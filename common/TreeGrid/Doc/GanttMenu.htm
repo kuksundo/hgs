@@ -1,0 +1,608 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt popup menu</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span class=apple-style-span><span style='font-size:10.0pt;
+color:black'>&nbsp;</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [<b>*</b>]
+</span><a name=CGanttMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [...]                                                                                                     <span
+style='color:red'>new <b>7.1</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defines all items in right
+click popup menu in the Gantt column for given cell or whole column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be first character
+separated array of menu item names. The items can contain any HTML code. Separator
+can be shown as item named ‘-‘</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or it can be in standard <a
+href="Menu.htm">TreeGrid menu</a> format as complex menu with <b>sub levels</b>,
+<b>sub menus</b>, <b>columns</b> and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also API <a
+href="Menu.htm#ShowMenu">ShowMenu</a> function to show custom menu from
+JavaScript.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to change the
+order or remove some items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also <b><i>add new
+custom items</i></b> and define <a href="file:///S:\Doc\OnGanttMenuClick">OnGanttMenuClick</a>
+API event to be called on click to the custom item.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The predefined menu item
+texts are defined in Text.xml, in &lt;Lang&gt;&lt;Gantt&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default Gantt menu is defined
+in Defaults.xml, in &lt;D Name=”Gantt” ... /&gt; and contains all these items
+in this order:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Item name used in
+GanttMenu       Text defined in Text.xml                  When shown and notes</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttConstraint                           Delete
+%d constraint                          Shown on constraint and constraints are
+editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SplitGanttConstraint                         Split
+the %d constraint                      Shown on mandatory constraint and
+constraints are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ChangeGanttConstraint                   Set
+the constraint as %d                    Shows up to four items to change to all
+possible constraints. Shown on constraint and constraints are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttFlag                                       Delete
+the flag                                     Shown on flag and flags are
+editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttFlag                                     Enter
+the flag text                               Shown on flag and flags are
+editable and the GanttFlagTexts column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ChooseGanttFlagIcon                       Select
+the flag icon                             Shown on flag and flags are editable
+and the GanttFlagIcons column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttPoint                                     Delete
+the point                                   Shown on point and points are
+editable</span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>DelGanttFlowPart                              Delete
+the real flow bar                     Shown on flow bar and the flow is
+editable</span></s><i><span style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>                                                               Delete
+milestone                                 Shown on flow milestone and the flow
+is editable</span></s><i><span style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>SplitGanttFlow                                    Split
+the real flow bar                        Shown on flow and the flow is editable</span></s><i><span
+style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>SetGanttFlowPercent                         Update
+completed status here         Shown on flow and the flow is editable and the
+GanttFlowComplete is defined</span></s><i><span style='font-size:10.0pt'>
+(deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>EditGanttFlowPercent                       Enter
+completed status                      Shown on flow and the flow is editable
+and the GanttFlowComplete is defined</span></s><i><span style='font-size:10.0pt'>
+(deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>EditGanttFlowText                            Enter
+the real flow information       Shown on flow and the flow is editable and the
+GanttFlowText column is defined</span></s><i><span style='font-size:10.0pt'>
+(deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttMilestone                             Delete
+milestone                                 Shown on milestone, the main bar is
+editable and GanttSummary is not set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttMilestone                             Set
+the milestone complete              Shown on incomplete milestone, the main bar
+is editable, GanttSummary is not 1 and GanttComplete column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Set
+the milestone incomplete           Shown on complete milestone, the main bar is
+editable, GanttSummary is not 1 and GanttComplete column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttMainPart                             Delete
+the bar                                     <i>(new 10.0) </i>Shown on main bar,
+the main bar is editable and GanttSummary is not set and there are more main
+bar parts</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttMain                                     Delete
+the task                                    Shown on main bar, the main bar is
+editable and GanttSummary is not set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DisableGanttMain                             Disable
+the task                                  <i>(new 10.0) </i>Shown on main bar,
+the main bar is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Enable
+the task</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>LockGanttMain                                 Lock
+the task                                      <i>(new 10.0) </i>Shown on main
+bar, the main bar is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Unlock
+the task</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SplitGanttMain                                   Split
+the bar                                         <i>(new 10.0) </i>Shown on main
+bar, the main bar is editable, GanttSummary is not set and the GanttParts is
+defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttPercent                                 Update
+completed status here         Shown on main bar, the main bar is editable,
+GanttSummary is not set and GanttComplete column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttPercent                                Enter
+completed status                     Shown on main bar, the main bar is
+editable, GanttSummary is not set and GanttComplete column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttText                                     Enter
+the main bar information      Shown on main bar or milestone, the main bar is
+editable and GanttText column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttRunPart                               Delete
+the box                                     Shown on run bar except End/Bound
+and the run is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DisableGanttRun                               Disable
+the task / Disable the box   <i>(new 10.0) </i>Shown on run bar, the run bar is
+editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Enable
+the task / Enable the box</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>LockGanttRun                                   Lock
+the task / Lock the box           <i>(new 10.0) </i>Shown on run bar, the run
+bar is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Unlock
+the task / Unlock the box</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SplitGanttRun                                     Split
+the bar / Split the box               <i>(new 10.0) </i>Shown on run bar except
+End/Bound and the run is editable and GanttRunError contains 'Merge'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttRun                                     Change
+the box text                          Shown on run bar except End/Bound and the
+run is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttRunTip                               Change
+the box information           Shown on run bar except End/Bound and the run is
+editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ChooseGanttRunType                      Select
+the box type                            Shown on run bar except End/Bound and
+the run is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-              </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttRunGroup                           Delete
+row group (%d boxes)           Shown on run bar except End/Bound and the run is
+editable. Only if there are more boxes with the same Group attribute as this
+box in the same row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttRunGroupAll                      Delete
+group (%d boxes)                   Shown on run bar except End/Bound and the
+run is editable. Only if there is a box with the same Group attribute as this
+box in another row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ChooseGanttRunGroupType          Select
+row group type (%d boxes) Shown on run bar except End/Bound and the run is
+editable. Only if there are more boxes with the same Group attribute as this
+box in the same row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ChooseGanttRunGroupAllType     Select
+group type (%d boxes)          Shown on run bar except End/Bound and the run is
+editable. Only if there is a box with the same Group attribute as this box in
+another row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttRunMilestone                     Set
+the milestone complete              Shown on incomplete run Milestone or Stop,
+the run is editable, GanttRunComplete column is defined. Only if the run
+contains only the box.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Set
+the milestone incomplete           Shown on complete run Milestone or Stop, the
+run bar is editable, GanttRunComplete column is defined. Only if the run
+contains only the box.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttRunPercent                          Update
+completed status here         Shown on run bar, the run is editable,
+GanttRunComplete column is defined. Except the run contains the only milestone.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttRunPercent                        Enter
+completed status                     Shown on run bar, the run is editable,
+GanttRunComplete column is defined. Except the run contains the only milestone.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttRunText                             Enter
+the task information               Shown on run bar, the run is editable,
+GanttRunText column is defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EditGanttResource                            Change
+resources                               Shown if resources are editable and
+GanttResources column is defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>GanttDepLagChange                        Change
+the dependency lag             <i>(chg 10.0)</i> Show on dependency line and
+the dependencies and lags are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttDep                                       Delete
+the dependency                      <i>(chg 10.0)</i> Show on dependency line
+and the dependencies are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelAllGanttDep                                  Disconnect
+all dependencies            Shown if there is some incoming/outgoing dependency
+in any <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a> in
+the cell</span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>DelGanttMainDep                             Delete
+main bar and dependencies Shown if there is some incoming/outgoing dependency
+and the <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a> bar
+(main or flow or run) that is editable</span></s><i><span style='font-size:
+10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><s><span
+style='font-size:10.0pt'>Delete milestone and dependencies               Shown
+if there is some incoming/outgoing dependency and milestone and the main bar is
+in the <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a> and
+the main bar is editable</span></s><i><span style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttMainBar                              Delete
+the task                                    Shown on main bar and the main bar
+is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttMainAll                                Delete
+all tasks                                    <i>(new 10.0) </i>Shown if there
+is main bar and the main bar is editable</span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>DelGanttFlow                                      Delete
+real flow                                   Shown if there is flow bar and the
+flow is editable and GanttFlowComplete column is <u>not</u> defined</span></s><i><span
+style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>                                                               Delete
+main bar                                  Shown if there is flow bar and the
+flow is editable and GanttFlowComplete column is defined</span></s><i><span
+style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttRun                                       Delete
+all boxes                                   Shown if there is run bar and the
+run is editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttFlags                                     Delete
+all flags                                    Shown if there is some flag and
+the flags are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttPoints                                   DelGanttPoints                                   Shown
+if there is some editable point</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttConstraints                          Delete
+all constraints                         Shown if there is some constraint and
+the constraints are editable</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttAll                                         Clear
+the gantt cell                             Shown if there is any object in the
+cell that can be deleted</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttFlag                                     Add
+new flag to selected point        Shown if there is no flag under mouse, the
+flags are editable, GanttFlags column is defined and the adding does not
+violate constraints</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttPoint                                   Add
+new point to selected point      Shown if it is possible to add new point here</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttConstraint                         Add
+%d constraint here                    Shows up to six items for every
+constraint that can be added to this place</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttMilestone                           Add
+new milestone here                    Shown if there is neither main bar nor
+milestone, the main bar is editable, GanttStart column is defined and the
+adding does not violate constraints</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttEndMilestone                   Add
+new ending milestone here       Shown if there is neither main bar nor
+milestone, the main bar is editable, GanttEnd column is defined and the adding
+does not violate constraints</span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>NewGanttFlowMilestone                  Add
+new milestone here                    Shown if there is no flow bar under
+mouse, the flow is editable, GanttFlowComplete is defined and the adding does
+not violate constraints</span></s><i><span style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>NewGanttFlowEndMilestone           Add
+new ending milestone here       Shown if there is no flow bar under mouse, the flow
+is editable, GanttFlowComplete is defined and the adding does not violate
+constraints</span></s><i><span style='font-size:10.0pt'> (deleted 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttRunMilestone                   Add
+new milestone here                    Shown if there is no run bar under mouse,
+the run is editable, GanttRun column is defined, GanttRunMilestones=1 and the
+adding does not violate constraints</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>NewGanttRunStop                            Add
+new stop here                             Shown if there is no run bar under
+mouse, the run is editable, GanttRun column is defined, GanttRunMilestones=1
+and the adding does not violate constraints</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttBase                                      Set
+project start here                          Shown on computed start line (if
+GanttBase is empty) and GanttBaseCanEdit is set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttBase                                     Delete
+project start                             Shown on start line (if GanttBase is <u>not</u>
+empty) and GanttBaseCanEdit is set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetGanttFinish                                    Set
+project finish here                        Shown on computed finish line (if
+GanttFinish is empty) and GanttFinishCanEdit is set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DelGanttFinish                                    Delete
+project finish                           Shown on finish line (if GanttFinish
+is <u>not</u> empty) and GanttFinishCanEdit is set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>CorrectRelatedDependencies          Correct
+related dependencies           Shown on Gantt task if there is some dependency
+error in the group related to this task</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>CorrectAllDependencies                   Correct
+all dependencies in chart    Shown if there is some dependency error in chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomBar                                             Zoom
+to bar                                        <i>(new 10.0) </i>Shown on bar
+(main or run) and GanttSmoothZoom&gt;=1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomAll                                               Zoom
+to all objects                            <i>(new 10.0) </i>Shown if the cell
+contains some object (Main, Run, Flags, Points) and GanttSmoothZoom&gt;=1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomHeader                                      Zoom
+to %d %d - %d                        <i>(new 10.0) </i>Shows more menu items,
+one per Gantt header row with different units</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomUndo                                          Zoom
+back to %d                              <i>(new 10.0) </i>Shown to undo last
+zoom change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomIn                                                Zoom
+in to %d                                    <i>(new 10.0) </i>Shown if it is
+possible to increase zoom level</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomOut                                             Zoom
+out to %d                                 <i>(new 10.0) </i>Shown if it is
+possible to decrease zoom level</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>ZoomFit                                               Zoom
+fit to actual space                  <i>(new 10.0) </i>Shown always</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Any other item name is custom
+name and its click must be handled by <a href="OnGanttMenuClick">OnGanttMenuClick</a>
+API event.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=OnGetGanttMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetGanttMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>menu</b>,
+<i>object</i> <b>GanttXY</b>)            <span style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the popup <a
+href="#CGanttMenu">GanttMenu</a> attribute dynamically by JavaScript.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>menu</span></b><span
+style='font-size:10.0pt'> is the original menu for the cell with all default
+and custom values. It should return new menu string.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttXY</span></b><span
+style='font-size:10.0pt'> is object returned by <a
+href="GanttAPI.htm#GetGanttXY">GetGanttXY</a> method and contains information
+about the Gantt bar(s) under mouse cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnGanttMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TMenu </i><b>Menu</b>,
+<i>object</i> <b>GanttXY</b>)          <span style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the Gantt popup
+menu is displayed for the appropriate cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Menu</span></b><span
+style='font-size:10.0pt'> is TreeGrid JavaScript <a href="Menu.htm">TMenu</a>
+object, here can be changed, items modified, added or deleted and so on.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttXY</span></b><span
+style='font-size:10.0pt'> is object returned by <a
+href="GanttAPI.htm#GetGanttXY">GetGanttXY</a> method and contains information
+about the Gantt bar(s) under mouse cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel showing
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnGanttMenuClick><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttMenuClick</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>name</b>,
+<i>TMenuItem</i> <b>Item</b>, <i>object</i> <b>GanttXY</b>)         <span
+style='color:red'>new <b>7.1</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when a user clicks to an
+item in <a href="#CGanttMenu">GanttMenu</a>. <i>Since 10.0 it is called for all
+GanttMenu items, not only for custom ones.</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is clicked custom item Name or standard item Text, <b>Item</b>
+is the whole clicked item object.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttXY</span></b><span
+style='font-size:10.0pt'> is object returned by <a
+href="GanttAPI.htm#GetGanttXY">GetGanttXY</a> method and contains information
+about the Gantt bar(s) under mouse cursor in time of the menu display.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGanttMenu></a><a name=GanttMenu><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GanttMenu</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>Attached
+to <b>OnRightClickGantt</b> event                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows popup menu with
+available actions for given clicked point in the Gantt cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [<b>*</b>]
+</span><a name=CMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Menu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [...]                                                                                                                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For compatibility with 6.x
+and 7.0 version only. In <b>7.1+</b> version use GanttMenu attribute instead.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Context (popup) menu for the
+Gantt cell to add custom items to the default Gantt menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnContextMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnContextMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>result</b>)                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when user clicks to
+context menu set by <a href="#CMenu">Menu</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>result is Value or Name of
+the clicked item or all value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to <u>not</u>
+close the menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>  
+   <script>
+
+Grids.OnTip = function(G,row,col,tip){
+if(col=="A"){
+   return "A = "+Get(row,"A")+", B = "+Get(row,"B")+", C = "+Get(row,"C")+", D = "+Get(row,"D")+", E = "+Get(row,"E");
+   }
+return tip;
+}   
+   
+   </script>
+
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>10. Column and row spanning</center>
+   <center style='font:bold italic;'>Attributes RowSpan, Span and Merge</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='740'>
+            <div style='margin-bottom:6px;'><a href='10 - Span.xml'>10 - <h2>Span</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='10 - Span.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='10 - Span header.xml'>10 - <h2>Span header</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='10 - Span header.xml'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>
+         <h3>Span</h3> attribute specifies how many columns in the row will the cell span.
+         The row must have set <b>Spanned='1'</b>, otherwise the Span attribute is ignored.
+      </li>
+      <li>
+         If you permit column moving by users in spanned grid, it is recommended to define column groups by <b>Group</b> attribute to not let users to break down the spanned cells.
+      </li>
+      <li><h3>Merge</h3> attribute specifies the cell values which will be shown in the spanned cell.<br />
+         By default only the first column value is shown in the spanned cell. The Merge contains a list of column names to display their values.
+         The merged cell values can be displayed in any order.<br />
+         By <b>MergeEdit</b> attribute is possible to specify the one editable cell from the Merge list.<br />
+         By <b>MergeFormat</b> is possible to define exact structure how the cell values will be merged and displayed.<br />
+         By <b>MergeEditFormat</b> specifies exact structure for editing, when more merged cells are editable.<br />
+         For complex MergeFormat can be defined API event <b>OnMergeChanged</b> for custom parsing edited value instead of default one for given MergeEditFormat.<br />
+      </li>
+      <li>
+         <h3>RowSpan</h3> attribute specifies how many rows in the column will the cell span.
+         The column must have set <b>Spanned='1'</b>, otherwise the RowSpan attribute is ignored.
+         In tree the RowSpan is a count of rows on the same level as this row. All their children are spanned automatically.
+         The last row’s children are spanned within range when added 0.5 to the RowSpan, e.g. RowSpan=’3.5’ means span for three row and also the last row’s children.
+      </li>
+      <li><h4>Custom spanned section</h4> can be defined by <b>LeftHtml</b>, <b>MidHtml</b> and <b>RightHtml</b>.
+      It spans all columns in the section and shows here the HTML code.
+      </li>
+      
+      <li><h4>Header</h4> can be spanned and row spanned like any other rows.<br /> 
+      Every grid contains one main header that is defined by root tag &lt;Header>. You can define more headers by placing next &lt;Header> tags into &lt;Head> section.<br />
+      To control position of the main header inside the other headers place it also to &lt;Head> tag as &lt;Header id='Header'/>.
+      </li>
+      <li>
+      If used <h4>column paging</h4> (&lt;Cfg ColPaging/> ), the cells can be spanned only inside the column page.<br />
+      You can set <b>&lt;Cfg ColPagingFixed='0'/></b> to not page fixed rows and let them span through the whole body.<br />
+      </li>
+      <li>To center text inside horizontally spanned cell regardless on scrolling set cell attribute <b>Align='Scroll'</b>.</li>
+   </ul>
+</body>
+</html>

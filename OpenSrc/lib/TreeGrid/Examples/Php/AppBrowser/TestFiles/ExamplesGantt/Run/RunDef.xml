@@ -1,0 +1,218 @@
+<Grid>
+   <Cfg id="Run" SuppressCfg="1"  MainCol="T" Undo="1"/> <!-- Displays tree in column T (Task / Subtask) -->
+   <Cfg NoVScroll="1" HideRootTree="1"/>
+   <LeftCols>
+      <C Name="T" Width="70" Type="Text"/> <!-- Column Task / Section-->
+      <C Name="S" Width="60" Type="Date" Format="MMM dd"/> <!-- Column Start date-->
+      <C Name="R" Width="100" Type="Text" Range="1"/> <!-- Column Run -->
+   </LeftCols>
+   <Def>
+      <D Name="R" CDef="" AcceptDef=""/>
+      <D Name="Task" CDef="R" AcceptDef="R" GGanttEdit="" GGanttIcons="1" SCanEdit="0" RCanEdit="0"
+         Calculated="1" CalcOrder="GGanttStart,GGanttEnd" GGanttStartFormula="ganttrunminstart('G')" GGanttEndFormula="ganttrunmaxend('G')"
+         />
+   </Def>
+   <Root CDef="Task" AcceptDef="Task"/>
+   <Cols>
+      <!-- Gantt chart column -->
+      <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Sets Gantt type to show Gantt chart here -->
+      <C Name="G" GanttRunStart="S" GanttRun="R"/> <!-- Defines source columns where are the Run data stored -->
+      <C Name="G" GanttDataUnits="d"/> <!-- All run lenghts are set in days in this example -->
+      <C Name="G" GanttRight="1" /> <!-- reserves one unit on right side to be always empty -->
+      <C Name="G" GanttEndLast="0" /> <!-- The end date of boxes (in last row only) is the exact end date, not the last day -->
+      <C Name="G" MinWidth="450"/> <!-- Minimal width of the column will be 450 pixels -->
+      
+      <!-- Special Run settings -->
+      <C Name="G" GanttRunNewStart="2,end,Start;;1,box;;2,end,End"/> <!-- The first created run in empty row will be created with start and end boxes -->
+      <C Name="G" GanttRunMove="slide"/> <!-- When the run is dragged by mouse, it is moved within its row only -->
+      <C Name="G" GanttRunAdjustSlide="shrink"/> <!-- When the run moved inside its row, the other boxes are moved and their spaces are shrunk -->
+      <C Name="G" GanttRunAdjustCopy="resize,move,shrink,append"/> <!-- What to do, when the run is copied from another grid -->
+      <C Name="G" GanttRunMoveCtrl="move"/> <!-- When the run is dragged with ctrl, it is moved to another row -->
+      <C Name="G" GanttRunAdjustMove="shrink,move,append"/> <!-- What to do, when the run is moved to another row -->
+      <C Name="G" GanttRunMoveShift="move,single,all" /> <!-- When the run is dragged with shift, it is moved to another row, always as single box, even fixed boxes -->
+      <C Name="G" GanttRunAdjustMoveShift="error"/> <!-- When the run is moved with shift, it can be placed to incorrect place without any correction -->
+      <C Name="G" GanttRunResize="resize"/> <!-- When the run edge is dragged by mouse, the box is resized -->
+      <C Name="G" GanttRunAdjustResize="shrink"/> <!-- When the run is resized, the other boxes are moved and their spaces are shrunk -->
+      <C Name="G" GanttRunResizeCtrl="resize,all"/> <!-- With ctrl are resized also fixed and solid boxes -->
+      <C Name="G" GanttRunTypes="Box,Box;Box 1,Box,,Fuchsia;Box 2,Box,,Aqua;Box 3,Box,,Lime;Box 4,Box,,Orange;Solid box,Solid,, ;Solid box 1,Solid,,Gray;Solid box 2,Solid,,Black;Fixed left box,Left,, ;Fixed right box,Right,, ;Fixed box,Fixed,, "/>
+         <!-- Defines all types to change to one from popup menu list -->
+      
+      <!-- Excluded holidays -->
+      <C Name="G" GanttExclude="w#1/5/2008~1/7/2008"/> <!-- Excludes weekends, the weekends will be excluded from the run length, the runs cannot start / end in weekend -->
+      <C Name="G" GanttInclude="5/24/2008~5/26/2008"/> <!-- Includes this one weekend, this weekend is used as normal workdays -->
+      <C Name="G" GanttHideExclude="0"/> <!-- By default are the Excluded dates shown in chart, it can be changed by a user -->
+
+      <!-- Zoom settings -->
+      <C Name="G" GanttZoom="weeks and days"/> <!-- Predefine zoom level name -->
+
+      <!-- GanttZoomList defines zoom levels definition -->
+      <!-- The individual levels predefine various Gantt zoom settings -->
+      <!-- GanttUnits and GanttWidth specify the zooming size, to GanttUnits are all the dates rounded for display and drag -->
+      <!-- GanttChartRound specifies rounding of first and last date in the chart -->
+      <!-- Some zoom levels changes GanttBackground to mark different units -->
+      <!-- GanttHeader1,GanttFormat1 specify the dates shown in the first line in Gantt header -->
+      <!-- GanttHeader2,GanttFormat2 and possibly also 3,4,5 specify next lines in Gantt header -->
+      <!-- The ...Ex values are chosen when Exclude is hidden, they are appropriate only for the actual Exclude dates (days only) -->
+      <C Name="G" GanttZoomList="[
+      { Name:'years and halves', GanttUnits:'M6', GanttChartRound:'y', GanttWidth:18, GanttWidthEx:25,
+      GanttBackground:';y#1/1/2008',
+      GanttHeader1:'y#yyyy',
+      GanttHeader2:'M6#MMMMMM' },
+
+      { Name:'years and quarters', GanttUnits:'M3', GanttChartRound:'y', GanttWidth:24, GanttWidthEx:34,
+      GanttBackground:';y#1/1/2008',
+      GanttHeader1:'y#yyyy', GanttHeader2:'M3#MMMMM' },
+
+      { Name:'halves and months', GanttUnits:'M', GanttChartRound:'y', GanttWidth:18, GanttWidthEx:25,
+      GanttBackground:';M6#1/1/2008',
+      GanttHeader1:'M6#MMMMMM. yyyy',
+      GanttHeader2:'M#MM' },
+
+      { Name:'quarters and months', GanttUnits:'M', GanttChartRound:'M6', GanttWidth:28, GanttWidthEx:39,
+      GanttBackground:';M3#1/1/2008',
+      GanttHeader1:'M3#MMMMM. yyyy',
+      GanttHeader2:'M#MMM' },
+
+      { Name:'months and weeks', GanttUnits:'d', GanttChartRound:'M', GanttWidth:3, GanttWidthEx:4.2,
+      GanttBackground:';M#1/1/2008',
+      GanttHeader1:'M#MMM yyyy',
+      GanttHeader2:'w#d.' },
+
+      { Name:'months and days', GanttUnits:'d', GanttChartRound:'M', GanttWidth:8, GanttWidthEx:11.2,
+      GanttHeader1:'M#MMMM yyyy',
+      GanttHeader2:'d#&quot;&lt;span style=\'font:8px Arial;\'>&quot;DDDDDD&quot;&lt;br/>&quot;DDDDDDD&quot;&lt;/span>&quot;' },
+
+      { Name:'weeks and days', GanttUnits:'d', GanttChartRound:'w', GanttWidth:18, GanttWidthEx:23.5,
+      GanttHeader1:'w#&quot;&lt;span style=\'color:red;font-size:8px;\'>week &quot;ddddddd&quot;&lt;/span>&quot; MMMM yyyy',
+      GanttHeader2:'d#%d',
+      GanttHeader3:'d#ddddd' },
+
+      { Name:'days and quarters', GanttUnits:'h', GanttChartRound:'w', GanttWidth:3,
+      GanttHeader1:'d#dd MMM yyyy',
+      GanttHeader2:'d#dddd',
+      GanttHeader3:'h6#HH', GanttHeaderRound3:1 },
+
+      { Name:'days and hours', GanttUnits:'h', GanttChartRound:'d', GanttWidth:8,
+      GanttHeader1:'d#dddd dddddd MMMM yyyy',
+      GanttHeader2:'h#&quot;&lt;span style=\'font:8px Arial;\'>&quot;HHHH&quot;&lt;br/>&quot;HHHHH&quot;&lt;/span>&quot;',
+      GanttHeader2Ex:'h#HH' },
+
+      { Name:'halves and hours', GanttUnits:'h', GanttChartRound:'d', GanttWidth:19,
+      GanttHeader1:'h12#dddd dddddd MMMM yyyy tt',
+      GanttHeader1Ex:'d#dddd dddddd MMMM yyyy',
+      GanttHeader2:'h#HH' },
+
+      { Name:'hours and quarters', GanttUnits:'h', GanttChartRound:'d', GanttWidth:60,
+      GanttBackground:'w#1/5/2008~1/7/2008; h#00:00',
+      GanttHeader1:'h3#dddd dddddd MMMM yyyy',
+      GanttHeader2:'h#HH \'hour\'',
+      GanttHeader3:'m15#mm' },
+
+      { Name:'hours and 5 minutes', GanttUnits:'m5', GanttChartRound:'h', GanttWidth:18,
+      GanttBackground:'w#1/5/2008~1/7/2008; h#00:00',
+      GanttHeader1:'h#dddd dddddd MMMM yyyy',
+      GanttHeader2:'h#HH \'hour\'',
+      GanttHeader3:'m5#mm' },
+
+      { Name:'hours and minutes', GanttUnits:'m', GanttChartRound:'h', GanttWidth:8,
+      GanttBackground:'m15#00:00; h#00:00',
+      GanttHeader1:'h#dddd dddddd MMMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH \'hour\'&quot;&lt;/span>&quot;',
+      GanttHeader2:'m#&quot;&lt;span style=\'font:8px Arial;\'>&quot;mmmm&quot;&lt;br/>&quot;mmmmm&quot;&lt;/span>&quot;' },
+
+      { Name:'halves and minutes', GanttUnits:'m', GanttChartRound:'h', GanttWidth:12,
+      GanttBackground:'m15#00:00; h#00:00',
+      GanttHeader1:'m30#dddd dddddd MMMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm &quot;&lt;/span>&quot;',
+      GanttHeader2:'m#&quot;&lt;span style=\'font:8px Arial;\'>&quot;mmmm&quot;&lt;br/>&quot;mmmmm&quot;&lt;/span>&quot;' },
+
+      { Name:'quarters and minutes', GanttUnits:'m', GanttChartRound:'h', GanttWidth:18,
+      GanttBackground:'m15#00:00; h#00:00',
+      GanttHeader1:'m15#dddd dddddd MMMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm &quot;&lt;/span>&quot;',
+      GanttHeader2:'m#mm' },
+
+      { Name:'5 minutes and minutes', GanttUnits:'m', GanttChartRound:'m15', GanttWidth:36,
+      GanttBackground:'m5#00:00; h#00:00',
+      GanttHeader1:'m5#dddd d MMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm&quot;&lt;/span>&quot;',
+      GanttHeader2:'m#mm' },
+
+      { Name:'minutes and 15 seconds', GanttUnits:'s15', GanttChartRound:'m15', GanttWidth:18,
+      GanttBackground:'m#00:00; h#00:00',
+      GanttHeader1:'m2#dddd d MMM yyyy',
+      GanttHeader2:'m#HH:mm',
+      GanttHeader3:'s15#ss' },
+
+      { Name:'minutes and 5 seconds', GanttUnits:'s5', GanttChartRound:'m15', GanttWidth:18,
+      GanttBackground:'m#00:00; h#00:00',
+      GanttHeader1:'m#dddd dddddd MMMM yyyy',
+      GanttHeader2:'m#HH:mm',
+      GanttHeader3:'s5#ss' },
+
+      { Name:'minutes and seconds', GanttUnits:'s', GanttChartRound:'m5', GanttWidth:8,
+      GanttBackground:'s15#00:00; m#00:00',
+      GanttHeader1:'m#dddd dddddd MMMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm \'minute\'&quot;&lt;/span>&quot;',
+      GanttHeader2:'s#&quot;&lt;span style=\'font:8px Arial;\'>&quot;ssss&quot;&lt;br/>&quot;sssss&quot;&lt;/span>&quot;' },
+
+      { Name:'halves and seconds', GanttUnits:'s', GanttChartRound:'m5', GanttWidth:12,
+      GanttBackground:'s15#00:00; m#00:00',
+      GanttHeader1:'s30#dddd d MMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm \'minute\'&quot;&lt;/span>&quot;',
+      GanttHeader2:'s#&quot;&lt;span style=\'font:8px Arial;\'>&quot;ssss&quot;&lt;br/>&quot;sssss&quot;&lt;/span>&quot;' },
+
+      { Name:'quarters and seconds', GanttUnits:'s', GanttChartRound:'m', GanttWidth:18,
+      GanttBackground:'s15#00:00; m#00:00',
+      GanttHeader1:'s15#dddd dddddd MMMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm:ss&quot;&lt;/span>&quot;',
+      GanttHeader2:'s#ss' },
+
+      { Name:'5 seconds and seconds', GanttUnits:'s', GanttChartRound:'s15', GanttWidth:36,
+      GanttBackground:'s5#00:00; m#00:00',
+      GanttHeader1:'s5#dddd d MMM yyyy, &quot;&lt;span style=\'color:red;\'>&quot;HH:mm&quot;&lt;/span>&quot;',
+      GanttHeader2:'s#ss' },
+
+      { Name:'seconds and 100 ms', GanttUnits:'ms100', GanttChartRound:'s2', GanttWidth:9,
+      GanttBackground:'s#00:00; m#00:00',
+      GanttHeader1:'s2#dddd dddddd MMMM yyyy',
+      GanttHeader2:'s#HH:mm:ss',
+      GanttHeader3:'ms100#%f' },
+
+      { Name:'seconds and 100 ms 2', GanttUnits:'ms100', GanttChartRound:'s', GanttWidth:60,
+      GanttBackground:'s#00:00; m#00:00',
+      GanttHeader1:'s#dddd dddddd MMMM yyyy',
+      GanttHeader2:'ms100#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;f&quot;&lt;/span>&quot;' },
+
+      { Name:'100 ms and 10 ms', GanttUnits:'ms10', GanttChartRound:'ms100', GanttWidth:10,
+      GanttBackground:'ms100#00:00; s#00:00',
+      GanttHeader1:'ms100#ddd d MMM yyyy',
+      GanttHeader2:'ms100#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;f&quot;&lt;/span>&quot;',
+      GanttHeader3:'ms10#ffff' },
+
+      { Name:'100 ms and 10 ms 2', GanttUnits:'ms10', GanttChartRound:'ms100', GanttWidth:65,
+      GanttBackground:'ms100#00:00; s#00:00',
+      GanttHeader1:'ms100#dddd dddddd MMMM yyyy',
+      GanttHeader2:'ms10#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;ff&quot;&lt;/span>&quot;' },
+
+      { Name:'10 ms and ms', GanttUnits:'ms', GanttChartRound:'ms10', GanttWidth:11,
+      GanttBackground:'ms10#00:00; ms100#00:00',
+      GanttHeader1:'ms10#ddd d MMM yyyy',
+      GanttHeader2:'ms10#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;ff&quot;&lt;/span>&quot;',
+      GanttHeader3:'ms#fffff' },
+
+      { Name:'10 ms and ms 2', GanttUnits:'ms', GanttChartRound:'ms10', GanttWidth:70,
+      GanttBackground:'ms10#00:00; ms100#00:00',
+      GanttHeader1:'ms10#dddd dddddd MMMM yyyy',
+      GanttHeader2:'ms#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;fff&quot;&lt;/span>&quot;' },
+
+      { Name:'10 ms and ms 3', GanttUnits:'ms', GanttChartRound:'ms10', GanttWidth:180,
+      GanttBackground:'ms10#00:00; ms100#00:00',
+      GanttHeader1:'ms#dddd dddddd MMMM yyyy',
+      GanttHeader2:'ms#HH:mm:ss.&quot;&lt;span style=\'color:red;\'>&quot;fff&quot;&lt;/span>&quot;' },
+      null]"
+      />
+   </Cols>
+   <Header id="ID" T="Task" R="Run" S="Start" G="Gantt"/> <!-- Column captions -->
+   <Toolbar
+      Cells="Correct,Save,Reload,Repaint,Print,Export,Undo,Redo,Add,AddChild,ExpandAll,CollapseAll,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,Help,Debug,StyleTitle,StyleStandard,StyleLight,StyleOffice,StyleModern,StyleBorders,StyleRobust,StylePlain,Empty,Formula,Exclude"
+      ExcludeType='Bool' ExcludeNoColor='1'
+      ExcludeLabelRight='Hide holidays'
+      ExcludeFormula='Grid.Cols.G.GanttHideExclude'
+      ExcludeOnChange='Grid.SetHideExclude(Value)'
+      ExcludeCanEditFormula='gantthasexclude()!=0'
+      />
+</Grid>

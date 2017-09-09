@@ -1,0 +1,125 @@
+<Grid>
+   <Cfg id="ZoomNumbers" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1"/>
+   <Cfg ScrollLeftLap="0"/>
+   <Cfg SuppressCfg="1"/>
+   <LeftCols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="CAL" Width="105" Type="Select" OnClickSideDefaults = "Grid.ShowGanttCalendars(Row,Col)" OnEnter = "Grid.ShowGanttCalendars(Row,Col)"/>
+      <C Name="START" Type="Float" CanEmpty="1"/>
+      <C Name="END" Type="Float" CanEmpty="1"/>
+      <C Name="DUR" Type="Text" CanSort="0"/>
+   </LeftCols>
+   <Def>
+      <D Name="PARTS" Spanned="1" GANTTGanttStart="" GANTTGanttParts="START" STARTSpan="3" STARTRange="1" STARTCanEdit="0"/>
+      <D Name="RUN" Spanned="1" GANTTGanttStart="" GANTTGanttRun="START" STARTSpan="3" STARTType="Text" STARTCanEdit="0" STARTFormat=""/>
+   </Def>
+   <Cols>
+      <C Name="GANTT" Type="Gantt"
+         GanttDataUnits="1"
+         GanttStart="START" GanttEnd="END" GanttDuration="DUR"
+         GanttCalendar="CAL"
+         GanttLeft="0" GanttRight="0"
+         GanttZoom="tens"
+         GanttHideExclude="0" GanttCheckExclude="1"
+         GanttExclude="Every 5"
+         />
+   </Cols>
+   <Calendars>
+      <E Name="Odd" Exclude="2#0~1"/>
+      <E Name="Even" Exclude="2#1~2"/>
+      <E Name="Every 3" Exclude="3#0~1"/>
+      <E Name="Every 5" Exclude="5#0~1"/>
+      <E Name="Every 10" Exclude="10#0~1"/>
+      <E Name="0~10" Exclude="100#0~210;100#-210~0"/>
+      <E Name="Odd 10" Exclude="20#0~10"/>
+      <E Name="Even 10" Exclude="20#10~20"/>
+      <E Name="Full" Exclude=""/>
+   </Calendars>
+   <Zoom>
+      <Z Name="tens" 
+         GanttUnits="10" GanttChartRound="100"
+         GanttWidth="16" GanttWidthEx="20"
+         GanttHeader1="100#0"
+         GanttHeader2="10#800;800" 
+         />
+      <Z Name="ones" 
+         GanttUnits="1" GanttChartRound="10" 
+         GanttWidth="16" GanttWidthEx="9"
+         GanttHeader1="10#0" 
+         GanttHeader2="1#80;80" 
+         />
+      <Z Name="decimal" 
+         GanttUnits="0.1" GanttChartRound="1"
+         GanttWidth="16" GanttWidthEx="25"
+         GanttHeader1="1#0.0"
+         GanttHeader2="0.1#8.0;8.0"
+         />
+   </Zoom>
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1" 
+            START="-153" END="154"
+            />
+         <I id="2"
+            START="-153" DUR="246"
+            />
+         <I id="3"
+            CAL="0~10"
+            START="-153" END="154"
+            />
+         <I id="4"
+            CAL="Odd 10"
+            START="-153" END="154"
+            />
+         <I id="5"
+            CAL="Even"
+            START="-153" END="154"
+            />
+         <I id="6"
+            CAL="Full"
+            START="-153" END="154"
+            />
+         <I id="7" Def="PARTS"
+            START="-153~-86;-2~;37;57~58;87~94"
+            />
+         <I id="8" Def="PARTS"
+            CAL="Even 10"
+            START="-153~-86;-2~;37;57~58;87~94"
+            />
+         <I id="9" Def="PARTS"
+            CAL="Odd 10"
+            START="-153~-86;-2~;37;57~58;87~94"
+            />
+         <I id="10" Def="RUN"
+            START=";,-153,28;-93,7;-13,4;2;-6,27;67,28;137,14"
+            />
+      </B>
+   </Body>
+   <Header id="id"/>
+   <Header id="id"/>
+   <Toolbar Cells="Ex,Typ,Hide,Check,Reload,Print,Undo,Redo,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo" Styles="2"
+      ExLabel="&lt;b style='color:blue;'>Holidays&lt;/b>" ExWidth="100" ExLeft="5"
+      ExType="Select" ExOnClickSideDefaults = "Grid.ShowGanttCalendars(Row,Col)"
+      ExFormula="Grid.Cols.GANTT.GanttExclude"
+      ExOnChange="Grid.ChangeExclude(Value);" ExUndo="1"
+      ExTip="Global calendar for the whole project"
+            
+      HideType='Bool' HideCanEdit='1'
+      HideLabelRight='Hide excluded dates'
+      HideFormula='Grid.Cols.GANTT.GanttHideExclude'
+      HideOnChange='Grid.SetHideExclude(Value)'
+
+      CheckType='Select'
+      CheckDefaults='|Permit start at excluded dates|Restrict start at excluded dates|Ask before start at excluded dates'
+      CheckFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.GANTT.GanttCheckExclude)'
+      CheckOnChange='Grid.Cols.GANTT.GanttCheckExclude = Grid.GetDefaultsIndex(Row,Col,Value); Grid.SaveCfg();'
+      CheckTip='If tasks can start and end at excluded dates'
+      CheckWidth='160'
+            
+      TypType='Bool' TypLabelRight='Update end by duration' TypLeft='5' Typ='1' TypCanEdit='1'
+      TypTip='When changing exclude / include it will update end by duration when checked and duration by end when unchecked&lt;br>Updates only Main bar. The Run bars are updated always according to their definition type.'
+      TypFormula='Grid.Cols.GANTT.GanttChangeExclude'
+      TypOnChange='Grid.Cols.GANTT.GanttChangeExclude=Value?3:0'
+      />
+</Grid>

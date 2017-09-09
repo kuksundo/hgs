@@ -1,0 +1,1093 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Export to Excel</title>
+
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Export to Excel</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Export of grid data to MS
+Excel in HTML format, to CSV, or any other format.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It requires <b>communication
+with server</b>, because JavaScript can never create files on client side
+because of security restrictions.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>There are two export
+types, client and server. </span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Client export</span></b><span
+style='font-size:10.0pt'> creates the data on client, sends them to server and
+back to client. It is done by TreeGrid does not need too much to set it up.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Server export</span></b><span
+style='font-size:10.0pt'> sends to server only configuration and server
+generated the data and sends them back to client. It is done by custom server
+script that must written by developers using TreeGrid. There can be used also
+TreeGrid.dll/so as support library to generate the exported data on server
+side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=XLS><b><span style='font-size:20.0pt'>Basic settings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Basic definition of export to
+MS Excel XLS, CSV or any other custom type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be <a href="#Client">client
+export</a> (only XLS or CSV) or <a href="#Server">server export</a> (XLS, CSV
+or any custom type).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="Export_Url"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Export_Url</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Destination for page that
+generates data to export to XLS, CSV or any other format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This server URL should return
+the exported data as XLS file in HTTP content-type=&quot;application/vnd.ms-excel&quot;
+or CSV as “text/csv”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This communication is <u>not</u>
+done by AJAX, but always by hidden form, so it can be used even if no ActiveX
+is supported.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Export cannot use Soap or Get
+communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you encounter problems
+with export of international (non-English) characters, add to your page, to
+&lt;head&gt; section:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;meta
+http-equiv=&quot;Content-Type&quot; content=&quot;text/html;
+charset=UTF-8&quot;&gt; </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In <b>client</b> <b>export</b>
+(Export_Type=’XLS’ or ‘CSV’) to this URL is uploaded complete exported data
+ and the server script should just return them back.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In <b>server</b> <b>export</b>
+(Export_Type=’Settings’ or other value) to this URL is uploaded actual grid
+configuration and the server script should create and return the exported data
+by itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="Export_Data"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Export_Data</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>    [“Data”]                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of form input in
+that will be uploaded exported data or configuration to Export_Url</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="Export_Type"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Export_Type</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>   [“”]                                                                                                      <span
+style='color:red'>chg <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What and how will be send to
+server to export, case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It specifies the format of <b>client
+export</b> or the configuration sent to server for <b>server export</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>empty</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server will be send full
+report in XLS/CSV format (chosen by <a href="#CfgExportFormat">ExportFormat</a>),
+generated according to <b><a href="#Client">Client<span style='font-weight:
+normal'> </span>export</a></b> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>XLS</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server will be send full
+report in XLS format, generated according to <b><a href="#Client">Client<span
+style='font-weight:normal'> </span>export</a></b> settings.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It replaces Export_Type=”0”
+and &lt;Cfg ExportFormat=”1”/&gt; from versions prior 6.7.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>CSV</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server will be send full
+report in CSV format, generated according to <b><a href="#Client">Client<span
+style='font-weight:normal'> </span>export</a></b> settings.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It replaces Export_Type=”0”
+and &lt;Cfg ExportFormat=”2”/&gt; from versions prior 6.7.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Settings</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server will be send only
+configuration (sorting, grouping, filters) and columns (positions, visibility
+and widths) in XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server must generate the
+requested report in <b>XLS</b> or <b>CSV</b> according to the settings and
+stored data and return it to client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="#Server">Server
+export</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It replaces Export_Type=”1”
+from versions prior 6.7.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Expanded</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends ids of all expanded
+rows in &lt;Cfg <a href="Tree.htm#CfgExpanded">Expanded</a>/&gt; attribute,
+comma separated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Changes</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used usually with Settings
+for server export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends modified rows - rows
+with set attribute <b>Added</b>, <b>Deleted</b>, <b>Moved</b> or <b>Changed</b>
+(modified values). The rows are sent in &lt;<a href="#XML">Changes</a>&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, the export does <u>not</u>
+save the changes to server before export, but includes them in the export
+request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute supports
+also all other settings like <b>Cookie</b> or <b>Data</b> defined for _Type,
+see <a href="DataUpload.html#Upload_Type">Upload_Type</a>. Also <b>Export_Flags</b>
+are supported if defined, see <a href="DataUpload.html#Upload_Flags">Upload_Flags</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgExportCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       [2]                                                                                           <span
+style='color:red'>new <b>6.0</b></span><span style='color:blue'>;upd<b> 6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and which menu will be
+shown before doing export.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no menu</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – menu with columns to select which columns will be
+exported. Only columns with <a href="#CCanExport">CanExport</a>=’1’ are listed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.7)</i> menu with column and also with
+options for export</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>Export API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExport></a><a name=Export><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Export</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Attached
+to event <b>OnClickButtonExport</b>                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates report in XLS or CSV
+or a request for the server report and sends it to server</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnExportStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnExportStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>bool</i> <b>pdf</b>)                                                    <span
+style='color:red'>new <b>6.0;</b></span><span style='color:#0070C0'> upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the export
+report is generated. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 7.0) </span></i><b><span
+style='font-size:10.0pt'>pdf</span></b><span style='font-size:10.0pt'> is true
+for export to PDF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>data</b>, <i>bool</i> <b>pdf</b>)                                                         <span
+style='color:#0070C0'>upd <b>7.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the export or
+configuration is created and before it is sent to server. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is the created export or configuration. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 7.0) </span></i><b><span
+style='font-size:10.0pt'>pdf</span></b><span style='font-size:10.0pt'> is true
+for export to PDF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or return new or updated data
+to send.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void</i>      </span><a
+name=SendExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SendExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>string</i>
+<b>data</b>, <i>string</i> <b>url</b>, <i>string</i> <b>name</b>)                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends the data to server as
+export or configuration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calls also OnExport.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnShowColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TMenu </i><b>Menu</b>)                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to add custom items to
+the export menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnShowColumns =
+function(G,M){ var I = M.Items[7].Items; I[I.length] =
+{Name:&quot;XXX&quot;,Bool:1,Value:1}; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+menu action</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnColumnsFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColumnsFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TMenu </i><b>Menu</b>)                                                        <span
+style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the export menu
+is closed to process custom menu items added in OnShowColumns API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnColumnsFinish =
+function(G,M){ var val = M.FindItem(&quot;XXX&quot;).Value; ... }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+menu action</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Client></a><a name=Simple><b><span style='font-size:20.0pt'>Client
+export</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server (to <b>Export_Url</b>)
+is sent whole prepared report that can just be returned by this page back to
+Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In “custom” parameter “<b>ExportFormat</b>”
+is sent chosen file extension “xls” or “csv”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used only for small
+grids, because to server are send all data back.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cannot be used with server
+paging or server child paging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Space rows are <u>not</u>
+exported.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server script just
+returns the data from <a href="DataCommunication.htm#xxx_Data">Data</a>
+attribute back to client with changed content type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For MS <b>Excel</b> use <b><i>ContentType</i></b>=&quot;<b>application/vnd.ms-excel</b>&quot;
+and <b><i>charset:</i></b> <b>utf-8</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:16.0pt'>Examples of server script for client
+export</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Point Export_Url to simple
+server script that will just return the received data:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ASP.NET</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;%@
+Page Language=&quot;C#&quot; ContentType=&quot;application/vnd.ms-excel&quot;
+%&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;%
+Response.AppendHeader(&quot;Content-Disposition&quot;,&quot;attachment;
+filename=\&quot;Export.xls\&quot;&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+Response.AppendHeader(&quot;Cache-Control&quot;,&quot;max-age=1,
+must-revalidate&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+Response.Write(HttpUtility.HtmlDecode(Request[&quot;Data&quot;])); %&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ASP</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;% 
+Session.Codepage=65001</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Response.ContentType
+= &quot;application/vnd.ms-excel&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Response.Charset=
+&quot;utf-8&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Response.AddHeader
+&quot;Cache-Control&quot;,&quot;max-age=1, must-revalidate&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Response.AddHeader
+&quot;Content-Disposition&quot;, &quot;attachment;
+filename=&quot;&quot;Export.xls&quot;&quot;&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Response.Write
+Replace(Replace(Replace(Request.Form(&quot;Data&quot;),&quot;&amp;lt;&quot;,&quot;&lt;&quot;),&quot;&amp;gt;&quot;,&quot;&gt;&quot;),&quot;&amp;amp;&quot;,&quot;&amp;&quot;)
+%&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>JSP</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;%@page
+contentType=&quot;application/vnd.ms-excel&quot;%&gt;&lt;%@page
+pageEncoding=&quot;UTF-8&quot;%&gt;&lt;%</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>request.setCharacterEncoding(&quot;utf-8&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>response.addHeader(&quot;Content-Disposition&quot;,&quot;attachment;
+filename=\&quot;Export.xls\&quot;&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>response.addHeader(&quot;Cache-Control&quot;,&quot;max-age=1,
+must-revalidate&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>out.print(request.getParameter(&quot;Data&quot;).replaceAll(&quot;&amp;lt;&quot;,&quot;&lt;&quot;).replaceAll(&quot;&amp;gt;&quot;,&quot;&gt;&quot;).replaceAll(&quot;&amp;amp;&quot;,&quot;&amp;&quot;).replaceAll(&quot;&amp;quot;&quot;,&quot;\&quot;&quot;).replaceAll(&quot;&amp;apos;&quot;,&quot;'&quot;));
+%&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PHP</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;?php
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>header(&quot;Content-Type:
+application/vnd.ms-excel; charset=utf-8&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>header(&quot;Content-Disposition:
+attachment; filename=\&quot;Export.xls\&quot;&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>header(&quot;Cache-Control:
+max-age=1; must-revalidate&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>$XML
+= array_key_exists(&quot;Data&quot;,$_REQUEST) ? $_REQUEST[&quot;Data&quot;] :
+&quot;&quot;;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>if(get_magic_quotes_gpc())
+$XML = stripslashes($XML);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>echo
+html_entity_decode($XML); ?&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Any other language can
+generate the export similarly</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:16.0pt'>Client export settings</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i>
+</span><a name=CfgExportFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ExportFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                               <span
+style='color:red'>new <b>6.0</b>;chg <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.7</span></i><span
+style='font-size:10.0pt'> it is predefined format in Export options menu and
+predefined format when <a href="#Export_Type">Export_Type</a> is empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Possible values: <b>1</b> –
+XLS, <b>2</b> – CSV.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i>
+</span><a name=CfgExportPrefix><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ExportPrefix</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added into Excel
+report between Excel header and TreeGrid table</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i>
+</span><a name=CfgExportPostfix><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ExportPostfix</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added into Excel
+report between exported TreeGrid table and enclosing &lt;/body&gt; tag</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CfgExportType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportType</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [“Expanded,Indent”]                                                                             <span
+style='color:#1F497D'>upd <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The way of client export (or
+server export via TreeGrid.dll/so) to Excel, comma separated list of keywords,
+case insensitive </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Filtered</span></b><span
+style='font-size:10.0pt'>                export also filtered rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Expanded</span></b><span
+style='font-size:10.0pt'>            exports all rows expanded</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Hidden</span></b><span
+style='font-size:10.0pt'>                  export all columns, including hidden
+(but only columns with CanExport=’1’)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Outline</span></b><span
+style='font-size:10.0pt'>                 export tree as Excel outline, for CSV
+adds new column with the outline as characters ‘#’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Indent</span></b><span
+style='font-size:10.0pt'>                   indent levels in main column</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Strings</span></b><span
+style='font-size:10.0pt'>                  (XLS) store strings in file twice to
+preserve their type a spaces, set it if you want to export all strings as
+strings and not chosen by Excel.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Dates</span></b><span
+style='font-size:10.0pt'>                     (XLS) export dates as strings
+only (useful for exporting Hirji dates). In this case the &lt;C&gt; <a
+href="CExportFormat">ExportFormat</a> formats directly the date string</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Rtl</span></b><span
+style='font-size:10.0pt'>                          <i>(new 7.1) </i>The columns
+will be exported in reversed order when the grid is in Rtl mode</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgExportRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [500]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For how many rows will be
+displayed and updated progress bar. Displaying progress bar suppresses also
+message about slow script. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> never shows progress bar. The progress bar is shown
+only if the count of exported rows is higher than the ExportRows value.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>When shown the progress
+bar in IE there is shown message after finish and a user must click to download
+button – otherwise IE blocks the file download.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Too small value can slow down
+the export, reasonable value is about 100.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellExportValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell value used for export to
+Excel, see also <a href="OnGetExportValue">OnGetExportValue</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CExportStyle><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportStyle</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The CSS style added to the
+cell when exported.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example to align the cell
+vertically to top, set ExportStyle=’vertical-align:top’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used also to format
+the number or date value in Excel, e.g. ExportStyle='mso-number-format:&quot;$ 0.00&quot;;'
+or ExportStyle='mso-number-format:&quot;d.M.yyyy HH:mm&quot;;'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Excel CSS attribute <b>mso-number-format</b>
+settings are similar to TreeGrid number and date formats.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CExportFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A date time or number format
+to export to Excel. Used only for <a href="Export.htm#Export_Type">Export_Type</a>
+= 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a
+href="TypeDate.htm#CExportFormat">ExportFormat</a> for number type or <a
+href="TypeNumber.htm#CExportFormat">ExportFormat</a> for date type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetExportValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetExportValue</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string </i><b>str</b>)                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value for
+export to Excel</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>str</span></b><span
+style='font-size:10.0pt'> is html tag ending character (‘&gt;’), so to return
+just string return str+your_value and to return formatted number return
+your_format+str+your_value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: Grids.OnGetExportValue
+= function(G,row,col,str){ return &quot; style='mso-number-format:\&quot;$ 0.00\&quot;;'&quot;+str+Get(row,col);
+}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CCanExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1/0]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column will be
+exported</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default Panel has <b>0</b>
+and other columns <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                   bool      </span></i><a
+name=ICanExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row will be exported to
+Excel.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Space rows are <u>never</u>
+exported.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgExportRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportRound</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, the Float number will
+be rounded to this count of decimal digits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCSVValueSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CSVValueSeparator</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [“;”]                                                                              <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String or character that
+separates individual values in export to CSV</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCSVRowSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CSVRowSeparator</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [“&amp;#x0a;”]                                                                    <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String or character that
+separates individual rows in export to CSV</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCSVQuote><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CSVQuote</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                [‘”’]                                                                              <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Character that quotes value
+in export to CSV, if it contains one of the ValueSeparator, RowSeparator or
+Quote.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The quote characters are
+doubled in the value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCSVLevel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CSVLevel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                  [“#”]                                                                             <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String or character to show
+level deep, when ExportType=’Outline’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Server><b><span style='font-size:20.0pt'>Server export</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server is sent just actual
+grid configuration – sorting, grouping, filters, search and column width,
+positions and visibility. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In “custom” parameter “<b>ExportFormat</b>”
+is sent chosen file extension “xls” or “csv”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In “custom” parameter “<b>ExportType</b>”
+is sent chosen <a href="#CfgExportType">ExportType</a> flags.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to upload also
+other data from client like changes, set Export_Type=”Settings,Changes”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The configuration is sent as
+standard TreeGrid XML in <a href="DataCommunication.htm#xxx_Data">Data</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server must generate the
+report from data on server by itself and return report to client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this way for larger grid
+and/or for grids with server paging or server child paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it also if you want to
+generate different then standard report or you want to generate report for
+another program then MS Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:16.0pt'>XML structure of request for
+server export</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>request sent</b>
+to data source <b>Export</b> to get the exported grid when set <b>server side
+export</b> (<b>Export_Type</b>=”<b>Settings</b>”).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains session
+identification and grid configuration to sort, group, filter and search
+exported data on server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains also columns
+settings – width, position and visibility.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with
+request settings  </i>...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(<a href="DataCommunication.htm#IOSession">Session</a> attribute)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Cfg</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with grid
+settings read from cookies </i> ...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(Sort, Group, ReSort, ReCalc, TimeZone attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (SearchAction,
+SearchExpression, SearchType, SearchMethod, SearchDefs, SearchCols attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (Focused,
+FocusedCol, FocusedPos attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (PrintPageBreaks,
+PrintRows, PrintExpanded, PrintFiltered)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span><span style='font-size:10.0pt;color:#FF6600'> </span><span
+style='font-size:10.0pt'>(list of filters)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(<b>id</b> attribute, cell <b>values</b> and cell <b>Filter</b> attributes)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt; if more filters are in
+grid  ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;/</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:16.0pt'>
+</span><b><span style='font-size:10.0pt;color:green'>Name</span></b><span
+style='font-size:10.0pt'>='<i>column name</i>' Width=’...’ Visible=’0/1’</span><span
+style='font-size:16.0pt'> <span style='color:red'>/&gt;</span></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' Width=’...’ Visible=’0/1’
+</span><span style='font-size:16.0pt;color:red'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' Width=’...’ Visible=’0/1’
+</span><span style='font-size:16.0pt;color:red'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'>   </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:#FF6600'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

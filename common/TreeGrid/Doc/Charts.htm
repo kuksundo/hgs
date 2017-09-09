@@ -1,0 +1,1061 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Line charts</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can compute and show
+classic line charts, point charts, XY point charts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These charts can be shown in
+TreeGrid space cell from sources in grid data column(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The charts are available also
+in standalone TreeGrid library to use it without TreeGrid itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Charts><b><span style='font-size:20.0pt'>Charts in grid
+cells</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can show one or more
+charts in space row cells of type <b>Chart</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=CType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“Text”]
+             Type=”Chart”                                                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type=”Chart” sets the cell to
+show line chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=SpaceCellChart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Chart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The chart settings in JSON
+format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual Lines settings
+are used for individual lines according to the sources in <a
+href="#SpaceCellSourcesY">SourcesY</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See the <a href="#Chart">TLineChart</a>
+object.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string[]  </i></span><a
+name=SpaceCellSourcesY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SourcesY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies column names where
+to get the Y sources for the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every column will produce one
+line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string[]  </i></span><a
+name=SpaceCellSourcesX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SourcesX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies column names where
+to get the X sources for the Y values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If defined, the chart will
+the <b>XY point chart</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not defined, it produces
+standard <b>line chart</b> and the X will be set as 0 – p, where p is the row
+count+1 used for Y sources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=SpaceCellParent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Parent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show chart only for
+children of some row in tree, set the Parent to the parent row id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string[]  </i></span><a
+name=SpaceCellRefresh><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Refresh</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                         <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of columns. If any cell
+in the column is changed by user, the chart is recalculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it contains all
+columns from SourcesX and SourcesY.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it when some source
+columns are calculated, to specify their sources here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>int        </i></span><a
+name=SpaceCellWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the cell in pixels.
+It specifies the <a href="#TLineChartWidth">Width</a> of the chart.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is possible to use also
+<b>RelWidth</b>, but it can remarkably slow down grid or column resizing,
+because for every cell resize will be the chart repainted.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>int        </i></span><a
+name=SpaceHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Height</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Height of the whole row in
+pixels. It specifies the <a href="#TLineChartHeight">Height</a> of the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=GetChart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetChart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>string
+<b>id</b></i>)                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns the actually rendered
+<a href="#Chart">TLineChart</a> object with the given <a href="#TLineChartid">id</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The chart is accessible only
+after it is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshChart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RefreshChart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string
+<b>id</b></i>)                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates and repaints the
+actually rendered <a href="#Chart">TLineChart</a> object with the given <a
+href="#TLineChartid">id</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It just calls RefreshCell for
+the cell displaying the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Chart><b><span style='font-size:20.0pt'>Chart JSON definition</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The chart is defined in JSON
+format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used in TreeGrid, the
+data <b>sources</b> are defined by cell attributes <a href="#SpaceCellSourcesX">SourcesX</a>
+and <a href="#SpaceCellSourcesY">SourcesY</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used standalone, the <b>sources</b>
+are defined by <a href="TLineX">X</a>, <a href="#TLineY">Y</a> or <a
+href="#TLinePoints">Points</a> parameters of TChartLine. And the chart is shown
+by <a href="#ShowLineChart">ShowLineChart</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In documentation, the global
+object is called TLineChart and the individual objects in Lines array are named
+TChartLine.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>JSON Example in TreeGrid Chart
+attribute (in XML without data):</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Col1Chart=&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>{</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>   id:
+'Chart1',</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+Top: 5, Right: 5,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+AxisX: 5, LabelX: 5, Bottom: 20,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+AxisY: 5, LabelY: 5, Left: 20,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>           
+ChartRoundY: 5, ChartAddY: 0.5,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>           
+Lines: [</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>              
+{ Width:1, PointType:1, Color:'red' },</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>     
+         { Width:3, PointType:0, Color:'blue' }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>              
+]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>}&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>JSON Example of standalone
+version with data (in JavaScript with data):</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>ShowLineChart(</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>{</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+id:'Chart1',</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+Top: 5, Right: 5,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+AxisX: 5, LabelX: 5, Bottom: 20,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+AxisY: 5, LabelY: 5, Left: 20,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+ChartRoundY: 5, ChartAddY: 0.5,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+Lines: [</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>     
+{ X:[-0.25,0,0.25,0.5,0.75,1,1.5,2,3,5],Y:[-1,0,-1,-2,-1,0,1,2,1,0], Width:1,
+PointType:1, Color:'red' },</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>     
+{ Points:{'-0.25':1,0:0,0.25:1,0.5:2,0.75:1,1:0,1.5:-1,2:-2,3:-1,5:0}, Width:3,
+PointType:0, Color:'blue' }               </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>  
+]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>},'MyTag');</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Base><b><span style='font-size:20.0pt'>Base chart settings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Basic><b><i><span style='font-size:16.0pt'>Basic
+attributes</span></i></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>                </span><a
+name=TLineChartid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique id of the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By this id can be the chart
+accessible from JavaScript – by global array LineCharts[id] or by TreeGrid API
+method GetChart(id).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i><a href="#Line">TChartLine</a></i>
+<b>[</b> <b>]</b>    </span><a name=TLineChartLines><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Lines</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Array of settings of
+individual lines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In standalone usage the lines
+contain also points data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i><a href="#Line">TChartLine</a></i>        </span><a
+name=TLineChartDefault><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Default</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default settings for all
+lines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These attributes of Default
+are used when the line does not have defined the attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TLineChartClass><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Class</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [“GMChart”]       Only
+standalone usage                                                 <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Class prefix for all items in
+the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For TreeGrid usage it is set
+always  to &lt;Cfg Style&gt; value + “Chart”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><i><span style='font-size:16.0pt'>Size</span></i></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the chart space in
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is computed
+from the parent tag or cell width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Height</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Height of the chart space in
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is computed
+from the parent tag or row height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartMinX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first X value shown in
+the chart = the left constraint.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is used
+minimal value from X sources rounded down by ChartRoundX and decreased by
+ChartAddX.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartMaxX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The last X value shown in the
+chart = the right constraint.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is used
+maximal value from X sources rounded up by ChartRoundX and increased by
+ChartAddX.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartChartRoundX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ChartRoundX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                   <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rounds the first X down and
+last X up in chart if not set MinX and MaxX.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartChartAddX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChartAddX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Subtracts the value from the
+first X and adds to the last X in the chart if MinX and MaxX not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is 10 pixels
+(yes, pixels, but any set value is in X units)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartMinY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first Y value shown in
+the chart = the top constraint.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is used
+minimal value from Y sources rounded down by ChartRoundY and decreased by
+ChartAddY.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartMaxY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The last Y value shown in the
+chart = the bottom constraint.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is used
+maximal value from Y sources rounded up by ChartRoundY and increased by ChartAddY.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartChartRoundY><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ChartRoundY</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rounds the first Y down and
+last Y up in chart if not set MinY and MaxY.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartChartAddY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChartAddY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Subtracts the value from the
+first Y and adds to the last Y in the chart if MinY and MaxY not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is 10 percent
+(yes, percent, but any set value is in Y units)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><i><span style='font-size:16.0pt'>Axis and caption</span></i></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Left</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space in pixels reserved from
+left. Used for Axis Y labels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartRight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Right</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space in pixels reserved from
+right.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Top</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space in pixels reserved from
+top. Used for caption.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TLineChartBottom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Bottom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space in pixels reserved from
+bottom. Used for Axis X labels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartAxisX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AxisX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows horizontal lines in
+chart. The line positions are rounded to this count of x units values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example value 5 means the
+line will be shown at ..., -15, -10,-5, 0, 5, 10, 15, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartLabelX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LabelX</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows the labels for AxisX
+lines, below the chart. The label position is rounded to this count x units
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The space for the labels
+should be reserved by <a href="#TLineChartBottom">Bottom</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example value 10 means
+the label will be shown at ..., -20, -10, 0, 10, 20 ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TLineChartLabelXFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>LabelXFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                             <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format string to format the
+label x numbers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is standard TreeGrid <a
+href="TypeNumber.htm#CFormat">Format</a> string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartAxisY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AxisY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows vertical lines in
+chart. The line positions are rounded to this count of y units values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example value 5 means the
+line will be shown at ..., -15, -10,-5, 0, 5, 10, 15, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float      </i>            </span><a
+name=TLineChartLabelY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LabelY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows the labels for AxisY
+lines, left to the chart. The label position is rounded to this count y units
+value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The space for the labels
+should be reserved by <a href="#TLineChartLeft">Left</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example value 10 means
+the label will be shown at ..., -20, -10, 0, 10, 20 ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TLineChartLabelYFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>LabelYFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                             <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format string to format the
+label y numbers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is standard TreeGrid <a
+href="TypeNumber.htm#CFormat">Format</a> string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TLineChart</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TLineChartCaption><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Caption</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Text shown above the chart,
+the space for it should be reserved by <a href="#TLineChartTop">Top</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Lines><b><span style='font-size:20.0pt'>Individual chart
+lines</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Sources><b><i><span style='font-size:16.0pt'>Data sources</span></i></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float[]    </i>            </span><a
+name=TChartLineX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>X</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                    Only
+standalone usage                                                                         <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The X values for the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not defined, it will be
+set as 0,1,2,3,4,5,6 ... – Y length</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In TreeGrid the X values
+are defined in column(s) set by cell <a href="#SpaceCellSourcesX">SourcesX</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>float[]    </i>            </span><a
+name=TChartLineY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Y</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                    Only
+standalone usage                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Y values for the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not defined, it will be
+set as 0,1,2,3,4,5,6 ... – X length.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In TreeGrid the Y values
+are defined in column(s) set by cell <a href="#SpaceCellSourcesY">SourcesY</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TChartLineSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [1]                                                                                                       <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how will be data sources
+sorted.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no sort, the chart will be XY points chart.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – sort by X, the chart will be horizontal Line chart.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – sort by Y, the chart will be vertical Line chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i>            </span><a
+name=TChartLineConnect><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Connect</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Connect also the first and
+the last points by line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It connects the points only
+when Sort is 0, otherwise it just interpolates the last parts like in
+continuous function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Visual><b><i><span style='font-size:16.0pt'>Visual
+settings</span></i></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i>            </span><a
+name=TChartLineVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this line chart is
+visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To easily show and hide the
+individual lines from the chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TChartLineInterpolation><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Interpolation</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [3]                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Interpolation function used
+to connect the points</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – none (line is hidden), <b>1</b> – linear (straight
+lines between points), <b>2</b> - cosine, <b>3</b> - hermite, <b>4</b> - cubic.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TChartLineWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [2]                                                                                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the line in pixels.
+0 hides the line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TChartLineColor><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Color</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [“black”]                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>CSS color used for the line.
+It can be any string usable for CSS <b>background</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>            </span><a
+name=TChartLineColor2><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Color2</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, the Color2 is used
+for ascending lines and the Color for descending lines. It can also simulate 3d
+effect of the line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>TChartLine</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>            </span><a
+name=TChartLinePointType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PointType</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of the point, it is
+number of icon.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – hidden,<b> 1</b> – black, <b>2</b> – red, <b>3</b>
+– blue, <b>4</b> – green, <b>5</b> – pink, <b>6</b> – yellow, <b>7</b> – light
+blue, <b>8</b> - gray</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>API for standalone
+usage</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'><a
+href="#Chart">TLineChart</a>        </span></i><a name=ShowLineChart><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>ShowLineChart</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i><a
+href="#Chart">TLineChart</a> </i><b>Chart</b>, <i>string</i> <b>tag</b>)                                        <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates and renders the <b>Chart</b>
+into the tag. The <b>tag</b> can be tag id or HTMLElement itself</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be called also after
+any change in the <b>Chart</b> to recalculate and re-render it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

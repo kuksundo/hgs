@@ -1,0 +1,136 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// ---------------------------------------------------------------------------------------------------
+// Refreshes state of all buttons for the rows with expand buttons in different column
+Grids.OnExpand = function(G,row){
+if((row.id+"").indexOf(3)==0) setTimeout(function(){ G.RefreshCell(row,"B"); G.RefreshCell(row,"C"); },10);
+}   
+// ---------------------------------------------------------------------------------------------------   
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Tree</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Row tree</center>
+   <center style='font:bold italic;'>Expanding and collapsing rows</center>
+   <div style='margin-bottom:6px;'><a href='01 - Row tree.xml'>01 - <h2>Row tree</h2>.xml</a></div>
+   <div style='width:100%; height:450px;'>
+      <bdo Debug='check' Data_Url='01 - Row tree.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         The tree is shown when defined Cfg attribute <h3>MainCol</h3>. It specifies column name, where the tree (expand / collapse buttons) is shown.<br />
+      </li>
+      <li>
+         By default the children are shown below their parent. To show children above their parent like in MS Excel outline set Cfg attribute <h3>ReversedTree</h3><b>='1'</b>.<br />
+      </li>
+      <li>
+         <h4>Creating row tree</h4><br />
+         <i>Only variable rows can be shown in tree.</i><br />
+         <ul>
+         <li>
+            The rows can be placed into tree directly in input data by <b>nesting the &lt;I> tags</b>.
+         </li>
+         <li>
+            Or the tree can be created automatically by <b>Grouping</b> feature. It is demonstrated in next example.<br />
+         </li>
+         <li>
+            Or the two methods can be used both together, some rows can be nested by default and they can be still grouped to create deeper tree.<br />
+         </li>
+         </ul>
+      </li>
+      <li>
+         The initial state of the parent rows is set by their <h3>Expanded</h3> attribute.<br />
+      </li>
+      <li>
+         To restrict collapsing (or expanding) the row's children, set <h3>CanExpand</h3><b>='0'</b>.<br />
+      </li>
+      <li>
+         To show custom expand / collapse icon for any row or row level use row attribute <b>TreeIcon<i>X</i></b>, where X is number 0 - 5 for given icon and state:<br />
+         0 – not expandable, 1 – last not expandable, 2 – expand (+), 3 – last expand (+), 4 – collapse (-), 5 – last collapse (-).
+      </li>
+      <li>
+         The expand / collapse button can be shown also in other column than the main column by <b>Button='Expand'</b> or <b>Icon='Expand'</b>.<br />
+         To hide the expand / collapse button in the main column in this case you can set <b>CanExpand='2'</b>.<br />
+         If state of this button can be changed by another action (e.g. by Expand all or click to another button), the cell should be refreshed, usually in <b>OnExpand</b> API event.<br /> 
+      </li>
+      <li>
+         To permit expanding tree to given level set cell attribute <h3>Levels</h3><b>='1'</b> in header in main column. It shows button for every row level, like in MS Excel outline.<br />
+      </li>
+      <li>
+         It is possible to hide tree lines by Cfg attribute <b>NoTreeLines='1'</b>.<br />
+         It is possible to hide the root tree in case the first level rows should not be expanded by Cfg attribute <b>HideRootTree='1'</b>.<br />
+         For small grids it is possible to save the Expanded state of all rows to cookies (by their ids) by Cfg attribute <b>SaveExpanded='1'</b><br />
+      </li>
+      <li>
+         To scroll to show all parent's children when the parent is expanded, set Cfg attribute <b>NoScrollAfterExpand='0'</b>. <br />
+      </li>
+      <li>
+         To the row ids can be automatically their parent to be unique withint the whole grid.<br />
+         For this behavior set Cfg attribute <h3>FullId</h3><b>='1'</b>.<br />
+         The ids are merged together by '$'.
+      </li>
+      <li>
+         <h4>API</h4><br />
+         <ul>
+         <li>
+         In API every row has set its <b>Level</b> attribute. It is 0 for root rows, 1 for first level rows and so on. For page it is -1.
+         </li>
+         <li>
+         On every expand or collapse is called <b>OnExpand</b> API event.<br />
+         </li>
+         <li>
+         The row can be expanded by method <b>Expand</b>, collapsed by <b>Collapse</b>.<br />
+         All rows can be expanded by method <b>ExpandAll</b>, collapsed by <b>CollapseAll</b>.<br />
+         Expanding all rows has various settings, because there are various issues, e.g. in server paging it could lock grid by expanding too many rows.<br />
+         </li>
+         </ul>
+      </li>
+
+      <li>
+         <h4>Tree in different columns without nesting</h4>
+         <ul>
+         <li>
+            It is possible also to expand different rows in different columns. <br />
+            In this case the rows don't need to be nested in tree, you can just specify which rows will be shown/hidden by which expand button.<br />
+            It is possible to use both ways (rows in tree and hiding / showing rows) in the same grid.
+         </li>
+         <li>
+            This way is slower than row tree, because the rows are shown / hidden one by one.
+         </li>
+         <li>
+            Define <h3>Button='Expand'</h3> or <h3>Icon='Expand'</h3> in the selected cell and by cell attribute <h3>ExpandRows</h3> specify the rows (by comma separarated list of their ids) that will be shown / hidden by clicking to that button.
+         </li>
+         <li>
+            It is even possible to let more buttons (in the same or even different row) to control visibility of the same rows.<br />
+            You can set row attribute <b>ExpandLevel</b> to specify how many expand buttons must be turned on to show the row. 
+            It controls also initial state if some buttons are already expanded on start.
+         </li>
+         <li>
+            By <b>API</b> you can expand / collapse these rows by <b>ExpandCell</b> method and check if the cell is expanded by <b>IsCellExpanded</b>
+         </li>
+         <li>
+            In the same way can be controlled also column visibility, see the next tutorial 2. Column tree.
+         </li>
+         </ul>
+      </li>
+      <li>
+         Custom <h4>checkbox in tree</h4><br />
+         Show checkbox to check / uncheck row in main column by <b>Icon='Check'</b>. Checkbox in parent row shows state of its child checkboxes.<br />
+         After a user changes some checkbox state, the other parent and child checkboxes are updated too.<br />
+         The checkbox value is stored in attribute XXX<b>Checked</b>, where XXX is the (main) column where the checkbox is shown.<br />
+         The checkbox meaning / function is custom and TreeGrid does not use it for any its action.<br />
+         To upload this value to server, define new hidden column to server as &lt;C Name='XXXChecked' Visible='0' CanHide='0'/>.<br />
+      </li>
+   </ul>
+</body>
+</html>

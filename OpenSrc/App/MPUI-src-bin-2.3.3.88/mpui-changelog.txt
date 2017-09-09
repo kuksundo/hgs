@@ -1,0 +1,481 @@
+1.1.11.0 first release.
+Added zoom function (like media player classic, keys 1,5,9 from numpad)
+Added current and total time in status bar, was not implemented at 100%.
+Increased seek bar accuracy, previous= 1% of file lengh, now 1 sec.
+Better fullscreen toggle behaviour, now it remembers original window state (normal, maximized).
+Better fullcreen controls behaviour.
+
+1.1.11.0
+bug fix with windows xp styles.
+
+1.1.12.0
+Better fullcreen controls behaviour.
+Status bar shows aspect ratio and zoom level.
+Changes in seek bar controls and colors.
+Replay video if spacebar or play button is pressed after playback, it was previously disabled.
+
+1.1.12.3
+Overlay color changed to pink.
+Video window follows main form in pause.
+
+1.1.12.4
+Fixed little bug with topmost mode.
+
+1.1.12.5
+Aspect ratio = width/height for videos without aspect ratio
+Stream info update fix
+
+1.1.12.6
+seek bar improoved behaviour (drag seek from any point + update from seek point + update delay after seeking)
+
+1.1.13.0
+New icons with colors, supressed some icons from menus, now checkboxes are shown.
+Better support for subtitles, now if file is autoloaded, filename is shown in subtitles menu.
+Better support for bad mpg files with bad timestamps.
+Added cache of 1.5Mb for media data, improves jerky playback from optical disks.
+New custom aspect ratio.
+Better behaviour of Audio, subtitles, image format and deinterlacing, now clicking an already selected item it makes no action (before it reloaded the video).
+Can toggle subtitle visibility with V.
+
+
+1.1.14.0
+Better support for mplayer version compiled to send continously timestamp information, MPUI showed this messages in message window, now it simply ignores them.
+
+1.1.15.0
+Automatic detection of interlaced video in mpeg2 files, changed menus, now there are two deinterlace menus, one for selection of algorithm and another one for enable/disable and automatic detection.
+Stream info window shows detected video frame format: progressive/interlaced.
+
+
+1.1.16.0
+Solved timing problem with -autosync command line option (only found to be problematic in 1 avi video).
+Menus for deinterlace and aspect ratio are generated at run time, from options array.
+Language changes and corrections.
+I win only maintain 3 languages :spanish, english and french.
+
+Infobox is updated when changing language,
+
+1.1.16.1
+Little bug correction: Video info for frame format was shown on info form in audio files (no video).
+seek bar improoved behaviour, was updated with incorrect time because of previous time in queue, now these are ignored during update delay.
+Moved time and zoom status text to the right.
+
+1.1.16.2
+Child forms show on top of main form.
+Info box button always enabled.
+Full screen controls (TAB) option forces controls in fullscreen mode (before it only showed for a while).
+
+
+1.1.17.0
+New settings form with brightness, contrast, hue and saturation control, saves settings at program exit.
+Common docking parent class for settings, preferences and info forms.
+Solved some problems with docking.
+
+1.1.17.1
+Changed the way aspect ratio is set, now aspect ratio is changed without restarting mplayer.
+Added Pan&scan options like mediaplayerclassic, keys 4,8,6 control aspect ratio correction, 4 decreases aspect ratio, 8 resets, 6 increases.
+Fast update of aspect/pan&scan/zoom status label.
+
+1.1.17.2
+Solved bug that allowed maximized window to be moved by dragging in video area.
+Faster seekbar update.
+Overlay color can be set in preferences.
+When window is minimized mplayer overlay window is set to 1x1 pixel, to avoid showing video in other applications
+New logo, thanks to mr.Xkr.
+
+1.1.17.3
+Added support for time autoupdate messages.
+Increased seek bar updating position accuracy.
+Corrected small bug restoring video plaback with bad timestamps (introduced when seek bar resolution was changed the first time).
+
+1.1.17.4:
+Added support for video output driver selection.
+Added support for video equalizer selection.
+Universal equalizer settings, MPUI now reads default value of brightness, contrast, hue and saturation, and this value is added to settings value. This makes equalizer settings independent of video output driver and equalizer selection.
+Negative values of settings are internally limited to -99, because of some bugs in video output drivers.
+Changed video filter order and -ass option to correct some weird bugs with deinterlacing filter (no valid video output mode in opengl without -ass ¿?).
+Changed dvd device selection option order in commandline, because DVD playback was not working ok.
+Added tabs in preferences.
+
+1.1.17.5:
+Small bug fixes:
+Aspect ratio = width/height for unespecified aspect ratio videos, implemented in 1.1.12.5 but not working since the addition of Pan&scan.
+Correct update of play/pause buttons in case of mute/ volume/settings/osd, etc change.
+
+
+Pause state is retained in case of  mute/ volume/settings/osd, etc change.
+brightness/contrast/hue/saturation are disabled when not available.
+Volume level is saved
+Escape key closes child forms except main, playlist and settings.
+
+To do: send initcmds in two steps, first for audio, then video
+
+1.1.17.6:
+Initial cmds sent in two steps, first for audio, then video.
+initial volume set to 0 in commandline (only for mplayer SVN), audio keeps in mute until set volume or mute apply. Added option to allow this in commandline.
+Initial volume set is silent, no osd.
+Added gamma to settings form.
+
+Fullscreen controls do not move video, like mediaplayerclassic.
+Fixed problems with audio language change while options form is open.
+Updated language texts.
+
+1.1.17.7:
+Solved bug in interlaced mpeg detection funcion with big files.
+
+1.1.17.8:
+Mplayer doesn't select always the first audio track as default, now, mpui checks current audio track.
+In mpeg files, audio tracks in menu show type of audio track (AC3, LPCM, MPEG).
+Fixed bug, audio track and subtitle selection was not kept when stopping file playback.
+1.1.17.9:
+audio track check is only performed with mpeg files, other file types do not work properly.
+
+1.1.17.10:
+Rewritten fullscreen controls show/hide code. Simpler and more reliable.
+Fullscreen controls now show with move/click.
+
+1.1.17.11:
+seek to 0 at start with libavformat files (3gp), if not performed, with gl2 video out video reached end inmediatly.
+Now videos not seekable and with bad timestamps (typically vob files), are seekable and display aproximate time better than before, thanks to streampos property, it's not perfect but works.
+
+1.1.17.12:
+Added blend option to deinterlace menu, this is the best deinterlacing method to preserve motion smoothness, it is also the one with smallest cpu usage (it is the same used in dvd players like windvd).
+Changed default options: deinterlade alg = blend, deinterlace mode = auto, postprocessing none
+Reading stream_length property with big files locks mplayer stdout, now stream_length is read by MPUI directly if possible (I've found later that it was a bug in MPUI, i was using integer instead of int64 conversion).
+New changes in window styles, with old method child windows sometimes stayed on top when switching to another application, now this has been fixed.
+
+1.1.17.13:
+Added workaround to fix odd behaviour when "Show desktop" shortcut was activated.
+Main form shows faster than before, main form is shown while other forms are loaded, this makes application look faster.
+Enter key in additional parameter (in options window) applies values (for fast testing)
+Enter key in log window does not beep if command is sent to mplayer, commands are sent only if mplayer is active.
+Removed -ass option from commandline, i discovered it was not necessary, the needed option was the software scaler (see 1.1.17.4), that -ass forced always in opengl.
+
+Added interlaced option double rate.
+Added video options: direct rendering, double bluffer, use slices, software scaling options.
+Reorganized options window.
+
+Lots of code cleanup and little bug fix. 
+
+1.1.18.0:
+Massive code cleanup, now language units are finaly not dependent on other forms, this allows to make form changes without having to change a line in language units, and also makes possible to delay window update. 
+
+Now forms are only updated with local text(language) if necessary (if visible), else they only are notified for later change (when shown).
+
+Big load speedup, there was a big delay (almost 400ms on my computer) caused by a single function that is used to enumerate sound devices, now this function is only called when necessary (in options windows, in audio tab).
+
+Fixed incorrect video window resize when window reaches maximum size and video is not set to custom size.
+
+In fullscreen, window menus and borders are hidden, this prevents user accessing window control menu with alt-space.
+
+Updated about window with new text and sourceforge URL.
+
+Added icons in status bar to indicate status and playback performance.
+Added icons in forms.
+
+Fixed fullscreen wrong video window position (there was a small top black bar) because of a bug introduced in 1.1.17.6 (change in fullscreen controls).
+Better main window positioning.
+
+Starting video timestamp is checked, if it's > 10s then the time label and seek bar work based on the stream_pos property.
+New option : ac3 compression level.
+Fixed problem with aspect ratio changes in mpg stream.
+
+1.1.18.1:
+Better status window text positioning with small window size.
+Full screen controls are shown when there is a real move of 10 pixels or more of the cursor.
+1.1.18.2:
+Bug fix for streams that update time with streampos property, time was not updated and streampos message was added to log.
+
+2.0.1.0
+Completely rewritten core unit, now it's not a simple collection of functions and variables, now mplayer core is a class with events, so it can be used easily to create more than one instance of mplayer or to be used in other projects.
+All propertys in the class check if it is really necessary to restart mplayer or if the property can be modified while mplayer is running or it wil have no effect in current video file, this simplifies and improoves the options dialog. It also has a function to modify several propertys and only do one restart.
+
+Created thread objects were not property destroyed, now they are destroyed when each tread ends.
+
+Added caching options that allow to select different cache sizes depending on the source of the stream. DVD source is special:
+-If greater or equal to 0 -> the cache for dvd playback is the lower between CD-rom/dvd-rom and dvd-source 
+-If lower than 0 (-1) -> the cache for dvd playback the one set in CD-rom/dvd-rom.
+
+Added TV/capture card in file menu (this needs more work, to select source, channels...).
+
+2.0.2.0
+Solved some access violation errors when closing mplayer without stopping before.
+Window positioning messages to mplayer are sent only when needed (when it is paused).
+Disabled window animation when switching between maximized window and fullscreen.
+Less glitches when switching fullscreen.
+Deleted menu container toolbar, now menus can be accessed from keyboard, also in fullcreen.
+
+2.0.2.4
+Solved problems with softvol (i never tested it), softvol and volume limiting is handled now by mplayer class.
+Single key hotkeys work now ok (because of menu hotkeys it was impossible to type Q, F, C, T, or O in other forms).
+A side effect of deleting hotkeys from menus was that hotkeys were not displayed in menus anymore. To solve this now menus are custom drawn, hotkeys are shown aligned to the right, all menus have icons, checked icons are highlighted in red, there is also a custom radio and check box icon.
+Playback control elemens in menus are updated even if they are visible (they were only updated when showing).
+
+2.0.2.5
+Zoom label is updated in stop mode
+Fixed position of time label and audio icon changed by error.
+
+2.0.2.6
+Fixed bug in mplayer stdout parser, caused mplayer output stop with some special comments like E12398 interpreted as floating point numbers and rising an unhandled exception when trying to convert to integer.
+
+2.0.2.7
+Fix over last fix, this happens when you do fixes late at night :D, integers were not parsed ok.
+
+2.0.2.8
+Added multimonitor support.
+Fixed little bug when selecting fixed video size in menu (half, original, double) when window was maximized.
+
+2.0.2.9
+Added option to force fullscreen mode in a particular monitor 0-no forced monitor 1,2... selected monitor number.
+Small usability fixes in options form.
+2.0.2.10
+Fixed wrong behaviour when minimizing from taskbar.
+Software volume control limited do 1000%, was limited to 9999% while mplayer was limited to 1000%.
+2.0.2.11
+Small fixes for mpeg TS format, video size is shown even if repported size is 0, MPUI gets size from VO: message. Suppressed messages for 'PROGRAM_ID' and 'SUBSTREAM_ID'.
+Fixed minimum main form size.
+
+2.0.3.2
+DVD menu support.
+Dvd menus are experimental, mplayer support for dvd menus is not very good.
+Added general options: Autosync factor, A-V sync per frame
+New Tab in options, OSD and Subs
+Added OSD-Sub options: Font Path
+New Tab in options, DVD
+Added DVD options: Use Dvd Nav, Always deinterlace.
+New menu "Navigation" for DVD: Title and Chapter selection.
+
+Audio channel track can be changed without restart for mpeg streams (DVDs included).
+
+
+Fixes:
+-Overlay updates only send if overlay active (vo directx)
+-Open DVD without disk shows only one nice error (not 6).
+-Disabled some menus while opening.
+-Forced update of audio-sub-title-chapter when opening DVD (because disk can change).
+
+2.0.3.3
+Fixed: language menu was not updated properly.
+
+2.0.3.4
+Main menu is hidden at startup, so it doesn't flicker while loading locale strings.
+Full screen label "Press esc..." is timed like the logo, this way it doesn't appear while playing a playlist in fullscreen mode.
+2.0.3.7
+Added popup menu bar.
+Added custom main menu highlight.
+Some menu code cleanup.
+Main menu shows/hides accelerator keys as any other windows application.
+Menu selected and disabled element now looks like windows standard.
+
+Added new option "Don't crop video".
+
+Cache size options can be -1, this will use mplayer default cache, remember DVD source is special:
+-If greater or equal to 0 -> the cache for dvd playback is the lower between CD-rom/dvd-rom and dvd-source (if cd-rom/dvd rom is set to -1 cache is set to dvd-source) 
+-If lower than 0 (-1) -> the cache for dvd playback the one set in CD-rom/dvd-rom.
+Changed default cache sizes, to reset to new values delete all "Cache_X" options in MPUI.ini
+
+
+2.0.4.2
+Always on top option works better with child windows.
+Fixed style of dinamically created menus, audio,sub,titles... (bug introduced in v 2.0.3.7)
+
+Added option for sub character encoding.
+Added option to load subtitles from file.
+Fixed bugs when handling multiple subtitles sources (video file + external file).
+
+Audio stream format (in audio track menu) is updated in all video formats when known, formatting the name to be consistent as far as possible in all video formats.
+Added support for changing audio track in mkv videos without restart (like it is in mpeg).
+Fixed bugs when handling multiple audio tracks in mkv video.
+
+Tested video samples in mkv and mpg format with multiple audio and subtitle tracks, with multiple subtitle sources (contact me in case you find any error).
+
+Changed lots of visual stuff.
+Menu Drive list is updated when new media is inserted to show disc label.
+
+Time Autoupdate works better with some files, time value is taken from video stream, if available, audio time goes sometimes up and down while playing.
+
+Some controls are hidden when mainform size is too small.
+
+Disabled menu items have a better look.
+Always on top option is saved.
+
+2.0.4.3
+mplayer class:
+-New status of mplayer class (sPlayStarting)
+-Some propertys limited in some status
+-Mplayer is asked for Time lenght of stream when file is about to start playing, this is needed because sometimes first indicated length is incorrect (mostly on mp3). When the answer to this command is received status changes to sPlaying or sPaused, depending of pause value.
+
+Video fourcc code is read and displayed.
+Video size option does not change if main window is resized while playing only audio file.
+New alternative seek method (used with bad timestamps), replacing old seek by stream pos in 90% of the cases. Works faster and better than older one. This method uses incremental seek relative to actual position.
+Pause can be done almost anytime (included while loading), pause is delayed until loaded.
+Fixed popup menu gradiend update when menu was updated while being shown.
+Loaded subtitle is cleared when there is a subtitle load error.
+
+2.0.5.2
+Mp3 vbr files is read from mp3 file header directly, instead of trusting mplayer.
+Mp3 vbr bitrate is shown in information window.
+Mp3 vbr files are seeked by mplayer repported length but displayed time is calculated by stream pos.
+Fixed seeking bugs with mp3 vbr files.
+Time and seekbar updated when framestepping.
+Fixed seeking bugs with dvd video.
+Added option to enable/disable liba52 (disabled by default), to be compatible with new mplayer SVN-r30945.
+Added TS extension for interlaced file check.
+More checks in video length to set seek by streampos
+
+2.0.6.1
+Fixed seeking bugs introduced in previous version, seeking shoud be now rock solid.
+Added simulated visualization (random equalizer) in audio only playback
+
+
+2.0.6.2
+Lower seekbar flicker while resizing window.
+2.0.6.3
+Fixed no extension file handling bug.
+Once more a seek bug introduced in 2.0.5.2, incremental alternate seek method was not working.
+2.0.6.4
+changes to seekbar from 2.0.6.2 undone due to graphic update problems.
+
+2.1.0.1
+New file loading method, if command line options are the same for the next file, it can be loaded into mplayer without restarting mplayer process. You just need to add files to the playlist to check it out, this gives allmost gapless playback for audio files.
+
+Cache default options changed, fixed disk and ram disk = -1 (mplayer default)
+
+get_property switch_audio is executed always, because new version of mplayer (SVN-r31878-4.2.5) returns selected audio stream correctly (in previous versions, if not forced with -aid, it returned -1)
+
+Changes in playlist code and appearance (playlist mimics classic winamp style, with colors and numbers).
+Playlist items can be moved with drag-n-drop.
+Playlist window can be moved from top, double clicking any non control area retuns the window to the docked position
+
+New visualization effects, two rendering modes, direct to form canvas (only bars) or using multilayer background rendering (bars and particles, with blur, assembly code), some code from Gerben Wijnja <gerben@gerbs.net>.
+2.2.1.1
+Visualization effects have been memory optimized, memory for picture layers is only allocated when needed.
+
+Added check for read error of property 'length', in some very unusual videos this property can't be read.
+Mplayer class code cleanup.
+
+Default height of info window has been increased.
+Added check to avoid adding multiple times the same subtitle (sometimes, in mpeg TS streams mplayer repports the same subtitle id a lot of times).
+
+The code to change to full screen has been optimized to avoid control bar fliker.
+
+Playlist key shortcuts (space or p: play current item, delete: delete items)
+
+Subtitle menu items are numbered by index, not by subtitle id.
+Visualization effects options are saved on exit.
+
+
+2.2.1.2
+Fixed wrong zoom label position in fullscreen
+
+2.2.3.0
+Added handlers for hibernate/suspend and resume events (playback is stopped and resumed).
+Close speedup when not playing.
+Some text translations.
+
+2.2.4.0
+Fixed some problems with fullscreen controls in multimonitor machines.
+Fixed fullscreen controls not hiding in windows vista.
+
+Notes about video output:
+From my own testing with some machines i've got the following results:
+-The best video mode for Vista is gl:yuv=3 or gl:yuv=4 (Tested on ATI MR HD 4570), directx works just fine, but disables aero.
+-The best video mode for windows XP is also gl, with software scaler set to on or auto. With gl:yuv=X i get Grayscale video (Tested on Nvidia ti4200).
+-On some systems (Mobile Intel GMA 4500M) gl works but with image tearing, only directx gets no tearing.
+ -So, you should follow this procedure to get the best video out for your system:
+  check gl:yuv=3 or gl:yuv=4.
+  if you get grayscale video, set it to gl, with software scaler set to on or auto.
+  if you get tearing, set it to directx.
+
+2.2.4.1
+Fixed duplicated vbr file log message
+Fixed Wrong file name when reusing mplayer process "/" instead of "\"
+Some extra logs
+
+2.2.5.4
+Changed preferences tab style.
+Fixed preferences general tab icon.
+Added shortcuts to prev/next playlist file (Control-Left/Right)
+Deleted some not needed constants in main form.
+Added time information in playlist.
+Playlist window width follows main window width when docked.
+Information window has now more items: file size, audio track number, Subtitle number and list.
+Some changes in classes that hold audio tracks/subtitle tracks/Titles/Chapters.
+Changes in language files, now all local strings are in a record.
+
+2.2.5.5
+Repeat option added to menus
+2.2.5.6
+Code optimization, deleted some unused mplayer class functions paramenters.
+Libavformat behaviour has been refined (introduced in 1.1.17.11): seek to 0 at start with libavformat files (now .3gp extension is checked), if not performed, with gl2 video out video reached end inmediatly.
+2.2.6.7
+Mplayer font scan and index building progress are shown in main form status bar.
+Status label is hidden if Zoom label is too big.
+Fixed playlist graphical update defects introduced in 2.2.5.4.
+Fixed wrong text colors in playlits.
+Changed close button in playlist window (no flicker when resized)
+Framestep command is only send if time position autoupdate is detected, otherwise, a command to get actual time followed by a pause command is sent. By doing it this way only one frame is done in any case (it was doing 2 frames with old code).
+Custom size can be checked with no file.
+2.2.7.3
+New seekbar appearance.
+Added speed control bar, make main window bigger to see it (Shortcuts: Control + MouseWheel or Control + /*)
+Solved some docking bugs in playlist.
+Some code cleanup.
+Almost Killed main window flicker when resizing (It was very annoying with themes enabled).
+
+2.2.7.5
+Fixed: pause status was not kept when changing speed.
+Fixed: playlist window width was not right after changing to fullscreen
+
+2.3.1
+Migrated project to Delphi 2007.
+Fixed delphi 2007 bugs handling application minimize and restore (conditional define APPLICATIONFORMSFIX).
+New window docking system, allows almost free dock window positioning and remembers configuration.
+Some new icons.
+Optimized main window redrawing when changing from/to fullscreen or between max/restored sizes.
+Thoroughly tested under windows 7, fixed window redrawing problems and task manager glitches.
+Some visual changes.
+Copy function on information window is implemented with a popup menu.
+New class for version information, about form shows more information, detailed information is shown with hints.
+New video option to force video window width to be an even number (if not enabled sometimes you can see directx overlay color in one side).
+Fixed mplayer crash when resizing video window to 1x1.
+Fixed cpu use problem when dragging files in playlist.
+Added filters to open dialogs.
+Added progress bar with cancel button when adding folders to playlist.
+Added messageboxes for invalid drive and for no files found.
+Updated about form text.
+As usual a lot of code cleanup.
+
+2.3.2:
+Added subtitles options:
+ -Ass Subtitles
+ -Use fontconfig
+ -Autoload subtitle files
+ -Background color
+ -Ass text color
+ -Ass border color
+New setting:
+ -Subtitle font size (with special fix that keeps aprox. the same size with or without Ass option activated)
+
+Corrected some locale texts.
+Deleted unneeded locale texts.
+Open dialogs filters remember last setting while program is running (resets to first one when program is closed)
+New color picker, with alpla and grayscale support.
+Colors are saved to ini file in RRGGBB(AA) format, but delphi format ($00BBGGRR , clRed) is accepted for RGB colors.
+Corrected some dependencies of Locale unit.
+Removed unneeded Uses, thanks to CnPack.
+Reorganized/renamed project files.
+
+2.3.3:
+New class for handling playlist files (currently supports reading of PLS,M3U & RAM formats, Saves to M3U).
+Playlists are saved with relative paths when possible.
+Playlists can be downloaded from the internet directly from open url.
+Adding new files to playlist is forbidden while adding files progressbar is working.
+Default cache value for internet files changed to 500Kb.
+New application Icon.
+Fixed problem when resuming playback, mpui was resuming always from the start of the file.
+Fixed problem with mplayer being killed by MPUI-Ve when it was not necessary.
+Fixed problem when mplayer returned an error code but file was stopped by user (selected other file or hit stop).
+Fixed some visual problems in colorpicker form in windows 7.
+Fixed one very old memory leak in playlistform.
+Fixed Mplayer class memory leak related to waiting thread.
+

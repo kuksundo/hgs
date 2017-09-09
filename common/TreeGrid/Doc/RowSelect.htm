@@ -1,0 +1,1063 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row and cell selecting</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row and cell selecting</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>There can be more selected
+rows and cells in grid. Don’t confuse <b><span style='color:red'>selected</span></b>
+and <b><span style='color:red'>focused</span></b> row. The <b>focused</b> row
+is the only row with cursor (<b>FRow</b>).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default can be selected
+only whole rows, to permit selecting of individual cells or cell ranges set
+&lt;Cfg <a href="#CfgSelectingCells">SelectingCells</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default can be rows (and
+cells) selected by <b>Ctrl+click</b>, <b>Shift+click</b>, <b>Space</b>, <b>Ctrl
++ drag</b>, <b>Panel Select</b> <b>click </b>or<b> drag</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change default selecting behavior
+assign the selecting actions to different events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is selection
+persistent. To clear selection after mouse click, add to action
+OnClickCell=”... ,<a href="#ClearSelection">ClearSelection</a>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To permit only selected row
+at a time, add the <a href="#ClearSelection">ClearSelection</a> before all
+selecting actions calls.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The selected rows can be
+deleted, moved or copied. They can be also sent to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The selected rows can be got
+by <a href="#GetSelRows">GetSelRows</a> method and used for any custom task. To
+find out what cells are selected read <a href="#CellSelected">Selected</a>
+attribute of the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSelecting><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Selecting</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]
+                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If selecting rows or cells is
+permitted. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To control how rows and cells
+can be selected by a user, assign the selecting actions to appropriate events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is permitted
+selecting rows but not selecting cells &lt;Cfg Selecting=’1’
+SelectingCells=’0’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSelectingCells><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectingCells</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If selecting individual cells
+or cells ranges is permitted.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is disabled by default!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSelectingSingle><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectingSingle</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]
+                                                                                          <span
+style='color:red'>new <b>9.1</b></span><span style='color:#0070C0'>; upd <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> (1.bit),
+only one row can be selected in grid. Selecting other row clears previously
+selected row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 9.3) </span></i><span
+style='font-size:10.0pt'>If set to <b>2</b> (2. bit), the selected row cannot
+be unselected. The grid will have always selected one row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 9.3) </span></i><span
+style='font-size:10.0pt'>If set to <b>4</b> (3. bit), it clears the row
+selected in grid data on start.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to <b>7</b> for all the
+three features.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSelectingText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectingText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If text selection in grid
+(standard browser behavior) by mouse is permitted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To let a user to select text,
+there also must not be any drag action possible for the cell, otherwise the
+drag action is done.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If it is <b>1</b>, there
+can be unwanted selection blinking during grid dragging and selection actions!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSaveSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveSelected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]        Saves
+information to cookies                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, saves all
+<a href="#ISelected">Selected</a> row ids to cookies. Therefore it remembers
+all Selected rows on the client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, cookies are limited
+to 4096 bytes for the whole page, so use this setting only for very small
+tables or use <a href="Cookie.htm#PersistentCfg">PersistentCfg</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use also as small row ids as
+possible (the amount of cookie space is used: id+1 bytes per selected row).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCalculateSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalculateSelected</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are formulas in grid
+that use selected rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, all calculated rows
+are recalculated after selection changes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i>
+</span><a name=ICanSelect><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanSelect</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row can be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the row cannot
+be selected by any method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i>
+</span><a name=CCanSelect><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanSelect</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1/0]                                                                                                               <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the individual cells in
+the column can be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the
+column cells are excluded from selected ranges, but the whole row can be still
+selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is <b>1</b> for
+all columns except Panel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool      </i>
+</span><a name=HeaderCanSelect><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>CanSelect</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the Panel <b>SelectAll</b>
+button is enabled. Header row itself can never be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i>
+</span><a name=ISelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Selected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>1</b> when
+the row is selected. It is colored yellow (by default setting in Grid.css).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>2</b> when
+the row contains some but not all selected cells.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>There can be more selected
+rows in the grid. Don’t confuse <b><span style='color:red'>selected</span></b>
+and <b><span style='color:red'>focused</span></b> row. The <b>focused</b> row
+is the only row with cursor.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;             </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=CellSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Selected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>1</b> when
+the cell is selected. In this case the row has <a href="#ISelected">Selected</a>
+= <b>2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>int        </i></span><a
+name=PanelSelect><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Select</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                              <span
+style='color:#0070C0'>upd <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the default Panel button <b>Select</b>
+is visible. This button is hidden also if &lt;Cfg <a href="#CfgSelecting">Selecting</a>=”0”/&gt;.
+This button is inactive when the row has <a href="#ICanSelect">CanSelect</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Click to this button selects
+the whole row. Dragging this button selects rows range.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.2)</span></i><span
+style='font-size:10.0pt'> If set to <b>2</b>, it is similar to 1, but the
+button is checked only if the whole row is selected, not only individual cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSelectClass><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectClass</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, selected
+cells can be highlighted also by CSS class attributes like color or font,
+defined in <b>GxColorSelected</b> CSS class in Grid.css.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, selected
+cells are highlighted only by background color.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is used for <a
+href="#CfgSelectingCells">SelectingCells</a>, selected rows are always
+highlighted by CSS class.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The value <b>1</b> can
+slow down selecting cells. </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnSelect><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSelect</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>int</i> <b>deselect</b>)                                                                <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the <b>row</b>
+is selected or unselected. Called before the selection state of the row is
+changed. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>deselect</span></b><span
+style='font-size:10.0pt'> is 0 if the row will be selected, <b>1</b> if will be
+unselected and <b>2</b> if some (but not last) cell will be selected or
+unselected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnSelectAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSelectAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>)                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before all rows in
+grid are selected or unselected. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow[]</i>   </span><a
+name=GetSelRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetSelRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( )                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all selected rows in
+JavaScript array. They are sorted according to their position in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns also selected fixed
+rows (head rows on beginning and foot rows on end).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a
+href="#CfgSelectingCells">SelectingCells</a> is permitted, to find out what
+cells are selected read <a href="#CellSelected">Selected</a> attribute of the
+cell: if(row[col+”Selected”]) ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SelectRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SelectRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row, </b><i>bool</i><b> select</b> = null)                                                                          <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects / unselects whole row.
+Select the row if <b>select</b> = <b>1</b>, unselects if <b>select</b> = <b>0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>select</b> = <b>null</b>
+and the row has at least one selected cell, it is unselected, otherwise it is
+selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SelectAllRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SelectAllRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>int</i>
+<b>select</b> = null)                                                                                  <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects / unselects all rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>select</b> = <b>1</b>
+selects all rows, <b>select</b> = <b>0</b> unselects all rows, <b>select</b> = <b>-1</b>
+invert all rows (every selected row will be unselected and vice versa)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>select</b> = <b>null</b>
+and some row is selected, unselects all rows, otherwise it selects all rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>[][]        </i></span><a
+name=GetSelRanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetSelRanges</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (
+)                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all selected
+rectangles in table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns it in two dimensional
+array: [ [row11,col11,row12,col12],[row21,col21,row22,col22],[row31,col31,row32,col32],…]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SelectRange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SelectRange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TRow</i>
+<b>row1</b>, <i>string</i> <b>col1</b>, <i>TRow</i> <b>row2</b>, <i>string</i> <b>col2</b>,
+<i>int</i> <b>select</b>, <i>int</i> <b>type</b>)                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects rectangular range of
+cells, including given cells</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>col1</b> is null,
+selects all rows in range <b>row1</b> – <b>row2</b> including, otherwise
+selects continuous range of cells between [<b>row1</b>,<b>col1</b>] [<b>row2</b>,<b>col2</b>].</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first point [<b>row1</b>,<b>col1</b>]
+need <u>not</u> be the top left point.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>select</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – unselects range, <b>1</b> – selects
+range, <b>2</b> – unselects range if cell [<b>row1</b>,<b>col1</b>] is
+selected, otherwise selects the range.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = bit array, &amp;<b>1</b> – selects only visible
+rows, &amp;<b>2</b> – ignores children of collapsed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectCells></a><a name=SelectCells><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts selecting rectangular
+range of cells by mouse dragging. Fails if <a href="#CfgSelecting">Selecting</a>
+or <a href="#CfgSelectingCells">SelectingCells</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectCells></a><a name=DeselectCells><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts deselecting rectangular
+range of cells by mouse dragging. Fails if <a href="#CfgSelecting">Selecting</a>
+or <a href="#CfgSelectingCells">SelectingCells</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectRows></a><a name=SelectRows><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts selecting range of rows
+by mouse dragging. Fails if <a href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectRows></a><a name=DeselectRows><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts deselecting range rows
+by mouse dragging. Fails if <a href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertCellsFirst></a><a name=InvertCellsFirst><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>InvertCellsFirst</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Assigned
+to <b>OnCtrlDragRow</b> event, can be assigned to <b>OnDrag</b>... events only   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts selecting or
+deselecting rectangular range of cells by mouse dragging. Fails if <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the actual cell is
+selected, starts deselecting, otherwise starts selecting. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertRowsFirst></a><a name=InvertRowsFirst><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>InvertRowsFirst</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       Assigned
+to <b>OnCtrlDragRow</b> event, can be assigned to <b>OnDrag</b>... events only   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts selecting or
+deselecting range of rows by mouse dragging. Fails if <a href="#CfgSelecting">Selecting</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the actual row is selected
+(at least one cell), starts deselecting, otherwise starts selecting. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectOddRows></a><a name=SelectOddRows><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectOddRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts selecting individual
+rows – every row under mouse cursor is selected. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectOddRows></a><a name=DeselectOddRows><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectOddRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Not
+assigned to any event, can be assigned to <b>OnDrag</b>... events only                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts deselecting individual
+rows – every row under mouse cursor is deselected. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertOddRows></a><a name=InvertOddRows><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>InvertOddRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Assigned
+to <b>OnDragPanelSelect</b> event, can be assigned to <b>OnDrag</b>... events
+only   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts inverting selection of
+individual rows - every row under mouse cursor changes its selection state. Fails
+if <a href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SelectRow </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Assigned
+to <b>OnSpace</b>, <b>OnCtrlClickCell</b> and <b>OnClickPanelSelect</b> events      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects actual or focused
+row. Fails if the row is already selected, cannot be selected or <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectRow></a><a name=DeselectRow><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectRow</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      Assigned
+to <b>OnSpace</b>, <b>OnCtrlClickCell</b> and <b>OnClickPanelSelect</b> events      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects actual or focused
+row. Fails if the row is <u>not</u> selected, cannot be selected or <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To invert selection action
+use “SelectRow OR DeselectRow” </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectCell></a><a name=SelectCell><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectCell</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>              Assigned
+to <b>OnCtrlClickCell</b> event                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects actual or focused
+cell. Fails if the cell is already selected, row cannot be selected or <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectCell></a><a name=DeselectCell><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectCell</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Assigned
+to <b>OnCtrlClickCell</b> event                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects actual or focused
+cell. Fails if the cell is already selected, row cannot be selected or <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To invert selection action
+use “SelectCell OR DeselectCell”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectCol></a><a name=SelectCol><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SelectCol</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Not
+assigned to any event                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects whole actual or
+focused column. Fails if all cells in the column are selected or cannot be
+selected or <a href="#CfgSelecting">Selecting</a> or <a
+href="#CfgSelectingCells">SelectingCells</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectCol></a><a name=DeselectCol><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectCol</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Not
+assigned to any event                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects whole actual or
+focused column. Fails if no cells in the column are selected or cannot be
+selected or <a href="#CfgSelecting">Selecting</a> or <a
+href="#CfgSelectingCells">SelectingCells</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To invert selection action
+use “SelectCol OR DeselectCol”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectRowRange></a><a name=SelectRowRange><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectRowRange</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Not
+assigned to any event                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects all rows between
+focused row and actual row, including both rows. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectRowRange></a><a name=DeselectRowRange><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectRowRange</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Not
+assigned to any event                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects all rows between
+focused row and actual row, including both rows. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertRowRangeFirst></a><a name=InvertRowRangeFirst><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>InvertRowRangeFirst</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      Assigned
+to <b>OnShiftClickCell</b> event                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects or deselects all rows
+between focused row and actual row, including both rows. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the focused row is
+selected, deselects all, otherwise selects all</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectCellRange></a><a name=SelectCellRange><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>SelectCellRange</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Not
+assigned to any event                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects all cells in
+rectangular range between focused cell and actual cell. Fails if <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectCellRange></a><a name=DeselectCellRange><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectCellRange</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Not
+assigned to any event                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects all cells in
+rectangular range between focused cell and actual cell. Fails if <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertCellRangeFirst></a><a name=InvertCellRangeFirst><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>InvertCellRangeFirst</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       Assigned
+to <b>OnShiftClickCell</b> event                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects or deselects all
+cells in rectangular range between focused cell and actual cell. Fails if <a
+href="#CfgSelecting">Selecting</a> or <a href="#CfgSelectingCells">SelectingCells</a>
+is 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the focused cell is
+selected, deselects all, otherwise selects all</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSelectAll></a><a name=SelectAll><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SelectAll</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                         Assigned
+to <b>OnCtrlSpace</b> and <b>OnClickHeaderSelect</b> events                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects all visible rows. Fails
+if all rows are selected or cannot be selected or <a href="#CfgSelecting">Selecting</a>
+is 0.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This action can be
+asynchronous!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeselectAll></a><a name=DeselectAll><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeselectAll</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Assigned
+to <b>OnCtrlSpace</b> and <b>OnClickHeaderSelect</b> events                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deselects all visible rows. Fails
+if no rows is selected or cannot be selected or <a href="#CfgSelecting">Selecting</a>
+is 0. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To always deselect all
+rows you should use <a href="#ClearSelection">ClearSelection</a> instead!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This action can be
+asynchronous, so you should not call any other select actions after this in the
+same event!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsInvertAll></a><a name=InvertAll><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>InvertAll</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                           Assigned
+to <b>OnCtrlClickHeaderSelect</b> events                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Inverts whole selection,
+unselects all visible selected rows and selects all unselected rows. Fails if <a
+href="#CfgSelecting">Selecting</a> is 0.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is <u>not</u> the same
+as “SelectAll OR DeselectAll”!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsClearSelection></a><a name=ClearSelection><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>ClearSelection</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          Not
+assigned to any event                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Clears whole selection,
+including hidden rows. It is always <u>synchronous</u> and never fails.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Add it to <b>OnClickCell</b>
+and <b>OnClickOutside</b> to clear selection after any click – to have <u>not</u>
+persistent selection.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Actions
+OnClickCell=’ClearSelection,FocusEdit’
+OnClickOutside=’ClearSelection,Blur’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Fill><b><span style='font-size:20.0pt'>Fill cell values by
+dragging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can fill cell values
+by mouse dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To permit it, just set
+&lt;Actions OnDragCell=’FillCells’/&gt; or similarly to different drag action,
+e.g &lt;Actions OnCtrlDragCells=’FillCells’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first clicked cell value
+is used as source for all cells in rectangle selected by mouse.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default the value of the
+first cell is just copied to the other cells. You can change this behavior by
+Use <a href="#OnAutoFill">OnAutoFill</a> and <a href="#OnAutoFillValue">OnAutoFillValue</a>
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFillCells></a><a name=FillCells><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>FillCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Attached
+to <b>OnShiftDragRow</b> event, can be attached only to <b>OnDrag...</b> event                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts filling cell values by
+the actual cell value. It fills to all cells the focused cell value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFillCol></a><a name=FillCol><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>FillCol</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Not
+attached to any event, can be attached only to <b>OnDrag...</b> event                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts filling cell values by
+the actual cell value. It fills only vertically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFillRow></a><a name=FillRow><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>FillRow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Not
+attached to any event, can be attached only to <b>OnDrag...</b> event                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts filling cell values by
+the actual cell value. It fills only horizontally.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnAutoFill><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAutoFill</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>r1</b>, <i>string</i> <b>c1</b>, <i>TRow</i> <b>r2</b>,
+<i>string</i> <b>c2</b>, <i>bool</i> <b>rdir</b>, <i>bool</i> <b>cdir</b>)                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after cell range is
+selected by used in action <b>FillCells</b>/<b>Row</b>/<b>Col</b>, before the
+standard filling is done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>r1</span></b><span
+style='font-size:10.0pt'>,<b>c1</b>,<b>r2</b>,<b>c2</b> is the selected cell
+range. <b>r1</b>,<b>c1</b> is always the firstly clicked cell. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rdir</span></b><span
+style='font-size:10.0pt'> is vertical direction - <b>0</b> when <b>r2</b> is
+under <b>r1</b> and <b>1</b> if <b>r2</b> is above <b>r1</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cdir</span></b><span
+style='font-size:10.0pt'> is horizontal direction - <b>0</b> when <b>c2</b> is
+right from <b>c1</b> and <b>1</b> when <b>c2</b> is left from <b>c1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This function can be used to
+do to any operation in cell range created by dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default behavior. If returns true, the <a href="#OnAutoFillValue">OnAutoFillValue</a>
+is <u>not</u> called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAutoFillFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAutoFillFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>r1</b>, <i>string</i> <b>c1</b>, <i>TRow</i> <b>r2</b>,
+<i>string</i> <b>c2</b>, <i>bool</i> <b>rdir</b>, <i>bool</i> <b>cdir</b>)          <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after filling is
+finished. The arguments are the same as in OnAutoFill</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnAutoFillValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAutoFillValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TRow</i> <b>orow</b>,
+<i>string</i> <b>ocol</b>, <i>type</i> <b>val</b>, <i>type</i> <b>prevval</b>, <i>int</i>
+<b>rowpos</b>, <i>int</i> <b>colpos</b>)          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when automatically
+filling cell values selected by dragging in action <b>FillCells</b>/<b>Row</b>/<b>Col</b>,
+like in Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called for every cell
+in the range to get its new value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'>, <b>col</b> is cell to fill; <b>orow</b>, <b>ocol</b>
+is base cell (the first cell dragged); <b>val</b> is predefined value to be
+filled. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>prevval</span></b><span
+style='font-size:10.0pt'> is previously filled (returned) value, for the base
+cell is null.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rowpos</span></b><span
+style='font-size:10.0pt'>, <b>colpos</b> is distance from the actual cell from
+the base cell = base cell has 0,0. <b>rowpos</b> is negative when filling up
+and <b>colpos</b> when filling left.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns new value or <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnAutoFillValue=function(G,row,col,orow,ocol,val,old,ri,ci){return
+val+ri+ci;}</span><span style='font-size:10.0pt'> – fills with increased values
+right down and decreased top left.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

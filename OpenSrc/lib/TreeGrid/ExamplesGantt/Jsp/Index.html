@@ -1,0 +1,160 @@
+<html>
+<head>
+      <link href="../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+   <body>
+   <style> <!--	
+   a.H { color:red; font-weight:bold; }
+   a.G { color:green; font-weight:bold; }
+   a.H:hover { color:blue;}
+   a:hover { color:green;}
+   a:active { color:gray;}
+   a.C { font-weight:bold; }
+   a.L { }
+   a.D { }
+   
+   h1 { font-size:50px;text-align:center; font-weight:bold; } /* Main caption */
+   h2 { font-size:35px;text-align:center; font-weight:bold; margin:10px; padding:0px; color:black; } /* Section caption */
+   h5 { font-size: medium; font-weight:normal; background:#F5FFF5; border:1px solid #88F;padding:3px;margin:3px;color:red; } /* Exclamation */
+   
+	--></style>
+<script>
+function Local(){
+if(!location.host){ 
+   alert("You cannot run server examples locally from your filesystem.\nYou can run server examples only from local or remote web server with IIS and ASP.NET\nFor example from 'http://localhost/treegrid/Examples/'"); 
+	return false;
+   }
+}
+</script>
+<br /><br />
+<h1>JAVA <span style="color:Red;">JSP</span> examples<br />Gantt chart</h1>
+<h5>Do <b>not</b> run this file locally</h5>
+Run it from your (local) web server where is installed your http and JSP server like Apache Tomcat and the J2SE runtime environment (JRE).<br>
+<br>
+<h5>The JSP service program must have <b>write</b> access to all files <b>database.*</b> and also must have write access to the directory <b>/ExamplesGantt/Jsp/</b></h5>
+To permit write access on Windows XP right click to folder <B>Jsp</B> in My Computer, 
+select Properties -&gt; Security -&gt; Users and set <I><B>Full control </B></I>to <I><B>Allow</B></I>.
+If you don't have <I><B>Security</B></I> item in <I><B>Properties</B></I>, run My Computer, 
+in menu select Tools - &gt; Folder options -&gt; View and uncheck <I><B>Use simple file sharing</B></I> option.<br>
+<br>
+<h5>You have to copy files <b>hsqldb.jar</b> and <b>TreeGrid.jar</b> to your JRE shared lib directory and <b>restart</b> your http server</h5>
+These files are located in TreeGrid distribution in <b>/Server/JSP/</b> directory.<br>
+The shared lib directory is usually <b><i>jre_install_path</i>/lib/ext</b> and also for example in Tomcat is usually <b><i>tomcat_install_path</i>/shared/lib</b>.<br>
+<b>hsqldb.jar</b> file is JDBC driver for <a href='http://www.hsqldb.org'>HSQLDB database</a> that is used in nearly all examples. <br>
+<b>TreeGrid.jar</b> is support code for using <a href='../../TreeGridServer.htm'>TreeGrid server side library</a>, this library is <b>not</b> used in Gantt chart examples.<br>
+<br>
+    
+<hr>
+<h2>Example index</h2>
+<table width=100%>
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#gantt'>Gantt chart</a></center></td></tr>
+<tr><td colspan=2><i>How to download and upload Gantt chart in SQL database and in static XML file</i></td></tr>
+<tr>
+   <td><a href='#ganttbasicdb' class='L'>Gantt Database Basic</a></td>
+   <td><i>Demonstrates basic loading Gantt chart from and uploading changes to SQL database</i></td>
+   <td><a class=D href="./Gantt/GanttBasicDB.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#gantttreedb' class='L'>Gantt Database Tree</a></td>
+   <td><i>Demonstrates creating Gantt chart tree from one SQL database table by grouping and uploading changes back</i></td>
+   <td><a class=D href="./Gantt/GanttTreeDB.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#gantttreefile' class='L'>Gantt File</a></td>
+   <td><i>Demonstrates loading Gantt chart from static XML file and storing the complete changed file back to disk</i></td>
+   <td><a class=D href="./Gantt/GanttTreeFile.html" onclick='return Local();'>link</a></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#run'>Run chart</a></center></td></tr>
+<tr><td colspan=2><i>How to download and upload Run chart in SQL database and in static XML file</i></td></tr>
+<tr>
+   <td><a href='#rundb' class='L'>Gantt Run Database</a></td>
+   <td><i>Demonstrates basic loading Gantt Run chart from and uploading changes to SQL database</i></td>
+   <td><a class=D href="./Run/RunDB.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#runfile' class='L'>Gantt Run File</a></td>
+   <td><i>Demonstrates loading Gantt Run chart from static XML file and storing the complete changed file back to disk</i></td>
+   <td><a class=D href="./Run/RunFile.html" onclick='return Local();'>link</a></td>
+</tr>
+
+</table>
+<br>
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='gantt'/>
+<hr>
+<h2>Gantt chart</h2>
+Demonstrating TreeGrid Gantt chart, communication with database and static XML file.<br>
+
+<a name='ganttbasicdb'></a>
+<br>
+<a class=H href="./Gantt/GanttBasicDB.html" onclick='return Local();'>Gantt Database Basic</a><br>
+<i>Main file <A href="./Gantt/GanttBasicDB.html" onclick='return Local();'><b>GanttBasicDB.html</b></A>, 
+   support codes <A href="./Gantt/GanttBasicDef.xml">GanttBasicDef.xml</A> as layout, 
+   <A href="./Gantt/GanttBasicDBData.jsp">GanttBasicDBData.jsp</A> as data,
+   <A href="./Gantt/GanttBasicDBUpload.jsp">GanttBasicDBUpload.jsp</A> as upload<br>
+Data are in database table "<b>GanttBasic</b>".<br></i>
+Demonstrates loading data source for Gantt chart from SQL database and uploading changes back to the database.<br>
+Presents base Gantt chart features - Main bar, milestones and dependencies.<br>
+
+<a name='gantttreedb'></a>
+<br>
+<a class=H href="./Gantt/GanttTreeDB.html" onclick='return Local();'>Gantt Database Tree</a><br>
+<i>Main file <A href="./Gantt/GanttTreeDB.html" onclick='return Local();'><b>GanttTreeDB.html</b></A>, 
+   support codes <A href="./Gantt/GanttTreeDef.xml">GanttTreeDef.xml</A> as layout, 
+   <A href="./Gantt/GanttTreeDBData.jsp">GanttTreeDBData.jsp</A> as data,
+   <A href="./Gantt/GanttTreeDBUpload.jsp">GanttTreeDBUpload.jsp</A> as upload<br>
+Data are in database table "<b>GanttTree</b>".<br></i>
+Demonstrates creating Gantt chart tree from one SQL database table by grouping and uploading changes back.<br>
+The tree levels are stored in column L1 - L4 and these values are used for grouping by the same values. The example supports four levels, but can be easily extended.<br>
+Presents base Gantt chart features - Main bar, milestones and dependencies.<br>
+
+<a name='gantttreefile'></a>
+<br>
+<a class=H href="./Gantt/GanttTreeFile.html" onclick='return Local();'>Gantt File Tree</a><br>
+<i>Main file <A href="./Gantt/GanttTreeFile.html" onclick='return Local();'><b>GanttTreeFile.html</b></A>, 
+   support codes <A href="./Gantt/GanttTreeDef.xml">GanttTreeDef.xml</A> as layout, 
+   <A href="./Gantt/GanttTreeData.xml">GanttTreeData.xml</A> as data source XML,
+   <A href="./Gantt/GanttTreeFileUpload.jsp">GanttTreeFileUpload.jsp</A> as upload<br>
+Demonstrates creating Gantt chart from static XML file and uploading changes back to this file.<br>
+It demonstrates also creating Gantt chart tree by grouping. The tree levels are stored in column L1 - L4 and these values are used for grouping by the same values. The example supports four levels, but can be easily extended.<br>
+Presents base Gantt chart features - Main bar, milestones and dependencies.<br>
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='run'/>
+<hr>
+<h2>Run chart</h2>
+Demonstrating TreeGrid Run chart, communication with database and static XML file.<br>
+
+<a name='rundb'></a>
+<br>
+<a class=H href="./Run/RunDB.html" onclick='return Local();'>Gantt Database Run</a><br>
+<i>Main file <A href="./Run/RunDB.html" onclick='return Local();'><b>RunDB.html</b></A>, 
+   support codes <A href="./Run/RunDBDef.xml">RunDBDef.xml</A> as layout, 
+   <A href="./Run/RunDBData.jsp">RunDBData.jsp</A> as data,
+   <A href="./Run/RunDBUpload.jsp">RunDBUpload.jsp</A> as upload<br>
+Data are in database table "<b>Run</b>".<br></i>
+Demonstrates loading data source for Gantt Run chart from SQL database and uploading changes back to the database.<br>
+Presents all Gantt chart Run features - independent boxes, different text, color, tooltip, features and box adding, moving, copying, deleting, resizing.<br>
+
+<a name='runfile'></a>
+<br>
+<a class=H href="./Run/RunFile.html" onclick='return Local();'>Gantt File Run</a><br>
+<i>Main file <A href="./Run/RunFile.html" onclick='return Local();'><b>RunFile.html</b></A>, 
+   support codes <A href="./Run/RunDef.xml">RunDef.xml</A> as layout, 
+   <A href="./Run/RunData.xml">RunData.xml</A> as data source XML,
+   <A href="./Run/RunFileUpload.jsp">RunFileUpload.jsp</A> as upload<br>
+Demonstrates creating Gantt Run chart from static XML file and uploading changes back to this file.<br>
+Presents all Gantt chart Run features - independent boxes, different text, color, tooltip, features and box adding, moving, copying, deleting, resizing.<br>
+
+<br>
+<hr>
+<br>
+
+
+
+   </body>
+</html>

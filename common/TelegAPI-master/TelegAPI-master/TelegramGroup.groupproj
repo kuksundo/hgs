@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{55585921-B228-41C2-9554-6F92BC4C6750}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Install\TelegaPiBot.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="examples\PingPong\PingPong.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="examples\FMX\PiDWS.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TelegaPiBot">
+        <MSBuild Projects="Install\TelegaPiBot.dproj"/>
+    </Target>
+    <Target Name="TelegaPiBot:Clean">
+        <MSBuild Projects="Install\TelegaPiBot.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TelegaPiBot:Make">
+        <MSBuild Projects="Install\TelegaPiBot.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PingPong">
+        <MSBuild Projects="examples\PingPong\PingPong.dproj"/>
+    </Target>
+    <Target Name="PingPong:Clean">
+        <MSBuild Projects="examples\PingPong\PingPong.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PingPong:Make">
+        <MSBuild Projects="examples\PingPong\PingPong.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PiDWS">
+        <MSBuild Projects="examples\FMX\PiDWS.dproj"/>
+    </Target>
+    <Target Name="PiDWS:Clean">
+        <MSBuild Projects="examples\FMX\PiDWS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PiDWS:Make">
+        <MSBuild Projects="examples\FMX\PiDWS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TelegaPiBot;PingPong;PiDWS"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TelegaPiBot:Clean;PingPong:Clean;PiDWS:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TelegaPiBot:Make;PingPong:Make;PiDWS:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

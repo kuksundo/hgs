@@ -1,0 +1,92 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Client root paging</center>
+   <center style='font:bold italic;'>Automatic paging of root rows on client side</center>
+   <div style='margin-bottom:6px;'><a href='01 - Client root paging.xml'>01 - <h2>Client root paging</h2>.xml</a></div>
+   <div style='width:350px; height:550px;'>
+      <bdo Debug='check' Data_Url='01 - Client root paging.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Client root paging distributes all root rows into root pages.<br />
+         Client root paging has no effect on child rows in tree. 
+         Client root paging is automatically done by TreeGrid and does not require any work on server.<br />
+         The client root paging is controlled by Cfg attribute <h3>Paging</h3>, values <b>1</b> or <b>2</b> and <h3>AllPages</h3>, values <b>0</b> or <b>1</b>:
+         <ul>
+            <li>
+               Pages rendered <b>on demand</b>, set by <b>Paging='2'</b>.<br />
+               The pages are rendered only if they are scrolled to view for given time. The time is set <b>PageTime</b> attribute, default is 200 ms.<br />
+               It can be used for grids with rows about 500 ~ 20,000.
+            </li>
+            <li>
+               All pages are rendered <b>on start</b>, set by <b>Paging='1'</b>.<br />
+               The advantage to no paging setting (Paging='0') is the pages are rendered on background and a user can cancel the rendering and switch to Paging='2'.
+               Also it supports pagers for better navigation.<br />
+               It can be used for grids with rows about 500 ~ 2,000.
+            </li>
+            <li>
+               Only <b>one page</b> is shown at a time, set by <b>AllPages='0'</b> and <b>Paging='2'</b>.
+               It is standard paging widely used on internet, the page can be switched only from pager, not by scrollbar.<br />
+               It can be used for grids with rows about 500 ~ 20,000.
+            </li>
+         </ul>
+      </li>
+      <li>
+         The pages are created on grid loading and also re-created after any sorting, filtering or grouping.<br />
+         The size of page is set by Cfg attribute <h3>PageLength</h3>. It is specifies count of root row at one page when creating pages. 
+         The count can differ, when some row is added or deleted and at the last page.
+      </li>
+      <li>
+         When there are too many pages rendered, the grid slows down. To solve this problem the unused pages are cleared after some time.<br />
+         Cfg attribute <b>MaxPages</b> specifies how many pages can be rendered in grid at one time. 
+         If the count of rendered pages exceeds this limit, the oldest (not shown) pages are cleared.
+      </li>
+      <li>
+         TreeGrid provides three built in pagers:
+         <ul>
+            <li>
+               <h4>Right side pager</h4><br />
+               The pager is defined by special root tag <b>&lt;Pager></b>.<br />
+               This pager is shown on grid right side and shows page names according to the actual sorting. 
+               If there is no active sorting in grid, it shows captions Page 1 - Page XX.<br />
+               The page name is built from the first and last row in the page, from cell values in sorting columns.
+               The cell values are abbreviated on position they differ from values in the last row in previous page and the first row on next page.<br />
+               It is possible to specify the cell value used in pager name instead of actual value by attribute <b>PageNameValue</b>.<br />
+               The right side pager has similar attribute to the standard column and can be also resized or hidden.<br />
+            </li>
+            <li>
+               <h4>Pager with navigation buttons</h4><br />
+               It is Space cell of <b>Type='Pager'</b>. It shows standard buttons First, Prev, Next, Last and cell to edit page number.<br />
+               It creates new Space cells named PagerFirst, PagerPrev, PagerEdit, PagerNext, PagerLast, in that order. It is also possible to set attributes for these cells like PagerEditWidth='70'.<br />
+               This pager can be displayed in any space row, e.g. on Toolbar.
+            </li>
+            <li>
+               <h4>List of page links</h4><br />
+               It is Space cell of <b>Type='Pages'</b>. It shows all pages as numbers with links to show the page. <br />
+               It can show all the page links, optionally with horizontal scrollbar, depending also on <b>Wrap</b> attribute.<br />
+               Or it can show only nearest pages to actual page (set by <b>Count</b> attribute) and optionally the rest pages in steps set by <b>Step</b> attribute.<br />
+               The display of the page links (the numbers) can be changed by API by <b>OnGetPageNumber</b> event.<br />
+               This pager can be displayed in any space row, e.g. on Toolbar, usually with RelWidth='1' to accommodate as much space as possible.
+            </li>
+            <li><h4>Custom pagers</h4><br />
+               There are also various API methods for paging to let developers to build their custom pager. <br />
+               Especially <b>GoToPage</b>, <b>GoToNextPage</b> and <b>GoToPreviousPage</b> methods.
+               For more information see Paging documentation.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

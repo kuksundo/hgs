@@ -1,0 +1,29 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of server side paging width sorting and export features
+Uses HSQLDB database Database (.properties and .script) as data and XML file SortingExport_Layout.xml as TreeGrid layout
+Uses support file SortingExport_Data.jsp as data generating script
+Uses support file SortingExport_Upload.jsp for saving changes to database
+Uses support file SortingExport_Page.jsp as source for individual pages
+Uses support file SortingExport_Export.jsp as script for generating export
+! Check if JAVA application has write access to ../Database.properties and ../Database.script files
+! Don't forget to copy hsqldb.jar file to JAVA shared lib directory
+-->
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Server side paging with uploading changes, sorting and export</h2>
+      <div style="WIDTH:100%;HEIGHT:99%">
+         <bdo Debug='1'
+              Layout_Url="SortingExport_Layout.xml" Layout_Bonus="<Grid><Cfg Paging='3'/></Grid>"
+              Data_Url="SortingExport_Data.jsp"
+              Upload_Url="SortingExport_Upload.jsp" Upload_Format="Internal" Upload_Data="TGData"
+              Page_Url="SortingExport_Page.jsp" Page_Format="Internal" Page_Data="TGData"
+              Export_Url="SortingExport_Export.jsp" Export_Data="TGData" Export_Param_File="Table.xls" Export_Type="1"
+              ></bdo>
+      </div>
+   </body>
+</html>

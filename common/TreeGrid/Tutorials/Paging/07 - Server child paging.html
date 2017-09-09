@@ -1,0 +1,97 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>7. Server child paging in tree</center>
+   <center style='font:bold italic;'>Manual paging of child rows in tree on server side</center>
+   <table>
+      <tr>
+         <td valign='top' width='600'>
+            <div style='margin-bottom:6px;'>
+               <a href='07 - Server child paging.xml'>07 - <h2>Server child paging</h2>.xml</a>
+               &nbsp;
+               <a href='07 - ChildPage1001.xml'>07 - <h2>ChildPage1001</h2>.xml</a>
+               &nbsp;
+               <a href='07 - ChildPage75.xml'>07 - <h2>ChildPage75</h2>.xml</a>
+            </div>
+            <div style='width:350px; height:550px;'>
+               <bdo Debug='check,io' DebugTag='TGDebug' DebugCheckIgnore='countR,countI' Data_Url='07 - Server child paging.xml' Page_Url='07 - ChildPage*id.xml' Page_Method='Get'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='float:right;'><button onclick='document.getElementById("TGDebug").innerHTML="";'>Clear</button></div>
+            <div style='margin-bottom:6px;height:20px;'>Server communication</div>
+            
+            <div id='TGDebug' style='width:350px; height:550px; overflow:auto; background:#EEE; border:1px solid black; padding-left:3px;'></div>
+         </td>
+      </tr>
+   </table>
+
+   
+   <ul>
+      <li>
+         Server side child paging is done by server script that generates the children for the parent rows on demand.<br />
+         <b><i>Implementation of server child paging is not easy and requires a lot of work on server side!</i></b>, although it is simpler to implement than server root paging.
+         For more information see <a href='../../Doc/PagingServer.htm'>Server paging documentation</a>.<br />
+         TreeGrid provides server side DLL/SO library that provides the most of work to support the server paging, 
+         but it can be used only some cases, see the <a href='../../Doc/DLL.htm'>DLL documentation</a>.<br />
+      </li>
+      <li>
+         <h4>How server child paging works</h4><br />
+         <ul>
+         <li>
+         On start TreeGrid downloads layout and root rows as usual without server paging, from Layout_Url and Data_Url.<br /> 
+         If any row contains children, it will be handled by standard client paging, without any access to server.<br />
+         If the row contains no children, but has set <h3>Count</h3> attribute to the count of expected children, it will download the children from server on demand.
+         </li>
+         <li>
+         When the row with the <b>Count</b> attribute is expanded and becomes visible due scroll or is collapsed and is being expanded, 
+         TreeGrid uploads to data source <h3>Page_Url</h3> the row identification 
+         (and also the sorting, filtering, grouping and search state) and downloads back all the children rows. <br />
+         If the children contain their own sub-children, they can be served similarly in both ways - normally included as children or with the <b>Count</b> attribute and downloaded on demand.<br />
+         The server script should find the child rows for the parent row and return them back to the grid. 
+         It can use the information about the grid state or use some data prepared in the first request for the body.<br />
+         </li>
+         </ul>
+      </li>
+      <li>
+         The server child paging is set by Cfg attribute <h3>ChildPaging</h3><b>='3'</b>.<br />
+         Remember, all the children for one parent must be downloaded at once, there is no server paging among row children (ChildParts cannot be set to 3).<br />
+         But still is available client paging in children by Cfg attribute <b>ChildParts='2'</b>.<br />
+      </li>
+      <li>
+         The downloaded children are automatically sorted and filtered (including filter by search) according to the actual state, but <u>not</u> grouped or searched (select, mark, find actions).<br />
+      </li>
+      <li>
+         The server script implementing server child paging is responsible for grouping feature and summary calculations.
+      </li>
+      <li>
+         <h4>Calculations in server child paging</h4><br />
+         If the parent row contains any function for children summaries or some fixed or higher parent row aggregates children deeply, the parent row must contain results of the aggregate functions for its children. 
+         Including filter application, if required.<br />
+         The attribute format is ColNameFuncName='result for children'. The attribute name can be changed by appropriate attribute of the aggregate function.
+      </li>
+      <li>
+         <h4>Static files</h4><br />
+         In the most cases the children are created and served dynamically by some server script.<br />
+         But it is also possible, like in this tutorial example, to load the children from static files. <br />
+         For static file it is required to set Page_Method='Get'.<br />
+         In this case the data source address supports wildcards according to the row identification and sorting state: *id, *Rows.<br />
+      </li>
+      <li>
+         If set Cfg attribute <h3>RemoveCollapsed</h3><b>='3'</b>, it removes the downloaded children on every collapse and downloads them again on expand.<br />
+         It is useful when data requires to be renewed and regenerated often.
+      </li>
+   </ul>
+</body>
+</html>

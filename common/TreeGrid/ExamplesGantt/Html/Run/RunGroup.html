@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+   <script src="../../../Grid/GridE.js"> </script>
+   <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<style>
+
+/* --- Styles used in created boxes HTML --- */
+.Top,.TopLeft { width:10px; height:10px; float:left; border-top:1px solid gray; border-right:1px solid gray; overflow:hidden; }
+.TopLeft { border-left:1px solid gray; }
+.BackWhite { background:white; }
+.BackGreen { background:#8F8; }
+.BackYellow { background:yellow; }
+.BackRed { background:red; }
+.Main { border:1px solid black; }
+.Big { font-size:14px; }
+.Bold { color:blue; font-weight:bold; }
+.Small { font-size:8px; border:1px solid black; border-top:none; width:100%; overflow:hidden; }
+.Bottom { float:left; overflow:hidden; border-right:1px solid black; border-bottom:1px solid black; }
+.Width { width:100%; overflow:hidden; }
+.Height12 { height:12px; }
+.Height16 { height:16px; }
+.Left { width:100%; overflow:hidden; border-left:1px solid black; }
+
+.VAlign { vertical-align:middle; }
+.Inner { padding-top:8px; }
+.Group { padding-left:15px; }
+
+.White { background:#FFFFFF; }
+.Cyan { background:#00FFFF; }
+.Blue { background:#ADD8E6; }
+.Yellow { background:#FFFF00; }
+.Lime { background:#00FF00; }
+.Silver { background:#C0C0C0; }
+.Orange { background:#FFA500; }
+.Green { background:#40C040; }
+
+.Deleted { background:#DDD; color:#AAA; }
+/* --- */
+</style>
+
+<script>
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Browser identification
+var BIEA = navigator.appName.search("Microsoft")>=0; // True if Browser = Internet explorer
+var BIE = BIEA && document.compatMode!="CSS1Compat" && !(document.documentMode>=10); // True if Internet explorer is in quirks mode 5
+
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Creates the Main bar content HTML (in child row)
+Grids.OnGetGanttHtml = function(G,row,col,width){
+width -= 6; // border size around the box, can differ according to used TreeGrid CSS style
+var dur = Get(row,"DUR");
+var W = [Math.floor(Get(row,"R1")*width/100),Math.floor(Get(row,"R2")*width/100),Math.floor(Get(row,"R3")*width/100)];
+W[3] = (width-W[0]-W[1]-W[2]);
+if(W[3]<0) W = [0,0,0,0]; // Wrong data, negative result !
+if(!BIE){ // Subtracts tag borders (1px), because width does not contain them. All browsers except IE quirks mode
+   for(var i=0;i<W.length;i++) if(W[i]) W[i]--;
+   }
+for(var i=W.length-1;i>=0;i--) if(W[i]) { W[i]--; break; } // The left tag border, once
+
+return "<div class='Width' style='padding-top:2px;'>"
+      +"<div class='TopLeft Back"+Get(row,"I1")+"'></div>"
+      +"<div style='display:"+(width<=22?"none":"")+"' class='Top Back"+Get(row,"I2")+"'></div>"
+      +"<div style='display:"+(width<=33?"none":"")+"' class='Top Back"+Get(row,"I3")+"'></div>"
+      +"<div style='display:"+(width<=44?"none":"")+"' class='Top Back"+Get(row,"I4")+"'></div>"
+   +"</div>"
+   +"<div class='Main "+(row.Deleted ? "Deleted" : G.GetString(row,"COLOR"))+"'>"
+      +"<div class='Width Height16'>"
+         +"<div style='float:right;padding-right:2px;' class='Big'>"+Get(row,"COMP")+"%</div>"
+         +"<div class='Big Bold"+(row.Deleted?" Deleted":"")+"'>"+Get(row,"CITY")+"</div>"
+      +"</div>"
+      +"<div class='Width Height12'>"
+         +"<div style='float:right;padding-right:2px;'>"+dur+" hours</div>"
+         +"<div>"+Get(row,"CN")+"</div>"
+      +"</div>"
+      
+   +"</div>"
+   +"<div class='Width'><div class='Left'>"
+   +(W[0]?"<div class='BackGreen Bottom' style='width:"+W[0]+"px'>"+NumberToString(Get(row,"R1")*dur/100,"0.##")+"</div>":"")
+   +(W[1]?"<div class='BackYellow Bottom' style='width:"+W[1]+"px'>"+NumberToString(Get(row,"R2")*dur/100,"0.##")+"</div>":"")
+   +(W[2]?"<div class='BackRed Bottom' style='width:"+W[2]+"px'>"+NumberToString(Get(row,"R3")*dur/100,"0.##")+"</div>":"")
+   +(W[3]?"<div class='BackWhite Bottom' style='width:"+W[3]+"px'>"+NumberToString((100-Get(row,"R1")-Get(row,"R2")-Get(row,"R3"))*dur/100,"0.##")+"</div>":"")
+   +"</div></div>";
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Creates the Run box content HTML according to its children (in group row)
+Grids.OnGetGanttRunText = function(G,row,col,run,index,text,width){
+var cr = G.GetRowById(run[index][5]);
+if(cr) return Grids.OnGetGanttHtml(G,cr,col,width-2); // The -2 value can differ according to used TreeGrid CSS style
+else return Grids.OnGetGanttHtml(G,G.Def.New,col,width-2); // For new run box returns text for default row <D Name='New'/>
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Used to display edit box for Rotated cells
+Grids.OnCustomStartEdit = function(G,row,col,val,cell,width){
+if(G.GetType(row,col)=="Enum" || !Get(row,col+"Rotate")) return; // Only for rotated cell, but not Enum
+G.Prompt("Enter value for "+G.Header[col],val,function(res){ 
+   G.EndEdit(0);
+   if(res!=null) {
+      res = G.CheckGantt(row,col,res);
+      if(res!==false) G.SetValue(row,col,res,1);
+      }
+   },100);
+return true;
+}
+Grids.OnCustomEndEdit = function(){ } // Unused, but required to define
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Updates dependencies for deleted row - links the previous and next rows together
+Grids.OnRowDelete = function(G,row){
+var next = Get(row,"NEXT"), prev = Get(row,"PREV");
+if(next) { 
+   var nr = G.GetRowById(next), val = G.CheckGantt(nr,"PREV",prev); 
+   if(val!==false) G.SetValue(nr,"PREV",val,1); 
+   }
+if(prev) { 
+   var pr = G.GetRowById(prev), val = G.CheckGantt(pr,"NEXT",next); 
+   if(val!==false) G.SetValue(pr,"NEXT",val,1); 
+   }
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Updates dependencies for new or undeleted row - finds the boxes between the row's box will be added and links it to them
+Grids.OnRowUndelete = function(G,row){
+var max = -1e16, found = null, start = Get(row,"START");
+if(start==="" && row.previousSibling) start = Get(row.previousSibling,"START");
+for(var r=row.parentNode.firstChild;r;r=r.nextSibling){
+   if(r==row || r.Deleted) continue;
+   var s = Get(r,"START");
+   if(s>max && s<=start){ found = r; max = s; }
+   }
+if(found){ // found is the nearest box starting before the row's box, adds the row's box after it
+   G.MoveRow(row,row.parentNode,found.nextSibling,1);
+   if(Get(found,"NEXT")){
+      var nr = G.GetRowById(Get(found,"NEXT"));
+      var val = G.CheckGantt(nr,"PREV",row.id); 
+      if(val!==false) G.SetValue(nr,"PREV",val,1); 
+      }
+   var val = G.CheckGantt(found,"NEXT",row.id); 
+   if(val!==false) G.SetValue(found,"NEXT",val,1); 
+   }
+else { // All boxes are after the box, searches for the first box
+   var min = 1e16;
+   for(var r=row.parentNode.firstChild;r;r=r.nextSibling){
+      if(r==row || r.Deleted) continue;
+      var s = Get(r,"START");
+      if(s<min){ found = r; min = s; }
+      }
+   if(found){ // The first box, adds the row's box before it
+      G.MoveRow(row,row.parentNode,found,1);
+      var val = G.CheckGantt(row,"NEXT",found.id); 
+      if(val!==false) G.SetValue(row,"NEXT",val,1); 
+      }
+   }
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Calls the OnRowUndelete also for added rows
+Grids.OnRowAdded = Grids.OnRowUndelete; 
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Called during dragging and on drop
+Grids.OnGanttRunDrop = function(G,row,col,drop,src,index,keyprefix,x,y,togrid,torow,tocol,cellx,accept){
+if(torow && row.Level!=torow.Level) return false; // Cannot move the Run to different level
+if(drop && row==torow){ // When moved (not only shifted) Run box inside one row
+   var row = G.GetRowById(src[0][5]);
+   setTimeout(function(){ // Called in timeout because in time of the event call the Run is not yet set
+      Grids.OnRowDelete(G,row); // Simulates delete and undelete to regenerate dependencies for the new position
+      Grids.OnRowUndelete(G,row);
+      },10);
+   }
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Called on moving row in grid
+Grids.OnRowMove = function(G,row,oldparent,oldnext){
+if(row.parentNode!=oldparent){ // When moved Run box to another row
+   setTimeout(function(){ // Called in timeout because in time of the event call the Run is not yet set
+      Grids.OnRowDelete(G,row); // Simulates delete and undelete to regenerate dependencies for the new position
+      Grids.OnRowUndelete(G,row);
+      },10);
+   }
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// Called to get cell value for filtering to be used instead of the cell value
+// It is used to get value for filtering by GROUP (Location), the grouped column
+Grids.OnGetFilterValue = function(G,row,col,val){
+if(col=="GROUP" && row.Def.Name=="R") val = Get(row,"REG")+","+Get(row,"CN");
+return val;
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------
+//*/
+</script>
+<h2 id="ExampleTitle">Grouping main bars to Run groups</h2>
+<div id="ExampleDescription" style="margin-bottom:5px;">
+   This example demonstrates defining tasks as one individual main bar per row and <b>grouping</b> them <b>by various criteria to Run groups</b>.<br />
+   The bars in Run groups can be <b>created, deleted, resized, moved</b> inside row, moved to another group <i>(by right mouse button)</i>. All the changes are done also in underlying main bars.<br />
+   The changes to server are usually saved only in the main bars.
+   It is even possible to hide the main bars and show only the Run groups.<br />
+   This example also demonstrates <b>custom HTML bar content</b>, for both Run and main bar. And <b>correcting dependencies in MS Project</b> way with early start constraint.<br />
+</div>
+<div style='width:100%; height:650px;'>
+<bdo Layout_Url='RunGroupDef.xml' Data_Url='RunGroupData.xml'></bdo>
+</div>
+</body>
+</html>

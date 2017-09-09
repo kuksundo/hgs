@@ -1,0 +1,86 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttCalendars"><b>Gantt calendars</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Calendars - excluded dates</center>
+   <center style='font:bold italic;'>Excluding any dates from chart and Gantt calculation</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Calendars exclude.xml'>01 - <h2>Calendars exclude</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Calendars exclude.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Calendars exclude - Numbers.xml'>01 - <h2>Calendars exclude - Numbers</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Calendars exclude - Numbers.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Available calendars in chart are defined in root <h3>Calendars</h3> tag, by individual <h3>E</h3> tags.<br />
+         Every calendar has defined its <b>Name</b> and all dates to exclude in <b>Exclude</b> tag.<br />
+         The calendard are accessible also by API by <b>Calendars</b> array.<br />
+      </li>
+
+      <li>
+         The <h4>format</h4> of <b>Exclude</b> or <b>GanttExclude</b> is: <b>rep1#date1a~date1b;rep2#date2a~date2b;...</b><br />
+         The <b>repeater</b> can be one of GanttDataUnits. If it is missing, the date is not repeated. The date is repeated also before it.<br />
+         For example: GanttExclude = ‘w#1/5/2008~1/7/2008; d#00:00~9:00; d#13:00~14:00; d#18:00~24:00’ shows only hours 8:00 – 13:00 and 14:00 – 18:00 and only workdays.<br />
+      </li>
+
+      <li>
+         The excluded dates are completely ignored in Gantt calculation, they behave like there are no such dates at all.<br />
+      </li>
+      <li>
+         If the excluded dates are shown, they are colored in different color and usually do not permit to place objects here, see <b>GanttCheckExclude</b>.
+         The excluded dates are color before background, so by GanttBackground is possible to change their color.<br />
+      </li>
+      <li>
+         <h3>GanttCheckExclude</h3> attribute controls if it will be possible to place some objects to excluded dates.<br />
+         <i>Remember, even if the object contains excluded dates, they are still excluded from all calculations, like dependency or duration.</i><br />
+         The checking affects also editing Gantt source columns by a user.<br />
+         0 - permits placing, 1 - restricts placing, 2 - asks user.
+      </li>
+
+      <li>
+         <h4>Global calendar</h4> is defined by <h3>GanttExclude</h3> tag. It affects all rows without local calendar.<br />
+         The GanttExclude can be set to the name of calendar defined in <b>Calendars</b> tag or directly to exclude string.<br />
+         The excluded dates by global calendar can be shown or hidden in the chart, according to <h3>GanttHideExclude</h3> value.<br />
+         Dynamically can be the GanttHideExclude changed by API method <b>SetHideExclude</b>.<br />
+      </li>
+
+      <li>
+         <h4>Local calendars</h4> can be defined individually for every row by <h3>GanttCalendar</h3> attribute.<br />
+         The GanttCalendar can be set for the whole column to another grid column that contains calendar names or direct exclude strings.<br />
+         Or can be set individually for every row to the calendar name, exclude string or the column containing this information. In this case the Gantt column must have set the GanttCalendar attribute to some value too.<br />
+      </li>
+
+      <li>
+         <b>ShowGanttCalendar</b> API method presets cell Defaults list to the list of calendar to let users to choose and assign a calendar to the local or global calendar.<br />
+         It can be used in <b>OnClickSideDefaults</b> event.
+      </li>
+
+      <li>
+         <b>EditGanttCalendars</b> API method shows the global dialog to let users to edit, add and delete available calendars.<br />
+      </li>
+
+      <li>
+         If the calendar changes, the bars in rows must be recalculated. It is possible to recalculate bar duration according to its end or its end according to the duration.<br />
+         For main bar it is chosen by <b>GanttChangeExclude</b> attribute. The Run bars change depends if the bars are defined by width or by end.<br />
+      </li>
+
+      <li>
+         The calendar be changed and updated also by API method <b>ChangeExclude</b>.
+      </li>
+   </ul>
+</body>
+</html>

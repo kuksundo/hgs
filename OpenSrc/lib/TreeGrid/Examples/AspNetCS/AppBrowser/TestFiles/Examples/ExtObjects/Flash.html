@@ -1,0 +1,160 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Dynamic Adobe Flash objects in cells</h2>
+         <i>This example works only in browsers with installed <b>Adobe Flash Player 8.0+ plugin</b>. 
+         The plugin can be downloaded from <a href='http://www.adobe.com/products/flashplayer/' target='_blank'>http://www.adobe.com/products/flashplayer/</a>.<br />
+         <br />
+         <b>In some browsers and Flash versions this example cannot be run locally from file system.</b><br>
+         </i>
+         <br />
+         This example demonstrates how to display any Flash object inside TreeGrid cells.<br />
+         Also demonstrates dynamical creating / updating the Flash objects according to some condition, for example value in other cell.<br />
+         And finally demonstrates displaying HTML content and Flash object within one cell.<br />
+         <br />
+         This example uses <a href='FlashCanvas.swf'>FlashCanvas.swf</a> file as base source for all Flash objects in grid. 
+         This swf canvas defines all External Interface API functions used by example. If you want to use other Flash graphic functions, you must prepare your custom FlashCanvas.swf with these functions revealed to JavaScript.<br />
+         The TreeGrid xml source is defined in <a href='Flash.xml'>Flash.xml</a>.<br />
+         The main work is done by JavaScript funtion <b>Draw</b> included in this HTML page. This function is called from various events to (re) draw the Flash object. There is no external script file needed for this example.<br />
+         <br />
+         In the Number column are custom numbers. In the Flash column is drawn an ellipse by Flash plugin and text value as standard HTML text. 
+         The width of the ellipse and the HTML text is related to Number column value.<br />
+         You can edit Number column values, sort rows, filter rows, copy&amp;paste rows, delete rows, add new rows and drag rows by mouse. You can see that the Flash column values are always updated.<br />
+      <br />
+      <div align="center">
+      <div style="width:100%;height:500px;">
+         <bdo Data_Url="Flash.xml"></bdo>
+      </div>
+      </div>
+      <script>
+// ---------------------------------------------------------------------------------------------------
+var IE = navigator.appName.indexOf("Microsoft")>=0; // Internet Explorer
+var ID = 1;                                         // unique ID for every object in Internet explorer
+var Version = GetFlashVersion();                    // Flash version
+// ---------------------------------------------------------------------------------------------------
+// Returns Flash Player version installed (for External Interface only 8 and later are propper)
+function GetFlashVersion() {
+try {
+   if(IE){
+      var plg = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7");
+      if(plg) return plg.GetVariable("$version").split(",")[0].split(" ")[1];
+      } 
+   else if (navigator.plugins && navigator.plugins.length > 0) {
+      var plg = navigator.plugins["Shockwave Flash 2.0"];
+      if(!plg) plg = navigator.plugins["Shockwave Flash"];
+      if(plg) return plg.description.split(" ")[2].split(".")[0];
+      }
+   }
+catch (e) {}      
+return -1;
+}
+// ---------------------------------------------------------------------------------------------------      
+// Main function to draw the Flash to the 'Flash' cell
+// The cnt is used only in recursion when waiting for plugin to be loaded
+function Draw(G,row,col,cnt){
+if(row.Kind!="Data")return;         //do nothing for special rows
+if(col && col!="Flash")return;      //only for "Flash" column
+if(cnt>=7) { G.RefreshCell(row,"Flash"); return; } // In Firefox sometimes the object never loads, in this case helps refreshing the whole cell
+var cell = G.GetCell(row,"Flash");
+if(!cell) return;                   //given cell is not prepared, should not happen
+
+// --- No Flash ---
+if(Version < 8) {
+   var err = "<i style='font-size:12px;'>FlashPlayer is unavailable</i>";
+   if(row.Flash!=err){ row.Flash = err; G.RefreshCell(row,"Flash"); }
+   return;
+   }
+
+// --- Getting flash object, for IE <object> tag, otherwise <embed> ---
+var obj = cell.getElementsByTagName(IE?"object":"embed")[0]; 
+
+// --- Creating Flash object if it does not exist yet ---
+if(!obj){
+   while(cell.firstChild && cell.firstChild.nodeType==1) cell = cell.firstChild; // Finds the cell content
+   if(IE) cell.innerHTML = '<div style="overflow:hidden;height:17px;"><object type="application/x-shockwave-flash" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"'
+                         + ' id="'+(ID++)+'" width="500" height="17">'
+                         + '<param name="movie" value="FlashCanvas.swf"><param name="allowScriptAccess" value="always">'
+                         + '<param name="wmode" value="transparent"></object></div>';
+   else cell.innerHTML   = '<div style="overflow:hidden;height:17px;"><embed src="FlashCanvas.swf" quality="high" allowScriptAccess="always"'
+                         + ' name="'+(ID++)+'" width="500" height="17" wmode="transparent"></embed></div>';
+   obj = cell.getElementsByTagName(IE?"object":"embed")[0]; // getting flash object, for IE <object> tag, otherwise <embed>
+   }
+
+
+// --- Check if the movie is already loaded ---   
+try { var p = obj.PercentLoaded(); } catch(e){ }
+if(p!=100) { setTimeout(function(){ Draw(G,row,col,cnt?cnt+1:1); },20*(cnt?cnt*5:1)); return; } // The FlashCanwas.swf is not yet loaded, waits asynchronously
+
+// --- Drawing by ExternalInterface API ---
+var Length = Get(row,"Number")-0;     // Gets the value of the Number cell, it contains width of the ellipse
+if(!Length || Length<0) Length = 0;   // The width of ellipse cannot be negative or null
+if(Length>200) Length=200;            // The width of ellipse cannot be wider than 200
+try { 
+   obj.setScaleMode("noScale");
+   obj.setAlign("TL");
+   obj.ellipse(Length);
+   obj.setAttribute('name',"loaded");
+   }
+catch(e){ if(cnt<6) setTimeout(function(){ Draw(G,row,col,cnt?cnt+1:1); },20*(cnt?cnt*5:1)); return; } // The FlashCanwas.swf is not yet prepared, waits asynchronously
+
+// --- Prints the HTML text right to the Flash ellipse ---      
+var T = obj.nextSibling;           // Gets the <DIV> tag next to Flash object
+while(T && T.nodeType!=1) T = T.nextSibling; // In some browsers (Firefox) there are also text nodes
+if(!T){                               // The tag does not exist yet, it will be created now
+   T = document.createElement('div');
+   T.style.marginTop = "-18px";       // The tag is positioned on the same line as Flash ellipse
+   T.style.fontSize = "14px";
+   T.style.color = "#00F";
+   obj.parentNode.appendChild(T);  // Appends the DIV tag after the Flash ellipse
+   }
+T.style.paddingLeft = (Length+15)+"px"; // Places the DIV tag immediatelly next to the Flash ellipse
+T.innerHTML = Length;                 // Sets the text to be displayed
+}
+// ---------------------------------------------------------------------------------------------------
+// Sets base events to draw the Flash inside cells
+Grids.OnRenderRow = Draw;   // Called whenever the row or cell is rendered, must (re)draw the Flash content
+if(!IE) Grids.OnDisplaceRow = Draw; // Called whenever the row or cell is moved in table, in this case the dynamic Flash content is lost and must be re-drawn
+if(!IE) Grids.OnDisplayRow = Draw; // In Firefox also every displaying of row (expand or unfilter) needs to re-draw the dynamic Flash
+// --------------------------------------------------------------------------------------------------
+// Called after some value changed
+// Updates Flash column when change is done in Number column
+Grids.OnAfterValueChanged = function(G,row,col){
+if(col=="Number") G.RefreshCell(row,"Flash"); // Updates the Flash ellipse for this row
+}
+// --------------------------------------------------------------------------------------------------
+// Called when the Number is recalculated to update the Flash column
+Grids.OnCalculateCell = function(G,row,col,val,show){
+if(col!="Number" || val == row[col] || !show) return;
+var old = row[col]; 
+row[col] = val;       // Sets the new value to be used in Draw function
+G.RefreshCell(row,"Flash");  // Updates the Flash ellipse for this row
+row[col] = old;       // Restores the original value otherwise the cell will not be refreshed
+}
+// --------------------------------------------------------------------------------------------------
+// If copy / paste is supported, the Flash should be also refreshed
+Grids.OnPasteFinish = function(G,rows){ for(var i=0;i<rows.length;i++) Draw(G,rows[i]); }
+// --------------------------------------------------------------------------------------------------
+// User can edit only numbers in row without children, otherwise the cell shows sum of its children
+Grids.OnCanEdit = function (G,row,col){
+return col=="Number" && !row.firstChild;
+}
+// --------------------------------------------------------------------------------------------------
+// In Firefox is a bug that causes Flash cannot be renderered to invisible tag due overflow
+if(!IE) Grids.OnScrollRow = function(G,row) {
+var obj = G.GetCell(row,"Flash").getElementsByTagName("embed")[0];
+if(obj && obj.name!="loaded") G.RefreshCell(row,"Flash");
+}
+if(!IE) Grids.OnScrollCol = function(G,col) {
+if(col!="Flash") return;
+for(var r=G.GetFirstVisible();r;r=G.GetNextVisible(r)){
+   var obj = G.GetCell(r,"Flash").getElementsByTagName("embed")[0];
+   if(obj && obj.name!="loaded") G.RefreshCell(r,"Flash");
+   } 
+}
+// --------------------------------------------------------------------------------------------------
+      </script>
+   </body>
+</html>

@@ -1,0 +1,1135 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Download data</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Download data</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This document describes
+TreeGrid data sources for download and XML structure for download.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For basic information about
+TreeGrid communication settings (AJAX, AJAX SOAP, submit, direct) see <a
+href="DataCommunication.htm">Data communication with server</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For information about
+creating TreeGrid see <a href="Create.htm">Creating TreeGrid</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can download data
+from remote server, local server, local files or from XML placed directly in
+the source HTML page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid always downloads
+from these basic data sources in this order: <b>Text</b>, <b>Defaults</b>, <b>Base</b>,
+<b>Layout</b>, <b>Data</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does not matter what
+setting is defined in which data source, but it is recommended to return data
+from the data source according to its meaning as described below.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If used <b>server paging</b>
+or <b>reloading body</b> the <b>Data</b> source can contain only variable rows
+definition (&lt;Body&gt; tag).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <b>prefix</b></span></i><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>  <a
+name="Text_"></a><a name=Text><b>Text</b></a><b>_</b></span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download all</span></i><span style='color:#3366FF'> <i>texts
+and language settings</i></span></b>. It is loaded as the first data source. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set <b><span
+style='color:blue'>Text_Url=”Text.xml” </span>Text_Method=”Get”</b> to download
+the predefined TreeGrid texts from file Text.xml. The Text.xml file is searched
+in directory with GridE.js script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can translate and update
+the Text.xml for all languages you want and provide the appropriate file based
+on user language settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:red'>required</span></b> source, but you can keep the <b>default</b>
+value “Text.xml”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+string</span></i><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>   </span><a name="Text_Start"><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>Text_Start</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [“Initializing
+…”]                                                                                    <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Message displayed on grid
+initialization, when TreeGrid texts are loading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only if SuppressMessage is
+not set.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> its default value is “Initializing …”, so it is
+displayed by default. To hide only this message, set it to empty string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In time of the message
+display TreeGrid styles are not loaded yet, so it uses internal message setting
+in the Modern style. To re-style this message, define GridMessage CSS class in
+page &lt;head&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default message width is
+140, it can be changed by Text_MessageWidth attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+string</span></i><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>   </span><a name="Text_StartErr"><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>Text_StartErr</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Message displayed if TreeGrid
+texts failed to load and TreeGrid hangs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Defaults_"></a><a name=Defaults><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Defaults</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download <u>system</u> predefined values</span></i></b>
+of all parameters in TreeGrid. It is loaded as the second data source.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>This file is
+required for TreeGrid to work properly. This file should <u>not</u> be modified
+and must be from the same version as GridE.js script itself.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set <b><span
+style='color:blue'>Defaults_Url=”Defaults.xml” </span>Defaults_Method=”Get”</b>
+to download the predefined TreeGrid values from file Defaults.xml. The
+Defaults.xml file is searched in directory with GridE.js script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:red'>required</span></b> source, but you can keep the <b>default</b>
+value “Defaults.xml”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Base_"></a><a name=Base><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Base</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download <u>custom</u> predefined values</span></i></b>
+of some parameters in TreeGrid. It is loaded as the third data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set <b>Base_Method=”Get”</b>
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:#339966'>optional</span></b> source, to have some predefined
+values for all TreeGrids on site or in application.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Layout_"></a><a name=Layout><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Layout</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download grid structure</span></i></b> (configuration,
+columns, header, filter, group, search, fixed rows, pager, ...). It is loaded
+as the fourth data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set <b>Layout_Method=”Get”</b>
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:#339966'>optional</span></b> source, all the layout can be
+included in </span><a href="#Data"><span style='font-size:10.0pt'>Data</span></a><span
+style='font-size:10.0pt'> source instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:red'>required</span></b> source for <b>server paging</b> and / or <b>ReloadBody</b>
+usage.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Data_"></a><a name=Data><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Data</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download grid data</span></i></b> (variable rows or fixed
+data rows). It is loaded as the fifth data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain also all grid
+data structure if Layout data source is not used (not possible for <b>server
+paging</b> or ReloadBody).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>server paging</b> it
+should contain only pages definition (&lt;B&gt; tags).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set <b>Data_Method=”Get”</b>
+<b>Data_Data=”Data”</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:red'>required</span></b> source, you need to set at least this
+data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Page_"></a><a name=Page><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Page</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>download data for individual page or child page</span></i></b>.
+It is loaded on request, when the page is being displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can return only variable
+row within requested page. The requested page can be find out from request
+configuration XML sent in <b>Data</b> parameter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set <b>Page_Method=”Form”</b>
+<b>Page_Data=”Data”</b>   </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Used only for server
+paging or server child paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used only with AJAX communication, set attribute <b><span style='color:#3366FF'>Page_Url</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><span
+style='color:red'>required</span></b> source for <b>server paging</b> or <b>server
+child paging</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For other paging types is <b><u><span
+style='color:#339966'>not</span></u><span style='color:#339966'> used</span></b>
+at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string   </i></span><a
+name=BasePath><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>BasePath</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [path_to_GridE.js]                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Base path to all TreeGrid
+base files required files: <b>Defaults.xml</b>, <b>Text.xml</b>, <b>Grid.css,</b>
+<b>Help.html</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default value is the path
+to <b>GridE.js</b> file, it is usual to place all the required files along to
+the GridE.js.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The BasePath is add also to
+&lt;treegrid Default_Url and Text_Url&gt;, but <u>not</u> to &lt;Cfg CSS and
+HelpFile/&gt;.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It must end with ‘/’ if
+contains standard directory path.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnReadData><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnReadData</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>object</i> <b>source</b>, <i>function</i> <b>Func</b>)                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before data are requested
+by any method (AJAX, submit, ...) from source Defaults, Text, Base,  Layout or
+Body.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout. The source.<b>Name</b> contains the name of source, e.g.
+“Layout”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can return true to suppress
+the loading and provide the downloading by custom way and must call function <b>Func</b>
+(int <b>result</b>), where result&lt;0 is error code or 0 for ok.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ReadData><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ReadData</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>object</i>
+<b>source</b>, <i>function</i> <b>Func</b>)                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reads data from given source
+according to its _Url/_Tag/_Data parameters. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source to be is accessed, for example
+grid.Source.Layout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After finish calls function <b>Func</b>:
+function <b><i>Func</i></b> (<i>int</i> result), result&lt;0 is error code and
+&gt;=0 is success.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i> </span><a
+name=Loading><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Loading</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>             [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to 1 during
+downloading and updating base data – when creating grid, reloading grid, or
+reloading body of grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When Loading is set, <u>no</u>
+API function that reads or changes grid data can be called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also </span><a
+href="#Rendering"><span style='font-size:10.0pt'>Rendering</span></a><span
+style='font-size:10.0pt'> variable.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnLoaded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnLoaded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>function</i> <b>next</b>)                                                                    <span
+style='color:#0070C0'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after all data has
+been loaded successfully, when creating or reloading grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called before the grid
+data has been updated, so you cannot call any row or column manipulation
+function.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> you can return <b>true</b> to <u>not</u> continue, if
+required some asynchronous action. And after finish call <b>next</b>( ) to
+continue.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnLoadError><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnLoadError</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when data cannot be
+downloaded and the grid cannot render and shows fatal error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is always called <b>OnLoaded</b>
+or <b>OnLoadError</b> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnUpdated><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnUpdated</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>)                                                                                   
+            <span style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after all grid data
+were prepared for use, but before the grid calculated, filtered, sorted,
+grouped and rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can call any data
+manipulation API methods to update the data before they are calculated and
+sorted/grouped/filtered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnReady><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnReady</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, bool <b>start</b>)                                                                        <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after all grid data
+were prepared for use, before the grid is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called when creating or
+reloading grid (<b>start</b> = 1) or when reloading body or updating detail
+grid (<b>start</b> = 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can call any data
+manipulation API methods to update the data before they are rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is the only time during
+grid creating when both the </span><a href="#Loading"><span style='font-size:
+10.0pt'>Loading</span></a><span style='font-size:10.0pt'> and </span><a
+href="Create.htm#Rendering"><span style='font-size:10.0pt'>Rendering</span></a><span
+style='font-size:10.0pt'> properties are false. <i>Do not call here API methods
+that render grid or update grid view!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CfgCacheTimeout><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CacheTimeout</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [5]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long TreeGrid waits for its
+CSS style (Grid.css file) to be complete loaded, in seconds. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the timeout expires,
+TreeGrid shows fatal error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgPrepared><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Prepared</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can prepare input xml
+data for grid to speed up loading grid. If input xml data are prepared, set in
+them Prepared to 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In prepared xml data:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Date</span></b><span
+style='font-size:10.0pt'> type values must be set as count of milliseconds from
+1/1/1970 00:00:00.000, see also </span><a href="TypeDate.htm#FormatGMT"><span
+style='font-size:10.0pt'>GMT</span></a><span style='font-size:10.0pt'>
+attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Float</span></b><span
+style='font-size:10.0pt'> values must be set in standard English format,
+without leading zero, but with leading zero for values between -1 and 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All <b>Int</b>, <b>Float</b>
+and <b>Date</b> type cells must have set its value (or set value in its default
+row cell).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=LayoutXML><b><span style='font-size:20.0pt'>Layout XML
+structure</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Layout XML</span></b><span
+style='font-size:10.0pt'> defines all parts in TreeGrid except data rows and
+cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is sent from server to
+grid. It is generated by server script. It is usually static XML file.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used when downloading grid
+for first time or reloading all data for the grid (function Reload).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>response</b> from
+data sources <b>Text</b>, <b>Defaults</b>, <b>Base</b>, <b>Layout</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For small grids it can be
+merged with </span><a href="#DataXML"><span style='font-size:10.0pt'>Data XML</span></a><span
+style='font-size:10.0pt'> and returned in <b>Data response</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>columns</b> are merged
+by their <b>Name</b> - if there is already defined some <b>column</b> &lt;C&gt;
+with the same <b>Name</b>, it is updated, <u>no</u> new column is added.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>defaults</b> are
+merged by their <b>Name</b> - if there is already defined some <b>default row</b>
+&lt;D&gt; with the same <b>Name</b>, it is updated, <u>no</u> new default is
+added.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The fixed and space rows are
+merged by their <b>id</b> - if there is already defined some <b>fixed or space
+row</b> with the same <b>id</b>, it is updated, <u>no</u> new row is added.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To specify position of the
+main <b>Header</b> row place to &lt;Head&gt; or &lt;Foot&gt; section a tag with
+<b>id=’Header’</b> on the appropriate position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To specify position of the
+main <b>Toolbar</b> row place to &lt;Solid&gt; section a tag with <b>id=’Toolbar’</b>
+on the appropriate position and also set its <b>Space</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You <u>cannot</u> change
+position of the main left side <b>Panel</b> column, but you can hide it by <b>&lt;Panel
+Visible=’0’/&gt;</b> and define new column(s) with <b>Type</b>=”<b>Panel</b>”
+on the appropriate position in columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:10.0pt'> (Root tag,
+can accept any count of introduced child tags in any order, only one tag Grid
+per response is permitted)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes </i>...<span
+style='color:#FF6600'> </span></span><span style='font-size:16.0pt;color:#FF6600'>/&gt;</span><span
+style='font-size:10.0pt'> (a server response)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Cfg</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes </i>...<span
+style='color:#FF6600'> </span></span><span style='font-size:16.0pt;color:#FF6600'>/&gt;</span><span
+style='font-size:10.0pt'> (base grid settings)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Colors</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes </i>...</span><span
+style='font-size:16.0pt;color:#FF6600'> /&gt;</span><span style='font-size:
+10.0pt'> (cell background color setting for various row states)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>Def</span></b><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:10.0pt'> (list of default settings for rows or columns)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      <b><span
+style='color:#FF6600'>            </span></b></span><span style='font-size:
+16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>D</span></b><span
+style='font-size:10.0pt'> <b><span style='color:green'>Name</span></b>='<i>name
+of default</i>' <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      <b><span
+style='color:#FF6600'>            </span></b><i>... More tags &lt;D&gt; ...</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   <b><span style='color:
+#FF6600'>      </span></b></span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Def</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Panel</span></b><span style='font-size:
+10.0pt'> <i>... attributes ...</i> </span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><span style='font-size:10.0pt'> (one predefined most
+left side column Type=”Panel”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> (Columns fixed to the
+left side, not horizontally scrollable)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' <i>...
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>/&gt;</span><i><span
+style='font-size:10.0pt'> </span></i><span style='font-size:10.0pt'>(individual
+columns)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (Variable columns,
+between left and right, horizontally scrollable) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' <i>...
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>/&gt;</span><i><span
+style='font-size:10.0pt'> </span></i><span style='font-size:10.0pt'>(individual
+columns)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> (Columns fixed to the
+right side, not horizontally scrollable) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' <i>...
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>/&gt;</span><i><span
+style='font-size:10.0pt'> </span></i><span style='font-size:10.0pt'>(individual
+columns)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'>   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>  </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Header</span></b><span style='font-size:
+10.0pt'> <i>... row and cell attributes ... </i></span><span style='font-size:
+16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (predefined first
+“main” header, by default with id=”Header”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Head</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (List of top fixed rows, not
+vertically scrollable, rows <u>cannot</u> contain children rows)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>Filter</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (special
+row with user interface for filtering rows by column(s))</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>            </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>Header</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ... </i></span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (other
+headers or main header with id=”Header”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>I</span></b><span style='font-size:10.0pt'>
+<i>... row and cell attributes ...</i></span><span style='font-size:16.0pt;
+color:red'> /&gt;</span><span style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt;,
+&lt;Filter&gt;,&lt;Header&gt; ...</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Head</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Foot</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (List of bottom fixed
+rows, not vertically scrollable, rows <u>cannot</u> contain children rows)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>Filter</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (special
+row with user interface for filtering rows by column(s))</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>            </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>Header</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ... </i></span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (other
+headers or main header with id=”Header”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>I</span></b><span style='font-size:10.0pt'>
+<i>... row and cell attributes ...</i></span><span style='font-size:16.0pt;
+color:red'> /&gt;</span><span style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt;,
+&lt;Filter&gt;,&lt;Header&gt; ...</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Foot</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Solid</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> (List of special
+solid rows, these rows can be positioned in more locations in table)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Group</span></b><span style='font-size:
+10.0pt'> <i>... group row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (special
+row with user interface for grouping)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Search</span></b><span style='font-size:
+10.0pt'> <i>... search row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(special row with user interface for search and advanced filter)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Toolbar</span></b><span style='font-size:
+10.0pt'> <i>... toolbar row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (special
+row with toolbar buttons, or main toolbar with id=”Toolbar”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Space</span></b><span style='font-size:
+10.0pt'> <i>... row and cell attributes ...</i> </span><span style='font-size:
+16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'> (special row with
+no special interface, just to display custom cells)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;Space&gt; &lt;Group&gt;
+&lt;Search&gt; &lt;Toolbar&gt; ...</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Solid</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt;color:red'>   </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>Toolbar</span></b><span
+style='font-size:10.0pt'> <i>... attributes ... </i></span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(predefined first “main” toolbar, by default with id=”Toolbar”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuCfg</span></b><span style='font-size:
+10.0pt'> <i>... attributes ...</i> </span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><span style='font-size:10.0pt'> (settings for
+configuration menu)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuColumns</span></b><span
+style='font-size:10.0pt'> <i>... attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(settings for columns visibility menu)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Pager</span></b><span style='font-size:
+10.0pt'> <i>... attributes ...</i> </span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><span style='font-size:10.0pt'> (right side pager
+settings)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Lang</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (All language depended
+texts and formats)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Alert</span></b><span style='font-size:
+10.0pt'> <i>... attributes ...</i></span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><span style='font-size:10.0pt'> (texts for alert
+messages, only plain text, no HTML tags)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Text</span></b><span style='font-size:10.0pt'>
+... <i>attributes ...</i></span><i><span style='font-size:16.0pt'> </span></i><span
+style='font-size:16.0pt;color:red'>/&gt;</span><i><span style='font-size:10.0pt'>
+</span></i><span style='font-size:10.0pt'>(html text for messages and other
+use)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Gantt</span></b><span style='font-size:
+10.0pt'> ... <i>attributes ...</i></span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><i><span style='font-size:10.0pt'> </span></i><span
+style='font-size:10.0pt'>(Gantt chart texts)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuButtons</span></b><span
+style='font-size:10.0pt'> ... <i>attributes ...</i></span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><i><span style='font-size:10.0pt'>
+</span></i><span style='font-size:10.0pt'>(button captions in all popup menus)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuCopy</span></b><span style='font-size:
+10.0pt'>... <i>attributes ...</i></span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><i><span style='font-size:10.0pt'> </span></i><span
+style='font-size:10.0pt'>(copy menu item captions)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuFilter</span></b><span
+style='font-size:10.0pt'> ... <i>attributes ...</i></span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><i><span style='font-size:10.0pt'>
+</span></i><span style='font-size:10.0pt'>(filter operator menu item captions)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>MenuCfg</span></b><span style='font-size:
+10.0pt'> ... <i>attributes ... </i></span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><i><span style='font-size:10.0pt'> </span></i><span
+style='font-size:10.0pt'> (configuration menu item names and values)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Format</span></b><span style='font-size:
+10.0pt'> ... <i>attributes ... </i></span><span style='font-size:16.0pt;
+color:red'>/&gt;</span><i><span style='font-size:10.0pt'> </span></i><span
+style='font-size:10.0pt'>(number and date formats and regional settings)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Lang</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DataXML><b><span style='font-size:20.0pt'>Data XML
+structure</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Data XML</span></b><span
+style='font-size:10.0pt'> defines body (data) rows. Here is listed the
+structure for <b>no</b> or <b>client</b> <b>paging</b>. For server paging see
+the next paragraph.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is sent from server to
+grid. It is generated by server script. It is usually generated from server
+database.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used when downloading grid
+for first time or reloading all data for the grid (function Reload) or
+reloading only body (function ReloadBody).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>response</b> from
+data source <b>Data</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For small grids it can be
+merged with </span><a href="#LayoutXML"><span style='font-size:10.0pt'>Layout
+XML</span></a><span style='font-size:10.0pt'>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also contain some
+parts from </span><a href="#LayoutXML"><span style='font-size:10.0pt'>Layout
+XML</span></a><span style='font-size:10.0pt'>, like fixed rows or configuration
+settings if they need to generate dynamically to let the rest of the layout to
+be in static file.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also contain
+configuration settings like sort, filter or group if you want to change them
+when reloading body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The body rows are <u>not</u>
+updated by their <b>id</b> attribute – <u>no</u> two body rows should have the
+same id. It is due speed reason.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>server child paging</b>
+some or all rows with children can have set <b>Count</b> attribute as the count
+of the expected children instead of the children themselves. The children will
+be downloaded on demand. In this case the row must have set also its <b>id</b>
+or <b>Rows</b> attribute to identify it on server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt;color:#999999'>   </span><span style='font-size:16.0pt;
+color:#999999'>&lt;<b>Par</b>&gt; </span><span style='font-size:10.0pt;
+color:#999999'>(list of prepared parameters for </span><span style='font-size:
+10.0pt;color:#993300'>short</span><span style='font-size:10.0pt;color:#999999'>
+formats) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:#999999'>      </span><span style='font-size:
+16.0pt;color:#999999'>&lt;<b>P</b></span><span style='font-size:10.0pt;
+color:#999999'> <b>Name</b>=&quot;list name&quot; <b>List</b>=&quot;parameter
+names, comma separated&quot;</span><span style='font-size:16.0pt;color:#999999'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt;color:#999999'>   </span><span style='font-size:16.0pt;
+color:#999999'>&lt;/<b>Par</b>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>B</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (Only one page with all rows)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                 
+</span></b><span style='font-size:10.0pt'>          </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell attributes
+...</i></span><span style='font-size:16.0pt'> <span style='color:red'>&gt;</span></span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                       
+</span></b><span style='font-size:10.0pt;color:red'>            </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                               
+</span></b><span style='font-size:10.0pt;color:red'>            </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                                     
+</span></b><i><span style='font-size:10.0pt'>               ... More tags
+&lt;I&gt;, with possible children tags &lt;I&gt; with possible children and so
+on – <span style='color:red'>unlimited levels of tree</span> ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                            
+</span></b><span style='font-size:10.0pt'>              </span><span
+style='font-size:16.0pt;color:red'>&lt;/</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                             
+</span></b><i><span style='font-size:10.0pt'>               ... More tags
+&lt;I&gt; ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                     
+</span></b><span style='font-size:10.0pt'>              </span><span
+style='font-size:16.0pt;color:red'>&lt;/</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                       
+</span></b><i><span style='font-size:10.0pt'>            ... More tags
+&lt;I&gt; ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:16.0pt'>          <span style='color:red'>&lt;/</span><b><span
+style='color:blue'>I</span></b><span style='color:red'>&gt;</span> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                 
+</span></b><i><span style='font-size:10.0pt'>      ... More tags &lt;I&gt; ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>B</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

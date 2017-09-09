@@ -1,0 +1,1127 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row adding and copying</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row adding and copying</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only variable rows can be
+added or copied.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fixed (Head and Foot) and
+Space rows <u>cannot</u> be added or copied.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Ways><b><span style='font-size:20.0pt'>Ways of adding rows
+to grid</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:16.0pt'>Adding new empty row </span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New empty row can be added by
+actions <b>AddRow</b>, <b>AddChild</b> and other <b>Add</b>... actions. These
+actions are usually attached to Toolbar <b>Add</b> and <b>AddChild</b> Button
+and also to <a href="#PanelCopyMenu">CopyMenu</a> menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By API can be new row added
+by <a href="#AddRow">AddRow</a> method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described below in <a href="#Adding">Adding new empty rows paragraph</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:16.0pt'>Copying existing row </span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Existing row can be copied by
+actions <b>CopyRow</b>, <b>CopyTree</b>, <b>CopySelected</b> and other <b>Copy...</b>action.
+These actions are usually accessible from <a href="#PanelCopyMenu">CopyMenu</a>
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to copy row
+only, copy row with children, copy row with children, but without values, copy
+selected rows – with or without children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By API can be existing rows
+copies by <a href="#CopyRows">CopyRows</a> method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described below in <a href="#Copying">Copying existing rows paragraph</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:16.0pt'>Copying existing row by
+dragging </span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Existing rows can be copied
+when dragging by actions <b>DragCopy</b>, <b>DragSelectedCopy</b>, <b>DragCopyChildren</b>.
+These actions are not attached to any event by default, because by default are
+rows moved by dragging. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The copying actions can be
+attached to <b>OnDrag...</b> events and replace DragRow, DragSelected and
+DragChildren events that move the rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described in <a href="RowMoving.htm">Row moving documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:16.0pt'>Moving existing row
+from another grid by dragging</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>From another grid are rows
+move always as copy – from source grid are deleted (marked as Deleted) and
+added as new to the destination grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The dragging rows can be done
+by actions <b>DragRow</b>, <b>DragSelected</b> and <b>DragChildren</b> events.
+These actions are usually attached as default actions for dragging rows to <b>OnDrag</b>
+event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By API can be rows moved from
+another grid by <b>MoveRowsToGrid</b> method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described in <a href="RowMoving.htm">Row moving documentation</a></span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:16.0pt'>Pasting row from
+clipboard </span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports pasting new
+rows from clipboard. To clipboard can be rows copied from the grid, from
+another grid, or from another application like MS Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The pasting is done by
+actions <b>PasteTo</b>... These actions are attached to CtrlV event and cannot
+be attached alsewhere.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described in <a href="CopyPaste.htm">Copy&amp;Paste documentation</a> </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Restrictions><b><span style='font-size:20.0pt'>Adding and
+copying restrictions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default every row accepts
+every child. Remember, only variable rows can be added or copied!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To control which row accepts
+which child use <b>Def</b> and <b>AcceptDef</b> attributes. The row accepts as
+child only rows with <b>Def</b> attribute listed in the row’s <b>AcceptDef</b>
+array. The root rows are controlled by &lt;Root <b>AcceptDef</b>/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The new empty row gets its <b>Def</b>
+attribute from <b>CDef</b> attribute of its parent. Root rows use &lt;Root <b>CDef</b>/&gt;.
+To restrict adding to row’s children, set its <b>CDef</b>=””. By default is <b>CDef</b>=”R”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Dynamically you can control adding
+new rows by API event <a href="#OnCanRowAdd">OnCanRowAdd</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the settings are
+described in <a href="RowDefaults.htm">Default rows documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Adding><b><span style='font-size:20.0pt'>Adding new empty
+rows</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAdding><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Adding</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [1]
+                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be added into
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, grid does <u>not</u>
+permit adding new rows, copying existing rows and pasting rows from clipboard,
+but it is still permitted moving rows from another grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, it hides Toolbar
+buttons Add and AddChild. If set to 0 all <b>Add</b>... actions fail, but <a
+href="#AddRow">AddRow</a> method still works.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgAddFocusCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AddFocusCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, automatically
+focuses this column after the row is added.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the originally
+focused column is used. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=IAdded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Added</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]        Uploaded
+to server, support Undo                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>1</b> when
+row has been added to the grid and not yet uploaded to server. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>It is set to <b>1</b>
+for every type of adding the row (add empty, copy, drag copy, move from other
+grid, paste).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Added row is colored green
+(by default setting in Grid.css).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After uploading changes to
+server or calling <a href="DataUpload.htm#AcceptChanges">AcceptChanges</a> the
+added row just looses its state and becomes normal row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The place where the row is
+added is identified by <a href="#Parent">Parent</a>, <a href="#Next">Next</a>
+and <a href="#Prev">Prev</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IParent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Parent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the new parent row or position of page (from 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=INext><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Next</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the row below or “” if the row is the last row in its
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IPrev><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Prev</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the row above or “” if the row is the first row in its
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt; &lt;Root&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      <i>int        </i>
+</span><a name=IAddParent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AddParent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, adds new row’s
+children as its siblings rather than its children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If is set to <b>1</b> adds
+new row before the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If is set to <b>2</b> adds
+new row as last child of the parent row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example, if you set
+AddParent of all rows and &lt;Root&gt; to <b>2</b>, every new row will be added
+to the end of table, to the root.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsAddRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>AddRow </span></u></b></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to <b>OnClickButtonAdd</b> and <b>OnIns</b> and used in <b>Toolbar</b> <b>Add</b>
+and <b>Panel</b> <a href="#PanelCopyMenu">CopyMenu</a>      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row above
+actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsAddRowBelow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>AddRowBelow </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row below
+actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsAddRowEnd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>AddRowEnd</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>    Attached to <b>OnClickButtonAdd</b>
+event and used in <b>Toolbar</b> <a href="#PanelCopyMenu">CopyMenu</a>              <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row to the end
+of grid (when &lt;Cfg AllPages=’1’/&gt;) or actual page (when &lt;Cfg AllPages=’0’/&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are also available
+actions <b>AddRowE<u>ndGrid</u></b> to add row to the grid end and <b>AddRow<u>EndPage</u></b>
+to add row to actual page end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsAddChild><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>AddChild </span></u></b></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>              Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row into
+actual or focused row’s children to the beginning (as the first child)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsAddChildEnd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>AddChildEnd </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    Attached
+to <b>OnClickButtonAddChild </b>and<b> OnCtrlIns</b> and used in <b>Toolbar</b>
+<b>AddChild</b> and <b>Panel</b> <a href="#PanelCopyMenu">CopyMenu</a>      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row into
+actual or focused row’s children to the end (as the last child)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCanRowAdd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCanRowAdd</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>parent</b>, <i>TRow</i> <b>next</b>)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the row is
+added to find out if it can be added to this position. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called when adding new
+rows, copying existing rows and pasting rows. It is <u>not</u> called when
+moving rows from another grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>parent</span></i><span
+style='font-size:10.0pt'> is parent row in tree or page for root row, to its
+children the new row will be added. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>next</span></i><span
+style='font-size:10.0pt'> is next row, above it the new row will be added or
+null if the row will be added as the last child or last row on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRowAdd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowAdd</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the row is
+added, but before it is displayed. Usually to change default values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRowAdded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowAdded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                        <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the row is added
+and displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called also when the row is
+copied, but not moved from another grid by dragging (MoveRowsToGrid).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=AddRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AddRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>parent</b>, <i>TRow</i> <b>next</b>, <i>int</i> <b>show</b> = 0, <i>string</i>
+<b>id</b> = null, <i>string</i> <b>Def</b> = null)                      <span
+style='color:blue'>upd <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new empty row to grid
+and returns it. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show&amp;1</b>, the new
+row is also displayed, for false there must be called <a
+href="RowBasics.htm#ShowRow">ShowRow</a> method to display it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show&amp;2</b>, the
+parents are expanded to show the row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show&amp;4</b>, the row
+is recalculated, including Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call with <b>show</b> = <b>7</b>
+to completely show the row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>parent</span></b><span
+style='font-size:10.0pt'> is parent row, <b>next</b> is row below the new row.
+If <b>next</b> is null adds new row as the last <b>parent’s</b> child. If <b>parent</b>
+and <b>next</b> are null adds row as the last root row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also sets values to new row
+from its default row (according to <a href="RowDefaults.htm#ICDef">CDef</a>
+attribute of parent row). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>id</b>, sets it to <b>id</b>
+attribute, otherwise creates new unique id for the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>Def</b>, uses this
+Def as Default row name</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only variable row can be
+added.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Copying><b><span style='font-size:20.0pt'>Copying existing
+rows</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCopying><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Copying</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If existing rows can be
+copied / duplicated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the Panel
+Copy button is hidden and the CopyMenu does not display items for copying.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, all <b>Copy</b>...
+actions fail but <a href="#CopyRow">CopyRow</a> and <a href="#CopyRows">CopyRows</a>
+methods still work.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0)</span></i><span
+style='font-size:10.0pt'> If set to <b>0</b>, the rows cannot be copied by
+dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copying is automatically
+disabled when set <a href="#CfgAdding">Adding</a>=’0’.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is <u>not</u> related
+to Copy&amp;Paste, it is controlled by <a href="CopyPaste.html#CfgPasting">Pasting</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCopyDeleted><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyDeleted</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If copies also deleted rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ICanCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                  <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row can be duplicated
+and copied. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the Panel
+Copy button is inactive and all <b>Copy</b>... actions fail but <a
+href="#CopyRow">CopyRow</a> and <a href="#CopyRows">CopyRows</a> methods still
+work.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row cannot be also copied
+by dragging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is <u>not</u> related
+to copying values into clipboard.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool      </i></span><a
+name=HeaderCanCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the Header Panel Copy
+button is enabled. Header row itself can never be never copied.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=ICopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Copy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is set when used
+<a href="PagingServer.htm#ChildPaging">ChildPaging</a>=3 and the row was
+created as deep copy of another row, the Copy is <a href="RowId.htm#Iid">id</a>
+of the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is set only if
+the source row has some children and they were not loaded from server yet (the
+row was not expanded yet).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server script must
+provide deep copy of the children of source (Copy) node to children of this
+(id) node.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>bool      </i></span><a
+name=PanelCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Copy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                                                              <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>If
+the default Panel button Copy is visible. This button is hidden also if &lt;Cfg
+<a href="#CfgCopying">Copying</a>=”0”/&gt;. This button is inactive when the
+row has <a href="#ICanCopy">CanCopy</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Click to this button shows
+popup menu for copying and adding rows. The menu is defined by attribute <a
+href="#PanelCopyMenu">CopyMenu</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyRow </span></u></b></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>              Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row,
+the new row is placed above the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyRowBelow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyRowBelow </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                     Not
+attached to any event                                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row
+with all its children, the new row is placed below the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyTree </span></u></b></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row
+with all its children, the new row is placed above the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyTreeBelow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyTreeBelow </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                     Not
+attached to any event                                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row
+with all its children, the new row is placed below the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyEmpty </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row
+with all children, but without their cell values, the new row is placed above
+the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyEmptyBelow><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopyEmptyBelow </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Not
+attached to any event                                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies actual or focused row
+with all children, but without their values, the new row is placed below the
+row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopySelected </span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies selected rows the
+actual or focused row and place them before the actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It copies only rows that can
+be copied in the location.  It fails if no selected row can be copied to the
+location.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedChild><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopySelectedChild </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#CopySelected">CopySelected</a>,
+but copies the rows as the first children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedChildEnd><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedChildEnd </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#CopySelected">CopySelected</a>,
+but copies the rows as the last children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedTree><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopySelectedTree </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#CopySelected">CopySelected</a>,
+but copies the selected rows with all their children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedTreeChild><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedTreeChild </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedTree">CopySelectedTree</a>, but copies the rows as the first
+children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedTreeChildEnd><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedTreeChildEnd </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedTree">CopySelectedTree</a>, but copies the rows as the last
+children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedEmpty><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopySelectedEmpty </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#CopySelected">CopySelected</a>,
+but copies the selected rows with all their children, but without their cell
+values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedEmptyChild><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedEmptyChild </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedEmpty">CopySelectedEmpty</a>, but copies the rows as the
+first children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedEmptyChildEnd><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedEmptyChildEnd </span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Not
+attached to any event, but used in <b>Toolbar</b> <b>AddChild</b> and <b>Panel</b>
+<a href="#PanelCopyMenu">CopyMenu</a>          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedEmpty">CopySelectedEmpty</a>, but copies the rows as the
+last children of actual or focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedEnd><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopySelectedEnd</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        <span style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#CopySelected">CopySelected</a>,
+but copies the selected rows to end of grid (when &lt;Cfg AllPages=’1’/&gt;) or
+actual page (when &lt;Cfg AllPages=’0’/&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are also available
+actions <b><u>CopySelectedEndGrid</u></b> to copy to the grid end and <b><u>CopySelectedEndPage</u></b>
+to copy to actual page end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedTreeEnd><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CopySelectedTreeEnd</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>   <span style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedEnd">CopySelectedEnd</a>, but copies the selected rows with
+all their children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are also available
+actions <b><u>CopySelectedTreeEndGrid</u></b> to copy to the grid end and <b><u>CopySelectedTreeEndPage</u></b>
+to copy to actual page end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopySelectedEmptyEnd><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CopySelectedEmptyEnd</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          Not
+attached to any event, but used in <b>Toolbar</b> <b>Add</b> and <b>Panel</b> <a
+href="#PanelCopyMenu">CopyMenu</a>        <span style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a
+href="#CopySelectedEnd">CopySelectedEnd</a>, but copies the selected rows with
+all their children, but without their cell values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are also available
+actions <b><u>CopySelectedEmptyEndGrid</u></b> to copy to the grid end and <b><u>CopySelectedEmptyEndPage</u></b>
+to copy to actual page end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;                    </span></b><a
+name=ActionsCopyMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CopyMenu </span></u></b></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Attached
+to <b>OnClickPanelCopy</b>, <b>OnClickButtonAdd</b> and <b>OnClickButtonAddChild</b>          <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows popup menu for copying
+or adding rows.  From this menu can be available all adding and copying actions
+listed above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The menu items displayed are
+set by column or row attribute <a href="#PanelCopyMenu">CopyMenu</a>. The menu
+items captions are set in <b>Text.xml</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;&lt;Space cell&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string[<a
+name=PanelCopyMenu>] </a></span></i><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CopyMenu</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [...]                                                                                                     <span
+style='color:red'>new<b> 6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What items (and their order)
+will be available in menu displayed by <a href="#CopyMenu">CopyMenu</a> action
+– this actions attached to Panel <a href="#PanelCopy">Copy</a> button and
+Toolbar Button <a href="GlobalSettings.htm#ToolbarAdd">Add</a> and <a
+href="GlobalSettings.htm#ToolbarAddChild">AddChild</a> by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the item action cannot be
+applied to the row, the menu item will be hidden even if it is set by this
+attribute, e.g. Panel CopyMenu button shows only items related to the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is comma separated array
+of these action names:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>CopyRow,
+CopyTree, CopyEmpty, CopyRowBelow, CopyTreeBelow, CopyEmptyBelow, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>CopySelected,
+CopySelectedTree, CopySelectedEmpty</span> <span style='font-size:10.0pt'>CopySelectedBelow,
+CopySelectedTreeBelow, CopySelectedEmptyBelow, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>CopySelectedChild,
+CopySelectedTreeChild, CopySelectedEmptyChild, CopySelectedChildEnd,
+CopySelectedTreeChildEnd, CopySelectedEmptyChildEnd, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>CopySelectedEnd,
+CopySelectedTreeEnd, CopySelectedEmptyEnd, CopySelectedEndGrid,
+CopySelectedTreeEndGrid, CopySelectedEmptyEndGrid, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>CopySelectedEndPage,
+CopySelectedTreeEndPage, CopySelectedEmptyEndPage, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>AddRow,
+AddRowBelow, AddRowEnd, AddRowEndGrid, AddRowEndPage, AddChild, AddChildEnd</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set in
+&lt;Panel CopyMenu=’...’/&gt; and &lt;Toolbar AddCopyMenu=’...’
+AddChildCopyMenu=’...’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To create dynamic / custom
+copy menu for individual rows use similar code (it creates menu with one item
+to add new child to the row):</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;Actions
+OnClickPanelCopy='Grid.CloseDialog(); Grid.Dialog =
+ShowMenu({Items:[{Name:&quot;AddChild&quot;,OnClick:function(){Grid.AddRow(Row,null,1)}}]},{Tag:Grid.GetCell(Row,Col)});
+return 1;'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRowCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>source</b>, <i>bool</i> <b>empty</b>)                                            <span
+style='color:blue'>upd <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the row is
+copied, but before it is displayed. <b>row</b> is the copied row, source is the
+<b>source</b> row. <b>empty</b> is true if values were not copied.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.4 it is called
+also when pasting new row if set <a href="CopyPaste.htm#CfgCopyPasteRows">CopyPasteRows</a>=1.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnRowCopyId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowCopyId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>source</b>, <i>bool</i> <b>move</b>)                     <span
+style='color:red'>new <b>6.4</b></span><b><span style='color:#0070C0'>; </span></b><span
+style='color:blue'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before creating id for
+the new copied row, the row has already copied the IdNames columns, the other
+columns will be copied later.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.1</span></i><span
+style='font-size:10.0pt'> it can set the row id and return true to not generate
+the new id.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> <b>move</b> is set when the row is moved from another
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      </span><a
+name=CopyRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CopyRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow[]</i>
+<b>rows</b>, <i>TRow</i> <b>parent</b>, <i>TRow</i> <b>next</b>, <i>bool</i> <b>deep</b>
+= false, <i>bool</i> <b>empty</b> = false) <span style='color:red'>chg <b>7.0</b></span>.</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies all given rows inside
+grid. Shows all changes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows </span></b><span
+style='font-size:10.0pt'>is array of the rows to copy in this order. The rows
+can be also from another grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>parent</span></b><span
+style='font-size:10.0pt'> is parent row, <b>next</b> is row below the copied
+rows. If <b>next</b> is null, places the <b>rows</b> as the last <b>parent’s</b>
+children. If <b>parent</b> and <b>next</b> are null, places rows as the last
+root rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>deep</b> is true,
+copies include children, only visible (not filtered, not deleted). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies all row and cell
+attributes. Does <u>not</u> copy RowSpan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In 7.0 was removed
+parameter dest_grid and <b>rows</b> now can become from another grid.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=CopyRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CopyRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TRow</i>
+<b>row</b>, <i>TRow</i> <b>parent</b>, <i>TRow</i> <b>next</b>, <i>bool</i> <b>deep</b>
+= false, <i>bool</i> <b>empty</b> = false)    <span style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies one row inside grid.
+Returns the row copy.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row </span></b><span
+style='font-size:10.0pt'>is the row to copy, it can be also from another grid, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>parent</span></b><span
+style='font-size:10.0pt'> is parent row, <b>next</b> is row below the copied
+row. If <b>next</b> is null, places the row as the last <b>parent’s</b> child.
+If <b>parent</b> and <b>next</b> are null, places row as the last root row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>deep</b> is true, copies
+include children, only visible (not filtered, not deleted). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies all row and cell
+attributes. Does <u>not</u> copy RowSpan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 it also shows
+all the changes and tests if the copy is possible due Def / AcceptDef settings.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

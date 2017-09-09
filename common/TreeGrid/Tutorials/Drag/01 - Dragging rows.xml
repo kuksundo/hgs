@@ -1,0 +1,45 @@
+<Grid>
+   <Cfg id="Dragging" MainCol="N" FullId="1" NumberId="1" IdChars="0123456789" Sorting="0" Undo="1"/>
+   <Cfg CalculatedChanges="D"/> <!-- Saves changed in Def to server -->
+   <Panel Copy="1"/>
+   <Cols>
+      <C Name="id" CanEdit="0"/>
+      <C Name="N" Width="200"/>
+      <C Name="D" Formula="Row.Def.Name"/>
+      <C Name="S"/>
+   </Cols>
+   <Root CDef="ITEM"/>
+   <Panel Move="1"/>
+   <Actions OnDragRow="DragSelected OR DragRow" OnRightDragRow="DragSelectedCopy OR DragCopy" OnCtrlRightDragRow="DragSelectedCopyChildren OR DragCopyChildren"/>
+   <Def>
+      <D Name="R" DefEmpty="ITEM" DefParent="NODE" CDef="ITEM"/> <!-- Defines the changes for all the rows, here for NODE and ITEM rows -->
+      <D Name="NODE" SFormula="sum()" Calculated="1" Color="#EEE"/>
+      <D Name="ITEM" S="0"/>
+      <D Name="SPEC" Color="#AFF" DefEmpty="" DefParent="" />
+   </Def>
+   <Header id="id" N="Name" D="Def" S="Num"/>
+   <Body>
+      <B>
+         <I id="1" N="Item 1" Def="ITEM" S="5"/>
+         <I id="2" N="Node 2" Def="NODE">
+            <I id="1" N="Item 2-1" Def="ITEM" S="3"/>
+            <I id="2" N="Item 2-2" Def="ITEM" S="12"/>
+            <I id="3" N="Node 2-3" Def="NODE">
+               <I id="1" N="Node 2-3-1" Def="NODE">
+                  <I id="1" N="Item 2-3-1-1" Def="ITEM" S="5"/>
+                  <I id="2" N="Item 2-3-1-2" Def="ITEM" S="3.5"/>
+               </I>
+            </I>
+         </I>
+         <I id="3" N="Item 3 cannot be dragged" CanDrag="0" Def="ITEM" S="6.5"/>
+         <I id="4" N="Item 4 does not accept children" AcceptDef="" CDef="" Def="ITEM" S="9"/>
+         <I id="5" N="Item 5 cannot be copyied" CanCopy="0" CanCopyPaste="0" Def="ITEM" S="2"/> 
+         <I id="6" N="Item 6 cannot be moved" Def="ITEM" S="8"/> <!-- Controlled by OnStartDrag defined in HTML -->
+         <I id="7" N="Special 7 does not become node" Def="SPEC" S="0"/>
+         <I id="8" N="Node 8" Def="NODE">
+            <I id="1" N="Item 8-1" Def="ITEM" S="7"/>
+            <I id="2" N="Item 8-2" Def="ITEM" S="-6"/>
+         </I>
+      </B>
+   </Body>
+</Grid>

@@ -1,0 +1,983 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Grid cursor – focused cell and row</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Grid cursor – focused cell and row</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgStaticCursor><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>StaticCursor</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, grid does
+not delete cursor when it looses focus – after click outside grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After click outside the grid,
+it looses focus and the cursor cannot be changed by keys. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To not let grid loosing its
+focus after click outside, you can suppress the action by <b>&lt;Actions
+OnClickOutside=’0’/&gt;</b> instead of setting StaticCursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case the arrow keys
+will control the grid cursor even if user edits some other input on page – you
+need to cancel bubbling of onkeydown in such input.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgFocusWholeRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FocusWholeRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, does not show cursor
+for the cell, only for row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For this case should be set
+also &lt;Cfg Editing=’0’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;I&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int        </i></span><a
+name=ICanFocus><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanF</span></u></b></a><a name=CCanFocus></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>ocus</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0/1]                                                                                                               <span
+style='color:#0070C0'>upd<b> 7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row or cell can be focused
+– the grid cursor can be placed to this place.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The not focusable cell cannot
+be edited except Bool and Radio types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If user clicks to not
+focusable row, the cursor position is not changed at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If user click to not
+focusable cell in focusable row, it is focused the clicked row and the cell in
+previously focused column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When user moves cursor by
+arrow keys, the not focusable cells are skipped. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> arrow keys skip also cells with CanFocus=’<b>2</b>’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The routine to find out if
+the cell is focusable checks these points in this order:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) Checks <u>cell</u>
+CanFocus, if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) Checks <u>row</u>
+CanFocus, if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) Checks <u>column</u>
+CanFocus, if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) Returns <b>0</b> for cell
+types Panel, Button and Select, for other types returns <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=CanFocus><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanFocus</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If cell can be focused. Tests
+all <a href="#CCanFocus">CanFocus</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Focused</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An <b>id</b> of focused row
+to focus it on start on or reload.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used server paging, it
+can be id or position of page with focused row and <a href="#CfgFocusedPos">FocusedPos</a>
+is set to the row position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is also sent
+to server in request for data to change the focused row from server and
+contains actual <a href="#FRow">FRow</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgFocusedCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FocusedCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of focused column to
+focus it on start on or reload.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is also sent
+to server in request for data to change the focused row from server and
+contains actual <a href="#FCol">FCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgFocusedPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FocusedPos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies position (from 0)
+of focused row at page when used <a href="#CfgFocused">Focused</a> attribute
+with server paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree it includes all
+expanded rows’ children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is also sent
+to server in request for data to change the focused row from server and
+contains actual <a href="#FPagePos">FPagePos</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgIgnoreFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>IgnoreFocused</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Ignores attribute <a
+href="#CfgFocused">Focused</a> sent from server. Has sense especially when used
+TreeGrid server library.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=FRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        read
+only                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Actually focused row in grid
+or null. The grid cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be a page when there
+is focused row on not yet loaded page in server paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string</i>    </span><a
+name=FCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           read
+only                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Actually focused column in
+grid or null. The grid cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=FPagePos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FPagePos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         read
+only                                                                                                                     .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>                       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a href="#FRow">FRow</a>
+is not yet rendered page in server paging, there is index (from 0) of focused
+row on this page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree it includes all
+expanded rows’ children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;XML event&gt;   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      </span><a
+name=XMLOnFocus><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>OnFocus</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>             (<i>TGrid</i> <b>Grid</b>,
+<i>TRow</i> <b>Row</b>, <i>string</i> <b>Col</b>, <i>TEvent</i> <b>Event</b>)                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called as &lt;Actions&gt; or
+cell event when the cell is focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attach the action or any
+JavaScript code to the cell to be run on focus, like &lt;I ...
+Col1OnFocus=’alert(“focused!”)’ ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnFocus><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnFocus</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TRow</i> <b>orow</b>,
+<i>string</i> <b>ocol</b>, int <b>pagepos</b>)                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when cell is focused, <b>row</b>,
+<b>col</b> is actual (new) focused cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>orow</span></b><span
+style='font-size:10.0pt'>, <b>ocol</b> is previously focused cell. All rows and
+cols parameters can be nulls. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>pagepos</span></b><span
+style='font-size:10.0pt'> is not null if row is not rendered page or row with
+children, in this case it is position on the page. If server paging is not
+used, it is always null. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focusing is moving cursor to
+row’s cell. By mouse click or by arrow keys or by tab key. Don’t confuse <i>selecting
+</i>and <i>focusing row</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=Focus><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Focus</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>pagepos</b> = null, <i>bool</i>
+<b>show</b> = false)                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grid was in edit mode,
+saves changed value in the edited cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true, if cell was
+focused. Returns false if the cell is already focused. Returns null if the cell
+cannot be focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>row</b> is page,
+focuses cell on page on <b>pagepos</b> position after page renders
+(asynchronously). If server paging is not used, <b>pagepos</b> is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>row</b> is null,
+defocuses grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show</b> is true,
+expands all parents to show the row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, when you will
+call the Focus method from onclick event of some external button, you need to
+call it in setTimeout, otherwise grid looses focus due the click to button - setTimeout(function(){grid.Focus(row,col);},10);</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global prop.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TGrid</i>    </span><b><i><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>Grids</span></i></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>.<a
+name=Focused><u>Focused</u></a></span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Actually focused grid. This
+grid catches key events. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to process key
+events in other controls, set it to null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFocus></a><a name=ActionFocus><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Focus</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                Attached
+to <u>many</u> events                                                                                 .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses actual cell =&gt;
+moves cursor to cell under mouse cursor. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will receive key
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if cell cannot be
+focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is attached to
+events OnClickCell, OnClickEditEnum, OnDblClickCell, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>OnClickSideDefaults,
+OnClickSideDate, OnClickSideFilter, OnClickExpand, OnClickEditBool, OnjClickEditRadio,
+OnClickLink</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFocusEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>FocusEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                     Attached
+to event <b>OnClickCell</b>                                                             <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses actual cell =&gt;
+moves cursor to cell under mouse cursor. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And starts editing according
+to <a href="CellEdit.htm#CfgInEditMode">InEditMode </a>setting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if the focus cannot
+be changed or start edit the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will receive key
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if cell is already
+focused or cannot be focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsChangeFocus></a><a name=ActionChangeFocus></a><a name=ChangeFocus><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>ChangeFocus</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses actual cell =&gt;
+moves cursor to cell under mouse cursor. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will receive key
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if cell is already
+focused or cannot be focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFocusRow></a><a name=ActionFocusRow></a><a name=FocusRow><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>FocusRow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                    Attached
+to event <b>OnClickNoFocus</b>                                                     <span
+style='color:red'>chg<b> 7.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>            </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses cell in actual row
+and focused column. If the cell cannot be focused, focuses only row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will receive key
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if the row cannot be
+focused.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 whole Space rows
+cannot be focused, only their cells.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsBlur></a><a name=ActionBlur></a><a name=Blur><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>Blur</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                     Attached
+to event <b>OnClickOutside</b>                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defocuses grid and hides
+cursor if it is not set as <a href="#CfgStaticCursor">StaticCursor</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will <u>not</u>
+receive key events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Tab><b><span style='font-size:20.0pt'>Tabulator navigation</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports tabulator
+navigation (tab &amp; shift+tab) inside grid and also from another control to
+grid and from grid to another control.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgTabStop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TabStop</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                                              <span
+style='color:red'>new <b>6.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how the grid is
+included in page tab order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, the grid is
+accessible by tab key from other inputs on page – the first or the last cell in
+grid becomes focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the cell
+is just focused, if set to <b>2</b>, it also starts editing the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgTabIndex><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TabIndex</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 <span
+style='color:red'>new <b>6.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a href="#CfgTabStop">TabStop</a>,
+you can also set the exact <b>TabIndex</b> to place the grid into specific position
+in the page tab order. Similar to HTML <b>tabindex</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabLeft></a><a name=ActionTabLeft></a><a name=TabLeft><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>TabLeft</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to event <b>OnShiftTab</b>                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell left to the actual focused cell. If there is none in the row, continues
+up, from right. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there is no focused cell
+in grid, it focuses the first bottom right focusable cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if there is no
+previous cell to focus.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If returns false and is set <a
+href="#CfgTabStop">TabStop</a>, it focuses the previous control above the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, if you want to
+focus the previous control, the <b>OnShiftTab</b> event must return 0,
+otherwise it should return 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabRight></a><a name=ActionTabRight></a><a name=TabRight><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>TabRight</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Attached
+to event <b>OnTab</b>                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell right to the actual focused cell. If there is none in the row, continues
+down, from left. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there is no focused cell
+in grid, it focuses the first top left focusable cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if there is no
+next cell to focus.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If returns false and is set <a
+href="#CfgTabStop">TabStop</a>, it focuses the next control below the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, if you want to
+focus the previous control, the <b>OnTab</b> event must return 0, otherwise it
+should return 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabRightAdd><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>TabRightAdd</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>  Not attached to any event                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="#TabRight">TabRight</a>, but adds new row if no next variable row is available.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabLeftEdit></a><a name=TabLeftEdit><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>TabLeftEdit</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      Attached
+to events <b>OnShiftTabEdit</b> and <b>OnShiftTabEnum</b>                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a href="#TabLeft">TabLeft</a>
+but goes to the <u>editable</u> cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabRightEdit></a><a name=TabRightEdit><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>TabRightEdit</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  Attached
+to events <b>OnTabEdit</b> and <b>OnTabEnum</b>                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="#TabRight">TabRight</a> but goes to the <u>editable</u> cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsTabRightEditAdd><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>TabRightEditAdd</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>    Not attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="#TabRight">TabRight</a> but goes to the <u>editable</u> cell and adds new
+row if no next variable row is available.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Key><b><span style='font-size:20.0pt'>Key navigation</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports key
+navigation inside the grid by arrows, PageUp / PageDown, Home / End. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Behavior of any key can be
+changed by attaching chosen event handler in &lt;Actions/&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnKeyDown><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnKeyDown</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>char</i> <b>key</b>, <i>Event</i> <b>event</b>, <i>string</i> <b>name</b>,
+<i>string</i> <b>prefix</b>)                           <span style='color:blue'>upd
+<b>6.0</b></span>.</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when a user hold down
+key in focused grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called for <u>every</u>
+key, even for all functional keys like ESC or arrow keys.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>key</span></b><span
+style='font-size:10.0pt'> is Unicode code of the character key pressed or key
+code for functional key</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>event</span></b><span
+style='font-size:10.0pt'> is JavaScript key event generated in onkeydown.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is key name set in &lt;Actions&gt; tag, e.g. “A”,
+“D3”, “Esc” or “Right”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>prefix</span></b><span
+style='font-size:10.0pt'> is shift key prefix – “Shift”, “Alt”, “Ctrl”,
+“ShiftAlt”, “ShiftCtrl”, “CtrlAlt”, “ShiftCtrlAlt”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i> </span><a
+name=OnKeyPress><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnKeyPress</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>char</i> <b>key</b>, <i>Event</i> <b>event</b>, <i>string</i> <b>name</b>,
+<i>string</i> <b>prefix</b>)                           <span style='color:blue'>upd
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when a user presses
+key in focused grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called after <a
+href="#OnKeyDown">OnKeyDown</a>, see the parameters here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In some browsers (IE, Safari)
+it is called only for character keys, in other browsers (Mozilla, Opera) it is
+called for all keys.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i> </span><a
+name=OnKeyUp><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnKeyUp</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>char</i> <b>key</b>, <i>Event</i> <b>event</b>, <i>string</i> <b>name</b>,
+<i>string</i> <b>prefix</b>)                           <span style='color:red'>new
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when a user releases
+key in focused grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See the parameters in <a
+href="#OnKeyDown">OnKeyDown</a>,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoDown></a><a name=GoDown><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoDown</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>              Attached
+to event <b>OnDown</b>                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell below the actually focused cell. If there is no focused cell, focuses the
+first left top cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next
+focusable cell below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoDownAdd></a><a name=GoDownAdd><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoDownAdd</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   Not
+attached to any event                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell below the actually focused cell. If there is no focused cell, focuses the
+first left top cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there is no next focusable
+cell below in variable row it adds new row and moves focus here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoUp></a><a name=GoUp><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>GoUp</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                     Attached
+to event <b>OnUp</b>                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell above the actually focused cell. If there is no focused cell, focuses the
+first left bottom cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next
+focusable cell below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoRight></a><a name=GoRight><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoRight</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Attached
+to event <b>OnRight</b>                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell right to the actually focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next
+focusable cell or no row is focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoLeft></a><a name=GoLeft><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoLeft</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                  Attached
+to event <b>OnLeft</b>                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable
+cell left to the actually focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no
+previous focusable cell or no row is focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoFirst></a><a name=GoFirst><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoFirst</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Attached
+to event <b>OnHome</b>                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first focusable variable
+row in actually focused column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoLast></a><a name=GoLast><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GoLast</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Attached
+to event <b>OnEnd</b>                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the last focusable
+variable row in actually focused column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsPageDown></a><a name=PageDown><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>PageDown</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Attached
+to event <b>OnPageDown</b>                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the same row on the
+next page or the last row. It does not change focused column except the cell in
+the new row is not focusable.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When one page is visible
+(&lt;Cfg AllPages=’0’/&gt;) just focuses to the next page on the same position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When all pages are visible or
+no paging is set, it scrolls down for the count of visible rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsPageUp></a><a name=PageUp><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>PageUp</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to event <b>OnPageUp</b>                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the same row on the
+previous page or the first row. It does not change focused column except the
+cell in the new row is not focusable.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When one page is visible
+(&lt;Cfg AllPages=’0’/&gt;) just focuses to the previous page on the same
+position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When all pages are visible or
+no paging is set, it scrolls up for the count of visible rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoDownEdit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>GoDownEdit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>               Attached to
+event <b>OnDownEdit</b>                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first editable
+cell below the actually focused cell. If there is no focused cell, focuses the
+first left top cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next editable
+cell below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoDownEditAdd><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>GoDownEditAdd</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>     Not attached to any
+event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first editable
+cell below the actually focused cell. If there is no focused cell, focuses the
+first left top cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there is no next editable
+cell below in variable row it adds new row and moves focus here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoUpEdit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>GoUpEdit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                       Attached
+to event <b>OnUpEdit</b>                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first editable cell
+above the actually focused cell. If there is no focused cell, focuses the first
+left bottom cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next editable
+cell below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoRightEdit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>GoRightEdit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                Not attached
+to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first editable cell
+right to the actually focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no next editable
+cell or no row is focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGoLeftEdit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>GoLeftEdit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                    Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Focuses the first editable cell
+left to the actually focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no
+previous editable cell or no row is focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

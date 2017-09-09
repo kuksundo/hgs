@@ -1,0 +1,77 @@
+<Grid>
+   <Cfg id="FilterTree" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1" MainCol="A" FullId="1"/>
+   <Cfg StandardFilter="2"/>
+   <Cols>
+      <C Name="id" Width="80"/>
+      <C Name="A" Type="Text" CaseSensitive="0" Width="540"/>
+   </Cols>
+   <Def>
+      <D Name="R" DefParent="Node"/>
+      <D Name="Node" DefEmpty="R" Color="#EFE"/>
+   </Def>
+   <Head>
+      <Filter ARange="1" AButton="Defaults" ADefaults="|*FilterOff|*RowsAll" A="one;two;seven;ten" AFilter="1" ACanEdit="0"/>
+   </Head>
+   <Solid>
+      <Tabber Cells="SHOW,CHILD,HIDE,LEAF,EMPTY,NODE"
+         SHOWButtonText="Show all found"     SHOWOnCheck="Grid.StandardFilter = 2; Grid.Def.R.CanFilter = 1; Grid.Def.Node.CanFilter = 1; Grid.DoFilter();" SHOW="1" SHOWTip="Shows all rows that satisfy the filter condition&lt;br>Shows all parents that contain some visible children"
+         CHILDButtonText="Show all found with children"  CHILDOnCheck="Grid.StandardFilter = 3; Grid.Def.R.CanFilter = 1; Grid.Def.Node.CanFilter = 1; Grid.DoFilter();" CHILDTip="Shows all rows that satisfy the filter condition&lt;br>Shows all children of parents that satisfy the filter condition"
+         HIDEButtonText="Hide all not found" HIDEOnCheck="Grid.StandardFilter = 0; Grid.Def.R.CanFilter = 1; Grid.Def.Node.CanFilter = 1; Grid.DoFilter();" HIDETip="Hide all rows that don't satisfy the filter condition&lt;br>Hides all, even succeeded, children if their parent does not satisfy the filter condition"
+         LEAFButtonText="Filter leaf"         LEAFOnCheck="Grid.StandardFilter = 2; Grid.Def.R.CanFilter = 1; Grid.Def.Node.CanFilter = 0; Grid.DoFilter();" LEAFTip="Hides only leaf nodes (without children) that don't satisfy the filter condition&lt;br>All parents are always shown, even without visible children"
+         EMPTYButtonText="Filter leaf empty" EMPTYOnCheck="Grid.StandardFilter = 2; Grid.Def.R.CanFilter = 1; Grid.Def.Node.CanFilter = 2; Grid.DoFilter();" EMPTYTip="Hides only leaf nodes (without children) that don't satisfy the filter condition&lt;br>Hides also parents with all children hidden"
+         NODEButtonText="Filter parents"      NODEOnCheck="Grid.StandardFilter = 0; Grid.Def.R.CanFilter = 0; Grid.Def.Node.CanFilter = 1; Grid.DoFilter();" NODETip="Hides only parents that don't satisfy the filter condition&lt;br>All leaf nodes of visible parents are always visible"
+         />
+   </Solid>
+   <Header id="id"/>
+   <Toolbar Styles="2" Sort="0" Debug="0" Help="0" Formula="'Found &lt;b>'+Grid.FilterCount+'&lt;/b> results'" FormulaLeft="5"/>
+   <Body>
+      <B>
+         <I Def="Node" id="1" A="one">
+            <I Def="Node" id="1" A="one">
+               <I id="1" A="one"/>
+               <I id="2" A="two"/>
+               <I id="3" A="three"/>
+            </I>
+            <I Def="Node" id="2" A="two">
+               <I id="1" A="one"/>
+               <I id="2" A="two"/>
+               <I id="3" A="three"/>
+            </I>
+            <I Def="Node" id="3" A="three">
+               <I id="1" A="one"/>
+               <I id="2" A="two"/>
+               <I id="3" A="three"/>
+            </I>
+         </I>
+         <I Def="Node" id="2" A="two">
+            <I Def="Node" id="1" A="four">
+               <I id="1" A="seven"/>
+               <I id="2" A="eight"/>
+            </I>
+            <I id="2" A="four"/>
+            <I Def="Node" id="3" A="five">
+               <I id="1" A="six"/>
+               <I id="2" A="eight"/>
+            </I>
+         </I>
+         <I Def="Node" id="3" A="three">
+            <I Def="Node" id="1" A="three">
+               <I Def="Node" id="1" A="six">
+                  <I id="1" A="ten"/>
+               </I>
+            </I>
+            <I id="2" A="four"/>
+            <I Def="Node" id="3" A="five">
+               <I id="1" A="five"/>
+               <I id="2" A="six"/>
+               <I Def="Node" id="3" A="seven">
+                  <I Def="Node" id="1" A="six">
+                     <I id="1" A="nine"/>
+                  </I>
+                  <I id="2" A="eight"/>
+               </I>
+            </I>
+         </I>
+      </B>
+   </Body>
+</Grid>

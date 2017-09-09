@@ -1,0 +1,414 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="A discussion of open array parameters and the special form, array of const, in Delphi, by Rudy Velthuis">
+<title>Open array parameters and array of const</title>
+<link rel="stylesheet" type="text/css" href="printable.css">
+</head>
+
+<body class="georgia">
+
+<!-- contents -->
+
+<h1><a name="top"></a>Open array parameters and array of const</h1>
+
+<p>This article describes the syntax and use of open array 
+parameters, and the use of the &quot;array of const&quot; parameter 
+type.</p>
+
+<h2>Open array parameters</h2>
+
+<p>Open array parameters are special parameters which allow you to write 
+procedures or functions that can act on any array of the same base 
+type, regardless its size. To declare an open array parameter, you use a
+syntax like this:
+
+<pre class="sourcecode">
+  <b>procedure</b> ListAllIntegers(AnArray: <b>array of</b> Integer);
+  <b>var</b>
+    I: Integer;
+  <b>begin</b>
+    <b>for</b> I := Low(AnArray) <b>to</b> High(AnArray) <b>do</b>
+      WriteLn(<span class="string">'Integer at '</span>, I, <span
+class="string">' is '</span>, AnArray[I]);
+  <b>end</b>;</pre>
+
+<p>You can call this procedure with any one-dimensional array of Integers, 
+so you can call it with an <em>array[0..1] of Integer</em> as well as with 
+an <em>array[42..937] of Integer</em>.</p>
+    
+<p>The code also demonstrates how you can determine the size of the array. 
+Delphi knows the pseudo-functions <em>Low</em> and <em>High</em>. They are 
+not real functions, they are just syntactic items in Delphi that take the 
+form of a function, but actually rely on the compiler to substitute them for 
+code. <em>Low</em> gives the lower bound of an array, and <em>High</em> the 
+upper bound. You can also use <em>Length</em>, which returns the number of elements of the array.</p>
+    
+<p>But if you call the code with an array that is not zero-based, like for 
+instance in the following (nonsense) example,</p>
+   
+<pre class="sourcecode">
+  <b>var</b>
+    NonZero: <b>array</b>[7..9] <b>of</b> Integer;
+  <b>begin</b>
+    NonZero[7] := 17;
+    NonZero[8] := 325;
+    NonZero[9] := 11;
+    ListAllIntegers(NonZero);
+  <b>end</b>.</pre>
+
+<p>you will see that the output is like this:</p>
+    
+<pre class="sourcecode">
+  Integer at 0 is 17
+  Integer at 1 is 325
+  Integer at 2 is 11</pre>
+
+<p>That is because inside the procedure or function, the array is always
+seen as a zero based array. So for an open array parameter, <em>Low</em> is
+always 0, and <em>High</em> is adjusted accordingly (note that this is not 
+necessarily true for other uses of <em>High</em> and <em>Low</em>, i.e. not
+on open array parameters). For open arrays, <em>Length</em> is always <em>High&nbsp;+&nbsp;1</em>.</p>
+
+<h3>Slice</h3>
+
+<p>If you don't want to use an entire array, but only a part of it, you can do that using the <em>Slice</em> pseudo-function. It is only allowed where open an array parameter is declared. It is used in this fashion:</p>
+
+<pre class="sourcecode"> 
+  <b>const</b>
+    Months: <b>array</b>[1..12] <b>of</b> Integer = (31, 28, 31, 30, 31, 30, 
+                                       31, 31, 30, 31, 30, 31);
+  <b>begin</b>
+    ListAllIntegers(Slice(Months, 6));
+  <b>end</b>;</pre>
+  
+<p>That will only display the first 6 values of the array, not all 12.</p>
+    
+<h3>Internals</h3>
+    
+<p>But how does that work; how can the function know the size of the array? 
+It is quite simple. An open array parameter is actually a <em>combination of 
+two parameters</em>, a pointer, which contains the address of the start of 
+the array, and an integer, which contains the High value, adjusted for a 
+zero base. So <em>in fact</em> the real parameter list of the procedure is 
+something like this:
+    
+<pre class="sourcecode">
+  <b>procedure</b> ListAllIntegers(AnArray: Pointer; High: Integer);</pre>
+
+<p>Each time you pass an array to an open array parameter, the compiler, 
+which knows the size of the array, will pass its address and its adjusted 
+<em>High</em> value to the procedure or function. For arrays of a static 
+size, like <em>array[7..9] of Integer</em>, it uses the declared size to 
+pass the <em>High</em> value; for dynamic arrays, it compiles code to get 
+the <em>High</em> value of the array at runtime.</p>
+
+<h3>Open array constructors</h3>
+
+<p>Sometimes you don't want to declare and fill an array just so you can use 
+it with an open array parameter. Luckily, Delphi allows you to declare open 
+arrays on the spot, using the so called <em>open array constructor</em> 
+syntax, which uses [ and ] to define the array. The above example with the 
+NonZero array could also have been written like this:</p>
+
+<pre class="sourcecode">
+  ListAllIntegers([17, 325, 11]);</pre>
+
+<p>Here, the array is defined on the spot as <em>[17, 325, 11]</em>. The 
+compiler ensures that the array exists during the call of the procedure, and 
+it passes the correct <em>High</em> value. This is totally transparent to 
+the code inside the procedure. After the call, the array is discarded.</p>
+
+<h3>Confusion</h3>
+
+<p>Although the syntax is unfortunately very similar, an <em>open array 
+parameter</em> should not be confused with a Delphi <em>dynamic array</em>. 
+A dynamic array is an array that is maintained by Delphi, and of which you 
+can change the size using <em>SetLength</em>. It is declared like:</p>
+
+<pre class="sourcecode">
+  <b>type</b>
+    TIntegerArray = <b>array of</b> Integer;</pre>
+
+<p>Unfortunately, this looks a lot like the syntax used for open array 
+parameters. <em>But they are not the same</em>. An open array parameter will 
+accept dynamic arrays like <em>array of Month</em>, but also static arrays 
+like <em>array[0..11] of Month</em>. So in a function with an open array 
+parameter, you can't call <em>SetLength</em> on the parameter. If you really 
+only want to pass dynamic arrays, you'll have to declare them separately, 
+and use the type name as parameter type.</p>
+    
+<pre class="sourcecode">
+  <b>type</b>
+    TMonthArray = <b>array of</b> Month;
+
+  <b>procedure</b> AllKinds(Arr: <b>array of</b> Month);
+  <b>procedure</b> OnlyDyn(Arr: TMonthArray);</pre>
+  
+<p>Procedure AllKinds will accept static arrays as well as dynamic arrays, 
+so <em>SetLength</em> can't be used, since static arrays can't be 
+reallocated. Procedure OnlyDyn will only accept dynamic arrays, so you can 
+use <em>SetLength</em> here (this will however use a copy, and not change 
+the original array; if you want to change the length of the original array, 
+use <em>var Arr: TMonthArray</em> in the declaration).</p>
+
+<p><b>Note:</b> You should not forget that in Delphi, parameters can ony be declared with type <em>specifications</em>, and not with type <em>declarations</em>. So the following formal parameters, which would be type declarations, are not possible:</p>
+
+<pre class="sourcecode">
+  <b>procedure</b> Sum(<b>const</b> Items: <b>array</b>[1..7] <b>of</b> Integer);
+  <b>function</b> MoveTo(Spot: <b>record</b> X, Y: Integer; <b>end</b>);</pre>
+  
+<p>You'll have to declare a type first, and use the specifications as parameter type:</p>
+
+<pre class="sourcecode">
+  <b>type</b>
+    TWeek = <b>array</b>[1..7] <b>of</b> Integer;
+    TSpot = <b>record</b>
+      X, Y: Integer;
+    <b>end</b>; 
+    
+  <b>procedure</b> Sum(<b>const</b> Items: TWeek);
+  <b>function</b> MoveTo(Spot: TSpot);</pre>
+
+<p>That is why <em>array of Something</em> in a parameter list can't be a type declaration either. It is always an open array declaration.</p>
+
+<h2>Array of const</h2>
+
+<p>Array of const is a special case of open arrays. Instead of passing only 
+one type, you can pass a variety of types. Have a look at the declaration of 
+the <em>Format</em> function in Delphi:</p>
+
+<pre class="sourcecode">
+  <b>function</b> Format(<b>const</b> Format: <b>string</b>; <b>const</b> Args: <b>array of const</b>): <b>string</b>;</pre>
+
+<p><em>(Actually, there is a second, overloaded function in some versions of Delphi, but I'll simply ignore that here.)</em></p>
+    
+<p>The first parameter is a string which indicates how you want your values 
+formatted, and the second is an <em>array of const</em>, so you can pass a 
+range of values using a similar syntax as the one for <em>open array 
+constructors</em>. So you can call it like:
+    
+<pre class="sourcecode">
+  <b>var</b>
+    Res: <b>string</b>;
+    Int: Integer;
+    Dub: Double;
+    Str: <b>string</b>;
+  <b>begin</b>
+    Int := Random(1000);
+    Dub := Random * 1000;
+    Str := <span class="string">'Teletubbies'</span>;
+    Res := Format(<span class="string">'%4d %8.3f %s'</span>, [Int, Dub, Str]);
+  <b>end</b>;</pre>
+
+ <h3>Internals</h3>
+
+<p>Internally, an <em>array of const</em> is an open array of 
+<em>TVarRec</em>. The declaration of <em>TVarRec</em> is given in the online 
+help for Delphi. It is a variant record, that contains a field called 
+<em>VType</em>, and an overlay of different types, some of which are only 
+pointers. The compiler creates a <em>TVarRec</em> for each member in the 
+open array constructor, fills the VType field with the type of the member, 
+and places the value, or a pointer to it, in one of the other fields. Then 
+it passes the <em>array of TVarRec</em> to the function.</p>
+
+<p>Since each <em>TVarRec</em> contains type information, <em>Format</em>
+can use this to check if it matches with the type given in the format 
+string. That is why you get an error when passing the wrong type. 
+You can tell the compiler that you want it to store a different type 
+identifier, by casting to the desired type. If the type doesn't match 
+exactly, the compiler will <em>try</em> to convert it to a matching 
+type, so if you pass a <em>Double</em>, it will convert it to an 
+<em>Extended</em> and pass that instead. Of course there are limitations on 
+what the compiler can do.</p>
+
+<p>Inside the function or procedure, you can treat the members as 
+<em>TVarRec</em> immediately. The help for Delphi gives an example how to 
+do this.</p>
+
+<h3>Lifetime issues</h3>
+
+<p>What you should notice is, that values in the <em>TVarRec</em> which are 
+passed as pointers only exist during the course of the function or 
+procedure. As soon as the routine ends, these values don't exist anymore. So 
+you should not be tempted to return these pointers from the procedure or 
+function, or to store the <em>TVarRec</em>s in an array outside the routine, 
+unless you can make sure that you manage the values yourself.</p>
+
+<p>If you must copy the <em>TVarRec</em>s to an array or variable 
+outside the function (this can also be a <em>var</em> parameter), be sure to 
+make a copy (i.e. on the heap) of the value, and replace the pointer in the 
+<em>TVarRec</em> with one to the copy. You should also take care that the 
+copy is disposed of when it is not needed anymore. An example follows:</p>
+
+<pre class="sourcecode">
+  <b>type</b>
+    TConstArray = <b>array of</b> TVarRec;
+                                  
+  <span class="comment">// Copies a TVarRec and its contents. If the content is referenced
+  // the value will be copied to a new location and the reference
+  // updated.</span>
+  <b>function</b> CopyVarRec(<b>const</b> Item: TVarRec): TVarRec;
+  <b>var</b>
+    W: WideString;
+  <b>begin</b>
+    <span class="comment">// Copy entire TVarRec first.</span>
+    Result := Item;
+        
+    <span class="comment">// Now handle special cases.</span>
+    <b>case</b> Item.VType <b>of</b>
+      vtExtended:
+        <b>begin</b>
+          New(Result.VExtended);
+          Result.VExtended^ := Item.VExtended^;
+        <b>end</b>;
+      vtString:
+        <b>begin</b>
+          New(Result.VString);
+          Result.VString^ := Item.VString^;
+        <b>end;</b>
+      vtPChar:
+        Result.VPChar := StrNew(Item.VPChar);
+      <span class="comment">// There is no StrNew for PWideChar.</span>
+      vtPWideChar:
+        <b>begin</b>
+          W := Item.VPWideChar;
+          GetMem(Result.VPWideChar, 
+                 (Length(W) + 1) * SizeOf(WideChar));
+          Move(PWideChar(W)^, Result.VPWideChar^, 
+               (Length(W) + 1) * SizeOf(WideChar));
+        <b>end</b>;
+      <span class="comment">// A little trickier: casting to string will ensure
+      // reference counting is done properly.</span>
+      vtAnsiString:
+        <b>begin</b>
+          <span class="comment">// Nil out first, so no attempt to decrement
+          // reference count.</span>
+          Result.VAnsiString := nil;
+          <b>string</b>(Result.VAnsiString) := <b>string</b>(Item.VAnsiString);
+        <b>end</b>;  
+      vtCurrency:
+        <b>begin</b>
+          New(Result.VCurrency);
+          Result.VCurrency^ := Item.VCurrency^;
+        <b>end</b>;
+      vtVariant:
+        <b>begin</b>
+          New(Result.VVariant);
+          Result.VVariant^ := Item.VVariant^;
+        <b>end</b>;
+      <span class="comment">// Casting ensures proper reference counting.</span>
+      vtInterface:
+        <b>begin</b>
+          Result.VInterface := <b>nil</b>;
+          IInterface(Result.VInterface) := IInterface(Item.VInterface);
+        <b>end</b>;
+      <span class="comment">// Casting ensures a proper copy is created.</span>
+      vtWideString:
+        <b>begin</b>
+          Result.VWideString := <b>nil</b>;
+          WideString(Result.VWideString) := WideString(Item.VWideString);
+        <b>end</b>;
+      vtInt64:
+        <b>begin</b>
+          New(Result.VInt64);
+          Result.VInt64^ := Item.VInt64^;
+        <b>end</b>;
+      <span class="comment">// VPointer and VObject don't have proper copy semantics so it
+      // is impossible to write generic code that copies the contents.</span>
+    <b>end</b>;
+  <b>end</b>;
+
+  <span class="comment">// Creates a TConstArray out of the values given. Uses CopyVarRec
+  // to make copies of the original elements.</span>
+  <b>function</b> CreateConstArray(<b>const</b> Elements: <b>array of const</b>): TConstArray;
+  <b>var</b>
+    I: Integer;
+  <b>begin</b>
+    SetLength(Result, Length(Elements));
+    <b>for</b> I := Low(Elements) <b>to</b> High(Elements) <b>do</b>
+      Result[I] := CopyVarRec(Elements[I]);
+  <b>end</b>;
+       
+  <span class="comment">// TVarRecs created by CopyVarRec must be finalized with this function.
+  // You should not use it on other TVarRecs.</span>
+  <b>procedure</b> FinalizeVarRec(<b>var</b> Item: TVarRec);
+  <b>begin
+    case</b> Item.VType <b>of</b>
+      vtExtended: Dispose(Item.VExtended);
+      vtString: Dispose(Item.VString);
+      vtPChar: StrDispose(Item.VPChar);
+      vtPWideChar: FreeMem(Item.VPWideChar);
+      vtAnsiString: <b>string</b>(Item.VAnsiString) := <span
+      class="string">''</span>;
+      vtCurrency: Dispose(Item.VCurrency);
+      vtVariant: Dispose(Item.VVariant);
+      vtInterface: IInterface(Item.VInterface) := <b>nil</b>;
+      vtWideString: WideString(Item.VWideString) := <span 
+      class="string">''</span>;
+      vtInt64: Dispose(Item.VInt64);
+    <b>end</b>;
+    Item.VInteger := 0;
+  <b>end</b>;  
+
+  <span class="comment">// A TConstArray contains TVarRecs that must be finalized. This function
+  // does that for all items in the array.</span>  
+  <b>procedure</b> FinalizeVarRecArray(<b>var</b> Arr: TConstArray);
+  <b>var</b>
+    I: Integer;
+  <b>begin
+    for</b> I := Low(Arr) <b>to</b> High(Arr) <b>do</b>
+      FinalizeVarRec(Arr[I]);
+    Finalize(Arr);
+    Arr := <b>nil</b>;
+  <b>end</b>;</pre>
+  
+<p>The functions above can help you manage <em>TVarRec</em>s outside the routine for which they were constructed. You can even use a <em>TConstArray</em> where an open array is declared. The following little program</p>
+
+<pre class="sourcecode">
+  <b>program</b> VarRecTest;
+
+  <span class="comment">{$APPTYPE CONSOLE}</span>
+
+  <b>uses</b>
+    SysUtils,
+    VarRecUtils in <span class="string">'VarRecUtils.pas'</span>;
+
+  <b>var</b>
+    ConstArray: TConstArray;
+
+  <b>begin</b>
+    ConstArray := CreateConstArray([1, <span class="string">'Hello'</span>, 7.9, IntToStr(1234)]);
+    <b>try</b>
+      WriteLn(Format(<span class="string">'%d --- %s --- %0.2f --- %s'</span>, ConstArray));
+      Writeln(Format(<span class="string">'%s --- %0.2f'</span>, Copy(ConstArray, 1, 2)));
+    <b>finally</b>
+      FinalizeConstArray(ConstArray);
+    <b>end</b>;  
+    ReadLn;
+  <b>end</b>.</pre>
+  
+<p>will produce the expected, but not very exciting, output</p>
+
+<pre class="sourcecode">1 --- Hello --- 7.90 --- 1234
+Hello --- 7.90</pre>
+
+<p>The little program above also demonstrates how you can use <em>Copy</em> to use only a part of the entire <em>TConstArray</em>. <em>Copy</em> will create a copy of the dynamic array, but not copy the contents, so you should not try to use <em>Copy</em> and then later on use <em>FinalizeConstArray</em> on that copy. In the program above, the copy will be removed automatically, since the lifetime of the copy is managed by the compiler.</p> 
+
+<p>The unit <a 
+href="http://rvelthuis.bei.t-online.de/downloads.htm#openarrzip">VarRecUtils</a> with the displayed functions can be downloaded from my <a href="http://rvelthuis.bei.t-online.de/downloads.htm">Download</a> page.</p>
+  
+<h2>Finally</h2>
+
+<p>Open arrays and arrays of const are powerful features of the language, but they come with a few caveats. I hope I succeeded in showing some of these, and how you can overcome them.</p>  
+
+<!-- /contents -->
+
+<p><em>Rudy Velthuis</em></p>
+                   
+<p class="backtotop"><a href="#top">Back to top</a></p>
+
+<p><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01"></p>
+</body>
+</html>

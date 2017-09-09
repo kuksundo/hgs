@@ -1,0 +1,43 @@
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <!-- BodyStart --> 
+      
+      <h2>Positions, static and dynamic spanning, types and formats</h2>
+      Demonstration of various layout positions, column and row spanning, cell types and formats.<br />
+      On top there is one row for both <b>grouping</b> and <b>searching</b>. Individual <b>filter</b> row is at bottom. <b>Toolbar</b> is moved between head and body.<br />
+      There are <b>three headers</b>, two on top, one at bottom. Some header show <b>spanned captions</b>. It is still possible to <b>move</b> and <b>resize columns</b>, <b>sort</b> by columns.<br />
+      The rows <b>4</b> and <b>18</b> show (vertical) <b>row spanning</b>, also with combination of <b>column spanning</b>.
+      The rows <b>8</b> and <b>12</b> show <b>html in whole section</b> instead of cells, the row <b>Liberec</b> shows <b>merging spanned</b> cell.<br />
+      There various setting of <b>cell types and formats</b>, for whole column or for individual cell. Also show <b>right button</b> in cell.<br />
+      <br />
+      You can <b>dynamically span and split selected cells</b>.<br /> 
+      Select cells by mouse left button and click to Span icon on toolbar to span the cells or to Split button to split spanned cells, if any. <br />
+      Select the cells by right mouse button to span them automatically. Click to spanned cell by middle mouse button to split cells.<br />
+      <br />
+      <div align="center">
+         <div id="Table" style="width:100%;height:490px;">
+            <script>TreeGrid('<bdo Sync="1" Layout_Url="TableDef.xml" Data_Url="TableData.xml"></bdo>',"Table")</script>
+         </div>
+      </div>
+      <script>
+
+// Shows user dialog on button click
+Grids.OnButtonClick = function(G,row,col){
+G.ShowDialog(row,col,{
+   Body:"<DIV style='background:#ffffaa;padding:10px;white-space:nowrap'> User dialog on<br>row '"+row.B+"'<br>column '"+G.GetCaption(col)+"</div>",
+   Popup:1,CloseClick:1
+   });
+return true;
+}
+      </script>
+
+      <!-- BodyEnd -->
+      <script>
+      if(location.hostname.search(/coqsoft\.|treegrid\./i)>=0) setTimeout('location.replace("../../../www/#..*Examples*Html*BasicAjax*Table.html"+location.hash.replace("#","\'"));',500);
+      </script>
+   </body>
+</html>

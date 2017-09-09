@@ -1,0 +1,138 @@
+<html>
+<head>
+      <link href="../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+   <body>
+   <style> <!--	
+   a.H {color:red; font-weight:bold; }
+   a.G {color:green; font-weight:bold; }
+   a.H:hover {color:blue;}
+   a:hover {color:green;}
+   a:active {color:gray;}
+	--></style>
+
+<script>
+function Local(){
+if(!location.host){ 
+   alert("You cannot run server examples locally from your filesystem.\nYou can run server examples only from local or remote web server with IIS and ASP 3.0\nFor example from 'http://localhost/treegrid/Examples/'"); 
+	return false;
+   }
+}
+</script>
+<br /><br />	
+<DIV align="center"><b><FONT size="7">ASP 3.0 examples</FONT></b></DIV>
+<br>
+<div style='background:#F5FFF5; border:1px solid #88F;padding:3px;margin:3px;color:red;'>Do <b>not</b> run this file locally </div>
+Run it from your (local) web server where is installed IIS and ASP 3.0.<br>
+<br>
+<div style='background:#F5FFF5; border:1px solid #88F;padding:3px;margin:3px;color:red;'>The ASP service program must have <b>write</b> access to <b>Examples/Asp/Database.mdb</b> file </div>
+To permit write access on Windows XP right click to file <B>Database.mdb</B> in My Computer, 
+select Properties -&gt; Security -&gt; Users and set <I><B>Full control </B></I>to <I><B>Allow</B></I>. 
+If you don't have <I><B>Security</B></I> item in <I><B>Properties</B></I>, 
+run My Computer, in menu select Tools - &gt; Folder options -&gt; View and uncheck <I><B>Use simple file sharing</B></I> option.<br>
+In <b><i>Windows Vista</i></b> for access MDB files you have to permit write access to folder <b>C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Temp</b> for user <b>IUSR</b>. 
+Remember, some folders in path are hidden. <i>This is common Windows Vista problem with running old ASP scripts</i>.
+<br>    
+<hr>
+<DIV align="center"><B><FONT size="6">Visual Basic</FONT></B></DIV>
+<hr>
+<br>
+<B><FONT size="5">Ajax</FONT></B><br>
+<br>
+Asynchronous background (new style) communication with server.<br>
+Data are downloaded from or uploaded to server by JavaScript XmlHttpRequest object on background, without reloading/submitting the page content.<br>
+You can check from configuration menu option <b>Auto update changes to server</b> for immediate updates after edit/modify.<br>
+When debugging, you can set &lt;treegrid ... <b>Debug</b>='<b>3</b>' ... > to see communication with server. It opens two new browser's windows. You can see XML data or ASP error server returned.<br>
+Remember, in Ajax communication, the asp page must return only xml data, not any standard html tags like &lt;html> or &lt;!doctype>.<br>
+See documentation <a href="../../Doc/DataCommunication.htm#AJAX">AJAX communication</a>.<br>
+<br>
+<a class=H href="AjaxTable.html" onclick='return Local();'>Ajax table</a><br>
+<i>Main file <A href="AjaxTable.html" onclick='return Local();'><b>AjaxTable.html</b></A>, support code <A href="AjaxTable.asp">AjaxTable.asp</A><br>
+Layout file in <A href="TableDef.xml">TableDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP and AJAX. It generates data from database table 1:1 including <b>id</b>. Also updates changes to database according/with <b>id</b>.<br>
+<br>
+
+<a class=H href="AjaxTableFramework.html" onclick='return Local();'>Ajax table with framework</a><br>
+<i>Main file <A href="AjaxTableFramework.html" onclick='return Local();'><b>AjaxTableFramework.html</b></A>, support code <A href="AjaxTableFramework.asp">AjaxTableFramework.asp</A>, framework code <A href="TreeGridFramework.asp">TreeGridFramework.asp</A><br>
+Layout file in <A href="TableDef.xml">TableDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous <b><i>Ajax table</i></b> but with using functions from <b>TreeGrid ASP Framework</b>. Also shows using user parameters.<br>
+<br>
+
+<a class=H href="AjaxTablePaging.html" onclick='return Local();'>Ajax table with server side paging and export</a><br>
+<i>Main file <A href="AjaxTablePaging.html" onclick='return Local();'><b>AjaxTablePaging.html</b></A>, support codes <A href="AjaxTablePaging.asp">AjaxTablePaging.asp</A> , <A href="AjaxTablePagingPage.asp">AjaxTablePagingPage.asp</A> , <A href="AjaxTablePagingExport.asp">AjaxTablePagingExport.asp</A><br>
+Layout file in <A href="TableDef.xml">TableDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous <b><i>Ajax table</i></b> but with using server paging and export routine.<br>
+The pages are downloaded on demand from server (when the page is visible by scrollbars).<br>
+It is simple example with ineffective database access - it loads all table for every page and throws the rest away.<br>
+It also simply reloads all body when rows are added or deleted instead of handling changes in pages.<br>
+<br>
+
+
+<a class=H href="AjaxTreeFramework.html" onclick='return Local();'>Ajax tree with framework</a><br>
+<i>Main file <A href="AjaxTreeFramework.html" onclick='return Local();'><b>AjaxTreeFramework.html</b></A>, support code <A href="AjaxTreeFramework.asp">AjaxTreeFramework.asp</A>, framework code <A href="TreeGridFramework.asp">TreeGridFramework.asp</A><br>
+Layout file in <A href="TreeDef.xml">TreeDef.xml</A>, data in database table "<b>TreeData</b>".<br></i>
+Generates treetable from database table with column <b>Parent</b> where are relations Parents/Children. <b>Parent</b> column contains parent's <b>id</b> of the child. For root rows it contains "#Body", for fixed rows "#Head" or "#Foot".<br>
+Uploaded rows are still identified by preset and standardly generated <b>id</b> attributes.<br>
+Uses functions from <b>TreeGrid ASP Framework</b>.<br>
+<br>
+
+<a class=H href="AjaxAPI.html" onclick='return Local();'>Ajax Extended API with reloading</a><br>
+<i>Main file <A href="AjaxAPI.html" onclick='return Local();'><b>AjaxAPI.html</b></A>, support codes <A href="AjaxTableFramework.asp">AjaxTableFramework.asp</A> and <A href="AjaxTreeFramework.asp">AjaxTreeFramework.asp</A> , framework code <A href="TreeGridFramework.asp">TreeGridFramework.asp</A><br>
+Layout files in <A href="TableDef.xml">TableDef.xml</A> and <A href="TreeDef.xml">TreeDef.xml</A>, data in database tables "<b>TableData</b>" and "<b>TreeData</b>".<br></i>
+It shows two tables from previous examples and demonstrates Extended API functions for <b>reloading</b>, changing data source when reloading, catching data event and so on.<br>
+<br>
+
+<a class=H href="AjaxGrid.html" onclick='return Local();'>Ajax grid</a><br>
+<i>Main file <A href="AjaxGrid.html" onclick='return Local();'><b>AjaxGrid.html</b></A>, support codes <A href="AjaxGridData.asp">AjaxGridData.asp</A> , <A href="AjaxGridLayout.asp">AjaxGridLayout.asp</A> , <A href="AjaxGridUpload.asp">AjaxGridUpload.asp</A><br>
+Data in database table "<b>TableData</b>".<br></i>
+Demonstrates <b>advanced generating</b> from and updating to database.<br>
+Generates treetable from standard database table. Also flips the table and shows data in changed layout.<br>
+For every action is used another support code (Layout, Data, Upload). The layout is also generated.<br>
+Rows are identified by one unique editable column, with using full ids (including parents ids).<br>
+For demonstration it shows id column, to see what ids are generated by TreeGrid.<br>
+<br>
+
+<a class=H href="Schools.html" onclick='return Local();'>Complete application - Schools</a><br>
+<i>Main file <A href="Schools.html" onclick='return Local();'><b>Schools.html</b></A><br>
+Support codes <A href="Schools.asp">Schools.asp</A> (main file generates data and also saves changes to database or adds new user), <br>
+<A href="SchoolsRatings.asp">SchoolsRatings.asp</A> (loads reviews for given record, used for server child paging), <br>
+<A href="SchoolsReview.asp">SchoolsReview.asp</A> (saves one review to database, called as custom AJAX call). <br>
+Layout file in <A href="SchoolsDef.xml">SchoolsDef.xml</A>, data in database tables "<b>Schools_Schools</b>", "<b>Schools_Ratings</b>" and "<b>Schools_Users</b>".<br>
+Uses also file SchoolsStars.gif (<img src='SchoolsStars.gif'>)<br></i>
+Complete application to demonstrate generating from and updating to <b>different database tables</b> with various structure. Demonstrates also <b>server child paging</b> feature (loading children on demand). 
+And also <b>custom AJAX call</b>.<br>
+The application show list of schools that can be sorted and filtered. The records can be added/deleted or modified by logged user or admin. 
+The records can be rated and reviewed by visitors.<br>
+<br>
+
+<hr>
+<br>
+
+<B><FONT size="5">Submit</FONT></B><br>
+<br>
+Synchronous (old style) communication with server.<br>
+Data are included in page in hidden input. Changes are sent to server in the hidden input of submitted &lt;form> on page.<br>
+See documentation <a href="../../Doc/DataCommunication.htm#Submit">Submit communication</a>.<br>
+<br>
+<a class=H href="SubmitTable.asp" onclick='return Local();'>Submit table</a><br>
+<i>Main file <A href="SubmitTable.asp" onclick='return Local();'><b>SubmitTable.asp</b></A><br>
+Layout file in <A href="TableDef.xml">TableDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP and standard page submit. It generates data from database table 1:1 including <b>id</b>. Also updates changes to database according/with <b>id</b>. <br>
+The code is nearly the same as in <b><i>Ajax table</i></b>.<br>
+<br>
+<a class=H href="SubmitTableFramework.asp" onclick='return Local();'>Submit table with framework</a><br>
+<i>Main file <A href="SubmitTableFramework.asp" onclick='return Local();'><b>SubmitTableFramework.asp</b></A>, framework code <A href="TreeGridFramework.asp">TreeGridFramework.asp</A><br>
+Layout file in <A href="TableDef.xml">TableDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous <b><i>Submit table</i></b> but with using functions from <b>TreeGrid ASP Framework</b>.<br>
+<br>
+<a class=H href="SubmitTreeFramework.asp" onclick='return Local();'>Submit tree with framework</a><br>
+<i>Main file <A href="SubmitTreeFramework.asp" onclick='return Local();'><b>SubmitTreeFramework.asp</b></A>, framework code <A href="TreeGridFramework.asp">TreeGridFramework.asp</A><br>
+Layout file in <A href="TreeDef.xml">TreeDef.xml</A>, data in database table "<b>TreeData</b>".<br></i>
+Generates treetable from database table with column <b>Parent</b> where are relations Parents/Children. <b>Parent</b> column contains parent's <b>id</b> of the child. For root rows it contains "#Body", for fixed rows "#Head" or "#Foot".<br>
+Uploaded rows are still identified by preset and standardly generated <b>id</b> attributes.<br>
+Uses functions from <b>TreeGrid ASP Framework</b>.<br>
+The code is nearly the same as in <b><i>Ajax tree</i></b>.<br>
+<br>
+
+   </body>
+</html>

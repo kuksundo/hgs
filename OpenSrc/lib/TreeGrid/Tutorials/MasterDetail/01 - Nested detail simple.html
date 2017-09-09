@@ -1,0 +1,54 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      .Bold { font-size:12px; font-weight:bold; }
+      
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Master / Detail</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Simple nested master detail</center>
+   <center style='font:bold italic;'>Simple master detail relation with detail tables shown as children of master rows</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Master.xml'>01 - <h2>Master</h2>.xml</a></div>
+   <div style='width:600px; height:350px;'>
+      <bdo Debug='check' DebugCheckIgnore='ADDRESS,NOTE' Data_Url='01 - Master.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Data rows in master detail relation are always defined only in master grid. Changes in both tables are also uploaded only from master grid.<br />
+         <b style='color:black;'>In simple nested relation are detail data defined as <b>children of one child</b> of master rows.</b><br />
+      </li>
+      <li>
+         In master rows define one child row (<b>"detail parent"</b>) that will show the nested grid in one of its cells.<br />
+         In the detail parent row children define the detail rows to be shown in the nested detail grid.<br />
+      </li>
+      <li>
+         In the detail parent row define attribute <h3>DetailCol</h3> to column name where to show the detail grid.<br />
+         It is often good to span more (or even all) cells in this row to have more room for the detail grid. Use row attribute <b>Spanned</b> and cell attribute <b>Span</b>.<br />
+      </li>
+      <li>
+         In the detail parent row define attribute <h3>DetailLayout</h3> to specify XML/JSON layout for the detail grid. It can direct XML/JSON string or URL to download the data from.<br />
+         If you need to set more options for the detail grid data sources, you can use <b>DetailTreeGrid</b> attribute instead.
+      </li>
+      <li>
+         In the detail parent row define attributes <b>Expanded='0' CanExpand='0'</b> to not show the detail children in master grid.
+      </li>
+      <li>
+         Oposite to external detail grids you don't need to define the detail columns in master grid. <br />
+         If you use debug='check' to check errors in your XML, you will receive warnings for unknown attributes for these columns in detail rows. In this case you can ignore these warnings. Or list them in DebugCheckIgnore.
+      </li>
+      <li>
+         You can set attributes <b>Sync</b> and <b>SyncId</b> and optionally <b>CfgId</b> to synchronize all the detail grids.<br />
+         For example if a user changes size of column in one detail grid, all other detail grids will be resized accordingly. Similarly for sorting, filtering, grouping and search settings.
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Master / Detail</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Master detail nested tables</center>
+   <center style='font:bold italic;'>Master detail relation in plain tables shown as children of master rows</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Master.xml'>02 - <h2>Master</h2>.xml</a></div>
+   <div style='width:500px; height:450px;'>
+      <bdo Debug='error' DebugCheckIgnore='ADDRESS,NOTE,ADDRESSCopyTo,NOTECopyTo' Data_Url='02 - Master.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Plain master detail relation is used to show the same data in the expandable children in different layout.<br />
+         <b>Master</b> grid shows the data in rows and <b>detail</b> grid shows the one master row data in different structure, often vertically in column.<br />
+      </li>
+      <li>
+         The data are defined only in master grid, only master grid stores the changes and can upload them back to server.<br />
+         Detail grid defines only layout, the columns and fixed (summary) rows.<br />
+      </li>
+      <li>
+         The master data structure is usually defined in three levels tree: 
+         <ul>
+            <li>
+               1. level <b>Data row</b>. The first level are the data rows displaying the data horizontally. They are the only defined rows, the other two levels are automatically created by grid according to the settings in row defaults.<br />
+               The Data row default row (&lt;D>) should define the one child (Master row) with its Def set. And it should define also CopyTo attribute to copy the cells from Data row to Master row after their change.
+            </li>
+            <li>
+               2. level <b>Master row</b>. The second level row is automatically created one child of the data row, usually fully spanned to show the detail grid in one (spanned) its cell.<br />
+               This row is shown, when the Data row is expanded.<br />
+               The Master row default (&lt;D>) row should define all the detail children, with appropriate cell values and other attributes and also with CopyTo attributes to copy the values from the Detail row cells to the Master row.<br />
+               The Master row default (&lt;D>) row should also define appropriate CopyTo attributes to copy the cell values from Master row to Data row and also to Detail row.
+               It should have set also <b>Expanded='0' CanExpand='0'</b> to never show the detail rows in master grid.<br />
+            </li>
+            <li>
+               3. level <b>Detail row</b>. The third level rows are automatically created children of the master row. defined in the Master row default row.
+            </li>
+         </ul>
+      </li>
+      <li>
+         Oposite to external detail grids you don't need to define the detail columns in master grid. <br />
+         If you use debug='check' to check errors in your XML, you will receive warnings for unknown attributes for these columns in detail rows. In this case you can ignore these warnings. Or list them in DebugCheckIgnore.
+      </li>
+      <li>
+         You can set attributes <b>Sync</b> and <b>SyncId</b> and optionally <b>CfgId</b> to synchronize all the detail grids.<br />
+         For example if a user changes size of column in one detail grid, all other detail grids will be resized accordingly. Similarly for sorting, filtering, grouping and search settings.
+      </li>
+      <li>
+         The &lt;D> cell attributes <h3>CopyTo</h3> will define which master cells will be copied to which detail row(s) and cells.<br />
+         Usual value of the master CopyTo attribute is "Child_X,Y", where X is child row position from 0 and Y is column name.<br />
+         For example NAMECopyTo='Child_2,VALUE' means that master row's NAME cell will be copied to the third child row, to the cell name VALUE.<br />
+      </li>
+      <li>
+         The child row cell attributes <h3>CopyTo</h3> will define which detail cells will be copied to which master cells.<br />
+         Usual value of the child CopyTo attribute is "Parent,Y", where Y is the master cell name.<br />
+         For example VALUECopyTo='Parent,NAME' means that child row's VALUE cell will be copied to the master row's cell NAME.<br />
+      </li>
+      <li>
+         <h4>How it works</h4><br />
+         <ul>
+            <li>
+               On master grid load there will be created hidden children for every row according to the &lt;D> definition.<br />
+               To these children attributes will be copied values from the root rows, according to the &lt;D> <b>CopyTo</b> attributes.<br />
+            </li>
+            <li>
+               When some row in master grid is expanded to show the detail grid in children, all the master row's children are copied from master grid to detail grid and here are shown.<br />
+               In this time are all the child rows at two placed (in master grid and in detail grid) and all changes are synchronized and mirrored to both.<br />
+            </li>
+            <li>
+               When a user changes some value in master grid, in root row, the change is automatically copied to its hidden children and also mirrored to detail grid.<br />
+               It is done by <b>CopyTo</b> attribute in &lt;D> tag, similarly to the grid loading.<br />
+            </li>
+            <li>
+               When a user changes some value in detail grid, the change is mirrored to hidden child in master grid and also copied to the parent row.<br />
+               It is done by <b>CopyTo</b> attribute in &lt;D> child &lt;I> tag.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>API</h4><br />
+         On showing the master row in detail grid is called API event <b>OnShowDetail</b>.<br />
+         After the row is shown is called <b>OnShowDetailFinish</b>.<br />
+         To manually show some master row in detail grid call API method <b>ShowDetail</b>.<br />
+         To refresh or clear detail grid call <b>RefreshDetail</b>.<br />
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row basics</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row basics</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows in TreeGrid contain
+cells, including their values – call values are defined only in rows, not in
+columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can contain <b>variable
+data rows</b>, <b>fixed data rows</b>, <b>fixed special rows</b>, <b>solid
+space rows</b> and <b>solid special rows</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowKind><b><span style='font-size:20.0pt'>Rows by
+functionality</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><a name=DataRows><b><span style='font-size:16.0pt'>Data rows</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard rows structured to
+sections, columns and cells containing values. They can be <b><a href="#Fixed">fixed</a></b>
+or <b><a href="#Variable">variable</a></b>. Are set by <b>&lt;I&gt;</b> tag
+inside &lt;<b>Head</b>&gt;, &lt;<b>Foot</b>&gt; and &lt;<b>B</b>&gt; tags.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default have data rows one
+cell in every column. But the cells can be also spanned horizontally (by Span
+attribute) or vertically (by RowSpan attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And the rows can also contain
+one or all custom sections without cells – the whole column section is spanned
+and custom HTML is displayed, from attribute specific for the section <b>LeftHtml</b>
+/ <b>MidHtml</b> / <b>RightHtml</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data rows can also contain
+specific column definitions for individual cells (like <b>Type</b> or <b>Format</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Row position in tree is done
+by placing &lt;I&gt; tags inside their parent &lt;I&gt; tag. Variable rows
+order in body is by default set by position of the &lt;I&gt; tags inside their
+parent, but is affected by actual sorting.   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SpaceRows><b><span style='font-size:16.0pt'>Space
+rows</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Nonstandard rows not
+structured to columns and sections, but containing independent cells with
+values. They can be only <b><a href="#Solid">solid</a></b>. Are set by <b>&lt;I&gt;</b>
+or <b>&lt;Space&gt;</b> tag inside &lt;<b>Solid</b>&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SpecialRows><b><span style='font-size:16.0pt'>Special
+rows</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows with special
+functionality, they can be <b><a href="#Fixed">fixed</a></b> (<b>&lt;Header&gt;</b>,
+&lt;<b>Filter</b>&gt;) or <b><a href="#Solid">solid</a></b> (&lt;<b>Group</b>&gt;,
+&lt;<b>Search</b>&gt;, &lt;<b>Toolbar</b>&gt;, <b>&lt;Tabber&gt;</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The changes in cell values
+are usually <u>not</u> updated to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The special rows are editable
+even if the grid has restricted editing by &lt;<b>Cfg</b> <b>Editing</b>=’0’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>string</i>    </span><a
+name=Kind></a><a name=IKind><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>Kind</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Kind of the row set in XML by
+the tag name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be <b>Header</b>, <b>Filter</b>,
+<b>Group</b>, <b>Search</b>, <b>Toolbar</b>, <b>Tabber</b> and <b>Space</b> for
+other Space rows or <b>Data</b> for all other non Space rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowFixed><b><span style='font-size:20.0pt'>Rows by
+position</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><a name=VariableRows></a><a name=Variable><b><span
+style='font-size:14.0pt'>Variable (scrollable) rows</span></b></a><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard data rows placed
+inside grid’s &lt;<b>Body</b>&gt; section to &lt;<b>B</b>&gt; pages. If grid
+does not use paging, all the variable rows are in one page, otherwise they are
+in more pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>They can be scrolled
+vertically or horizontally, paged, structured to tree, sorted, filtered, grouped.
+They can also be added, deleted or moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Variable rows can be only <b><a
+href="#DataRows">data rows</a></b>. Variable rows are base rows in TreeGrid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FixedRows><b><span style='font-size:14.0pt'>Fixed
+(frozen) rows</span></b></a><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard rows placed to &lt;<b>Head</b>&gt;
+or &lt;<b>Foot</b>&gt; section above or bellow the &lt;<b>Body</b>&gt; section.
+They are still visible and <u>cannot</u> be scrolled vertically, only
+horizontally.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows order is set by position
+of the &lt;I&gt; tags inside the section &lt;<b>Head</b>&gt; or &lt;<b>Foot</b>&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>They <u>cannot</u> be paged,
+structured to tree, sorted, filtered, grouped. They also <u>cannot</u> be
+added, deleted or moved, only shown or hidden by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fixed rows are still divided
+to cells or at least to column sections (left, variable, right), so the
+variable column section is horizontally scrollable.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If all fixed and solid
+rows plus header together are higher then <a href="Create.htm#MainTag">main tag</a>
+height, the grid cannot display its content and displays only “Too small
+extents” message.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fixed rows can be <b><a
+href="#DataRows">data rows</a></b>, usually some sum or total result rows, or
+rows with some global input parameters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fixed rows can also be
+special <b>filter rows</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SolidRows></a><a name=Solid><b><span
+style='font-size:14.0pt'>Solid (floating) rows</span></b></a><span
+style='font-size:10.0pt'> </span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Solid space rows contain its own
+cells (set by <b>Cells</b> attribute) with their own widths not corresponding
+with grid columns widths and positions. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows position inside grid is
+specified by <b>Space</b> attribute (<b>0</b> above <b>Head</b>, <b>1</b> –
+between <b>Head</b> and <b>Body</b>, <b>2</b> – between <b>Body</b> and <b>Foot</b>,
+<b>3</b> – between <b>Foot</b> and scrollbar, 4 – below scrollbar).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows order inside section
+specified by Space is set by positions of &lt;I&gt; tags inside the tag &lt;<b>Solid</b>&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Their content is always
+visible and never scrolled. They have their own structure independent on
+columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Solid space rows can also
+display custom html instead of cells, set by <b>Html</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>They are still visible and <u>cannot</u>
+be scrolled. They <u>cannot</u> be paged, structured to tree, sorted, filtered,
+grouped. They also <u>cannot</u> be added, deleted or moved, only shown or
+hidden.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If all fixed and solid
+rows plus header together are higher then <a href="TreeGridHTML.htm#MainTag"><span
+style='color:windowtext;text-decoration:none'><u><span style='color:blue'>main
+tag</span></u></span></a> height, the grid cannot display its content and
+displays only “Too small extents” message.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Solid rows can be <b><a
+href="#SpaceRows">space rows</a></b> and also <a href="#SpecialRows">special</a>
+<b>group row</b>, <b>search row</b>, <b>simple</b> <b>pager</b> and <b>toolbar</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>string</i>    </span><a
+name=Fixed></a><a name=IFixed><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>Fixed</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Position in table, it can be <b>Head</b>
+or <b>Foot</b> for fixed rows and <b>Solid</b> for Space rows. For all other
+rows is null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowVisibility><b><span style='font-size:20.0pt'>Row
+visibility</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool</i>      </span><a
+name=IVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row is displayed in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row Visible attribute can
+be changed also by Filter/Search and by deleting row, when deleted rows are
+hidden. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By API the Visible attribute
+can be changed by methods ShowRow / HideRow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapsing / expanding
+children and rendering pages, child pages or child parts does <u>not</u> affect
+row Visible attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Visible attribute does <u>not</u>
+directly affect if the row is rendered in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When row has Visible=’0’ on
+start, it is not rendered at all and it is rendered when it is shown for the
+first time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the already rendered row
+is hidden by Filter / Search or by HiddenRow, it has set display=’none’ and
+next showing just clears it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The visible row can be also <u>not</u>
+rendered because of collapsed parent (in child paging) or not rendered page,
+child page or child part.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=ShowRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>bool</i> <b>noshow</b> = false)                                                                     <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays the row in table
+(sets its Visible property to true). </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it never expands row’s parent, if the parent is
+invisible or not expanded, the row remains not displayed until the parent is
+expanded and visible. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To expand all parents to
+display the row call <a href="Tree.htm#ExpandParents">ExpandParents</a> method
+after calling ShowRow.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 4.7</span></i><span
+style='font-size:10.0pt'>, every row can be hidden, including solid and fixed
+rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=HideRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HideRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>TRow</i>
+<b>row</b>, <i>bool</i> <b>del</b> = false, bool <b>noshow</b> = false)                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hides the row from table,
+sets its style display=’none’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>del</b> = true, deletes
+the row from html table (but not from data). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>noshow</b> is true,
+only sets Visible attribute, but does not hide the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Since TreeGrid 4.7, every row
+can be hidden, including solid and fixed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowName><b><span style='font-size:20.0pt'>Row name</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can specify row name that
+will be shown in messages and alerts that speaking about the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “Are you sure to
+delete row ‘%d’ ?”, the %d will be replaced by row name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row name is its <a
+href="#IName">Name</a> attribute if set. Or value(s) in <a href="#INameCol">NameCol</a>
+if set. Or row <b>id</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>    </span><a
+name=IName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Row name shown in any text
+that mention the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]</i>  </span><a
+name=CfgNameCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NameCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                   <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One or more column that are
+used as row name, only if the row <a href="#IName">Name</a> attribute is <u>not</u>
+set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+column names. Value is these column in the row will be used as row name in any
+texts mention the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=UpCounter><b><span style='font-size:20.0pt'>Row up-counter</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows column with row
+numbers, always from 1 increased by 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>    </span><a
+name=CfgUpCounter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>UpCounter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column name that will show
+the row position in table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column does <u>not</u>
+exist, it is created in the LeftCols as &lt;C Name=<i>'UpCounter'</i>
+Type='Int' CanFilter='0' CanEdit='0' CanSort='0' CanSearch='0' Width='30'/&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>I does <u>not</u> work in
+server paging. </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It iterates all the UpCounter
+cells after any row order change and resets the value, so it can be slow in
+very large grids.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgUpCounterType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>UpCounterType</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                      <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Bit array of flags for the <a
+href="#CfgUpCounter">UpCounter</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. bit       &amp;1          Count
+deleted rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2. bit       &amp;2          Count
+hidden rows by filter</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3. bit       &amp;4          Count
+other hidden rows (other than deleted and filtered)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4. bit       &amp;8          Count
+collapsed children</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5. bit       &amp;16        Reset
+on children (first child gets 1)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6. bit       &amp;32        Count
+fixed data rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7. bit       &amp;64        Count
+other fixed rows like Filter, but not Header</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>8. bit       &amp;128     Count
+Header rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example UpCounterType='7'
+counts all hidden and deleted rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool</i>      </span><a
+name=INoUpCounter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoUpCounter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                       <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the row
+will not be counted by UpCounter</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnUpCounter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnUpCounter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>TGrid</i>
+<b>grid</b>)                                                                                          <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on recalculate the
+UpCounter column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Provide your own
+recalculation and return true to cancel default calculation</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

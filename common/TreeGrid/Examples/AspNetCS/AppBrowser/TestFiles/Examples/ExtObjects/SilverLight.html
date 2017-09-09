@@ -1,0 +1,128 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+      <title>EJS TreeGrid SilverLight Example</title>
+   </head>
+   <body>
+      <h2>Dynamic Microsoft SilverLight objects in cells</h2>
+         <i>This example works only in browsers with installed <b>Microsoft SilverLight 1.0+ plugin</b>. 
+         The plugin can be downloaded from <a href='http://www.microsoft.com/silverlight/' target='_blank'>http://www.microsoft.com/silverlight/</a>.
+         For SilverLight documentation see <a href='http://msdn.microsoft.com/en-us/library/bb188743.aspx' target='_blank'>MSDN</a>.</i><br />
+         <br />
+         <b><i>This example uses windowless mode that does not work in some browsers (Google, Safari) and some plugin versions, 
+         in this case you can try <a href='javascript:RunWindowedVersion();'>windowed version</a>.</i></b><br />
+         <br />
+         This example demonstrates how to display any SilverLight object inside TreeGrid cells.<br />
+         Also demonstrates dynamical creating / updating the SilverLight objects according to some condition, for example value in other cell.<br />
+         And finally demonstrates displaying HTML content and SilverLight object within one cell.<br />
+         <br />
+         This example uses <a href='SilverLightEmptyObject.xaml'>SilverLightEmptyObject.xaml</a> file as base source for all SilverLight objects in grid.
+         The TreeGrid xml source is defined in <a href='SilverLight.xml'>SilverLight.xml</a>.<br />
+         The main work is done by JavaScript funtion <b>Draw</b> included in this HTML page. This function is called from various events to (re) draw the SilverLight object. There is no external script file needed for this example.<br />
+         <br />
+         In the Number column are custom numbers. In the SilverLight column is drawn an ellipse by SilverLight plugin and text value as standard HTML text. 
+         The width of the ellipse and the HTML text is related to Number column value.<br />
+         You can edit Number column values, sort rows, filter rows, copy&amp;paste rows, delete rows, add new rows and drag rows by mouse. You can see that the SilverLight column values are always updated.<br />
+      <br/>
+      <div align="center">
+      <div style="width:100%;height:500px;">
+         <bdo Data_Url="SilverLight.xml"></bdo>
+      </div>
+      </div>
+      <script>
+// --------------------------------------------------------------------------------------------------
+// Main function to draw the SilverLight to the 'Silver' cell
+// The cnt is used only in recursion when waiting for plugin to be loaded
+function Draw(G,row,col,cnt){
+if(row.Kind!="Data") return;      // No Filter or Header rows
+if(col && col!="Silver") return;  // col is null when the whole row is being rendered
+
+// --- Gets the SilverLight object and its canvas ---
+if(cnt>=10) { G.RefreshCell(row,"Silver"); return; } // In Firefox sometimes the object never loads, in this case helps refreshing the whole cell
+var Silver = G.GetCell(row,"Silver"); // Gets the cell object
+if(!Silver) return;                   // The cell is probably not displayed
+Silver = Silver.getElementsByTagName("object")[0]; // Gets the SilverLight object within the cell
+if(!Silver) return;                   // Cell contains no SilverLight object
+if(Silver.IsLoaded==null) {           // Not existing SilverLight, but it can be also problem with refresh
+   if(window.SilverLightInstalled==null){ // Checks global property of installed SilverLight
+      try { var O = new ActiveXObject('AgControl.AgControl'); SilverLightInstalled = O!=null; } // Checks in IE
+      catch(e) { try { var O = navigator.plugins["Silverlight Plug-In"]; SilverLightInstalled = O!=null; } catch(e) { } }  // Checks in FF
+      }
+   if(!window.SilverLightInstalled){  // No SilverLight
+      SilverLightInstalled = 0;
+      row.Silver = "<i style='font-size:12px;'>SilverLight is unavailable or not installed</i>";
+      G.RefreshCell(row,"Silver");
+      return;
+      }   
+   }
+if(!Silver.IsLoaded) { setTimeout(function(){ Draw(G,row,col,cnt?cnt+1:1); },20); return; } // SilverLight object is not yet loaded, waits asynchronously
+var Canvas = Silver.Content.findName("MainCanvas"); // Gets the canvas to draw to
+if(!Canvas){ setTimeout(function(){ Draw(G,row,col,cnt?cnt+1:1); },20); return; } // Canvas does not exist yet, waits asynchronously
+
+// --- Draws the ellipse via SilverLight ---
+var Length = Get(row,"Number")-0;     // Gets the value of the Number cell, it contains width of the ellipse
+if(!Length || Length<0) Length = 0;   // The width of ellipse cannot be negative or null
+if(Length>200) Length=200;            // The width of ellipse cannot be wider than 200
+var Ellipse = '<Ellipse Height="15" Width="'+Length+'" Canvas.Left="10" Canvas.Top="1" Stroke="Black" StrokeThickness="2" Fill="LightBlue"/>';
+var SilverEllipse = Silver.Content.CreateFromXaml(Ellipse); // Creates the SilverLight object from the XML
+SilverEllipse.AddEventListener("MouseLeftButtonUp", new Function("Grids['"+G.id+"'].GridClick();")); // Simulates click to the grid cell
+Canvas.children.clear();              // Clears the previous ellipse if any
+Canvas.children.add(SilverEllipse);   // Draws the ellipse to canvas
+Silver.style.width = (Length+12)+"px";// Sets the width of SilverLight object to not override the next HTML text
+
+// --- Prints the HTML text right to the SilverLight ellipse ---      
+var T = Silver.nextSibling;           // Gets the <DIV> tag next to SilverLight object
+while(T && T.nodeType!=1) T = T.nextSibling; // In some browsers (Firefox) there are also text nodes
+if(!T){                               // The tag does not exist yet, it will be created now
+   T = document.createElement('div');
+   T.style.marginTop = "-18px";       // The tag is positioned on the same line as SilverLight ellipse
+   T.style.fontSize = "14px";
+   T.style.color = "#00F";
+   Silver.parentNode.appendChild(T);  // Appends the DIV tag after the SilverLight ellipse
+   }
+T.style.paddingLeft = (Length+15)+"px"; // Places the DIV tag immediatelly next to the SilverLight ellipse
+T.innerHTML = Length;                 // Sets the text to be displayed
+}
+// --------------------------------------------------------------------------------------------------
+// Sets base events to draw the SilverLight inside cells
+Grids.OnRenderRow = Draw;   // Called whenever the row or cell is rendered, must (re)draw the SilverLight content
+Grids.OnDisplaceRow = Draw; // Called whenever the row or cell is moved in table, in this case the dynamic SilverLight content is lost and must be re-drawn
+if(navigator.appName.search("Netscape")>=0) Grids.OnDisplayRow = Draw; // In Firefox also every displaying of row (expand or unfilter) needs to re-draw the dynamic SilverLight
+// --------------------------------------------------------------------------------------------------
+// Called after some value changed
+// Updates Silver column when change is done in Number column
+Grids.OnAfterValueChanged = function(G,row,col){
+if(col=="Number") Draw(G,row,"Silver"); // Updates the SilverLight ellipse for this row
+}
+// --------------------------------------------------------------------------------------------------
+// Called when the Number is recalculated to update the Silver column
+Grids.OnCalculateCell = function(G,row,col,val,show){
+if(col!="Number" || val == row[col] || !show) return;
+var old = row[col]; 
+row[col] = val;       // Sets the new value to be used in Draw function
+Draw(G,row,"Silver"); // Updates the SilverLight ellipse for this row
+row[col] = old;       // Restores the original value otherwise the cell will not be refreshed 
+}
+// --------------------------------------------------------------------------------------------------
+// User can edit only numbers in row without children, otherwise the cell shows sum of its children
+Grids.OnCanEdit = function (G,row,col){
+return col=="Number" && !row.firstChild;
+}
+// --------------------------------------------------------------------------------------------------
+// If copy / paste is supported, the SilverLight should be also refreshed
+Grids.OnPasteFinish = function(G,rows){ for(var i=0;i<rows.length;i++) Draw(G,rows[i]); }
+// --------------------------------------------------------------------------------------------------
+// Runs SilverLight in their windows
+// Changes the parameters of SilverLight object and re-renders the grid
+function RunWindowedVersion(){
+var s = '<div style="overflow:hidden;height:17px;"><object type="application/x-silverlight" Height="18">';
+s += '<param name="background" value="White"/><param name="source" value="SilverLightEmptyObject.xaml"/></object></div>';
+Grids[0].Def.R.Silver = s;
+Grids[0].Render();
+}
+// --------------------------------------------------------------------------------------------------
+</script>
+
+   </body>
+</html>

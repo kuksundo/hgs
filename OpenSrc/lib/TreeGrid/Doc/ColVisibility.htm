@@ -1,0 +1,505 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Column visibility</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Column visibility</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool</i>      </span><a
+name=CVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [1]        <i>Saved
+to cookies, avoid it by <b>&lt;C VisibleLap=’1’/&gt;</b></i>                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column is displayed in
+grid. Hidden column can be shown by a user from columns menu – depending on <a
+href="#CCanHide">CanHide</a> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgFastColumns><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FastColumns</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If column hiding is done by
+setting its width to 0px. This action is faster than removing the cells and
+speeds up also showing the column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column is hidden
+correctly, but it is still present in HTML and is <u>not</u> removed either on re-render.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column is shown for
+first time (it was not displayed on first render, had set &lt;C
+Visible=’0’/&gt;), it is still slow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool</i>      </span><a
+name=CHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Hidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[0]                                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hidden=’<b>1</b>’ has sense
+only for <a href="#CVisible">Visible</a>=’<b>0</b>’ and &lt;Cfg <a
+href="#CfgFastColumns">FastColumns</a> =’<b>1</b>’/&gt;. On start or re-render
+this column will be rendered as hidden (width 0px). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It slows down rendering grid
+(the column is rendered) but speeds up showing column (it is just resized). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to 1 if you expect the
+column will be shown later to speed it up.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>bool      </i></span><a
+name=SpaceCellVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space cells are independent
+on columns and can be shown or hidden by its cell attribute Visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the space cell is not visible,
+it is not displayed at all (it is displayed with zero width).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this attribute
+can be also calculated (colVisibleFormula), so you can show or hide the space
+cells dynamically by the formula.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>int        </i></span><a
+name=CellVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The normal (not Space) cells <u>cannot</u>
+be hidden completely, they will have always the width of its column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>Visible</b>
+attribute to <b>0</b>, the cell content is not displayed – the cell is shown
+empty, but its left / right button <u>is</u> visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>Visible</b>
+attribute to <b>-1</b>, the cell content is shown empty and also its left /
+right side button is not displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>string</i>
+<b>col</b>)                                                                                           <span
+style='color:#1F497D'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays hidden column <b>col</b>
+in grid. If the column is already shown or does not exist, does nothing.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If the column is displayed
+for first time (it was hidden by XML &lt;C Visible=’0’/&gt; or is set &lt;Cfg
+FastColumns=’0’/&gt; the displaying of the column can be slow.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 it never does
+Render</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=HideCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HideCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (string
+<b>col</b>)                                                                                                       <span
+style='color:#1F497D'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hides visible column <b>col</b>.
+If the column is already hidden or does not exist, does nothing.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 it never does
+Render</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeColsVisibility><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeColsVisibility</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>string</i>[]
+<b>Show</b>, <i>string</i>[] <b>Hide</b>, <i>bool</i> <b>prefer</b> = 0)                 <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes visibility of given
+columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Show</span></b><span
+style='font-size:10.0pt'> – an array of column names to show</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Hide</span></b><span
+style='font-size:10.0pt'> – array of column names to hide</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If column is present in both
+arrays, it will be shown for <b>prefer</b> = 0 or hidden for <b>prefer</b> = 1.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 it never require
+Render and always returns null.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsHideCol><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>HideCol </span></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      not
+assigned to any event                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hides actual or focused
+column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsShowColLeft></a><a name=ShowColLeft><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>ShowColLeft </span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     not
+assigned to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows hidden column on left
+side from actual or focused cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsShowColRight></a><a name=ShowColRight><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>ShowColRight </span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  not
+assigned to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows hidden column on right
+side from actual or focused cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=MenuColumns><b><span style='font-size:20.0pt'>Columns
+visibility menu</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This menu shows all permitted
+columns and let a user to check which columns will be visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This menu is by default shown
+on click to Toolbar cell <b>Columns</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsShowColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>          Attached to event <b>OnClickButtonColumns</b>                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows menu to choose columns
+visibility</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>string</i>
+<b>attribute</b>, <i>string</i> <b>caption</b>, <i>function</i> <b>func</b>, <i>TMenuItem[]</i>
+<b>options</b>, <i>string</i> <b>optionscaption</b>)            <span
+style='color:red'>new <b>6.0;</b></span><span style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows menu columns to let a
+user to check or uncheck columns.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>caption</span></b><span
+style='font-size:10.0pt'> is menu caption</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>attribute</span></b><span
+style='font-size:10.0pt'> is name of column attribute, only columns with this
+attribute set will be listed (e.g CanHide, CanExport, CanPrint, ...)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the user clicks to OK, it
+calls function <b>func </b>(string <b>Cols</b>[], object <b>Names</b>[], TMenu <b>Menu</b>)
+where <b>Cols</b> is array of checked columns, <b>Names</b> is name array of
+all columns as col:checked and <b>Menu</b> is the <a href="Menu.htm">TMenu</a>
+object.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>options</span></b><span
+style='font-size:10.0pt'> <i>(new 6.7) </i>– array of custom menu items to add
+to the end of the menu, it is possible to read the <b>options</b> changes in
+the function <b>func</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>optionscaption</span></b><span
+style='font-size:10.0pt'> <i>(new 6.7)</i> – caption for the options shown as
+inactive caption in the menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgMenuColumnsCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MenuColumnsCount</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                      
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In how many columns the menu
+items will be displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can increase this value
+if the menu contains many items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgMenuColumnsSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MenuColumnsSort</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                   <span
+style='color:red'>            new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, sorts all the columns
+in menu according to alphabet, independently on column section, case
+insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CCanHide><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanHide</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [1]
+                                                                                                                 <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If column is displayed in <b>Columns</b>
+<b>menu</b> and can be hidden or displayed by user. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the
+column can be shown or hidden by API <a href="#ShowCol">ShowCol</a> / <a
+href="#HideCol">HideCol</a> only. If the column has Visible=’0’ and is in Sort,
+it cannot be removed from the Sort.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the column can
+be shown or hidden also from configuration menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>,<i> (since
+8.0)</i> the column can be shown or hidden by API <a href="#ShowCol">ShowCol</a>
+/ <a href="#HideCol">HideCol</a> only, but its sort behavior is normal. Use for
+child columns in tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also use <b>CanHide</b>=<b>0</b>
+and <a href="#CVisible">Visible</a>=<b>0</b> to define always hidden column to
+store any custom data or to predefine sorting behavior – see &lt;Cfg&gt; <b>SortCols</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CMenuName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MenuName</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Html string displayed in <b>Columns</b>
+<b>menu</b> for this column. If not set, the column caption is displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnShowColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TMenu</i> <b>Menu</b>)                                                        <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before menu for
+columns visibility is displayed, Menu is TreeGrid menu with all columns to
+display.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnShowColumns =
+function(G,M){ var I = M.Items[7].Items; I[I.length] =
+{Name:&quot;XXX&quot;,Bool:1,Value:1}; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to <u>not</u>
+display the menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnColumnsFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColumnsFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TMenu </i><b>Menu</b>)                                                        <span
+style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the columns menu
+is closed to process custom menu items added in OnShowColumns API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnColumnsFinish =
+function(G,M){ var val = M.FindItem(&quot;XXX&quot;).Value; ... }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+menu action</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnColumnsChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColumnsChanged</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>bool[] </i><b>cols</b>, <i>int</i> <b>count</b>)                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when user presses OK
+button on columns menu. Before any updates in data or display.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cols</span></b><span
+style='font-size:10.0pt'> is array of changed columns, with string index as
+column name and value as its new visibility</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+changes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAfterColumnsChanged><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnAfterColumnsChanged</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>)                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the visibility
+of all the columns has been changed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

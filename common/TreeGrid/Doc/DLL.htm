@@ -1,0 +1,2556 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Server DLL</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:24.0pt'>TreeGrid server library v<span style='color:blue'>3.4</span></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TreeGrid</span></b><span
+style='font-size:10.0pt'> <b>server</b> is helper library for very large grids
+to use server side <a href="PagingServer.htm">paging</a> or <a
+href="PagingServer.htm#ChildPaging">child paging</a>. You can, but <b>you need
+not use it</b> for server paging.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TreeGrid</span></b><span
+style='font-size:10.0pt'> <b>server</b> is dynamic link library (<b>.dll</b>
+for <b>Windows</b> and <b>.so</b> for <b>Linux</b>). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is written in C++ and is
+very <b>fast</b> and <b>not memory consuming</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Works upon XML data and
+provides intrinsic functionality for <b><a href="PagingServer.htm">server side
+paging</a></b>, <b>sorting</b>, <b>filtering</b>, <b>grouping</b>, <b>calculations</b>
+and <b>updates</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Input data are the same as in
+client application (XML with defaults, XML with grid layout and XML with data).
+DLL exports all functions needed to support server paging and updating
+TreeGrid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid server can be used
+in <b>ASP.NET</b>, <b>Java servlets / JSP</b>, <b>PHP</b> or any server script
+environment that supports using dynamic link libraries.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All input / output data are
+in XML <b><a href="DataFormats.htm#InternalFormat">Internal format</a></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid server is <b>thread
+safe</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid server does not care
+about sharing data among clients. <i>Every client must have own instance of
+server grid</i>, because of their own sorting and filter settings. If you want
+to support write access for more clients, you must call <a href="#Save">Save</a>
+method for all opened grid (in group) with the same changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default rounding precision of
+all numbers in TreeGrid server is 4 digits. It can be changed by &lt;Cfg <b>Precision</b>=’’/&gt;,
+available values are 0 – 9.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a
+name=Compatibility><b><span style='font-size:16.0pt'>Compatibility with
+TreeGrid component</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TreeGrid server library is
+compatible with TreeGrid component v6.0+ <b><u>except</u></b>:</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It supports only <a
+href="DataFormats.htm#InternalFormat">Internal format</a> of XML input / output
+data. You must set &lt;treegrid *_Format=<b>’Internal’</b>&gt;, where * is
+Data, Page, Upload, Export, Check.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It supports only some
+formulas syntax and few functions, see <a href="#Calculations">Calculations
+section</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> support
+advanced <b>CalcOrder</b> - it does <u>not</u> support wildcards in CalcOrder
+attribute and <b><s>CalcOrderX</s></b> attributes and also &lt;<s>Cfg CalcOrder</s>&gt;
+attribute (uses only &lt;I CalcOrder).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Up to <b>three sort columns</b>
+are supported.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attributes <b>LocaleCompare</b>,
+<b>CaseSensitive</b>, <b>WhiteChars</b>, <b>CharCodes</b>  and <b>GroupSole</b>,
+<b>GroupSingle</b>, <b>GroupEmpty</b> are supported only in &lt;C&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other default cols &lt;D&gt;
+than &lt;D Name=“C”/&gt; are ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only base types (Bool, Int,
+Float, Date, Enum, Radio, Text, Lines) are sorted and filtered as expected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Bool, Int,
+Enum, Radio and Date are integers, Float are floats and other types are
+strings.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>To
+sort or filter extended types like <b>Link</b>, you should use cell attributes <a
+href="Sort.htm#CellSortValue">SortValue</a>, <a
+href="Sort.htm#CellSortDescValue">SortDescValue</a> and <a
+href="Filter.htm#CellFilterValue">FilterValue</a>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Enum
+type should be set as integer not string and <s><a href="TypeEnum.htm#CEnumKeys">EnumKeys</a></s>
+attribute is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It uses only basic row
+identification by unique id, so extended id attributes <b><s>IdNames</s></b>, <b><s>FullId</s></b>,
+<b><s>AppendId</s></b>, <b><s>IdCompare</s></b> <u>must not</u> be used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It uses date time values as
+integers (number of milliseconds since 1/1/1970 00:00:00) for input and output.
+You also <u>must not</u> use attribute &lt;Cfg <b><s>DateStrings</s></b>&gt;.
+See also <a href="TypeDate.htm#FormatGMT">GMT</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute <s><a
+href="CellSpan.htm#ISortSpan">SortSpan</a></s> is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute</span><span
+style='font-size:10.0pt'> <a href="CellBasics.htm#CellRange">Range</a> is used
+only in filter rows. In all other cells is the value treated as simple string.</span></p>
+
+<p class=MsoNormal><b><s><span style='font-size:10.0pt'>Search</span></s></b><span
+style='font-size:10.0pt'> and <b><s>advanced filters</s></b> are not supported
+yet.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>filter</b> rows (&lt;<a
+href="Filter.htm#Filter"><span style='color:windowtext'>Filter</span></a>&gt;)
+must have set <b>id</b> attribute if there are more filter rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Using><b><span
+style='font-size:16.0pt'>Using TreeGrid server</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All functions are exported as
+</span><span style='font-size:10.0pt;font-family:"Courier New"'> <b>extern
+&quot;C&quot; __declspec(dllexport) </b>...<b> __stdcall</b> </span><span
+style='font-size:10.0pt'> (standard C++ exports). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All strings parameters are in
+<b>unicode</b>. For all string handling functions there are functions ends with
+“<b><span style='color:blue'>A</span></b>” using <b>UTF8</b> strings
+(CreateGrid =&gt; CreateGridA).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Input XML strings can be
+standard XML “&lt;...&gt;&lt;/...&gt;” or entity encoded “&amp;lt; ...
+&amp;gt;&amp;lt;/...&amp;gt;”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=ASPNETC><b><i><span style='font-size:14.0pt'>ASP.NET
+C#</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare all needed functions
+with DllImport attribute and static extern keywords:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Courier New"'>DllImport(&quot;TreeGrid.dll&quot;,
+CharSet=CharSet.Unicode, CallingConvention=CallingConvention.StdCall)]</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Courier New"'>public
+static extern </span></b><i><span style='font-size:10.0pt;font-family:"Courier New"'>return_type
+function_name</span></i><b><span style='font-size:10.0pt;font-family:"Courier New"'>(</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'> ... <i>parameters</i> ...<b>);</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to place
+TreeGrid.dll anywhere else then in Windows/System32 directory you need to load
+it by function <b>LoadLibrary</b> before any its method is called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use <b>LoadLibrary</b> you
+must declare it in the same manner as TreeGrid functions:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>[DllImport(&quot;kernel32.dll&quot;,
+CharSet = CharSet.Auto)] static extern IntPtr LoadLibrary(string lpFileName);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Supported <b>.NET 1.0</b>, <b>1.1</b>,
+<b>2.0</b>, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Whole declaration:</span></u></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;kernel32.dll&quot;,
+CharSet = CharSet.Auto)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>static extern IntPtr
+LoadLibrary(string lpFileName);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+CreateGrid(string Data, string Layout, string Defaults, string Text, string
+Bonus, string Bonus2);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+UpdateGrid(int Index, string Bonus);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+FindGrid(string Cfg);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+FindGrids(IntPtr Indexes, int Max, string Cfg, int Seconds, int Type);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static int
+FindGrids(ref int []Indexes, int Max, string Cfg, int Seconds, int Type){</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   return
+FindGrids(GCHandle.Alloc(Indexes,GCHandleType.Pinned).AddrOfPinnedObject(),Max,Cfg,Seconds,Type);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   }</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetSession(string Cfg);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetGridSession(int Index);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+DeleteGrid(int Index);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern void
+Clear();</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetBody(int Index, string Cfg);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetPage(int Index, string Cfg);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetExport(int Index, string Cfg);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+Save(int Index, string Input);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+SaveEx(int Index, string Input, int Type);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)] </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+SaveToFile(int Index, string FileName, int Type);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetData(int Index);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+LastError();</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetLastId(int Index);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetChanges(int Index, int Type);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern string
+GetCells (int Index, string Row, string Col, int Type, string Param);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+SetDebug(int Index, string FileName);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern int
+SetGridLocale(int Index, string Locale);</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern void
+EnterRead( );</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern void
+LeaveRead( );</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern void
+EnterWrite( );</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>[DllImport(&quot;TreeGrid.dll&quot;,
+CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>public static extern void
+LeaveWrite( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=ASPNETVB><b><i><span style='font-size:14.0pt'>ASP.NET
+VB</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare all needed functions:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Courier New"'>Declare</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'> <b>Unicode</b> <b>Function</b>
+<i>function_name</i> <b>Lib</b> <b>&quot;TreeGrid.dll&quot;</b> <b>(</b>... <i>parameters</i>
+...<b>)</b> <b>As</b> <i>return_type</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to place
+TreeGrid.dll anywhere else then in Windows/System32 directory you need to load
+it by function <b>LoadLibrary</b> before any its method is called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use <b>LoadLibrary</b> you
+must declare it in the same manner as TreeGrid functions:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Declare
+Auto Function LoadLibrary Lib &quot;kernel32.dll&quot; (ByVal lpFileName As
+String) As IntPtr</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Supported <b>.NET 1.0</b>, <b>1.1</b>,
+<b>2.0</b>, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Whole declaration:</span></u></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Auto Function
+LoadLibrary Lib &quot;kernel32.dll&quot; (ByVal lpFileName As String) As IntPtr</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+CreateGrid Lib &quot;TreeGrid.dll&quot; (ByVal Data As String, ByVal Layout As
+String, ByVal Defaults As String, ByVal Text As String, _</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>ByVal
+Bonus As String, ByVal Bonus2 As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+UpdateGrid Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Bonus As
+String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+FindGrid Lib &quot;TreeGrid.dll&quot; (ByVal Cfg As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+FindGrids Lib &quot;TreeGrid.dll&quot; (ByVal Indexes As IntPtr, ByVal Max As
+Integer, ByVal Cfg As String, ByVal Seconds As Integer, _</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>ByVal
+Type As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Public Function
+FindGrids(ByVal Indexes() As Integer, ByVal Max As Integer, ByVal Cfg As
+String, ByVal Seconds As Integer, ByVal Type As Integer) As Integer</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Return
+FindGrids(GCHandle.Alloc(Indexes, GCHandleType.Pinned).AddrOfPinnedObject(),
+Max, Cfg, Seconds, Type)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>End Function</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetSession Lib &quot;TreeGrid.dll&quot; (ByVal Cfg As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetGridSession Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+DeleteGrid Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Sub Clear Lib
+&quot;TreeGrid.dll&quot; ()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetBody Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Cfg As
+String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetPage Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Cfg As
+String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function GetExport
+Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Cfg As String) As
+String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function Save
+Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Input As String) As
+Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+SaveEx Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Input As
+String, ByVal Type As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+SaveToFile Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal FileName
+As String, ByVal Type As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetData Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetLastId Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+LastError Lib &quot;TreeGrid.dll&quot; () As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+GetChanges Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Type As
+Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function GetCells
+Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal Row As String,
+ByVal Col As String, ByVal Type As Integer, _</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>ByVal
+Param As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+SetDebug Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal FileName
+As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Function
+SetGridLocale Lib &quot;TreeGrid.dll&quot; (ByVal Index As Integer, ByVal
+Locale As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Sub EnterRead
+Lib &quot;TreeGrid.dll&quot; ()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Sub LeaveRead
+Lib &quot;TreeGrid.dll&quot; ()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Sub
+EnterWrite Lib &quot;TreeGrid.dll&quot; ()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Declare Unicode Sub
+LeaveWrite Lib &quot;TreeGrid.dll&quot; ()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=PHP><b><i><span style='font-size:14.0pt'>PHP</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In PHP TreeGrid.dll/so works
+as <b>PHP extension</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copy it to you PHP extensions
+directory and add to your <b>php.ini</b> to main [PHP] section the line <b>extension=TreeGrid.dll</b>
+on Windows or <b>extension=TreeGrid.so</b> on Linux.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>!
+TreeGrid.dll/so must <u>not</u> be the first PHP extension loaded!</span></i></b><b><i><span
+style='font-size:10.0pt'> </span></i></b><i><span style='font-size:10.0pt'>So
+ensure that in <b>php.ini </b>is at least one active line <b>extension=xxx</b> before
+the <b>extension=TreeGrid.dll/so</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid.dll/so PHP extension
+is compatible with PHP versions <b>5.0</b> – <b>5.5</b>. Both PHP <b>thread-safe</b>
+/ <b>thread-unsafe</b> versions. Only PHP <b>non-debug</b> version.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It should work also in future
+releases, but because of pure amateurism of PHP authors there is no insurance
+that it will do. We sometimes check and update the extension to be compatible
+with new PHP releases. If you encounter that TreeGrid.dll/so does not work in
+PHP release other that listed above let us know to update the TreeGrid.dll/so.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b>Windows</b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The TreeGrid.dll library is
+intended to be persistently placed in memory. Therefore you should run the PHP
+engine as <b>ISAPI</b> service and <b>not CGI</b> application.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you installed PHP by
+windows installer, the PHP is configured by default to run as <b>CGI</b>
+application. Check <b>Install.txt</b> file in your PHP directory how to change
+PHP to run as <b>ISAPI</b> service. For example WinXP and IIS - just open IIS
+configuration, choose your virtual web server directory, select <b><i>Properties</i></b>-&gt;<b><i>Virtual
+Directory</i></b>-&gt;<b><i>Configuration</i></b>-&gt;<b><i>Mappings</i></b>,
+select <b><i>.php Extension</i></b> and click <b><i>Edit</i></b> button and
+browse for <b><i>Executable</i></b> <b>php5isapi.dll</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid.dll will work also
+with PHP as <b>CGI</b> application, but after every page processing the DLL is
+unloaded from memory and all grid instances are deleted, so in this case you
+need always to save all grid instances to disk and load them when processing
+new command. It can slow down using TreeGrid.dll/so.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, if PHP runs as <b>ISAPI</b>
+service and you do some changes in <b>php.ini</b>, you usually need to restart
+whole web server service, for example for IIS you need often to restart <b>IIS
+Admin</b> service from services dialog. Also remember, that PHP running as <b>ISAPI</b>
+can have another relative path, so you should set in <b>php.ini</b> the <b>extension_dir</b>
+to absolute path where to search PHP extensions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b>Using</b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call TreeGrid function like
+other PHP functions, for example  </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>$grid = TGCreateGrid($DataFile,$LayoutsFile,$TextFile,$DefaultsFile,””,””);</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><b><span
+style='font-size:10.0pt'> </span></b><span style='font-size:10.0pt'>PHP does
+not use Unicode, thus you must all strings encode in <b>UTF8</b>. But call
+TreeGrid functions <u>without</u> prefix “A” (CreateGrid). </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>! </span></b><span
+style='font-size:10.0pt'>Remember, if PHP on Windows is simple CGI application
+without any state memory, after finishing request unloads all resources
+including TreeGrid.dll. Therefore you must not store indexes between requests,
+but you must store whole data to file (by SaveToFile) or database (by GetData).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><span
+style='font-size:10.0pt'> All TreeGrid function names in PHP starts with prefix
+“<b><span style='color:red'>TG</span></b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Whole declaration:</span></u></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is no need for external
+declaration of TreeGrid functions in PHP. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But remember all function
+names start with prefix “<b><span style='color:red'>TG</span></b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=JSPJava><b><i><span style='font-size:14.0pt'>JSP
+Java</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In <b>Java</b> there is used <b>JNI</b>
+(Java Native Interface) in provided package <b>TreeGrid</b>, class <b>Server</b>.
+Therefore you need create an instance of the <b>TreeGrid.Server</b> and use its
+methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First copy <b><span
+style='color:blue'>TreeGrid.jar</span></b> file (located in <a
+href="../Server/Jsp/TreeGrid.jar">/Server/Jsp</a> directory of your TreeGrid
+distribution) to your JRE installed optional packages, usually located at
+“&lt;java-home&gt;\lib\ext”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can copy <b><span
+style='color:blue'>TreeGrid.dll</span></b> file (located in <a
+href="../Server/TreeGrid.dll">/Server</a> directory of your TreeGrid
+distribution) to your JRE BIN directory, usually located at
+“&lt;java-home&gt;\bin” or “&lt;java-home&gt;\lib\ext\x86”. &lt;java-home&gt;
+is directory where JRE is installed or JDK/jre. To run TreeGrid examples it is
+not needed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now you can in your code
+create TreeGrid.Server instance by</span><span style='font-size:10.0pt;
+font-family:"Courier New"'> </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>TreeGrid.Server TS = new TreeGrid.Server();</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you have not copied
+TreeGrid.dll to JRE BIN directory, you must specify its path and name as
+parameter: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>TreeGrid.Server TS = new TreeGrid.Server
+(“TreeGrid_distribution_path/Server/TreeGrid”); </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now you can call any TreeGrid
+server function as method of the TS instance. </span><span style='font-size:
+10.0pt;font-family:"Courier New"'>int G = T.CreateGrid( ... );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can test if DLL was
+successfully loaded by static <b>TreeGrid.Server.Loaded</b> property. DLL is loaded
+when creating the first instance of TreeGrid.Server. If DLL loading has failed,
+the static String <b>TreeGrid.Server.DllError</b> contains the exception’s
+message string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Supported any <b>Java</b>
+version with <b>JNI</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Whole declaration:</span></u></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is no need for external
+declaration of TreeGrid functions in Java – it is already declared in <b>TreeGrid.jar</b>
+in object <b>TreeGrid.Server</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Concepts><b><span
+style='font-size:16.0pt'>TreeGrid server concepts</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Basics><b><i><span style='font-size:14.0pt'>Basics</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>a) You have stored your data
+somewhere on disk or in database. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>b) When first request to this
+data arrives, you need to read all you data and convert it to the TreeGrid XML
+internal format and create TreeGrid instance from this data by calling <b><a
+href="#CreateGrid">CreateGrid</a></b>. And fulfill the request by calling <b><a
+href="#FGetPage">GetPage</a></b>, <b><a href="#FGetBody">GetBody</a>,</b> <b><a
+href="#Save">Save</a></b> or <b><a href="#GetExport">GetExport</a></b> method
+of the created instance.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This means that every
+client has its own grid instance on server, because every client can have its
+own individual state of sorting, filtering or grouping.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>c) For next requests you have
+to resolve the TreeGrid instance the request belongs (by URL, by some user
+parameter, by &lt;<b>IO</b> <b><span style='color:blue'><a
+href="TreeGridXmlBasics.htm#IOSession">Session</a></span></b>&gt; attribute or
+by any you custom way, see <b><a href="#FindGrid">FindGrid</a></b> and <b><a
+href="#FindGrids">FindGrids</a></b> function) and fulfill the request by
+calling <b><a href="#FGetPage">GetPage</a></b>, <b><a href="#FGetBody">GetBody</a>,</b>
+<b><a href="#Save">Save</a></b> or <b><a href="#GetExport">GetExport</a></b> method
+of the found instance.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>d) After every <a
+href="#RequestUpdate">Update</a> request you will save data changes to grid
+instance by <b><a href="#Save">Save</a></b> method as mentioned in c).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But you need to save changes
+also your original data store (database, file, etc.) by parsing the request XML
+and updating to your original store. See <a
+href="TreeGridXmlBasics.htm#XMLUpload">XML structure – upload</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;<b>IO</b> <b><span
+style='color:blue'><a href="TreeGridXmlBasics.htm#IOSession">Session</a></span></b>&gt;
+can be modified by CreateGrid, UpdateGrid and GetBody if the sent xml contains
+this attribute set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For use TreeGrid server
+you have to separate data (rows) that can be changed and updated from layout
+(columns, other settings). Layout is usually in static XML file, which is
+regenerated only when data layout changes, for example a column is added.
+Remember, <a href="#GetBody">GetBody</a> returns data only, not layout.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Creating><b><i><span style='font-size:14.0pt'>Creating
+instance</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Create TreeGrid instance from
+data in files or in strings (<b><span style='color:blue'><a href="#CreateGrid">CreateGrid</a></span></b>).
+This data must contain all data for the session.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Instance is created in memory
+and you will get handle (<b>Index</b>) to it. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The instance stays in memory
+until you delete it by <b><span style='color:blue'><a href="#DeleteGrid">DeleteGrid</a></span></b>
+or <b><span style='color:blue'><a href="#Clear">Clear</a></span></b> function
+or until TreeGrid server is not <b>unloaded</b>. TreeGrid server is unloaded
+for example if the server side script is restarted. In this case you need to
+save data from memory to persistent storage (disk (by <b><span
+style='color:blue'><a href="#SaveToFile">SaveToFile</a></span></b>) or database
+(by <b><span style='color:blue'><a href="#GetData">GetData</a></span></b>)) and
+re-create it when processing next request.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>On some systems (for
+example in PHP as CGI  on Windows) is TreeGrid server unloaded immediately
+after client’s request is fulfilled, so in this case you must always save
+changed data to persistent storage as disk or database and create grid again
+when processing next request.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Particular instances are
+independent on the others. You can have more instances of the same data or
+different data. Count of instances is restricted by available memory only.
+Remember, the memory consumed by instance is usually similar to input size of
+input XML data in ASCII or 2/3 if they are in unicode. But always depends on
+data structure.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You should also know that
+grouping data can allocate significantly more memory, depending on count of
+groups, but it can double or even triple memory allocation when many groups are
+generated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Finding><b><i><span style='font-size:14.0pt'>Finding
+instance</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How to find instance that the
+request belongs to?</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=FindingSession><b><i>Session</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The easiest way is to use
+TreeGrid built-in Session concept. When grid instance is created on server, it
+gets its unique Session attribute. This Session attribute is sent to client in
+GetBody request. And client in every future request will send this Session
+attribute within the request. You can control how client will store its Session
+by &lt;Cfg <a href="DataCommunication.htm#CfgSaveSession">SaveSession</a>/&gt;
+attribute. To get grid instance with appropriate Session call <a
+href="#FindGrid">FindGrid</a> with the whole request XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When you get request with
+Session no longer exist on server (FindGrid returned -1) you have to create new
+instance (for GetBody request) or return error for other request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=FindingMore><b><i>More
+instances by custom attribute</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When you want to permit write
+access to the grid data and read access for more clients, you will need, when
+saving, to get all grid instances with appropriate table and save changes to
+them all. To get some instances you need to mark them when creating by setting
+some your custom attribute in &lt;Cfg&gt; tag and when needed call FindGrids to
+get all the instances according to the custom attribute. For example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Create grids like: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>index = CreateGrid(“...”,”...”,”...”,”...”,”...”,”&lt;Grid&gt;&lt;Cfg
+Ident=’MyGridX1’/&gt;&lt;/Grid&gt;”);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And get all the instances of
+MyGridX1 by: </span><span style='font-size:10.0pt;font-family:"Courier New"'>count
+= FindGrids(array, 100, ”&lt;Grid&gt;&lt;Cfg
+Ident=’MyGridX1’/&gt;&lt;/Grid&gt;”,0,0);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=FindingCustom><b><i>Custom
+way</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also identify the
+grid by any your custom way, for example according to some user name and
+password or IP address and provide your own method to find the appropritate
+grid for the request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Updating><b><i><span style='font-size:14.0pt'>Updating
+instance</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you have created instance
+and you only need to change some of its configuration settings (but not
+columns), you can use <b><span style='color:blue'><a href="#UpdateGrid">UpdateGrid</a></span></b>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Request><b><i><span style='font-size:14.0pt'>Processing
+client’s request</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When you have an index to
+TreeGrid instance, you can use next functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can response to three
+main client’s request – to get body, to get one page and to update data. And
+two support requests to get exported data and to get changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=RequestGetBody><b><i>a) Request
+GetBody</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Body is whole grid data. When
+used server paging, it does not contain content of any page – in this case
+contains only page descriptions, page names and fixed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Client requests body when</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>a)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>document is loaded for first time</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>b)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>document is reloaded</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>c)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>used server paging and rows have
+been re-sorted</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>d)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>used server paging and filter has
+changed</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>e)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>used server paging and grouping
+has changed</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:-18.0pt'><span
+style='font-size:10.0pt'>f)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt'>used server paging and search has
+been done – <i>search feature is not supported by current version of TreeGrid
+server library</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get body just return <b><span
+style='color:blue'><a href="#FGetBody">GetBody</a></span></b> function result.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=RequestGetPage><b><i>b) Request
+GetPage</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Page is one page when used
+server paging. When used client paging, this request does not occur.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Page is also children of
+parent row or group when used server child paging. When used client child
+paging, this request does not occur.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Client request a page when
+page is displayed or parent row was expanded, and it was not downloaded yet.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get page just return <b><span
+style='color:blue'><a href="#FGetPage">GetPage</a></span></b> function result.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=RequestUpdate><b><i>c) Request
+Update</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Save occurs when client
+changed some data and is sending them to server to update.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call <b><span
+style='color:blue'><a href="#Save">Save</a></span></b> function to update data
+to the instance. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But you need to save changes
+also your original data store (database, file, etc.) by parsing the request XML
+and updating to your original store. See <a
+href="TreeGridXmlBasics.htm#XMLUpload">XML structure – upload</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are more instances
+of TreeGrid for the table (more clients simultaneously read the same table) is
+good idea to permit just only client to change data to avoid access violation
+and data inconsistency. When the one chosen client changes data, call <b><span
+style='color:blue'><a href="#Save">Save</a></span></b> for all opened instances
+of the grid. To get all the instances for update, call <a href="#FindGrids">FindGrids</a>,
+see also <a href="#Finding">Finding instance</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are more clients
+with write access to one document, you need to implement your own semaphores or
+another technique to avoid access violation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=RequestGetExport><b><i>d)
+Request GetExport</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is request for all data
+to be exported in XLS file to download and open in Excel. It is sent, when user
+clicks to Export button on TreeGrid toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get exported data just
+return <a href="#GetExport">GetExport</a> function result. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When exporting data to Excel,
+do not forget to set in HTTP response <b>ContentType</b> to &quot;application/vnd.ms-excel&quot;
+and <b>Content-Disposition</b> to &quot;attachment; filename=&quot;export_file.xls&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=RequestGetChanges><b><i>e)
+Request GetChanges</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When you set in your grid to
+check for updates feature (&lt;treegrid <a href="DataServerChanges.htm#Check">Check_</a>&gt;),
+the grid periodically sends this request to server to find, if there is some
+update to the data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The changes can be marked by
+using <a href="#SaveEx">SaveEx</a> method instead of Save. This feature can be
+used, when database is frequently changing or if any other visitor(s) have
+write access to the data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get chanegs just return <a
+href="#GetChanges">GetChanges</a> function result.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Saving><b><i><span style='font-size:14.0pt'>Saving
+data back</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When data are changed by <b><a
+href="#Update">Update</a></b> request or by you custom calling <b><a
+href="#UpdateGrid">UpdateGrid</a></b> function you will need save instance data
+back to you original storage. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use function <b><span
+style='color:blue'><a href="#SaveToFile">SaveToFile</a></span></b> to save data
+to disk or get data in string from function <b><span style='color:blue'><a
+href="#GetData">GetData</a></span></b> and update it manually, for example to
+database.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can use <b><a
+href="#GetChanges">GetChanges</a></b> function to get all Update requests (if
+you used <a href="#SaveEx">SaveEx</a> function with Type==1) and parse and
+update them manually to database.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can just parse XML got
+in <a href="#RequestUpdate">Update</a> request and provide changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, the saved data are
+sorted by last used sorting and contains filter settings, but always all rows,
+not only filtered. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When to update the original
+data depends on your needs. You can do after every Update request, after some
+time, or you can call your own request procedure when data is needed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other way is to save all
+input data into grid instance and simultaneously to the original data store by
+parsing input XML string in <b><a href="#Update">Update</a></b> request. See <a
+href="DataUpload.htm#XML">XML structure of Upload request</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><a name=TempSaving><b><i>Temporary
+saving</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use functions <b><span
+style='color:blue'><a href="#SaveToFile">SaveToFile</a></span></b> and <b><span
+style='color:blue'><a href="#GetData">GetData</a></span></b> to temporary save
+data to persistent storage when server service is restarted or to free memory.
+After data save you can delete the instance by <b><span style='color:blue'><a
+href="#DeleteGrid">DeleteGrid</a></span></b> function. In next request you will
+to create the instance again. Pass saved data as first parameter to <b><span
+style='color:blue'><a href="#CreateGrid">CreateGrid</a></span></b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Reference><b><span
+style='font-size:16.0pt'>Function reference</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=CreateGrid><b><i><span style='font-size:14.0pt;
+color:blue'>CreateGrid</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>CreateGrid</b>
+(wchar_t *<b>Data</b>, wchar_t *<b>Layout</b>, wchar_t *<b>Defaults</b>,
+wchar_t *<b>Text</b>, wchar_t *<b>Bonus</b>, wchar_t *<b>Bonus2</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>CreateGridA</b>
+(char *<b>Data</b>, char *<b>Layout</b>, char *<b>Defaults</b>, char *<b>Text</b>,
+char *<b>Bonus</b>, char *<b>Bonus2</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>CreateGrid</b> (string <b>Data</b>, string <b>Layout</b>, string <b>Defaults</b>,
+string <b>Text</b>, string <b>Bonus</b>, string <b>Bonus2</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>CreateGrid</b>
+(ByVal <b>Data</b> As String, ByVal <b>Layout</b> As String, ByVal <b>Defaults</b>
+As String, ByVal <b>Text</b> As String, ByVal <b>Bonus</b> As String, ByVal <b>Bonus2</b>
+As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGCreateGrid
+</b>(char* <b>Data</b>, char* <b>Layout</b>, char* <b>Defaults</b>, char *<b>Text</b>,
+char* <b>Bonus</b>, char *<b>Bonus2</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>CreateGrid</b>
+(String <b>Data</b>, String <b>Layout</b>, String <b>Defaults</b>, String <b>Text</b>,
+String <b>Bonus</b>, String <b>Bonus2</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates new grid instance
+from XML data in given files or strings. Returns grid index, that can be used
+in other functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Input parameters can be XML
+string (first character must be ‘<b>&lt;</b>’ or ‘<b>&amp;</b>’) or XML file.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>&lt;0</b> for
+error (<b>-1</b> input file not found, <b>-2</b> file cannot be read, <b>-3</b>
+bad XML format)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Data</span></b><span
+style='font-size:10.0pt'> – required – the XML data rows. This is only data
+that can be saved back.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Layout</span></b><span
+style='font-size:10.0pt'> – can be NULL – grid layout (columns, definitions,
+configuration, ...)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Defaults</span></b><span
+style='font-size:10.0pt'> – can be NULL – grid defaults, usually <b><a
+href="Files.htm#DefaultsXml">Defaults.xml</a></b>. Remember, some default
+settings is always required.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Text</span></b><span
+style='font-size:10.0pt'> – can be NULL – grid text, usually <b><a
+href="Files.htm#TextXml">Text.xml</a></b>. In actual version is not used.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bonus</span></b><span
+style='font-size:10.0pt'>, <b>Bonus2</b> – can be NULL - XML data in string, to
+change some settings</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, if you pass XML
+file as parameter, you must give absolute path. Relative paths in this context
+are very problematic.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=UpdateGrid><b><i><span style='font-size:14.0pt'>UpdateGrid</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>UpdateGrid</b>
+(int <b>Index</b>, wchar_t *<b>Bonus</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>UpdateGridA</b>
+(int <b>Index</b>, char *<b>Bonus</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>UpdateGrid </b>(int <b>Index</b>, string <b>Bonus</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>UpdateGrid</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Bonus</b> As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGUpdateGrid</b>
+(int <b>Index</b>, char *<b>Bonus</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>UpdateGrid </b>(int
+<b>Index</b>, String <b>Bonus</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Updates Grid settings by XML
+string <b>Bonus</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-1</b>
+grid not found, <b>-3</b> bad input XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this function to modify
+some grid settings, not to saving changes to data. For saving changes use <a
+href="#Save">Save</a> or <a href="#SaveEx">SaveEx</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FindGrid><b><i><span style='font-size:14.0pt'>FindGrid</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>FindGrid</b>
+(wchar_t *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>FindGridA</b>
+(char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>FindGrid </b>(string <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>FindGrid</b>
+(ByVal <b>Cfg</b> As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGFindGrid</b>
+(char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>FindGrid</b>
+(String <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Looks for grid with the same <b>Session</b>
+attribute (&lt;Grid&gt;&lt;IO <a href="DataCommunication.htm#IOSession">Session</a>=’???’/&gt;&lt;/Grid&gt;) as in given <b>Cfg</b> string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Session attribute can be set
+in functions CreateGrid, UpdateGrid, GetBody, GetPage, Save.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If Session attribute is not
+set, it is by default the grid index returned from CreateGrid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By Session should be the grid
+instance fully identified. The Session attribute (if set) is returned in every
+TreeGrid request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns grid index or <b>-1</b>
+grid not found, <b>-2</b> no &lt;IO&gt; Session attribute set in Cfg or no grid
+found for the Session, <b>-3</b> bad input XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>-2</b> is returned if
+the grid instance was already freed from memory. It happens especially in PHP
+when used as CGI.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FindGrids><b><i><span style='font-size:14.0pt'>FindGrids</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>FindGrids</b>
+(int *<b>Indexes</b>, int <b>Max</b>, wchar_t *<b>Cfg</b>, int <b>Seconds</b>,
+int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>FindGridsA</b>
+(int *<b>Indexes</b>, int <b>Max</b>, char *<b>Cfg</b>, int <b>Seconds</b>, int
+<b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>FindGrids</b> (IntPtr <b>Indexes</b>, int <b>Max</b>, string <b>Cfg</b>,
+int <b>Seconds</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>FindGrids</b>
+(ByVal <b>Indexes</b> As IntPtr, ByVal <b>Max</b> As Integer, ByVal <b>Cfg</b>
+As String, ByVal <b>Seconds</b> As Integer, ByVal <b>Type</b> As Integer) As
+Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        <i>use <a
+href="#FindGridsStr">FindGridsStr</a> instead</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>FindGrids</b>
+(int[] <b>Indexes</b>, int <b>Max</b>, string <b>Cfg</b>, int <b>Seconds</b>,
+int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Looks for grids with the same
+attribute values in &lt;Cfg&gt; tag as in <b>Cfg</b> parameter. So you should
+fill to <b>Cfg</b> parameter only those attributes according to you want to
+search.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Indexes</span></b><span
+style='font-size:10.0pt'> is array of integers filled by found indexes. <b>Indexes</b>
+can be null to get only count of grids.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Max</span></b><span
+style='font-size:10.0pt'> is maximum count of indexes to fill to <b>Indexes</b>
+array.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> is full Grids XML data with &lt;Cfg&gt; tag like
+“&lt;Grid&gt;&lt;Cfg MyAttr=’xy’/&gt;&lt;/Grid&gt;” to search grids according
+to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>Seconds</b> is not 0
+the function returns only grids older this count of seconds – the last access
+to grids was before this count of seconds. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Type</span></b><span
+style='font-size:10.0pt'> is reserved and should be 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns count of found grids
+(count of indexes in <b>Indexes</b>) or <b>-3</b> for bad XML in Cfg.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this function to get
+indexes from some group of grids marked by some (usually custom) attribute in
+&lt;Cfg&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or use this function to get
+old (probably not used) grid instances to backup or delete them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FindGridsStr><b><i><span style='font-size:14.0pt'>FindGridsStr</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char* <b>FindGridsStrA</b>
+(int <b>Max</b>, char *<b>Cfg</b>, int <b>Seconds</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char* <b>TGFindGridsStr</b>
+(int <b>Max</b>, char *<b>Cfg</b>, int <b>Seconds</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="#FindGrids">FindGrids</a>, but returns <b>Indexes</b> as comma separated
+string. If no index found, returns null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetSession><b><i><span style='font-size:14.0pt'>GetSession</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t* <b>GetSession</b>
+(wchar_t *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char* <b>GetSession</b>
+<b>A</b> (char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetSession</b> (string <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetSession</b>
+(ByVal <b>Cfg</b> As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char* <b>TGGetSession</b>
+(char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetSession</b>
+(String <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns value of &lt;IO
+Session&gt; attribute from given XML string. If no session found returns null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful when the grid data are
+unloaded from memory and saved to disk or database according to Session id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetGridSession><b><i><span style='font-size:14.0pt'>GetGridSession</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t* <b>GetGridSession</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char* <b>GetGridSessionA</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetGridSession</b> (int Index);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetGridSession</b>
+(ByVal <b>Index</b> As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char* <b>TGGetGridSession</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetGridSession</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns actual value of
+&lt;IO Session&gt; attribute in given grid instance. If no session found
+returns null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful when the grid data are
+unloaded from memory and saved to disk or database according to Session id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=DeleteGrid><b><i><span style='font-size:14.0pt'>DeleteGrid</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>DeleteGrid</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>DeleteGrid </b>(int Index);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>DeleteGrid</b>
+(ByVal <b>Index</b> As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGDeleteGrid</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>DeleteGrid</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes the grid. Frees all
+its resources. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-1</b>
+grid not found</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Clear><b><i><span style='font-size:14.0pt'>Clear</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        void <b>Clear </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          void <b>Clear </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Sub <b>Clear </b>(
+)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        void <b>TGClear </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       void <b>Clear </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes all grids. Frees all
+resources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But remember, this does not
+unlock the dll file. To unlock it, you must call FreeLibrary ( ), but only if
+it was loaded dynamically (in ASP.NET or Java it is not possible).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetBody><b><i><span style='font-size:14.0pt;
+color:blue'>GetBody</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetBody</b>
+(int <b>Index</b>, wchar_t *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetBodyA</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetBody</b> (int <b>Index</b>, string <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetBody</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Cfg</b> As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetBody</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetBody</b>
+(int <b>Index</b>, String <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns main data for
+TreeGrid in XML string. If Paging==3, returns only pages (tags &lt;B&gt;)
+without any child tags &lt;I&gt;. For error returns null.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> – required - XML string with TreeGrid configuration –
+sorting and filters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function also modifies main
+data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetPage><b><i><span style='font-size:14.0pt;
+color:blue'>GetPage</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetPage</b>
+(int <b>Index</b>, wchar_t *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetPageA</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetPage</b> (int <b>Index</b>, string <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetPage</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Cfg</b> As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetPage</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetPage</b>
+(int <b>Index</b>, String <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns data for one page if
+Paging==3 or children of row if ChildPaging==3.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> – required – XML string with requested page
+(identified by position) or row (identified by id) and with TreeGrid
+configuration – sorting and filters.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> contains requested page or row identification. Both
+requests are set by &lt;B&gt; tag, page is identified by <b><a
+href="PagingServer.htm#BPos">Pos</a></b> attribute and row by <b><a
+href="RowId.htm#Iid">id</a></b> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> also contains setting for sorting and filters. If
+these settings do not correspond to settings in last call <a href="#FGetBody">GetBody</a>,
+the GetPage returns NULL.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns null if no page or
+row is requested or the requested page or row is not found.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Does not return rows marked
+as Filtered. Returns all cells with values set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function does not modify main
+data (only if configuration changes).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Save><b><i><span style='font-size:14.0pt;color:blue'>Save</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>Save</b>
+(int <b>Index</b>, wchar_t *<b>Input</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SaveA</b>
+(int <b>Index</b>, char *<b> Input</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>Save</b> (int <b>Index</b>, string <b>Input</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>Save</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Input</b> As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGSave</b>
+(int <b>Index</b>, char *<b> Input</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>Save</b>
+(int <b>Index</b>, String <b>Input</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Saves changes to main data.
+The same as <a href="#SaveEx">SaveEx</a> function with Type = 0.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Input</span></b><span
+style='font-size:10.0pt'> is XML string with changed rows. It contains rows
+that have been added, deleted, moved or changed. Function irreversibly modifies
+main data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-3</b>
+bad Input XML, <b>&gt;0</b> number of rows not successfully saved</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SaveEx><b><i><span style='font-size:14.0pt'>SaveEx</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SaveEx</b>
+(int <b>Index</b>, wchar_t *<b>Input</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SaveExA</b>
+(int <b>Index</b>, char *<b> Input</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>SaveEx</b> (int <b>Index</b>, string <b>Input</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>SaveEx</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Input</b> As String, ByVal <b>Type</b>
+As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGSaveEx</b>
+(int <b>Index</b>, char *<b> Input</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>SaveEx</b>
+(int <b>Index</b>, String <b>Input</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Saves changes to main data.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Input</span></b><span
+style='font-size:10.0pt'> is XML string with changed rows. It contains rows
+that have been added, deleted, moved or changed. Function irreversibly modifies
+main data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>Type</b> = 1 it
+remembers the changes to be got by <a href="#GetChanges">GetChanges</a>
+function. More changes are merged together.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Type = 1 is
+usually set for all other grid instances except the grid instance the changes
+are coming from.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>Type</b> = 2 it
+remembers the id modifications if new id collided with some id stored in data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Type = 2 is
+usually set for the grid instance the changes are coming from.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                This setting
+has sense only when more users have rights to add new rows that can cause id
+colliding.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-3</b>
+bad Input XML, <b>&gt;0</b> number of rows not successfully saved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetChanges><b><i><span style='font-size:14.0pt'>GetChanges</span></i></b></a><b><i><span
+style='font-size:14.0pt'> </span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetChanges</b>
+(int <b>Index</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetChangesA</b>
+(int <b>Index</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetChanges</b> (int <b>Index</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetChanges</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Type</b> As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetChanges</b>
+(int <b>Index</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetChanges</b>
+(int <b>Index</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all changes done by <a
+href="#SaveEx">SaveEx</a> function with Type=1. Returns only &lt;Changes&gt;
+tag without parent &lt;Grid&gt; tag. Returns null if there is no pending
+changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>Type</b>=1, it clears
+all returned changes, so you will not get them in next call of GetChanges.
+Remember, it never modifies the data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use this function to
+get changes and return them to client when <a href="DataServerChanges.htm#Check">checking
+for updates</a> function is used or you can get and parse them and store
+changes to database instead of use <a href="#GetData">GetData</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetCells><b><i><span style='font-size:14.0pt'>GetCells</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetCells</b>
+(int <b>Index</b>, wchar_t *<b>Row</b>, wchar_t *<b>Col</b>, int <b>Type</b>,
+wchar_t *<b>Param</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetCellsA</b> 
+(int <b>Index</b>, char *<b>Row</b>, char *<b>Col</b>, int <b>Type</b>, char *<b>Param</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetCells</b> (int <b>Index</b>, string <b>Row</b>, string <b>Col</b>,
+int <b>Type</b>, string <b>Param</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetCells</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Row</b> As String, ByVal <b>Col</b> As
+String, ByVal <b>Type</b> As Integer, ByVal <b>Param</b> As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetCells</b>
+(int <b>Index</b>, char *<b>Row</b>, char *<b>Col</b>, int <b>Type</b>, char *<b>Param</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetCells</b>
+(int <b>Index</b>, String <b>Row</b>, String <b>Col</b>, int <b>Type</b>, String
+<b>Param</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns values from selected
+cells. Returns all data in one string, separated by the first character in <b>Param</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Row</span></b><span
+style='font-size:10.0pt'> – a row id, can be null, see <b>Type</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Col</span></b><span
+style='font-size:10.0pt'> – required – from this column will be the cells
+returned. In fact the <b>Col</b> can be any row or cell attribute name.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Type</span></b><span
+style='font-size:10.0pt'> – required - which cells will be returned for the
+given <b>Row</b> and other options</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                (1-2. bit,
+&amp;3)        <b>0</b> – returns only one given cell [Row,Col]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <b>1</b>
+– returns values from all sibling rows, including the <b>Row</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <b>2</b>
+– returns values from all variable rows, the <b>Row</b> is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <b>3</b>
+– returns values from all variable and fixed rows, the <b>Row</b> is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                (3. bit,
+&amp;4)            <b>4</b> – the result is formatted according to Format/Enum
+attributes, only for Enum and Date types</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                (4-5. bit,
+&amp;24)      <b>8</b> – the values will be sorted as numbers</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <b>16</b>
+– the values will be sorted as strings, case insensitive</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <b>24</b>
+– the values will be sorted as strings, case sensitive</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                (6.bit,
+&amp;32)           <b>32</b> – only one value from the same values (according
+to the sorting) will be listed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                (7.bit,
+&amp;64)           <b>64</b> – no empty value(s)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Param</span></b><span
+style='font-size:10.0pt'> – its first character is used to separate the values
+in the returned string. If it is empty, the ‘|’ is used</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>Param</b>
+can also contain “|name|value” to return only rows their attribute <i>name</i>
+is equal to <i>value</i>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For example
+GetCells(0,”123”,”A”,1,”!Visible!1”) returns all siblings of the row with id
+“123”, only visible rows, values from column ‘A’. </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The result can be for
+example “!45!2.4!66!12” (it is separated by the ‘!’, because it was set as the
+first character in Param).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used especially to
+get string for Defaults list</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.4</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetExport><b><i><span style='font-size:14.0pt;
+color:blue'>GetExport</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetExport</b>
+(int <b>Index</b>, wchar_t *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetExportA</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetExport</b> (int <b>Index</b>, string <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetExport</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Cfg</b> As String) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetExport</b>
+(int <b>Index</b>, char *<b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetExport</b>
+(int <b>Index</b>, String <b>Cfg</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns data exported to MS
+Excel. It returns data in HTML with specific formatting for Excel. Returns null
+for error.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cfg</span></b><span
+style='font-size:10.0pt'> – required – XML string with list all columns with
+position, width and visibility.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SaveToFile><b><i><span style='font-size:14.0pt'>SaveToFile</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SaveToFile</b>
+(int <b>Index</b>, wchar_t *<b>FileName</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SaveToFileA</b>
+(int <b>Index</b>, char *<b> FileName</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>SaveToFile</b> (int <b>Index</b>, string <b>FileName</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>SaveToFile</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>FileName</b> As String, ByVal <b>Type</b>
+As Integer) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGSaveToFile</b>
+(int <b>Index</b>, char *<b> FileName</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>SaveToFile</b>
+(int <b>Index</b>, String <b>FileName</b>, int <b>Type</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Saves data to file. Saves all
+rows, include all attributes (such Filtered). Saves in last state (sorting,
+filters, calculations).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FileName</span></b><span
+style='font-size:10.0pt'> – required – FileName with path to save to.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Type</span></b><span
+style='font-size:10.0pt'> – required (default = <b>28</b> = UTF8 + session + cfg
++ body) – bit array:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>1.bit
+(&amp;1) - data format – 0 – UTF8, 1 – Unicode.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>2.bit
+(&amp;2) – reserved</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>3.bit
+(&amp;4) – save session (&lt;IO Session&gt; attribute)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>4.bit
+(&amp;8) – save configuration (sorting, grouping, search, filters)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>5.bit
+(&amp;16) – save &lt;Body&gt; tag</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>6.bit
+(&amp;32) – save &lt;Head&gt; and &lt;Foot&gt; tags</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>7.bit
+(&amp;64) – save all other tags than &lt;Body&gt;, &lt;Head&gt;, &lt;Foot&gt;.
+It saves also configuration and session.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-1</b>
+file cannot be created, <b>-2</b> file cannot be written, <b>-3</b> corrupted
+data</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetData><b><i><span style='font-size:14.0pt'>GetData
+</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetData</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetDataA</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetData</b> (int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetData</b>
+(ByVal <b>Index</b> As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetData</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetData</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all data in string.
+This is the same as function <a href="#SaveToFile">SaveToFile</a>, but always
+returns unicode (or <b>...A</b> UTF8) string. Returns null for error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=GetLastId><b><i><span style='font-size:14.0pt'>GetLastId
+</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>GetLastId</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>GetLastIdA</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>GetLastId</b> (int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>GetLastId</b>
+(ByVal <b>Index</b> As Integer) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGGetLastId</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>GetLastId</b>
+(int <b>Index</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns last (highest) id in
+grid. Use this function to get the last id after saving changes by <a
+href="#Save">Save</a> function when copying collapsed rows with children is
+permitted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You should return this last
+id in &lt;Cfg LastId=’...’/&gt; back to grid after successful save to update <a
+href="RowId.htm#CfgLastId">LastId</a> property on client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copying collapsed rows means
+that user can copy rows with not loaded children =&gt; copying is done only on
+server by <a href="RowAdd.htm#ICopy">Copy</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns null for error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SetGridLocale><b><i><span style='font-size:14.0pt'>SetGridLocale</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SetGridLocale</b>
+(int <b>Index</b>, wchar_t *<b>Locale</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SetGridLocaleA</b>
+(int <b>Index</b>, char *<b> Locale</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>SetGridLocale</b> (int <b>Index</b>, string <b>Locale</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>SetGridLocale</b>
+(ByVal <b>Index</b> As Integer, ByVal <b>Locale</b> As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGSetGridLocale</b>
+(int <b>Index</b>, char *<b> Locale</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>SetGridLocale</b>
+(int <b>Index</b>, String <b>Locale</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Chooses language for
+internationalization when comparing strings for sorting, filtering and
+grouping.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Index</span></i><span
+style='font-size:10.0pt'> is index of given grid. Every grid instance can have
+its own locale settings.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Locale</span></i><span
+style='font-size:10.0pt'> is name of language like “french”, “german”, “czech”.
+For name reference see <a
+href="http://msdn2.microsoft.com/en-us/library/39cwe7zf(VS.80).aspx">http://msdn2.microsoft.com/en-us/library/39cwe7zf(VS.80).aspx</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Locale can also specify
+regional sub language if different, in this schema: &quot;lang[_territory[.code_page]]&quot;,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>where <i>lang</i> is ISO 639
+language code, <i>territory</i> is an ISO 3166 country code, and <i>code_page</i>
+is a character set or encoding identifier like ISO-8859-1 or UTF-8.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For standard English language
+don’t call this function, it slows down strings comparing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Strings are compared
+according to given locale only if SortType / GroupType / FilterType has set
+second bit (&amp;2) for locale comparing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><span
+style='font-size:10.0pt'> Attention, the locale comparing is always <b><i>case</i></b>
+<b><i>insensitive</i></b> !</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>EnterRead, LeaveRead,
+EnterWrite, LeaveWrite</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        void <b>EnterRead </b>(
+); void <b>LeaveRead </b>( ); void <b>EnterWrite </b>( ); void <b>LeaveWrite </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          void <b>EnterRead
+</b>( ); void <b>LeaveRead </b>( ); void <b>EnterWrite </b>( ); void <b>LeaveWrite
+</b>( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Sub <b>EnterRead </b>(
+) : Sub <b>LeaveRead </b>( ) : Sub <b>EnterWrite </b>( ) : Sub <b>LeaveWrite </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        void <b>TGEnterRead
+</b>( ); void <b>TGLeaveRead </b>( ); void <b>TGEnterWrite </b>( ); void <b>TGLeaveWrite
+</b>( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       void <b>EnterRead </b>(
+); void <b>LeaveRead </b>( ); void <b>EnterWrite </b>( ); void <b>LeaveWrite </b>(
+);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Critical section</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use critical sections if you
+need to call more than one function without interference with other threads. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All TreeGrid functions itself
+are thread safe and you don’t need to use critical section for them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This critical section is
+usual <b>Multi read exclusive write synchronizer</b>. It is <b>not reentrant</b>
+- you cannot call EnterWrite twice from one thread.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For every EnterRead you must
+call LeaveRead and for every EnterWrite you must call LeaveWrite.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EnterWrite waits for all
+threads to finish reading or writing. There can be only one thread that writes
+at a time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>EnterRead waits for all
+threads to finish writing. There can be more threads that read at a time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These functions are in fact
+independent on grids and can be used everywhere.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i>Other function</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=LockLibrary><b><i><span style='font-size:14.0pt'>LockLibrary</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>LockLibrary</b>
+(wchar_t *<b>LibName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>LockLibraryA</b>
+(char *<b>LibName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Locks library in memory to
+not be unloaded after the server script frees its handle. Use only in
+non-standard server script environment</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>LibName</span></b><span
+style='font-size:10.0pt'> is full path to TreeGrid.dll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The function can be called
+more times, it locks library only once.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>1</b> – success, <b>0</b>
+– error, <b>-1</b> library already locked</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>UnlockLibrary</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>UnlockLibrary</b>
+( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unlocks library previously
+locked by <b>LockLibrary</b> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>1</b> – success, <b>0</b>
+– error, <b>-1</b> library is not locked</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>2.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FreeString><b><i><span style='font-size:14.0pt'>FreeString</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        void <b>FreeString</b>
+(wchar_t *<b>Str</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        void <b>FreeStringA</b>
+(char *<b>Str</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Frees allocated string if
+calling environment cannot do this itself. Use it for all strings you got by
+TreeGrid functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In standard server side
+environments like .NET, Java or PHP you don’t need to (you must not) use this
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i>Debugging
+functions</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>! </span></i></b><i><span
+style='font-size:10.0pt'>These functions are available only in debug version of
+TreeGrid.dll/so (<b>TreeGridDbg.dll / TreeGridDbg.so</b>).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=SetDebug><b><i><span style='font-size:14.0pt'>SetDebug</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SetDebug</b>
+(int <b>Level</b>, wchar_t *<b>FileName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        int <b>SetDebugA</b>
+(int <b>Level</b>, char *<b> FileName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern int <b>SetDebug</b> (int <b>Level</b>, string <b>FileName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>SetDebug</b>
+(ByVal <b>Level</b> As Integer, ByVal <b>FileName</b> As String) As Integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        int <b>TGSetDebug</b>
+(int <b>Level</b>, char *<b> FileName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       int <b>SetDebug</b>
+(int <b>Level</b>, String <b>FileName</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets debugging path and level
+of logs.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Level</span></b><span
+style='font-size:10.0pt'> is binary array and controls what will be logged:
+Default is <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                1. bit
+(&amp;1) – last error is stored and can be accessed by <a href="#LastError">LastError</a>
+function</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                2. bit
+(&amp;2) – every global function called is logged with all its input parameters
+to file <i>FileName</i><b>G</b>_<i>Index</i>.log, </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>where <i>FileName</i> is given <b>FileName</b>, <i>Index</i>
+is grid instance index, for functions without index is <i>Index</i> set as
+‘xxxx’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                3. bit
+(&amp;4) – many information is logged to file FileNameT_Id.log,</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>where <i>FileName</i> is given <b>FileName</b>, <i>Id</i>
+is global thread id that called the function</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt;color:red'>!</span></b><span style='font-size:10.0pt'>
+Setting this bit can slow down the library and sometimes also crash it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                4. bit
+(&amp;8) – logs all the global called functions (by 2.bit) the one file with
+Index set as ‘xxxx’.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FileName</span></b><span
+style='font-size:10.0pt'> is only partial file name without extension. It can
+be also only directory path, but with ending ‘\’ or ‘/’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default <b>FileName</b> value
+is &quot;c:\\treegrid\\log_&quot; on Windows and &quot;/tmp/treegrid/log_&quot;
+on Linux.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>! </span></b><span
+style='font-size:10.0pt'>The web server process must have rights to write to
+the directory where <b>FileName</b> resides and must have rights to create new
+files here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> OK, <b>-1</b>
+Called in non debug DLL/SO, <b>-2</b> to file cannot be written</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>3.0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=LastError><b><i><span style='font-size:14.0pt'>LastError</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        wchar_t * <b>LastError</b>
+( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C++        char * <b>LastErrorA</b>
+( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>C#          public static
+extern string <b>LastError</b> ( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>VB          Function <b>LastError</b>
+( ) As String</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PHP        char * <b>TGLastError</b>
+( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Java       String <b>LastError</b>
+( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns last error string message
+if any function returned error code. The last error is always cleared by
+calling any TreeGrid function. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New in version <b>1.2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In version <b>3.0</b> moved
+to debug version. In non-debug version returns always null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               </span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Calculations><b><span
+style='font-size:16.0pt'>Calculations</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid server is written in
+C++ and therefore you cannot use all JavaScript code in formulas calculated on
+server as you can do if formula is calculated on client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All names and keywords are
+case-sensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default rounding precision of
+all numbers in TreeGrid server is 4 digits. It can be changed by &lt;Cfg <b>Precision</b>=’’/&gt;,
+available values are 0 – 9.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Operators><b><u><span style='font-size:10.0pt'>Operators</span></u></b></a><span
+style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>(sorted by
+priority):</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>!</span></b><span style='font-size:10.0pt'> (logical negation) <b><span
+style='color:blue'>~</span></b> (binary negation) <b><span style='color:blue'>–</span></b>
+(unary minus)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>*</span></b><span style='font-size:10.0pt'> (multiplication) <b><span
+style='color:blue'>/</span></b> (division) <b><span style='color:blue'>%</span></b>
+(modulo)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>+</span></b><span style='font-size:10.0pt'> (addition, number +
+number = number, number + string = string) <b><span style='color:blue'>–</span></b>
+(subtraction)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>&lt;</span></b><span style='font-size:10.0pt'> (less then) <b><span
+style='color:blue'>&lt;=</span></b> (less or equal) <b><span style='color:blue'>&gt;</span></b>
+(greater then) <b><span style='color:blue'>&gt;=</span></b> (greater or equal)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>==</span></b><span style='font-size:10.0pt'> (equal) <b><span
+style='color:blue'>!=</span></b> (not equal)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>&amp;</span></b><span style='font-size:10.0pt'> (binary AND)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>^</span></b><span style='font-size:10.0pt'> (binary XOR)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>|</span></b><span style='font-size:10.0pt'> (binary OR)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>&amp;&amp;</span></b><span style='font-size:10.0pt'> (logical AND)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>||</span></b><span style='font-size:10.0pt'> (logical OR)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>?:</span></b><span style='font-size:10.0pt'> (conditional ternary
+operator =&gt; a ? b : c =&gt; if(a) return b; else return c; )</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>,</span></b><span style='font-size:10.0pt'> (comma, separates
+parameters in functions)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Constants><b><u><span style='font-size:10.0pt'>Constants</span></u></b></a><span
+style='font-size:10.0pt'>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><i><span
+style='color:blue'>number</span></i></b> (floating point number, always starts
+with digit ‘0’ – ‘9’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><i><span
+style='color:blue'>string</span></i></b> (any characters in quotes “ ” or
+apostrophes ‘ ‘, the string cannot contain enclosing quote or apostrophe)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                </span></p>
+
+<p class=MsoNormal><a name=Identifiers><b><u><span style='font-size:10.0pt'>Identifiers</span></u></b></a><span
+style='font-size:10.0pt'>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><i><span
+style='color:blue'>ident</span></i></b> (any string without quotations,
+starting with letter (‘a’ – ‘z’, ‘A’ – ‘Z’) or underscore ‘_’, can contain
+these characters and letters ‘0’ – ‘9’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               This
+<b><i>ident</i></b> returns value from actual row from column named <b><i>ident</i></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><i><span
+style='color:blue'>func</span></i></b> (any ident followed by left parenthesis
+‘(‘, comma separated parameters and right parenthesis ‘)’ ). </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Parameters can contain expression, except aggregate
+functions in fixed rows (fixed rows are calculated in special way due paging).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               This
+<b><i>func</i></b> returns value the function calculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Functions><b><u><span style='font-size:10.0pt'>Functions</span></u></b></a><span
+style='font-size:10.0pt'>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>Get</span></b> (<b>Parent</b>, ”<i>column</i>”)     Returns
+the cell from column from immediate parent node, <b>Parent</b> is keyword
+without quotations, <b><i>column</i></b> must be quoted <u>constant</u>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>Get</span></b> (<b><i>id</i></b>, “<i>column</i>”)              Returns
+the cell from column from row identified by <b><i>id</i></b>. <b><i>id</i></b>
+is an id attribute of row, without quotations, <b><i>column</i></b> must be
+quoted <u>constant</u>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>sum</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)                  Sums
+all values in column or in actual column if called without parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>sumsq</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)              Sums
+all squares of values in column or in actual column if called without parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>count</span></b><span style='font-size:10.0pt'> ( )                Returns
+count of rows</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>counta</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)             Counts
+all non blank values in the column or in actual column if called without
+parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>countblank</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)
+    Counts all blank values in the column or in actual column if called without
+parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>product</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)           Multiplies
+all values in column or in actual column if called without parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>max</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)                  Returns
+maximum value from the column or from actual column if called without parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>min</span></b><span style='font-size:10.0pt'> (“<i>column</i>”)                   Returns
+minimum value from the column or from actual column if called without parameter</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Examples><b><u><span style='font-size:10.0pt'>Examples</span></u></b></a><span
+style='font-size:10.0pt'>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;I id = ‘i’ A = ‘5’&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;I
+id=’i1’ A=’10’ B=’5.5’ C=’yes’ D=’no’F = ‘<b><i>formula</i></b>’&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’i11’ F=’100’ B=’200’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’i12’ F=’200’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’i13’ F=’300’ B=’400’/&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;/I&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;I
+id=’i2’ E=’0.5’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/I&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In these data let’s have
+formula in second row (id=’<b>i1</b>’) for cell ‘<b>F</b>’:</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A+B                                                      =
+10+5.5                                                              = 15.5</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A+B+C                                                 =
+10 + 5.5 + “yes”                                              = 15.5yes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A+(B+C)+D                                         =
+10 + (5.5 + “yes”) + “no”                              = 105.5yesno</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A*B*C                                                 =
+10 * 5.5 * 0                                                      = 0</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A &gt; 3 &amp;&amp; B+1 &gt;
+6 ? C : D                 = 10 &gt; 3 &amp;&amp; 5.5+1&gt;6 ? “yes” : “no”              =
+yes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>(!A+2) * -(B&amp;3)                                  =
+(!10 +2) * -(5.5&amp;3)                                         = -2   (!10 =
+0,  5.5&amp;3=1)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“(“+C+”,”+D+”)                                  =
+“(“+”yes”+”,”+”no”+”)”                               = (yes,no)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum()                                                    =
+100+200+300                                                 = 600</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>count() &gt;= 3 ? sum(“B”) :
+D             = 3 &gt;=3 ? 200+400 :  “no”                               = 600</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum() * Get(i1,”E”)                            =
+(100+200+300) * 0.5                                     = 600</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Get(Parent,”A”) ==
+Get(i11,”F”)     = 5 == 100                                                           =
+0</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Updates</span></i></b></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>&nbsp;</span></i></b></p>
+
+<p class=MsoNormal><a name=u20></a><b><span style='font-size:8.0pt'>2.0</span></b></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added Compatibility section</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added GetLastId function</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added FindGrids function</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added SaveEx and GetChanges
+functions</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added LockLibrary and
+UnlockLibrary</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Rewritten PHP section</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=u30></a><b><span style='font-size:8.0pt'>3.0</span></b></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added SetDebug function</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>LastError function moved to
+newly created section Debugging functions</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Updated SaveToFile, parameter
+Type</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added critical section
+function EnterRead,LeaveRead,EnterWrite,LeaveWrite</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added SetGridLocale function</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Rewritten PHP section</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added GetSession and
+GetGridSession functions</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added functions sumsq, counta,
+countblank, product, max, min</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Rewritten section TreeGrid
+server concepts</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=u31></a><b><span style='font-size:8.0pt'>3.1</span></b></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added compatibility with Range
+attribute for filters</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=u311></a><b><span style='font-size:8.0pt'>3.1.1</span></b></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>Added &lt;Cfg Precision/&gt;
+to set rounding precision of digits</span></p>
+
+</div>
+
+</body>
+
+</html>

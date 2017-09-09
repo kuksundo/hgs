@@ -1,0 +1,26 @@
+<Grid>
+   <Cfg id="GanttBasic"/>
+   <Cfg NumberId="1" IdChars="0123456789"/> <!-- Controls generating of new row ids -->
+   <Panel Copy="7"/> <!-- Shows Add/Copy icon on left side panel -->
+   <LeftCols>
+      <C Name="id" Width="40" Type="Int"/> <!-- Row id, informational column -->
+      <C Name="T" Width="140" Type="Text"/> <!-- Column Task / Section-->
+      <C Name="S" Width="60" Type="Date" Format="MMM dd"/> <!-- Column Start date-->
+      <C Name="E" Width="60" Type="Date" Format="MMM dd"/> <!-- Column End Date -->
+      <C Name="C" Width="50" Type="Int" Format="##\%;;0\%"/> <!-- Column Complete -->
+      <C Name="D" Width="50" Type="Text" CanEdit="0" Button="Defaults" Defaults="|*RowsColid*VariableDef" Range="1"/> <!-- Column dependencies (descendants) -->
+   </LeftCols>
+   <Cols>
+      <!-- Gantt chart column -->
+      <C Name="G" Type="Gantt"/>
+      <C Name="G" GanttStart="S" GanttEnd="E" GanttComplete="C" GanttDescendants="D"/> <!-- Defines the source columns for the Gantt chart -->
+      <C Name="G" GanttUnits="d" GanttWidth="18" GanttChartRound="w" GanttRight="1"/> <!-- Defines the Gantt zoom -->
+      <C Name="G" GanttHeader1="w#dddddd MMMM yyyy" GanttHeader2="d#ddddd"/> <!-- Defines Gantt header for the zoom -->
+      <C Name="G" GanttBackground="w#1/6/2008~1/6/2008 0:01"/> <!-- Visualy separates the weeks by vertical line -->
+      <C Name="G" GanttEdit="MainMove,MainResize,MainNew,MainComplete,Dependency"/> <!-- Only the tasks and dependencies can be modified, except the task state -->
+   </Cols>
+   <Header id="ID" T="Task" S="Start" E="End" C="Comp&#x0a;lete" G="Gantt" D="Next"/> <!-- Column captions -->
+
+   <!-- Shows count of incorrect dependencies and on click corrects them -->
+   <Toolbar Formula="ganttdependencyerrors(null,1)" FormulaOnClick="CorrectAllDependencies" FormulaTip="Click to correct the dependencies"/>
+</Grid>

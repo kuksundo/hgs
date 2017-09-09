@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzHash" invoke="none">
+		<description>
+			create a new type safe hash (aka associative array)
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyList
+                  </text>
+                  <hint>
+                    Name of the hash class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored in the hash (descendant of TObject)
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes;
+
+{$DEFINE __HASH_TEMPLATE__}
+type
+   /// This is the hash's ancestor class, can be a user defined class if you
+   /// want to inherit additional behaviour or TInterfacedObject if you
+   /// want the hash to implement an interface
+  _HASH_ANCESTOR_ = TObject;
+  /// The type of items to be stored in the hash, must be TObject or a descendant
+  /// of TObject
+  _HASH_ITEM_ = TMyItem;
+const
+  /// value to return if no item was found
+  _HASH_EMPTY_ITEM_ = nil;
+{$INCLUDE 't_dzHashTemplate.tpl'}
+
+type
+  {: Hash for storing |itemtype| items }
+  |listtype| = class(_HASH_TEMPLATE_)
+  end;
+
+implementation
+
+{$INCLUDE 't_dzHashTemplate.tpl'}
+
+]]>
+		</code>
+	</template>
+</codetemplate>

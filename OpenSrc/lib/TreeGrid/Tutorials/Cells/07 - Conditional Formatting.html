@@ -1,0 +1,65 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <!-- Styles used in the XML example -->
+   <style>
+      .Text1 { color:brown; font-style:italic; }
+      .Text2 { color:navy; font-weight:bold; }
+      .Text3 { color:lime; }
+   </style>
+      
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>7. Conditional formatting and styling</center>
+   <center style='font:bold italic;'>TreeGrid can calculate cell's look according to its value or any other condition</center>
+
+   <div style='margin-bottom:6px;'><a href='07 - Conditional Formatting.xml'>07 - <h2>Conditional Formatting</h2>.xml</a></div>
+   <div style='width:100%; height:350px;'>
+      <bdo Debug='check' Data_Url='07 - Conditional Formatting.xml'></bdo>
+   </div>
+
+   <div style='font:italic 13px Arial;margin-top:6px;'>
+   Remember, when you specify <b>Formula</b> for cell attribute like Class, Color or Icon, you must add it to the row <b>CalcOrder</b> list, otherwise it will be ignored.
+   To add CalcOrder to all rows, set it to the &lt;D Name='R'/>. Remember, when you set <b>CalcOrder</b> attribute, you must list here also all calculated cells.<br />
+   For example &lt;Def>&lt;D Name='R' CalcOrder='Col1Class,Col3,Col3Color,Col5'/>&lt;/Def> when set &lt;C Name='Col1' ClassFormula='...'/>&lt;C Name='Col3' Formula='...' ColorFormula='...'/>&lt;C Name='Col5' Formula='...'/>.
+   </div>
+   <div style='font:italic 13px Arial;margin-top:6px;'> All the <b>...Formula</b> attributes can be set also to individual cells, not only to whole columns. In this case the row must have set <b>Calculated</b>='1'.<br /> 
+   The conditional formatting can be used also for any other cell <b>Type</b> like Date, Enum or Text, not only numbers.<br />
+   The Format, Color and Class attributes can be calculated also in API events <b>OnGetFormat</b>, <b>OnGetColor</b> and <b>OnGetClass</b>.<br />
+   </div>
+   
+   <ul style='margin-top:6px; font: 13px Arial; margin-bottom:6px;'>
+      <li>
+         <h3>Format</h3> attribute (for Int and Float Type only). The simplest way, you can specify three different formats, for positive values, negative values and zero. 
+         Empty value can be specified independently by <b>EmptyValue</b> attribute.<br />
+         By Format you can specify the count of digits, count of decimal places, group separator and also any HTML code to set font, text color, etc.
+      </li>
+      <li>
+         <b>Calculated</b> <h3>Class</h3> attribute. You can set <b>ClassFormula</b> to calculate the cell class name according to any condition.
+         For example to assign different class to value between -3 and 3. The CSS classes are defined inside HTML page. <br />
+         By the Class you can specify font, text color and other text attributes. The Class should <b>not</b> set background color, see Color attribute below.
+      </li>
+      <li>
+         <b>Calculated</b> <h3>Color</h3> attribute. You can set <b>ColorFormula</b> to calculate the cell background color according to any condition.<br />
+         You can also calculate the individual RGB parts of the color from the cell value to achieve color scale according to the values.<br />
+         For example Col1Color="Value+',0,0'" displays scale in red color. <i>Remember, the RGB parts must be in range 0-255, otherwise the color will be completely different.</i>
+      </li>
+      <li>
+         <b>Calculated</b> <h3>Icon</h3> attribute. You can set <b>IconFormula</b> to calculate left side icon according to any condition. The icon can be clickable to run some action (correction) on click.<br />
+      </li>
+      <li>
+         <b>Calculated</b> <h3>HtmlPrefix</h3> and / or HtmlPostfix. You can set <b>HtmlPrefixFormula</b> to append before the cell value any HTML code calculated according to any condition.<br />
+         By the HtmlPrefix you can show for example the gauge according to the cell value.
+      </li>
+   </ul>
+</body>
+</html>

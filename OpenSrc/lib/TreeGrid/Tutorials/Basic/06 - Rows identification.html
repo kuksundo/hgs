@@ -1,0 +1,274 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// ---------------------------------------------------------------------------------------------
+// Simulated save, shows the data to be sent to server in message dialog
+Grids.OnSave = function(G){
+//GetElem("Output").value = ;
+var s = "<div style='text-align:left;'>XML changes to be sent to server:<br><code>";
+s += G.GetXmlData().replace(/\</g,"<br>&lt;");
+s += "</code></div>";
+G.CenterMessage = 2; // Centers the message in the whole page and disables the page
+G.ShowMessageTime(s);
+}
+// ---------------------------------------------------------------------------------------------
+// Called when a user enters not unique id, informs him about the change.
+// Used for examples 03, 05 and 06
+Grids.OnChangeId = function(G,row,col,old){
+G.CenterMessage = 0;
+G.ShowMessageTime("The value '"+old+"' already exists, it was changed to '"+Get(row,col)+"'");
+}
+// ---------------------------------------------------------------------------------------------
+// Generates new GUID for the example 07 - id by API
+Grids.OnGenerateId = function(G,row,id){
+if(G.id!="IdAPI") return id; // Only for the example 07 - id by API
+return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, 
+   function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+      }
+   );
+}
+// ---------------------------------------------------------------------------------------------
+// Generates simulated server response XML for the example 08 - id by server
+// Such response should be normally created and returned from server, this function is used only to avoid server code.
+Grids.OnDataSend = function(G,source,data,func){
+if(G.id!="IdServer"||source!=G.Source.Upload) return null; // Only for the example 08 - id by server and upload response
+for(var max=0,r=G.GetFirst();r;r=G.GetNext(r)) if(!r.Added && max<r.id) max = r.id; // finds out the maximal id used in data
+var X = CreateXML(data); // creates internal object as parsed XML request
+var o = "<Grid><IO Result='0'/><Changes>";
+for(var r=X.firstChild.firstChild.nextSibling.firstChild;r;r=r.nextSibling){ // iterates the XML request and for all added rows changes their id
+   if(r.Added) {max++; o += "<I id='"+r.id+"' Changed='1' NewId='"+(max<10?"000":(max<100?"00":(max<1000?"0":"")))+max+"'/>"; }
+   }
+o += "</Changes></Grid>";
+G.AddDataFromServer(o); // Adds the simulated response to grid like it came from server
+func(0); // Continues the code normally called after the reponse arrives from server
+
+// --- shows the request and response XML in message dialog ---
+var s = "<div style='text-align:left;'>XML changes to be sent to server:<br><code>";
+s += data.replace(/\</g,"<br>&lt;");
+s += "</code><br><br>";
+s += "Simulated XML response returned from server:<br><code>";
+s += o.replace(/\</g,"<br>&lt;");
+s += "</code></div>";
+G.CenterMessage = 2; // Centers the message in the whole page and disables the page
+G.ShowMessageTime(s);
+
+return true; // Suppresses default action
+}
+// ---------------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:0px; padding-left:10px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>6. Rows identification</center>
+   <center style='font:bold italic;'>Different ways of unique identification of rows</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 1 - Row id.xml'>06 - <h2>1 - Row id</h2>.xml</a></div>
+            <div style='width:300px; height:220px;'>
+               <bdo Debug='check' Data_Url='06 - 1 - Row id.xml' Upload_Xml="1" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>Setting row id attribute</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm">Setting row id attribute</a></b>.</li>
+            <li>This is the basic option. Set <h3>id</h3> attribute of every row to unique string. This string can contain all letters and '_' (a-zA-Z_).</li>
+            <li>New row will get its <b>id</b> attribute generated also from these characters. The new generated id is always the highest id (by alphabet order) in the grid.</li>
+            <li>Rows without the id attribute set and rows with duplicate id value will get automatically generated id as <b>AR</b><span style='color:blue;'>xxx</span>, where xxx is auto incremented index starting from 1. The 'AR' can be changed by <b>AutoIdPrefix</b> attribute.<br />
+               Group rows generated by grouping will get auto generated id as <b>GR</b><span style='color:blue;'>xxx</span>. They can be more controlled by <b>GroupIdValue</b> and <b>GroupIdPrefix</b> attributes or by API <b>OnCreateGroup</b>.
+            </li>
+            <li>It is possible to show the row id in column named 'id', but this column must be set as CanEdit='0'.</li>
+            <li><span style='font-weight:bold;'>The row id must <u>not</u> be changed directly API.</span> 
+            To have editable/changeable id use unique editable column as described in the below example "3 - One editable column as unique id".</li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 2 - New id.xml'>06 - <h2>2 - New id</h2>.xml</a></div>
+            <div style='width:300px; height:220px;'>
+               <bdo Debug='check' Data_Url='06 - 2 - New id.xml' Upload_Xml="1" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>Generating id attribute for new rows</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm">Setting row id attribute</a></b>.</li>
+            <li>You can set characters that will be used to generate <b>id</b> by &lt;Cfg: <h3>IdChars</h3> attribute.
+               The characters will be used in the order they are stored in the string IdChars. The IdChars must <u>not</u> contain character '<b>$</b>'.</li>
+            <li>If you want to generate <b><i>number id</i></b>, you can set &lt;Cfg <b>IdChars</b>='0123456789' <h3>NumberId</h3>='1'/>.</li>
+            <li>If you want to start new ids from some id value, you can set &lt;Cfg> <h3>LastId</h3> attribute to the id value before the first generated new id (e.g. LastId='158', the new ids will be 159,160,161,...).</li>
+            <li>You can also use <b>LastId</b> in <b><i>server paging</i></b>, because client TreeGrid does not know the highest id in the grid on server side.</li>
+            <li>You can set prefix and postfix that are added to new id by &lt;Cfg> <b>IdPrefix</b> and <b>IdPostfix</b> attributes. 
+               If you set prefix and/or postfix, all your <b>ids</b> (and also <b>LastId</b> if used) must contain them too!</li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 3 - Editable column.xml'>06 - <h2>3 - Editable column</h2>.xml</a></div>
+            <div style='width:300px; height:220px;'>
+               <bdo Debug='check' Data_Url='06 - 3 - Editable column.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>One editable column as unique id</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm#RowIdColumn">Using one or more (editable) columns as row identity</a></b>.</li>
+            <li>You can identify your rows by any string and let user to set or change this unique identifier manually in some editable column. 
+               TreeGrid ensures that all ids will be unique by appending generated postfix to changed ids in this column. Note, on start all the values in the source ids column must be unique. </li>
+            <li>Set &lt;Cfg <b>IdNames</b>='<i>ColName</i>' <b>AppendId</b>='1' <b>IdChars</b>='0123456789' <b>NumberId</b>='1'/></li>
+            <li><h3>IdNames</h3> contains column name where your unique identifier is set, this column is usually used as <b><i>primary key</i></b> in your database table. <span style='font-weight:bold;'>IdNames must <u>not</u> contain 'id' column name.</span></li>
+            <li>When user adds new row or changes value in id column to not unique id, the value will be regenerated according to <h3>AppendId</h3> value.<br />
+               If <b>AppendId</b>='1' to the existing or default value will be appended generated postfix. <br />
+               If <b>AppendId</b>='0' the value will be overwritten by new generated id, but remember, in this case all the values must contain only characters from <b>IdChars</b>.<br />
+               In the case the value is automatically changed there is called API event <b>OnChangeId</b>.<br />
+            </li>
+            <li>
+               <span style='font-weight:bold;'>The row id attribute is <u>not</u> changed immediatelly after the editable unique column is changed. The row id is changed after the changes are sucessfully uploaded to server or AcceptChanges API method is called.</span>
+            </li>
+            <li>You can set <b>IdChars</b> and <b>NumberId</b> to different values to generate other prefixes.</li>
+            <li>You can set <b>LastId</b> to start from another index, for example LastId='1' starts from index '2'.</li>
+            <li>You can set <b>IdCompare</b>='<b>4</b>' if your unique identifiers are case insensitive.</li>
+            <li><i>Remember, if source ids column value contains '<b>$</b>', this character is converted to '_' in generated id, because id attribute cannot contain this character.</i></li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 4 - Row id in tree.xml'>06 - <h2>4 - Row id in tree</h2>.xml</a></div>
+            <div style='width:300px; height:260px;'>
+               <bdo Debug='check' Data_Url='06 - 4 - Row id in tree.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' width="350">
+            <div style='margin-bottom:6px;'><a href='06 - 5 - Editable column in tree.xml'>06 - <h2>5 - Editable column in tree</h2>.xml</a></div>
+            <div style='width:320px; height:260px;'>
+               <bdo Debug='check' Data_Url='06 - 5 - Editable column in tree.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+         <h4>Row id in tree</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm#RowIdTree">Row id in tree</a></b>.</li>
+            <li>By default the row id attribute does not include any information about row position in tree, so it must be unique among all rows in grid, regardless on their level.</li>
+            <li>You can set &lt;Cfg> <h3>FullId</h3><b>='1'</b>. Now all row ids contain parent's id attribute as prefix, separated by '<b>$</b>'.<br />
+               In deep tree, row id contains all parent's ids, because row's parent also contains its parent id.</li>
+            <li>
+               Initial row id attribute can contain the parent ids separated by $ or it can contain only the last part - so the initial id is unique only inside its parent.<br />
+               After the grid is loaded, all the row id attributes are converted to the full id with parent ids. To server is uploaded always the full id.
+            </li>
+            <li>
+               <span style='font-weight:bold;'>The row id attribute is <u>not</u> changed immediatelly after the row is moved or editable unique column is changed. The row id is changed after the changes are sucessfully uploaded to server or AcceptChanges API method is called.</span><br />
+               If you want to upload also the new id value that will be set to the row, set &lt;bdo/&lt;treegrid <b>Upload_Flags='NewId'</b> ... >. It will be uploaded in <b>NewId</b> attribute of the changed row.
+            </li>
+
+            <li>All other attributes can be used in the same way as in previous examples.</li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 6 - More editable columns.xml'>06 - <h2>6 - More editable columns</h2>.xml</a></div>
+            <div style='width:330px; height:220px;'>
+               <bdo Debug='check' Data_Url='06 - 6 - More editable columns.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>More (editable) columns as unique id</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm#RowIdColumn">Using one or more (editable) columns as row identity</a></b>.</li>
+            <li>You can identify row by more row attributes. You can set their names as comma separated list to &lt;Cfg> <h3>IdNames</h3> attribute.</li>
+            <li>
+               When user adds new row or changes value in some identifier column and the id will became nonunique, the last attribute value (from the <b>IdNames</b>) will be regenerated.<br />
+               Therefore the last item in <b>IdNames</b> must be column name. But the column need not be editable or visible.
+            </li>
+            <li>Other items in <b>IdNames</b> can be column names (editable or read only, visible or hidden), standard row attributes like <b>Def</b> or any user defined attribute filled in &lt;I> tag.</li>
+            <li>The attributes in <b>IdNames</b> must <u>not</u> be '<b>id</b>' attribute or any array attribute like Enum or Defaults.</li>
+            <li>The unique <b>id</b> attribute generated from the <b>IdNames</b> contains all their values separated by '<b>$</b>'.</li>
+            <li>
+               <span style='font-weight:bold;'>The row id attribute is <u>not</u> changed immediatelly after the editable IdNames column is changed. The row id is changed after the changes are sucessfully uploaded to server or AcceptChanges API method is called.</span>
+            </li>
+
+            <li>Other id attributes like FullId, AppendId or IdChars can be used in the same way as in previous examples.</li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 7 - id by API.xml'>06 - <h2>7 - id by API</h2>.xml</a></div>
+            <div style='width:330px; height:170px;'>
+               <bdo Debug='check' Data_Url='06 - 7 - id by API.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>Custom id generated by API</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm#RowIdAPI">API for row ids</a></b>.</li>
+            <li>
+               It is possible to generate new id by client side JavaScript by API event <b>OnGenerateId</b> or <b>OnSetRowId</b>.<br />
+            </li>
+            <li>
+               <h3>OnGenerateId</h3> generates or modifies unique part of the row id.<br /> 
+               If set FullId it controls only the row id part, not its parents part. <br />
+               In more editable columns as id it controls only the last column value as unique part. <br />
+               For other settings it controls the whole id like <b>OnSetRowId</b>.<br />
+            </li>
+            <li>
+               <h3>OnSetRowId</h3> generates or modifies the complete row id set to the id attribute.
+            </li>
+            <li>
+               <i>This example uses OnGenerateId event to generate GUID, see the &lt;script> in this HTML code (06 - Rows identification.html).</i>
+            </li>
+         </ul>
+         </td>
+      </tr>
+      <tr><td><br /></td></tr>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - 8 - id by server.xml'>06 - <h2>8 - id by server</h2>.xml</a></div>
+            <div style='width:330px; height:170px;'>
+               <bdo Debug='check' Data_Url='06 - 8 - id by server.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Url="simulated in API OnDataSend event"></bdo>
+            </div>
+         </td>
+         <td valign='top' colspan="2">
+         <h4>Custom id generated on server side</h4><br />
+         <ul>
+            <li>See documentation for <b><a href="../../Doc/RowId.htm#INewId">NewId attribute</a></b>.</li>
+            <li>
+               If the row id must be generate on server side, e.g. by SQL database, the server can change the row id and return it back to the grid.
+            </li>
+            <li>
+               The server returns the changes in <b>&lt;Changes></b> tag in row's attribute <h3>NewId</h3>
+            </li>
+            <li> Simple server response changing one row id looks like: 
+            <tt>&lt;Grid>&lt;Changes>&lt;I <b>id</b>='orig id' Changed='1' <b>NewId</b>='new id'/>&lt;/Changes>&lt;/Grid></tt><br />
+            Where the 'orig id' is the row id generated by TreeGrid and the 'new id' is the new row id generated by server.
+            </li>
+            <li>
+            <i>This example uses simulated server response generated in client side script in OnDataSend API event. It is used just to avoid server code in many server script languages.</i>
+            </li>
+         </ul>
+         </td>
+      </tr>
+   </table>
+</body>
+</html>

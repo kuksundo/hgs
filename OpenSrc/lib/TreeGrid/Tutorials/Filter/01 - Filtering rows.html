@@ -1,0 +1,167 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Filter</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Filtering rows</center>
+   <center style='font:bold italic;'>Showing only rows that satisfy selected criteria</center>
+   <div style='margin-bottom:6px;'><a href='01 - Filtering rows.xml'>01 - <h2>Filtering rows</h2>.xml</a></div>
+   <div style='width:960px; height:450px;'>
+      <bdo Debug='check' Data_Url='01 - Filtering rows.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         TreeGrid provides three independent ways of filtering rows. All of them can be applied at the same time.
+         <ul>
+            <li>
+               <b>Basic filters</b> done by <b>&lt;Filter></b> row. There can be more &lt;Filter> rows in one grid.<br />
+               The &lt;Filter> row supports simple filter for every column like in MS Excel.
+            </li>
+            <li>
+               <b>Advanced filters</b> done by Cfg <b>Search...</b> attributes and editable in <b>&lt;Search></b> row.<br />
+               It lets users to write their complex expression to filter by or just string to search in all or specified columns.<br />
+               <i>It is described and more demonstrated in next tutorial example <a href='03 - Search and advanced filters.html'>03 - Search and advanced filters.html</a>.</i>
+            </li>
+            <li>
+               <b>Custom filters</b> done by API method <b>SetFilter</b> or <b>FilterDateRange</b> / <b>FilterTextRange</b>. 
+               There can be set more independent filters identified by name. <br />
+               It can be used for example to switch data parts by <b>tabs</b>, combos or radio buttons.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Filter permitions</h4><br />
+         <ul>
+            <li>
+               A Cfg attribute <h3>Filtering</h3><b>='0'</b> completely disables filtering in grid.<br />
+               <i>It affects all filters (basic, advanced, custom)</i>.
+            </li>
+             <li>
+               A Cfg attribute <h3>Filtered</h3><b>='0'</b> temporary disables filtering in grid.<br />
+               This attribute value can be changed by actions <b>FilterOff</b> and <b>FilterOn</b>.<br />
+               <i>It affects only basic filter (for search there is similar attribute <b>Searched</b> and actions <b>SearchOff</b> and <b>SearchOn</b>)</i>.
+            </li>
+            <li>
+               A <b>row</b> can have set <h3>CanFilter</h3><b>='0'</b> to restrict filtering (hiding) this rows by any filter.<br />
+               In tree it can be set also to '2' to hide the row if all its children are hidden. <i>See next example <a href='02 - Filtering in tree.html'>02 - Filtering in tree.html</a></i>.<br />
+               <i>It affects all filters (basic, advanced, custom)</i>.
+            </li>
+            <li>
+               A <b>column</b> can have set <h3>CanFilter</h3><b>='0'</b> to not filter by this column.<br />
+               <i>It affects only basic filter (for search there is similar attribute <b>CanSearch</b>).</i>
+            </li>
+            <li>
+               A <b>column</b> can have set <h3>CanFilter</h3><b>='2'</b> to test all its <b>cell</b> attributes <b>CanFilter</b>, if the cell attribute is set to 0, 
+               the row is not filtered by this column.<br />
+               <i>It affects only basic filter and custom filter with column parameter set (for search there is no similar setting)</i>.
+            </li>
+         </ul>
+      </li>
+      <li><h4>Cell value for filtering</h4><br />
+         Every cell can have set special value by <h3>FilterValue</h3> to use it for filtering instead of the cell value.<br />
+         The value can be also dynamically created by JavaScript in API event <b>OnGetFilterValue</b>.<br />
+         <i>It affects basic and advanced filters and custom filters set by FilterTextRange / FilterDateRange, but not by SetFilter</i>
+      </li>
+      <li>
+         <h4>API events</h4><br />
+         Before filtering start it is called <b>OnFilter</b> API event. It can return true to provide own filtering and not the default one.<br />
+         After filtering finishes, it is called <b>OnFilterFinish</b> API event.<br />
+         For every row it is called <b>OnRowFilter</b> event to let you change the result of the filtering row.<br />
+         The grid can be re-filtered after some external change by <b>DoFilter</b> method.<br />
+         <i>All these events are called for all filters (basic, advanced, custom). </i>
+      </li>
+      <li>
+         <h4>Simple filter (&lt;Filter>)</h4><br />
+         Simple filter is done by fixed &lt;Filter> row(s) placed into &lt;Head> or &lt;Foot> section.
+         <ul>
+            <li>
+               <h4>Filtering strings</h4><br />
+               There are four attributes used also for sorting and grouping. To set the option only for filter, set it to &lt;Filter> cell.
+               <ul>
+                  <li>
+                     Column / Filter cell attribute <h3>CaseSensitive</h3> to compare the strings case sensitive. By default is on.
+                  </li>
+                  <li>
+                     Column / Filter cell attribute <h3>LocalCompare</h3> to compare the strings according to browser's locale settings. 
+                     It has sense especially for case insensitive comparing. By default is off.
+                  </li>
+                  <li>
+                     Column / Filter cell attribute <h3>WhiteChars</h3> as list of characters to ignored when comparing. The strings are compared after these values are removed from them.
+                  </li>
+                  <li>
+                     Column / Filter cell attribute <h3>CharCodes</h3> as list of character pairs to replace the first character by the second one in all strings before comparing them. Useful for example to compare strings without punctuation in many languages.
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h4>User interface (&lt;Filter> row)</h4><br />
+               <ul>
+               <li>
+                  The actual or predefined filter values are in cell values of the &lt;Filter> row.
+               </li>
+               <li>
+                  The actual or predefined operator is set by cell attribute <h3>Filter</h3>. It can be:<br />
+                  Off: 0 – Off<br />
+                  Number filter: 	1 – Equal, 2 – Not equal, 3 – Less than, 4 – Less than or equal, 5 – Greater than, 6 – Greater than or equal<br />
+                  String filter:	7 – Begins with, 8 – Does not begin with, 9 – Ends with, 10 – Does not end with, 11 – Contains, 12 – Does not contain<br />
+               </li>
+               <li>
+                  Every filter cell shows left icon to popup filter menu to select filter operator.<br />
+                  The menu can be hidden by cell attribute <b>ShowMenu='0'</b>. For Enum type is the menu hidden by default, it can be shown by ShowMenu='1'.<br />
+                  The individual menu items (visibility and order) can be set by <b>MenuItems</b> cell attribute.<br />
+                  The menu can be shown also by calling action <b>ShowFilterMenu</b>.<br />
+               </li>
+               <li>
+                  After the filter cell value is edited or changed by a user and the filter operator is 0 (off), the operator can be automatically set to <b>DefaultFilter</b> cell attribute value.<br />
+                  By default it is 1 for number types and 11 for string types.
+               </li>
+               <li>
+                  When a user inputs or selects value set by attribute <b>FilterOff</b>, the filter operator is automatically changed to 0 (off). It is empty string by default.<br />
+                  For Enum type it can be also value not existing in Enum array to add it to disable the filter.
+               </li>
+               <li>
+                  Enum type can filter by the Enum strings or by EnumKeys values when set cell attribute <b>FilterEnumKeys='1'</b>, useful especially when it filters different type cells with FilterValue set.
+               </li>
+               <li>
+                  To choose more values to filter by, set <h3>Range</h3><b>='1'</b> for the Filter cell. Especially for Enum type or Button Defaults.
+               </li>
+               <li>
+                  All the cell values and operator values can be changed by API method <b>ChangeFilter</b>.
+               </li>
+               </ul>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Advanced filter (Search)</h4> done by Cfg <b>Search...</b> attributes and editable in <b>&lt;Search></b> row.<br />
+         It lets users to write their complex expression to filter by or just string to search in all or specified columns.<br />
+         <i>It is described and more demonstrated in next tutorial example <a href='03 - Search and advanced filters.html'>03 - Search and advanced filters.html</a>.</i>
+      </li>
+      <li>
+         <h4>Custom filters</h4><br />
+         It is possible to set custom filters by API. These filters are identified by their names and are independent on each other and on the basic and advanced filters.<br />
+         In this example are demonstrated in top tabs to choose specific part of the data to display.<br />
+         <ul>
+         <li>
+         There are two special API methods <b>FilterDateRange</b> and <b>FilterTextRange</b> to filter rows with values in given column in given range.<br />
+         </li>
+         <li>
+         All other custom filters can be set by API method <h3>SetFilter</h3>. It accepts any JavaScript code like in grid Formula to apply it for every iterated row.<br />
+         </li>
+         <li>
+         Calling <b>SetFilter</b> without filter parameter clears the given filter set by any or these three methods.<br />
+         </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

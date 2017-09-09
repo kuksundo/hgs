@@ -1,0 +1,563 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Default rows</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Default rows</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every row &lt;<b>I</b>&gt;
+has predefined attribute values in its default row &lt;<b>D</b>&gt;. The values
+from &lt;D&gt; are used when the row &lt;I&gt; has some attribute not set. If
+row has attribute set to empty value, the default value is not used.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Using defaults helps you
+to reduce data size and also to control adding and moving rows. But using
+defaults is not required.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Using defaults is good
+especially for trees with different levels, at least to differentiate tree
+nodes and data rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default rows are used for
+restrictions in dragging and copying rows in tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defaults <b>&lt;D&gt;</b> are
+identified by their attribute <b><span style='color:blue'><a href="#DName">Name</a></span></b>.
+By this <b>Name</b> string are referenced from rows or other defaults by
+attributes <b><a href="#IDef">Def</a></b> or <b><a href="#ICDef">CDef</a></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'><a href="#IDef">Def</a></span></b><span
+style='font-size:10.0pt'> attribute specifies default for the row itself. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use <b>Def</b>
+attribute even in &lt;D&gt; tag to reference one or more other &lt;D&gt;. This
+means that you define &lt;I&gt; that references to its &lt;D&gt; that
+references to another &lt;D&gt;, that ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you don’t set <b>Def</b>
+attribute for any &lt;D&gt; or &lt;I&gt; tag the default is always &lt;D Name=”<b>R</b>”&gt;.
+Only for fixed rows is predefined &lt;D Name=”<b>Fixed</b>”&gt; that references
+“R” default too. This means that any attribute value not set in branch of
+&lt;I&gt; and &lt;D&gt; tags is at last read from “R” default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pay attention to
+cross-references among &lt;D&gt; tags. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'><a href="#ICDef">CDef</a></span></b><span
+style='font-size:10.0pt'> attribute specifies default for all immediate
+children rows, but only if they have not set their own <b><a href="#IDef">Def</a></b>
+attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When adding rows to children
+of the row, the new row will implicitly have default the same as parent rows’ <b>CDef</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use <b>CDef</b>
+attribute even in &lt;D&gt; tag to predefine <b>CDef</b> attribute for all rows
+that use this default (the <b>CDef</b> attribute does not concern &lt;D&gt; tag
+itself, unlike <b>Def</b> attribute). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>CDef</b> attribute can
+be also set in tag &lt;<b>Root</b>&gt;, this specifies default for all root
+rows. In this case &lt;Root&gt; acts as parent for all variable root rows,
+including adding and dragging rows to root.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can specify to row which
+default to use by many ways, all can be done in every case, but some are better
+for some cases and some for other cases.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Using <b>Def</b> attribute
+only is simpler but by <b>CDef</b> attribute you can control more. Remember, <b>CDef</b>
+attribute you can set even in &lt;D&gt; and &lt;Root&gt; tags too.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you don’t use any <b>Def</b>
+or <b>CDef</b> attributes, all variable rows will have default &lt;D Name=“<b>R</b>”&gt;,
+header rows &lt;D Name=”<b>Header</b>”&gt;, other fixed rows &lt;D Name=”<b>Fixed</b>”&gt;
+and solid rows &lt;D Name=”<b>Solid</b>”&gt;. These &lt;D&gt; are defined in
+basic file <b><a href="Files.htm#DefaultsXml">Defaults.xml</a></b>. It means,
+if you don’t need to use defaults, you need not do it. You can change attributes
+of “R” or “Fixed” if you use &lt;D&gt; tag with this name in your data. New
+attributes you specify are merged or overwrite attributes specified in <b>Defaults.xml</b>
+=&gt; you don’t need to edit this file for every new grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DefaultsExample><b><span style='font-size:20.0pt'>Example
+of default rows</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This example show basic
+usage of default rows and Def and CDef attributes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cols&gt;&lt;C
+Name=’A’/&gt;&lt;/Cols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D Name=’<b>R</b>’
+Expanded=’0’/&gt;                                                      All rows
+in grid will be collapsed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D Name=<b>’Fixed’</b>
+CanEdit=’0’/&gt;                                                  All fixed
+rows in grid will be read only</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D
+Name=’D1’ AType=’Int’/&gt;                                                       This
+custom default sets type of column ‘A’ to integer</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D
+Name=’D2’ AType=’Lines’/&gt;                                                  This
+custom default sets type of column ‘A’ to multiline text</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D
+Name=’D3’ <b>AcceptDef</b>=’D1,D3’/&gt;                                         This
+custom default permits dragging rows with Def=’D1’ and Def=’D3’ as children of
+rows that have Def=’D3’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;D
+Name=’D4’ <b>CDef</b>=’D3’ <b>Def</b>=’D2’/&gt;                                       This
+custom default sets all children Def attributes to D3. And inherits all
+settings from D2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Root</b> <b>CDef</b>=’D4’/&gt;                                                          All
+root variable rows without Def attribute will have set Def=’D4’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Head&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;I/&gt;                                                                                Has
+Def=’Fixed’ (has AType=’Text’, because all undefined Type are ‘Text’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Head&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;B&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I/&gt;                                                                          Has
+Def=’D4’ because of setting Root CDef (has AType=’Lines’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I <b>Def</b>=’D1’
+<b>CDef</b>=’D3’&gt;                                     Has Def=’D1’ because
+of its own setting (has AType=’Int’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                  &lt;I/&gt;                                                                    Has
+Def=’D4’ because of its parent CDef setting (has AType=’Lines’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;/I&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;/B&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DefaultsChangeExample><b><span style='font-size:20.0pt'>Example
+of changing default row</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This example shows
+updating row when it gets children and becomes parent row or looses its
+children and becomes empty.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The change can be done by
+adding new row, deleting row or moving row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg
+MainCol=&quot;A&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;C
+Name=&quot;A&quot; Width=&quot;500&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Cols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;D Name=&quot;<b>R</b>&quot;
+<b>DefParent</b>=&quot;Node&quot; <b>DefEmpty</b>=&quot;Item&quot;/&gt;                                   Any
+row if becomes parent its Def is set to “Node” and if becomes empty the Def is
+set to “Item”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;D Name=&quot;<b>R</b>&quot;
+<b>CDef</b>=&quot;Item&quot;/&gt;                                                                                Any
+row’s new children will have set Def=”Item”. Any children without Def has
+Def=”Item”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;D
+Name=&quot;Node&quot; Color=&quot;220,220,200&quot;/&gt;                                                           Parent
+row is colored, to show the change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;D
+Name=&quot;Item&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Root</b> <b>CDef</b>=&quot;Item&quot;/&gt;                                                                                                     Any
+new root rows will have set Def=”Item”. Any root rows without Def has
+Def=”Item”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;B&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I
+Def=&quot;Node&quot; A=&quot;1&quot;&gt;                                                                                        It
+is parent row, so it has explicitly set Def=”Node”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                  &lt;I
+A=&quot;1-1&quot;/&gt;                                                                                                    This
+child has set Def=”Item” due setting &lt;D Name=&quot;R&quot; CDef=&quot;Item&quot;/&gt;
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;/I&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I
+A=&quot;2&quot;/&gt;                                                                                                             This
+and next children have set Def=”Item” due setting &lt;Root
+CDef=&quot;Item&quot;/&gt;          </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I
+A=&quot;3&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>            &lt;I
+A=&quot;4&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>      &lt;/B&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DefaultsAttributes><b><span style='font-size:20.0pt'>Items
+related to default rows</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i>
+</span><a name=DName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        required attribute                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the default row. Required.
+This name is referenced in row attributes <a href="#IDef">Def</a>, <a
+href="#ICDef">CDef</a>, <a href="#IAcceptDef">AcceptDef</a>, <a
+href="#IDefEmpty">DefEmpty</a>, <a href="#IDefParent">DefParent</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Any custom name can be used
+for default row, but there are predefined default row names (in <a
+href="Files.htm#DefaultsXml">Defaults.xml</a>): </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                “<b><span
+style='color:blue'>R</span></b>” – default row for all rows and defaults
+without <b>Def</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                “<b><span
+style='color:blue'>Fixed</span></b>” – default row for all fixed (head and
+foot) rows without Def attribute. Except Header. By default it inherits the <b>Def</b>
+“<b>R</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                “<b><span
+style='color:blue'>Solid</span></b>” – default row for all solid space rows
+without Def attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                “<b><span
+style='color:blue'>Header</span></b>” – default row for all <b>Header</b> rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                “<b>Group</b>”
+– default row for all created grouping rows (parent rows automatically created
+when grouping). By default it inherits the <b>Def</b> “<b>R</b>”.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>In fact, any default with <b>Group</b> = ‘1’ is
+default for grouping rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;D&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=IDef></a><a name=DDef><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Def</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [“<b><span
+style='color:blue'>R</span></b>”]                                                                                                                            <span
+style='color:#0070C0'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of default row <b>&lt;D&gt;</b>
+used for this row or default row. From this default the row inherits (reads)
+all its <u>not set</u> attribute values.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In &lt;D&gt; tag is this
+attribute is used only during loading data – fills the default by values from
+its parent default (and its parents). </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> the &lt;D Def/&gt; can contain more default names,
+comma separated. But the &lt;I Def/&gt; can contain only one default!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=TRowDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Def</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>   <span style='color:red'>read
+only</span>                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On runtime the row Def
+attribute points to default row object instead of its name, the Def name is
+accessible by row.Def.Name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Root&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=ICDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“<b><span
+style='color:blue'>R</span></b>”]                                                                                                                <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of default row for row’s
+children. This value is used as child’s <a href="#IDef">Def</a> attribute value
+only for children without its own <a href="#IDef">Def</a> attribute set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is used only
+on load, here it fills the row <a href="#IDef">Def</a> attribute value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This value is also used as
+value of <a href="#IDef">Def</a> attribute for new child rows added to this
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;<b>Root</b> <b>CDef</b>/&gt;
+controls all root variable rows (like children of the hidden root row).z</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Root&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string[]</i>  </span><a
+name=IAcceptDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AcceptDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated array of
+names of default rows that are accepted as children of this row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only rows with <a href="#IDef">Def</a>
+attribute present in this array can be moved or copied to the row’s children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this attribute is missing,
+the row accepts all rows. If it is empty, it accepts no rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;<b>Root</b> <b>AcceptDef</b>/&gt;
+controls moving and copying into root (like children of the hidden root row).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=IDefEmpty><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DefEmpty</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of default row that will
+be set to row’s <a href="#IDef">Def</a> attribute when the row loses all its
+children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After change the row will be
+re-rendered to show all the changes related to the change. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute is used
+only after the change, not on loading, on loading the row should have set
+correct Def attribute.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Hidden rows are valid
+children, but deleted rows (even visible) are not children!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=IDefParent><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DefParent</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of default row that will
+be set to row’s <a href="#IDef">Def</a> attribute when the row gets first
+children and becomes parent row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After change the row will be
+re-rendered to show all the changes related to the change. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute is used
+only after the change, not on loading, on loading the row should have set
+correct Def attribute.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Hidden rows are valid
+children, but deleted rows (even visible) are not children!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow[]</i>  </span><a
+name=Def><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Def</span></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:aqua'>                                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Named array of all default
+rows in grid, including the base defaults: “R”, “Fixed”, “Solid”, “Header” and
+“Group”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To access or change some
+default attribute value use grid.Def[def_name].attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get some row attribute
+including default value use global function Get(row,”attribute”).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeDef</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TRow</i>
+<b>row</b>, <i>string</i> <b>def</b>, <i>bool</i> <b>show</b> = 1, <i>bool</i> <b>undo</b>
+= 0)                            <span style='color:blue'>upd <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes Def attribute of the
+row to default named <b>def</b>. If <b>show </b>= 1 it refreshes row and shows
+the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does not update row
+values, so cell types should <u>not</u> be changed by switching to the new default
+or must be updated externally.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnChangeDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnChangeDef</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>            </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>def</b>)                                             <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when changing default
+row due <a href="#IDefEmpty">DefEmpty</a> and <a href="#IDefParent">DefParent</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called before the
+change, def is name of the new default row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return different default row
+name to change it, or null to continue or empty string to suppress the change.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is called from
+ChangeDef method.</span></i></p>
+
+</div>
+
+</body>
+
+</html>

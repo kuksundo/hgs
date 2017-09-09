@@ -1,0 +1,2315 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Cell editing and changing values</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Lucida Console";
+	panose-1:2 11 6 9 4 5 4 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Cell editing and changing values</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=CellEditability><b><span style='font-size:20.0pt'>Cell
+editability</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgEditing><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Editing</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how values of grid can
+be edited. It does <u>not</u> affect rows of Kind = Filter, Group, Search.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – <b>read only</b>  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells cannot be edited,
+cannot be switched to edit mode. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Bool and Radio types cannot
+be clicked. Enum type and Defaults list cannot be expanded. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Date button is not
+displayed for Date type by default. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – <b>editable</b> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells can be edited. Default
+mode. The individual cell editability can be changed by their CanEdit attribute
+to 0 (read only) or 2 (preview).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells can be switched to edit
+mode and changed by user. Bool and Radio type can be changed by click. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enum type and Default list
+can be expanded and value selected.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Date button is displayed
+for Date type by default (can be hidden by setting the Button=””).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <b>preview</b> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells cannot be changed, but
+they can be displayed in read only edit mode.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell cannot be previewed if
+it has set CanEdit=’0’ (read only). The CanEdit=’1’ does <u>not</u> change to
+editable!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Bool and Radio types cannot
+be clicked. Enum type and Defaults list cannot be expanded. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Date button <u>is</u>
+displayed for Date type by default, but the calendar dialog displayed on click
+is in read only mode. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The preview mode is intended
+especially for multiline types (Lines) to let user to display the whole text
+and also select it and copy to clipboard.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default mode is 1
+(editable), you can switch all editable cells to <b>0</b> - read only or <b>2</b>
+- preview mode by setting the Editing attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;I&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int        </i></span><a
+name=CCanEdit></a><a name=ICanEdit><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CanEdit</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [0/1]                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how values in cells
+can be edited. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – read only, <b>1</b> – editable, <b>2</b> – preview.
+See <a href="#CfgEditing">Editing</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The routine to find out the
+cell editability checks these points in this order:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) If editing is suppressed (&lt;Cfg
+<a href="#CfgEditing">Editing</a>=’0’/&gt;) returns <b>0</b>, except the Row
+Kind is <a href="Filter.htm#Filter">Filter</a>, <a href="Group.htm#Group">Group</a>,
+<a href="Search.htm#Search">Search</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) If the cell is <u>not</u> focusable
+(<a href="Focus.htm#CCanFocus">CanFocus</a>=’0’) returns <b>0</b>, except the
+cell Type is <a href="TypeBool.htm">Bool</a> or <a href="TypeEnum.htm">Radio</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) Checks <u>cell</u>
+CanEdit, if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) Checks <u>row</u> CanEdit,
+if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5) For <a
+href="Filter.htm#Filter">Filter</a> row returns <b>0</b> for Pass type and for
+columns with <a href="Filter.htm#CCanFilter">CanFilter</a>=’0’ otherwise returns
+<b>1</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6) For calculated cell returns
+<b>0</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7) Checks <u>column</u>
+CanEdit, if it set, returns it</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>8) Returns <b>0</b> or <b>1</b>
+according to the cell <a href="CellBasics.htm#CType">Type</a>, default editable
+types are: Text, Lines, Int, Float, Date, Enum, Bool, Radio, Pass</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If point 3 – 8 returns 1 and set
+&lt;Cfg Editing=’2’/&gt; returns 2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After points 3 – 8 it calls
+OnCanEdit event to change the result dynamically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnCanEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCanEdit</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>mode</b>)                                                                 ,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to check editability
+of the cell dynamically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called in various
+situations, during rendering, before start edit, on mouse hover and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This handler should be very
+fast and short.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>mode</b> is preset
+editability, 0 – readonly, 1 – editable, 2 – preview.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new editability or the
+<b>mode</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=CanEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>               (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Checks if the cell can be
+edited, return 0 – read only, 1 – editable, 2 – preview.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Defaults><b><span style='font-size:20.0pt'>Defaults list</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of predefined values
+for the cell to let a user to choose one or more of them. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displayed on click to button
+or by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This list can be used also
+for <u>non</u> editable cells of any Type, it does <u>not</u> depend on <a
+href="#CCanEdit">CanEdit</a> settings.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2</span></i><span
+style='font-size:10.0pt'> it is possible to simulate Enum value/key pairs by <b>Html</b>
+type and its <a href="TypeHtml.htm#CFormat">Format</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CButton><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Button</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 Button
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Defaults</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                                 <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show right side button
+with Defaults list set <a href="CellSideButton.htm#CButton">Button</a>=”<b>Defaults</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be shown also by <a
+href="CellSideButton.html#CIcon">Icon</a>=&quot;<b>Defaults</b>&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>
+[*]  </span><a name=CDefaults><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Defaults</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>chg <b>6.0; </b></span><span style='color:blue'>upd <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A first character separated
+list of values to select to the cell. A user can choose one value from combo or
+even more values if <a href="CellBasics.htm#CRange">Range</a> is set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or it can be in standard <a
+href="Menu.htm">TreeGrid menu</a> format as complex menu with <b>sub levels</b>,
+<b>sub menus</b>, <b>columns</b> and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used when set <a
+href="CellSideButton.htm#CButton">Button</a>=”Defaults” or <a
+href="CellSideButton.htm#CIcon">Icon</a> = “Defaults” or <a
+href="CellBasics.htm#CType">Type</a>=”Select”. It can be used for cell of any <a
+href="CellBasics.htm#CType">Type</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To show a list of
+predefined values while <b>editing</b> use <a href="#CSuggest">Suggest</a> list
+instead.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Separator can be shown as
+item named ‘-‘.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2</span></i><span
+style='font-size:10.0pt'> the Defaults can be used with name/key pairs using
+new Format and EditFormat attributes structure for Text, Lines and Html types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example
+&lt;C Name=&quot;A&quot; Button=&quot;Defaults&quot; Defaults=&quot;|one|two|three&quot;
+Format=&quot;{1:'one',2:'two',3:'three'}&quot;
+EditFormat=&quot;{1:'one',2:'two',3:'three'}&quot;/&gt; will show/edit strings
+one, two, three, but cell values will be 1,2,3</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The list can contain special
+items starting with ‘*’:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>*Date</span></b><span
+style='font-size:10.0pt'>                    After click on menu item it shows
+calendar to select date</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>*Button</span></b><span
+style='font-size:10.0pt'>                After click on menu item it calls <a
+href="CellSideButton.htm#OnButtonClick">OnButtonClick</a> user event for the
+cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>*Default</span></b><span
+style='font-size:10.0pt'>               Item contains default value for the
+cell (value from <a href="RowDefaults.htm">Def</a> row).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>*FilterOff</span></b><span
+style='font-size:10.0pt'>            Switches off the filter operator, only for
+filter row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>*<b>All</b>                       Chooses
+all items for range</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>*<b>None</b>                   Selects
+empty range</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>*Rows...</span></b><span
+style='font-size:10.0pt'>                There will added more items containing
+values from other rows in this column according other settings:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Variable</b>...
+        from variable rows (used also if no Fixed / All / Sibling is present)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Fixed</b>...
+              from fixed rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>All</b>...
+                   from fixed and variable rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Sibling</b>...
+           from sibling rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Def</b>...
+                  only from rows that have the same default (<a
+href="RowDefaults.htm">Def</a> attribute) as the row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>DefXXX*</b>...
+     <i>(since 7.0) </i>only from rows that have its default (<a
+href="RowDefaults.htm">Def</a> attribute) named XXX</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Visible</b>...
+           only visible rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>CanFilter</b>...
+      (for <a href="Filter.htm#Filter">Filter</a> row) only rows that can be
+filtered according to this column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b><i>n</i></b>...
+                      maximally <b><i>n</i></b> most frequent values</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>ColXXX</b>*...
+     values from another column, XXX is column name, from left must have prefix
+‘Col’ and from right postfix ‘*’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...<b>Alphabet</b>...        <i>(new
+6.1)</i> the menu items will be divided to submenus according to the first
+letter. Useful for long menus. See also <a href="CfgDefaultsAlphabetWhite">DefaultsAlphabetWhite</a>.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The menu item name is defined by &lt;Lang&gt;&lt;Text
+DefaultsAlphabet=’%d ...’/&gt;, the %d will be replaced by the character</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example:
+“*RowsDef20” returns maximally 20 variable rows with the same default row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CDefaultsServer></a><a name=CellDefaultsServer><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>DefaultsServer</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                     [0]                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, TreeGrid
+dynamically downloads the <a href="#CDefaults">Defaults</a> list from server
+side by &lt;treegrid&gt; <a href="DataServerChanges.htm#Cell_Url">Cell_Url</a>
+settings before it displays it (after the button was clicked).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:              Let’s
+have row <i>MyRow</i> with cell <i>MyCol</i> with Defaults button: </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;I id='MyRow'
+MyColButton='Defaults' MyColDefaultsServer='1' ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Set
+in your TreeGrid definition: </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;treegrid Cell_Url='myscript.jsp'
+Cell_Data='MyData' ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               And
+the <i>myscript.jsp</i> (or .aspx, .php) will get such XML in <i>MyData</i>
+property:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Grid&gt; ... &lt;Body&gt;
+&lt;B id='MyRow' Col='MyCol'/&gt; &lt;/Body&gt; &lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>And the <i>myscript</i> should return XML to update
+the Defaults list in the appropriate row cell:</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Grid&gt; &lt;Changes&gt;
+&lt;I id='MyRow' MyColDefaults='the prepared list'/&gt; &lt;/Changes&gt; &lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgDefaultsAlphabetWhite><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DefaultsAlphabetWhite</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [“!&amp;quot;#$%&amp;amp;'()*+,-./:;&amp;lt;=&gt;?@[\]^_{|}”]                <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Characters ignored when
+grouping items by *Alphabet keyword in <a href="#CDefaults">Defaults</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CDefaultsAlphabetMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DefaultsAlphabetMin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal count of the items
+starting by the same character to group them, by *Alphabet keyword in <a
+href="#CDefaults">Defaults</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if set to 2,
+there will not be created sub menus with one item only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i> </span><a
+name=OnGetDefaults><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetDefaults</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>defaults</b>)                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before displaying menu
+<a href="#CDefaults">Defaults</a> to get the list dynamically. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns original or modified
+defaults list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnShowDefaults><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowDefaults</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TMenu</i> <b>Menu</b>,
+<i>TPosition</i> <b>Pos</b>)            <span style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before displaying menu
+<a href="#CDefaults">Defaults</a> to update the menu dynamically. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to do any
+modification in Menu, for example to sort or change position in Menu.Items
+array. See <a href="Menu.htm">Menu</a> documentation</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;        </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            </span></b><a
+name=ActionsShowDefaults><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowDefaults</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                                                                                                         .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>                                              </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays dialog <a
+href="#CDefaults">Defaults</a> for the actual or focused cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i> </span><a
+name=ShowDefaults><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowDefaults</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                          <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays dialog <a
+href="#CDefaults">Defaults</a> for given cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i> </span><a
+name=GetDefaultsIndex><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetDefaultsIndex</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b> = null)                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns index (from 0) of
+actual cell value inside its Defaults array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns null if the value is
+not in the Defaults array or the Defaults array does not exits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>val</b>, compares
+this value instead of the cell one.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Works only for simple
+defaults as first character separated array, without special items (*) and <u>not</u>
+as TreeGrid Menu.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i> </span><a
+name=GetDefaultsValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetDefaultsValue</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>)                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns an item from Defaults
+array in the given position <b>index</b> (from 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns null if the index is
+outside defaults boundary or the Defaults array does not exits.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Works only for simple
+defaults as first character separated array, without special items (*) and <u>not</u>
+as TreeGrid Menu.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Suggest><b><span style='font-size:20.0pt'>Suggest list
+(auto complete)</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of predefined values
+for the cell and <b>actual input</b> to let a user to choose one of them. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displayed while editing and
+updated whenever the input text changes. .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>[*]
+</span><a name=CSuggest><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Suggest</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        <span
+style='color:red'>new <b>6.0; </b></span><span style='color:blue'>upd<b> 9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list o values to suggest them
+to user while editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains all items that
+can be suggested for the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The user will see only items
+that contain already entered part of the value in input. The searching is case
+insensitive.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The Suggest can contain
+also the special items starting by * like <a href="#CDefaults">Defaults</a>
+menu.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2</span></i><span
+style='font-size:10.0pt'> the Suggest can be used with name/key pairs using new
+Format and EditFormat attributes structure for Text and Lines types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example
+&lt;C Name=&quot;A&quot; Suggest=&quot;|one|two|three&quot;
+Format=&quot;{1:'one',2:'two',3:'three'}&quot; EditFormat=&quot;{1:'one',2:'two',3:'three'}&quot;/&gt;
+will show/edit strings one, two, three, but cell values will be 1,2,3</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If used
+SuggestType='Existing,...', the above example should define Suggest=&quot;{Items:[{Name:1,Text:'one'},{Name:2,Text:'two'},{Name:3,Text:'three'}]}&quot;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                Due
+internal implementation the no key can be equal to value, e.g. {a:'<b>b</b>',<b>b</b>:'c'},
+the b cannot be both key and value.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>
+[] </span><a name=CSuggestType><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>SuggestType</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                            <span
+style='color:red'>new <b>6.0; </b></span><span style='color:blue'>upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Various settings for <a
+href="#CSuggest">Suggest</a> menu. Comma separated list of keywords, case
+insensitive</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Replace</span></b><span
+style='font-size:10.0pt'> – if set, replaces the actual edit input while
+changing selected item in the suggest menu by cursor keys.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Start</span></b><span
+style='font-size:10.0pt'> – if set, shows the suggest menu also on start
+editing for current value</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Empty</span></b><span
+style='font-size:10.0pt'> – if set, shows the full suggest menu also for empty
+input value</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>All</span></b><span
+style='font-size:10.0pt'> – if set, shows the full suggest menu always – it
+does not search the current input value</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Case</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.2) </i>if set, preserves case
+sensitivity, shows only items that contains the text in the same case</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>WhiteChars</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>uses <a
+href="Sort.htm#CWhiteChars">WhiteChars</a> cell attribute value for comparing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CharCodes</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>uses <a href="Sort.htm#CCharCodes">CharCodes</a>
+cell attribute value for comparing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Complete</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.2)</i> auto completes the input value if
+there is only one value to suggest.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Existing</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.2) </i>accepts only values existing in
+the actual suggest menu</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Begin</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.2)</i> the suggested items must start
+with the value (otherwise the item is suggested if any its word starts with the
+value)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Separator</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.4)</i> after selecting suggested item for
+the last value, adds also <a href="#CSuggestSeparator">SuggestSeparator</a> to
+the end. Used only if set <a href="#CSuggestSeparator">SuggestSeparator</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Esc</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.5)</i> escape hides the suggestion menu
+instead of cancelling editing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Arrows</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.5)</i> in multiline edit the up/down arrows
+will be used in suggest menu. If not set, Ctrl + arrows control the suggest
+menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CSuggestDelay><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SuggestDelay</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Delay before the suggest menu
+is shown. If next key is pressed within this time, the menu is <u>not</u> shown
+for the previous text.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CSuggestMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SuggestMin</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal count of characters
+in text to show the suggest menu for the text.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CSuggestSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SuggestSeparator</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set for range values
+separated by this separator.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, suggest is shown
+separately for the individual parts of the value. After choose suggest item, it
+replaces the part by the item and does not end editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To add the separator also to
+the end after item is selected like in MS Outlook, set <a href="#CSuggestType">SuggestType</a>,
+value <b>Separator</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is empty for
+normal cells, and ValueSeparator (semicolon by default) for Range cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set also to “&amp;#x0a;”
+for enter as separator in multiline cells</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string</i>    </span><a
+name=OnSuggest><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSuggest</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>,
+<i>TMenu</i> <b>suggest</b>)                           <span style='color:red'>new
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called whenever the
+value is changed by user while editing to get the appropriate defaults for the
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>val</b> is actual
+value, the suggest is the proposed <b>suggest</b> menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new suggest string or
+the <b>suggest</b>. The returned suggest is not searched for the <b>val</b>
+again and is displayed always the whole.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The OnSuggest is <u>not</u>
+called when set SuggestServer=’1’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CSuggestServer><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SuggestServer</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For dynamic loading the
+suggest menu list from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, TreeGrid
+downloads the Suggest attribute setting from server side &lt;treegrid&gt; <a
+href="DataServerChanges.htm#Cell_Url">Cell_Url</a> settings whenever a user
+changes the input value while editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The returned suggest is not
+searched for the <b>val</b> again and is displayed always the whole.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example you can return
+for cell [row id=’R1’ col=’Col1’] such XML to change the Suggest menu:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Grid&gt;&lt;Changes&gt;&lt;I
+id=’R1’ Col1Suggest=’|One|Two|Three’/&gt;&lt;/Changes&gt;&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you change from server
+also Format / EditFormat, you should set &lt;Changed Update='32'&gt; to not
+refresh the edited cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i> </span><a
+name=OnGetSuggest><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetSuggest</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>suggest</b>)                                 <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the complete <a
+href="#CSuggest">Suggest</a> attribute once on start editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ChangingValue><b><span style='font-size:20.0pt'>Changing
+cell value</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=IChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Changed</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]        Uploaded
+to server, supports Undo                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>1</b> when
+any cell value in the row has been changed. Which cell is specified by the
+cell’s attribute <a href="#CellChanged">Changed</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the changed cell value is
+set back to its original value, the cell and row looses the Changed flag,
+except is set &lt;Cfg <a href="#CfgStoreOriginalValues">StoreOriginalValues</a>=’0’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After uploading changes to
+server or calling <a href="DataUpload.htm#AcceptChanges">AcceptChanges</a> the
+changed row just looses its state and becomes normal row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CellChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Changed</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>             [0]        Uploaded
+to server, supports Undo                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to 1 when the cell
+value has been changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnValueChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnValueChanged</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before cell value is
+changed by a user input. It is called even if a user entered the same value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called when a
+user edited cell, selected item from Defaults or Enum list, selected date from
+calendar, clicked and changed Bool or Radio cell, dragged column to DropCols
+cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to change or
+update the entered value. To do some action after finish edit call <a
+href="#OnEndEdit">OnEndEdit</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value or the
+entered value <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAfterValueChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAfterValueChanged</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                               <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after cell value is
+changed by user edit, only if the value was changed to another.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the changed
+value is shown in the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to run code
+after cell value is modified.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CCaseSensitiveValues></a><a name=CCaseSensitive><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>CaseSensitiveValues</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are stored case
+sensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the input value
+is always converted to lower case.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgStoreOriginalValues><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>StoreOriginalValues</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If all the cell values are
+stored before they are changed. If the values are stored and the cell value is
+set back to the original value, the row is marked back as not <a
+href="#IChanged">Changed</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to 0 just to save
+memory, if you don’t need this behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSaveValues><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveValues</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, saves all
+changed cell values of all rows to cookies. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used only for very
+small grids their changes are not uploaded to server. Usually for grids that
+controls something on client side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, cookies are limited
+to 4096 bytes for the whole page, so use this setting only for very small
+static tables or use <a href="Cookie.htm#CfgPersistentCfg">PersistentCfg</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use the smallest row ids and
+column names as possible (the amount of space is used: (name+1)+id+value+2
+bytes per row).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also use it only for number
+tables or restrict input strings length by edit mask.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=SetValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>, bool <b>refresh</b>
+= 0)                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets the cell value.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>val</b> should be
+already type of the cell, the Date type must be set as count of milliseconds
+and Int and Float type should be set as JavaScript Number.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set <b>refresh</b> to true to
+display changes in grid or call <a href="CellBasics.htm#RefreshCell">RefreshCell</a>
+method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method updates all
+things around the setting value like calculations, master / detail, CopyTo, id,
+AutoUpdate and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> call <a
+href="#OnValueChanged">OnValueChanged</a> / <a href="#OnAfterValueChanged">OnAfterValueChanged</a>
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For synchronized Gantt cells
+(like Start/End/Duration or Descendants/Ancestors) call <a
+href="GanttAPI.htm#CheckGantt">CheckGantt</a> before SetValue to update also
+the other Gantt cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetString><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetString</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>, bool <b>refresh</b>
+= 0)                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets cell values as string in
+data xml format, the format affects especially Date type. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set <b>refresh</b> to true to
+display changes in grid or call <a href="CellBasics.htm#RefreshCell">RefreshCell</a>
+method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method converts the
+string to value and calls <a href="#SetValue">SetValue</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;XML event&gt;   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      </span><a
+name=ActionsOnChange></a><a name=OnChange><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>OnChange</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         (<i>TGrid</i>
+<b>Grid</b>, <i>TRow</i> <b>Row</b>, <i>string</i> <b>Col</b>, <i>TEvent</i> <b>Event</b>)                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called as &lt;Actions&gt; or
+cell event when cell value is changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attach the action or any
+JavaScript code to the cell to be run on cell value change, like &lt;I ...
+Col1OnChange=’alert(“changed!”)’ ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The new value can be got by
+Get(Row,Col).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called from <a
+href="#SetValue">SetValue</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;XML event&gt;   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      </span><a
+name=ActionsOnSame><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>OnSame</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>  (<i>TGrid</i> <b>Grid</b>, <i>TRow</i>
+<b>Row</b>, <i>string</i> <b>Col</b>, <i>TEvent</i> <b>Event</b>)                                                        <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called as &lt;Actions&gt; or
+cell event when cell value is edited and accepted, but <u>not</u> changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attach the action or any
+JavaScript code to the cell to be run on cell value change, like &lt;I ...
+Col1OnChange=’alert(“changed!”)’ ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The value can be got by
+Get(Row,Col).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> called from <a
+href="#SetValue">SetValue</a>, it is called only when the value was edited or
+selected by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Editing><b><span style='font-size:20.0pt'>Editing cells</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CfgInEditMode><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>InEditMode</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [2]                                                                                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the edit mode is started
+on click, on double click or on character key press.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It presets actions <b>OnDblClickCell</b>,
+<b>OnKey</b> and <b>OnBackspace</b>. You can modify these actions by yourself
+to get more options.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is tested also in <a
+href="Focus.htm#ActionsFocusEdit">FocusEdit </a>action attached to <b>OnClickCell</b>
+by default.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The default actions
+settings corresponds to InEditMode=’<b>2</b>’, but without modifications of the
+event actions.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0             </span></b><span
+style='font-size:10.0pt'>the edit mode is run only when user clicks to already focused
+editable cell or double clicks some editable cell or presses Enter or F2.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1             </span></b><span
+style='font-size:10.0pt'>the edit mode is run when user clicks to any cell or presses
+character key or Enter, F2 or Backspace.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2             </span></b><span
+style='font-size:10.0pt'>the edit mode is run when user clicks to already focused
+editable cell or double clicks some editable cell or presses character key or
+Enter, F2 or Backspace.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgEnterMode><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>EnterMode</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                                   <span
+style='color:red'>new <b>6.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Enter key behavior, if
+and how it moves edit cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It presets actions <b>OnEnter</b>
+and <b>OnEnterEdit</b>. You can modify these actions by yourself to get more
+options.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Standard mode, Enter accepts value and do
+nothing else, <u>no</u> modification to OnEnter and OnEnterEdit.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Enter starts editing cell below, it sets
+&lt;Action <b>OnEnterEdit</b>='AcceptEdit AND GoDownEdit,1' <b>OnEnter</b>='GoDownEdit'/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Enter starts editing cell below and on
+the last row adds new row and moves to it, it sets &lt;Action <b>OnEnterEdit</b>='AcceptEdit
+AND GoDownEditAdd,1' <b>OnEnter</b>='GoDownEditAdd'/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             Enter starts editing cell right, it sets
+&lt;Actions <b>OnEnterEdit</b>='AcceptEdit AND TabRightEdit,1' <b>OnEnter</b>='TabRightEdit'/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'>             Enter starts editing cell right and on
+the last row and cell adds new row and move to it, it sets &lt;Actions <b>OnEnterEdit</b>='AcceptEdit
+AND TabRightEditAdd,1' <b>OnEnter</b>='TabRightEditAdd'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To support also other cell
+types than the &lt;input&gt; ones, e.g. Enum type, don't define the EnterMode,
+but implement it by API event OnEndEdit like:</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>Grids.OnEndEdit = function(G,row,col,save,val){
+if(save) setTimeout(function(){ </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>if(row!=G.FRow||col!=G.FCol)
+return; G.ActionTabRightEdit(); if(G.GetType(G.FRow,G.FCol)==&quot;Enum&quot;)
+G.StartEdit(); },10); }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool
+</i></span><a name=CfgAcceptEnters></a><a name=CellAcceptEnters><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>AcceptEnters</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Lines</b> type cell to
+let input CR/LF character into cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> the Enter key
+accepts changes and finishes editing like in single line text.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> the Enter key
+inputs LF character (<b>&amp;#x0A</b>). To finish editing is possible by
+Alt+Enter or Ctrl+Enter or click outside the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>bool
+</i></span><a name=CCancelUnchanged><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CancelUnchanged</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                                      <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it does <u>not</u>
+save the value, if the entered string was <u>not</u> changed by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is intended to be used
+when the value is changed just by entering end leaving edit mode in the cell
+due EditFormat or DefaultDate settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=EditMode><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>EditMode</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          <span
+style='color:red'>read only</span>                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If focused cell is being
+edited now. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set if the
+&lt;input&gt; or &lt;textarea&gt; is shown in grid or the Enum list is
+expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set also if grid is in
+preview mode (the &lt;input&gt; or &lt;textarea&gt; is shown as read only)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CEditServer></a><a name=CellEditServer><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>EditServer</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For dynamic loading cell
+settings and content for editing the value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, TreeGrid
+downloads the cell settings from server side by &lt;treegrid&gt; <a
+href="DataServerChanges.htm#Cell_Url">Cell_Url</a> settings before it starts
+cell editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After the edit finishes, all
+the cell settings (but only this cell settings) are restored to original values
+before the new value is accepted or rejected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server response should
+contain the &lt;Changes&gt; with attributes to change, only the actual cell
+settings should be changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example you can return
+for cell [row id=’R1’ col=’Col1’] such XML to change the type for editing:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Grid&gt;&lt;Changes&gt;&lt;I
+id=’R1’ Col1Type=’Enum’ Col1Enum=’|One|Two|Three’/&gt;&lt;/Changes&gt;&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>It
+will change cell type to Enum and download Enum list from server side and let a
+user to select the value from it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnStartEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnStartEdit</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>)                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before started editing
+of textual cell (in &lt;input&gt; or &lt;textarea&gt;) or before Enum list is
+expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnEndEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnEndEdit</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>save</b>,
+<i>type</i> <b>val</b>, <i>string</i> <b>raw</b>)            <span
+style='color:red'>chg <b>6.0</b></span><span style='color:#365F91'>; upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before editing is
+finished in textual cell (in &lt;input&gt; or &lt;textarea&gt;) or before Enum
+list is closed. It is <u>not</u> called after change in Bool, Radio or Select
+type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>save</b> is 1 if a
+user accepted entered value, 0 if canceled editing. The <b>val</b> is entered
+or chosen value if <b>save</b> = 1. For <b>save</b>=0 is <b>val</b> null. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to continue
+editing, only if <b>save</b> is 1. For <b>save</b> = 0 the finish cannot be
+suppressed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change edited value you
+should rather use event <a href="#OnValueChanged">OnValueChanged</a>, except
+you want to convert <b>raw</b> value to <b>val</b>. Also see <a
+href="#OnAfterValueChanged">OnAfterValueChanged</a> event.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.1) </span></i><span
+style='font-size:10.0pt'>The <b>raw</b> value is exact not converted string
+entered by a user. For Enum type is always the same as <b>val</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0)</span></i><span
+style='font-size:10.0pt'> You can return new value to be used instead of <b>val</b>.
+The return value type must be string or number, should be the same as type of <b>val</b>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Use
+for custom converting the <b>raw</b> string value to the cell value. Only if <b>save</b>
+is 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                You can return
+original value by Get(row,col) to ignore the input and finish editing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnCustomStartEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCustomStartEdit</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>,
+<i>HTMLElement</i> <b>cell</b>, <i>int</i> <b>width</b>)    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to create and
+manage your own editing control.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before starting
+editing to display the custom editing control.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>val</span></b><span
+style='font-size:10.0pt'> is formatted string to be displayed in edit control, <b>cell</b>
+is cell object that should be used as parent of the custom editing control, <b>width</b>
+is inner width of the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If displayed custom editing
+control, return any nonull value – this value will be passed to <a
+href="#OnCustomEndEdit">OnCustomEndEdit</a> event to let you to delete the
+custom edit control.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For example to use ExtJS
+basic TextField editing component use such framework:</span></i></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;font-family:"Courier New"'>Grids.OnCustomStartEdit
+= function(G,row,col,val,cell,width){ var I = new Ext.form.TextField({ value:
+val }); I.render(cell); I.focus(); I.selectText(); return I; }</span></p>
+
+<p class=MsoNormal><span style='font-size:9.0pt;font-family:"Courier New"'>Grids.OnCustomEndEdit
+= function(G,row,col,save,I){ var val = I.getValue(); I.destroy(); return val;
+}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnCustomEndEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCustomEndEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>            (<i>TGrid</i> <b>grid</b>,
+<i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>save</b>, <i>type</i>
+<b>custom</b>)                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to delete your
+own editing control and save its value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to finish editing by
+custom edit control returned by <a href="#OnCustomStartEdit">OnCustomStartEdit</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>save</span></b><span
+style='font-size:10.0pt'> is 1 when value will be changed (user accepted
+editing), otherwise it will be ignored. <b>custom</b> is the object returned by
+<a href="#OnCustomStartEdit">OnCustomStartEdit</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value to save or
+null to not save even if <b>save</b> parameter is 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetInputValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetInputValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                                         <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to convert or update
+cell value to string for input.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the value is
+set to &lt;input&gt; or &lt;textarea&gt; on start edit.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return converted or original
+value <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnSetInputValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSetInputValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to convert or update
+input string back to cell value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before OnValueChanged,
+but only for cells edited by &lt;input&gt; or &lt;textarea&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return converted or original
+value <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=StartEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>StartEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>             (
+)                                                                                                                   <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts editing in the focused
+cell. The focused cell can be set grid.<a href="Focus.htm#Focus">Focus</a> ( )
+and read by grid.<a href="Focus.htm#FRow">FRow</a>, grid.<a
+href="Focus.htm#FCol">FCol</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts editing only in
+textual cell by &lt;input&gt; or &lt;textarea&gt; or shows Enum list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=EndEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>EndEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>               (<i>bool</i>
+<b>save</b>)                                                                                                      <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Finishes / cancels editing in
+the edited focused cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>save</b> is true, saves
+changed value, if <b>save</b> is 0, discards changes and restores original
+value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>1</b> if value has
+changed, <b>0</b> if value has not changed, <b>-1</b> to continue editing
+(editing cannot be finished, only for <b>save</b> = 1), <b>null</b> for error
+(not in edit mode) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsStartEdit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>StartEdit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>             Attached to <u>many</u>
+events                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts editing focused cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if cell cannot be
+edited or there is no focused cell or some cell is already being edited.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is attached to
+events OnClickCell, OnClickEnum, OnDblClickCell, OnKey, OnBackSpace, OnEnter,
+OnF2, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>OnTabEdit, OnShiftTabEdit,
+OnTabEnum, OnShiftTabEnum, OnUpEdit, OnDownEdit. See also <a
+href="#CfgInEditMode">InEditMode</a> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsAcceptEdit></a><a name=AcceptEdit><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>AcceptEdit</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Attached
+to events <b>OnEnterEdit</b>, <b>OnCtrlEnterEdit</b>, <b>OnAltEnterEdit</b>                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Ends editing, saves changed
+value, returns true when editing was finished, even if value was not saved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes are automatically
+accepted also by any change of focus by navigation actions – if you want to
+discard changes, call CancelEdit first.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if the grid is not
+in edit mode or editing was not finished.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCancelEdit></a><a name=CancelEdit><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CancelEdit</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Attached
+to event <b>OnEscEdit</b>                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cancels editing, discards
+changes, returns true when editing was finished.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if the grid is not
+in edit mode or editing was not finished.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Input><b><span style='font-size:20.0pt'>Controlling INPUT
+tag by JavaScript</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Edit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>JSON settings for inline
+editing. It contains JSON definition of <b>TEdit</b> object.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>TEdit event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>      <i>void</i>      </span><a
+name=TEditOnStartEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnStartEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>      ( )                                                                                                                    <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the TEdit object
+is created.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The TEdit object is
+accessible by <b>this</b>, the &lt;input&gt; tag by <b>this.Tag</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is accessible by <b>this.Grid</b>,
+the actual cell by <b>this.Grid.Row</b> and <b>this.Grid.Col</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;C Name=&quot;A&quot;
+Edit=&quot; { OnStartEdit: function() { this.Tag.className='MyInput'; } } &quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>TEdit event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>      <i>void</i>      </span><a
+name=TEditOnChange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnChange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         (<i>string </i><b>Value</b><i>,
+string </i><b>Old</b>)                                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after every change
+done while editing. Called for every key up or suggest select.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Value</b> is already
+shown in the input. <b>Old</b> is old value before change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The TEdit object is accessible
+by <b>this</b>, the &lt;input&gt; tag by <b>this.Tag</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is accessible by <b>this.Grid</b>,
+the actual cell by <b>this.Grid.Row</b> and <b>this.Grid.Col</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:</span> <span
+style='font-size:10.0pt'>&lt;C Name=&quot;A&quot; Edit=&quot; { OnChange: function(V)
+{ alert('Value '+V+' in column '+this.Grid.FCol); this.Tag.focus(); } } &quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>TEdit event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>      <i>void</i>      </span><a
+name=TEditOnKeyDown><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnKeyDown</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>    (<i>string </i><b>key</b><i>,
+Event </i><b>event</b>, <i>bool</i> <b>handled</b>)                                                             <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after holding key down
+while editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called after functional
+keys like enter or esc are processed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>key</span></b><span
+style='font-size:10.0pt'> is keyCode / charCode, <b>event</b> is standard
+JavaScript MouseEvent.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>handled</span></b><span
+style='font-size:10.0pt'> is true, if the event will be cancelled and the key
+will not be used in the input.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The TEdit object is
+accessible by <b>this</b>, the &lt;input&gt; tag by <b>this.Tag</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is accessible by <b>this.Grid</b>,
+the actual cell by <b>this.Grid.Row</b> and <b>this.Grid.Col</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:</span> <span
+style='font-size:10.0pt'>&lt;C Name=&quot;A&quot; Edit=&quot; { OnKeyDown: function(key,event)
+{ if(key==65) CancelEvent(event); } } &quot;/&gt; (restricts entering 'a' key)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Validation><b><span style='font-size:20.0pt'>Input
+validation and restrictions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Editing masks can be used for
+any column type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For column types <a
+href="TypeNumber.htm">Int</a>, <a href="TypeNumber.htm">Float</a> and <a
+href="TypeDate.htm">Date</a> are predefined default editing masks. These masks
+can be also changed using following attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Size</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of characters
+permitted to enter in &lt;input&gt; tag, <u>not</u> used for &lt;textarea&gt;
+(Lines type). For textarea implement EditMask or ResultMask.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It sets &lt;input
+maxLength/&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CEditMask><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>EditMask</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Mask for editing. It can be
+any regular expression (JavaScript <b>RegExp</b> string). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is mask is checked
+during editing. If a user presses a key, the resulted text is checked with the
+mask. If the new text does not pass the mask, the cell blinks and the previous
+text is restored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The mask is checked by
+JavaScript </span><span style='font-size:10.0pt;font-family:"Lucida Console"'>text.search(EditMask)&gt;=0</span><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Examples of editing masks: without
+spaces: &quot;^\S*$&quot;, only digits: &quot;^\d*$&quot;, only alphanum chars:
+&quot;^\w*$&quot;, max 10 digits: &quot;^\d{0,10}$&quot;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, some validation
+should be done rather by <a href="#CResultMask">ResultMask</a>  to not complicate
+editing – you should for example permit empty string in EditMask even if the
+input is required – it can be rejected by <a href="#CResultMask">ResultMask</a>.
+Or structure validations like URL, email or telephone number should be fully
+tested by <a href="#CResultMask">ResultMask</a> and by <b>EditMask</b> just
+test only applicable characters.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By EditMask you can also
+define some exact text structure and let user to change only some parts of it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example EditMask=”</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>^Src:.*\r?\nw\:\d{0,3},h\:\d{0,3};\sx\:\d{0,4},y\:\d{0,4}$</span><span
+style='font-size:10.0pt'>” </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>displays (in textarea, always
+on two rows): </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>Src:</span></b><i><span style='font-size:10.0pt;
+font-family:"Courier New"'>[text]</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>w:</span></b><i><span style='font-size:10.0pt;
+font-family:"Courier New"'>[int]</span></i><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>,h:</span></b><i><span style='font-size:10.0pt;
+font-family:"Courier New"'>[int]</span></i><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>; x:</span></b><i><span style='font-size:10.0pt;
+font-family:"Courier New"'>[int]</span></i><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>,y:</span></b><i><span style='font-size:10.0pt;
+font-family:"Courier New"'>[int]</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>where [...] are the only
+editable sections, <i>[text]</i> can contain any characters, <i>[int]</i> can
+contain only digits, max 3 or 4.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, default cell
+value must always pass the EditMask, otherwise a user will not be possible to
+edit it.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CMaskColor><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaskColor</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [‘red’]                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The edit field blinks by this
+color, when user tried to write character conflicting with <a href="#CEditMask">EditMask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be color name or any
+other CSS color setting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=CfgSilent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Silent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the grid beeps
+on error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is not supported on all
+browsers and also on some browsers it can required a plugin to download.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CResultMask><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ResultMask</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Validation mask applied after
+finish editing or when validate cells on save. Syntax is the same as in <a
+href="#CEditMask">EditMask</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When input value collides
+with ResultMask, the <a href="#CResultText">ResultText</a> alert message is
+displayed and editing continues.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Examples of result masks: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                number range
+0 – 255:      &quot;^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                floating
+point number:      &quot;^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$&quot;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>email
+address:                     &quot;^[\w\.\+%-]+@[A-Za-z0-9\.-]+\.[A-Za-z]{2,6}$&quot;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>credit
+card VISA:                “^4[0-9]{12}(?:[0-9]{3})?$”</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>credit
+card MasterCard:    “^5[1-5][0-9]{14}$”</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CResultText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ResultText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Alert message displayed when
+value collides with <a href="#CResultMask">ResultMask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set (default), the
+alert message is not displayed and editing just continues without accepting the
+input.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CResultMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ResultMessage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML message displayed as
+modal TreeGrid message when value collides with <a href="#CResultMask">ResultMask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set (default), the
+message is not displayed and editing just continues without accepting the
+input.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The message can be
+automatically hidden after <a href="#CResultMessageTime">ResultMessageTime</a>
+milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CResultMessageTime><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ResultMessageTime</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long will be the <a
+href="#CResultMessage">ResultMessage</a> shown, in milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set or set to 0, the
+message is shown forever with OK button to hide it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to negative number,
+the message is shown for the (positive) time, but also with OK button to hide
+it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnResultMask><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnResultMask</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when entered value
+collides with <a href="#CResultMask">ResultMask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return   <b>0</b> – alert
+ResultText message  and continue editing</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – don’t alert the ResultText message and continue
+editing, </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – don’t save value and finish edit, </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – save value and finish edit</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]<i>  </i></span><a
+name=CfgValidate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Validate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                         <span
+style='color:red'>chg <b>6.0</b></span><span style='color:#0070C0'>; upd <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how will be validated all
+result masks (<a href="#CResultMask">ResultMask</a>) before changes are
+uploaded to server on save. Comma separated list of keywords.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For custom validation you can
+use also <a href="#OnValidate">OnValidate</a> API event.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Added</span></b><span
+style='font-size:10.0pt'>                   Validates only added new rows, to
+ensure that all new added rows are filled correctly</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Changed</span></b><span
+style='font-size:10.0pt'>               <i>(Since 9.1) </i>Validates also
+changed rows, to ensure that all modified rows are filled correctly</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>All</span></b><span
+style='font-size:10.0pt'>                          Validates all rows in grid,
+to ensure that all required inputs are filled correctly – it can be slow for
+large grids.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Confirm</span></b><span
+style='font-size:10.0pt'>               On error displays confirm message and
+let a user to continue or not, otherwise it displays alert and cancels saving</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Focus</span></b><span
+style='font-size:10.0pt'>                    On error focuses the first invalid
+cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Edit</span></b><span
+style='font-size:10.0pt'>                       On error starts editing the
+first invalid cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Text</span></b><span
+style='font-size:10.0pt'>                       On error inserts <a
+href="#CResultText">ResultText</a> before ValidateText in alert or confirm
+message</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>NoColor</span></b><span
+style='font-size:10.0pt'>               Does <u>not</u> set <a href="#CellError">Error</a>
+attribute and color for invalid cells</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There must be set keyword <b>All</b>
+or <b>Added</b> to do the validation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On error calls <a
+href="#OnValidateError">OnValidateError</a> event and displays alert or confirm
+message with <a href="#CfgValidateText">ValidateText</a> and colors invalid
+cells.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Not used for AutoUpdate.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgValidateText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ValidateText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Alert or confirm message
+displayed for error in validation on save.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgValidateMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ValidateMessage</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Alert or confirm HTML message
+displayed by TreeGrid message for error in validation on save.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The message can be
+automatically hidden after <a href="#CfgValidateMessageTime">ValidateMessageTime</a>
+milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a href="#CfgValidate">Validate</a>
+contains <b>Confirm</b> keyword, this message is shown in standard confirm dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>int        </i></span><a
+name=CfgValidateMessageTime><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ValidateMessageTime</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long will be the <a
+href="#CfgValidateMessage">ValidateMessage</a> shown, in milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set or set to 0, the
+message is shown forever with OK button to hide it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to negative number,
+the message is shown for the (positive) time, but also with OK button to hide
+it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellError><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Error</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set it means that the cell
+contains invalid value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell is colored red and
+as tool tip is displayed the <b>Error</b> string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Error</b> attribute is
+set by <a href="#CfgValidate">Validate</a> on save and it is cleared after cell
+value changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be returned also from
+server in on server validation. In this case the server must also clear it
+after successful upload in next response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnValidate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnValidate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>err</b>)                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called for every cell
+to validate its value on saving, only if set <a href="#CfgValidate">Validate</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The err is error result of
+ResultMask validation, if any, otherwise 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>0</b> ok, <b>1</b>
+error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnValidateError><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnValidateError</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i>[] <b>rows</b>, <i>string</i>[] <b>cols</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on validation error
+when saving. When set <a href="#CfgValidate">Validate</a> attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return   <b>0</b> - alert or
+confirm message and cancel or continue saving, depending on user confirmed the
+saving or not</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - cancel saving, no alert shown</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - continue saving, no alert shown</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows</span></b><span
+style='font-size:10.0pt'> and <b>cols</b> are invalid cells that do not match
+their <a href="#CResultMask">ResultMask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsValidate></a><a name=Validate><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Validate</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                           Attached
+to event <b>OnClickButtonSave</b>                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Validates data according to
+settings in <a href="#CfgValidate">Validate</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Check><b><span style='font-size:20.0pt'>Side checkbox</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Checkbox displayed usually in
+tree in main column between tree and cell text.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It has two direct states <b>0</b>
+unchecked and <b>1</b> checked.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Parent row shows state of its
+children. It shows <b>1</b> checked if all children are checked, <b>0</b>
+unchecked if all children are unchecked and <b>2</b> unknown if there are both
+the checked and unchecked children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On click to parent checkbox
+it changes all child values to <b>1</b> checked or <b>0</b> unchecked.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell is <u>not</u> editable,
+the icon is checked / unchecked by click to any part of the cell. To check /
+uncheck the icon still only by clicking to icon itself, set:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Actions OnClickSideCheck=&quot;&quot;
+OnDblClickSideCheck=&quot;&quot;/&gt; (to disable the original actions called
+for the whole cell click)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>and to your column or cell
+add the actions like: &lt;C ... OnClickSide=&quot;Focus,SetChecked&quot;
+OnDblClickSide=&quot;SetChecked&quot; ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CIcon><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Icon</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                       Icon
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Check</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                                          <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show left side checkbox
+set <a href="CellSideButton.html#CIcon">Icon</a>=&quot;<b>Check</b>&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set also as right
+side button by <a href="CellSideButton.htm#CButton">Button</a>=”<b>Check</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CellChecked><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Checked</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                                  <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value for
+Icon=&quot;Check&quot;.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - unchecked, <b>1</b> - checked, <b>2</b> - unknown</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To upload this value to
+server define new column &lt;C Name=&quot;XXXChecked&quot;
+Visible=&quot;0&quot; CanHide=&quot;0&quot;/&gt;, where XXX is name of the
+column with the Icon=&quot;Check&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSetChecked><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SetChecked</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        Attached
+to event <b>OnClickSideCheck</b>                                                  <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on click to the Check
+icon, changes the Checked attribute / icon state to 0 / 1. It updates also all
+related parent and child Checked states.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetChecked><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetChecked</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>value</b>)                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes the state of given
+Check icon / Checked attribute. It updates also all related parent and child
+Checked states.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>row</b> is null, it
+changes all checkboxes in the column to the value. In this case value can be <b>0</b>
+or <b>1</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is the column with the Check icon / Checked
+attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>value</span></b><span
+style='font-size:10.0pt'> can be <b>0</b> or <b>1</b> to set this value. If
+value is null, it changes the Checked state from <b>2</b> or <b>1</b> to <b>0</b>
+and from <b>0</b> to <b>1</b>. <b>value</b> should <b>not</b> be <b>2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ResetChecked><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ResetChecked</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Updates this checkbox value
+according to its children. Updates also the children in the deep levels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it in OnLoaded like
+Grids.OnLoaded = function(G){ G.ResetChecked(); } if you want to specify only
+leaf rows' Checked value to '1' to calculate all the parent values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

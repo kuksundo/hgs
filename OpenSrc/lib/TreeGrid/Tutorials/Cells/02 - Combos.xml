@@ -1,0 +1,94 @@
+<Grid>
+   <Cfg id="Combos" NoVScroll="1" NoHScroll="1" IdChars="0123456789" NumberId="1"/>
+   <Cols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="ENUM" Type="Enum" Enum="||One|Two|Three|&lt;div style='background:0px -2px url(Yellow.gif) no-repeat;padding-left:20px;height:15px;'>Four&lt;/div>|Five|&lt;b>Six&lt;/b>|Seven|Eight|Nine|Ten" EmptyValue="unknown"/>
+      <C Name="ENUM1" Type="Enum" Clear="ENUM2,ENUM3" Enum="|A|B|C" Tip="Related Enum, the first column, controls the Enum2 and Enum3"/>
+      <C Name="ENUM2" Type="Enum" Related="ENUM1" Clear="ENUM3" EnumA="|A1|A2|A3" EnumB="|B1|B2" EnumC="|C1" Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1"/>
+      <C Name="ENUM3" Type="Enum" Related="ENUM1,ENUM2" EnumA_A1="|A1-a|A1-b|A1-c|A1-d" EnumA_A2="|A2-a|A2-b" EnumA_A3="|A3-a|A3-b|A3-c" EnumB_B1="|B1-a|B1-b|B1-c|B1-d|B1-e" EnumB_B2="|B2-a|B2-b|B2-c|B2-d" EnumC_C1="|C1-a|C1-b|C1-c" Tip="Related Enum, the third column, it is controlled by Enum1 and Enum2"/>
+      <C Name="SELECT" Type="Select" Width="90" Defaults="||&lt;div style='background:url(Green.gif) no-repeat;padding-left:20px;height:19px;padding-top:3px;'>Correct&lt;/div>|&lt;div style='background:url(Yellow.gif) no-repeat;padding-left:20px;height:19px;padding-top:3px;'>Warning&lt;/div>|&lt;div style='background:url(Red.gif) no-repeat;padding-left:20px;height:19px;padding-top:3px;'>Error&lt;/div>"/>
+      <C Name="DEFAULTS" Type="Text" Button="Defaults" Defaults="|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten"/>
+      <C Name="SUGGEST" Type="Text" Width="100" Suggest="AliceBlue,AntiqueWhite,Aqua,Aquamarine,Azure,Beige,Bisque,Black,BlanchedAlmond,Blue,BlueViolet,Brown,BurlyWood,CadetBlue,Chartreuse,Chocolate,Coral,CornflowerBlue,Cornsilk,Crimson,Cyan,DarkBlue,DarkCyan,DarkGoldenRod,DarkGray,DarkGreen,DarkKhaki,DarkMagenta,DarkOliveGreen,Darkorange,DarkOrchid,DarkRed,DarkSalmon,DarkSeaGreen,DarkSlateBlue,DarkSlateGray,DarkTurquoise,DarkViolet,DeepPink,DeepSkyBlue,DimGray,DodgerBlue,Ecru,Emerald,FireBrick,FloralWhite,ForestGreen,Fuchsia,Gainsboro,GhostWhite,Gold,GoldenRod,Gray,Green,GreenYellow,HoneyDew,HotPink,IndianRed,Indigo,Ivory,Jade,Jonquil,Khaki,Lavender,LavenderBlush,LawnGreen,LemonChiffon,LightBlue,LightCoral,LightCyan,LightGoldenRodYellow,LightGrey,LightGreen,LightPink ,LightSalmon,LightSeaGreen,LightSkyBlue,LightSlateGray,LightSteelBlue,LightYellow,Lime,LimeGreen,Linen,Magenta,Maroon,MediumAquaMarine,MediumBlue,MediumOrchid,MediumPurple,MediumSeaGreen,MediumSlateBlue,MediumSpringGreen,MediumTurquoise,MediumVioletRed,MidnightBlue,MintCream,MistyRose,Moccasin,NavajoWhite,Navy,OldLace,Olive,OliveDrab,Orange,OrangeRed,Orchid,PaleGoldenRod,PaleGreen,PaleTurquoise,PaleVioletRed,PapayaWhip,PeachPuff,Peru,Pink,Plum,PowderBlue,Purple,Red,RosyBrown,RoyalBlue,SaddleBrown,Salmon,SandyBrown,SeaGreen,SeaShell,Sienna,Silver,SkyBlue,SlateBlue,SlateGray,Snow,SpringGreen,SteelBlue,Tan,Teal,Thistle,Tomato,Turquoise,UltraMarine,Umber,Violet,Wheat,White,WhiteSmoke,Xanadu,Yellow,YellowGreen,Zaffre" />
+   </Cols>
+
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1"
+            ENUM="Three" ENUMTip="Enum value set by text"
+            ENUM1="A" ENUM1Tip="Related Enum, the first column, controls the Enum2 and Enum3&lt;br>After change sets the Enum2 and Enum3 to the first item"
+            ENUM2="A1" ENUM2Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1&lt;br>After change sets the Enum3 to the first item"
+            ENUM3="A1-c"
+            DEFAULTS="Five" DEFAULTSTip="Basic Defaults"
+            SUGGEST="Aqua" SUGGESTTip="Basic Suggest"
+            />
+         <I id="2"
+            ENUM="3" ENUMTip="Enum value set by index"
+            ENUM1="B" ENUM1Tip="Related Enum, the first column, controls the Enum2 and Enum3&lt;br>After change clears the Enum2 and Enum3"
+            ENUM2="B1" ENUM2CanEmpty="1" ENUM2Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1&lt;br>After change clears the Enum3"
+            ENUM3="B1-e" ENUM3CanEmpty="1"
+            SELECT="&lt;div style='background:url(Green.gif) no-repeat;padding-left:20px;height:19px;padding-top:3px;'>Correct&lt;/div>"
+            DEFAULTS="Two" DEFAULTSButton="" DEFAULTSIcon="Defaults" DEFAULTSDefaults="|*Rows" DEFAULTSTip="Defaults filled by values from all cell in this column&lt;br>The button shown by left side Icon"
+            SUGGEST="Light" SUGGESTSuggestType="Start" SUGGESTTip="Suggests also on start editing"
+            />
+         <I id="3"
+            ENUM="C" ENUMEnumKeys="|A|B|C|D|E|F|G|H|I|J" ENUMTip="Enum values set by key from EnumKeys"
+            ENUM1="1" ENUM1Refresh="ENUM2,ENUM3" ENUM1Clear="" ENUM1Tip="Related Enum, the first column, controls the Enum2 and Enum3&lt;br>Defined by index&lt;br>After change switches the Enum2 and Enum3 to the value from new list with the same index"
+            ENUM2="1" ENUM2Refresh="ENUM3" ENUM2Clear="" ENUM2IntFormat="Unknown 0" ENUM2Enum0="|A1|A2|A3" ENUM2Enum1="|B1|B2" ENUM2Enum2="|C1" ENUM2Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1&lt;br>Defined by index&lt;br>After change switches the Enum3 to the value from new list with the same index"
+            ENUM3="2" ENUM3IntFormat="Unknown 0" ENUM3Enum0_0="|A1-a|A1-b|A1-c|A1-d" ENUM3Enum0_1="|A2-a|A2-b" ENUM3Enum0_2="|A3-a|A3-b|A3-c" ENUM3Enum1_0="|B1-a|B1-b|B1-c|B1-d|B1-e" ENUM3Enum1_1="|B2-a|B2-b|B2-c|B2-d" ENUM3Enum2_0="|C1-a|C1-b|C1-c"
+            SELECT="&lt;i>Choose state&lt;/i>"
+            DEFAULTS="Three" DEFAULTSDefaults="|*RowsAlphabet" DEFAULTSDefaultsAlphabetMin="2" DEFAULTSTip="Defaults filled by values from all cell in this column and grouped by their first character"
+            SUGGEST="Brown" SUGGESTSuggestType="Existing,Replace,Complete" SUGGESTTip="Autocomplete combo&lt;br>Forces to enter only existing value&lt;br>Replaces input by selected item in menu&lt;br>Automatically selects and accepts item, it there is only one to suggest"
+            />
+         <I id="4"
+            ENUM="1;5;9" ENUMRange="1" ENUMEmptyValue="&lt;i>empty&lt;/i>" ENUMTip="Enum in Range cell&lt;br>You can select more items for one cell"
+            ENUM1="A;B" ENUM1Range="1" ENUM1Tip="Related Enum, the first column, controls the Enum2 and Enum3&lt;br>Related enum in Range cell&lt;br>Shows options in Enum2 and Enum3 for all chosen items in Enum1"
+            ENUM2="A1;A3;B2" ENUM2Range="1" ENUM2Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1&lt;br>Related enum in Range cell&lt;br>Merges list of options for all items chosen in Enum1"
+            ENUM3="A1-b;B2-c" ENUM3Range="1" ENUM3Tip="Related Enum, the third column, it is controlled by Enum1 and Enum2&lt;br>Related enum in Range cell&lt;br>Merges list of options for all items chosen in Enum1 and Enum2"
+            SELECT="&lt;div style='background:url(Yellow.gif) no-repeat;padding-left:20px;height:19px;padding-top:3px;'>Warning&lt;/div>"
+            DEFAULTS="Two;Six;Ten" DEFAULTSRange="1" DEFAULTSTip="Defaults in Range cell&lt;br>You can choose more values from the list"
+            SUGGEST="Blue;Green;Red" SUGGESTRange="1" SUGGESTSuggestType="Separator" SUGGESTTip="Suggest in range cell&lt;br>The items are separated by semicolon&lt;br>Suggests values for every item separately"
+            />
+         <I id="5"
+            ENUM="spec menu" ENUMEnumKeys="||A|B|C|D|E|F|G|H|I|J" ENUMTip="Custom Enum menu with collapsible levels, submenu and so on"
+            ENUMEnumMenu="{
+               Items:[
+                  {Name:'A',Text:'One'},
+                  {Name:'B',Text:'Two'},
+                  {Level:1,Name:'3-5',Expanded:0,Items:[
+                     {Name:'C',Text:'Three'},
+                     {Name:'D',Text:'Four'},
+                     {Name:'E',Text:'Five'}
+                     ]},
+                  {Level:1,Name:'6-7',Expanded:1,Items:[
+                     {Name:'F',Text:'Six'},
+                     {Name:'G',Text:'Seven'}
+                     ]},
+                  {Menu:1,Name:'8-9',Items:[
+                     {Name:'H',Text:'Eight'},
+                     {Name:'I',Text:'Nine'}
+                     ]},
+                  {Name:'J',Text:'Ten'}
+                  ]
+               }"
+            ENUM1="X" ENUM1Enum="|A|B|C" ENUM1EnumKeys="|X|Y|Z" ENUM1Tip="Related Enum, the first column, controls the Enum2 and Enum3&lt;br>Defined by keys&lt;br>After change clears the Enum2 and Enum3"
+            ENUM2="X3" ENUM2EnumX="|A1|A2|A3" ENUM2EnumY="|B1|B2" ENUM2EnumZ="|C1" ENUM2EnumKeysX="|X1|X2|X3" ENUM2EnumKeysY="|Y1|Y2" ENUM2EnumKeysZ="|Z1" ENUM2Tip="Related Enum, the second column, controls Enum3, it is controlled by Enum1&lt;br>Defined by keys&lt;br>After change clears the Enum3"
+            ENUM3="X3b" ENUM3EnumX_X1="|A1-a|A1-b|A1-c|A1-d" ENUM3EnumX_X2="|A2-a|A2-b" ENUM3EnumX_X3="|A3-a|A3-b|A3-c" ENUM3EnumY_Y1="|B1-a|B1-b|B1-c|B1-d|B1-e" ENUM3EnumY_Y2="|B2-a|B2-b|B2-c|B2-d" ENUM3EnumZ_Z1="|C1-a|C1-b|C1-c" ENUM3EnumKeysX_X1="|X1a|X1b|X1c|X1d" ENUM3EnumKeysX_X2="|X2a|X2b" ENUM3EnumKeysX_X3="|X3a|X3b|X3c" ENUM3EnumKeysY_Y1="|Y1a|Y1b|Y1c|Y1d|Y1e" ENUM3EnumKeysY_Y2="|Y2a|Y2b|Y2c|Y2d" ENUM3EnumKeysZ_Z1="|z1a|Z1b|Z1c" ENUM3Tip="Related Enum, the third column, it is controlled by Enum1 and Enum2&lt;br>Defined by keys"
+            DEFAULTS="spec menu" DEFAULTSTip="Custom Defaults menu with collapsible levels, submenu, item icons and so on"
+            DEFAULTSDefaults="{
+               Items:[
+                  {Name:'One',Icon:'Green.gif',Height:18},
+                  {Name:'Two',Icon:'Yellow.gif',Height:18},
+                  {Level:1,Name:'3-5',Expanded:0,Items:'|Three|Four|Five'},
+                  {Level:1,Name:'6-7',Expanded:1,Items:'|Six|Seven'},
+                  {Menu:1,Name:'8-9',Items:'|Eight|Nine'},
+                  {Name:'Ten',Icon:'Red.gif',Height:18}
+                  ]
+               }"
+            SUGGEST="Blue&#x0a;Green" SUGGESTType="Lines" SUGGESTAcceptEnters="1" SUGGESTSuggestSeparator="&#x0a;" SUGGESTResultText="Incorrect input"
+            SUGGESTSuggestType="Existing,Replace,Separator,Arrows,Esc" SUGGESTTip="Suggest in multiline cell&lt;br>Items are separated by LF&lt;br>Suggests for every line separately&lt;br>Enter creates new line&lt;br>Ctrl or Shift + Enter accepts input"
+            />
+      </B>
+   </Body>
+   <Header id="id" ENUM="Enum" ENUM1="Enum1" ENUM2="Enum1-2" ENUM3="Enum1-2-3" SELECT="Select" DEFAULTS="Defaults" SUGGEST="Suggest"/>
+</Grid>

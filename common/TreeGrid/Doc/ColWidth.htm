@@ -1,0 +1,430 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Column width</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Column width</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every column can have set its
+width by <a href="#CWidth">Width</a> otherwise its width is automatically
+calculated on start, but it can slow down the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every column’s width can be
+also automatically calculated to fill all the main tag, set it by <a
+href="#CRelWidth">RelWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Columns can be resized by a
+user, by mouse dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space row cells are
+independent on columns and have set their <a href="#SpaceCellWidth">Width</a>
+attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                    <i>Saved
+to cookies, avoid it by <b>&lt;C WidthLap=’1’/&gt;</b></i>                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column width in pixels. It is
+outer width including all side buttons, cell border and padding.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is not set, it is automatically
+computed before the grid is first displayed according to the width of first few
+cells in the column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If there any many columns,
+the automatic width calculation can slow down the rendering, so you should set
+Width for all or most of them!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell content is wider
+than column width, it is overflowed in normal cells and wrapped in multiline
+cells (Type=Lines, Html, ...).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CRelWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RelWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, the column width is
+automatically computed to fill all the remaining space in <b>main tag</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The width is automatically
+recalculated whenever the width of the main tag or its content changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are more RelWidth
+columns in grid, their width is computed as ratio of their RelWidth values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The RelWidth columns together
+fill the remaining vertical space in main tag, so the grid has always constant
+height of the main tag.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Using too many
+RelWidth columns can remarkably slow down grid usage!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set &lt;Cfg <a
+href="GridSize.htm#CfgShowVScroll">ShowVScroll</a>=’1’/&gt; to always show vertical
+scrollbar to speed up grid, especially in tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set minimal width by <a
+href="#CMinWidth">MinWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is ignored when set
+&lt;Cfg <a href="GridSize.htm#CfgNoHScroll">NoHScroll</a> or <a
+href="GridSize.htm#CfgMaxHScroll">MaxHScroll</a> or <a
+href="GridSize.htm#CfgNoScroll">NoScroll</a> /&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the RelWidth column is
+resized by a user, it looses its capability and gets fixed width. Back to relative
+width can be forced by resizing it to zero width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For successful printing set <a
+href="Print.htm#CPrintWidth">PrintWidth</a> for the relative width column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CMinWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal width for width
+calculated on start (no Width set), for width calculated by <a href="#CRelWidth">RelWidth</a>
+and for column resizing by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, minimal column
+width is cell border + padding.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set or set less than
+20, resizing column by a user below the MinWidth sets the column to automatic
+width and calculates it according to its content. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:silver'>                 <i>bool      </i></span><a
+name=COverflowEllipsis><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+color:silver'>OverflowEllipsis</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:silver'> </span><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";color:silver'>     <i>Removed, set </i></span><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>“text-overflow:ellipsis;”</span></i></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:silver'> for
+G_Cell in Grid.css file.</span></i><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:silver'>       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGroupWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                              <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A width of column when it is
+set as main column to show tree when grid is grouped.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can specify this width to
+change column width when it becomes main column while grouping – to resize
+column to accommodate the tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid is ungrouped or it
+shows the tree in another column, the column width returns to previous setting.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'>, if set to <b>1</b>, the width of the column will be
+automatically increased by the widths of columns hidden by grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CCanResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanResize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If column can be resized by a
+user by mouse dragging by column’s right edge. The column resizing must be also
+permitted globally by &lt;Cfg <a href="#CfgColResizing">ColResizing</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, fixed column can
+also be resized automatically if there is no room for it, to preserve
+displaying “Too small extents” message.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgColResizing><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColResizing</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All columns that have set
+&lt;C <a href="#CCanResize">CanResize</a>=’1’/&gt; can be resized by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CVarHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>VarHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]
+                                                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to columns containing
+wrap able cells, to shrink row height when the column is resized by a user and
+cells values occupy less height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> the rows are
+resized after column resizing finishes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>2</b> it resizes the
+rows during column resizing, it can be slow and should be used only for small
+grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute also affect
+printing, see <a href="Print.htm#CVarHeight">VarHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CMaxCalcWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxCalcWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [100]                                                                                       <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of rows to
+iterate when calculating column width.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Increasing the value can
+slow down the action.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>int        </i></span><a
+name=SpaceCellWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [100]                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the Space cell in
+pixels. If not set, it has default value 100px. It is inner width without side
+buttons and border and cell padding.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set to <b><span
+style='color:blue'>-1</span></b> to automatically calculate width according to
+cell content every time. If the cell value is changed, its width is updated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set to <b><span
+style='color:blue'>-2</span></b> to automatically calculate width according to cell
+content first time. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionsColResize></a><a name=ColResize><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>ColResize</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Mouse
+dragging action, only for <b>OnDrag...</b> event                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts resizing column by
+mouse. This actions resizes also right side <b>Pager</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the action attached
+to <b>OnDragHeaderLeft</b> (header left edge), <b>OnDragHeaderRight</b> (header
+right edge) and <b>OnDragPagerHeaderRight</b> (right side pager header right
+edge).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnColResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColResize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>)                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when column is
+resized, by a user or due <a href="#CRelWidth">RelWidth</a> or by API call <a
+href="#SetWidth">SetWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be called more times
+during resizing column by a user, for every change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAfterColResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAfterColResize</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>, <i>TRow</i> <b>row</b>, <i>int</i> <b>chg</b>)                    <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; </span><span
+style='color:blue'>upd <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after column or right
+pager is resized by a user. Called only once.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.2) </span></i><b><span
+style='font-size:10.0pt'>row</span></b><span style='font-size:10.0pt'> is the
+header row where the column edge was dragged.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.2) </span></i><b><span
+style='font-size:10.0pt'>chg</span></b><span style='font-size:10.0pt'> is
+change of width in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>string</i>
+<b>col</b>, <i>int</i> <b>dx</b>)                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes column with about <b>dx</b>
+pixels. Displays the change in grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>dx</b> can be positive
+(enlarge) or negative (shrink). The resulted column width will be
+grid.Cols[col].Width + dx.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the resulted width will be
+less than <a href="#CMinWidth">MinWidth</a>, the column width is automatically
+calculated according to its content or it restores <a href="#CRelWidth">RelWidth</a>
+if it was set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=CalcWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CalcWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>string</i>
+<b>col</b>, <i>bool</i> <b>noupdate</b> = 0)                                                             <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Computes column width
+according to the first 100 visible cells in this column, including all fixed
+cells and header. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In <b>server paging</b> if
+no rows are loaded yet it uses only fixed cells for calculation!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default updates the column
+width in grid, if set <b>noupdate</b> = 1, it just sets the <a href="#CWidth">Width</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method is called on
+start for every column that has not set <a href="#CWidth">Width</a> or <a
+href="#CRelWidth">RelWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=TestCellWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>TestCellWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                              <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell shows its content
+fully. <i>Works only for already rendered cell.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns required change of
+the column width to show the whole cell content. Returns only 0 or positive
+value.</span></p>
+
+</div>
+
+</body>
+
+</html>

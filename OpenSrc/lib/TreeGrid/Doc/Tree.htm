@@ -1,0 +1,839 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Tree</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Tree</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows in TreeGrid can be
+placed into tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports <b>unlimited</b>
+<b>levels</b> of tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In XML can be rows placed in
+tree of &lt;I&gt; tags like &lt;I A=’1’&gt; &lt;I A=’1-1’&gt; &lt;I A=’1-1-1’<span
+style='color:red'>/</span>&gt; &lt;I A=’1-1-2’<span style='color:red'>/</span>&gt;
+&lt;<span style='color:red'>/</span>I&gt; &lt;I A=’1-2-1’&gt; &lt;I A=’1-2-2’<span
+style='color:red'>/</span>&gt; &lt;I<span style='color:red'>/</span>&gt; &lt;<span
+style='color:red'>/</span>I&gt; &lt;I A=’1-2’<span style='color:red'>/</span>&gt;
+&lt;I A=’1-3’<span style='color:red'>/</span>&gt; &lt;<span style='color:red'>/</span>I&gt;
+&lt;I A=’2’<span style='color:red'>/</span>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tree lines and
+expand/collapse buttons are placed into <a href="#CfgMainCol">MainCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row’s children can be
+expanded, collapsed or not expandable / not collapsible, see <a
+href="#IExpanded">Expanded</a> and <a href="#ICanExpand">CanExpand</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The width of icons and indent
+in tree is defined in styles in Grid.css.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows can be also placed
+into tree automatically by <a href="Group.htm">Grouping</a> feature. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgMainCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MainCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this attribute to show
+TreeGrid instead of plain table. Let it empty to show only plain table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is name of main column with
+tree. The column must exist in the grid, but can be also hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this column will be
+displayed the tree with expand / collapse icons. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only one main column is
+possible to be in grid. </span></i><span style='font-size:10.0pt'>See also <a
+href="#CButton">Button</a>=’Expand’ to show the tree in more columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, the column should
+exist and be visible, otherwise a user cannot see the rows parent / children
+relationship.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeMainCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeMainCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>string</i>
+<b>col</b>, <i>bool</i> <b>noshow</b> = 0)                                                    <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes <a href="#CfgMainCol">MainCol</a>
+to given column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>noshow</b>, does <u>not</u>
+call RenderBody to display changes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgReversedTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ReversedTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]        <i>Saved
+to cookies, avoid it by <b>&lt;Cfg ReversedTreeLap=’1’/&gt;</b></i>            <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - it shows standard tree from top, children are below
+their parent</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - it shows MS Excel summary outline tree, from
+bottom, children are above their parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                It changes
+also row order in functions for iterating rows: GetFirst, GetLast, GetNext,
+GetPrev, GetFirstVisible, GetLastVisible, GetNextVisible, GetPrevVisible,
+GetNextShift, GetPrevShift.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetReversedTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetReversedTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>bool</i>
+<b>value</b>, <i>bool</i> <b>noshow</b> = 0)                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets value of <a
+href="#CfgReversedTree">ReversedTree</a> and renders body. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>noshow</b> = 1 does
+not render body and requires rerender.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i></span><a
+name=ICanExpand><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanExpand</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                                      <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row shows icon to expand /
+collapse and the row can be expanded or collapsed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the row
+cannot be expanded or collapsed by a user. So its children are always shown or
+hidden, depending on <a href="#IExpanded">Expanded</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'>, if set to <b>2</b>, the row can be expanded or
+collapsed, but the expand / collapse icon is <u>not</u> shown. Use to expand /
+collapse the row by another way.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=IExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Row is expanded, displays its
+children. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a
+href="PagingServer.htm#ChildPaging">ChildPaging</a> is set to <b>3</b>, only
+rows with Expanded=’<b>0</b>’ will take effect of the server ChildPaging and
+can download its children on expand.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i>
+</span><a name=ITreeIconX></a><a name=ITreeIcon><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>TreeIcon<i><span
+style='color:blue'>X</span></i></span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Custom tree icons for
+specified row state (icons for expand/collapse)</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>X</span></i></b><span
+style='font-size:10.0pt'> = <b>0</b> – not expandable, <b>1</b> – last not
+expandable, <b>2</b> – expand (+), <b>3</b> – last expand (+), <b>4</b> –
+collapse (-), <b>5</b> – last collapse (-)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a
+href="#CfgNoTreeLines">NoTreeLines</a> only values <b>2</b> and <b>4</b> are
+used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The last row is last row
+inside its parent’s children – its line does not continue.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: &lt;I
+TreeIcon2=’SpecialExpand.gif’ TreeIcon4=’SpecialCollapse.gif’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The height of the icon is
+always set to height of the row, the width is always set to standard Tree icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CButton><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Button</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 Button
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expand</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                        <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show <b>right</b> side
+Expand button set <a href="CellSideButton.htm#CButton">Button</a>=”Expand”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to show the tree
+button in different column than in the main column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide expand icon in the
+main column, you can set row attribute <a href="#ICanExpand">CanExpand</a>=’2’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CIcon><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Icon</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                       Icon
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expand</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show <b>left</b> side
+Expand button set <a href="CellSideButton.htm#CIcon">Icon</a>=”Expand”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to show the
+tree button in different column than in the main column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide expand icon in the
+main column, you can set row attribute <a href="#ICanExpand">CanExpand</a>=’2’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header cell&gt;  </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=HeaderCellLevels><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Levels</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                                   <span
+style='color:red'>new </span></span><b><span lang=CS style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red;background:yellow'>10.0</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set only in Header
+row in MainCol column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, it displays buttons
+for tree levels, like in MS Excel outline. After click to the button, it
+expands / collapses the rows to show up to the selected level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the button count
+is equal to the maximal tree level in grid (= max <a href="#Level">Level</a> + 1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt;1, it displays
+maximally given button count.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The count of level buttons is
+updated after grouping changes. It is also increased, but not decreased, after
+moving or adding rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgHideRootTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HideRootTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hides the first line in tree
+(root items are without any line). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Root rows become not
+expandable, so they should be all <a href="#IExpanded">Expanded</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgNoTreeLines><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoTreeLines</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it does
+not show connecting lines in tree, shows only expand / collapse buttons</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgNoPrintTreeLines><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoPrintTreeLines</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  []                                                                                            <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it does
+not show connecting lines in tree when printing, shows only expand / collapse
+buttons</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If empty, uses value of <a
+href="#CfgNoTreeLines">NoTreeLines</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetNoTreeLines><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetNoTreeLines</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>int</i>
+<b>Value</b>)                                                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets value of the NoTreeLines
+and re-renders grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>int</i>        </span><a
+name=ILevel></a><a name=Level><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>Level</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          <span
+style='color:red'>read only</span>                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Row’s level in tree. Only for
+variable rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>-1</span></b><span
+style='font-size:10.0pt'> = page, <b>0</b> root row, <b>1</b> first level
+children, <b>2</b> second level children, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=HasChildren><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HasChildren</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if row has some <u>visible</u>
+children (shows icon expand/collapse)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int</i>        </span><a
+name=GetPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow</i>
+<b>row</b>)                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns row’s position in its
+parent. It counts only visible rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgSaveExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveExpanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                    [0]        Saves
+information to cookies                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, saves
+expanding / collapsing state of all rows to cookies. All rows must have set <b><a
+href="RowId.htm#Iid">id</a></b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, saves the
+state of only rows that differs from their default row’s Expanded state.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, cookies are limited
+to 4096 bytes for the whole page, so use this setting only for very small
+tables or use <a href="Cookie.htm#CfgPersistentCfg">PersistentCfg</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also use the smallest ids as
+possible (the amount of space is used: id+1 bytes per row).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Cannot be used with server
+side child paging. Cannot be used for automatically created group rows.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows (comma separated ids)
+that will be expanded, all other rows will be collapsed if the attribute is
+present.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is done on start and also
+after every page / child page load in server paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoScrollAfterExpand><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>NoScrollAfterExpand</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [1]                                                                   <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, TreeGrid
+scrolls down if the children are not shown all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, when expanding
+row, does <u>not</u> scroll into view the row’s children – the icon always
+stays under mouse cursor</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the default value is <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>Actions and API for
+expand / collapse</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row can be expanded or
+collapsed by a user by clicking to row’s <b>expand</b> / <b>collapse</b> icon
+in tree. And also by pressing Ctrl+Enter by default.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Collapsing</span></b><span
+style='font-size:10.0pt'> rows is immediate, but <b>expanding</b> rows can be
+slows and asynchronous, depending on how many children will be loaded / render,
+see various <a href="TreePaging.htm">paging</a> types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows can be expanded or
+collapsed by clicking to toolbar buttons <b>ExpandAll</b> or <b>CollapseAll</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>CollapseAll</b> always
+collapses all rows in grid, but <b>ExpandAll</b> can expand only some rows to
+avoid dead lock when too many children are present, see <a
+href="#CfgExpandAllLevels">ExpandAll</a>... settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExpand><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Expand</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Attached
+to events <b>OnClickExpand</b> and <b>OnCtrlEnter</b>                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands actual or focused
+row, fails if row is already expanded or cannot be expanded or does not have
+children.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The expanding can be
+asynchronous and can finish after the action returned.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCollapse><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Collapse</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to events <b>OnClickExpand</b> and <b>OnCtrlEnter</b>                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapses actual or focused
+row, fails if row is not expanded or cannot be expanded or does not have
+children. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use “Expand OR Collapse” to
+invert expand state</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExpandAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ExpandAll</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>      </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Attached
+to event <b>OnClickButtonExpandAll     </b>                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Tries to expand all rows. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The ExpandAll can be
+asynchronous and can finish after the action returned.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The ExpandAll action can be
+stopped by a user during process.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgExpandAllLoaded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandAllLoaded</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [0]                                                                      
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>
+ in server child paging (<a href="PagingServer.htm#ChildPaging">ChildPaging</a>=3)
+the <a href="#ExpandAll">ExpandAll</a> expands only rows with already
+downloaded children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgExpandAllLevels><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandAllLevels</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 [3]                                                                               <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which levels will be expanded
+on <a href="#ExpandAll">ExpandAll</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – only one level, no sub nodes of actually expanding
+rows will be expanded.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – all already rendered children, the rest only one
+level</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – all already downloaded children, the rest only one
+level</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3 </span></b><span
+style='font-size:10.0pt'>– all levels, the expanding can be done in more
+passing, because it waits for children to download</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCollapseAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>CollapseAll</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Attached
+to event <b>OnClickButtonCollapseAll   </b>                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapses all rows. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The CollapseAll can be
+asynchronous and can finish after the action returned.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsIndent></a><a name=Indent><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Indent</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Attached
+to event <b>OnClickButtonIndent</b>                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Increases level of actual or
+focused row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves the row as the last
+child of previous row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsIndentSelected><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>IndentSelected</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Attached
+to event <b>OnClickButtonIndent</b>                                   <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Increases level of all
+selected rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves every selected row as
+the last child of previous row. It never moves selected row as child of another
+selected row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsOutdent></a><a name=Outdent><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Outdent</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                  Attached
+to event <b>OnClickButtonOutdent</b>                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Decreases level of actual or
+focused row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves the row below its
+parent row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsOutdentSelected><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>OutdentSelected</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     Attached
+to event <b>OnClickButtonOutdent</b>                                 <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Decreases level of all
+selected rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves every selected row
+below its parent row. It never move the row if its parent is also selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsShowTreeLevel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowTreeLevel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>        Attached to event <b>OnClickLevels</b>                                             <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands / collapses grid
+after click to <a href="#HeaderCellLevels">Levels</a> button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnExpand><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnExpand</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the row is
+expanded or collapsed. Return true to suppress action. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Test the actual state by <b>row.Expanded</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel the
+action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Expand><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Expand</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands row, <i>for child
+paging is asynchronous</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=ExpandParents><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ExpandParents</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row</b>)                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands all parents to show
+the row. The row must <u>not</u> be hidden (must have Visible=1). <i>For child
+paging is asynchronous.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=ExpandAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ExpandAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TRow
+</i><b>parent</b>, <i>int</i> <b>loaded </b>= 0, <i>int</i> <b>levels </b>= 3)                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands all rows in parent and
+shows their children. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If parent is null, expands
+all rows in grid.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><b><span style='font-size:10.0pt'>loaded</span></b><span
+style='font-size:10.0pt'> is <a href="#CfgExpandAllLevels">ExpandAllLoaded</a>,
+<b>levels</b> is <a href="#CfgExpandAllLevels">ExpandAllLevels</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, in grid with <a
+href="PagingServer.htm#ChildPaging">ChildPaging</a> is not often possible to
+expand all rows, because rendering of thousands of rows is very slow.</span></i></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=Collapse><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Collapse</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>)                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapses row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=CollapseAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CollapseAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (
+)                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapses all rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

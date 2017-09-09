@@ -1,0 +1,71 @@
+<html>
+<head>
+<SCRIPT src="../Grid/GridE.js"> </SCRIPT>
+<title>TG Tutorials Index</title>
+</head>
+<body>
+<center id='title' style='font:bold 40px Arial;'>TreeGrid example list</center>
+<div id='desc'>Here are listed all online examples. In downloadable trial version there are more examples specific for server side scripts like ASP, ASP.NET, PHP or JSP.</div>
+<br />
+<div style='width:100%; height:350px;'>
+<bdo Layout_Url='IndexDef.xml' Data_Url="IndexData.xml" Upload_Tag='Info' Upload_Xml='1' Upload_Type='Body' Upload_Attrs='F,C,S,P,T,N,D,R,V'></bdo>
+</div>
+<style>
+.Name { font-size:12px; }
+.NameGroup { font-size:14px; font-weight:bold; color:blue; }
+.GMClassSelected { color:Blue!important; }
+</style>
+<script>
+var W = null; // The window with documentation
+if(window.Starting==null) { 
+   try { 
+      GetElem('title').innerHTML = "TreeGrid HTML tutorial and example list";
+      GetElem('desc').style.display = "none";
+      } catch(e) { }
+   }
+
+// --- Click to cell, opens the link ---
+Grids.OnClick = function(G,row,col){
+if(row.Fixed || row.Def.Group) return;
+var L = (row.S&&row.S!="EGrid"&&row.S!="EGantt"?"../Tutorials/"+row.S+"/":"") + row.F;
+if(window.ProcessClick){ ProcessClick(null,L); return; } // online web
+if(W) W.close();
+W = window.open(L,"Examples");
+setTimeout(function(){
+   W.scrollBy(0,-20);
+   },10);
+}
+
+// --- Marks section attached in hash ---
+Grids.OnLoaded = function(G){
+var h = location.hash.slice(1);
+if(h){
+   h = h.replace(/^[^\']*\'/,"").replace(/%7c/gi,"|");
+   G.SearchExpression = "Get(Row,'S').search(/"+h+"/)==0";
+   G.SearchAction = "Select,Find";
+   G.SearchMethod = 4;
+   if(!G.Grouped) G.Sort = "S,I";
+   }
+if(window.Starting==null) { G.Def.Online.Visible = 0; G.Def.Online.CanFilter = 0; } // Only online web
+if(Grids.Tablet) G.NoVScroll = 1; // iPad
+}
+
+// --- Scrolls the first selected rows top ---
+Grids.OnRenderPageFinish = function(G){
+var A = G.GetSelRows();
+if(A[0]) G.SetScrollTop(G.GetRowTop(G.Grouped ? A[0].parentNode : A[0])-4);
+}
+
+// --- Runs the search online ---
+Grids.RunExamples = function(sec) {
+var G = Grids.Examples;
+G.SearchExpression = "Get(Row,'S').search(/"+sec+"/)==0";
+G.SearchMethod = 4;
+G.DoSearch("Select,Find");
+var A = G.GetSelRows();
+if(A[0]) G.SetScrollTop(G.GetRowTop(G.Grouped ? A[0].parentNode : A[0])-4);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<Grid>
+   <Cfg id='User' UsePrefix='1' ColsPosLap='1' ShowDeleted="0" AutoSort="1" AcceptEnters="1" NoFormatEscape='1' MaxHeight='1' SaveAttrs='Choose,Filter' GroupMain='B'/>
+   <Colors Alternate='-15,-5,-15'/>
+   <Def> 
+      <D Name='R' BColor='245,255,245' FColor='255,245,245'/>
+      <D Name='Group' Expanded='1'/>
+   </Def>
+   <LeftCols>
+      <C Name='A' Type='Int'/>
+      <C Name='B' Width='120' Type='Text' ToolTip='1' Spanned='1'/>
+   </LeftCols>
+   <Cols>
+      <C Name='E' Width='80' Type='Int' Spanned='1'/>
+      <C Name='F' Width='60' Type='Date' Format='HH:mm' Button=''/>
+      <C Name='G' Width='135' Type='Date' Format='ddd d/M/yyyy'/>
+      <C Name='H' Width='80' Type='Html' CanEdit='0' CanFocus='0' Spanned='1'/>
+      <C Name='I' Width='90' Type='Date' Format='=> h:mm tt' Formula='F+E*3600000'/>
+   </Cols>
+   <RightCols>
+      
+      <C Name='C' Width='80' Type='Enum' Enum=';City;Town;Small town;Village' Spanned='1'/>
+      <C Name='D' Width='80' Type='Float' Format='"#"#########0.##"#"' Button='Button' WidthPad='20' ButtonText='...'/>
+   </RightCols>
+
+   <Solid>
+      <I id='Choose' Space='0' Class='Group' Cells='Filter,Group' CanEdit='0' NoColor='1'
+         FilterLabel='Show'
+         Filter='All' 
+         FilterType="Select"
+         FilterDefaults="|All|Cities|Towns|Villages|Cities and towns"
+         FilterOnChange="
+            var idx = Grid.GetDefaultsIndex(Row,Col);
+            Grid.SearchExpression = ['','Type==0','Type==1 || Type==2','Type==3','Type&lt;=2'][idx];
+            Grid.SearchRows('Filter')
+            "
+         FilterWidth="120" 
+         
+         GroupLabel='Group by' 
+         GroupType='Select'
+         GroupDefaults='|None|Type|Int|Type and Int'
+         GroupOnChange='Grid.GroupRows(["","C","E","C,E"][Grid.GetDefaultsIndex(Row,Col)]);'
+         GroupFormula='{"":"None","C":"Type","E":"Int","C,E":"Type and Int"}[Grid.Group]'
+         />
+      <Toolbar id='Toolbar' Space="1"/>
+   </Solid>
+
+   <Head>
+      <Header Spanned='1' 
+         A='' AVisible='-1' ASpan='2'
+         E='' EVisible='-1'
+         F="&lt;center>&lt;b style='color:red;'>TreeGrid Example&lt;/b>&lt;/center>" FSpan='3' FType='Html' FButton=''
+         I='' IVisible='-1'
+         C='' CVisible='-1' CSpan='2'         
+         />
+      <Header id='Header' A="Index" B="Town" C="Type" D="Number" E="Int" F="Time" G="Date" H="Html" I="Calc"/>   
+   </Head>
+   <Foot>
+      <I Kind='Filter' DButton='None' BButton='Defaults' BDefaults='|*FilterOff|*RowsAll' BShowMenu='0'/>
+      <Header Spanned="1"
+         A="&lt;i>Left columns&lt;/i>" ASpan="2" AType="Html"
+         E="&lt;center>&lt;i>Editable columns&lt;/i>&lt;/center>" ESpan="7" EType="Html"
+         C="&lt;div align='right'>&lt;i>Right columns&lt;/i>&lt;/div>" CSpan="2" CType="Html"
+         />
+   </Foot>
+</Grid>

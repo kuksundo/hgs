@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<Grid>
+   <Cfg id='Calc' Tag='GRID' MaxHeight='1' MainCol='A' ShowDeleted="0" SuppressCfg='0' AutoSort="0" DateStrings='1'/>
+   <Def>
+      <D Name='C' CanMove='2'/>
+      <D Name='Data' 
+         CalcOrder='F,B'
+         XType='Text' XCanEdit='0' XCanFilter='0'
+         A='Item'
+         G='0'
+         H='0'
+         I=''
+         CDef='' AcceptDef=''
+         />
+      <D Name='Fixed'
+         XType='Text' XCanEdit='0'
+         CalcOrder='D,B'
+         EType='Text'
+         FType='Text'
+         HType='Text'
+         IType='Text'
+         />
+      <D Name='Node'
+         CDef='Data' AcceptDef='Data'
+         Expanded='1'
+         Calculated='1'
+         CalcOrder='D,F,B'
+         X='1'
+         A='Order'
+         BFormula='F-F*G/100+H'
+         CCanEdit='1'
+         DFormula='count()' DFormat='0 "items"'
+         EFormat=' ' ECanEdit='0'
+         FFormula='sum("B")'
+         G='0'
+         H='0'
+         ICanEdit='1'
+         />
+   </Def>
+   <Panel Move='1' Copy='7'/>
+   <LeftCols>
+      <C Name='X' Width='35' Type='Bool' CanFilter='2' CanSort='0'/>
+      <C Name='A' Width='250' Type='Text' ToolTip='1'/>
+   </LeftCols>
+   <Cols>
+      <C Name='C' Width='100' Type='Text' CanEdit='0'/>
+      <C Name='I' Width='90' Type='Date' Format='d' CanEdit='0'/>
+      <C Name='D' Width='80' Type='Int'/>
+      <C Name='E' Width='80' Type='Float' Format='0.00'/>
+      <C Name='F' Width='80' Type='Float' Format='0.00' Formula='D*E'/>
+      <C Name='G' Width='80' Type='Int' Format='0\%'/>
+      <C Name='H' Width='80' Type='Float' Format='0.00'/>
+   </Cols>
+   <RightCols>
+      <C Name='B' Width='80' Type='Float' Format='0.00' Formula='F-F*G/100+H'/>
+   </RightCols>   
+   <Header 
+      CDef = 'Node'
+      X="Used"
+      A="Product / Order name" 
+      B="Price" 
+      C="Customer" 
+      D="Amount" 
+      E="Unit price" 
+      F="List Price" 
+      G="Discount" 
+      H="Shipping" 
+      I="Date"
+      />
+   <Foot>
+      <I id='Fix1' CanDelete='0' CanEdit='0' Calculated='1'
+         A="Total income" 
+         BFormula='sum("X==1")'
+         DFormula='count("X==1")' DFormat='0 "orders"' DType='Int'
+         GVisible='0' 
+         />
+      <I id='Fix2' CanDelete='0' CanEdit='0' Calculated='1' 
+         A="Taxes"
+         BFormula='Get(Fix1,"B")*G/100'
+         CVisible='0'
+         DVisible='0'
+         G="22" GCanEdit='1'
+         />
+      <I id='Fix3' CanDelete='0' CanEdit='0' Calculated='1'
+         A="Profit"
+         BFormula='Get(Fix1,"B")-Get(Fix2,"B")'
+         CVisible='0'
+         DVisible='0'
+         GVisible='0'
+         />
+   </Foot>
+   <Toolbar Styles="1"/>
+</Grid>

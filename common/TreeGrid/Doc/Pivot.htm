@@ -1,0 +1,1234 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Grouping rows to tree</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Pivot tables</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grouping rows cells to two
+dimensional row and column tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>How to create Pivot table.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) First create the source (<b>master</b>)
+grid with layout and data. It should be plain grid without tree and any special
+functionality, to just show the data table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) The master
+grid can be normally shown and updated after any change in the Pivot grid (see <a
+href="#CfgPivotUpdate">PivotUpdate</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) Or the
+master grid can be hidden by &lt;bdo Hidden='1' ... &gt; to show only the Pivot
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) If you want to permit
+changes in the Pivot grid and upload them to server, define the Upload_Url and
+other saving attribute in the <b>master</b> grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) Only the
+changes in master grid are uploaded to server, the Pivot grid is just a view,
+its changes are mirrored to the master grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) Define the Pivot grid only
+with partial layout, without Data_ source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) In the Pivot layout set
+the Pivot grid <a href="#CfgPivotMaster">PivotMaster</a> attribute to the
+master grid id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5) Optionally in the Pivot
+layout </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>a)
+Set the <a href="#CfgPivotRows">PivotRows</a>, <a href="#CfgPivotCols">PivotCols</a>
+and <a href="#CfgPivotData">PivotData</a> attributes, if you want to create the
+Pivot on start from these columns in master grid.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>b)
+Set the other Pivot attributes to control the Pivot grid creating</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>c)
+Define custom columns and custom fixed and space rows to show some custom
+information, usually summaries</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                d) Define
+default columns and rows to be used for the automatically created rows and
+columns</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6) TreeGrid automatically
+creates the Pivot table data XML and reloads the Pivot grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) It creates
+column named MainCol to show the rows tree created from PivotRows, it sets it
+as the Pivot grid MainCol</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) It creates
+columns for PivotCols, one column for every different value combination in
+every row in all the PivotCols cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               The
+created column names are like <b>P</b>Value1_Value2_Value3_... where Value1 is
+value from the first column in PivotCols, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               All
+the Values are escaped by <a href="#PivotEscape">PivotEscape</a> method,
+similarly to standard escape function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                c) It creates
+columns for all the combinations of PivotData and PivotCols</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               The
+created column names are the parent name (from point b) plus &quot;_&quot; and
+one value from PivotData</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                d) It creates
+header rows with the column tree. The count of the header rows is the same as
+PivotCols length</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                e) It creates
+row tree according to PivotRows (like normal grouping in TreeGrid according to
+the Group attribute)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               The
+row ids are like Value1$Value2$Value3$... where Value1 is value from the first
+column in PivotRows, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7) To dynamically change the
+pivot definition </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) Set
+PivotRows, PivotCols and PivotData by API and call CreatePivot API method</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) To permit
+users to choose the pivot source freely, define the source columns and pivot
+rows, columns and data as 4 DropCols cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                c) If you
+hide the master on pivot (PivotControlMaster='1') you should define the control
+DropCols and button cells in both grids the same</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>8) Catching pivot creating
+events</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) Use
+standard events for loading like OnLoaded, OnReady, OnRenderFinish</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) The pivot
+grid is loaded first time without data, with Grid.Source.Data.Data == null. In
+next calls the Data contains the pivot grid XML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                c)
+CreatePivot method calls its parameter func when the pivot grid is created and
+ready (not rendered yet)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+   </span><a name=CfgPivotMaster><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PivotMaster</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>id of the source grid from
+where it loads data rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master grid can be also
+hidden (&lt;bdo Hidden='1' ... &gt;) to show only the pivot grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PivotMaster is main attribute
+that defines the pivot relation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPivotControlMaster><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PivotControlMaster</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                
+<span style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd
+9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the pivot grid controls
+visibility of the master grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             The visibility of pivot and master grids
+are independent</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                To not
+display the master grid set its &lt;bdo Hidden='1' ... &gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the pivot
+settings are incomplete, the pivot grid is displayed empty.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             The visibility of the pivot and master
+grids are controlled automatically to show only one grid at a time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Define the
+main div tags of both grid in the same parent. Set the master grid's main tag
+as display:none.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Optionally
+define the Pivot row also in master grid to be used to set up the pivot grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the pivot
+settings are complete, the pivot grid is shown and the master grid is hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the pivot
+settings are incomplete, the pivot grid is hidden (its main tag has
+display:none) and the master grid is shown</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>Since
+9.3</span></i><span style='font-size:10.0pt'>, if permitted saving Pivot
+configuration to cookies, it saves the display state of both grids to cookies</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]</i>
+ </span><a name=CfgPivotRows><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PivotRows</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>Saved
+to cookies (since 9.3), avoid it by <b>&lt;Cfg PivotLap=’1’/&gt;</b></i>                <span
+style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A comma separated list of
+column names from master grid that will be used for row groups.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every the column name will
+create one row tree level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]</i>
+ </span><a name=CfgPivotCols><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PivotCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>Saved
+to cookies (since 9.3), avoid it by <b>&lt;Cfg PivotLap=’1’/&gt;</b></i>                <span
+style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A comma separated list of
+column names from master grid that will be used for column groups.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every the column name will
+create one column tree level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]</i>
+ </span><a name=CfgPivotData><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PivotData</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>Saved
+to cookies (since 9.3), avoid it by <b>&lt;Cfg PivotLap=’1’/&gt;</b></i>                <span
+style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A comma separated list of
+column names from master grid that will be used for data columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These columns usually contain
+numbers to be summed into parent column and row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type</i>      </span><a
+name=CfgPivotExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PivotExpanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>From which level the columns
+and rows will be expanded. It can be one number for both or two numbers comma separated
+as columns, rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &quot;2,0&quot;
+means the first two column levels will be expanded and all rows will be
+collapsed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To expand all rows and
+columns set it to high number e.g. 100.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPivotMaxCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PivotMaxCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [100]                                                                                           
+<span style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of visible
+columns in the pivot table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the created columns exceed
+this limit, appropriate levels are always collapsed by default and only one
+cell per header can be expanded on these levels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It also sets FastColumns to
+0, it slows down the expanding / collapsing, but speeds up the table rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal value is 500, it is
+because of hard limits for colSpan attribute value (1000) in the most browsers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Higher value slows down the
+grid rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPivotShowParent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PivotShowParent</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]        <i>Saved
+to cookies (since 9.3), avoid it by <b>&lt;Cfg PivotLap=’1’/&gt;</b></i> <span
+style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it shows all
+columns. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it hides
+expanded summary columns and shows the summary column only when it is
+collapsed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPivotUpdate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PivotUpdate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [3]                                                                                                          
+<span style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the second grid will be
+updated after the first grid is changed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - no change in master or pivot grid will be updated
+in the second grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - every change in pivot grid will be done in master
+grid. But no change in master grid will update the pivot grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - every change in pivot grid will be done in master
+grid. Only changes in master grid that don't change pivot grid structure (do
+not require pivot recreate) are done in pivot grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - Every change is mirrored in both grids. But change
+in master grid that requires recreating pivot grid must be confirmed by a user
+in confirm dialog.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> - Every change is mirrored in both grids. If
+required, the pivot grid is automatically recreated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In pivot grid there cannot be
+changed summary cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPivotFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PivotFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]        <i>Saved
+to cookies (since 9.3), avoid it by <b>&lt;Cfg PivotLap=’1’/&gt;</b></i>            <span
+style='color:red'>new <b>9.2</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how will be created
+pivot values from filtered rows in master table.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - The filtered rows will be ignored</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - The groups for filtered rows will be created, but
+the values from filtered rows will be ignored</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - The filtered rows will be used as normal rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+   </span><a name=CfgPivotFunc><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PivotFunc</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [&quot;sumjoin&quot;]                                                                                             
+<span style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function used to summarize
+the values for pivot cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One pivot cell should contain
+all values from master grid rows data column, where the values in all columns
+PivotRows and PivotCols have appropriate (the same) value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>sum</span></b><span
+style='font-size:10.0pt'>        sums all the number values</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>count</span></b><span
+style='font-size:10.0pt'>     returns the count of the values</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>join</span></b><span
+style='font-size:10.0pt'>        all the values will be merged as strings, separated
+by ValueSeparator (semicolon by default)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>joinsum</span></b><span
+style='font-size:10.0pt'> all the values will be merged as strings, separated
+by ValueSeparator (semicolon by default), the same values will be counted and
+placed once as &quot;count x value&quot;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>sumjoin</span></b><span
+style='font-size:10.0pt'> sums all the values. If some value is neither number
+not empty string, it merges the values as <b>joinsum</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The other actions with the
+values can be done in <a href="#OnPivotFunc">OnPivotFunc</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+   </span><a name=CfgPivotFuncXXX><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PivotFuncXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>            new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>PivotFunc for particular
+PivotData column, the XXX is the pivot data column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &lt;Cfg
+PivotData= 'COUNT' PivotFuncCOUNT='count' PivotFuncNAMES='join'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, <a
+href="#CfgPivotFunc">PivotFunc</a> is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i> </span><a
+name=OnPivotFunc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPivotFunc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid
+</i><b>grid</b>, <i>string</i> <b>id</b>, <i>string</i> <b>col</b>, <i>TGrid</i>
+<b>master</b>, <i>TRow[]</i> <b>rows</b>, <i>type[]</i> <b>values</b>, <i>type</i>
+<b>result</b>)      <span style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to calculate result of
+the pivot data cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'> is pivot grid, <b>master</b> is master grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>id</span></b><span
+style='font-size:10.0pt'> is the id of the pivot row that will contain or
+contains the value. It is full id that consists from the PivotRows value,
+separated by '$'</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is the column in pivot grid that will contain or
+contains the value. It consist from the PivotCols values, separated by '$' and
+converted by PivotEscape</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows</span></b><span
+style='font-size:10.0pt'> are all source rows in master grid from their values
+is created this cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>values</span></b><span
+style='font-size:10.0pt'> are all values from them the result can be
+calculated. Simply, the <b>values</b> are all values from master rows that have
+the same (actual) values in PivotRows and PivotCols columns.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>result</span></b><span
+style='font-size:10.0pt'> is actual result for the pivot cell calculated by
+actual PivotFunc.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i>
+</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:yellow'>        = &quot;</span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>MainCol</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>&quot;                                                                                                        <span
+style='color:red'>            </span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column named
+&quot;MainCol&quot; is automatically created column that contains the row tree.
+It is set also as the grid MainCol (&lt;Cfg MainCol =
+&quot;MainCol&quot;/&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i>
+</span><a name=DName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          <span
+style='color:red'>            </span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can control the created
+grouping rows and columns by the default rows and columns.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The predefined default
+rows:</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>PivotRow</b>&quot;
+- defines all the leaf data rows in the Pivot grid (created from the last item
+in <a href="#CfgPivotRows">PivotRows</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>PivotGroupRow</b>&quot;
+- defines all the tree (group) rows in the Pivot grid (created from all items
+in <a href="#CfgPivotRows">PivotRows</a> except the last item)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Individual
+defaults created from <a href="#CfgPivotRows">PivotRows</a> list. These
+defaults are used as default row, one per every level.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The predefined default
+columns:</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>Pivot</b>&quot;
+- base column used to define all the automatically created columns except the <b>MainCol</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>PivotData</b>&quot;
+- default column used for leaf data columns (created from <a
+href="#CfgPivotData">PivotData</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>PivotLast</b>&quot;
+- default column used for the last group column (parent of the data columns,
+created from the last item in <a href="#CfgPivotCols">PivotCols</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &quot;<b>PivotGroup</b>&quot;
+- default column used for all the group columns except the last one (except the
+PivotLast, created from all the items in <a href="#CfgPivotCols">PivotCols</a>
+except the last item)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Individual
+defaults from <a href="#CfgPivotCols">PivotCols</a> list. These defaults are
+used as default column, one per every level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Individual
+defaults from <a href="#CfgPivotData">PivotData</a> list. These defaults are
+used as default column, one per every data column level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default columns usually
+define format or type of the cells in these columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default rows usually
+define the cell formulas for these group or data rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default rows can define
+more cells at once by using the default column names as the cell name. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example &lt;D Name='PivotRow' PivotGroupFormula='sumc()'/&gt; sets all the
+cells that belong to the default column &quot;PivotGroup&quot;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To speed up the pivot
+creating it is strongly recommended to set default width for all columns (like
+&lt;DefCols&gt;&lt;D Name='Pivot' Width='100'/&gt;&lt;/DefCols&gt;), especially
+when many columns are created.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string    </i></span><a
+name=CellPivotValue></a><a name=CPivotValue><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PivotValue</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value displayed in pivot
+table instead of the source cell value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When creating pivot table,
+there is used cell <a href="Group.htm#CSortValue">SortValue</a> attribute to
+group the same values. The PivotValue is used only for display in cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetPivotValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPivotValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value for display
+in pivot table, <i>val</i> is predefined value, returns <i>val</i> or new
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row, col is the cell from
+the value is read. For data cell it is real cell in the source grid, but for
+pivot columns and rows it is a temporary row created by grouping and main
+column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When creating pivot table,
+there is called <a href="Group.htm#OnGetSortValue">OnGetSortValue</a> event to
+group the same values. The OnGetPivotValue is used only for display in cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CFormula><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Formula</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By formulas you can calculate
+the group columns and rows in the Pivot grid. Use the formulas in the default
+rows or columns. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Don't forget to set also <a
+href="#CfgCalcOrder">CalcOrder</a>, it is usually needed to set it in Pivot
+grid.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <a
+href="CellFormula.htm#sum">sum</a> function to sum row children or root rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <a href="#sumc">sumc</a>
+function to sum column children and <a href="#sumca">sumca</a> to sum root
+columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [] </span><a
+name=ICalcOrder><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalcOrder</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+calculated cells to specify order in which the cells are calculated. See <a
+href="CellFormula.htm#ICalcOrder">CalcOrder</a> documentation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the CalcOrder is set in
+default row in Pivot table, it is possible to use the default column names
+(e.g. &quot;PivotData&quot;) to reference all the columns that belong to the
+default column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The calculation order of
+&quot;PivotGroup&quot; is reversed (calculates first the last column from that
+group)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=CTypeSelectPivot><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Type=”</span><a
+name=SelectPivot><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectPivot</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                                          <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special combo box to select predefined
+pivots.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It presets these cell
+attribute: Type=”Html” Button=”Defaults” Formula=<i>PivotRows/Cols/Data</i> Defaults=<i>Updated
+Defaults</i> OnChange=<i>change PivotRows/Cols/Data</i> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define Defaults attribute in
+this format:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defaults=&quot;|
+R11,R12,...,R1X : C11,C12,...,C1X : D11,D12,...,D1X | R21,R22,...,R2X :
+C21,C22,...,C2X : D21,D22,...,D2X | R31,R32,...,R3X : C31,C32,...,C3X :
+D31,D32,...,D3X | ..... &quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>where <b>R</b> are comma
+separated PivotRows, <b>C</b> comma separated PivotCols and <b>D</b> comma
+separated PivotData. Always column names, <u>not</u> captions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The separator '|' can be
+replaced by any character that is not included in any value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The comma and colon can be
+replaced by values defined in the cell <a href="#CellSeparators">Separators</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string[*] </i></span><a
+name=CellsSeparators><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Separators</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [...]                                                                                                                  <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of five separators for <b>SelectPivot</b> type cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like
+XXXSeparators=&quot;|A|B|C|D|E&quot;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>A</span></b><span
+style='font-size:10.0pt'> separates individual values in data in the Defaults
+array. Default is comma.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>B</span></b><span
+style='font-size:10.0pt'> separates groups (PivotRows, PivotCols and PivotData)
+in data in the Defaults array. Default is colon.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>C</span></b><span
+style='font-size:10.0pt'> separates individual values in display. Can contain
+HTML. Default is blue comma.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>D</span></b><span
+style='font-size:10.0pt'> separates PivotRows and PivotCols in display. Can
+contain HTML. Default is red plus.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>E</span></b><span
+style='font-size:10.0pt'> separates PivotCols and PivotData in display. Can
+contain HTML. Default is red equal.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&quot;|,|:|&lt;b style='color:blue;'&gt;,&lt;/b&gt;
+| &lt;b style='color:red;'&gt;+&lt;/b&gt; | &lt;b
+style='color:red;'&gt;=&lt;/b&gt; &quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i> </span><a
+name=OnPivot><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPivot</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid
+</i><b>Pivot</b><i>, TGrid </i><b>Master</b><i>, string[] </i><b>Rows</b><i>,
+string[] </i><b>Cols</b><i>, string[] </i><b>Data</b>)                            <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the pivot grid data
+XML is created</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Rows, Cols and Data are
+JavaScript arrays of parsed PivotRows, PivotCols and PivotData. The event can
+modify them, it will affect only the pivot creating, not the source values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+creating the pivot grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i> </span><a
+name=OnPivotFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPivotFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid
+</i><b>Pivot</b><i>, TGrid </i><b>Master</b><i>, string[] </i><b>Rows</b><i>,
+string[] </i><b>Cols</b><i>, string[] </i><b>Data</b>)    <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the pivot grid
+data XML is created, but before the pivot grid is reloaded with the new XML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Rows, Cols and Data are
+JavaScript arrays of parsed PivotRows, PivotCols and PivotData. The event cannot
+modify them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+reloading the pivot grid with new pivot data.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To catch event after the
+pivot grid is created or rendered use standard loading events like OnLoaded,
+OnReady, OnRenderFinish.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i> </span><a
+name=CreatePivot><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CreatePivot</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>function
+</i><b>func</b>)                                                                                                 <span
+style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates the pivot table
+according to the PivotRows, PivotCols and PivotData.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false for error or
+incomplete settings. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true for success. It
+calls Reload(), so it can return before the grid is created.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>func</span></b><span
+style='font-size:10.0pt'> is called after the grid is reloaded, in time of
+OnReady - before the grid is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i> </span><a
+name=SwitchPivotGrid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SwitchPivotGrid</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>bool</i>
+<b>pivot</b>)                                                                                         <span
+style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For pivot = 0 it shows master
+grid, for pivot = 1 it shows pivot grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only when set <a
+href="#CfgPivotControlMaster">PivotControlMaster</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i> </span><a
+name=PivotEscape><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>PivotEscape</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>string
+</i><b>Value</b>)                                                                                                  <span
+style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Escapes any text value to be
+usable as TreeGrid column name, it escapes all the incorrect characters as _XX
+or _uXXXX (like escape function)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i> </span><a
+name=PivotUnescape><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>PivotUnescape</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>string
+</i><b>Value</b>)                                                                                      <span
+style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unescapes the values escaped
+by the <a href="#PivotEscape">PivotEscape</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Formulas><b><span style='font-size:20.0pt'>Formulas</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formulas used especially for
+the pivot tables, but they can be used also in other grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>They are similar to the
+standard <a href="CellFormula.htm#AggFunc">aggregate functions</a>, but they
+aggregate columns instead of rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These functions are named the
+same as standard aggregate functions, with &quot;c&quot; suffix. <i>Please
+note, they have different parameters!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>Basic aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=sumc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums cell values in actual
+row. It sums values in child columns of the actual column (or the column <b>col</b>,
+if set).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The child columns are listed
+in <b>ExpandCols</b> attribute of the header row. You can specify the header
+row by <b>headerid</b> or it is used the first header where the cell <b>col</b>
+has <b>ExpandCols</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>col</b> set to empty
+string (not null), it sums values in root columns =&gt; the columns in that the
+<b>headerid</b> header cell has set <b>ExpandCols</b>, but only the columns not
+listed in any <b>ExpandCols</b> attribute in that header. If the <b>headerid</b>
+is not set, it checks the first header.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>condition</span></b><span
+style='font-size:10.0pt'> is JavaScript code called as method of TCalc for
+every cell processed. It should return true or false if the cell should be
+added or not. It can read the variables Grid, Row and Col to get the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=countc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>counts</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns count of rows. See <a
+href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>type      </i></span><a
+name=calcc></a><a name=Fcalc><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>calcc</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Runs the formula for every
+row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>formula</b> is running
+in context of TCalc like standard formula. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actual temporary result
+is stored in variable <b><span style='color:red'>Result</span></b>, formula
+should read and use it. Return value of formula is stored back to Result and is
+available for the next row formula.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Result</span></b><span
+style='font-size:10.0pt'> is <b>0</b> on beginning.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Row</b> variable contains
+actual row, the <b>Col</b> variable the actually iterated column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>formula</b> can
+contain any JavaScript expression.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="#sumc">sumc</a>
+function.</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>Special aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=maxc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>maxc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns maximum value from
+the column. If there is no row to iterate, returns “”. See <a href="#sumc">sumc</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=minc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>minc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns minimum value from
+the column. If there is no row to iterate, returns “”. See <a href="#sumc">sumc</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=sumrangec><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumrangec</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                         <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all dates in column with
+Range=1 Type=”Date”. It just creates new range from all intervals and updates
+it to not contain duplicate value cross intervals.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="#sumc">sumc</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=sumsqc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumsqc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all squares of values.
+See <a href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=countac><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>countac</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Counts all non blank values
+in the column. See <a href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=countblankc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>countblankc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                         <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Counts all blank values in
+the column. See <a href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=productc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>productc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                         <span style='color:red'>new <b>9.2</b></span>..</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Multiplies all values in
+column. See <a href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>String aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=joinc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>joinc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                                     <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Joins values in row. The
+values are separated by ValueSeparator (semicolon by default)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=joinsumc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>joinsumc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                         <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Joins cell values in actual
+row. It joins values in child columns of the actual column (or the column <b>col</b>,
+if set). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The values are separated by
+ValueSeparator (semicolon by default)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same values will be
+counted and placed once as &quot;count x value&quot;. If the input values are
+already joined values, it splits them and recalculates the counts</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>type      </i></span><a
+name=sumjoinc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumjoinc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>headerid</b> = null, <i>string</i> <b>condition</b>
+= null)                         <span style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums values in actual as
+standard <a href="#sumc">sumc</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If any value is a not empty
+string, it joins the values as <a href="#joinsumc">joinsumc</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If all the values are empty
+strings or no values are in the column, returns empty string instead of zero.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

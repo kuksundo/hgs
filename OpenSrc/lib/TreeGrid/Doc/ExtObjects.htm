@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - External objects (Flash&amp;SilverLight)</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>External objects </span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:26.0pt'>(e.g. Flash and SilverLight)</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can display any external
+object in any cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To display the object create
+and place this object in <a href="#OnRenderRow">OnRenderRow</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Because some external objects
+need to refresh after its parent tag is moved, re-displayed or scrolled, catch
+the other events to do the needed action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is strongly recommended to
+<u>not</u> use ‘Class’ cursor for the external object cells, set <b>CellFocus=’Border,Color’</b>
+for the column or cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>)                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called whenever the row or
+its cell is being rendered or refreshed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to create or
+update some custom HTML code in the row cells, for example when using dynamic
+objects via plugins like <b>Flash</b>, <b>SilverLight</b>, external JavaScript <b>charts</b>
+and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use the <a
+href="CellBasics.htm#GetCell">GetCell</a> method to get the cell object. <i>Do
+not expect the exact cell structure, always search for your custom tags like
+“object”.</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is set to column name when only this cell is being
+refreshed, otherwise is set to null and you need to update all your custom
+cells in the row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the cell is
+refreshed also if used <b>Class</b> type focus or hover cursor (by default is
+for Focus, to disable it set </span></i><b><span style='font-size:10.0pt'>CellFocus=’Border,Color’</span></b><span
+style='font-size:10.0pt'>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnDisplaceRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDisplaceRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>)                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the row or its
+cell has been physically moved inside HTML table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When row is moved, this event
+is called also for every row’s rendered child, only for expanded parents.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to update some
+external objects like dynamic <b>Flash</b> or <b>SilverLight</b> that need to
+be updated when their parent is moved by DOM.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is set to column name when only this cell is being
+moved (when moving column), otherwise is set to null and you need to update all
+your custom cells in the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnDisplayRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDisplayRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the row has been
+displayed =&gt; changed its state from display:none.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the row is shown,
+but it is not re-rendered. Usually when the row is shown due filtering or by
+parent row expand.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to update some
+external objects like dynamic <b>Flash</b> or <b>SilverLight</b> that need to
+be updated when their parent state is changed from display:none.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnScrollRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnScrollRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the row is
+scrolled into visible area.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to update some
+problematic external object like dynamic <b>Flash</b> in Firefox that cannot be
+displayed into invisible area due overflow</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnScrollCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnScrollCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>)                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the column is
+scrolled into visible area.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this event to update some
+problematic external object like dynamic <b>Flash</b> in Firefox that cannot be
+displayed into invisible area due overflow</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

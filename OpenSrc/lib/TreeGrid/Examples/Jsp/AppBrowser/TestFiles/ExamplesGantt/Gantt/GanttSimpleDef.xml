@@ -1,0 +1,49 @@
+<Grid>
+   <Cfg id="GanttSimple" MainCol="T"/> <!-- Displays tree in column T (Task / Subtask) -->
+   <Cfg FullId="1" NumberId="1" IdChars="0123456789"/> <!-- Controls generation of new row ids -->
+   <Cfg Style="Borders"/> <!-- Presets Borders style -->
+   <Cfg MaxHeight="1"/> <!-- Resizes the grid to the whole page -->
+   <Cfg ScrollLeftLap="0"/> <!-- Saves horizontal scroll in Gantt to cookies -->
+   <Def>
+      <D Name="Task" Expanded="1" Calculated="1" CalcOrder="S,E,C,G"/> <!-- Group of task calculates summary of the tasks -->
+      <D Name="Task" SFormula="minimum(min('S'),min('E'))"/> <!-- Gets the first start date from its children -->
+      <D Name="Task" EFormula="maximum(max('S'),max('E'))"/> <!-- Gets the last end date from its children -->
+      <D Name="Task" CFormula="ganttpercent('S','E','d')"/> <!-- Calculates average task completion from its children -->
+      <D Name="Task" GColor="240,240,240"/> <!-- Changes background color -->
+      <D Name="Task" DButton=""/> <!-- Cannot change dependency of group task -->
+      <D Name="Task" GGanttClass="GanttG" GGanttIcons="1" GGanttEdit="0" GGanttHover="0"/> <!-- Gantt setting specific for Group rows, changes colors and restrict changes by a user -->
+   </Def>
+   <Panel Copy="7"/> <!-- Shows Add/Copy icon on left side panel -->
+   <LeftCols>
+      <C Name="id" Width="40" Type="Text"/> <!-- Row id, informational column -->
+      <C Name="T" Width="140" Type="Text"/> <!-- Column Task / Section-->
+      <C Name="S" Width="60" Type="Date" Format="MMM dd"/> <!-- Column Start date-->
+      <C Name="E" Width="60" Type="Date" Format="MMM dd"/> <!-- Column End Date -->
+      <C Name="C" Width="40" Type="Float" Format="##.##\%;;0\%"/> <!-- Column Complete -->
+      <C Name="D" Width="65" Type="Text" CanEdit="0" Button="Defaults" Defaults="|*RowsColid*VariableDef" Range="1"/> <!-- Column dependencies (Next) -->
+   </LeftCols>
+   <Cols>
+      <!-- Gantt chart column -->
+      <C Name="G" Type="Gantt"
+         GanttStart="S" GanttEnd="E" GanttComplete="C" GanttDescendants="D" 
+         GanttUnits="d" GanttChartRound="w" GanttEdit="Main,Dependency"
+         GanttRight="1"
+         GanttBackground="1/6/2008~1/6/2008 0:01" GanttBackgroundRepeat="w"
+         GanttHeader1="w" GanttFormat1="dddddd MMMM yyyy"
+         GanttHeader2="d" GanttFormat2="ddddd"
+         />
+      <C Name="G" GanttCorrectDependenciesFixed="1"/> <!-- Never moves the changed task, rather moves all others -->
+   </Cols>
+   <Header id="ID" T="Task" S="Start" E="End" C="Complete" G="Gantt" D="Next"/> <!-- Column captions -->
+   
+   
+   <!-- Use the next setting to fix the Gantt structure to two levels - Task / Data-->
+   <!--Root CDef="Task" AcceptDef="Task"/>
+   <Def>
+      <D Name="Task" CDef="R" AcceptDef="R"/>
+      <D Name="R" CDef="" AcceptDef=""/>
+   </Def-->
+
+   <!-- Shows count of incorrect dependencies and on click corrects them -->
+   <Toolbar Formula="ganttdependencyerrors(null,1)" FormulaOnClick="CorrectAllDependencies" FormulaTip="Click to correct the dependencies"/>
+</Grid>

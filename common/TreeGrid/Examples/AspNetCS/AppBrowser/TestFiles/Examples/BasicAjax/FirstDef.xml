@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<Grid>
+   <Cfg id='First' SuppressCfg='1'/> <!-- Configuration is not saved to cookies -->
+   <Cfg MainCol='A'/> <!-- Shows tree in column 'A' -->
+   <Cfg ConstHeight='1'/> <!-- Grid will always fill its main tag -->
+   <Cfg ReloadChanged='1'/> <!-- Grid can reload and automatically discard pending changes -->
+   <Cfg Undo='1'/> <!-- Undo / redo is supported, Ctrl+Z / Ctrl+Y -->
+   <Cfg SuppressMessage='2'/> <!-- Grid produces no informational message -->
+   <Cfg Sort='A'/> <!-- Grid is sorted according to column A by default -->
+   <Cfg FilterEmpty='1'/> <!-- Parent rows without visible children are hidden -->
+   <Cfg ResizingMain='3'/> <!-- User can resize grid main tag -->
+   <Cfg SearchDefs='Node' SearchCells='1' SearchExpression='"Peter Orwell" OR "Janet Scheel"' SearchAction='Select'/> <!-- Default Search setting -->
+   <Cfg ExportType='Expanded,Outline'/> <!-- Export setting, all rows will be exported expanded and will be used Excel outline -->
+   <Cfg ChildParts='0'/> <!-- Rendering children on background is disabled -->
+   <Cfg CalculateSelected='1'/> <!-- Recalculates rows after selection changed -->
+   <Cfg PrintCols='1'/> <!-- Let a user to choose which columns will be printed -->
+   <Cfg ExportCols='1'/> <!-- Let a user to choose which columns will be exported -->
+
+   <!-- Default rows definition -->
+   <Def> 
+      <!-- Data rows without children -->
+      <D Name='Data' CalcOrder='F,B' CDef='' AcceptDef=''
+         A='Item' ASuggest='|*RowsDef' XType='Text' XCanEdit='0' XCanFilter='0' CCanFilter='0' G='0' H='0' I='' ICanFilter='0'
+         />
+      
+      <!-- Order rows with children -->
+      <D Name='Node' CDef='Data' AcceptDef='Data' Expanded='0' Calculated='1' CalcOrder='D,F,B' CanFilter='3'
+         X='1' A='Order' ACanFilter='0'
+         BFormula='F-F*G/100+H'  BCanFilter='0'
+         CCanEdit='1' CCanFilter='1' CButton='Defaults' 
+         CDefaults='{ShowCursor:0,Items:[{Name:"*RowsVisibleDef"},"-",{Name:"All",Text:"&lt;b>All customers&lt;/b>",Menu:1,MinHeight:200,Items:"|*RowsAllDef"}]}'
+         TVisible='0' TCanEdit='0' TCanFilter='0'
+         DType='Enum' DFormula='count()' DCanFilter='0' DAlign='Right' DEnum='|empty|1 item&amp;#160;&amp;#160;' DIntFormat='0 "items"'
+         EVisible='0' ECanEdit='0' ECanFilter='0'
+         FFormula='sum("B")' FCanFilter='0'
+         G='0' GCanFilter='0'
+         H='0' HCanFilter='0'
+         ICanEdit='1' ICanFilter='1'
+         />
+
+      <!-- Footer summary rows -->
+      <D Name='Foot' CalcOrder='D,B' XVisible='0' EVisible='0' FVisible='0' HVisible='0' IVisible='0' TVisible='0'/>
+
+      <!-- Row created when grouping rows -->
+      <D Name='Group' Def='Node' CanSelect='0' AggChildren='1' CanFilter='2'
+         XVisible='0'
+         ACanEdit='1'
+         CVisible='0' CCanEdit='0' CButton='None' 
+         IVisible='0' ICanEdit='0'
+         BFormula='sum("X==1")'
+         DFormula='count("X==1")' DEnum='|no order|1 order&amp;#160;&amp;#160;' DIntFormat='0 "orders"'
+        />
+   </Def>
+
+   <!-- Column definition -->
+   <LeftCols>
+      <C Name='X' Width='35' Type='Bool' CanFilter='2' CanSort='0'/> <!-- Used -->
+      <C Name='A' RelWidth='100' MinWidth='250' Type='Text' ToolTip='1' CanFilter='2' SearchNames='Product name,Product,Order name,Order'/> <!-- Product / Order name -->
+   </LeftCols>
+   <Cols>
+      <C Name='C' Width='100' Type='Text' CanEdit='0' CanFilter='2'/> <!-- Customer -->
+      <C Name='I' Width='90' Type='Date' Format='d' CanEdit='0' CanFilter='2'/> <!-- Date -->
+      <C Name='T' Width='60' Type='Enum' Enum='|Comp|Access|Mon|Print|Soft' CanFilter='2'/> <!-- Kind -->
+      <C Name='D' Width='80' Type='Int' CanFilter='2'/> <!-- Amount -->
+      <C Name='E' Width='80' Type='Float' EditMask='^\-?\d*\.?\d*$' Format='0.00' CanFilter='2' CanGroup='0'/> <!-- Unit price -->
+      <C Name='F' Width='80' Type='Float' Format='0.00' Formula='D*E' CanFilter='2'/> <!-- List price -->
+      <C Name='G' Width='80' Type='Int' Format='0\%' CanFilter='2'/> <!-- Discount -->
+      <C Name='H' Width='80' Type='Float' Format='0.00' CanFilter='2'/> <!-- Shipping -->
+   </Cols>
+   <RightCols>
+      <C Name='B' Width='80' Type='Float' Format='0.00' Formula='F-F*G/100+H' CanFilter='2'/> <!-- Price -->
+   </RightCols>   
+   
+   <!-- Parent of root nodes, accepts only Node rows -->
+   <Root CDef='Node' AcceptDef='Node' />
+	
+   <!-- Column captions -->
+   <Header 
+      X="Used" A="Product / Order name" B="Price"
+      C="Customer" I="Date" T="Kind" D="Amount" E="Unit price" F="List Price" G="Discount" H="Shipping"
+      />
+
+   <Head>
+      <!-- Filter row -->
+      <Filter id='Filter' NoColorState='1'
+         XCanEdit='1' XType='Bool'
+         ASuggest='|*RowsCanFilter'     
+         CButton='Defaults' CDefaults='{Position:{Align:"below center"},Items:[{Name:"*FilterOff"},"-",{Columns:3,Items:"|*RowsAllCanFilter"}]}' CShowMenu='0' CRange='1'
+         IRange='1' IShowMenu='0' I='1/1/2005~12/31/2005' IFilter='1' IDefaultDate="6/1/2005"
+         B='500' BFilter='3'
+         />
+   </Head>
+
+   <Solid>
+      <!-- Top tabber -->
+      <Tabber id="Tabber" Cells="All,Y5,Y6,Y7,Y8,Y9,Cnt,Sel,Add,Del,Chg" Width="38" CanFocus="0"
+         AllButtonText="All" Y5ButtonText="2005" Y6ButtonText="2006" Y7ButtonText="2007" Y8ButtonText="2008" Y9ButtonText="2009"
+         AllOnClick="Grid.ChangeFilter(['I'],[''],[0],0,1);"
+         Y5OnClick="Grid.ChangeFilter(['I'],['1/1/2005~12/31/2005'],[1],0,1);" Y5="1"
+         Y6OnClick="Grid.ChangeFilter(['I'],['1/1/2006~12/31/2006'],[1],0,1);"
+         Y7OnClick="Grid.ChangeFilter(['I'],['1/1/2007~12/31/2007'],[1],0,1);"
+         Y8OnClick="Grid.ChangeFilter(['I'],['1/1/2008~12/31/2008'],[1],0,1);"
+         Y9OnClick="Grid.ChangeFilter(['I'],['1/1/2009~12/31/2009'],[1],0,1);"
+         CntRelWidth="1" CntType="Html" CntFormula='"Rows:&lt;b>"+count(7)+"&lt;/b>&amp;nbsp;&amp;nbsp;shown:&lt;b>"+count(6)+"&lt;/b>"' CntAlign="Right"
+         SelType="Html" SelFormula='var cnt=count(15);return cnt?"selected:&lt;b>"+cnt+"&lt;/b>":""' SelWidth='-1' SelWrap='0'
+         AddType="Html" AddFormula='var cnt=count("Row.Added==1",7);return cnt?"added:&lt;b>"+cnt+"&lt;/b>":""' AddWidth='-1' AddWrap='0'
+         DelType="Html" DelFormula='var cnt=count("Row.Deleted==1",7);return cnt?"deleted:&lt;b>"+cnt+"&lt;/b>":""' DelWidth='-1' DelWrap='0'
+         ChgType="Html" ChgFormula='var cnt=count("Row.Changed==1",7);return cnt?"changed:&lt;b>"+cnt+"&lt;/b>":""' ChgWidth='-1' ChgWrap='0'
+         />
+      
+      <!-- Group and special filter settings -->
+      <Group Space='1' Panel='1' id='Group' CanFocus='0' Cells='List,Custom,Month,Cust'
+             
+         List='|Group by &lt;span style="color:blue;">none&lt;/span>|Group by &lt;span style="color:blue;">Customer&lt;/span>|Group by &lt;span style="color:blue;">Date&lt;/span>|Group by &lt;span style="color:blue;">Customer -> Date&lt;/span>|Group by &lt;span style="color:blue;">Date -> Customer&lt;/span>'
+         ListCustom='&lt;span style="color:red;">Custom grouping&lt;/span>'
+         ListWidth='160'
+         Cols='||C|I|C,I|I,C' 
+         Custom='1'
+
+         MonthLabel='Filter&amp;#160;orders&amp;#160;from'
+         MonthType='Select'
+			MonthDefaults='|all&amp;#160;months|January|February|March|April|May|&lt;b>June&lt;/b>|&lt;b>July&lt;/b>|August|September|October|November|December'
+         Month='all&amp;#160;months'
+         MonthWidth='80'
+         MonthOnChange='
+            var idx = Grid.GetDefaultsIndex(Row,Col);
+            Grid.SearchExpression = idx==0 ? "" : "(new window.Date(Date)).getMonth()=="+(idx-1);
+            Grid.SearchDefs = "Node";
+            Grid.DoSearch("Filter");
+            '
+         
+         CustLeft='5'
+         CustType='Select'
+         CustDefaults='|all&amp;#160;customers|personal&amp;#160;cust.|limited&amp;#160;cust.|corporate&amp;#160;cust.'
+         CustOnChange='
+            var idx = Grid.GetDefaultsIndex(Row,Col);
+            Grid.SearchExpression = ["","Customer not contains Ltd. and Customer not contains Inc.","Customer contains Ltd.","Customer contains Inc."][idx];
+            Grid.SearchDefs = "Node";
+            Grid.DoSearch("Filter");
+            '
+         Cust='all&amp;#160;customers'
+         />
+      
+      <!-- Search settings -->
+      <Search Space='1' Panel='1' id='Search' NoColor='1' CanFocus='0'
+         Cells='Defs,Case,Type,Expression,Sep1,Filter,Select,Mark,Find,Clear,Help,Sep2'
+         ExpressionAction='Last' ExpressionNoColor='0' ExpressionCanFocus='1'
+         ExpressionEmptyValue ='&lt;i style="color:#AAAAAA">Enter keywords to search for&lt;/i>' 
+         DefsDefaults='|orders|products|orders&amp;#160;with&amp;#160;product'
+         DefsDefs='|Node|Data|'
+         DefsLabel='Search&amp;#160;in'
+         CaseLabel="case&amp;#160;sensitive"
+         TypeLabel="individual&amp;#160;cells"
+         Sep1Width="5" Sep1Type="Html" 
+         Sep2Width="5" Sep2Type="Html" 
+         />
+   </Solid>
+   
+   <!-- Summary footer rows -->
+   <Foot>
+      <I Def='Foot' id='Fix1' CanDelete='0' CanEdit='0' Calculated='1'
+         A="Total income"
+         BFormula='sum("X==1")'
+         DFormula='count("X==1")' DType='Enum' DAlign='Right' DEnum='|no order|1 order&amp;#160;&amp;#160;' DIntFormat='0 "orders"'
+         GVisible='0'
+         />
+      <I Def='Foot' id='Fix2' CanDelete='0' CanEdit='0' Calculated='1'
+         A="Taxes"
+         BFormula='-Get(Fix1,"B")*G/100'
+         DVisible='0'
+         G="22" GCanEdit='1'
+         />
+      <I Def='Foot' id='Fix3' CanDelete='0' CanEdit='0' Calculated='1'
+         A="Profit"
+         BFormula='Get(Fix1,"B")+Get(Fix2,"B")' BHtmlPrefix="&lt;b>" BHtmlPostfix="&lt;/b>"
+         DVisible='0'
+         GVisible='0'
+         />
+   </Foot>
+   
+   <!-- Bottom toolbar formula -->
+   <Toolbar Formula='count("X==1")+" / "+count(1)+" orders"'/>
+</Grid>

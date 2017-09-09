@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzObjStack" invoke="none">
+		<description>
+			create a new object stack
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="stacktype">
+                  <text>
+                    TMyStack
+                  </text>
+                  <hint>
+                    Name of the stack class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored on the stack (descendant of TObject)
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  SysUtils,
+  Classes;
+
+{$DEFINE __OBJECT_STACK_TEMPLATE__}
+type
+  _STACK_CONTAINER_TYPE_ = TList; // or TInterfaceList
+  _LIST_CONTAINER_ITEM_TYPE_ = pointer; // or IInterface
+  _STACK_ANCESTOR_ = TObject; // or TInterfacedObject
+  _STACK_ITEM_ = |itemtype|;
+{$INCLUDE 't_dzObjectStackTemplate.tpl'}
+
+type
+  {: Stack to store |itemtype| items, Destructor automatcially calls the Item's Free method. }
+  |stacktype| = class(_OBJECT_STACK_TEMPLATE_)
+  end;
+
+implementation
+
+{$INCLUDE 't_dzObjectStackTemplate.tpl'}
+
+]]>
+		</code>
+	</template>
+</codetemplate>

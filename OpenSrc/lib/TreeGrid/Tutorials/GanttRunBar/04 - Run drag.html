@@ -1,0 +1,153 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// -------------------------------------------------------------------------------------------------------
+var Texts = {}; // The highest indexes of the boxes according to their original texts
+// -------------------------------------------------------------------------------------------------------
+// Updates text of new or copied box, adds increased index to it
+Grids.OnGanttRunBoxNew = function(G,A,copy){
+if(A.Type=="milestone"||A.Type=="stop") return false; // Milestone has not text
+var txt = A.Text; if(!txt) txt = "";
+var pos = txt.search(/\d+/); if(pos>=0) txt = txt.slice(0,pos);
+var idx = Texts[txt]+1; if(!idx) idx = 1;
+Texts[txt] = idx;
+A.Text = txt + idx;
+return true;
+}
+// -------------------------------------------------------------------------------------------------------
+
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px;  font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttRunBar"><b>Gantt Run bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Run drag</center>
+   <center style='font:bold italic;'>Resizing, moving, creating, deleting and copying Run boxes</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Run drag.xml'>04 - <h2>Run drag</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='04 - Run drag.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Run drag 2.xml'>04 - <h2>Run drag 2</h2>.xml</a> - Test dragging boxes between grids</div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='04 - Run drag 2.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         There are many options for resize, move and copy the run boxes.
+         These options can be set for the whole Gantt column or for individual rows.<br />
+      </li>
+      <li>
+         Individual boxes have set their moving and resizing permissions by their <b>type</b> in the GanttRun definition: 
+            <b>Box</b> (normal), <b>Fixed</b> (not movable, not resizable), <b>Left</b> (not movable, resizable only right side), 
+            <b>Right</b> (not movable, resizable only left side), <b>Solid</b> (not resizable), for more information see previous tutorial.
+      </li>
+       <li>
+         All these dragging attributes (GanttRunResize, GanttRunMove, GanttRunAdjust, GanttRunNew, GanttRunNewStart) can have different values when dragging with shift key (Ctrl, Shift, Alt) and with other mouse button (Right, Middle).<br />
+         The value is set by attribute with appropriate suffix, it can be combined mouse button and shift key, the shift key suffix is before the mouse button.<br />
+         For example <b>GanttRunResizeCtrl</b>, <b>GanttRunMoveRight</b>, <b>GanttRunAdjustShiftMiddle</b>.
+      </li>
+      <li>
+         <h3>GanttRunResize</h3> attribute controls how the boxes are resized.<br />
+         Now there is only one way of resizing boxes, by dragging its edge, so this attribute sets only resizing permissions - 
+         <b>empty</b> value means no resizing, "<b>Resize</b>" for resizing resizable boxes, "<b>All</b>" for resizing all boxes. Default value is "Resize".<br />
+         The box can be deleted by resizing to zero width when set <h3>GanttResizeDelete</h3><b>='1'</b> (default setting).
+      </li>
+      <li>
+         <h3>GanttRunMove</h3> attribute controls how the boxes are moved or copied inside or outside the row. It controls the <b>source row</b> for dragging.<br />
+         To restrict moving at all, set GanttRunMove to <b>empty</b> string.<br />
+         <ul>
+            <li>
+               Default is "<b>Slide</b>" to shift the box left or right only inside its row. It cannot change the box order, except GanttRunAdjust contains "Error".<br />
+            </li>
+            <li>
+               "<b>Move</b>" moves the box inside or outside the row. The original place of the box is filled by empty space.<br />
+            </li>
+            <li>
+               "<b>Remove</b>" moves the box inside or outside the row. The original place of the box is deleted and the other boxes in row are shifted according to GanttRunAdjust setting.<br /> 
+            </li>
+            <li>
+               "<b>Copy</b>" copies the box to the new position inside or outside the row. The original box remains unchanged.<br />
+               Calls API event <b>OnGanttRunBoxNew</b>, here you can change especially box Id, because it is duplicate of the original box.
+            </li>
+            <li>
+               There are also other flags controlling which boxes will be moved.<br />
+               "<b>All</b>" - also fixed boxes can be moved.<br />
+               "<b>Single</b>" - by default are the joined boxes moved together, if used "Single", it moves only the one actual box.<br />
+               "<b>Entire</b>" - all boxes in the row, including spaces.<br />
+               "<b>Group</b>" - all boxes in the same group in the row; if set also "Entire", preserves spaces between boxes.<br />
+               "<b>Selected</b>" - all selected boxes in the row; if set also "Entire", preserves spaces between boxes. The selecting boxes is permitted by <b>GanttRunSelect</b> attribute.<br />
+               "<b>Clear</b>" - clears selected boxes after drop.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h3>GanttRunAdjust</h3> attribute controls how the other boxes will behave, when some box is shifted inside, dropped to or removed from the row.
+         It controls also how the dropped box will be updated. It controls the <b>destination row</b> for dragging.<br />
+         The GanttRunAdjust can have different values for GanttRunMove / GanttRunResize actions. These options are set by the attribute with appropriate postfix:
+         <b>GanttRunAdjustResize</b>, <b>GanttRunAdjustSlide</b>, <b>GanttRunAdjustMove</b>, <b>GanttRunAdjustRemove</b>, <b>GanttRunAdjustCopy</b>.<br />
+         <i>Remember, the order of the keywords is important. For example "Move,Resize" means that the box is first tried to move and next, only if it still cannot be placed, tries to resize it. And the "Resize,Move" will behave differently.</i><br />
+         <ul>
+            <li>
+               <b>Empty</b> value - When set nothing, the box will be moved within surrounding empty space only.
+            </li>
+            <li>
+               Default is "<b>Shift</b>" - The box will be moved or resized within surrounding empty space and if required, the next or previous boxes will be shifted and their empty spaces preserved.
+            </li>
+            <li>
+               "<b>Shrink</b>" - The box will be moved or resized within surrounding empty space and if required, the next or previous boxes will be shifted and their empty spaces shrunk.
+            </li>
+            <li>
+               "<b>Slip</b>" - The next or previous boxes will be shifted, all empty spaces will be preserved, including the adjacent.
+            </li>
+            <li>
+               There are also other flags controlling which boxes can be moved.<br />
+               "<b>All</b>" - also fixed boxes can be moved.<br />
+               "<b>Single</b>" - when there are more adjacent boxes without space, the surrounding space will be taken as none, especially for Shift and Slip. If not present, the surrounding space is taken as the nearest space.<br />
+               "<b>Append</b>" - when dragged to box edge, attaches it to the box without space as adjacent – the boxes will be joined.<br />
+               "<b>Inside</b>" - restrict moving boxes outside the existing boxes (before the first and after the last box).<br />
+               "<b>Between</b>" - when dragged to box, it places the source box left or right (nearer edge) next to the destination box.<br />
+               "<b>Nbsp</b>" - The Nbsp boxes can be automatically resized like Empty boxes, but they are not automatically deleted.<br />
+
+            </li>
+            <li>
+               Flags controlling how the source box will be changed if there is no room for it.<br />
+               "<b>Error</b>" - the box will be moved or resized even if there is no room for it, in this case it will be marked as error.
+                  The attribute <h3>GanttRunError</h3> controls behavior of error boxes.
+                  <ul style='margin-top:0px;'>
+                     <li style='padding-bottom:0px;'>
+                        If set <b>GanttRunError='Sort'</b> (default value), the boxes will be sorted according to their start date.
+                        The boxes are sorted also on start.
+                        <br />
+                     </li>
+                     <li style='padding-bottom:0px;'>
+                        If set <b>GanttRunError='Merge'</b>, the boxes will be merged together. Only Box and Solid boxes are merged.<br />
+                     </li>
+                  </ul>
+               "<b>Resize</b>" - the box will be resized if there is no room for it.<br />
+               "<b>Move</b>" - the box will be moved left if there is no room for it (also shifting boxes on left side by Shift/Shrink/Slip will be permitted).<br />
+               "<b>Zoom</b>" - when moving between grids, the box will have the same width on screen and its physical width will be changed by difference between zoom in the grids.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h3>GanttRunNew</h3> attribute defines the new box that will be created when dragging on empty space. 
+         It has the same format as the GanttRun definition except Start / End items.<br />
+         It can define also more boxes to create more boxes at once, only the first box will be resized when dragging the new box while creating.<br />
+      </li>
+      <li>
+         <h3>GanttRunNewStart</h3> attribute defines the new box(es) when creating new box in empty cell. It is possible to add here also Start / End boxes to be created too.<br /> 
+         It can also specify the definition format Array or JSON for save.
+      </li>
+   </ul>
+</body>
+</html>

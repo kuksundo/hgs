@@ -1,0 +1,409 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1250">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Changes V10</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Changes from 9.3 to 10.0 in Gantt chart</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This document describes only
+changes in compatibility between TreeGrid 9.3 and TreeGrid 10.0.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>This document does <u>not</u>
+describe new features of TreeGrid 10.0.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>Incompatibilities</span></b></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><i><span
+style='font-size:10.0pt'>These items must be changed to work like in previous
+version</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt chart is <u>not</u>
+resized according to side text by default.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttShowHtml">GanttShowHtml</a> and <a
+href="GanttRun.htm#CGanttRunShowHtml">GanttRunShowHtml</a> are set to <b>1</b>
+by default, to not resize Gantt column width according to side text, if set
+GanttSize=&quot;&quot; or &quot;0&quot;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set them to <b>3</b> for 9.3
+behavior used for GanttFormat.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Dependency must have defined
+bar plan if more plans are permitted for dependencies.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more bar types (more main
+bar plans and / or run) support dependencies, the dependency definition must
+contain the bar identification (number for main bar plan or '-' for run bar).
+Like &quot;1,1@R1&quot;, where 1,1 is the from and to plan number.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only the first object in <a
+href="GanttObjects.htm#CGanttTask">GanttTask</a> (formerly GanttObject) need
+not have this identification. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In 9.3 version only the first
+bar defined in row had dependencies and no identification was required.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Dependency API changed,
+the dependency API definition is different. </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changed <a
+href="GanttCompute.htm#OnGetDependency">OnGetDependency</a>, <a
+href="GanttCompute.htm#OnCheckDependencies">OnCheckDependencies</a>, <a
+href="GanttCompute.htm#GetIncorrectDependencies">GetIncorrectDependencies</a>, <a
+href="GanttCompute.htm#GetIncorrectConstraints">GetIncorrectConstraints</a>, <a
+href="GanttCompute.htm#GetTasksToSchedule">GetTasksToSchedule</a>, <a
+href="GanttCompute.htm#OnCorrectDependencies">OnCorrectDependencies</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>API <a
+href="GanttCompute.htm#GetDependency">GetDependency</a> and <a
+href="GanttCompute.htm#SetDependency">SetDependency</a> deleted and replaced by
+<a href="GanttCompute.htm#GetDependencies">GetDependencies</a>, <a
+href="GanttCompute.htm#DeleteDependencies">DeleteDependencies</a>, <a
+href="GanttCompute.htm#AddDependencies">AddDependencies</a> and <a
+href="GanttCompute.htm#TestDependencies">TestDependencies</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="GanttAPI.htm#GetGanttXY">GetGanttXY</a> returns different values for
+dependency</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Scheduling algorithm was
+rewritten. </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can produce different
+results than 9.3. version especially due different meaning of <a
+href="GanttCompute.htm#CGanttStrict">GanttStrict</a> options.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tasks with none of
+dependency, dependencycorrect and bar ...correct in <a
+href="GanttObjects.htm#CGanttEdit">GanttEdit</a> are ignored when scheduling,
+including their relation (dependencies and children)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttResources.htm#CGanttResources">GanttResources</a> for Run was
+renamed to <a href="GanttResources.htm#CGanttRunResources">GanttRunResources</a>.
+</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="GanttResources.htm#CGanttResources">GanttResources</a> are now used only
+for the first main bar plan and due compatibility also for GanttFlow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttSummary.htm#CellGanttSummary">GanttSummary</a> for Run was renamed
+to <a href="GanttSummary.htm#CellGanttRunSummary">GanttRunSummary</a>.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttComplete">GanttComplete</a> (GanttFlowComplete) / <a
+href="GanttRun.htm#CGanttRunComplete">GanttRunComplete</a> is used only if the
+bar is included in <a href="GanttObjects.htm#CGanttTask">GanttTask</a>
+(GanttObject).</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMain.htm#OnGetGanttHtml">OnGetGanttHtml</a> does <u>not</u> change
+the main bar class to Html.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In 9.3. if OnGetGanttHtml API
+event returned not null, the bar class was set to Html, without border and
+background. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now you must explicitly set
+the <a href="GanttMain.htm#CGanttClass">GanttClass</a>/X to &quot;Html&quot;,
+&quot;Void&quot; or &quot;None&quot; to change the class for the bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>By default the Sort and
+Calc buttons on Toolbar are hidden.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can show them by setting
+&lt;Toolbar SortVisibleFormula='1' CalcVisibleFormula='1'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Empty Run box is <u>not</u>
+shown by default, even if it has set Text or Class.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set &lt;C
+GanttRunEmpty='1'/&gt; to show it in this case.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttRun.htm#OnGetGanttRunRect">OnGetGanttRunRect</a> is called also when
+calculating dependencies.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>For milestone the <a
+href="GanttMain.htm#CGanttDuration">GanttDuration</a> column value is set to 0
+or &quot;&quot; according to <a href="TypeNumber.htm#CCanEmpty">CanEmpty</a>
+value regardless on the cell Type.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttClass">GanttClass</a> is now used only for the first
+main bar plan. </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Run has GanttRunClass or Run
+Class and other main bar plans have their own GanttClassX attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CSS style sheet for Gantt
+chart was rewritten.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Gantt CSS was separated
+from Grid.css to its own file Gantt.css.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Many of the CSS classes
+renamed, deleted or created new. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt internal HTML height
+was increased from 500 to 5000 pixels to support rows higher than 500 pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you used customized CSS
+for Gantt, you need to rewrite it completely, based on the new TreeGrid
+Gantt.css</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>The Run <a
+href="GanttRun.htm#CfgFastGantt">FastGantt</a> is now boolean and affects all
+browsers.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMenu.htm#OnGanttMenuClick">OnGanttMenuClick</a> is called for all
+items, not only for custom ones.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Various changes in
+TreeGrid (not only Gantt).</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Some of previous HTML ids
+used by TreeGrid were changed, especially in Gantt objects.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="RowAdd.htm#CfgCopying">Copying</a>, <a href="RowAdd.htm#CfgCopyDeleted">CopyDeleted</a>,
+<a href="RowAdd.htm#ICanCopy">CanCopy</a> and <a href="RowAdd.htm#ICopy">Copy</a>
+attributes are now used also when copying rows between grids by dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The exported HTML is now in
+UTF8 also in IE5,6,7,8, regardless on the page encoding</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hover classes in CSS for
+space Bool and Select types were modified and renamed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>Deprecated items</span></b></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><i><span
+style='font-size:10.0pt'>These items work also in the new version, but it is
+strongly recommended to use them in the new way</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttSummary.htm#CellGanttSummary">GanttSummary</a> should be set to main
+bar plan, 0 for first plan.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In 9.3. the GanttSummary was
+set to 1 for all bars, or to 2 for all editable bars.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>For editable summary
+should be set <a href="GanttSummary.htm#CGanttSummaryType">GanttSummaryType</a>
+instead of GanttSummary = 2.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttFlow">GanttFlow</a> should be replaced by <a
+href="GanttMain.htm#CGanttParts">GanttParts</a> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Flow bar was removed and
+should be replaced by main bar. It is possible to have more main bar plans and
+also discrete main bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set also GanttCount=2 or more
+if you want to have two main bar plans (formerly main bar and flow together).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rename or update also other
+Flow attributes to main bar attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttFormat">GanttFormat</a> should be replaced by bar
+side text.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <a
+href="GanttMain.htm#CGanttHtmlLeft">GanttHtmlLeft</a>/X or <a
+href="GanttMain.htm#CGanttHtmlRight">GanttHtmlRight</a>/X for main bar or <a
+href="GanttRun.htm#CGanttRunHtmlLeft">GanttRunHtmlLeft</a> or <a
+href="GanttRun.htm#CGanttRunHtmlRight">GanttRunHtmlRight</a> for run bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="GanttMain.htm#CGanttFormatObject">GanttFormatObject</a> is replaced by <a
+href="GanttMain.htm#CGanttHtmlLeftEdge">GanttHtmlLeftEdge</a>/X or <a
+href="GanttMain.htm#CGanttHtmlRightEdge">GanttHtmlRightEdge</a>/X for main bar
+or <a href="GanttRun.htm#CGanttRunHtmlLeftEdge">GanttRunHtmlLeftEdge</a> or <a
+href="GanttRun.htm#CGanttRunHtmlRightEdge">GanttRunHtmlRightEdge</a> for run
+bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Scheduling algorithm was
+rewritten. </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a
+href="file:///S:\Doc\GanttCompute.htm#CGanttStrict">GanttStrict</a> option 2 has
+been replaced by manual date (<a href="GanttMain.htm#CGanttManual">GanttManual</a>,
+<a href="GanttRun.htm#CGanttRunManual">GanttRunManual</a>, GanttRun - <a
+href="GanttRun.htm#RunManual">Manual</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="GanttObjects.htm#CGanttObject">GanttObject</a> renamed to <a
+href="GanttObjects.htm#CGanttTask">GanttTask</a>.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default only the first
+main bar plan is set as Gantt task and provides dependencies, resources,
+completion state, manual constraint and locked / disabled state.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="Pager.htm#PZoomToPage">ZoomToPage</a> in Pager was replaced by attributes
+<a href="Pager.htm#PClick">Click</a> and <a href="Pager.htm#PDblClick">DblClick</a></span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

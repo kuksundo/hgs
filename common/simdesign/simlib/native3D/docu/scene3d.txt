@@ -1,0 +1,50 @@
+Author: Nils Haeck
+created 11jul2010
+
+Scene 3D:
+
+The sdScene3D units have been designed in order to get info from a "commom denominator" from all 
+CAD formats into the scene and underlying GLScene objects.
+
+current formats
+
+DXF
+===
+- Format:               sdDxfFormat
+- Scene3D connection:   sdDXFToScene3D
+- Viewer:               No, not yet with GLScene
+
+DWG (AutoCad):
+===
+- Format:               sdDwgFormat
+- Aux files:            sdDwgBitReader, sdDwgHeaderVars, sdDwgItems, sdDwgProperties, sdDwgTypesAndConsts
+- Scene3D connection:   -
+- Viewer:               No, not yet with GLScene
+
+IGES:
+====
+- Format:               sdIGESFormat
+- Aux files:            sdIGESEntities, sdIGESOpenGL, sdIGESPointlist
+- Scene3D connection:   sdIGESToScene3D.pas
+- Viewer:               yes, formats3d\iges\demo\IgsAnalyse.dpr
+
+VRML:
+====
+- Format:               sdVrmlFormat
+- Aux files:            sdVrmlNodeTypes
+- Scene3D connection:   sdVrmlToScene3D
+- Viewer:               Yes, formats3D\vrml\demo\VrmlViewer.dpr
+
+
+Editor3D
+========
+- Started on 10jul2010
+- Goal 1: make more generic than the vrml viewer demo, adding at least the formats DXF, DWG, IGES and VRML. 
+- Goal 2: editing as well as viewing
+- Goal 3: Make connections for solid modeling stuff, elasticity, gravity etc
+
+The vrml viewer demo does still use objects from the sdVrmlFormat. Must create generic object references
+in sdScene3D or sdScene3DBuilder so the editor can work with the formats in a generic way.
+
+
+

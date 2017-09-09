@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>The first example from TreeGrid homepage</h2>
+      This examples demonstrates the most of TreeGrid features:<br />
+      Tree, sorting, grouping, filtering, searching, calculations, resizing and moving columns, row dragging, row manipulations, selecting rows,
+      fixed rows and columns, many cell types, popup default list, calendar, formatting values and many more.
+      <br/>
+      <br/>
+      <div style="WIDTH:100%;HEIGHT:500px;">
+         <bdo Layout_Url="FirstDef.xml" Data_Url="FirstData.xml"></bdo>
+      </div>
+      <script>
+
+// Custom calculation function      
+TCalc.prototype.customcount = function(all){
+var cnt = 0;
+function count(row){
+   if(row.Def.Name=="Node"){ if(!row.Deleted &amp;&amp; (Get(row,"X") &amp;&amp; row.Visible || all)) cnt++; }
+   else for(var r=row.firstChild;r;r=r.nextSibling) count(r);
+   }
+if(all) for(var r = this.Grid.XB.firstChild.firstChild;r;r=r.nextSibling) count(r);
+else if(this.Children) for(var i=0;i&lt;this.Children.length;i++) count(this.Children[i]);
+return cnt;
+}
+
+// Custom event for searching
+// Searches in orders with specified items
+Grids.OnRowSearch = function(G,row,col,found,F,type){
+if(type || G.SearchDefs!="") return found; // Only for "in orders with items" and default call
+if(row.Def.Name=="Data") return -1;        // Only for orders
+for(var r=row.firstChild;r;r=r.nextSibling) { 
+	var found = F(r,col,1);                 // calls F(r,col,type=1)
+	if(!(found&lt;=0)) return found; 
+	}
+return 0;
+}
+      </script>
+   </body>
+</html>

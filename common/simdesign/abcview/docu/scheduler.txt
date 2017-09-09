@@ -1,0 +1,32 @@
+Scheduler
+
+abcview needs a scheduler
+
+TTask
+  property Status: 
+   Idle
+   Pending
+   Running
+   Completed
+  property Priority: integer
+  property EstimatedLoad: integer (load in ticks of the processor)
+  property EstimatedMemWork: integer (in bytes)
+  property EstimatedMemCompleted: integer (in bytes)
+   
+TScheduler
+  Tasks[]: TTask
+  Threads[]: TThread
+  
+  
+The scheduler gets populated with tasks in the initialisation part.
+
+When running in the main thread, the scheduler will select an idle task from the tasks pool based on 
+the priority of all idle tasks, and starts a thread with this task.
+
+The task must be atomic: if the thread seems to "hang", the task will be reverted by the scheduler and 
+the scheduler resets the task to "idle". Then, at possibly another moment, the scheduler can select another 
+thread to complete the task.
+
+The scheduler is responsible for administration of the tasks[] list:
+ the TTask.Status property
+     TTask.Priority can be reprioritized 

@@ -1,0 +1,128 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <!-- Styles used in the XML example -->
+   <style>
+      .Bottom { vertical-align:bottom; }
+      .Border { border-color:red; border-style:dashed; padding:2px; }
+      .BorderInner { border:2px dashed green; margin:1px; }
+      .Bold { color:green; font: italic bold 15px Arial; }
+      .Green { background-color:#8F8; }
+   </style>
+
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>6. Cell CSS style and colors</center>
+   <center style='font:bold italic;'>Setting CSS attributes for cell via various TreeGrid attributes</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='440'>
+            <div style='margin-bottom:6px;'><a href='06 - Cell style.xml'>06 - <h2>Cell style</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='06 - Cell style.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='06 - Alternate colors.xml'>06 - <h2>Alternate colors</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='06 - Alternate colors.xml'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   
+   <ul>
+      <li>
+         <h4>Cell border</h4> (and margin and padding)<br />
+         <ul>
+            <li>
+               <h3>Class</h3> attribute can specify the most outer cell border color and style. It changes the default borders for the cell.
+               It <u>must not</u> set cell border <u>width</u>. The cell border width is specified in Grid.css and for all cells in grid it must be the same.<br />
+               Remember, many styles don't set all four cell borders, so if you want to set complete cell border by Class attribute, you need to specify all the borders in Grid.css for classes GxCell...<br />
+               In Firefox 3.x are the cell borders disabled, it always collapses the cell border to have only left and bottom border.<br />
+               The cell border set by Class is around all the cell content and its Button / Icon. The Class attribute can also specify <b><i>padding</i></b> settings, but not margin.
+            </li>
+            <li>
+               <h3>ClassInner</h3> attribute can add inner cell border. It can easily specify all the border attributes and sides. It does not change the outer cell border.<br />
+               The right side Button is outside this border, the left/right side Icon can be inside or outside this border according to attribute <b>ClassInnerIcon</b> (0 default outside, 1 inside).<br />
+               The ClassInner can specify also <b><i>margin</i></b> and <b><i>padding</i></b> settings.
+            </li>
+            <li>
+               By <h3>HtmlPrefix</h3> and <h3>HtmlPostfix</h3> attribute you can add next custom cell border inside the Class/ClassInner.
+               This border does not contain the Button and Icon icons. This border is also not visible during editing. This border can be partially hidden if the cell is overflowed.
+               There can be set also <b><i>margin</i></b> and <b><i>padding</i></b> settings.
+            </li>
+         </ul>
+      </li>
+      <li><h4>Cell background</h4><br />
+         <ul>
+            <li>
+               <h3>Color</h3> attribute specifies base cell background color before the color calculation.<br /> 
+               The base cell background color is modified by all other colors according to the row state (Added,Deleted,Moved,Changed,Selected,Error), cell permissions (CanEdit,CanFocus), Alternate color, hover color and so on. 
+               The resulted color is sum of all these colors and can remarkably differ from the Color set.<br />
+               The base color can returned dynamically by API event handler <b>OnGetDefaultColor</b>.
+            </li>
+            <li>
+               <h3>Background</h3> attribute specifies result cell background color after the most color calculations.<br />
+               The Background color is overridden only by Focus cursor and Search Mark. 
+               It means that row state colors don't modify the color set by Background.<br />
+               By API event <b>OnGetColor</b> you can modify the final color set to the cell (also after including Focus and Mark).<br />
+            </li>
+            <li><h3>ClassInner</h3> attribute class can specify the final background color or image. This background is not affected by any cell color, even not by Focus color.<br />
+            The ClassInner can specify also background-image, but only if <b>ClassInnerIcon</b>='0'.<br />
+            </li>
+            <li>
+               By <h3>HtmlPrefix</h3> and <h3>HtmlPostfix</h3> attribute you can specify the final inner background color and image. This background is not affected by any cell color, even not by Focus color.<br />
+            </li>
+            <li> Cell background should <u>not</u> be set by <b style='text-decoration:line-through'>Class</b> attribute.
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h3>Wrap</h3> attribute permits or restricts automatic text wrapping. All cell types have by default Wrap='0' except Lines and Html that have Wrap='1'.<br />
+         The manual wrapping by including LF is always possible, to text type by "&x0a;" entity or to Html type by "&lt;br>".
+      </li>
+      <li>
+         <h3>Align</h3> attribute controls horizontal alignment, "left", "right", "center".
+      </li>
+      <li>
+         <h4>Vertical alignment</h4> can be done by <h3>Class</h3> attribute with defined CSS attribute <b>vertical-align</b>.
+      </li>
+      <li>
+         <h3>Rotate</h3> attribute supports rotating cell text by 90 or 270 degrees.
+      </li>
+      <li>
+         <h3>Cursor</h3> attribute specifies mouse cursor for the whole cell. It is possible to specify Cursor to only part of the cell like Button by XXXCursor, for example Col1SideButtonCursor='pointer'.
+      </li>
+      <li>
+         <h4>Text color, font and other CSS attributes</h4> (CSS attributes font, color, letter-spacing, line-height, text-decoration, text-indent, text-transform, word-spacing)<br />
+         <ul>
+         <li>
+         <h3>Class</h3> attribute is the best place to set all these attributes, because it is the fastest, it does not add any next HTML tag into cell.<br />
+         </li>
+         <li>
+            These attributes can be set also by <b>ClassInner</b> or <b>HtmlPrefix</b> / <b>HtmlPostfix</b>.
+         </li>
+         <li>
+            <h3>Format</h3> attribute for Int, Float and Date type cells can contain also HTML code setting these attributes, especially to highlight only part of the value.
+         </li>
+         </ul>
+      </li>
+      <li><h4>Alternate colors</h4><br />
+      TreeGrid can color every Nth row in different background color. The N repeater is set by <h3>Alternate</h3> attribute. The alternate color is defined in Grid.css by GxColorAlternate.<br />
+      For every row is possible to predefine its color and alternate color by <b>Color</b> and <b>AlternateColor</b> attributes.<br />
+      In tree the coloring always starts from beginning, so it can lead to break down the N repeater (e.g. to have two adjacent rows with the same color for N=2). It is because of speed reason, it is not possible to recolor the whole grid after every expand / collapse.<br />
+      </li>
+   </ul>
+</body>
+</html>

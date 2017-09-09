@@ -1,0 +1,159 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of complex application with creating specific tree, server side child paging and more
+Uses MS Access database TableData.mdb as data and XML file SchoolsDef.xml as TreeGrid layout
+Uses support file Schools.asp as main application script that generates data, updates changes, adds new users
+Uses support file SchoolsRatings.asp as script for reading reviews
+Uses support file SchoolsReview.asp as script for saving one review back to database
+! Check if ASP application has write access to Database.mdb file 
+-->
+<html>
+   <head>
+      <SCRIPT src="../../Grid/GridE.js"> </SCRIPT>
+      <link href="../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>School list and ratings</h2>
+      <p>
+      <font size='2'>Demonstration of framework of item list with ratings and 
+         reviews.&nbsp;There are three modes to work with data:<br>
+         a) <STRONG><EM>View all data and rate</EM></STRONG> and review the schools. 
+         Default mode, without log in.<br>
+         b) <STRONG><EM>Edit data as user</EM></STRONG> . Every user has his own data. 
+         You can log in as <STRONG>Jan</STRONG>, <STRONG>Magda</STRONG>, <STRONG>David</STRONG>,
+         <STRONG>Adam</STRONG>, <STRONG>Linda</STRONG> , all without password. Or you 
+         can add new user by entering new name and password.<br>
+         c) <STRONG><EM>Edit all data as administrator</EM></STRONG> . You can edit all 
+         data or even assign it to another user. You can log in as <STRONG>Admin</STRONG>
+         , without password.<br>
+      </font>
+      </p>
+      <p style='BORDER-RIGHT:#ddd 1px solid; PADDING-RIGHT:5px; BORDER-TOP:#ddd 1px solid; PADDING-LEFT:5px; BACKGROUND:#fafafa; PADDING-BOTTOM:5px; BORDER-LEFT:#ddd 1px solid; PADDING-TOP:5px; BORDER-BOTTOM:#ddd 1px solid'>
+         <i>To add or edit your events, you need to log in </i>&nbsp;&nbsp;&nbsp; Name: <input type="text" id="IName">
+         &nbsp; Password: <input type="password" id="IPass"> &nbsp;
+         <button onclick='Reload(0);' title='Edit mode for users and admin' type="button">Edit</button>
+         &nbsp;
+         <button onclick='Reload(1);' title='Read only mode for visitors' type="button">View</button>
+         &nbsp;
+         <button onclick='Reload(2);' title='Adds new user to add events, with name and password'
+            type="button">New user</button>
+      </p>
+      <div style="WIDTH:100%;HEIGHT:90%">
+         <bdo Debug='1' 
+            Layout_Url="SchoolsDef.xml" 
+            Data_Url="Schools.asp" Data_Method="Form"
+            Upload_Url="Schools.asp" Upload_Method="Form" Upload_Data="TGData" Upload_Format="Internal" 
+            Page_Url="SchoolsRatings.asp" Page_Method="Form" Page_Data="TGData" Page_Format="Internal"
+            Export_Url="Export.asp" Export_Data="TGData" Export_Param_File="Schools.xls"
+            ></bdo>
+      </div>
+      
+      <p style='BORDER-RIGHT:#ddd 1px solid; PADDING-RIGHT:5px; BORDER-TOP:#ddd 1px solid; PADDING-LEFT:5px; BACKGROUND:#fafafa; PADDING-BOTTOM:5px; BORDER-LEFT:#ddd 1px solid; PADDING-TOP:5px; BORDER-BOTTOM:#ddd 1px solid'>
+         <button style='DISPLAY:none' id="BSave" onclick='Grids[0].ControlPanel.Click(1);' type="button">Save changes</button>
+         &nbsp;
+         <button style='DISPLAY:none' id="BReload" onclick='Grids[0].ControlPanel.Click(2);' type="button">Cancel changes</button>
+         &nbsp;
+         <button style='DISPLAY:none' id="BAdd" onclick='Grids[0].ControlPanel.Click(3);' type="button">Add record</button>
+         &nbsp;
+         <button onclick='Grids[0].ControlPanel.Click(8);' type="button">Expand all</button>
+         &nbsp;
+         <button onclick='Grids[0].ControlPanel.Click(9);' type="button">Collapse all</button>
+         &nbsp;
+         <button onclick='Grids[0].ControlPanel.Click(14);' type="button">Choose columns</button>
+         &nbsp;
+      </p>
+      <script>
+      
+function Reload(type){
+var G = Grids[0];
+if(!IName.value && type!=1) {
+   alert("Please enter your name !");
+   IName.focus();
+   return;
+   }
+IName.value = IName.value.replace('$','_'); // The TreeGrid id cannot contain '$'
+if(type==2){
+   if(!confirm("Do you want to add new user '"+IName.value+"' "+(IPass.value?"with":"without")+" password?")) return;
+   }
+G.Data.Data.Param["User"]=type==1?"":IName.value;
+G.Data.Data.Param["Pass"]=type==1?"":IPass.value;
+G.Data.Upload.Param["User"] = G.Data.Data.Param["User"];
+G.Data.Upload.Param["Pass"] = G.Data.Data.Param["Pass"];
+G.Data.Data.Param["New"]=type==2?"1":"0";
+BSave.style.display=type==1?"none":"";
+BReload.style.display=type==1?"none":"";
+BAdd.style.display=type==1?"none":"";
+G.Reload();
+}
+
+Grids.OnEndEdit = function(G,row,col,save,val){
+if(col=='CUser' && save && !val){ alert("User cannot be empty"); return -1; }
+}
+
+Grids.OnAfterValueChanged = function(G,row,col){
+if(col=='CUser'){
+   var val = G.GetString(row,col);
+   for(var r=row.firstChild;r;r=r.nextSibling){ G.SetValue(r,"CUser",val); G.ColorRow(r); } // Changes also User for children
+   }
+}
+
+Grids.OnButtonClick = function(G,row,col){
+var A = "<table cellspacing=0 cellpadding=0>";
+A+="<tr><td align=center colspan=12>Please rate and review the school</td></tr>";
+A+="<tr><td align=center colspan=12 style='color:green;'><B>"+G.GetString(row,"CName")+"</B></td></tr>";
+A+="<tr><td colspan=12><hr></td><tr>";
+A+="<tr>";
+A+="<td><input type=radio name=stars></td><td><i style='color:6969AA;'>No star</i></td>"
+for(var i=1;i<=5;i++) A+="<td>&nbsp;&nbsp;&nbsp;<input type=radio name=stars></td><td><div style='width:"+(i*16)+";overflow:hidden;'><img src='SchoolsStars.gif'></div></td>";
+A+="</tr>";
+A+="<tr><td colspan=12><br></td><tr>";
+A+="<tr><td colspan=12><textarea id=review rows=4 style='width:100%;'></textarea></td><tr>";
+A+="<tr><td colspan=12><hr></td><tr>";
+A+="<tr><td colspan=12 align=center><button onclick='Rate(1,\""+row.id+"\");' class=GCfgMenuButton style='width:60;'>OK</button><button onclick='Rate(0);' class=GCfgMenuButton style='width:60;'>Cancel</button></td></tr>";
+A+="<table>";
+G.ShowMessage(A,null,null,true);  
+}
+
+function Rate(ok,id){
+var G = Grids["Schools"];
+if(ok){
+   var I = document.getElementsByName("stars");
+   for(var i=0;i<I.length;i++) if(I[i].checked) break;
+   if(i==I.length){
+      alert("Please select number of stars");
+      return;
+      }
+   var D = new Object();
+   D.Url = "SchoolsReview.asp";
+   D.Method = "Form";
+   var P = new Object();
+   D.Param = P;
+   P.id = id;
+   P.Text = document.getElementById("review").value;
+   var S = document.getElementsByName("stars");
+   for(var i=0;i<S.length;i++) if(S[i].checked){ P.Stars = i+1; break; }
+   D.Debug=1;
+   G.Communicate2(D,"",function(code){
+      if(code>=0){
+         var par = G.GetRowById(id).lastChild;
+         if(par.State>=2 || par.Count==0){ // Loaded already or empty
+            var row = G.AddRow(par,null,0,1,"Review");
+            G.SetValue(row,"CName",(new Date()).getTime());
+            G.SetValue(row,"CCountry",P.Text);
+            G.SetValue(row,"CRating",P.Stars);
+            G.ShowRow(row);
+            }
+         else {
+            par.Count = par.Count-0+1;
+            par.CRatingsum = par.CRatingsum-0+P.Stars;
+            G.Recalculate(par,null,1);
+            }
+         }
+      });
+   }
+G.HideMessage();
+}
+
+      </script>
+   </body>
+</html>

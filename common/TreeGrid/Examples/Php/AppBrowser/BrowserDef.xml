@@ -1,0 +1,80 @@
+<Grid>
+   <Cfg id="Files" SuppressCfg="1" MaxHeight="1" MaxHeightReserved="10"/>
+   <Cfg SaveAttrs="Controls,M"/> <!-- Saves Merge checkbox to cookies -->
+   <Cfg Group="P" GroupMain="N" GroupRestoreSort="1"/> <!-- Predefined grouping is by Path, the tree will be shown in Name, sorting when grouping will  be preserved -->
+   <Cfg Sort="N,E,P" /> <!-- Predefined sorting is Name, Ext, Path -->
+   <Cfg FilterEmpty="1"/>  <!-- Empty directories are hidden when filtering -->
+   <Cfg Undo="1"/> <!-- Undo / Redo is permitted (it is cleared when groups/ungroups -->
+   <Cfg NoFormatEscape="1"/> <!-- Format attribute can contain HTML code -->
+   <Cfg IdNames="P,E,N" AppendId="1" IdChars="0123456789" NumberId="1"/> <!-- The file is uniquely identified by Path$Ext$Name, for not unique adds number from 1 to Name (the last in id) -->
+   <Cfg PasteFocused="6" PasteSelected="0" CopyPasteRows="1" CopyPasteInternal="1" CopyPasteTree="3"/> <!-- Copies rows whole as ids, pastes them always as new before focused -->
+   <Cfg SaveOrder="1"/> <!-- Uploads changes in the exact order they happened -->
+   <Actions OnClickButtonAdd="AddRowEnd"/> <!-- Toolbar Add button always adds new file to the end -->
+   <Actions OnClickPanelCopy="Row.Def.Group ? AddChild : CopyRow"/> <!-- Panel Copy button adds new file to the directory or copies the file above -->
+   <Actions OnRightClick="Focus,ShowRightMenu(Grid,Row),1"/> <!-- Shows the examples's right menu with actions like delete or copy -->
+   
+   <Panel Copy="1" Width="86"/> <!-- Shows the Panel Copy button, the Delete and Select buttons are shown by defaults -->
+   <Panel PanelSelectTip="Select file" PanelCopyTip="Copy file" PanelDeleteTip="Delete file"/> <!-- Sets tooltips for Panel buttons for files, directories are preset in <D Name='Dir'/> -->
+   
+   <!-- Shows the button 'Show' only for some extension that can be displayed -->
+   <Panel Formula="GetRowPanel(Grid,Row,Col)"/>
+   <Panel OnClickPanelEdit="EditFile(Row)" OnClickPanelShow="ShowFile(Row)"/>
+   
+   <Cols>
+      <C Name="P" Width="100"/> <!-- Path of directories -->
+      <C Name="P" GroupChar="/" /> <!-- Creates group for every part separated by the '/' -->
+      <C Name="P" GroupEmpty="0" /> <!-- Empty directory means no grouping -->
+      <C Name="P" Format="||||\/|g|&lt;span style='color:red;'>/&lt;/span>"/> <!-- Colors every '/' in red -->
+      
+      <C Name="N" Width="60" /> <!-- File name columns -->
+      <C Name="N" GroupWidth="160" /> <!-- Sets the column wider when shows grouping tree -->
+      <C Name="N" EmptyValue="&lt;span style='color:gray;font-style:italic'>empty file&lt;/span>" /> <!-- For empty file name it shows gray text 'empty file' -->
+      <C Name="N" HtmlPrefix="&lt;span style='color:blue;'>" HtmlPostfix="&lt;/span>" /> <!-- Colors the file name in blue -->
+      
+      <C Name="E" Width="45" /> <!-- File extension column -->
+      <C Name="E" HtmlPrefix="&lt;span style='color:#080;'>" HtmlPostfix="&lt;/span>" /> <!-- Colors the file extenstion in green -->
+   </Cols>
+   <Header id="ID" N="Name" E="Ext" P="Path"/> <!-- Column names shown in grid -->
+   <Def>
+      <D Name="R" PMerge="P,N,E" PMergeType="4"
+         PMergeFormat="P&lt;span style='color:red;'>/&lt;/span>N&lt;span style='color:red;font-weight:bold;'>.&lt;/span>E"
+         PMergeEditFormat="P/N.E"
+         /> <!-- Prepares Merge settings for not grouped grid, Spanned='1' and PSpan='3' will be set by Merge/Group functions -->
+      <D Name="R" NMerge="N,E" NMergeType="4"
+         NMergeFormat="N&lt;span style='color:red;font-weight:bold;'>.&lt;/span>E"
+         NMergeEditFormat="N.E"
+         /> <!-- Prepares Merge settings for grouped grid, Spanned='1' and NSpan='2' will be set by Merge/Group functions -->
+      <D Name="R" N="New file" E="txt" /> <!-- Name of newly created files -->
+      <D Name="R" Panel="Select,Delete,Copy,Edit,Show" PanelEditWidth="19" PanelEmptyWidth="19" PanelEdit="BrowserEdit.gif" PanelPanelEditTip="Edit file" PanelShow="BrowserEye.gif" PanelPanelShowTip="Show file"/> <!-- -->
+
+      <D Name="Dir" Group="1" NoUpload="1" Spanned="1" PSpan="1" NSpan="2" Expanded="1" CanFilter="2" NHtmlPrefix="" NHtmlPostfix="" E=""/> <!-- Directory definition -->
+      <D Name="Dir" Panel="Select,Delete,Copy" PanelFormula="" PanelPanelSelectTip="Select directory" PanelPanelCopyTip="Insert new file into the directory" PanelPanelDeleteTip="Delete directory"/> <!-- Tooltips for panel buttons in directory -->
+      
+      <D Name="C" LocaleCompare="1" CaseSensitive="0"/> <!-- Filtering and sorting is done case insensitive and according to browser's locale -->
+   </Def>
+   <Head><Filter Spanned="0" N="" NEmptyValue="" Panel="" E=""/></Head> <!-- Defines filter row in header -->
+   <Solid>
+      <!-- Defines the two checkboxes on top, Group and Merge -->
+      <Group id="Controls" Cells="G,M,R" Space="0" Panel="0" CanFocus="0"
+         
+         GLeft="5" GCanEdit="1"
+         GType="Bool"
+         GLabel="Group by path"
+         GFormula="Grid.Group?1:0"
+         GOnChange="Group(Value)"
+         
+         MLeft="5" MCanEdit="1"
+         MType="Bool" M="1"
+         MLabel="Merge name"
+         MFormula="Grid.Def.R.Spanned?1:0"
+         MOnChange="Merge(Value)"
+             
+         RLeft="5" RCanEdit="1"
+         RType="Bool" R="0"
+         RLabel="Read only"
+         RFormula="Grid.Editing?0:1"
+         ROnChange="SetReadOnly(Value)"    
+         />
+   </Solid>
+   <Toolbar Cells="Save,Reload,Print,Export,Undo,Redo,Add,ExpandAll,CollapseAll" AddTip="Add new file to the end" /> <!-- Specifies the toolbar buttons set -->
+</Grid>

@@ -1,0 +1,450 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Column visibility</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Column tree</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 version</span></i><span
+style='font-size:10.0pt'> TreeGrid supports tree also in columns, it means
+hiding and showing individual columns on click to expand / collapse button in
+some cell (usually header cell).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Similarly it supports also
+showing and hiding individual rows (usually, but not required, fixed rows) on
+click to Expand button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The collapsed / expanded
+columns or rows do <u>not</u> need to be adjacent! </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tree level count is not
+limited!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool</i>      </span><a
+name=CVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [1]        <i>Saved
+to cookies, avoid it by <b>&lt;C VisibleLap=’1’/&gt;</b></i>                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column is displayed in
+grid. Set &lt;C Visible=’0’ Hidden=’1’/&gt; for collapsed columns on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool</i>      </span><a
+name=CHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Hidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hidden=’<b>1</b>’ can be set
+only for <a href="#CVisible">Visible</a>=’<b>0</b>’ and &lt;Cfg <a
+href="#CfgFastColumns">FastColumns</a> =’<b>1</b>’/&gt;. This column will be
+rendered as hidden (width 0px). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It slows down rendering grid
+(the column is rendered) but speeds up showing / expanding the column (it is
+just resized). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set &lt;C Visible=’0’
+Hidden=’1’/&gt; for collapsed columns on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgFastColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FastColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If column hiding is done by
+setting its width to 0px. This action is faster than removing the cells and
+speeds up also showing the column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For expanding / collapsing
+columns is strongly recommended to use default setting FastColumns=’1’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool</i>      </span><a
+name=IVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [1]        <i>Saved
+to cookies, avoid it by <b>&lt;Cfg ExpandedLap=’1’/&gt;</b></i>                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is displayed in
+grid. Set to 0 for collapsed rows on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CButton><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Button</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 Button
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expand</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show <b>right</b> side
+Expand button set <a href="CellSideButton.htm#CButton">Button</a>=”Expand”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is shown usually in
+&lt;Header&gt; cell to show / hide columns, but can be shown in any cell, in
+variable, fixed or space cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CIcon><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Icon</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                       Icon
+= “</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expand</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show <b>left</b> side
+Expand button set <a href="CellSideButton.htm#CIcon">Icon</a>=”Expand”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is shown usually in
+&lt;Header&gt; cell to show / hide columns, but can be shown in any cell, in
+variable, fixed or space cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string[]  </span></i><a
+name=CExpandCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                              <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of column names to
+show / hide them on click to Button=’Expand’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to have deep tree
+of expanding columns (more nested levels) you must list here only immediate
+children, not the whole tree. And set appropriate <a href="#CExpandLevel">ExpandLevel</a>
+to the columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string[]  </span></i><a
+name=CExpandRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                               <span
+style='color:red'>new <b>7.0</b></span><span style='color:#1F497D'>;upd <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of row ids to show /
+hide them on click to Button=’Expand’</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.3</span></i><span
+style='font-size:10.0pt'> the item can be also a Name of default row to
+represent all rows with this default</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=CExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Expanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [
+]         <i>Saved to cookies, avoid it by <b>&lt;Cfg ExpandedLap=’1’/&gt;</b></i>             <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial state of the
+Button=’Expand’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the state is 1 if
+any column in the ExpandCols is visible. If ExpandCols is not defined it tests
+ExpandRows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If neither ExpandCols nor
+ExpandRows defined returns state of row Expanded attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it for more complex tree
+where the Expanded state is computed incorrectly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;I&gt;           </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CExpandLevel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandLevel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [
+]         <i>Saved to cookies, avoid it by <b>&lt;C VisibleLap=’1’/&gt;</b> or <b>&lt;Cfg
+ExpandedLap=’1’/&gt; </b>for rows</i>     <span style='color:red'>new <b>7.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row / column is shown on
+click to Expand Button when its ExpandLevel is positive (&gt;=1). It is hidden
+if its ExpandLevel is zero or negative (&lt;=0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it when more Expand
+Buttons show / hide one row / column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, every Expand
+Button shows / hides the row / column on its click.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, click to Expand
+Button will increase (when expanding) / decrease (when collapsing) this value
+and only if the value changes from 0 to 1 (shows the column / row) or from 1 to
+0 (hides the column / row).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>ExpandLevel</b> must
+be set accordingly to the row / column <b>Visible</b> attribute and also <b>Expanded</b>
+state of the Expand Buttons that control the row. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Let’s say there are three <b>collapsed</b>
+buttons that control the row. Setting ExpandLevel=’<b>-2</b>’ means that all
+three buttons must be expanded to show the row. Setting ExpandLevel=’<b>0</b>’
+means that every button shows the row and all three buttons must be collapsed
+to hide it. The row attribute Visible must be set to ‘<b>0</b>’.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Let’s say there are three <b>expanded</b>
+buttons that control the row. Setting ExpandLevel=’<b>1</b>’ means that all
+three buttons must be expanded to show the row. Setting ExpandLevel=’<b>3</b>’
+means that every button shows the row and all three buttons must be collapsed
+to hide it. The row attribute Visible must be set to ‘<b>1</b>’.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=ICollapseOther><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CollapseOther</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                          <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it
+collapses all other cells in this row when some cells is being expanded</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=CHideParentCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HideParentCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                          <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it hides
+parent column when expanding it  = shows the children instead of the parent
+column and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case the cell with
+expand button should be spanned through the child columns to be still visible
+after the parent column hides.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If used more column levels,
+they should have set ExpandLevel to correctly hide / collapse the columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=CellShowHiddenBorder><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowHiddenBorder</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                               <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to <b>1</b> in the spanned
+expand / collapse cell when set <b>HideParentCol</b>=1 and <b>FastColumns</b>=1
+to not hide the cell border when the column is hidden</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      </span><a
+name=IsCellExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>IsCellExpanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                              <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if the cell side
+Button Expand is expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      </span><a
+name=ExpandCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ExpandCell</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands or collapses the rows
+/ columns defined by ExpandCols / ExpandRows in the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExpandCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ExpandCell</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         assigned
+to event <b>OnClickSideExpand</b>                                     <span
+style='color:red'>new</span> <b><span style='color:red'>7.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands or collapses the rows
+/ columns defined by ExpandCols / ExpandRows in actual or focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExpandAllCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>ExpandAllCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        not
+assigned to any event                                                         <span
+style='color:red'>new</span> <b><span style='color:red'>7.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands all cells in all
+Header rows in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To expand cells in other rows
+use API IsCellExpanded / ExpandCell in loop instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCollapseAllCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CollapseAllCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     not
+assigned to any event                                                         <span
+style='color:red'>new</span> <b><span style='color:red'>7.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapsed all cells in all
+Header rows in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To collapse cells in other
+rows use API IsCellExpanded / ExpandCell in loop instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExpandRowCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>ExpandRowCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    not
+assigned to any event                                                         <span
+style='color:red'>new</span> <b><span style='color:red'>9.2</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expands all cells in actual
+Header row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCollapseRowCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>CollapseRowCells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> not
+assigned to any event                                                         <span
+style='color:red'>new</span> <b><span style='color:red'>9.2</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Collapsed all cells in actual
+Header row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

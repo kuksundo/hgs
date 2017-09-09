@@ -1,0 +1,139 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttDependencies"><b>Gantt dependencies</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Dependencies between tasks</center>
+   <center style='font:bold italic;'>Links between tasks - Ancestors and Descendants</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Dependencies.xml'>02 - <h2>Dependencies</h2>.xml</a></div>
+   <div style='width:1000px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Dependencies.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttCompute.htm#Dependencies">Defining dependencies</a></b>.
+      </li>
+      <li> <h4>Defining dependencies</h4>
+         <ul>
+           <li> 
+               Dependencies are defined in column set by <h3>GanttAncestors</h3> and / or <h3>GanttDescendants</h3> attributes.<br />
+               If defined both columns, the dependency can be entered in any one and is mirrored to the other column.<br />
+               The <b>GanttAncestors</b> (in some other programs called <b>predecessors</b>) are the <b>previous</b> tasks and the <b>GanttDescendants</b> (<b>successors</b>) are the <b>next</b> tasks.<br />
+           </li>
+           <li>
+               The GanttDescendants and GanttAncestors are defined per Gantt cell and one value contains all dependencies of all tasks in the Gantt cell.<br />
+               The individual dependencies are separated by RangeSeparator (&lt;Lang>&lt;Format RangeSeparator=';'/>&lt;/Lang>), by defaults by semicolon ';'.<br />
+               Every task can have more dependencies.
+           </li>
+           <li>
+            The one <h4>dependency definition</h4> has this format "
+               <b>from</b>,<b>to</b>@<b>idtype</b>+/-<b>lag</b>!<b>float</b>#<b>color</b>
+               ", for example 3ss+3!1. Only the id is mandatory.
+            <ul>
+               <li>
+                  The <b>from</b> and <b>to</b> identify main bar plan or run box id. They can be omitted if the bar is default GanttTask, except for Run box.
+               </li>
+               <li>
+                  The <b>id</b> is row id the dependency points to (for GanttDescendants) or the row id the dependency coming from (for GanttAncestors).<br />
+                  The id is the only required part of the depedency definition.
+               </li>
+               <li>
+                  The <b>type</b> can be <b>fs</b> (finish->start),<b>ff</b> (finish->finish),<b>ss</b> (start->start) and <b>sf</b> (start->finish).
+                  The default is <b>fs</b> that is used if the type is omited.<br />
+                  The type controls which edge of the tasks will be referenced (ancestor->descendant).
+               </li>
+               <li>
+                  The <b>lag</b> is reserved time between dependency start and its end, the lag is used to check if the dependency is correct or not and when correcting dependencies.<br />
+                  The lag can be positive or negative, it must be always written with the sign + or -. The lag value is in <a href="../../Doc/GanttCompute.htm#CGanttDataUnits">GanttDataUnits</a>.<br />
+                  The lag can be also in percentage of duration (in workdays) of the source (ancestor) task (with % suffix).
+               </li>
+               <li>
+                  The <b>float</b> value is maximal permitted time between dependency start+lag and its end, the float is used to check if the dependency is correct or not and when correcting dependencies.<br />
+                  The float value is in <a href="../../Doc/GanttCompute.htm#CGanttDataUnits">GanttDataUnits</a>.<br />
+                  The float can be also in percentage of duration (in workdays) of the source (ancestor) task (with % suffix).<br />
+                  Missing float value is set according to <a href="../../Doc/GanttCompute.htm#CGanttIncorrectDependencies"><b>GanttIncorrectDependencies</b></a> setting, for '1' is unlimited and for '2' is 0.
+               </li>
+               <li>
+                  The <b>color</b> specifies color and style of the depencency line and arrow.<br />
+                  There are predefined 10 colors in 4 shape sets, together 40 different lines and arrows.
+               </li>
+            </ul>
+           </li>
+           <li>
+            Dependencies can be connected only to Gantt tasks, defined by <h3>GanttTask</h3>.<br />
+            It is <b>Main</b> by default for the first main bar plan and can be also <b>Main1</b>, Main2, Main3, ... for different main bar plans, 
+            <b>All</b> for all main bar plans, <b>Run</b> for the whole run and <b>Box</b> for individual run boxes.
+           </li>
+           <li>
+            The dependencies are attached always to the whole main bar (to the first and to the last part). But different main bar plans can have different dependencies in the same row.<br />
+            The dependencies can be attached to the whole run bar (if GanttTask contains "Run", see tutorial <a href="../GanttRunBar/06 - Run bar as task.html">06 - Run bar as task</a>) 
+            or to every run box separately (if GanttTask contains "Box", see tutorial <a href="../GanttRunBar/07 - Run box as task.html">07 - Run box as task</a>).<br />
+           </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Creating and editing dependencies</h4>
+         <ul>
+           <li>
+            Dependencies are fully editable by default. It is possible to restrict editing dependencies by removing <b>dependency</b> flag from <h3>GanttEdit</h3>.<br />
+            To not edit dependency type remove <b>dependencytypes</b> flag from GanttEdit. All new dependencies will get FS type in this case.<br />
+            To not edit dependency lag remove <b>dependencylags</b> flag from GanttEdit.<br />
+           </li>
+           <li>
+            By default the dependencies can be created only between the same GanttTask type (the same Main bar plan and between run bars).<br />
+            By <b>GanttDragDependenciesBetween</b> is possible to permit dependencies between different main bar plans or between run bar and main bar.<br />
+           </li>
+           <li>
+            By default there can be only one dependency between two bars.<br />
+            By <b>GanttDragDependenciesMore</b> is possible to permit more dependencies between two bars, with different or even the same type.<br />
+           </li>
+           <li>
+            It is possible to permit or restrict <b>circular dependencies</b> by <b>GanttCheckDependencies</b> attribute.
+           </li>
+         </ul>
+      </li>
+      <li> <h4>Dependency colors and shapes</h4>
+         <ul>
+            <li>
+               By default the <b>correct</b> (normal) dependencies are shown blue, the <b>incorrect</b> dependencies in red and <b>disabled</b> dependencies in gray.<br />
+            </li>
+            <li>
+               If dependency has not assigned color or when one bar edge has more connected dependencies, the dependency color can be assigned automatically according to <b>GanttAssignDependencies</b> and <b>GanttDependencyColor</b> values.<br />
+            </li>
+           <li>
+            The <h4>incorrect dependency</h4> has its end before its start. It is possible also to mark as incorrect dependency the one that has not exactly its start equal to its end.
+            Or mark all dependencies always correct.<br />
+            It is controlled by <a href="../../Doc/GanttCompute.htm#CGanttIncorrectDependencies"><b>GanttIncorrectDependencies</b></a> attribute or by <b>float</b> part in individual dependency definition.<br />
+            The color for incorrect dependency is set by <b>GanttMarkIncorrectDependencies</b> and <b>GanttColorIncorrectDependencies</b> attributes.<br />
+            The incorrect dependencies can be automatically corrected by moving tasks, see tutorial <a href="03 - Scheduling tasks.html">03 - Scheduling tasks</a>.<br />
+           </li>
+           <li>
+            The <h4>disabled dependency</h4> is connected to disabled task.<br />
+            The color for disabled dependency is set by <b>GanttMarkDisabledDependencies</b> and <b>GanttColorDisabledDependencies</b> attributes.<br />
+           </li>
+           <li>
+            It is possible to hide arrow or stub dependency icons by <b>GanttDependencyArrows</b> attribute.
+           </li>
+        </ul>
+      </li>
+
+     <li>
+      The dependencies can be controlled by API methods <b>GetDependencies</b>, <b>AddDependencies</b> and <b>DeleteDependencies</b> and event <b>OnGetDependency</b>.
+     </li>
+     <li>
+      The two vertical red lines are automatically calculated base and finish dates for the whole chart. See tutorial <a href="01 - Constraints.html">01 - Constraints</a> - Project constraints.
+     </li>
+     
+   </ul>
+</body>
+</html>

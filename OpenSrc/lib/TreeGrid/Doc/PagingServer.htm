@@ -1,0 +1,1556 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Server paging</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Server paging</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RootPaging><b><span style='font-size:20.0pt'>Server paging
+for root rows (Paging=’3’)</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For basic information
+about paging and client paging see <a href="Paging.htm">Paging documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server paging is expected to
+use for large grids with more than 10,000 root rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In server paging are pages
+downloaded on demand when they are visible by scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server script is
+responsible for sending data for requested page and also for <b>sorting</b>, <b>filtering</b>,
+<b>grouping</b>, <b>searching</b> and <b>aggregate calculation</b>. This means
+that all the required features must be done on server side by server script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is available <b><span
+style='color:red'>TreeGrid server DLL/SO</span></b> that can be used to as
+support library for TreeGrid server paging – if you provide to the library the
+whole XML data, it will generate pages to client and will also provide all
+requested features like sorting, filtering, grouping and aggregate
+calculations. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>See <a href="DLL.htm">TreeGrid.dll/so
+documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you are not able to do
+sorting, filtering or grouping on server and you still want to use server
+paging, you can set <a href="#CfgOnePage">OnePage</a> attribute (and <a
+href="Paging.htm#CfgAllPages">AllPages</a>=0) to do them partially in actual
+page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can mix server and client
+Paging, for pages that should use client paging fill their data in body
+response. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Paging</span></b><span
+style='font-size:10.0pt'> can be set to <b>3</b> independently of <a
+href="#CfgChildPaging">ChildPaging</a> value.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Server paging <u>cannot</u>
+be used with <b>Gantt</b> <b>chart</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Paging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                    &lt;Cfg
+Paging=’3’/&gt;                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use server paging of root
+rows set Paging to <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageLength><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageLength</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [20]                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Average count of rows in
+page. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For client paging there are
+all pages created to contain this number of rows (except the last one).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For server paging it
+determines height of page – it is default value of &lt;B <a href="#BCount">Count</a>&gt;
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Exact count of rows in pages
+can differ due to adding or deleting rows or in last incomplete page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every page must contain at
+least one row otherwise it is deleted. Exception is when grid does not contain
+any row, so it contains one empty page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In TreeGrid server DLL/SO is
+this parameter used to set count of rows in page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRootCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RootCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of all rows in root.
+Used to compute <a href="#BCount">Count</a> parameter of the last page when
+server paging used and pages have not <a href="#BCount">Count</a> attribute
+set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgOnePage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>OnePage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, sorts,
+filters or groups rows only in actual page. Only when <a
+href="Paging.htm#CfgAllPages">AllPages</a> = <b>0</b> (one page visible at a
+time).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Bit array: 1. bit (<b>&amp;1</b>)
+sorting, 2. bit (<b>&amp;2</b>) filtering, 3. bit (<b>&amp;4</b>) grouping. Set
+to <b>7</b> for all actions done at one page only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this attribute only for <b>server
+paging</b> (<a href="#CfgPaging">Paging</a>=<b>3</b>) if you are not able to do
+sorting, filtering or grouping on server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgReloadChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ReloadChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [5]
+                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If permits reloading grid if
+not uploaded changes are pending.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no (does not allow neither reloading nor server
+side sorting/filtering/searching/grouping)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – yes, save them (only when reloading as request for
+server side filtering/sorting/searching/grouping, for reload by Reload button
+always discards changes), </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – yes, discard changes (should be used only when
+changes are not saved to server at all and server paging is used)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – show confirmation message to user</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&amp;4 </span></b><span
+style='font-size:10.0pt'>– test also selected rows (values 4,5,6,7 are related
+to 0,1,2,3)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=BId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  (<i>Both
+letters lowercase !</i>)                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique ID of the page. By
+this ID is page identified when downloading data for this page. Used only if <a
+href="#BRows">Rows</a> are not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set neither <b>id</b> nor <b>Rows</b>
+attribute, the page is identified by attribute <b>Pos</b> as its position
+inside body. But this position can change if any page is deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=BRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Rows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User string to identify the
+page. If set, the page is identified by this string when downloading data for
+this page. It can for example contain a list of row ids the page contains.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also be used to
+specify different url for every page by using <a href="DataDownload.htm#Page_">Page_Url</a>
+with wildcard <b>*Rows</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=BPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Pos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Page position inside body
+(from 0), identifies the page, if <b>id</b> and <b>Rows</b> not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=BName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the page, displayed
+in right side pager. It can contain HTML code (coded).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=BTitle><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Title</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Title of page, displayed in
+pager as tool tip. It can contain HTML if set &lt;Cfg StandardTip=’0’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=BNameXY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name<i><span style='color:blue'>X</span><span
+style='color:red'>Y</span></i></span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There can be predefined names
+according to sorting. If these are set, the <a href="#BName">Name</a> and <a
+href="#BTitle">Title</a> are created from them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These names specifies the first
+and last value on page in sorting columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>X</span></b><span
+style='font-size:10.0pt'> is boundary  = 0 – both (both values are the same in
+this column), 1 – top, 2 – bottom. Can be used either 0 or 1+2.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Y</span></b><span
+style='font-size:10.0pt'> is sorting column 0,1,2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are possible
+combinations of XY (separated by #): </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>10
+=&gt; 20 <span style='color:blue'>#</span> 10,11 =&gt; 20,21 <span
+style='color:blue'>#</span> 10,11,12 =&gt; 20,21,22 <span style='color:blue'>#</span>
+00 <span style='color:blue'>#</span> 00 | 11 =&gt; 21 <span style='color:blue'>#</span>
+00 | 11,12 =&gt; 21,22 <span style='color:blue'>#</span> 00, 01 <span
+style='color:blue'>#</span> 00, 01 | 12 =&gt; 22</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: Name00=’blue’
+Name11=’100’ Name21=’154’ means that page shows all blue values from 100 to
+154.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=BCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Count</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of rows the page
+contains. It specifies height of the page when it does not show rows yet. It is
+also result of count function in formulas.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, it is used
+&lt;Cfg <a href="#CfgPageLength">PageLength</a>&gt; value. Or for the last page
+is Count computed from &lt;Cfg <a href="#CfgRootCount">RootCount</a>&gt; and
+row count in other pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B cell&gt;           </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=BCellsum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>sum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>, </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>count</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>,
+...                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If any fixed or space row in
+grid in server paging contains some aggregate function like sum or count, the
+server must pre-calculate and fill all the results of these functions, because
+TreeGrid cannot do it on client without the page data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For more information see <a
+href="CellFormula.htm#AggFunc">aggregate functions</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if some fixed row
+contains AFormula=’sum()’ the all the pages should contain for example <b>Asum=’123.50’</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RootCommunication><b><span style='font-size:16.0pt'>Server
+communication in root paging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For server Paging you must
+define &lt;treegrid/bdo <b><span style='color:red'>Page_Url</span></b>/&gt; to
+download the page(s) data from.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b><a href="#CfgPaging">Paging</a></b>
+is set to <b>3</b> (<b>Server</b>) TreeGrid loads actual configuration from
+cookies, inserts it to the <a href="#DataRequest">request for Data</a> (to <b>Data_Url</b>),
+sends it to server and downloads prepared pages without data. This request
+contains sorting, grouping, filter and search settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server prepares pages –
+calculates, sorts, filters and groups rows and distributes rows to pages. It
+also sets page names and results of aggregate functions for page and column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a href="#DataDownload">Server
+Data response</a> contains only &lt;Body&gt; tag with only &lt;B&gt; tags with
+attributes, but without any child &lt;I&gt; tags. Some pages (&lt;B&gt;) can
+contain their rows to use client paging only for them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When any not loaded page is
+displayed, TreeGrid downloads data for this page by sending the <a
+href="#PageRequest">request for Page</a> (to <b>Page_Url</b>). The request for
+page (&lt;B&gt; tag) contains <b><a href="#BRows">Rows</a></b> attribute of
+page (if was set) or <b><a href="#Bid">id</a></b> attribute (if was set) and
+(always) <b><a href="#BPos">Pos</a></b> attribute as page index (position from
+0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The request also contains
+sorting, grouping, filter and search settings, the same as when pages body was
+downloaded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a href="#PageDownload">Server
+Page response</a> contains the one requested page in &lt;B&gt; tag with the
+same identification attributes (Pos, id, Rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When user changes sorting,
+grouping, filter or search, TreeGrid reloads all data from data source <b>Data_Url</b>
+with new configuration in <a href="#DataRequest">request for Data</a>. And repeats
+loading of pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-calculations after cell
+change are still done on client. Calculated cells are not sent to server.
+Therefore server must also recalculate appropriate cells if changed values are
+saved to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you are not able to do
+sorting, filtering or grouping on server and you still want to use these
+features, you can set <a href="Paging.htm#CfgOnePage">OnePage</a> attribute
+(and <a href="Paging.htm#CfgAllPages">AllPages</a>=0) to do them partially in
+actual page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The data of returned page can
+contain also defaults (&lt;<b><a href="RowDefaults.htm">D</a></b>&gt; tags).
+These defaults are added to grid layout, but should be used only for data in
+the page they were loaded with.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Example of request for
+body (grid has columns named A,B,C,D,E)</span></u></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>&lt;Cfg
+Sort=’C,-A’ Group=’P’ SearchExpression=’new’ SearchAction=’Select’/&gt;</span></b></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>&lt;Filters&gt;&lt;I
+id=’MyFilter’ C=’10’ CFilter=’1’ E=’A’ AFilter=’10’/&gt;&lt;/Filters&gt;</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example of resulted body
+(grid has also one foot row: &lt;I AFormula=’sum()’ CFormula=’sum(“D”)/2+A’/&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Body&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;B Count=’20’ Asum=’123’ Dsum=’312’ /&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;B Count=’20’ Asum=’453’ Dsum=’6.5’ /&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;B Count=’20’ Asum=’1297’ Dsum=’-142.76’
+/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;B Count=’12’ Asum=’145’ Dsum=’349.7’ /&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>Example of request for
+second page (grid has columns named A,B,C,D,E)</span></u></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Cfg
+Sort=’C,-A’ Group=’P’ SearchExpression=’new’ SearchAction=’Select’/&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Filters&gt;&lt;I
+id=’MyFilter’ C=’10’ CFilter=’1’ E=’A’ AFilter=’10’/&gt;&lt;/Filters&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Body&gt;<b>&lt;B
+Pos=’1’/&gt;</b>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example of resulted second
+page</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Body&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt'>&lt;B Pos=’1’&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xa’ A=’10’ B=’20’ C=’10.3’ D=’-4.5’
+E=’one’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>... 18 rows ...</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xu’ A=’3’ B=’12’ C=’4.6’ D=’-3.5’
+E=’twenty’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'> &lt;/B&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><span style='font-size:10.0pt'>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=LargeTables><b><i><span style='font-size:14.0pt'>Root paging
+in very large tables</span></i></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are few advices how to
+use TreeGrid for grids with more then about 10&nbsp;000 <b>root</b> rows. It is
+<b>not</b> related to huge <b>trees</b>, the tree can handle unlimited count of
+rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All these advices are used
+only to speed up rendering and using TreeGrid, they do not concern about
+handling of such amount of rows, TreeGrid can handle unlimited rows count.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grids with more than <b>20&nbsp;000</b>
+rows always use <b><a href="#CfgPaging">server paging</a></b> (&lt;Cfg <a
+href="#CfgPaging">Paging</a>=’3’/&gt;). Your server script must provide data
+for grid’s pages. You can use <b><a href="DLL.htm">TreeGrid server</a></b>
+component to help you with this task. The TreeGrid server can do nearly all
+functions required in server paging as creating pages according to sorting and
+filter settings. Also pre-calculates aggregate functions. Saves changes returned
+from client. And more.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grids with more than <b>50&nbsp;000</b>
+rows use <b><a href="DataFormats.htm#ExtraShortFormat">Extra short format</a></b>
+to send list of pages. The <b><a href="DLL.htm">TreeGrid server</a></b> does it
+automatically. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If possible, use all page of
+the same width and don’t return rows count for every page, but set &lt;Cfg <b><a
+href="#CfgPageLength">PageLength</a></b> and <b><a href="#CfgRootCount">RootCount</a></b>
+/&gt; attributes. The <b><a href="DLL.htm">TreeGrid server</a></b> does it
+automatically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also increase &lt;Cfg <b><a
+href="#CfgPageLength">PageLength</a></b>/&gt; attribute according to count of
+columns in your grid. For 1 – 5 columns use <b>100</b>, for 5-10 use <b>50</b>
+and for more columns use <b>30</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also use &lt;Cfg <b><a
+href="#CfgFastPages">FastPages</a></b>/&gt; attribute. Set it to value about <b>100</b>.
+Higher value speeds up initial rendering but can slow down work with the grid
+and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grids with more than <b>50
+000</b> rows and all pages visible (&lt;Cfg <a href="Paging.htm#CfgAllPages">AllPages</a>=’1’
+/&gt;) use &lt;Cfg <b><a href="#CfgPageLengthDiv">PageLengthDiv</a></b>/&gt;
+attribute to reduce page size and all grid scroll height because some browsers
+have problems with too high scroll height. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IE8</span></b><span
+style='font-size:10.0pt'> can display only tags high up to 1342177.28 pixels
+(0x8000000/100) =&gt; 70640 rows with 19px height. Other browses have limit
+around 5M pixels =&gt; 263157 rows with 19px height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set <b><a
+href="#CfgPageLengthDiv">PageLengthDiv</a></b> to <i>your rows count</i> / 50&nbsp;000.
+For 1&nbsp;000&nbsp;000 set it to 20. To be compatible with IE8.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grids with more than <b>2
+000 000</b> rows display only one page at once by using &lt;Cfg <b><a
+href="Paging.htm#CfgAllPages">AllPages</a></b>=’0’ /&gt;. If you use
+configuration menu, set &lt;MenuCfg <a
+href="GlobalSettings.htm#MenuCfgShowAllPages">AllPages</a>=’0’/&gt;. Also to
+suppress loading defaults for AllPages use &lt;Cfg AllPagesLap=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use TreeGrid server,
+remember that for such amount of rows it allocates about 400 MB memory. Of
+course, it does <u>not</u> concern client browser memory consumption; it is
+independent on row count.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i>
+</span><a name=CfgFastPages><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>FastPages</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Speeds large tables with more
+than 50&nbsp;000 root rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to default value of <b>100</b>
+to speed up rendering of large tables.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Bigger value speeds up
+initial rendering, but can slow down TreeGrid usage and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageLengthDiv><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageLengthDiv</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Page length divider for large
+tables with more than 50&nbsp;000 root rows with <a
+href="Paging.htm#CfgAllPages">AllPages</a>==1 and <a href="#CfgFastPages">FastPages</a>&gt;0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This divides <a
+href="#CfgPageLength">PageLength</a> to display smaller non rendered pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this attribute to <i>your
+rows count</i> / 50&nbsp;000. For 1&nbsp;000&nbsp;000 set it to 20.
+ In this case set <a href="#CfgPageLength">PageLength</a> to be enough, for
+example to 100.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is used due
+problems in some browsers with too high tags (<b>IE8</b> can display only tags
+high up to 1342177.28 pixels (0x8000000/100) =&gt; 70640 rows with 19px height).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ChildPaging><b><span style='font-size:20.0pt'>Server
+paging in tree (ChildPaging=’3’)</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For basic information
+about paging in tree and client ChildPaging see <a href="Tree.htm#Paging">Paging
+in tree documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server paging in tree
+(ChildPaging) downloads children from server on collapsed parent expand or <i>(since
+7.0)</i> on scroll to already expanded parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It downloads children only if
+the row has not any children yet and it has <a href="#ICount">Count</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it downloads
+children only on the first expand, you can change it by <a
+href="#CfgRemoveCollapsed">RemoveCollapsed</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server script is
+responsible for sending data for requested page and also for <b>aggregate
+calculation</b> of children. This means that if grid uses aggregate functions
+like sum() or count() the children must be pre-calculated on server side by
+server script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Opposite to server root
+paging, server does <u>not</u> need to care about the <b>sorting</b> and <b>filtering</b>,
+but still needs to provide <b>grouping</b> and <b>searching</b> (except Filter
+action).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is available <b><span
+style='color:red'>TreeGrid server DLL/SO</span></b> that can be used to as
+support library for TreeGrid server paging – if you provide to the library the
+whole XML data, it will generate children to client and will also provide all
+requested aggregate calculations. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>See <a href="DLL.htm">TreeGrid.dll/so
+documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can mix server and client
+ChildPaging, for rows that download children on demand set Count attribute, for
+other rows just fill their children in data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ChildPaging</span></b><span
+style='font-size:10.0pt'> can be set to <b>3</b> independently of <a
+href="#CfgPaging">Paging</a> value.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Server ChildPaging <u>cannot</u>
+be used with <b>Gantt</b> <b>chart</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgChildPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChildPaging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                    &lt;Cfg
+ChildPaging=’3’/&gt;                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use server paging in tree
+set ChildPaging to <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgRemoveCollapsed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveCollapsed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                        [0]                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If children are removed when
+parent row collapses.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>3</b>, if you
+want to download children on <u>every</u> parent expand. But remember, all
+pending changes in rows will be discarded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void     </span><a
+name=OnRemoveCollapsed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveCollapsed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the row is
+collapsed and its children are deleted from data, only if set &lt;Cfg <a
+href="#CfgRemoveCollapsed">RemoveCollapsed</a>=’3’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will behave changed rows
+on RemoveCollapsed or RemoveUnused.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows and selected rows. If
+there is any such row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows. If there is any such
+row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Remove changed rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - Save changes and remove rows immediately</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4 </span></b><span
+style='font-size:10.0pt'>- Save changes and wait for the server success
+response before removing rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         int<i>        </i></span><a
+name=OnRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                               <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called if removing page
+containing some changed (or selected row for RemoveChanged==0)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For RemoveChanged==2 is
+called always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value for
+RemoveChanged to use - 1, 2, 3, 4</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i></span><a
+name=ICount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Count</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of not downloaded children
+rows the row contains. Used when <a href="#CfgChildPaging">ChildPaging</a> is
+set to <b>3</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Must be set to <b>&gt; 0</b>
+if you want to download children from server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It also specifies height of
+the children after expand when downloading data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  (<i>Both
+letters lowercase !</i>)                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique ID of the parent row.
+By this ID is the row identified when downloading its children. Used only if <a
+href="#IRows">Rows</a> are not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Rows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User string to identify the
+parent row. If set, the row is identified by this string when downloading its
+children. It can contain for example a list of children rows ids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also be used to
+specify different url for every page by using <a href="DataDownload.htm#Page_">Page_Url</a>
+with wildcard <b>*Rows</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=Cellsum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>sum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>, </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>count</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>,
+...                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the parent row in server
+paging contains some aggregate function like sum or count, the server must
+pre-calculate and fill all the results of these functions, because TreeGrid
+cannot do it on client without the children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For more information see <a
+href="CellFormula.htm#AggFunc">aggregate functions</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if the row
+contains AFormula=’sum()’ the row should contain for example <b>Asum=’123.50’</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ChildPagingCommunication><b><span style='font-size:16.0pt'>Communication
+with server in ChildPaging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For server ChildPaging you
+must define &lt;treegrid/bdo <b><span style='color:red'>Page_Url</span></b>/&gt;
+to download the children data from.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b><a
+href="#CfgChildPaging">ChildPaging</a></b> is set to <b>3</b> (<b>Server</b>),
+the communication for body is the same as for client or no paging, see <a
+href="DataDownload.htm">data download documentation</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When user expands collapsed
+not yet loaded row with <a href="#ICount">Count</a> attribute, TreeGrid sends
+the <a href="#PageRequest">request for Page</a> to <b>Page_Url</b>. The
+requested row is set as <b>&lt;B&gt;</b> tag with row’s attribute <a href="#IId">id</a>.
+(For example: &lt;Grid&gt;...&lt;Body&gt;&lt;B
+id=’r123’/&gt;&lt;/Body&gt;&lt;/Grid&gt;). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The request also contains
+sorting, grouping, filter and search settings, the same as for root paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a href="#PageDownload">Server
+Page response</a> contains the one requested page in &lt;B&gt; tag with the
+same identification attributes (id, Rows) and with content of the row’s
+children. Server must return all immediate children and children of all
+expanded rows. Some of the downloaded children can be also collapsed with <a
+href="#ICount">Count</a> attribute to download their children on demand.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent row must have set
+the <b><a href="#ICount">Count</a></b> attribute to at least <b>1</b>. It is
+better if <b>Count</b> is set to real count of immediate children the row
+contains + count of sub children of expanded children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example of request for
+children of row ‘xy’ (grid has columns named A,B,C,D,E):</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Cfg
+SortCols=’C,A’ SortTypes=’0,1’/&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Filters&gt;&lt;I
+id=’MyFilter’ C=’10’ CFilter=’1’ E=’A’ AFilter=’10’/&gt;&lt;/Filters&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Body&gt;<b>&lt;B
+id=’xy’/&gt;</b>&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DataRequest><b><span style='font-size:20.0pt'>XML Request
+for Data in server root paging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>request sent</b>
+to data source <b>Data</b> when layout is already downloaded and grid
+configuration is known.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains session
+identification and grid configuration to sort, group, filter and search data on
+server. It contains also cursor position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> sent if
+Data_Method=”Get” – Get is default if no or client paging is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with
+request settings  </i>...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(<a href="DataCommunication.htm#IOSession">Session</a> attribute)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Cfg</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with grid
+settings read from cookies </i> ...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(Sort, Group, ReSort, ReCalc, TimeZone attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (SearchAction,
+SearchExpression, SearchType, SearchMethod, SearchDefs, SearchCols attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (Focused,
+FocusedCol, FocusedPos attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (ScrollLeft,
+ScrollTop attributes) <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span><span style='font-size:10.0pt;color:#FF6600'> </span><span
+style='font-size:10.0pt'>(list of filters)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(<b>id</b> attribute, cell <b>values</b> and cell <b>Filter</b> attributes)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt; if more filters are in
+grid  ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;/</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DataDownload><b><span style='font-size:20.0pt'>XML Download
+Data in server root paging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Data XML</span></b><span
+style='font-size:10.0pt'> for <b>server paging</b> defines pages and <u>optionally</u>
+their rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is sent from server to
+grid. It is generated by server script. It is usually generated from server
+database or by TreeGrid server DLL / SO.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used when downloading grid
+for first time or reloading all data for the grid (function Reload) or
+reloading only body (function ReloadBody) or downloading new data for changed <b>sorting</b>,
+<b>filtering</b>, <b>grouping</b> or <b>searching</b> - in server paging these
+functions must be done on server side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the &lt;B&gt; tag contains
+some rows, the page will be filled by these rows and will <u>not</u> request to
+download its content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the &lt;B&gt; tag is empty
+it must contain <b>Count</b> attribute to set to count of expected rows. The
+page will be shown empty and will request to download its content by Page
+request when it will be visible by scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also contain some
+parts from <a href="DataDownload.htm#LayoutXML">Layout XML</a>, like fixed rows
+or configuration settings if they need to generate dynamically to let the rest
+of the layout to be in static file.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also contain
+configuration settings like sort, filter or group if you want to change them
+when reloading body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt;color:#999999'>   </span><span style='font-size:16.0pt;
+color:#999999'>&lt;<b>Par</b>&gt; </span><span style='font-size:10.0pt;
+color:#999999'>(list of prepared parameters for </span><span style='font-size:
+10.0pt;color:#993300'>short</span><span style='font-size:10.0pt;color:#999999'>
+formats) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:#999999'>      </span><span style='font-size:
+16.0pt;color:#999999'>&lt;<b>P</b></span><span style='font-size:10.0pt;
+color:#999999'> <b>Name</b>=&quot;list name&quot; <b>List</b>=&quot;parameter
+names, comma separated&quot;</span><span style='font-size:16.0pt;color:#999999'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt;color:#999999'>   </span><span style='font-size:16.0pt;
+color:#999999'>&lt;/<b>Par</b>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (List of all pages) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>B </span></b><i><span style='font-size:
+10.0pt'>... page attributes ...</span></i><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (page with or without rows,
+if the page does not contain rows, the rows will be requested in <b>Page</b>
+request on scroll)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                  </span></b><span
+style='font-size:10.0pt'>          </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i></span><span
+style='font-size:16.0pt'> <span style='color:red'>&gt;</span></span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                 
+</span></b><i><span style='font-size:10.0pt'>      ... More tags &lt;I&gt; ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>B</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>           &lt;</span><b><span
+style='font-size:16.0pt;color:blue'>B </span></b><i><span style='font-size:
+10.0pt'>... page attributes ...</span></i><span style='font-size:16.0pt;
+color:red'> /&gt;</span><span style='font-size:10.0pt'> (next page with or
+without rows, its position is 1)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;B&gt;...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=PageRequest><b><span style='font-size:20.0pt'>XML Request
+for Page or children</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>request sent</b>
+to data source <b>Page</b> to get the content of the page or child page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains the page
+identification by Pos, id or Rows attribute(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It also contains grid
+configuration to check if it is the same as it was in body request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with
+request settings  </i>...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(<a href="DataCommunication.htm#IOSession">Session</a> attribute)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Cfg</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with grid
+settings read from cookies </i> ...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(Sort, Group, ReSort, ReCalc, TimeZone attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (SearchAction,
+SearchExpression, SearchType, SearchMethod, SearchDefs, SearchCols attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (Focused,
+FocusedCol, FocusedPos attributes)</span></p>
+
+<p class=MsoNormal style='margin-left:247.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'> (ScrollLeft, ScrollTop attributes) <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span><span style='font-size:10.0pt;color:#FF6600'> </span><span
+style='font-size:10.0pt'>(list of filters)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(<b>id</b> attribute, cell <b>values</b> and cell <b>Filter</b> attributes)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt; if more filters are in
+grid  ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;/</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:#FF6600'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>B</span></b><span style='font-size:10.0pt'>
+<i>... attributes identifying the requested page or child page  ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt; </span><span style='font-size:10.0pt'>(<a
+href="#BPos">Pos</a>, id or Rows for page or <a href="RowId.htm#Iid">id</a> or
+Rows for child page (row))</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=PageDownload><b><span style='font-size:20.0pt'>XML Download
+Page or children</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Page XML</span></b><span
+style='font-size:10.0pt'> contains <u>one</u> page definition with content for
+the requested page. If the XML contains more pages, all the others are ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;B&gt; tag must have
+set <b>Pos</b>, <b>id</b> or <b>Rows</b> attribute to identify it on client as
+the requested page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>server child paging</b>
+some or all rows with children can have set <b>Count</b> attribute as the count
+of the expected children instead of the children themselves. The children will
+be downloaded on demand.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:10.0pt'> (Root tag)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> (List of all variable
+rows in pages, must not contain rows in root (only in pages)) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>B </span></b><i><span style='font-size:
+10.0pt'>... identification  attributes ...</span></i><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> (The one requested
+page or child page with rows)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                 
+</span></b><span style='font-size:10.0pt'>          </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell
+attributes ...</i></span><span style='font-size:16.0pt'> <span
+style='color:red'>&gt;</span></span><span style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                       
+</span></b><span style='font-size:10.0pt;color:red'>            </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                               
+</span></b><span style='font-size:10.0pt;color:red'>            </span><span
+style='font-size:16.0pt;color:red'>&lt;</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:10.0pt'> <i>... row and cell
+attributes ...</i> </span><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:10.0pt'> (data row)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                                     
+</span></b><i><span style='font-size:10.0pt'>               ... More tags
+&lt;I&gt;, with possible children tags &lt;I&gt; with possible children and so
+on – <span style='color:red'>unlimited levels of tree</span> ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                            
+</span></b><span style='font-size:10.0pt'>              </span><span
+style='font-size:16.0pt;color:red'>&lt;/</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                             
+</span></b><i><span style='font-size:10.0pt'>               ... More tags
+&lt;I&gt; ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                     
+</span></b><span style='font-size:10.0pt'>              </span><span
+style='font-size:16.0pt;color:red'>&lt;/</span><b><span style='font-size:16.0pt;
+color:blue'>I</span></b><span style='font-size:16.0pt;color:red'>&gt;</span><span
+style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                       
+</span></b><i><span style='font-size:10.0pt'>            ... More tags
+&lt;I&gt; ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:16.0pt'>          <span style='color:red'>&lt;/</span><b><span
+style='color:blue'>I</span></b><span style='color:red'>&gt;</span> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>                 
+</span></b><i><span style='font-size:10.0pt'>      ... More tags &lt;I&gt; ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>B</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Body</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>API for server
+paging and child paging</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=GetCfgRequest><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetCfgRequest</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>string</i>
+<b>format</b> = “internal”)                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns sorting, grouping,
+filter and search settings for download request, without enclosing &lt;Grid&gt;
+tag. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>format</span></b><span
+style='font-size:10.0pt'> can be “<a href="DataFormats.htm#InternalFormat">internal</a>”
+or “<a href="DataFormats.htm#DTDFormat">dtd</a>”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnDownloadPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDownloadPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>function</i> <b>func</b>)                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when data for page or
+row’s children are requested.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true to suppress
+default downloading. If it does return true, must call function func(int
+result), where result&lt;0 is error code or 0 for ok.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To catch and modify the data
+after they are loaded use <a href="DataCommunication.htm#OnDataReceive">OnDataReceive</a>
+or <a href="DataCommunication.htm#OnDataGet">OnDataGet</a> event and test their
+source.Row attribute to get the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnPageReady><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPageReady</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                             <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when page is
+downloaded and updated and is ready to render.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=DownloadPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DownloadPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TRow</i>
+<b>row</b>, <i>function</i> <b>Func</b>)                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Downloads data of page or children
+of row. Sends to server <a href="#PageRequest">request</a> with page index or
+row id and sort, group, filter and search settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Alerts server message if any
+and permitted. Asynchronous function. After finish, calls function Func.
+function <b><i>Func</i></b> (<i>int</i> code).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ReloadPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ReloadPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                (<i>TRow</i>
+<b>page</b>)                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Clears page data or row’s
+children and reloads them from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=LoadPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>LoadPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>)                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Loads and processes the page
+data. The page will be fully loaded and prepared for render and rendered if it
+is visible (due scroll).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To catch the event the page
+is loaded use <b>OnDataReceive</b> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example you can write
+such code to download all root pages asynchronously on start:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>      Grids.OnDataReceive
+= function(G,IO){ if(IO.Row) G.LoadPage(IO.Row.nextSibling); }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

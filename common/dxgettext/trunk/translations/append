@@ -1,0 +1,11 @@
+#!/bin/sh
+msgfmt -o /tmp/temp1.$$.mo $1
+msgfmt -o /tmp/temp2.$$.mo $2
+msgunfmt -o /tmp/temp1.$$.po /tmp/temp1.$$.mo
+msgunfmt -o /tmp/temp2.$$.po /tmp/temp2.$$.mo
+msghack --append -o $1 /tmp/temp1.$$.po /tmp/temp2.$$.po
+rm /tmp/temp1.$$.mo
+rm /tmp/temp1.$$.po
+rm /tmp/temp2.$$.mo
+rm /tmp/temp2.$$.po
+

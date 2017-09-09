@@ -1,0 +1,819 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt calendars – excluded dates / holidays</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The calendar specifies the
+dates that are <u>not</u> used in Gantt calculation, they are named “<b>excluded
+dates</b>”. These dates behave like they don’t exist at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are two calendars,
+global (<b>GanttExclude</b>) and local per row (<b>GanttCalendar</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can exclude from
+dependency calculations and task duration any dates or date range like <b>weekends</b>,
+<b>working hours</b> or any exact <b>custom dates</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The excluded dates can be
+shown in chart with different background or can be completely hidden (only
+global calendar).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Global></a><a name=Exclude><b><span style='font-size:20.0pt'>Global
+calendar</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Ignores or hides non workdays, non working hours or
+any other dates in the whole chart</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttExclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                        Can
+be uploaded to server                               <span style='color:red'>new
+<b>6.3</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Global calendar. It is used
+for all rows that don’t have set custom calendar by <a href="#CGanttCalendar">GanttCalendar</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date ranges hidden from Gantt
+chart. The ranges are separated by semicolon, the values by tilde and the
+repeater by ‘#’. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>repeater1<b><span
+style='color:red'>#</span></b>date1a<b><span style='color:red'>~</span></b>date1b<b><span
+style='color:red'>#</span></b>type1<b><span style='color:red'>;</span></b>repeater2<b><span
+style='color:red'>#</span></b>date2a<b><span style='color:red'>~</span></b>date2b<b><span
+style='color:red'>#</span></b>type2<b><span style='color:red'>;</span></b>...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>repeater</b> can be
+one of <a href="#CGanttDataUnits">GanttDataUnits</a>. If it is missing, the <b>date</b>
+is not repeated. The <b>date</b> is repeated also before it.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> The type value is by default empty to standard
+exclude.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the <b>type</b> value is set to <b>0</b>, the defined dates are <b><span
+style='color:red'>included</span></b> instead of excluded, to return some dates
+to previously excluded ranges.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                The
+items are processed one by one, so if some date is more times excluded and
+included, the last result is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Other <b>type</b>
+values represent given <a href="GanttDisplay.htm#CGanttBackground">GanttBackground</a>
+classes defined by GxGanttBackXXX, where Gx is the style prefix like
+&quot;GM&quot; for Modern and XXX is the <b>type</b> value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                <i>(Since
+10.0) </i>There are 11 predefined gray classes from <b>0</b> (white) to <b>10</b>
+(black)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               <i>(Since
+10.0) </i>There are 17 predefined color classes, case <u>sensitive</u> - <b>Aqua</b>,
+<b>Black</b>, <b>Blue</b>, <b>Fuchsia</b>, <b>Gray,</b> <b>Green</b>, <b>Lime</b>,
+<b>Maroon</b>, <b>Navy</b>, <b>Olive</b>, <b>Orange</b>, <b>Purple</b>, <b>Red</b>,
+<b>Silver</b>, <b>Teal</b>, <b>White</b>, <b>Yellow</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: GanttExclude = ‘<b>w<span
+style='color:red'>#</span></b>1/5/2008<b><span style='color:red'>~</span></b>1/7/2008<b><span
+style='color:red'>; </span>d<span style='color:red'>#</span></b>00:00<b><span
+style='color:red'>~</span></b>9:00<b><span style='color:red'>; </span>d<span
+style='color:red'>#</span></b>13:00<span style='color:red'>~</span>14:00<b><span
+style='color:red'>;</span> d<span style='color:red'>#</span></b>18:00<b><span
+style='color:red'>~</span></b>24:00’ shows only hours 8:00 – 13:00 and 14:00 –
+18:00 and only workdays.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is possible to limit the repeating, when the <b>date</b>
+range is wider than the <b>repeater</b>, the range is rounded to the <b>repeater</b>
+range and repeated only between the <b>dates</b>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example ‘w<b><span style='color:red'>#</span></b>1/5/2008<b><span
+style='color:red'>~</span></b>12/29/2008’ excludes all weekends, but only in
+year 2008.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is possible to set the second date before the
+first one, it will be updated to correctly fill the repeat range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example
+‘d<b><span style='color:red'>#</span></b>18:00<b><span style='color:red'>~</span></b>8:00’
+excludes all times from 18:00 to 8:00.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.0)</span></i><span
+style='font-size:10.0pt'> It can be also Calendar name, defined in Calendars
+array.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Remember, excluding
+too small units (e.g. minutes when chart shows years) can remarkably slow down
+the Gantt and Exclude calculation.</span></i><i><span style='font-size:10.0pt'>
+For example GanttExclude=’12:00~13:00’ will exclude hours, but for
+’11:55~12:55’ will exclude 5 minutes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Due internal implementation <span
+style='color:red'>the chart start date should be rounded to exclude units,
+check especially <a href="GanttCompute.htm#CGanttChartMinStart">GanttChartMaxStart</a>
+/ <a href="GanttCompute.htm#CGanttChartMaxStart">GanttChartMinStart</a></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string    </i></span><a
+name=CGanttInclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttInclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                         Can
+be uploaded to server                                      <span
+style='color:red'>deleted <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a
+href="#CGanttExclude">GanttExclude</a> with the third parameter <b>type</b> = 0</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttHideExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHideExclude</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]     Saved
+to cookies, to avoid it set &lt;<b>Cfg</b> <b>GanttLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of displaying excluded
+dates:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – displayed – all the dates are displayed, the
+Exclude is used only to specify correct / incorrect dependencies and when
+moving bars.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – hidden – all ranges from exclude are hidden from
+chart <i>(the custom calendars in rows can be displayed incorrectly)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - displayed like <b>0</b>, but without background <i>(new
+9.0)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - hidden like <b>1</b>, but without background <i>(new
+9.0)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> - displayed like <b>0</b>, but without background for
+ranges smaller than GanttUnits <i>(new 9.1)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> - hidden like <b>1</b>, but without background for
+ranges smaller than GanttUnits <i>(new 9.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set
+different zoom settings for case the Exclude is hidden by items with suffix <b>Ex</b>,
+like ... GanttWidth:18,GanttWidth<b>Ex</b>:22 ...</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It affects only global
+calendar defined by <a href="#CGanttExclude">GanttExclude</a>, <u>not</u> the
+custom calendars defined by GanttCalendar.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetHideExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetHideExclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>bool</i>
+<b>hide</b>)                                                                               <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes <a
+href="#CGanttHideExclude">GanttHideExclude</a> and refreshes Gantt and zoom.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If hide is null changes the
+value 0/1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttMaxExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttMaxExclude</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [10000000]                                               
+     <span style='color:red'>new <b>6.3</b>; chg <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of units in
+chart to compute exclude. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The count is computed as (<i>maxdate</i>-<i>mindate</i>)
+* <i>excludeunits</i>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <i>maxdate</i> and <i>mindate</i>
+depend on the chart content and also on chart round and minimal column width to
+display.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <i>excludeunits</i> is
+the smallest unit used in dates in GanttExclude / GanttCalendar. For example
+GanttExclude=’12:00~13:00’ will be hours, but for ’11:55~12:55’ will be 5
+minutes.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0 the default
+value has been increased to 10 million. And excludes containing more units are
+ignored and can lead to errors in calculations.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default 10 million is
+about 3.8 months for excluded seconds, 19 years for excluded minutes and 1100
+years for excluded hours, so it should be enough for all normal excludes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Local><b><span style='font-size:20.0pt'>Local calendar</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Ignores non workdays, non working hours or any other
+dates in particular row</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttCalendar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttCalendar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to something, grid
+supports more calendars (excludes) per grid (one calendar per row). <i>It will
+slightly slow down the grid.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be set to:      a) column
+name to be the calendar name or exclude string read from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               b)
+calendar name to be the exclude string read from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               c)
+direct exclude string</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               d)
+“1” just to support the custom calendars and read the calendar value from
+attributes <b>GanttCalendar</b> in individual cells, see below</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, defining many
+different calendars can remarkably slow down the chart.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The exclude string is
+described at <a href="#CGanttExclude">GanttExclude</a>.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Don’t set it, if you want
+to have only one calendar in grid, set <a href="#CGanttExclude">GanttExclude</a>
+instead, it will be faster.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellGanttCalendar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttCalendar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Custom calendar for given
+row. Used only when set column <b>GanttCalendar</b>, see above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be set to:      a) column
+name to be the calendar name or exclude string read from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               b)
+calendar name to be the exclude string read from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               c)
+direct exclude string</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These excluded dates are <u>not</u>
+affected by <a href="#CGanttHideExclude">GanttHideExclude</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the calendar for the row
+is set empty, it used global calendar from <a href="#CGanttExclude">GanttExclude</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The exclude string is
+described at <a href="#CGanttExclude">GanttExclude</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=List><b><span style='font-size:20.0pt'>Calendar list</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Defining individual calendars to assign</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Calendars&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>            </i></span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;<a
+name=CalendarsE><u>E</u></a>&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One calendar definition. It
+can be placed only in root &lt;Calendars&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example simple definition
+can be: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;Calendars&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               &lt;E
+Name=’Workdays’ Exclude=’w#1/5/2008~1/7/2008’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               &lt;E
+Name=’Workhours’ Exclude=’d#18:00~9:00; d#13:00~14:00#1; w#1/5/2008~1/7/2008#2;’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               &lt;E
+Name=’All’ Exclude=’’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;/ Calendars
+&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;E&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=EName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique name of the calendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This name can be assigned
+into <a href="#CGanttExclude">GanttExclude</a> and <a href="#CGanttCalendar">GanttCalendar</a>
+attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;E&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=EExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Exclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Dates excluded in this
+calendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format is the same as in <a
+href="#CGanttExclude">GanttExclude</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object[] </i></span><a
+name=Calendars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Calendars</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The array of all calendars in
+grid, accessible by its name. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The calendar objects contain
+all the XML attributes like Exclude or Name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:
+Grid.Calendars.Standard.Exclude = ’w#1/5/2008~1/7/2008’;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Use <a
+href="#ChangeExclude">ChangeExclude</a> method for modifications instead of
+direct changes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Dialog><b><span style='font-size:20.0pt'>Calendars dialog</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Showing dialog to choose calendar</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowGanttCalendars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowGanttCalendars</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow
+</i><b>row</b><i>, string </i><b>col</b>, <i>bool</i> <b>sort</b> = 0)                             <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets Defaults attribute of
+the cell to the list of calendars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it from XML event OnClickSideDefaults
+to show actual list of calendars. </span><span style='font-size:10.0pt;
+font-family:"Courier New"'>OnClickSideDefaults =
+&quot;Grid.ShowGanttCalendars(Row,Col)&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>sort</b> = 1, it
+sorts the items according to the alphabet, for 0 it shows them in defined
+order.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It adds also two predefined
+options, “None” or “Default” and “Edit”. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The “None” is displayed in
+space row for global calendar and sets the calendar empty. Hide it by
+&lt;Lang&gt;&lt;Text CalendarNone=””/&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The “Default” is displayed in
+data row for custom calendar and sets the custom calendar to global calendar.
+Hide it by &lt;Lang&gt;&lt;Text CalendarDefault=””/&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The “Edit” is displayed in
+both locations and shows modal dialog to edit, add and delete all the calendars
+defined in grid. Hide it by &lt;Lang&gt;&lt;Text
+CalendarEdit=””/&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=EditGanttCalendars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>EditGanttCalendars</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows modal dialog to edit,
+add or delete individual calendars defined in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This dialog is shown also in
+“Edit...” option in ShowGanttCalendars</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgCalendarsXXX></a><a name=CfgCalendars><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>Calendars</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>XXX</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Settings for the edit
+calendars dialog, individual attributes like CalendarsRepeatType. They are the
+same as <a href="TypeDate.htm#Dates">Dates dialog</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usual definition of the dialog
+is:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg
+CalendarsRepeatType=&quot;Enum&quot;
+CalendarsRepeatEnum=&quot;||Weekly|Daily&quot;
+CalendarsRepeatEnumKeys=&quot;||w|d&quot; CalendarsValueType=&quot;Float&quot;
+CalendarsValueFormat=&quot;0.00&quot; CalendarsValueCaption=&quot;Count&quot;
+/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgCalendarsNameXXX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalendarsNameXXX</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                           <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>Name</b>
+in the Calendars Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column <b>Name</b> is
+used to show the calendar names in parent rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: &lt;Cfg
+CalendarsNameType=&quot;Enum&quot;
+CalendarsNameEnum=&quot;|Standard|Special&quot;
+CalendarsNameButton=&quot;Enum&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCalendarsTitle><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalendarsTitle</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Title of the Calendars Dates
+grid, shown it top Space row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnDatesClose><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDatesClose</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TGrid</i> <b>dates</b>, <i>bool</i> <b>saved</b>)                                        <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the Dates dialog
+with calendars is closed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'> is the source grid that opened the Dates dialog</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>dates</span></b><span
+style='font-size:10.0pt'> is the grid showing dates dialog. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>saved</span></b><span
+style='font-size:10.0pt'> is <b>false</b> if no changes were done in the <a
+href="#Calendars">Calendars</a>, <b>true</b> is when something changed in <a
+href="#Calendars">Calendars</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Other><b><span style='font-size:20.0pt'>Other settings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttCheckExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttCheckExclude</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[1]   Saved
+to cookies, to avoid it set &lt;<b>Cfg</b> <b>GanttLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how will be checked
+placing start of main bar, milestone, point on holidays. It does <u>not</u>
+affect run and flag.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – place to holiday, <b>1</b> – place to the first
+workday after, <b>2</b> - ask user</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttChangeExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChangeExclude</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                   <span
+style='color:red'>new <b>8.0</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will be the main bars
+updated after the change of excluded dates, bit array. Permitted values are 0,
+1, 4, 5</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – The main bar duration will be updated according to
+the end date</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – The main bar end date will be updated according to
+the duration</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – If set, it changes dates of all objects to be
+outside the actually excluded ranges.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Run is always changed
+according to its definition – if the bars are defined by end date or by duration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttExcludeComplete><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttExcludeComplete</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                       <span
+style='color:red'>new <b>9.1</b></span><span style='color:#0070C0'>; upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+percentage complete in main bar (<i>since 10.0</i> also Run) is shown exactly
+according to the excluded dates - it shows the date where the actually
+completion finished.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For example if the main bar
+is 10th - 16th (six days) and 11th - 13th (2 days) are excluded, the completion
+finishes at 13th for GanttExcludeComplete=0 as half of the six days, but for
+GanttExcludeComplete it finishes at 14th, as half of 4 working days plus the
+two excluded days before.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeExclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>string</i>
+<b>exclude</b>, <i>string</i> <b>name</b>, <i>int</i> <b>type</b> = <a
+href="#CGanttChangeExclude">GanttChangeExclude</a>)             <span
+style='color:red'>new <b>7.0</b>; chg <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes given calendar and
+recalculates Gantt chart.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>exclude</span></b><span
+style='font-size:10.0pt'> is exclude string as in <a href="#CGanttExclude">GanttExclude</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>name</b> is not set,
+changes value of <a href="#CGanttExclude">GanttExclude</a>, otherwise changes
+the calendar <b>name</b> in Calendars array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>name</b> is
+“GanttCalendar” it sets column <a href="#CGanttCalendar">GanttCalendar</a>
+value to the <b>exclude</b> value, use it to disable / enable the custom
+calendars and recalculate Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>type</b> can override <a
+href="#CGanttChangeExclude">GanttChangeExclude</a> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=CorrectExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CorrectExclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>show</b> = 1, <i>string</i>
+<b>objects</b> = null)                   <span style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Corrects given Gantt cell to
+current calendar. All object dates are updated to not be in excluded dates.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>row</b> is null, it
+corrects all tasks in grid. <b>col</b> is Gantt column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show</b> is 0, it does
+not changes in the chart and the grid must be rerendered.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>objects</span></b><span
+style='font-size:10.0pt'> is comma separated list of objects to update. For
+null it updates all objects. It can be <i>main</i>, <i>run</i>, <i>flags</i>, <i>points</i>,
+<i>constraints</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=gantthasexclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>gantthasexclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    (<i>string</i>
+<b>ganttcol</b>)                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>0</b> if exclude
+is not defined, returns <b>1</b> if Exclude is shown, returns <b>2</b> if
+Exclude is hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

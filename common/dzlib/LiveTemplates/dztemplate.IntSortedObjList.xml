@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzIntSortedObjList" invoke="none">
+		<description>
+			create a new integer sorted object list
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyList
+                  </text>
+                  <hint>
+                    Name of the list class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored in the list (descendant of TObject)
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes,
+  u_dzQuicksort;
+
+{$DEFINE __DZ_INTEGER_SORTED_OBJECT_LIST_TEMPLATE__}
+type
+   /// This is the list's ancestor class, can be a user defined class if you
+   /// want to inherit additional behaviour or TInterfacedObject if you
+   /// want the list to implement an interface
+  _LIST_ANCESTOR_ = TObject;
+  /// The type of items to be stored in the list, must be TObject or a descendant
+  /// of TObject
+  _ITEM_TYPE_ = |itemtype|;
+{$INCLUDE 't_dzIntegerSortedObjectListTemplate.tpl'}
+
+type
+  {: List for storing |itemtype| items sorted by Integer }
+  |listtype| = class(_DZ_INTEGER_SORTED_OBJECT_LIST_TEMPLATE_)
+  protected
+    {: return the key of an item for comparison }
+    function KeyOf(const _Item: |itemtype|): Integer; override;
+  end;
+
+implementation
+
+{$INCLUDE 't_dzIntegerSortedObjectListTemplate.tpl'}
+
+function |listtype|.KeyOf(const _Item: |itemtype|): Integer;
+begin
+  { TODO : return the key of an item for comparison }
+  Result := _Item.|end|
+end;
+
+]]>
+		</code>
+	</template>
+</codetemplate>

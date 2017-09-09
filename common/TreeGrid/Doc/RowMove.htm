@@ -1,0 +1,1121 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row moving and dragging</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row moving and dragging</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows in TreeGrid can be
+dragged inside one grid or between any two grids. The dropped rows can be moved
+or copied.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only variable rows can be
+moved or copied!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default every row can be
+dragged and every row accepts every child as drop target.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To control which row can be
+dragged use row’s <a href="#ICanDrag">CanDrag</a> attribute and/or <a
+href="#OnStartDrag">OnStartDrag</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To control which row accepts
+which child use <b>Def</b> and <b>AcceptDef</b> attributes. The row accepts as
+child only rows with <b>Def</b> attribute listed in the row’s <b>AcceptDef</b>
+array. The root rows are controlled by &lt;Root <b>AcceptDef</b>/&gt;. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the <b>Def</b> and <b>AcceptDef</b>
+settings are described in <a href="RowDefaults.htm">Default rows documentation</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Dynamically you can control dropping
+by <a href="#OnCanDrop">OnCanDrop</a> and <a href="#OnEndDrag">OnEndDrag</a>
+events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDragging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Dragging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be moved by mouse
+– the grid can be a <u>source</u> grid for drag / drop rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDropping><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Dropping</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be dropped to
+this grid – the grid can be a <u>target</u> grid for drag / drop rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCopying><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Copying</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [1]                                                                                                                  <span
+style='color:red'>chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If existing rows can be
+copied / duplicated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the Panel
+Copy button is hidden and the CopyMenu does not display items for copying.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, all <b>Copy</b>...
+actions fail but <a href="#CopyRow">CopyRow</a> and <a href="#CopyRows">CopyRows</a>
+methods still work.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0) </span></i><span
+style='font-size:10.0pt'>If set to <b>0</b>, the rows cannot be copied by
+dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copying is automatically
+disabled when set <a href="#CfgAdding">Adding</a>=’0’.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is <u>not</u> related
+to Copy&amp;Paste, it is controlled by <a href="CopyPaste.html#CfgPasting">Pasting</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDragCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DragCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For copying <u>between</u>
+two grids. If set to <b>1</b> in <u>source</u> grid, rows are copied instead of
+moved – the moved rows are not deleted in the <u>source</u> grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> affect
+moving rows inside the same grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCopyDeleted><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyDeleted</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                      <span
+style='color:red'>new <b>6.4</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If copies also deleted rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> it is used also for copied rows by dragging, in
+previous version the deleted rows were copied always, now only if set it to 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDragEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DragEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, rows can
+be dragged even if grid is in edit mode. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case the grid
+finishes editing on mouse down at any other cell than edited one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is still not possible to
+drag row by the cell being edited.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgShowDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]        Saved
+to cookies, to not load it, set <b>ShowDragLap</b>=’1’                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If shows dragged object under
+mouse cursor. The dragged row(s) or moved column(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed by a user
+in configuration menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDragObject><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DragObject</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What is shown under mouse
+cursor when dragging rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – nothing</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – the first dragged row proxy. If dragged more rows,
+the border of the proxy is thicker</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – row name or count of dragged rows, in Grid.CSS is
+represented by class GxDragObject.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>the
+message is defined in Text.xml by &lt;Lang&gt;&lt;Text DragObjectMove
+DragObjectCopy DragObjectMoreMove DragObjectMoreCopy/&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDropFixed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DropFixed</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it is
+possible to drop rows above fixed sections.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is dropped to head
+section, it is placed as the first root row, if the row is dropped to foot
+section, it is placed as the last root row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgExpandOnDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExpandOnDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>1</b>, expands row
+when dragging row and mouse goes over the expand icon of not expanded row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgScrollOnDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ScrollOnDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [50]                                                                                                     <span
+style='color:red'>new <b>6.0; chg 7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, scrolls grid down if
+the dragging mouse hovers foot section and scrolls up if mouse hovers head
+section.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it specifies the scrolling speed, for how many pixels
+will be scrolled in one step, the original value 1 is changed to 50.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoDragIcon><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoDragIcon</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                                                  <span
+style='color:red'>new<b> 9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>1</b>, does not
+show dragging icon during dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgTouchDragFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TouchDragFocused</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [2]                                                                                           <span
+style='color:red'>new<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only for touch screens.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it
+permits dragging only focused object (row, Gantt bar, Gantt icon or Gantt line).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> permits
+dragging focused cell, not only focused row. Gantt is the same as for <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First tap on the object to
+focus it and next touch and move or resize it. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Similarly tap to empty space
+in Gantt chart and next touch and drag to create new bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects also showing Gantt
+menu - tap on the Gantt object and tap on it again to show the popup GanttMenu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgTouchClearFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TouchClearFocused</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                           <span
+style='color:red'>new<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only for touch screens.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Time in milliseconds; after
+that time the focus from actually focused cell or Gantt object is cleared.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> means never.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ICanDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row can be moved by mouse
+dragging. Not applicable for fixed rows. Fixed rows cannot also be drop target.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CCanDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row can by caught by cell
+in this column and being dragged. Set it to 0 to let a user to select text in
+cell instead of dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ICanCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                  <span
+style='color:red'>chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row can be duplicated
+and copied. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the Panel
+Copy button is inactive and all <b>Copy</b>... actions fail but <a
+href="#CopyRow">CopyRow</a> and <a href="#CopyRows">CopyRows</a> methods still
+work.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row cannot be also copied
+by dragging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> it is tested also for copied rows by dragging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is <u>not</u> related
+to copying values into clipboard.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i></span><a
+name=IMoved><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Moved</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]        Uploaded
+to server, supports Undo                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how the row has been
+moved inside the grid. <b>0</b> – no, <b>1</b> – to another position in the
+same parent, <b>2</b> – to another parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When sorting is enabled, the
+value <b>1</b> is not used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved between
+grids, it is marked as <b>Added</b> in target grid and <b>Deleted</b> in source
+grid. No <b>Moved</b> flag is set in this case.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After uploading changes to
+server or calling <a href="DataUpload.htm#AcceptChanges">AcceptChanges</a> the
+moved row just looses its state and becomes normal row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=ICopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Copy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Uploaded
+to server                                                                                                     <span
+style='color:red'>chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is set when
+used <a href="PagingServer.htm#ChildPaging">ChildPaging</a>=3 and the row was
+created as deep copy of another row, the Copy is <a href="RowId.htm#Iid">id</a>
+of the source row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is set only if
+the source row has some children and they were not loaded from server yet (the
+row was not expanded yet).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server script must
+provide deep copy of the children of source (Copy) node to children of this
+(id) node.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> it is set also for copied rows by dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IParent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Parent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the new parent row or position of page (from 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=INext><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Next</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the row below or “” if the row is the last row in its
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IPrev><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Prev</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           Uploaded
+to server                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the row is moved or
+added, this is id of the row above or “” if the row is the first row in its
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>bool      </i></span><a
+name=PanelMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Move</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the default Panel button <b>Move</b>
+is visible. This button is hidden also if &lt;Cfg <a href="#CfgDragging">Dragging</a>=”0”/&gt;.
+This button is inactive when the row has <a href="#ICanDrag">CanDrag</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Dragging this button moves
+the row. Use this button if dragging row by cells has different function like
+selecting cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnStartDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnStartDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>more</b>,
+<i>bool</i> <b>copy</b>, TRow [] <b>rows</b>)             <span
+style='color:#0070C0'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the <i>row</i>
+is being dragged. Return true to suppress dragging the row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'> is the caught row, <b>col</b> is column where the <b>row</b>
+is caught, <b>more</b> is true when more selected rows will be dragged
+together.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>copy</span></b><span
+style='font-size:10.0pt'> <i>(since 8.0) </i>is true if the row will be copied
+instead of moved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows</span></b><span
+style='font-size:10.0pt'> <i>(since 10.0) </i>are all the moved rows (when
+moved more selected rows). It does <u>not</u> contain children of moved rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnEndDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnEndDrag</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>,
+<i>int</i> <b>type</b>, int <b>X</b>, int <b>Y</b>, <i>bool</i> <b>copy</b>,
+TRow [] <b>rows</b>)  <span style='color:#0070C0'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the dragged row
+is dropped. It is called for any drop, even not permitted.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b> – dragged source row, <b>togrid</b>, <b>torow</b>
+– drop target – row under mouse cursor</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> - <b>0</b> – cannot drop, <b>1</b> – above <b>torow</b>,
+<b>2</b> – to the end of children of <b>torow</b>, <b>3</b> – below <b>torow</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>X</span></b><i><span
+style='font-size:10.0pt'>, </span></i><b><span style='font-size:10.0pt'>Y</span></b><span
+style='font-size:10.0pt'> – mouse cursor position on screen (related to browser
+window)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>togrid</span></b><span
+style='font-size:10.0pt'> is never null, it is the last grid that was under
+mouse cursor. <b>torow</b> is null when no row is under mouse cursor in time of
+drop.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>copy</span></b><span
+style='font-size:10.0pt'> <i>(since 8.0) </i>is true if the row will be copied
+instead of moved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows</span></b><span
+style='font-size:10.0pt'> <i>(since 10.0) </i>are all the moved rows (when
+moved more selected rows). It does <u>not</u> contain children of moved rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new type to change
+dropping results.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnCanDrop></a><a name=OnCanDrag><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>OnCanDrop</span></u></b></a><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>,
+<i>int</i> <b>type</b>, <i>bool</i> <b>copy</b>, TRow [] <b>rows</b>)       <span
+style='color:red'>renamed <b>6.0</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called during dragging row
+above other rows (drop targets) to find out if and how row can be dropped to
+this target.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called even if the
+dropping here is restricted (with type = 0). It is not called for grids with
+&lt;Cfg <a href="#CfgDropping">Dropping</a>=’0’/&gt;.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b> – dragged source row, <b>togrid</b>, <b>torow</b>
+– drop target – row under mouse cursor,</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> - <b>0</b> – cannot drop, <b>1</b> – above <b>torow</b>,
+<b>2</b> – to the end of children of <b>torow</b>, <b>3</b> – below <b>torow</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>copy</span></b><span
+style='font-size:10.0pt'> is true if the source <b>row</b> will be copied, not
+moved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>rows</span></b><span
+style='font-size:10.0pt'> <i>(since 10.0) </i>are all the moved rows (when
+moved more selected rows). It does <u>not</u> contain children of moved rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new type to change
+dropping permits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event controls <u>dropping</u>.
+To control which rows can be dragged (caught), set the row attribute <a
+href="#ICanDrag">CanDrag</a> or set &lt;Cfg <a href="#CfgDragging">Dragging</a>&gt;
+for whole grid or use <a href="#OnStartDrag">OnStartDrag</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnRowMoveToGrid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowMoveToGrid</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>,
+bool <b>copy</b>)   <span style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after row is moved or
+copied to another grid. Called from function <a href="#MoveRowsToGrid">MoveRowsToGrid</a>
+( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In time of call new row (<b>torow</b>)
+is positioned and displayed in target grid (<b>togrid</b>). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Old row (<b>row</b>) is still
+not deleted in source grid (<b>grid</b>). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>copy</b> = true, old
+row will not be deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>return null to default
+behavior according to <b>copy</b>, or <b>0</b> to move, <b>1</b> to copy and <b>-1</b>
+to remove source row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRowMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowMove</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>oldparent</b>, <i>TRow</i> <b>oldnext</b>)                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after row has been
+moved inside one grid. Called from function <a href="#MoveRow">MoveRow</a> ( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>row</b> is still
+displayed in old position but have new settings. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>oldparent</span></b><span
+style='font-size:10.0pt'> is original parent of the row, <b>oldnext</b> is
+original next sibling.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnRowCopyId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowCopyId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>source</b>, <i>bool</i> <b>move</b>)                     <span
+style='color:red'>new <b>6.4</b></span><b><span style='color:#0070C0'>; </span></b><span
+style='color:blue'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before creating id for
+the new moved / copied row, the row has already copied the IdNames columns, the
+other columns will be copied later.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.1</span></i><span
+style='font-size:10.0pt'> it can set the row id and return true to not generate
+the new id.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> <b>move</b> is set when the row is moved from another
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnRowCopyDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowCopyDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>source</b>, <i>bool</i> <b>move</b>)                                 <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when moving row
+between grids. Called before copying values from old default row to the new
+row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use if the default row of
+copied row differ between grids to copy only some attributes and return true.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>move</span></b><span
+style='font-size:10.0pt'> is set when the row is moved from another grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=MoveRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MoveRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>TRow</i> <b>parent</b>, <i>TRow</i> <b>next</b>, <i>bool</i> <b>show</b>
+= false)                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves <b>row</b> with all its
+children to the <b>parent’s</b> children in front of <b>next</b> row. <b>parent</b>
+can be row, page or null. If <b>show</b> = true, displays changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>next</b> is null, moves
+new row as last <b>parent’s</b> child. If <b>parent</b> and <b>next</b> are
+null, moves row as the last root row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is first row in
+spanned range (has set RowSpan for some cell), it moves the whole range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=MoveRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MoveRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TRow</i>
+<b>row</b>, <i>TRow</i> <b>rowto</b>, <i>int</i> <b>type</b>)                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves row with all its
+children inside one grid. It converts its parameters and calls <a
+href="#MoveRow">MoveRow</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'> is the row to move, <b>type</b> - <b>1</b> – above <b>torow</b>,
+<b>2</b> – to the end of children of <b>torow</b>, <b>3</b> – below <b>torow</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is first row in
+spanned range (has set RowSpan for some cell), it moves the whole range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=MoveRowsToGrid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MoveRowsToGrid</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>, <i>int</i> <b>type</b>,
+<i>int</i> <b>copy</b> = 1)                <span style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves or copies row to
+another (or the same) grid. Displays changes. Returns added row from source
+(calling) grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'> is the row to move or copy, <b>togrid</b> is target
+grid. If target grid is the same as source grid it calls <a href="#MoveRows">MoveRows</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> - <b>1</b> – above <b>torow</b>, <b>2</b> – to the
+end of children of <b>torow</b>, <b>3</b> – below <b>torow</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>copy</b> is <b>0</b>,
+row (and its children) is added to target grid (marked as <b>Added</b>) and
+deleted from source grid (marked as <b>Deleted</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>copy</b> is <b>1</b>, row
+(and its children) is added to target grid, but it is <u>not</u> deleted from
+source grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>copy</b> is <b>2</b>,
+copies only row, without its children. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies all row and cell
+attributes except when replacing deleted row with the same id. Does <u>not</u>
+copy RowSpan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>If <b>copy</b>
+is <b>0</b> and in target grid already exists <b>deleted</b> row with the same <b>id</b>
+as source <b>row</b>, to the target grid is <u>not</u> added new row, but the existing
+target row is moved to new position and filled with cell values from source row
+and the source row is deleted!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If copy is <b>0</b> it
+preserves creating new and new rows when moving one row more times between two
+grids.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 replaces only
+deleted rows with the same id. Also copies all attributes not only values.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>Global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=DragByMouse><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DragByMouse</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>object</i>
+<b>tag</b>, <i>Event</i> <b>event</b>, <i>int</i> <b>move</b> = null, <i>string</i>
+<b>html</b> = null, <i>function</i> <b>func</b> = null, <i>object</i> <b>param</b>
+= null)           <span style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful for dragging external
+object into grid (or anywhere else)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attaches copy of given HTML <b>tag</b>
+to mouse cursor to simulate its dragging. <i>Call it only on mouse down.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Automatically removes the
+attached object on mouse up. You can call DragByMouse without parameters to
+remove the object manually.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The ghost object is placed
+below mouse cursor to not suppress standard mouse events.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>tag</span></b><span
+style='font-size:10.0pt'> is HTML tag to be dragged. It is <u>not</u> modified
+by this function. It is used to get its position, class and innerHTML.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>event</span></b><span
+style='font-size:10.0pt'> is standard HTML MouseEvent, the function used its
+clientX and clientY for placing the ghost object.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>move</span></b><span
+style='font-size:10.0pt'> can be direction to move the ghost object only, 1 -
+horizontally, 2 – vertically</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>html</span></b><span
+style='font-size:10.0pt'> is html to filled into ghost object. If not set, the
+tag.innerHTML is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>function <b>func</b> (<b>param</b>)
+is called when the ghost object is removed (usually on mouse up). <b>param</b>
+is any custom parameter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragRow></a><a name=DragRow><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>DragRow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Attached
+to <b>OnDragPanelMove</b> and <b>OnDragRow</b> events, can be attached to <b>OnDrag...</b>
+events only   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging actual row
+with all its children to new position. Dropped row will be moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragSelected></a><a name=DragSelected><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DragSelected</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Attached
+to <b>OnDragRow</b> events, can be attached to <b>OnDrag...</b> events only       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging selected rows
+with all their children to new position. Dropped rows will be moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if actual row is not
+selected. It is possible to drag selected rows only by dragging one of them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragCopy></a><a name=DragCopy><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>DragCopy</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Not
+attached to any event, can be attached to <b>OnDrag...</b> events only      <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging actual row <u>without</u>
+its children to new position. Dropped row will be <u>copied</u>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#DragRow">DragRow</a>,
+but copies row, without its children.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it fails also when set <a href="RowAdd.html#CfgAdding">Adding</a>=’0’
+or <a href="RowAdd.html#CfgCopying">Copying</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragSelectedCopy></a><a name=DragSelectedCopy><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DragSelectedCopy</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Not
+attached to any event, can be attached to <b>OnDrag...</b> events only   <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging selected rows
+<u>without</u> their children to new position. Dropped rows will be <u>copied</u>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if actual row is not
+selected. It is possible to drag selected rows only by dragging one of them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#DragSelected">DragSelected</a>,
+but copies rows, without their children</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it fails also when set <a href="RowAdd.html#CfgAdding">Adding</a>=’0’
+or <a href="RowAdd.html#CfgCopying">Copying</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragCopyChildren></a><a name=DragCopyChildren><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DragCopyChildren</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Not
+attached to any event, can be attached to <b>OnDrag...</b> events only   <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging actual row <u>with</u>
+all its children to new position. Dropped row will be <u>copied</u>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#DragRow">DragRow</a>,
+but copies row, with all its children</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it fails also when set <a href="RowAdd.html#CfgAdding">Adding</a>=’0’
+or <a href="RowAdd.html#CfgCopying">Copying</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragSelectedCopyChildren></a><a name=DragSelectedCopyChildren><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DragSelectedCopyChildren</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  Not
+attached to any event, can be attached to <b>OnDrag...</b> events only   <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts dragging selected rows
+<u>with</u> their children to new position. Dropped rows will be <u>copied</u>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if actual row is not
+selected. It is possible to drag selected rows only by dragging one of them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Like <a href="#DragSelected">DragSelected</a>,
+but copies rows, with all their children</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it fails also when set <a href="RowAdd.html#CfgAdding">Adding</a>=’0’
+or <a href="RowAdd.html#CfgCopying">Copying</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsDragCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>DragCell</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>              Not attached to
+any event, can be attached to <b>OnDrag...</b> events only                <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Custom dragging of the cell.
+It does not provide any action on drop, just calls custom events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On mouse down, the cell
+content is attached to the mouse cursor. </span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>On
+start calls <a href="#OnStartDragCell">OnStartDragCell</a>, while moving there
+is called API event <a href="#OnMoveDragCell">OnMoveDragCell</a>, on mouse up
+there is called <a href="#OnEndDragCell">OnEndDragCell</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnStartDragCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnStartDragCell</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>html</b>)
+                                     <span style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when started dragging
+by action <a href="#ActionsDragCell">DragCell</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b>, <b>col</b> – dragged source cell, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>html</span></b><span
+style='font-size:10.0pt'> – html to be attached to mouse as ghost object for
+dragging</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>return true to suppress
+dragging or return new html to attach it to mouse cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnMoveDragCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnMoveDragCell</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TGrid</i> <b>togrid</b>,
+<i>TRow</i> <b>torow</b>, <i>string</i> <b>tocol</b>, int <b>X</b>, int <b>Y</b>)
+           <span style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called during dragging by
+action <a href="#ActionsDragCell">DragCell</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b>, <b>col</b> – dragged source cell, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>togrid</span></b><span
+style='font-size:10.0pt'>, <b>torow</b>, <b>tocol</b> – drop target – cell
+under mouse cursor or null when dragging outside. <b>togrid</b> is never null,
+it is the last grid that was under mouse cursor</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>X</span></b><i><span
+style='font-size:10.0pt'>, </span></i><b><span style='font-size:10.0pt'>Y</span></b><span
+style='font-size:10.0pt'> – mouse cursor position on screen (related to browser
+window)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnEndDragCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnEndDragCell</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>TGrid</i> <b>togrid</b>,
+<i>TRow</i> <b>torow</b>, <i>string</i> <b>tocol</b>, int <b>X</b>, int <b>Y</b>)
+           <span style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called the dragged cell is
+dropped, started by action <a href="#ActionsDragCell">DragCell</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b>, <b>col</b> – dragged source cell, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>togrid</span></b><span
+style='font-size:10.0pt'>, <b>torow</b>, <b>tocol</b> – drop target – cell
+under mouse cursor or null when dragging outside. <b>togrid</b> is never null,
+it is the last grid that was under mouse cursor</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>X</span></b><i><span
+style='font-size:10.0pt'>, </span></i><b><span style='font-size:10.0pt'>Y</span></b><span
+style='font-size:10.0pt'> – mouse cursor position on screen (related to browser
+window)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<html>
+<head>
+<SCRIPT src="../Grid/GridE.js"> </SCRIPT>
+<title>TG Doc Search</title>
+</head>
+<body>
+<center style='font:bold 40px Arial;'>TreeGrid attribute list</center>
+<div style='width:100%; height:650px;'>
+<bdo Layout_Url='SearchDef.xml' Data_Url="SearchData.xml" Upload_Tag='Info' Upload_Xml='1' Upload_Type='Body' Upload_Attrs='F,C,S,P,T,N,D,R,V'></bdo>
+</div>
+<style>
+   .Place { color:Red; font-weight:bold; }   
+   .Type { font-style:italic; }
+   .Name { font-weight:bold; }
+</style>
+
+<script>
+var W = null; // The window with documentation
+
+// --- Click to cell, opens the link ---
+Grids.OnClick = function(G,row,col){
+if(row.Fixed || row.Def.Group) return;
+var L = row.F+"#";
+if(row.P && row.P.charAt(0)=='<' && row.P.indexOf('bdo')<0) L += row.P.slice(1).replace(/\>.*|\s+/g,"").replace(/ICell/i,"Cell").replace("cell","Cell").replace("DXMLevent","XML").replace("XMLevent","");
+else if(row.P && row.P.charAt(0)=='T') L += row.P;
+L += row.N.replace(/\.\..*$|[\<\>]|\,.*$/g,"");
+L = L.replace(/\s+/g,"");
+L = "../Doc/"+L;
+if(W) W.close();
+W = window.open(L,"Search");
+setTimeout(function(){
+   W.scrollBy(0,-20);
+   },10);
+}
+
+Grids.OnGetColor = function(G,row,col){
+if(col!="N" || row.Fixed || row.Def.Group || !row.P) return null;
+if(row.P=="<Actions>" || row.P.indexOf("XML event")>=0 || row.P.indexOf("formula")>=0) return "#CFC";
+if(row.P.charAt(0)!='<') return "CFF";
+}
+
+Grids.OnShowDefaults = function(G,row,col,M){
+if(row.Kind!="Filter"||col!="V") return;
+M.Items[1].Items.sort(function(A,B){
+   var a = A.Name.split(" "); a.reverse(); a = a.join(" ");
+   var b = B.Name.split(" "); b.reverse(); b = b.join(" ");
+   return a<b ? -1 : (a>b ? 1 : 0);
+   });
+}
+
+</script>
+</body>
+</html>

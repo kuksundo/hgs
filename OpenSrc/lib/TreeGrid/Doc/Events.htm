@@ -1,0 +1,1197 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Events and actions</title>
+
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Events and actions</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid contains fully
+customizable Key and Mouse schema, all key and mouse actions (JavaScript callbacks,
+event handlers) are set in Defaults.xml in &lt;Actions&gt; tag and can be
+changed by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Events><b><span style='font-size:20.0pt'>JavaScript callbacks
+/ event handlers in TreeGrid</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>a) TreeGrid mouse
+events</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every part (row, cell,
+button, etc.) in grid has its own name and you can attach an action for it:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>click,
+double click, right click, mouse down, mouse up, mouse over, mouse out, mouse
+move, start drag, drag over (over when dragging).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To the action name is
+attached key prefix when some control key is held down: “Shift”, “Ctrl”, “Alt”
+and their combinations.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actions can be defined in
+global &lt;Actions&gt; tag, attached in global Grids array by JavaScript, defined
+for specific &lt;C&gt;, &lt;I&gt; or cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The JavaScript action has
+always this definition: function (TGrid Grid, TRow Row, TCol Col, TEvent
+Event).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>b) TreeGrid key events</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are three different key
+actions called when a user presses key in Focused grid: regular, edit, edit
+multiline.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The action name is the key
+name defined in &lt;Actions&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To the action name is
+attached key prefix when some control key is held down: “Shift”, “Ctrl”, “Alt”
+and their combinations.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actions can be defined in
+global &lt;Actions&gt; tag, attached in global Grids array by JavaScript,
+defined for specific &lt;C&gt;, &lt;I&gt; or cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The JavaScript action has
+always this definition: function (TGrid Grid, TEvent Event).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>c) TreeGrid API events</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid provides many
+JavaScript callbacks for many actions done in grid, like OnSelect,
+OnRenderFinish, OnClick and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actions are attached to
+global Grids array by JavaScript.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The JavaScript actions have various
+definitions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>d) TreeGrid
+calculations and formulas</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every row or cell attribute
+can be calculated, so it can have attached JavaScript formula to calculate the
+value. Basically the formulas are used to calculate cell values, but also other
+attributes can be calculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>e) Standard JavaScript
+events</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can attach any JavaScript
+event handler like onclick to any tag on HTML page and provide some action with
+TreeGrid using its API. The grid is accessible by global Grids array. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can attach JavaScript
+events also to HTML code inside grid cells, but if there are many such cells,
+it can remarkably slow down the grid, so you should reconsider it and use
+another event option.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Mouse><b><span style='font-size:20.0pt'>TreeGrid mouse
+events</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event name consists from:
+On + key_prefix + event_name + target.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example OnMouseOverTree,
+OnShiftClickRow, OnCtrlShiftRightClickCell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Names><b><i><span style='font-size:14.0pt'>Mouse
+event names </span></i></b></a></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnClick</span></b><span
+style='font-size:10.0pt'> – when the target is clicked (any mouse button is
+pressed and released). Called after OnMouseUp. Called only if mouse did not
+move between button press and release.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDblClick</span></b><span
+style='font-size:10.0pt'> – when the target is double clicked (left mouse
+button is pressed, released, pressed and released). Called after OnMouseUp.
+Called only if mouse did not move between button press and release.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnRightClick</span></b><span
+style='font-size:10.0pt'> – when the target is clicked by right mouse button,
+similar to OnClick. <i>Since 7.0 it is just OnClick event with “Right” mouse button
+prefix.</i></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseDown</span></b><span
+style='font-size:10.0pt'> - when any mouse button is pressed on the target</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseUp</span></b><span
+style='font-size:10.0pt'> - when any mouse button is released on the target</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseOver</span></b><span
+style='font-size:10.0pt'> – when mouse is moved to the target. For every target
+is the event run only once (opposite to standard JavaScript onmouseover event).
+See also OnDragOver.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseOut</span></b><span
+style='font-size:10.0pt'> – when mouse leaves the target. For every target is
+the event run only once (opposite to standard JavaScript onmouseout event).</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseMove</span></b><span
+style='font-size:10.0pt'> – whenever mouse moves above the target. It is called
+many times, so the handler should be very simple and fast.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrag</span></b><span
+style='font-size:10.0pt'> – when dragging should be started on the target –
+when user holds down any mouse button and slightly moves mouse</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrop</span></b><span
+style='font-size:10.0pt'> – <i>(new 7.0)</i> when dragging successfully
+finished on the target. Called only if the dragging successfully started and
+OnDrag returned true.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDragOver</span></b><span
+style='font-size:10.0pt'> – called instead of OnMouseOver when dragging is
+active</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Prefixes><b><i><span style='font-size:14.0pt'>Key and
+mouse button prefixes</span></i></b></a></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>Shift</span></b><span
+style='font-size:10.0pt'>, <b>Ctrl</b>, <b>Alt</b>, <b>ShiftCtrl</b>, <b>ShiftAlt</b>,
+<b>CtrlAlt</b>, <b>ShiftCtrlAlt</b></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>(since
+7.0) </span></i><b><span style='font-size:10.0pt'>Right</span></b><span
+style='font-size:10.0pt'>,<b> ShiftRight</b>, <b>CtrlRight</b>, <b>AltRight</b>,
+<b>ShiftCtrlRight</b>, <b>ShiftAltRight</b>, <b>CtrlAltRight</b>, <b>ShiftCtrlAltRight</b>.
+<i>The <b>Right</b> prefix cannot be used for <b>DblClick</b> event.</i></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>(since
+7.0) </span></i><b><span style='font-size:10.0pt'>Middle</span></b><span
+style='font-size:10.0pt'>,<b> ShiftMiddle</b>, <b>CtrlMiddle</b>, <b>AltMiddle</b>,
+<b>ShiftCtrlMiddle</b>, <b>ShiftAltMiddle</b>, <b>CtrlAltMiddle</b>, <b>ShiftCtrlAltMiddle</b>.
+<i>The <b>Middle</b> prefix cannot be used for <b>Click</b> and <b>DblClick</b>
+events.</i></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Remember,
+not all key prefixes are possible in all browsers. Some browsers use some
+prefixes for built-in functions.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><i><span style='font-size:
+10.0pt'>If there is <u>no</u> action defined for the actual key prefix, it is
+called an action without prefix, if it exists.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example
+there is called OnCtrlShiftRightClick event, if there is <u>no</u> action
+defined for this event, it is called OnClick.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=IPAD><b><i><span style='font-size:14.0pt'>Touch
+event names (for iPAD) </span></i></b></a><i><span style='font-size:10.0pt'>(new
+7.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are available events
+for one or more fingers touching down the pad.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If defined more handlers for
+the same event with different fingers, it is called only one (even if it
+returns false) for the specified count of fingers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if defined <i>Click</i>,
+<i>Click1</i> and <i>Click3</i> events, for 1 finger is called <i>Click1</i>,
+for 2 fingers also <i>Click1</i>, for 3 or more fingers is called Click3. The <i>Click</i>
+is never called if defined <i>Click1</i>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the affected fingers
+must be on the grid, not outside on the pad!</span></i></p>
+
+<p class=MsoNormal><i><u><span style='font-size:10.0pt'>No</span></u></i><i><span
+style='font-size:10.0pt'> key or button prefixes for the touch events
+available!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnClick</span></b><span
+style='font-size:10.0pt'> – when the target is clicked (touch down and up,
+without move), it is the same as standard mouse click and is shared with mouse
+events</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnClick1</span></b><span
+style='font-size:10.0pt'> – when the target is clicked by one finger</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnClick2</span></b><span
+style='font-size:10.0pt'> – when the target is clicked by two fingers (called
+when two fingers are down on touch pad and one of them releases the pad). For
+the other finger release or move is <u>not</u> called any other touch event.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnClick3</span></b><span
+style='font-size:10.0pt'> – when the target is clicked by three fingers (called
+when three fingers are down on touch pad and one of them releases the pad). For
+the other two fingers release or move is <u>not</u> called any other touch
+event.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseDown</span></b><span
+style='font-size:10.0pt'> - when the target is touched down by some finger,
+called for every finger, it is the same as standard mouse down and is shared
+with mouse events</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseDown1</span></b><span
+style='font-size:10.0pt'>– when the target is touched down by some finger, called
+for every finger.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseDown2</span></b><span
+style='font-size:10.0pt'>– when the target is touched down by some finger and
+there is already another finger on the pad, called for every finger, except the
+first one.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseDown3</span></b><span
+style='font-size:10.0pt'>– when the target is touched down by some finger and
+there are already other two fingers on the pad, called for every finger, except
+the first two.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseUp</span></b><span
+style='font-size:10.0pt'> - when the target is released by some finger, called
+for every finger, it is the same as standard mouse down and is shared with
+mouse events</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseUp1</span></b><span
+style='font-size:10.0pt'> - when the target is released by some finger, called
+for every finger</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseUp2</span></b><span
+style='font-size:10.0pt'>– when the target is released by some finger and there
+is still another finger on the pad, called for every finger, except the last
+one.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnMouseUp3</span></b><span
+style='font-size:10.0pt'>– when the target is released by some finger and there
+are still other two fingers on the pad, called for every finger, except the last
+two.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrag</span></b><span
+style='font-size:10.0pt'> – when dragging should be started on the target –
+when user touches down the pad and slightly moves the finger, it is the same as
+standard mouse drag and is shared with mouse events.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrag1</span></b><span
+style='font-size:10.0pt'> – when the target is dragged by one finger</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrag2</span></b><span
+style='font-size:10.0pt'> – when the target is dragged by one finger while
+there is down another finger on the pad. The dragging is done only by one
+finger, moving of the other finger is ignored. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Moving is done by the finger that first moved enough
+to start dragging.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><b><span style='font-size:10.0pt'>OnDrag3</span></b><span
+style='font-size:10.0pt'> – when the target is dragged by one finger while
+there are down other two fingers on the pad. The dragging is done only by one
+finger, moving of the other fingers is ignored.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrop</span></b><span
+style='font-size:10.0pt'> – when dragging successfully finished on the target.
+Called only if the dragging successfully started and OnDrag returned true. It
+is the same as standard mouse drop and is shared with mouse events.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrop1</span></b><span
+style='font-size:10.0pt'> – when dragging by one finger successfully finished
+on the target.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrop2</span></b><span
+style='font-size:10.0pt'> – when dragging by two fingers successfully finished on
+the target, the finger count is got in time of start dragging, by the OnDrag.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDrop3</span></b><span
+style='font-size:10.0pt'> – when dragging by three fingers successfully
+finished on the target, the finger count is got in time of start dragging, by
+the OnDrag.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDragOver</span></b><span
+style='font-size:10.0pt'> – called during dragging for every target the moving
+fingers visit. It is the same as standard mouse drag over and is shared with
+mouse events.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDragOver1</span></b><span
+style='font-size:10.0pt'> – called during dragging for every target when
+dragging by one finger.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDragOver2</span></b><span
+style='font-size:10.0pt'> – called during dragging for every target when
+dragging by two fingers, the finger count is got in time of start dragging, by
+the OnDrag.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>OnDragOver3</span></b><span
+style='font-size:10.0pt'> – called during dragging for every target when
+dragging by three fingers, the finger count is got in time of start dragging,
+by the OnDrag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Targets><b><i><span style='font-size:14.0pt'>Event
+targets</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every point in grid belongs
+to one or more targets. For one point in grid can be run more events, for
+different targets. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The targets are classified
+into 12 groups, every point in grid can have only one target per group.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To see what targets are
+assigned to grid points, set &lt;treegrid&gt;/&lt;bdo&gt; <b>Debug</b>
+attribute to “<b>event</b>” and hover the grid.</span></i></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>The assigned action are
+called in the order 0 – 11, if any of the actions succeeds, the next actions
+are not called.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>0) <b><i><u>Edge</u></i></b>
+– the edge of the cell, now implemented only for header cells</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Inside</span></b><span
+style='font-size:10.0pt'> / <b>Resize</b> (bottom right edge in grid, for
+resize grid) / <b>HeaderLeft</b> / <b>HeaderRight</b> / <b>PagerHeaderLeft</b>
+/ <b>PagerHeaderRight</b> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HScrollLeft</span></b><span
+style='font-size:10.0pt'>  (edge between left and middle scrollbar) / <b>HScrollRight</b>
+(edge between middle and right scrollbar)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) <b><i><u>Special</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Sort</span></b><span
+style='font-size:10.0pt'> / <b>SortUp</b> / <b>SortDown</b> (sorting icon or
+the whole header cell depending on &lt;Cfg SortIcons/&gt; setting)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio1</span></b><span
+style='font-size:10.0pt'> / <b>Radio2</b> / <b>Radio...</b> (individual Radio
+type buttons)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DropCol1</span></b><span
+style='font-size:10.0pt'> / <b>DropCol2</b> / <b>DropCol...</b> (individual
+columns in DropCols type, the empty space is the last DropCol)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerPage1</span></b><span
+style='font-size:10.0pt'> / <b>PagerPage2</b> / <b>PagerPager...</b> (individual
+pages in right side pager, without empty space)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Left</span></b><span
+style='font-size:10.0pt'> / <b>Mid</b> / <b>Right</b> (horizontal scrollbar)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Levels1 / Levels2 /
+Levels...</span></b><span style='font-size:10.0pt'> (individual tree Level
+buttons in header, <i>since 10.0</i>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) <b><i><u>PartType</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Edit</span></b><span
+style='font-size:10.0pt'> + <b><i>cell Type</i></b> (e.g EditText, EditInt,
+..., only editable cells, for Bool and Radio is returned for the icon only,
+otherwise returns Nothing)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>DropCol</b> / <b>DropEmpty</b>
+(cell Type=&quot;DropCols&quot;, DropEmpty is the empty space without columns)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>Link</b> (cell Type=&quot;Img&quot;,&quot;Link&quot;,
+only the link or image, otherwise Nothing)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>Gantt</b> (cell Type=&quot;Gantt&quot;)
+/ <b>GanttHeader</b> (header of Gantt type column)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>Expand</b> (expand or collapse
+button in tree)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>Levels</b> (tree level
+buttons in header, <i>since 10.0</i>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>ButtonSave</b> / <b>ButtonAdd</b>
+/ ... / <b>Button<i>XXX</i></b> (all standard and custom toolbar buttons - cell
+Type=&quot;Button&quot;, <b><i>XXX</i></b> is column name)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>PanelFiltered</b> / <b>PanelGrouped</b>
+/ <b>PanelSorted</b> / <b>SpaceOff</b> / <b>Space...</b> (all custom panel
+buttons in Space row, Type=”Panel”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>PanelDelete</b> / <b>PanelSelect</b>
+/ <b>PanelMove</b> / <b>PanelCopy</b> / <b>PanelOff</b> / <b>Panel...</b> (all custom
+panel buttons in standard row, Type=”Panel”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>HeaderDelete</b> / <b>HeaderSelect</b>
+/ <b>HeaderMove</b> / <b>HeaderCopy</b> / <b>HeaderOff</b> / <b>Header...</b> (all
+custom panel buttons in Header row, Type=”Panel”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>SideSort</b> / <b>SideDate</b>
+/ <b>SideDefaults</b> / <b>SideFilter</b> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>SideButton</b> (custom
+right side Button)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>SideIcon</b> (custom
+left / right side Icon)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>Nothing</b> (other types
+when CanEdit='0'; Bool and Radio also outside the icon, Bool,Radio,Enum also in
+ReadOnly mode)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) <b><i><u>Part</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Content</span></b><span
+style='font-size:10.0pt'> (standard cell content) / <b>Caption</b> (header cell
+content) / <b>Side</b> (right/left cell button) / <b>Tree</b> (tree button or
+lines) / <b>Panel</b> (cell Type=”Panel”) / <b>Button</b> (cell Type=”Button”, <i>since
+10.0</i> also for side Icon)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) <b><i><u>CellState</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Edited</span></b><span
+style='font-size:10.0pt'> (focused cell in edit mode) / <b>Viewed</b> (focused
+cell in read only edit mode) / <b>Focused</b> (focused cell) / <b>Regular</b>
+(not focused cell)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5) <b><i><u>CellEdit</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Editable</span></b><span
+style='font-size:10.0pt'> / <b>ReadOnly</b> (CanEdit=’0’) / <b>NoFocus</b>
+(CanFocus=’0’) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6) <b><i><u>CellKind</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Kind</span></b><span
+style='font-size:10.0pt'> + <b><i>row Kind attribute</i></b> (KindData,
+KindHeader, KindSpace, KindFilter, KindGroup, KindSearch, KindToolbar,
+KindPager, ...)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>KindUser</b> (standard
+row without cells, specified by xxxHtml attribute)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7) <b><i><u>CellSection</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Header</span></b><span
+style='font-size:10.0pt'> (Kind=”Header”) / <b>Body</b> (body row) / <b>Fixed</b>
+(head and foot row except header) / <b>Space</b> (space row ) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>/ <b>PagerHeader</b> (right
+side pager header) / <b>PagerBody</b> (right side pager except header,
+including empty space)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>8) <b><i><u>Cell</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cell</span></b><span
+style='font-size:10.0pt'> (any cell) / <b>PagerPage</b> (right side page, no
+empty space) / <b>Empty</b> (any other place without cells)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>9) <b><u>Section</u></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Left</span></b><span
+style='font-size:10.0pt'> / <b>Mid</b> / <b>Right</b> / <b>All</b> (space row)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>10) <b><i><u>RowKind</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderRow</span></b><span
+style='font-size:10.0pt'> / <b>BodyRow</b> / <b>FixedRow</b> / <b>SpaceRow</b>
+/ <b>NoRow</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>11) <b><i><u>RowSection</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Row</span></b><span
+style='font-size:10.0pt'> (any row) / <b>Pager</b> (right side pager) / <b>VScroll</b>
+(vertical scrollbar) / <b>HScroll</b> (horizontal scrollbar) / <b>Other</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>12) <b><i><u>Grid</u></i></b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Grid</span></b><span
+style='font-size:10.0pt'> (anything inside grid) / <b>Outside</b> (anything
+outside the grid, including other grids)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Assigning><b><i><span style='font-size:14.0pt'>Assigning
+event actions/callbacks</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event actions can be
+assigned in TreeGrid XML or by JavaScript in global Grids array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In XML the event can be
+assigned to cell, whole row, whole column or whole grid in &lt;Actions&gt; tag.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: &lt;I
+Col1OnClickCell=’Focus’/&gt; (cell), &lt;I OnClickCell =’Focus/&gt; (row),
+&lt;C OnClickCell =’Focus’/&gt; (column), &lt;Actions OnClickCell =’Focus’/&gt;
+(grid).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more events are assigned
+for one cell, they are called in this order: 1) Grids array, 2) one from cell
+or row or column, 3) &lt;Actions&gt;. If any action returns true, the next are
+not called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Dynamical assignment by
+JavaScript</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every action can be replaced
+dynamically by JavaScript, by simple assignment, for example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnClickCell =
+function(Grid,Event) { ... }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>row[col+”OnClickCell”] =
+“alert(‘click’)”;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>row.OnClickCell = “...”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>grid.Cols[col].OnClickCell =
+“...”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>grid.Actions.OnClickCell =
+“...”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The action code assigned to
+XML can be <u>exact JavaScript</u> code or <u>simplified notation</u>. The
+action in global Grids array must be JavaScript function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Simplified notation for
+assigning actions in XML</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- One action is assigned just
+by name                           </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>[A]                                         &lt;Actions
+OnClickCell=’Focus’/&gt; - do Focus</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Constant action. 1 or 0,
+useful with other operators to return 0 or 1 independently on result of actions</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                [<b><span
+style='color:blue'>1</span></b>] or [<b><span style='color:blue'>0</span></b>]                               &lt;Actions
+OnUp=’GoUp,1’/&gt; - do GoUp and always return success to suppress default
+behavior for OnUp key event</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Two action are always
+executed. Separate by plus. The return value is true if at least one action succeeded.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>[A
+<b><span style='color:blue'>+ </span></b>B]                                  &lt;Actions
+OnClickCell=’Focus+ShowDetail/&gt; - do Focus and next ShowDetail</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- The second action is
+executed only if the first action <u>succeeds</u>. The return value is true if
+both actions succeeded. Separate by AND or &amp;&amp;. <i>Attention, when you use
+only “&amp;” instead of “&amp;&amp;”, both action are always called!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                [A <b><span
+style='color:blue'>&amp;&amp;</span></b> B] <i>or</i> [A <b><span
+style='color:blue'>AND</span></b> B]   &lt;Action OnClickCell=’Focus AND
+StartEdit’/&gt; - do Focus and if succeeds, do StartEdit</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- The second action is
+executed only if the first action <u>fails</u>. The return value is true if at
+least one action succeeded. Separate by OR or ||. <i>Attention, when you use
+only “|” instead of “||”, both action are always called!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                [A <b><span
+style='color:blue'>||</span></b> B] <i>or</i> [A <b><span style='color:blue'>OR</span></b>
+B]           &lt; Action OnClickSort=’SortAsc OR SortDesc’/&gt; - do SortAsc
+or, if not possible, do SortDesc</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Action <u>B</u> is executed
+only when Action <u>A</u> succeeded, Action <u>C</u> is executed only when
+Action <u>A</u> failed. <i>The colon must not be missing.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                [A <b><span
+style='color:blue'>?</span></b> B<b><span style='color:blue'> :</span></b> C]                            &lt;Actions
+OnClickCell=’Focus ? StartEdit : ShowDetail’/&gt; - do Focus and if succeeds do
+StartEdit otherwise do ShowDetail</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Both actions are always
+executed. The return value is the result of the second action and the first
+action result is ignored</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                [A <b><span
+style='color:blue'>,</span></b> B]                                   &lt;Action
+OnMouseOverBody=’ColorHover,HoverRowCell’/&gt; - do ColorHover and next
+HowerRowCell, return value of HoverRowCell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The operators can be combined
+together, the operator priority is according to they are listed here, the plus
+has the highest priority. You can use parenthesis ( ) to change the priority.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               &lt;Actions
+OnClickCell=&quot;Focus AND StartEdit+ShowDetail&quot;/&gt; - do Focus and, if
+it succeeds, do both StartEdit and ShowDetail</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Exact JavaScript
+notation for assigning actions in XML</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use any JavaScript
+code here, for long code is better to define custom JavaScript function and
+call it here</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;Actions OnClickCell=&quot;alert('clicked
+['+this.ARow.id+','+Event.Col+']');&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Assigning function to
+global Grids array</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can assign the JavaScript
+function in script in HTML page or in external script. The assignment must be
+placed after including TreeGrid script GridE.js.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: Grids.OnClickCell =
+function(Grid,Row,Col,Event){ alert('clicked ['+Row.id+','+Col+']'); }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Parameters><b><i><span style='font-size:14.0pt'>Event
+action (function callback) parameters</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event handler is called
+with parameters <i>TGrid</i> <b>Grid</b>, <i>TRow</i> <b>Row</b>, <i>string</i>
+  <b>Col</b>, <i>TEvent</i> <b>Event</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These parameters can be
+accessible from the event handler code, for example: OnClickRow =
+“Grid.SelectRow(Row)”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Row</b> and <b>Col</b> parameters can be null if there is click outside cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event assigned to global
+Grids array is called as global function with these parameters – function
+(Grid, Row, Col, Event).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event code should return
+1 or true for success, 0, false or null for failure.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>TEvent properties</span></u></b><span
+style='font-size:10.0pt'> <i>(the cell properties are related always to <b>mouse</b>
+position!)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>string <b>Name</b>                         Name
+of event without On, for example MouseMove or Click.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TRow <b>Row</b>, string <b>Col</b>       Cell under mouse cursor</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>string <b>Type</b>                           Type
+of the cell, like Int or Text</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>bool <b>CanEdit</b>, <b>CanFocus</b>  Permissions
+of the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>int <b>X</b>, <b>Y</b>                                 Position
+of mouse click relative to the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>int <b>Width</b>, <b>Height</b>               Size
+of the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>int <b>ClientX</b>, <b>ClientY</b>          Absolute
+position of mouse click, the event.clientX, event.clientY</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>int <b>AbsX</b>, <b>AbsY</b>                   Absolute
+position of mouse click. It is not the same as event.clientX, event.clientY. It
+is position where will be placed tag with position:absolute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>string <b>Level</b>                          Target
+group (0-11), for example PartType or CellSection</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>string <b>Target</b>                       Target
+name from the group, for example ButtonSave or PagerBody</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>string <b>Prefix</b>                        Key
+prefix, for example Shift or CtrlAlt</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>int <b>Button</b>                             Button
+pressed in OnMouseDown, 1 left, 2 middle, 3 right</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>...and many other internal
+properties that must <u>not</u> be changed ...</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=CallingEvents><b><i><span style='font-size:14.0pt'>Calling
+predefined actions from JavaScript</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every action can be also
+called from JavaScript by grid[“Action”+name], for example grid.ActionSave( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use <b>...F</b> (focused) version
+of action, you need to call it with the first parameter as 1, for example
+grid.ActionSelectRow(1); =&gt; There is no method named ActionSelectRowF.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Some actions are related to
+focused row or cell. The focused cell can be changed by <a
+href="Focus.htm#Focus">Focus</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Some actions are related to
+actual row or cell. This cannot be changed, it is always cell under mouse
+cursor.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Calling actions from
+JavaScript is intended just to extend the global mouse or key schema. To
+provide specific actions for individual cells, use standard API methods like
+SelectRow or AddRow.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FocusedActual><b><i><span style='font-size:14.0pt'>Focused
+vs. actual cell</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined actions are done
+usually for focused or actual cell or row. It is <u>not</u> the same. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Actual</span></b><span
+style='font-size:10.0pt'> cell or row is under mouse cursor and <b>focused</b>
+cell or row is with TreeGrid cursor (blue by default).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also <b>focused</b> row or
+cell is <u>not</u> the same as <b>selected</b> row or cell. There can be more
+selected cells and rows and is possible to delete, move or copy them, whereas
+focused cell is only one and it is a grid cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When action says that works
+with <b>actual or focused row / column / cell</b>, it exists in two versions,
+one without postfix works with actual and the second with postfix <b>F</b>
+works with focused. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example <b><i>DeleteRow <span
+style='color:red'>...F</span></i> </b>has <b><i>DeleteRow</i></b> for actual
+row and <b><i>DeleteRowF</i></b> for focused row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Key><b><span style='font-size:20.0pt'>TreeGrid key events</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The event name consists from:
+On + key_prefix + key_name [+ target].</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example OnUp, OnShiftTab,
+OnUpEdit</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The key actions are called in
+JavaScript <b>onkeydown</b> event and are called only for <b>focused</b> grid.
+There can be only one focused grid at a time. The focused grid is set by <b>Grids.Focused</b>
+property automatically when some cell in grid is focused.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The build-in TreeGrid
+action should be used with ...<b>F</b> suffix when assigned to key events, to
+handle focused cell and not active (under mouse) cell.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=KeyEventNames><b><i>Key event names</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Key names for all possible
+keys on keyboard. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Key names are defined by <b>KeyNames...</b>
+attributes for key scan codes. The KeyNames should not be changed, if there is
+not real reason to do it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=BaseKeys><b><i><span style='font-size:10.0pt'>Base
+keys</span></i></b></a><span style='font-size:10.0pt'>             </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>A</span></b><span
+style='font-size:10.0pt'> - <b>Z</b>   <b>D0 </b>- <b>D9</b> (keys 0 to 9)   <b>Space</b>  
+<b>Tab</b>   <b>Backspace</b>   <b>Enter</b>   <b>Esc</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Maxthon</u>
+browser has disabled Esc key for JavaScript</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=ControlKeys><b><i><span style='font-size:10.0pt'>Control
+keys</span></i></b></a><span style='font-size:10.0pt'>        </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>F1</span></b><span
+style='font-size:10.0pt'> – <b>F12</b>   <b>Ins</b>   <b>Del</b>   <b>Home</b>  
+<b>End</b>   <b>PageUp</b>   <b>PageDown</b>   <b>Up</b>   <b>Down</b>   <b>Left</b>  
+<b>Right   Pause</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                In <u>IE</u>
+have function keys F1 – F12 predefined action that cannot be suppressed (for
+example F5 always reloads page)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Some function
+keys F1 – F12 are reserved for system use and cannot be handled by browser on
+some systems</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Safari</u>
+and <u>Konqueror</u> have disabled Ins key for JavaScript</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=StandardKeys><b><i><span style='font-size:10.0pt'>Other
+std. keys</span></i></b></a><span style='font-size:10.0pt'>     </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>Tilde</span></b><span
+style='font-size:10.0pt'> ‘~’    <b>Minus</b> ‘-‘   <b>Equal</b> ‘=’   <b>LeftBracket</b>
+‘[‘    <b>RightBracket</b> ‘]’   <b>Backslash</b> ‘\’   <b>Semicolon</b> ‘;’  <b>Apostrophe</b>
+‘’’   <b>Comma</b> ‘,’    <b>Point</b> ‘.’    <b>Slash</b> ‘/’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Firefox</u>
+returns for Minus the code for NumMinus and for Equal unknown code 61</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Opera</u>
+has completely different codes for these keys and often conflicts with control
+keys, for example Apostrophe returns code for Right arrow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=NumericKeys><b><i><span lang=PT-BR style='font-size:
+10.0pt'>Numeric keys</span></i></b></a><span lang=PT-BR style='font-size:10.0pt'>       </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span lang=PT-BR
+style='font-size:10.0pt'>Num0</span></b><span lang=PT-BR style='font-size:10.0pt'>
+– <b>Num9</b>   <b>NumDivide</b>   <b>NumStar</b>   <b>NumMinus</b>   <b>NumPlus</b>  
+<b>NumPoint</b>   </span></p>
+
+<p class=MsoNormal><span lang=PT-BR style='font-size:10.0pt'>                </span><span
+style='font-size:10.0pt'>Num0 – Num9 keys are identified only when NumLock is
+ON, otherwise the return code as control key.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+numeric Enter is always the same as Enter, so there is no NumEnter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Firefox</u>
+returns NumMinus also for Minus key</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <u>Konqueror</u>
+has problems with identification of NumDivide, NumStar, NumMinus, NumPlus,
+NumPoint</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=LockKeys><b><i><span style='font-size:10.0pt'>Lock
+keys</span></i></b></a><span style='font-size:10.0pt'>             </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>CapsLock</span></b><span
+style='font-size:10.0pt'>   <b>NumLock</b>   <b>ScrollLock</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ScrollLock on
+some systems does not work</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Character keys</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>Key</b> –
+the <b>OnKey</b> event is called for all character keys.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=KeyEventTargets><b><i>Key event targets</i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default has key event no
+target that is used for standard controlling when <a
+href="CellEdit.htm#EditMode">EditMode</a> is off – no cell is being edited.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the EditMode is on, there
+are called events for target <b>Edit</b>. If the edited cell is multiline,
+there is called two actions for targets <b>EditMultiline</b> and <b>Edit</b> –
+if the EditMultiline action returns true, the Edit action is not called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Assigning actions for
+events and function parameters are the same as for <a href="#Assigning">mouse
+events</a>.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>TreeGrid API events</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default are API event
+handlers defined as methods of global Grids object like:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Courier New";background:yellow'>Grids.<i>EventName</i>
+= function(grid, param1, param2, ...) { ... }</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnClick
+= function(grid,row,col,x,y) { alert(&quot;clicked cell
+&quot;+(row?row.id:null)+ &quot;,&quot;+col+&quot; at &quot;+x+&quot;,&quot;+y);
+}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This global event is called
+for all grids on page, with different first parameter <b>grid</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can set one event
+handler per grid by <a href="#SetEvent">SetEvent</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can set more event
+handlers per event and grid by <a href="#AddEvent">AddEvent</a> and remove by <a
+href="#DelEvent">DelEvent</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetEvent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetEvent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>string</i>
+<b>name</b>, <i>string</i> <b>id</b>, <i>function</i> <b>func</b>)                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets TreeGrid event handler
+for grid with given id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it, if you have more
+grids and want to call for every grid different function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to have only
+one handler per event and grid, to have more event handlers use <a
+href="#AddEvent">AddEvent</a> / <a href="#DelEvent">DelEvent</a> functions.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'>     event name like “OnClick”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>id</span></b><span
+style='font-size:10.0pt'>            id of the grid. If it is null, the
+function will be called for all other grids than for those having attached the
+event handler by SetEvent.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>func</span></b><span
+style='font-size:10.0pt'>       any JavaScript function to be called for event
+raised.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard way:     Grids.OnClick
+= function(G){ if(G.id==&quot;G1&quot;) alert(&quot;G1 clicked&quot;);
+if(G.id==&quot;G2&quot;) alert(&quot;G2 clicked&quot;); }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetEvent way:     SetEvent(&quot;OnClick&quot;,&quot;G1&quot;,function(){
+alert(&quot;G1 clicked&quot;);} );</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>SetEvent(&quot;OnClick&quot;,&quot;G2&quot;,function(){
+alert(&quot;G2 clicked&quot;);} );  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Do not use both ways
+together, if you set Grids.OnClick, you cannot set it also by SetEvent and vice
+versa. Also don’t use with <a href="#AddEvent">AddEvent</a> / <a
+href="#DelEvent">DelEvent</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>SetEvent is useful also when
+using automatic merging web pages like by Java portal - <a
+href="http://jcp.org/aboutJava/communityprocess/final/jsr168/">JSR-000168
+Portlet</a>.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>!</span></i></b><i><span
+style='font-size:10.0pt'> For events that return by default another value than
+false or null (OnRowFilter, OnGetClass) you have to define default event
+handler for all grids by calling it with null id.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=AddEvent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AddEvent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>string</i>
+<b>name</b>, <i>string</i> <b>id</b>, <i>function</i> <b>func</b>)                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds TreeGrid event handler
+for grid with given id. If <b>id</b> is missing, adds it for all grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>With this function you can
+have more handlers for one event and one grid and you can add and delete them
+dynamically</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Must <u>not</u> be used with <a
+href="#SetEvent">SetEvent</a> function. Must <u>not</u> be used with standard
+event assignment by Grids[name]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calling order of attached
+events is expected to be random.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The return value for event is
+the first non null return value from some handler.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This function slightly slows
+event execution.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>!</span></i></b><i><span
+style='font-size:10.0pt'> For events that return by default another value than
+false or null (OnRowFilter, OnGetClass) you have to define default event
+handler for all grids by calling it with null id.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=DelEvent><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DelEvent</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>string</i>
+<b>name</b>, <i>string</i> <b>id</b>, <i>function</i> <b>func</b>)                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removes TreeGrid event
+handler added by <a href="#AddEvent">AddEvent</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It removes only the event
+added by AddEvent with all three parameters the same as when calling DelEvent.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>func</b> must be
+the same function object you passed to AddEvent, <u>not</u> new defined
+function with the same code!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

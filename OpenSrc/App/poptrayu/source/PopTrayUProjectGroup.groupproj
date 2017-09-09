@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{86708729-B03A-431A-9ED8-1E320EFB7312}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="PopTrayU.dproj">
+            <Dependencies>..\dependencies\htmlp-0.96\example\HTMLP.dproj</Dependencies>
+        </Projects>
+        <Projects Include="..\dependencies\htmlp-0.96\example\HTMLP.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\dependencies\Cooltray for delphi 2010\CoolTrayIcon_D140.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="log4d\Log4Dproject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dunit\PopTrayUTestSuite.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="PopTrayU" DependsOnTargets="HTMLP">
+        <MSBuild Projects="PopTrayU.dproj"/>
+    </Target>
+    <Target Name="PopTrayU:Clean" DependsOnTargets="HTMLP:Clean">
+        <MSBuild Projects="PopTrayU.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PopTrayU:Make" DependsOnTargets="HTMLP:Make">
+        <MSBuild Projects="PopTrayU.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="HTMLP">
+        <MSBuild Projects="..\dependencies\htmlp-0.96\example\HTMLP.dproj"/>
+    </Target>
+    <Target Name="HTMLP:Clean">
+        <MSBuild Projects="..\dependencies\htmlp-0.96\example\HTMLP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HTMLP:Make">
+        <MSBuild Projects="..\dependencies\htmlp-0.96\example\HTMLP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CoolTrayIcon_D140">
+        <MSBuild Projects="..\dependencies\Cooltray for delphi 2010\CoolTrayIcon_D140.dproj"/>
+    </Target>
+    <Target Name="CoolTrayIcon_D140:Clean">
+        <MSBuild Projects="..\dependencies\Cooltray for delphi 2010\CoolTrayIcon_D140.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CoolTrayIcon_D140:Make">
+        <MSBuild Projects="..\dependencies\Cooltray for delphi 2010\CoolTrayIcon_D140.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Log4Dproject">
+        <MSBuild Projects="log4d\Log4Dproject.dproj"/>
+    </Target>
+    <Target Name="Log4Dproject:Clean">
+        <MSBuild Projects="log4d\Log4Dproject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Log4Dproject:Make">
+        <MSBuild Projects="log4d\Log4Dproject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PopTrayUTestSuite">
+        <MSBuild Projects="dunit\PopTrayUTestSuite.dproj"/>
+    </Target>
+    <Target Name="PopTrayUTestSuite:Clean">
+        <MSBuild Projects="dunit\PopTrayUTestSuite.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PopTrayUTestSuite:Make">
+        <MSBuild Projects="dunit\PopTrayUTestSuite.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="PopTrayU;HTMLP;CoolTrayIcon_D140;Log4Dproject;PopTrayUTestSuite"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="PopTrayU:Clean;HTMLP:Clean;CoolTrayIcon_D140:Clean;Log4Dproject:Clean;PopTrayUTestSuite:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="PopTrayU:Make;HTMLP:Make;CoolTrayIcon_D140:Make;Log4Dproject:Make;PopTrayUTestSuite:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

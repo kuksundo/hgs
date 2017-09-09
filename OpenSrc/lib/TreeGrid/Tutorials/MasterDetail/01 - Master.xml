@@ -1,0 +1,75 @@
+<Grid>
+   <Cfg id='MasterNested' SuppressCfg='1' MainCol='NAME' Sync='Style' SyncId='DetailNested'/>
+   <Cols> 
+      <C Name='NAME' Type='Text' GroupWidth='1' Width='150'/>
+      <C Name='SURNAME' Type='Text' Width='150'/>
+      <C Name='AGE' Type='Int'/>
+      <C Name='MARRIED' Type='Bool'/>
+   </Cols>
+   <Panel Copy='1'/>
+   <Def>
+      <!-- The default row for all master rows -->
+      <D Name='MAIN' CDef='DETAIL' Expanded='0'/>
+
+      <!--  The default row for all detail grid parents -->
+      <D Name='DETAIL' DetailCol='NAME' DetailLayout='01 - Detail.xml' Spanned='1' NAMESpan='4' 
+         Expanded='0' CanExpand='0' CanFilter='0' CDef='DETAILROW' AcceptDef='DETAILROW'/>
+
+      <!-- The default row for rows in detail grid -->
+      <D Name='DETAILROW'/>
+      
+      <!-- Default row for group rows -->
+      <D Name='Group' AggChildren='1' Expanded='1' CanFilter='2'/>
+   </Def>
+   <Root CDef='MAIN' AcceptDef='MAIN'/>
+   <Header NAME='First name'/>
+   <Head>
+      <Filter
+         NAMECanEdit='0' NAMEShowMenu='0' NAMEButton='Defaults' NAMEDefaults='|*FilterOff|*RowsDefMAIN' NAMERange='1'
+         SURNAMECanEdit='0' SURNAMEShowMenu='0' SURNAMEButton='Defaults' SURNAMEDefaults='|*FilterOff|*RowsSibling' SURNAMERange='1'
+         />
+   </Head>
+   <Foot>
+      <I Calculated='1'
+         NAME='Summary' NAMECanEdit='0'
+         SURNAMECanEdit='0'
+         AGEFormula='min()+" - "+max()' AGEType='Text' AGEAlign='Right'
+         MARRIEDFormula='count("MARRIED","MARRIED")+" / "+count()' MARRIEDType='Text' MARRIEDAlign='center'
+         />
+   </Foot>
+   <Solid>
+      <Toolbar1 Cells='GROUP'
+         GROUPType='Bool' GROUPLabelRight='Group rows by Surname' 
+         GROUPOnChange='Grid.DoGrouping(Value?"SURNAME":"")'        
+         />
+   </Solid>
+   <Actions OnClickButtonAdd='AddRowEnd' OnClickPanelCopy='CopyTree'/>
+   <Toolbar Styles='2' Kind='Toolbar2'/>
+   <Body>
+      <B>
+         <I NAME='James' SURNAME='Jackson' AGE='24' MARRIED='0'>
+            <I>
+               <I ADDRESS='3703 Tenth Ave, New York, NY 10034'/>
+               <I ADDRESS='201 Varick Street 4th Floor New York, NY 10014'/>
+               <I ADDRESS='1419 Westwood Blvd, Los Angeles, CA 90024'/>
+            </I>
+         </I>
+         <I NAME='Daniel' SURNAME='Moore' AGE='38' MARRIED='1' Expanded='1'>
+            <I>
+               <I ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703'/>
+               <I ADDRESS='1419 Westwood Blvd, Los Angeles, CA 90024'/>
+            </I>
+         </I>
+         <I NAME='Lisa' SURNAME='Moore' AGE='12' MARRIED='0'>
+            <I>
+               <I ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703' NOTE='Daniel&apos;s daughter'/>
+            </I>
+         </I>
+         <I NAME='Nancy' SURNAME='Allen' AGE='65' MARRIED='1'>
+            <I>
+               <I ADDRESS='701 Howard Road SE, Washington, DC 20020'/>
+            </I>
+         </I>
+      </B>
+   </Body>
+</Grid>

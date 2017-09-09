@@ -1,0 +1,76 @@
+<Grid>
+   <Cfg id='MasterNestedTable' SuppressCfg='1' MainCol='NAME' Sync="Style" SyncId='DetailNestedTable'/>
+   <Cols>
+      <C Name='Panel'/>
+      <C Name='NAME' Type='Text' GroupWidth='1'/>
+      <C Name='SURNAME' Type='Text'/>
+      <C Name='AGE' Type='Int'/>
+      <C Name='MARRIED' Type='Bool'/>
+   </Cols>
+   <Panel Copy='1'/>
+   <Def>
+      <!-- The default row for all master rows automatically defines also all detail children and copies the values from master rows -->
+      <D Name='MAIN' Expanded='0' CDef='' AcceptDef=''
+         NAMECopyTo='Children,NAME'
+         SURNAMECopyTo='Children,SURNAME'
+         AGECopyTo='Children,AGE'
+         MARRIEDCopyTo='Children,MARRIED'
+         ADDRESSCopyTo='Children,ADDRESS'
+         NOTECopyTo='Children,NOTE'
+         >
+         <I Def='DETAIL'/>
+      </D>
+      <D Name='DETAIL' DetailCol='NAME' DetailLayout='02 - Detail.xml' Spanned='1' NAMESpan='4' 
+         Expanded='0' CanExpand='0' CanFilter='0' PrintHeight='190' CDef='' AcceptDef=''
+         NAMECopyTo='Child_0,V,Parent,NAME'
+         SURNAMECopyTo='Child_1,V,Parent,SURNAME'
+         AGECopyTo='Child_2,V,Parent,AGE'
+         MARRIEDCopyTo='Child_3,V,Parent,MARRIED'
+         ADDRESSCopyTo='Child_4,V,Parent,ADDRESS'
+         NOTECopyTo='Child_5,V,Parent,NOTE'
+         >
+         <I I='1' Def='DETAILROW' N='FirstName' V='' VCopyTo='Parent,NAME'/>
+         <I I='2' Def='DETAILROW' N='Surname' V='' VCopyTo='Parent,SURNAME'/>
+         <I I='3' Def='DETAILROW' N='Age' V='' VType='Int' VAlign='Left' VCopyTo='Parent,AGE'/>
+         <I I='4' Def='DETAILROW' N='Married' V='' VType='Bool' VAlign='Left' VCopyTo='Parent,MARRIED'/>
+         <I I='5' Def='DETAILROW' N='Address' V='' VType='Lines' VCopyTo='Parent,ADDRESS'/>
+         <I I='6' Def='DETAILROW' N='Note' V='' VType='Lines' VCopyTo='Parent,NOTE'/>
+      </D>
+
+      <D Name='DETAILROW' CanFilter='0'/>
+      
+      <D Name='Group' AggChildren='1' Expanded='1' CanFilter='2'/>
+   </Def>
+   <Root CDef='MAIN'/>
+   <Header NAME='First name'/>
+   <Head>
+      <Filter
+         NAMECanEdit='0' NAMEShowMenu='0' NAMEButton='Defaults' NAMEDefaults='|*FilterOff|*RowsDefMAIN' NAMERange='1'
+         SURNAMECanEdit='0' SURNAMEShowMenu='0' SURNAMEButton='Defaults' SURNAMEDefaults='|*FilterOff|*RowsSibling' SURNAMERange='1'
+         />
+   </Head>
+   <Foot>
+      <I Calculated='1'
+         NAME='Summary' NAMECanEdit='0'
+         SURNAMECanEdit='0'
+         AGEFormula='min()+" - "+max()' AGEType='Text' AGEAlign='Right'
+         MARRIEDFormula='count("MARRIED","MARRIED")+" / "+count()' MARRIEDType='Text' MARRIEDAlign='center'
+         />
+   </Foot>
+   <Solid>
+      <Toolbar1 Cells='GROUP'
+         GROUPType='Bool' GROUPLabelRight='Group rows by Surname' 
+         GROUPOnChange='Grid.DoGrouping(Value?"SURNAME":"")'        
+         />
+   </Solid>
+   <Actions OnClickButtonAdd='AddRowEnd' OnClickPanelCopy='CopyRow'/>
+   <Toolbar Styles='2' Kind='Toolbar2' AddChild='0'/>
+   <Body>
+      <B>
+         <I NAME='James' SURNAME='Jackson' AGE='24' MARRIED='0' ADDRESS='3703 Tenth Ave, New York, NY 10034' Expanded='1'/>
+         <I NAME='Daniel' SURNAME='Moore' AGE='38' MARRIED='1' ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703'/>
+         <I NAME='Lisa' SURNAME='Moore' AGE='12' MARRIED='0' ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703' NOTE='Daniel&apos;s daughter'/>
+         <I NAME='Nancy' SURNAME='Allen' AGE='65' MARRIED='1' ADDRESS='701 Howard Road SE, Washington, DC 20020'/>
+      </B>
+   </Body>
+</Grid>

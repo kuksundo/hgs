@@ -1,0 +1,104 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <script>
+
+// --- To specify grouping by Complete, differ only 100%, 0% and others ---
+Grids.OnGetSortValue = function(G,row,col,val,desc,group){
+if(group && col=='C') {
+   if(val=="100%") return 100;
+   if(val=="0%") return 0;
+   return "50";
+   }
+return val;
+}
+
+// --- Shows a date of Gantt part as tooltip ---
+Grids.OnTip = function(G,row,col,tip,cx,cy,x,y){
+if(col!="G") return tip; // Tip only for Gantt column
+var A = G.GetGanttXY(row,col,x,y), t = ""; if(!A) return null;
+if(A.Flag) t = G.GetString(row,"M").split(";")[A.FlagIndex];
+else if(A.Flow) t = G.GetString(row,"F").split(";")[A.FlowIndex].replace('~'," - ");
+else if(A.Main) t = G.GetString(row,"S") + " - " + G.GetString(row,"E");
+return (t?"<div style='color:#00F;'>"+t+"</div>":"") + (tip&&t?"<div style='height:5px;overflow:hidden;'></div>":"") + (tip?tip:"");
+}
+
+// --- Informational message when printing ---
+Grids.OnClickButtonPrint = function(){
+alert("To successfully print the chart you should have chosen 'Printing of background colors and images' in your browser.\nIn IE in Internet options -> Advanced -> Print.\nIn FF in Page setup -> Format and options");
+}
+
+      </script>
+
+      <h2>Interactive Gantt chart</h2>
+         A demonstration of TreeGrid application showing interactive Gantt chart - timetable of tasks and their completion in project management.<br/>
+         <br />
+
+      <div id="Gantt" style="WIDTH:100%;HEIGHT:520px;">
+         <script>TreeGrid('<bdo Sync="1" Debug="Check" DebugCheckIgnore="Res" Layout_Url="GanttDef.xml" Data_Url="GanttData.xml"></bdo>',"Gantt");</script>
+      </div>
+ 
+         The <b>Start</b>, <b>End</b> and <b>Duration</b> columns contain planned task position and length, 
+         the <b>Complete</b> column contains how much is already done, the task completion is shown by red/green colors.
+         The <b>Information</b> column contains tooltip for the task.<br />
+         The <b>Real flow</b> column contains real process of task completion. It can be discrete, contain more date ranges.
+         The first and last date in range are separated by tilde (<b style="color:Red;">~</b>), ranges itself by semicolon (<b style="color:Red;">;</b>).
+         The <b>Real flow information</b> column contains tooltip for the Real flow.<br />
+         The <b>Resources</b> column contains resources assigned to the task, these resources can be also shown in the Gantt chart.<br />
+         The <b>Descendants</b> and <b>Ancestors</b> columns contain all outcoming / incoming dependency lines (identified by row ids) and their types (ss/sf/fs/ff) and lags (+/-xxx). 
+         The <b>Flags</b> column contains all flags and their descriptions are in <b>Flag Info</b> column.<br />
+         The <b>MinStart</b>, <b>MaxStart</b>, <b>MinEnd</b> and <b>MaxEnd</b> columns contain date <b>constraints</b> definitions.
+         The constraints are used when correcting dependencies.<br />
+         The columns Information, Real Flow, Real flow information, Resources, Flags, Flag Info, Min Start, Max Start, Min End and Max End are hidden by default and can be shown from columns menu displayed by toolbar clicking to icon.<br />
+         <i style="color:#700"><b>The column count and types are not static and are used just for the example, none of the column is required, every column can be removed and any new custom column added.</b></i><br />
+         The Gantt chart is automatically updated whenever some <b><i>cell is edited</i></b>, <b><i>row is added, deleted or moved</i></b> (dragged by mouse).<br />
+         <br />
+         The Gantt chart can be <b>smoothly zoomed</b> and scrolled to date range selected by mouse dragging or clicked in Gantt header. 
+         The zoom can be undone by right click to grid header. 
+         The exact zoom level can be chosen from combo or it can be increased by left click to header and decreased by right click to header.<br />
+         The grid can be plain (showing only tasks) or can be <b>grouped</b> by tasks or other values.<br />
+         This can example can show all or <b>selected resources</b> only.<br />
+         The Gantt chart can show or <b>hide holidays</b> (any defined excluded dates or date ranges).<br />
+         All the setttings are saved to <b>cookies</b> and are used next visit.<br />
+         <br />
+         The Gantt chart automatically <b>checks and corrects dependencies</b> between tasks. The incorrect dependencies are shown in red.
+         The dependencies can be manually corrected by click to the red text in bottom right or from Gantt popup menu.
+         Whenever a user moves or resizes task or changes dependency or its type or lag, the other dependent tasks are <b>automatically moved</b> to correct the dependencies.
+         The <b>circular dependencies</b> are checked.<br />
+         The tasks are also moved when they violate <b>baseline</b> date or their date <b>constraints</b>. When user changes the baseline date, the tasks are also automatically moved.<br />
+         All these actions can be done automatically, confirmed by a user or can be disabled.<br />
+         <br />
+         <b>Default colors in Gantt chart:</b> Black is used for Gantt in automatically calculated grouped rows. White for not complete grouped rows.
+         Light green for compete tasks. Light red for not yet started tasks. 
+         Dark green / dark red colors are used for tasks in progress and show the percentage of completion. 
+         Yellow boxes display the real flow.<br />
+         <i style="color:#700"><b>All the bar colors and other visual settings can be fully customized by css styles, every row can have its own colors set.</b></i><br />
+         <br />
+         <b style="color:Red;">The Gantt chart is interactive</b>, every setting can be also changed by mouse inside the Gantt chart. In this example only data (not grouping) rows can be changed.<br />
+         <b><i>New main (task) bar and flow bars</i></b> are created by mouse dragging on empty Gantt space. 
+         The flow bar is created when the main bar already exists.
+         <b><i>New milestone</i></b> is created by double click or from popup menu when neither milestone nor main bar exists.
+         <b><i>New flag</i></b> is created by double click anywhere except the main bar or milestone or from popup menu.
+         <br />
+         <b><i>Main bar and flow bars are resized</i></b> by dragging their edges.
+         <b><i>Main bar, flow bars, milestone and flags are moved</i></b> by mouse dragging.
+         <b><i>Main bar and flow bars are deleted</i></b> by resizing their width to zero or by ctrl + click or from popup menu.
+         <b><i>Milestone and flags are deleted</i></b> by ctrl + click or from popup menu.
+         <br />
+         <b><i>Resources are changed</i></b> by double click to main bar or milestone or from popup menu.
+         <b><i>Flag info is changed</i></b> by double click to the flag or from popup menu.
+         <b><i>The percent completed is set</i></b> by ctrl + right click to main bar or from popup menu.
+         <br />         
+         <b><i>New dependencies</i></b> are created by dragging from starting to ending main bar. 
+         Dragging left half of main bar creates 's' and right half 'f' dependency type.
+         <b><i>Dependencies are deleted</i></b> by ctrl + click to the ending or starting point next to main bar (the ending dependencies are deleted first)
+            or by deleting main bar or from popup menu.<br />
+         On the right click is displayed the <b><i>popup menu</i></b> with the mentioned options. The options set is dependent on what is clicked.<br />
+         <b><i>Every change can be undone</i></b> by Ctrl+Z or redone by Ctrl+Y (the grid must be focused).<br />
+         <i style="color:#700"><b>All the mouse controlling actions can be fully customized in XML settings, you can specify what mouse event will provide which action.
+         Also for every row can be specified what can be changed by a user (main task bar, milestone, flow bars, flags, dependencies, resources).</b></i><br />
+   </body>
+</html>

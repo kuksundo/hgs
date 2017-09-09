@@ -1,0 +1,790 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Copy &amp; paste via clipboard</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Copy &amp; paste via clipboard</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports copying
+cells, rows, columns and cell ranges into and from clipboard.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The data are in the same
+format as standard in spreadsheet programs like MS Excel, so it is possible to
+copy &amp; paste cells between TreeGrid and MS Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>The format of copied &amp; pasted data</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows are separated by CRLF. Last
+row is <u>not</u> followed by CRLF. In pasting it accepts also single CR and LF
+as row separators.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells are separated by
+tabulator. Last cell is <u>not</u> followed by tabulator.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If cell value contains one of
+characters CR (\r), LF (\n) (&amp;#x0a;), tabulator (\t) (&amp;#x09;) and
+double quote (“) (&amp;#x022;), it encloses the value into double quotes and
+doubles all double quotes inside.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;      </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CCanCopyPaste></a><a name=CCanCopy><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CanCopyPaste</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If values can be copied from
+this column to clipboard by Ctrl+C and pasted to this column from clipboard by
+Ctrl+V.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column has
+CanCopyPaste = 0, it is ignored for both copying and pasting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=ICanCopyPaste><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanCopyPaste</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If values can be copied from
+this row to clipboard by Ctrl+C and pasted to this row from clipboard by
+Ctrl+V.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Row cannot be copied and pasted</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Row can be copied and pasted</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Row can be copied and pasted only with
+its parent (when set <a href="#CfgCopyTree">CopyTree</a>).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             Only for fixed row, the row is always
+copied when all rows are selected and copied or all variable rows are copied.
+By default it is set for main Header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgCopyPasteTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyPasteTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how there will be
+copied children of the rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to another value than <b>0</b>,
+it adds level information to beginning of the first cell, as count of
+characters U65279.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Does not copy tree</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copies also visible children of expanded
+parents</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Copies also visible children of all
+parents</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             Copies also all children</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgCopyPasteInternal><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyPasteInternal</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Copies cell values to system clipboard
+and pastes from system clipboard.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copies cell values to TreeGrid global
+private cache, it will be available for all grids on page.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Copies cell values to TreeGrid local
+private cache, it will be available only for this grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgCopyPasteRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyPasteRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  [0]                                                                                <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Copies cell values, but no other row or
+cell attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copies row ids only. It should be set
+with CopyPasteInternal&gt;0 to copy the whole rows internally, with all
+attributes. Copies always all cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Copy><b><span style='font-size:20.0pt'>Copying to
+clipboard</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copying to clipboard can be
+done only by pressing <b>Ctrl + C</b> or <b>Ctrl + X</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is <u>no</u> API method
+to copy to clipboard due browser security restriction.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgCopySelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopySelected</span></u></b></a><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Never copy selected rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copy all selected rows/cells if any,
+otherwise copy focused row according to <a href="#CfgCopyFocused">CopyFocused</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgCopyFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyFocused</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>             [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is applied only if <a
+href="#CfgCopyFocused">CopySelected</a> is 0 or if no row in grid is selected.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Never copy focused row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copy only focused row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>20</span></b><span
+style='font-size:10.0pt'>           Copy all visible variable rows in the same
+parent as focused row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>30</span></b><span
+style='font-size:10.0pt'>           Copy all visible variable rows (if set <a
+href="#CfgCopyPasteTree">CopyPasteTree</a>, it affect only root rows, the other
+are handled by <a href="#CfgCopyPasteTree">CopyPasteTree</a>), copies also rows
+with <a href="#ICanCopyPaste">CanCopyPaste</a>=<b>3</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>31</span></b><span
+style='font-size:10.0pt'>           Copy all variable rows (if set <a
+href="#CfgCopyPasteTree">CopyPasteTree</a>, it affect only root rows, the other
+are handled by <a href="#CfgCopyPasteTree">CopyPasteTree</a>) , copies also
+rows with <a href="#ICanCopyPaste">CanCopyPaste</a>=<b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgCopyEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                         [1]                                                                                           <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Copies displayed text, usable for copying
+outside TreeGrid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Copies value in editable format, usable
+when copying inside grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgCopyCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                       [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which columns will be used
+for copy paste.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also column attribute <a
+href="#CCanCopyPaste">CanCopyPaste</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Only focused column</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             All visible columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             All columns</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellCopyValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell value used for <b>copying</b>
+to clipboard by Ctr+C / Ctrl+X instead of actual cell value. Useful for HTML
+type columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgCopyTime><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CopyTime</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                      [&quot;&quot;]                                                                                          <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copying too many values to
+clipboard can be too slow and in this case the copying can fail, especially in
+IE and FF.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the copying time exceeds
+this value (in milliseconds), the copying action is cancelled and the user must
+press the Ctrl+C again to finish the copying.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The CopyTime can contain up
+to four values used for different browsers in this order: [all, IE, FF,
+Safari/Chrome]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reasonable value is &quot;200,500,150,1000&quot;
+or &quot;150&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnGetCopyValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetCopyValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value for <b>copying</b>
+to clipboard by Ctrl+C</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>val</span></b><span
+style='font-size:10.0pt'> is predefined/actual cell value, return <b>val</b> or
+new value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetRowText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetRowText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string[]</i> <b>cols</b>, <i>string</i>
+<b>txt</b>, <i>bool</i> <b>sel</b>) <span style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the whole row
+text, without ending CRLF.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cols</span></b><span
+style='font-size:10.0pt'> are the cells to copy, <b>txt</b> is the default text
+to copy, <b>sel</b> is set if only selected cells are wanted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new row text to copy
+to clipboard or <b>txt</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row text must <u>not</u>
+contain CRLF string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Copy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>           Attached to event <b>OnCtrlC</b>,
+can be attached only to <b>OnCtrlC</b> or <b>OnCtrlX</b>            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies data to clipboard</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Action in the CtrlC and CtrlX
+events must return 0 to permit the default function, use zero after comma like
+“Copy,0”</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExclude><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Exclude</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>   Attached to event <b>OnCtrlX</b>,
+can be attached only to <b>OnCtrlC</b> or <b>OnCtrlX</b>            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Copies data to clipboard and
+deletes the copied rows (only if all cells are copied)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Action in the CtrlC and
+CtrlX events must return 0 to permit the default function, use zero after comma
+like “Exclude,0”</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnCopyStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCopyStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i> <b>grid</b>)                                                                                         <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the data for
+copy is generated. Return true to suppress copying.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string</i>    </span><a
+name=OnCopy><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCopy</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>               (<i>TGrid</i> <b>grid</b>,
+<i>string</i> <b>txt</b>)                                                                          <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the data for
+copy is generated. <b>txt</b> is data to be copied to clipboard.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return null to use the
+original txt, empty string to suppress copying or new text to copy.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Paste><b><span style='font-size:20.0pt'>Pasting from
+clipboard</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pasting from clipboard can be
+done only by pressing <b>Ctrl + V</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is <u>no</u> API method
+to paste from clipboard due browser security restriction.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPasting><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Pasting</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                            [1]                                                                                           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If pasting into grid is
+permitted</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPasteSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PasteSelected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Never paste to selected rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Paste to selected rows/cells if any,
+otherwise paste to focused row according to <a href="#CfgPasteFocused">PasteFocused</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the pasted
+range is bigger, the remaining source rows/cells are discarded</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPasteFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PasteFocused</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [8]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is applied only if <a
+href="#CfgPasteSelected">PasteSelected</a> is 0 or if no row in grid is
+selected.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Never paste to focused row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1             </span></b><span
+style='font-size:10.0pt'>To focused row only, if the pasted range contains more
+rows, they are discarded.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2             </span></b><span
+style='font-size:10.0pt'>To focused row and to the next rows below, in the same
+parent only, if the pasted range contains more rows, they are discarded.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             To focused row and to the next rows
+below, including expanded children, if the pasted range contains more rows,
+they are discarded.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4             </span></b><span
+style='font-size:10.0pt'>To focused row and new next rows are added after the
+focused row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'>             Inserts one new row in front of the
+focused row, if the pasted range contains more rows, they are discarded. The
+focused row itself is <u>not</u> changed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>6</span></b><span
+style='font-size:10.0pt'>             Inserts new rows in front of the focused
+row. The focused row itself is <u>not</u> changed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>7</span></b><span
+style='font-size:10.0pt'>             Inserts one new row in front of the
+focused row, if the pasted range contains more rows, they are discarded. The
+focused row itself is <u>not</u> changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If clipboard
+contains only one value, it pastes it to the actual focused cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>8</span></b><span
+style='font-size:10.0pt'>             Inserts new rows in front of the focused
+row. The focused row itself is <u>not</u> changed. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+clipboard contains only one value, it pastes it to the actual focused cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>20</span></b><span
+style='font-size:10.0pt'>           Paste to all visible variable rows in the
+same parent as focused row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>21</span></b><span
+style='font-size:10.0pt'>           Replace all siblings of focused row by the
+pasted rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>30</span></b><span
+style='font-size:10.0pt'>           Copy all visible variable rows (if set <a
+href="#CfgCopyPasteTree">CopyPasteTree</a>, it affect only root rows, the other
+are handled by <a href="#CfgCopyPasteTree">CopyPasteTree</a>), copies also rows
+with <a href="#ICanCopyPaste">CanCopyPaste</a>=<b>3</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>31</span></b><span
+style='font-size:10.0pt'>           Copy all variable rows (if set <a
+href="#CfgCopyPasteTree">CopyPasteTree</a>, it affect only root rows, the other
+are handled by <a href="#CfgCopyPasteTree">CopyPasteTree</a>) , copies also
+rows with <a href="#ICanCopyPaste">CanCopyPaste</a>=<b>3</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>32</span></b><span
+style='font-size:10.0pt'>           Replace all variable rows with the pasted
+rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPasteCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PasteCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                      [4]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which columns will be used
+for paste.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also column attribute <a
+href="#CCanCopyPaste">CanCopyPaste</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Paste only to focused column</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Paste to all visible columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Paste to all columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             Paste to all columns right to the focused
+cell, including the focused one</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'>             Paste from actually focused column or, if
+the data are longer than the rest right to the cursor, pastes from the first
+column (= <b>2</b> or <b>1</b> or <b>3</b>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPasteTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PasteTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                      [2]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Ignore the pasted children</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Fill the children to the existing children
+only, use settings from <a href="#CfgCopyPasteTree">CopyPasteTree</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             Replace the children, if required, delete
+remaining children or add new children, use settings from <a
+href="#CfgCopyPasteTree">CopyPasteTree</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;  </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CellCanPaste><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanPaste</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                          <span
+style='color:red'>new <b>6.0; chg 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how can be pasted values
+written to the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If pasted value cannot be
+written to the cell, it is discarded (it is <u>not</u> written to the next
+cell)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             The cell cannot accept pasted value</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             The cell accepts pasted value only if it
+is editable. To the pasted value are applied EditMask, ResultMask and Size.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>Since 10.0
+</i>cannot be pasted <u>not</u> existing value to Enum type cell.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                It permits
+pasting any value to not editable cell with Defaults Button or to Select type
+cell and to cell with SuggestType='Existing'. Use ResultMask to restrict
+pasting some value here.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             The cell always accepts the pasted value
+as is.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnPaste><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPaste</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>string[]</i> <b>cols</b>, <i>string[]</i> <b>pastedtext</b>)                                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before cell values are
+pasted by Ctrl+V from clipboard. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>pastedtext</span></b><span
+style='font-size:10.0pt'> is array of texts to paste into individual rows. You
+can modify this array.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cols</span></b><span
+style='font-size:10.0pt'> is array of column names only where will be pasting
+done. You can modify this array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnPasteFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPasteFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>)                                                                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after cell values was
+pasted from clipboard</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnPasteRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPasteRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string[]</i> <b>cols</b>, <i>string[]</i>
+<b>values</b>, <i>bool</i> <b>added</b>)            <span style='color:red'>new
+<b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the <b>values</b>
+are pasted to the <b>row</b> cells (<b>cols</b>). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>cols</b> array should <u>not</u>
+be modified – it is used also in next pasted rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>added</span></b><span
+style='font-size:10.0pt'> is set if the row was added by pasting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel default
+behavior. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If true is returned and
+the row was added by pasting, it is <u>not</u> removed – must be removed by the
+handler!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnPasteRowFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPasteRowFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string[]</i> <b>cols</b>, <i>string[]</i>
+<b>values</b>, <i>bool</i> <b>added</b>) <span style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the <b>values</b>
+are pasted to the <b>row</b> cells (<b>cols</b>). </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>added</span></b><span
+style='font-size:10.0pt'> is set if the row was added by pasting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=OnCopyPaste><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Paste</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Attached to event <b>OnCtrlV</b>,
+can be attached only to <b>OnCtrlV</b>                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pastes data from clipboard</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Action in the CtrlV event
+must return 0 to permit the default function, use zero after comma like “Paste,0”</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

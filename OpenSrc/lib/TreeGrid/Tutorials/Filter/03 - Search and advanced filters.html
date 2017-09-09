@@ -1,0 +1,168 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Filter</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Search and advanced filters</center>
+   <center style='font:bold italic;'>Searching in grid like Google or by formula expression</center>
+   <div style='margin-bottom:6px;'><a href='03 - Search and advanced filters.xml'>03 - <h2>Search and advanced filters</h2>.xml</a></div>
+   <div style='width:960px; height:450px;'>
+      <bdo Debug='check' Data_Url='03 - Search and advanced filters.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+        Search provides advanced searching and filtering in grid.<br />
+        It provides three methods of searching (search like Google, search by expression and exact string search).<br />
+        The results can be shown by four actions (Filter, Select, Mark (color) and Find (focus)).<br />
+        The search can be controlled by users in &lt;Search> row.<br />
+      </li>
+      <li><h4>Search setting</h4><br />
+         Predefined search is set by <b>Cfg</b> attributes <b>SearchExpression</b> and <b>SearchAction</b>.<br />
+         <ul>
+            <li>
+               <h3>SearchExpression</h3> is the string to look for.<br />
+               Its format depends on method selected by Cfg attribute <b>SearchMethod</b>.<br />
+               By default the search method (1 or 2) is automatically recognized from the input SearchExpression.<br />
+               <ul>
+                  <li>
+                     <b>1</b> <h4>Search like Google</h4><br />
+                     The SearchExpression has similar syntax like Google search expression. The possible syntax is:<br />
+                     <b>word word</b> (both words must be present), <b>"word word"</b> (exact phrase), <b>word OR word</b> (at least one word must be present), 
+                     <b>-word</b> (the word must not be present), <b>#</b> (empty string).
+                  </li>
+                  <li>
+                     <b>2</b> <h4>Search by expression</h4><br />
+                     It uses similar syntax to TreeGrid formulas or actions and it supports also all JavaScript.<br />
+                     It can execute any JavaScript code except function calls (due security reason).<br />
+                     <i>For more information about the syntax see documentation for SearchExpression.</i>
+                  </li>
+                  <li>
+                     <b>3</b> <h4>Exact string search</h4><br />
+                     It looks for the string as it is entered, without any processing or special syntax.
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3>SearchAction</h3> is the action done for the found rows / cells.<br />
+               There can be listed more actions, comma or semicolon separated, done in the given order.
+               <ul>
+                  <li>
+                     <h4>Filter</h4><br />
+                     It shows only the found rows. <i>The filtering options are descibed in the previous examples 
+                     <a href='01 - Filtering rows.html'>01 - Filtering rows.html</a> and
+                     <a href='02 - Filtering in tree.html'>02 - Filtering in tree.html</a>.</i>
+                  </li>
+                  <li><h4>Select</h4><br />
+                     All the found rows are selected. All previously selected rows are unselected.<br />
+                     If set <b>SearchExpand='1'</b>, it expands all parent rows to become the found row visible.<br />
+                  </li>
+                  <li><h4>Mark</h4><br />
+                     All the found rows or individual cells (according to <b>SearchCells</b> value) are colored by special background color.<br />
+                     If there are some rows/cells already marked and the Mark action is done with different expression, the old colors are preserved and for new coloring is used different color.<br />
+                     How many different colors can be used is set <b>SearchMaxMark</b> value. After the maximum is reached, all the colored rows/cells are cleared and the coloring starts from the first color.<br />
+                     If set <b>SearchClass='1'</b>, it changes also CSS class of the found cells/rows, e.g. to change font or border. It can slow down the coloring.<br />
+                     If set <b>SearchExpand='1'</b>, it expands all parent rows to become the found row visible.<br />
+                  </li>
+                  <li><h4>Find</h4><br />
+                     The first found row is focused. If set <b>SearchCells='1'</b>, it focuses the first found cell, otherwise it does not change actually focused column.<br />
+                     When the Find action is run again with the same expression, it focuses cell/row next to the cell previously focused.<br />
+                     More setting can be done by <b>SearchFocused</b> (0 - searches always from beginning, 1 - searches from the actual position and ends on the end, 
+                     2 - like 1, but on the end continues from beginning, 3 - like 1, but on the end asks before continue from beginning.<br />
+                     If there is nothing found, it can display an alert, if set <b>SearchNotFound</b>.<br />
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>SearchOptions</h4><br />
+         <ul>
+            <li>
+               <h4>Searching strings</h4><br />
+               <ul>
+                  <li>
+                     Cfg attribute <h3>Search CaseSensitive</h3> to compare the strings case sensitive. By default is off (oposite to filter/group/sort setting).
+                  </li>
+                  <li>
+                     Cfg attribute <h3>SearchWhiteChars</h3> as list of characters to ignored when comparing. The strings are compared after these values are removed from them.
+                  </li>
+                  <li>
+                     Cfg attribute <h3>SearchCharCodes</h3> as list of character pairs to replace the first character by the second one in all strings before comparing them. Useful for example to compare strings without punctuation in many languages.
+                  </li>
+               </ul>
+            </li>
+            <li>
+            <h4>Searching numbers</h4><br />
+            The different ways of searching numbers is used only for cell types Int and Float and for SearchMethod='1' or '3'.<br />
+            Cfg attribute <h3>SearchNumbers</h3> specifies how the numbers will be compared, 0 - searched inside as string, 1 - exact compare of the whole value, 
+            2 - round (the value is rounded before compare), 3 - float (decimal part is removed before compare).
+            </li>
+            <li><h4>Which columns</h4><br />
+            The columns can be specified only for SearchMethod='1' or '3'. For SearchMethod='2' are always used all columns in the expression.<br />
+            Cfg attribute <h3>SearchCols</h3> specifies columns that will be searched in.<br /> 
+            If set Cfg attribute <b>SearchHidden='1'</b> it will search also in hidden columns.<br />
+            The individual columns can have set <b>CanSearch='0'</b> to exclude it from searching.<br />
+            </li>
+            <li>
+            <h4>Which rows</h4><br />
+            Which rows will be searched can be set by Cfg attribute <h3>SearchDefs</h3>, only rows with Def attribute listed here will be searched.
+            </li>
+            <li>
+               <h4>Rows or cells</h4><br />
+               Attribute <h3>SearchCells</h3> specifies if individual cells will be searched. <br />
+               Value 0 means searching inside whole row. All cells together must pass the condition. For example for search expression Peter Pan, must at least one cell contain Peter and onther or the same cell must contain Pan.<br />
+               Value 1 means searching in individual cells. The cell to be find must pass the condition. For example for search expression Peter Pan, must the one cell contain both Peter and Pan.<br />
+            </li>
+         </ul>
+      </li>
+       <li><h4>Cell value for Search</h4><br />
+         Every cell can have set special value by <h3>FilterValue</h3> to use it for search instead of the cell value.<br />
+         The value can be also dynamically created by JavaScript in API event <b>OnGetFilterValue</b>.<br />
+         <i>It affects also filtering, but not grouping / sorting</i>.
+      </li>
+      <li>
+         <h4>API</h4><br />
+         Before searching start it is called <b>OnSearch</b> API event. It can return true to provide own searchnig and not the default one. For Filter actions it is called also <b>OnFilter</b> event.<br />
+         After searching finishes, it is called <b>OnSearchFinish</b> API event. For Filter action it is called also <b>OnFilterFinish</b> event.<br />
+         For every row it is called <b>OnRowSearch</b> event to let you change the result of the searching in row.<br />
+         The grid can be searched with given action by <b>SearchRows</b> (asynchronously) or by <b>DoSearch</b> (synchronously).<br />
+         
+      </li>
+      <li><h4>Search user interface (&lt;Search>)</h4><br />
+         The user interface is done by Space &lt;Search> row, but the cells for controlling search can be displayed also on any other Space row like Group or Toolbar.<br />
+         There can be also more &lt;Search> rows in one grid with different cells. The &lt;Search> row can also contain any other custom cells not related to searching.<br />
+         There are predefined cell names, can be put into <b>Cells</b> array:
+         <ul>
+            <li>
+               <h3>Expression</h3>. Editable input cell to enter the SearchExpression. Attribute <b>ExpressionAction</b> specifies action(s) that will be run after the Expression is edited by a user.
+            </li>
+            <li>
+               <h3>Filter</h3>,<h3>Select</h3>,<h3>Mark</h3>,<h3>Find</h3>,<h3>Clear</h3>,<h3>Help</h3>. Individual buttons to run the named search action.
+            </li>
+            <li>
+               <h3>Search</h3>. Button to run search action(s) specified by cell value <h3>Actions</h3> - combo to choose one or more search actions.
+            </li>
+            <li>
+               <h3>List</h3>. Combo with predefined expression for the SearchExpression. The expression names are set by <b>ListDefaults</b>, the expressions by <b>ListExpressions</b>. 
+               After change is done action(s) set by <b>ListAction</b>.
+            </li>
+            <li>
+               <h3>Cols</h3>. Combo to select SearchCols value. The item names are set by <b>ColsDefaults</b>, the values by <b>ColsCols</b>.
+            </li>
+            <li>
+               <h3>Defs</h3>. Combo to select SearchDefs value. The item names are set by <b>DefsDefaults</b>, the values by <b>DefsDefs</b>.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

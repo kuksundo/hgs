@@ -1,0 +1,261 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{E8B8B3B4-ED5B-431B-934C-1240928B7ED1}</ProjectGuid>
+        <MainSource>SIP.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <TargetedPlatforms>17</TargetedPlatforms>
+        <AppType>Console</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <ProjectVersion>15.3</ProjectVersion>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_N>true</DCC_N>
+        <DCC_RangeChecking>true</DCC_RangeChecking>
+        <DCC_K>false</DCC_K>
+        <DCC_ExeOutput>./bin</DCC_ExeOutput>
+        <DCC_S>false</DCC_S>
+        <DCC_BplOutput>./bin</DCC_BplOutput>
+        <DCC_DcuOutput>./build</DCC_DcuOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_DebugInformation>true</DCC_DebugInformation>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
+        <DCC_UsePackage>vcl;rtl;dbrtl;adortl;vcldb;vclx;bdertl;vcldbx;ibxpress;dsnap;cds;bdecds;qrpt;teeui;teedb;tee;dss;teeqr;visualclx;visualdbclx;dsnapcrba;dsnapcon;VclSmp;vclshlctrls;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;inetdb;webdsnap;websnap;soaprtl;dbexpress;dbxcds;dclOffice2k;UnicodeConvDelphi6;$(DCC_UsePackage)</DCC_UsePackage>
+        <VerInfo_Locale>2057</VerInfo_Locale>
+        <DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+        <DCC_F>false</DCC_F>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <Icon_MainIcon>SIP_Icon.ico</Icon_MainIcon>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <Icon_MainIcon>SIP_Icon.ico</Icon_MainIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="src\audioclasses.pas"/>
+        <DCCReference Include="src\ConfigUtils.pas"/>
+        <DCCReference Include="src\IdAddressSpace.pas"/>
+        <DCCReference Include="src\IdBaseThread.pas"/>
+        <DCCReference Include="src\IdConnectionBindings.pas"/>
+        <DCCReference Include="src\IdDTMFPanel.pas"/>
+        <DCCReference Include="src\IdIndyUtils.pas"/>
+        <DCCReference Include="src\IdInterfacedObject.pas"/>
+        <DCCReference Include="src\IdNetworking.pas"/>
+        <DCCReference Include="src\IdNotification.pas"/>
+        <DCCReference Include="src\IdObservable.pas"/>
+        <DCCReference Include="src\IdRandom.pas"/>
+        <DCCReference Include="src\IdRegisteredObject.pas"/>
+        <DCCReference Include="src\IdRoutingTable.pas"/>
+        <DCCReference Include="src\IdRTP.pas"/>
+        <DCCReference Include="src\IdRTPDiagnostics.pas"/>
+        <DCCReference Include="src\IdRTPServer.pas"/>
+        <DCCReference Include="src\IdSdp.pas"/>
+        <DCCReference Include="src\IdSimpleParser.pas"/>
+        <DCCReference Include="src\IdSipAuthentication.pas"/>
+        <DCCReference Include="src\IdSipCore.pas"/>
+        <DCCReference Include="src\IdSipDialog.pas"/>
+        <DCCReference Include="src\IdSipDialogID.pas"/>
+        <DCCReference Include="src\IdSipDns.pas"/>
+        <DCCReference Include="src\IdSipIndyLocator.pas"/>
+        <DCCReference Include="src\IdSipInviteModule.pas"/>
+        <DCCReference Include="src\IdSipLocation.pas"/>
+        <DCCReference Include="src\IdSipLocator.pas"/>
+        <DCCReference Include="src\IdSipMessage.pas"/>
+        <DCCReference Include="src\IdSipInMemoryBindingDatabase.pas"/>
+        <DCCReference Include="test\IdSipMockCore.pas"/>
+        <DCCReference Include="test\IdSipMockDnsServer.pas"/>
+        <DCCReference Include="test\IdSipMockLocator.pas"/>
+        <DCCReference Include="test\IdSipMockTransactionDispatcher.pas"/>
+        <DCCReference Include="test\IdSipMockTransport.pas"/>
+        <DCCReference Include="src\IdSipOptionsModule.pas"/>
+        <DCCReference Include="src\IdSipProxy.pas"/>
+        <DCCReference Include="src\IdSipProxyDescription.pas"/>
+        <DCCReference Include="src\IdSipRegistration.pas"/>
+        <DCCReference Include="src\IdSipSctpTransport.pas"/>
+        <DCCReference Include="src\IdSipStackInterface.pas"/>
+        <DCCReference Include="src\IdSipSubscribeModule.pas"/>
+        <DCCReference Include="src\IdSipTcpTransport.pas"/>
+        <DCCReference Include="src\IdSipTlsOverSctpTransport.pas"/>
+        <DCCReference Include="src\IdSipTlsTransport.pas"/>
+        <DCCReference Include="src\IdSipTransaction.pas"/>
+        <DCCReference Include="src\IdSipTransport.pas"/>
+        <DCCReference Include="src\IdSipTransportAddressSpace.pas"/>
+        <DCCReference Include="src\IdSipTransportLogger.pas"/>
+        <DCCReference Include="src\IdSipUdpTransport.pas"/>
+        <DCCReference Include="src\IdSipUserAgent.pas"/>
+        <DCCReference Include="src\IdSystem.pas"/>
+        <DCCReference Include="src\IdThreadableTcpClient.pas"/>
+        <DCCReference Include="src\IdTimerQueue.pas"/>
+        <DCCReference Include="src\IdUnicode.pas"/>
+        <DCCReference Include="src\MessageQueues.pas"/>
+        <DCCReference Include="src\PluggableLogging.pas"/>
+        <DCCReference Include="src\RuntimeSafety.pas"/>
+        <DCCReference Include="src\SipConfigUtils.pas"/>
+        <DCCReference Include="src\StringDictionary.pas"/>
+        <DCCReference Include="test\TestFrameworkEx.pas"/>
+        <DCCReference Include="test\TestFrameworkRtp.pas"/>
+        <DCCReference Include="test\TestFrameworkSdp.pas"/>
+        <DCCReference Include="test\TestFrameworkSip.pas"/>
+        <DCCReference Include="test\TestFrameworkSipTransport.pas"/>
+        <DCCReference Include="test\TestFrameworkSipTU.pas"/>
+        <DCCReference Include="test\TestFrameworkStackInterface.pas"/>
+        <DCCReference Include="test\TestFrameworkTimerQueue.pas"/>
+        <DCCReference Include="test\TestMessages.pas"/>
+        <DCCReference Include="test\TestConfigUtils.pas"/>
+        <DCCReference Include="test\TestIdAddressSpace.pas"/>
+        <DCCReference Include="test\TestIdConnectionBindings.pas"/>
+        <DCCReference Include="test\TestIdIndyUtils.pas"/>
+        <DCCReference Include="test\TestIdNetworking.pas"/>
+        <DCCReference Include="test\TestIdNotification.pas"/>
+        <DCCReference Include="test\TestIdObservable.pas"/>
+        <DCCReference Include="test\TestIdRandom.pas"/>
+        <DCCReference Include="test\TestIdRegisteredObject.pas"/>
+        <DCCReference Include="test\TestIdRoutingTable.pas"/>
+        <DCCReference Include="test\TestIdRTP.pas"/>
+        <DCCReference Include="test\TestIdRTPDiagnostics.pas"/>
+        <DCCReference Include="test\TestIdRTPServer.pas"/>
+        <DCCReference Include="test\TestIdSdp.pas"/>
+        <DCCReference Include="test\TestIdSimpleParser.pas"/>
+        <DCCReference Include="test\TestIdSipAuthentication.pas"/>
+        <DCCReference Include="test\TestSipConfigUtils.pas"/>
+        <DCCReference Include="test\TestIdSipCore.pas"/>
+        <DCCReference Include="test\TestIdSipDialog.pas"/>
+        <DCCReference Include="test\TestIdSipDialogID.pas"/>
+        <DCCReference Include="test\TestIdSipDns.pas"/>
+        <DCCReference Include="test\TestIdSipHeaders.pas"/>
+        <DCCReference Include="test\TestIdSipIndyLocator.pas"/>
+        <DCCReference Include="test\TestIdSipInviteModule.pas"/>
+        <DCCReference Include="test\TestIdSipLocation.pas"/>
+        <DCCReference Include="test\TestIdSipLocator.pas"/>
+        <DCCReference Include="test\TestIdSipMessage.pas"/>
+        <DCCReference Include="test\TestIdSipOptionsModule.pas"/>
+        <DCCReference Include="test\TestIdSipParser.pas"/>
+        <DCCReference Include="test\TestIdSipProxy.pas"/>
+        <DCCReference Include="test\TestIdSipProxyDescription.pas"/>
+        <DCCReference Include="test\TestIdSipRegistrar.pas"/>
+        <DCCReference Include="test\TestIdSipRegistration.pas"/>
+        <DCCReference Include="test\TestIdSipStackInterface.pas"/>
+        <DCCReference Include="test\TestIdSipSubscribeModule.pas"/>
+        <DCCReference Include="test\TestIdSipSctpTransport.pas"/>
+        <DCCReference Include="test\TestIdSipTcpTransport.pas"/>
+        <DCCReference Include="test\TestIdSipTlsTransport.pas"/>
+        <DCCReference Include="test\TestIdSipTransaction.pas"/>
+        <DCCReference Include="test\TestIdSipTransport.pas"/>
+        <DCCReference Include="test\TestIdSipTransportAddressSpace.pas"/>
+        <DCCReference Include="test\TestIdSipTransportLogger.pas"/>
+        <DCCReference Include="test\TestIdSipUdpTransport.pas"/>
+        <DCCReference Include="test\TestIdSipUserAgent.pas"/>
+        <DCCReference Include="test\TestIdSipUri.pas"/>
+        <DCCReference Include="test\TestIdSystem.pas"/>
+        <DCCReference Include="test\TestIdThreadableTcpClient.pas"/>
+        <DCCReference Include="test\TestIdTimerQueue.pas"/>
+        <DCCReference Include="test\TestIdUnicode.pas"/>
+        <DCCReference Include="test\TestStringDictionary.pas"/>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">SIP.dpr</Source>
+                </Source>
+                <Language>
+                    <Language Name="RootDir">E:\pjh\project\OpenSrc\SipStack-master\</Language>
+                </Language>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">False</VersionInfo>
+                    <VersionInfo Name="MajorVer">0</VersionInfo>
+                    <VersionInfo Name="MinorVer">1</VersionInfo>
+                    <VersionInfo Name="Release">0</VersionInfo>
+                    <VersionInfo Name="Build">0</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">2057</VersionInfo>
+                    <VersionInfo Name="CodePage">1252</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName"/>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">0.1.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright"/>
+                    <VersionInfoKeys Name="LegalTrademarks"/>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName"/>
+                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="Comments"/>
+                </VersionInfoKeys>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Android">True</Platform>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

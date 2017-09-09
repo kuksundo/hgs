@@ -1,0 +1,342 @@
+<html>
+<head>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<style><!--
+   .F { font-weight:bold; color:#0A7EA4; }
+   .K { color:brown; }
+   .R { font-weight:bold; color:brown;}
+   .P { font-weight:bold; font-style:italic;}
+   .S { color:#A0A; }
+   .C { color:#AAA; }
+--></style>
+<div align=center><font size=7><b>TreeGrid JSP Framework</b></font></div>
+<br>
+The framework contains support <b>Java</b> functions to help you with generating and parsing TreeGrid XML data and reading it from and upating it to database <b>in server side script</b>.<br>
+You need not use this framework, it contains only helper functions to simplify writting your code.<br>
+The framework is located in single file <b>TreeGridFramework.jsp</b> and can be included into your JSP pages by standard include mechanism <span style='background:yellow;font-family:monospace;'>&lt;%@include file="TreeGridFramework.jsp"%></span>.<br>
+Remember, if you are generating XML files, be careful to not generate any white space before the first &lt; character.<br>
+<br>
+
+
+
+
+<!-- Parsing uploaded XML -->
+
+<a name='ParseXML'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Parsing uploaded XML</b></font></div>
+<br>
+<i><b>Specific</b> functions for parsing TreeGrid output XML changes</i><br>
+<br>
+<li><span class=K>Document</span> <span class=F>parseXML</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+Returns XML Document from String XML.<br> 
+Returns null when <span class=P>XML</span> is empty or not valid.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>Element[]</span> <span class=F>getChanges</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>Element[]</span> <span class=F>getChanges</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns all changed rows - array of XML &lt;I> elements in &lt;Changes> tag.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>int</span> <span class=F>getPagePos</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>int</span> <span class=F>getPagePos</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns page number (&lt;B Pos='000'/>) from input XML. By this number is page identified for server paging.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>String</span> <span class=F>getPageId</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>String</span> <span class=F>getPageId</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns page id attribute (&lt;B id='xxx'/>) from input XML. By this id is row identified to get its children when server child paging is used.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>String[]</span> <span class=F>getSortCols</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>String[]</span> <span class=F>getSortCols</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns array of columns according to is grid sorted.
+Returns null if there are no columns. <br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>int[]</span> <span class=F>getSortTypes</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>int[]</span> <span class=F>getSortTypes</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns array of sorting types for columns according to is grid sorted.
+Returns null if there are no columns.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>String[]</span> <span class=F>getGroupCols</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>String[]</span> <span class=F>getGroupCols</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns array of columns according to is grid grouped.
+Returns null if there are no columns. <br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>int[]</span> <span class=F>getGroupTypes</span> (<span class=K>String</span> <span class=P>XML</span>)<br>
+<li><span class=K>int[]</span> <span class=F>getGroupTypes</span> (<span class=K>Document</span> <span class=P>XML</span>)<br>
+Returns array of grouping types for columns according to is grid grouped.
+Returns null if there are no columns.<br>
+<span class=P>XML</span> is complete data XML uploaded by TreeGrid.<br>
+<br>
+<li><span class=K>boolean</span> <span class=F>isAttribute</span> (<span class=K>Element</span> <span class=P>I</span>,
+<span class=K>String</span> <span class=P>name</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+Compares value of row <span class=P>I</span> attribute <span class=P>name</span> with given <span class=P>value</span>.<br>
+<br>
+<li><span class=K>boolean</span> <span class=F>isDeleted</span> (<span class=K>Element</span> <span class=P>I</span>)<br>
+<li><span class=K>boolean</span> <span class=F>isAdded</span> (<span class=K>Element</span> <span class=P>I</span>)<br>
+<li><span class=K>boolean</span> <span class=F>isChanged</span> (<span class=K>Element</span> <span class=P>I</span>)<br>
+<li><span class=K>boolean</span> <span class=F>isMoved</span> (<span class=K>Element</span> <span class=P>I</span>)<br>
+Tests if given row <span class=P>I</span> has set the flag. For Moved tests equality to "2" (moved to another parent).<br>
+<br>
+<li><span class=K>boolean</span> <span class=F>getParameter</span> (<span class=K>HttpServletRequest</span> <span class=P>request</span>,<span class=K>String</span> <span class=P>name</span>)<br>
+Returns request parameter value, for null returns "".<br>
+<br>
+
+
+<!-- Generating SQL commands -->
+
+<a name='GenerateSQL'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Generating SQL commands</b></font></div>
+<br>
+<i><b>Universal</b> functions for generating SQL commands from strings or values in XML attributes</i><br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQL</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+Returns string in quotes (') and with doubled all quotes.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQL</span> (<span class=K>Element</span> <span class=P>I</span>, <span class=K>String</span> <span class=P>name</span>)<br>
+Returns value of XML attribute in quotes (') and with doubled all quotes.<br>
+If attribute does not exist, returns two single quotes ('').<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLUpdateString</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+Returns one item for UPDATE command, for string types. Returns "<span class=P>name</span>=<font color=red><b>'</b></font><span class=P>value</span><font color=red><b>',</b></font>".<br>
+If value is null, returns empty string.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLUpdateString</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>Element</span> <span class=P>I</span>, <span class=K>String</span> <span class=P>attributeName</span>)<br>
+Returns one item for UPDATE command, for string types. Returns "<span class=P>name</span>=<font color=red><b>'</b></font><span class=P>I</span>.getAttribute(<span class=P>attributeName</span>)<font color=red><b>',</b></font>". For example "A=<font color=red><b>'</b></font>Peter<font color=red><b>''</b></font>s bug<font color=red><b>',</b></font>".<br>
+If attribute does not exist, returns empty string.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLUpdateNumber</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+Returns one item for UPDATE command, for number types. Returns "<span class=P>name</span>=<span class=P>value</span><font color=red><b>,</b></font>".<br>
+If value is null or empty string, returns empty string.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLUpdateNumber</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>Element</span> <span class=P>I</span>, <span class=K>String</span> <span class=P>attributeName</span>)<br>
+Returns one item for UPDATE command, for number types. Returns "<span class=P>name</span>=<span class=P>I</span>.getAttribute(<span class=P>attributeName</span>)<font color=red><b>,</b></font>". For example "A=3<font color=red><b>,</b></font>".<br>
+If attribute does not exist, returns empty string.<br>
+<br>
+<li><span class=K>String</span> <span class=F>trimSQL</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+Deletes all commas on the end of string <span class=P>value</span>. Useful when building comma separated list in loop, call it after list is built to strip ending comma(s).<br>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLInsert</span> (<span class=K>Element</span> <span class=P>I</span>,
+<span class=K>String[]</span> <span class=P>attrNames</span>, <span class=K>boolean[]</span> <span class=P>attrIsString</span>)<br>
+Returns values of row (XML element) <span class=P>I</span> attributes in <span class=P>attrNames</span>, separated by comma.<br>
+The string never ends by comma.<br>
+If the attribute does not exists, it is not included.<br>
+If <span class=P>attrIsString</span>[n] is true, it encloses attribute value by ' '.<br>
+This function can be used for SQL INSERT command generating. Example: <br>
+<pre style='margin:5px;'>
+Element I;    <i class=C>// I is XML for example "&lt;I id='7' Project='Main' Resource='This' Week='4' Hours='13'/></i>
+String[] Names = {<span class=S>"Project"</span>,<span class=S>"Resource"</span>,<span class=S>"Week"</span>,<span class=S>"Hours"</span>}; 
+boolean[] IsString = {false,true,true,false,false};
+String SQL = <span class=S>"INSERT INTO TableData(ID,Project,Resource,Week,Hours) VALUES("</span> + getAttributes(I,Names,IsString) + <span class=S>")"</span>;
+</pre>
+<br>
+<li><span class=K>String</span> <span class=F>toSQLUpdate</span> (<span class=K>Element</span> <span class=P>I</span>,
+<span class=K>String[]</span> <span class=P>attrNames</span>, <span class=K>String[]</span> <span class=P>outNames</span>,
+<span class=K>boolean[]</span> <span class=P>attrIsString</span>)<br>
+Returns row (XML element) <span class=P>I</span> attribute values in format "<span class=P>outNames</span>[0]=value_of_<span class=P>attrNames</span>[0],<span class=P>outNames</span>[1]=value_of_<span class=P>attrNames</span>[1], ...".<br>
+The string never ends by comma.<br>
+If the attribute does not exists, it is not included.<br>
+If <span class=P>attrIsString</span>[n] is true, it encloses attribute value by ' '.<br>
+This function can be used for SQL UPDATE command generating. Example:<br>
+<pre style='margin:5px;'>
+Element I;    <i class=C>// I is XML for example "&lt;I id='7' Project='Main' Hours='13'/></i>
+String[] Names = {<span class=S>"Project"</span>,<span class=S>"Resource"</span>,<span class=S>"Week"</span>,<span class=S>"Hours"</span>}; 
+boolean[] IsString = {true,true,false,false};
+String SQL = <span class=S>"UPDATE TableData SET "</span> + getAttributes(I,Names,Names,IsString) + <span class=S>" WHERE ID="</span> + getAttribute(I,"id");
+</pre>
+<br>
+
+
+
+
+<!-- Advanced function for updating changes from XML to database-->
+
+<a name='UpdateChanges'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Updating changes in XML to database</b></font></div>
+<br>
+<i><b>Advanced specific</b> functions for updating changes got in TreeGrid XML to database table.</i><br>
+<br>
+<li><span class=K>boolean</span> <span class=F>saveTree</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String</span> <span class=P>idCol</span>,
+<span class=K>String</span> <span class=P>parentCol</span>, <span class=K>String</span> <span class=P>parentBody</span>)
+<span class=R>throws</span> <span class=K>SQLException</span><br>
+Saves changes in XML to database <span class=P>table</span> by SQL statement <span class=P>Cmd</span>.<br>
+<span class=P>idCol</span> is database table column name where is stored id attribute. <br>
+<span class=P>parentCol</span> is database table column name where is stored Parent attribute, for Parent<-Child relation. In Parent column the row has value of id column of parent row => All parent's children have its id in their Parent column.<br>
+<span class=P>bodyParent</span> is value of Parent for new added root rows.<br>
+This function expects that all other attribute names are the same as column names in database table.<br>
+<br>
+
+
+
+<!-- Creating XML -->
+
+<a name='CreateXML'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Creating XML</b></font></div>
+<br>
+<i><b>Universal</b> functions for creating XML.</i><br>
+<br>
+<li><span class=K>String</span> <span class=F>toXMLString</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+Returns <span class=P>value</span> with replaced  <font color=red>&amp; ' &lt;</font>  by XML entities<br>
+<br>
+<li><span class=K>String</span> <span class=F>fromXMLString</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+Returns <span class=P>value</span> with replaced XML entities by  <font color=red>&amp; ' &lt; " ></font>  characters.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toHTMLString</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+Returns <span class=P>value</span> with replaced  <font color=red>&amp; "</font>  by XML entities.<br>
+Useful for direct writing generated XML to hidden input value on HTML page. Don't forget to use double quotes to enclose the string.<br>
+<br>
+
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>String</span> <span class=P>value</span>)<br>
+<li><span class=K>void</span> <span class=F>toXML</span> (<span class=K>StringBuffer</span> <span class=P>S</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+Returns <span class=P>value</span> in single quotes (') with replaced XML entities by  <font color=red>&amp; ' &lt;</font>  characters.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>short</span> <span class=P>value</span>)<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>int</span> <span class=P>value</span>)<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>long</span> <span class=P>value</span>)<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>boolean</span> <span class=P>value</span>)<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>float</span> <span class=P>value</span>)<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>double</span> <span class=P>value</span>)<br>
+Returns <span class=P>value</span> in single quotes (').<br>
+<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+<li><span class=K>void</span> <span class=F>toXML</span> (<span class=K>StringBuffer</span> <span class=P>S</span>, <span class=K>String</span> <span class=P>name</span>, <span class=K>String</span> <span class=P>value</span>)<br>
+Returns " <span class=P>value</span>=<font color=red><b>'</b></font><span class=P>value</span><font color=red><b>'</b></font>", value with replaced XML entities by  <font color=red>&amp; ' &lt;</font>  characters.<br>
+<br>
+<li><span class=K>String</span> <span class=F>toXML</span> (<span class=K>String</span> <span class=P>name</span>, <span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String</span> <span class=P>columnName</span>)<br>
+<li><span class=K>void</span> <span class=F>toXML</span> (<span class=K>StringBuffer</span> <span class=P>S</span>, <span class=K>String</span> <span class=P>name</span>, <span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String</span> <span class=P>columnName</span>)<br>
+Returns " <span class=P>name</span>=<font color=red><b>'</b></font><span class=P>R</span>.getString(<span class=P>columnName</span>)<font color=red><b>'</b></font>", value with replaced XML entities by  <font color=red>&amp; ' &lt;</font>  characters.<br>
+ResultSet must be opened and cursor must be on some row.<br>
+<br>
+
+
+
+
+<!-- Advanced creating XML -->
+
+<a name='AdvancedXML'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Advanced creating XML</b></font></div>
+<br>
+<i><b>Specific</b> functions for creating TreeGrid XML.</i><br>
+<br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>values</span>)<br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>values</span>,<span class=K>String</span> <span class=P>end</span>)<br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>colNames</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>colNames</span>, <span class=K>String</span> <span class=P>end</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>int[]</span> <span class=P>colIndexes</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>int[]</span> <span class=P>colIndexes</span>, <span class=K>String</span> <span class=P>end</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getRowXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>String</span> <span class=P>end</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+Returns XML representation of one row with given attribute <span class=P>names</span> and their values in array or from ResultSet <span class=P>R</span> in columns <span class=P>colNames</span> or <span class=P>colIndexes</span> or in columns in order according to names.<br>
+<span class=P>end</span> is the string appended after row, for rows with children use ">", without children "/>" (default), or you can set own attributes.<br>
+Does not move cursor in ResultSet.<br>
+Remember when <span class=P>colIndexes</span> are used, columns are indexed from 1 !<br>
+Example:
+<pre style='margin:5px;'>
+String[] Names = {<span class=S>"id"</span>,<span class=S>"Project"</span>,<span class=S>"Resource"</span>,<span class=S>"Week"</span>,<span class=S>"Hours"</span>}; 
+String[] Values = {<span class=S>"7"</span>, <span class=S>"Main"</span>,<span class=S>"This"</span>,<span class=S>"4"</span>,<span class=S>"13"</span>};
+String XML = getRowXML(Names,Values); <i class=C>// The result will be: "&lt;I id='7' Project='Main' Resource='This' Week='4' Hours='13'/>"</i>
+</pre>
+
+<br>
+<li><span class=K>String</span> <span class=F>getTableXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>colNames</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTableXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>, <span class=K>String[]</span> <span class=P>colIndexes</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTableXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String[]</span> <span class=P>names</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+Returns complete (include &lt;Grid> tag) XML representation of all rows with given attribute <span class=P>names</span> and their values from ResultSet <span class=P>R</span> in columns <span class=P>colNames</span> or <span class=P>colIndexes</span> or in columns in order according to names.<br>
+Remember when <span class=P>colIndexes</span> are used, columns are indexed from 1 !<br>
+Example result:
+<pre style='margin:5px;'>
+&lt;Grid>&lt;Body>&lt;B>
+   &lt;I id='7' Project='Main' Resource='This' Week='4' Hours='13'/>
+   &lt;I id='8' Project='Main' Resource='That' Week='3' Hours='8'/>
+&lt;/B>&lt;/Body>&lt;Grid></i>
+</pre>
+<br>
+<li><span class=K>String</span> <span class=F>getTableXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTableXML</span> (<span class=K>ResultSet</span> <span class=P>R</span>, <span class=K>String</span> <span class=P>idCol</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+Returns complete (include &lt;Grid> tag) XML representation of all rows with given attribute <span class=P>names</span> and their values from ResultSet <span class=P>R</span> in the same named attributes.<br>
+Remember, some SQL databases have case insensitive column names and TreeGrid XML has always case-sensitive names.<br>
+<span class=P>idCol</span> is name of database column that will be stored to id attribute.<br>
+<br>
+
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String[]</span> <span class=P>colNames</span>, <span class=K>String</span> <span class=P>bodyParent</span>)
+<span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String[]</span> <span class=P>colNames</span>, <span class=K>String</span> <span class=P>bodyParent</span>,
+<span class=K>String</span> <span class=P>headParent</span>, <span class=K>String</span> <span class=P>footParent</span>,
+<span class=K>boolean</span> <span class=P>deep</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String</span> <span class=P>bodyParent</span>)
+<span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String</span> <span class=P>bodyParent</span>,
+<span class=K>String</span> <span class=P>headParent</span>, <span class=K>String</span> <span class=P>footParent</span>,
+<span class=K>boolean</span> <span class=P>deep</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+Returns complete (include &lt;Grid> tag) XML representation of all rows with given attribute <span class=P>names</span> 
+and their values from ResultSet <span class=P>R</span> in columns indexed as attribute names 
+or when used <span class=P>colNames</span> returns only columns in this array in the same order as names attributes.<br>
+It is used for generating tree from one table that has parent->id relation.<br>
+<span class=P>table</span> is name of database table
+<span class=P>names</span> are TreeGrid attribute names in order in that are filled from columns from database table
+<span class=P>colNames</span> are names of columns in database used instead of indexes. Must be in the same order as names array. Can contain only some columns from database table.<br>
+<span class=P>names</span> must contain name "<b>id</b>", this is identity attribute to unique identify row when uploading and in tree.<br>
+<span class=P>names</span> must also contain name "<b>Parent</b>", this is column related to id in Parent<-Child. 
+In Parent column the row has value of id column of parent row => All parent's children have its id in their Parent column.<br>
+For <span class=P>deep</span>==false reads only one level of tree, for server side child paging.<br>
+<br>
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String[]</span> <span class=P>colNames</span>, <span class=K>String</span> <span class=P>parentVal</span>,
+<span class=K>boolean</span> <span class=P>deep</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+<li><span class=K>String</span> <span class=F>getTreeXML</span> (<span class=K>Statement</span> <span class=P>Cmd</span>,
+<span class=K>String</span> <span class=P>table</span>, <span class=K>String[]</span> <span class=P>names</span>,
+<span class=K>String</span> <span class=P>parentVal</span>
+<span class=K>boolean</span> <span class=P>deep</span>) <span class=R>throws</span> <span class=K>SQLException</span><br>
+Returns partial XML, returns children of row with id = <span class=P>parentVal</span> => returns all rows that have in their Parent column value <span class=P>parentVal</span>.<br>
+Other parameters are the same as in previous function getTreeXML.<br>
+<br>
+
+
+
+<!-- Support for examples -->
+
+<a name='ExamplesSupport'></a>
+<hr>
+<br>
+<div align=center><font size=5><b>Support for examples</b></font></div>
+<br>
+<li><span class=K>Statement</span> <span class=F>getHsqlStatement</span> (<span class=K>HttpServletRequest</span> <span class=P>request</span>,
+<span class=K>JspWriter</span> <span class=P>out</span>, <span class=K>String</span> <span class=P>dbPath</span>,
+<span class=K>String</span> <span class=P>user</span>, <span class=K>String</span> <span class=P>pass</span>)
+<span class=R>throws</span> <span class=K>Exception</span><br>
+Creates SQL statement for SQL database HSQLDB that is used for examples.<br>
+HSQLDB is simple database in text files without need of any driver instalation. Just copy file hsqldb.jar file to your shared lib directory and restart http server.<br>
+<span class=P>request</span> and <span class=P>out</span> are just the variables in main servlet functions.<br>
+<span class=P>dbPath</span> is path and name of database file(s), relative to location of the script file.<br>
+<span class=P>user</span> and <span class=P>pass</span> are login information to database.<br>
+If database driver cannot be executed, because hsqldb.jar file is missing or not accessible it writes this information to output, closes it and raises Exception.<br>
+
+
+
+</body>
+</html>

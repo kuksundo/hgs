@@ -1,0 +1,60 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{F877F350-0967-4C2D-AB0D-8C16FA1C48E7}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="MathApp.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Test\MathAppTests.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Test2\MathAppTests2.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="MathApp">
+			<MSBuild Projects="MathApp.dproj"/>
+		</Target>
+		<Target Name="MathApp:Clean">
+			<MSBuild Targets="Clean" Projects="MathApp.dproj"/>
+		</Target>
+		<Target Name="MathApp:Make">
+			<MSBuild Targets="Make" Projects="MathApp.dproj"/>
+		</Target>
+		<Target Name="MathAppTests">
+			<MSBuild Projects="Test\MathAppTests.dproj"/>
+		</Target>
+		<Target Name="MathAppTests:Clean">
+			<MSBuild Targets="Clean" Projects="Test\MathAppTests.dproj"/>
+		</Target>
+		<Target Name="MathAppTests:Make">
+			<MSBuild Targets="Make" Projects="Test\MathAppTests.dproj"/>
+		</Target>
+		<Target Name="MathAppTests2">
+			<MSBuild Projects="Test2\MathAppTests2.dproj"/>
+		</Target>
+		<Target Name="MathAppTests2:Clean">
+			<MSBuild Targets="Clean" Projects="Test2\MathAppTests2.dproj"/>
+		</Target>
+		<Target Name="MathAppTests2:Make">
+			<MSBuild Targets="Make" Projects="Test2\MathAppTests2.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="MathApp;MathAppTests;MathAppTests2"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="MathApp:Clean;MathAppTests:Clean;MathAppTests2:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="MathApp:Make;MathAppTests:Make;MathAppTests2:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>

@@ -1,0 +1,48 @@
+<Grid>
+   <Cfg id="Tree" MainCol="N"/>
+   <Cols>
+      <C Name="id" CanEdit="0"/>
+      <C Name="N" Width="180"/>
+      <C Name="T"/>
+      <C Name="C" Formula="count(4)"/>
+      <C Name="D" Formula="Row.Def.Name"/>
+   </Cols>
+   <Actions OnDragRow="DragSelected OR DragRow" OnRightDragRow="DragSelectedCopy OR DragCopy" OnCtrlRightDragRow="DragSelectedCopyChildren OR DragCopyChildren"/>
+   <Root CDef="NODE" AcceptDef="NODE"/>
+   <Def>
+      <D Name="R" Calculated="1"/>
+      <D Name="NODE" CDef="ITEM" AcceptDef="ITEM"/>
+      <D Name="ITEM" CDef="SUBITEM" AcceptDef="ITEM,SUBITEM"/>
+      <D Name="SUBITEM" CDef="SUBITEM" AcceptDef="SUBITEM"/>
+   </Def>
+   <Header id="id" N="Name" T="Text" C="Count" D="Def"/>
+   <Body>
+      <B>
+         <I id='N1' N='Node 1' T='N1' Expanded='0'>
+            <I id='I1' N='Item 1' T='I1'>
+               <I id='S1' N='Subitem 1' T='S1'/>
+               <I id='S2' N='Subitem 2' T='S2'/>
+            </I>
+            <I id='I2' N='Item 2' T='I2'/>
+         </I>
+         <I id='N2' N='Node 2' T='N2'/>
+         <I id='N3' N='Node 3' T='N3'>
+            <I id='I3' N='Item 3' T='I3'>
+               <I id='S3' N='Subitem 3' T='S3'>
+                  <I id='S4' N='Subitem 4' T='S4'/>
+               </I>
+               <I id='S5' N='Subitem 5' T='S5'/>
+            </I>
+            <I id='I4' N='Item 4' T='I4'>
+               <I Def='ITEM' id='I5' N='Item 5' T='I5'>
+                  <I id='S6' N='Subitem 6' T='S6'/>
+               </I>
+            </I>
+         </I>
+         <I id='N4' N='Node 4' T='N4'>
+            <I id='I6' N='Item 6' T='I6'/>
+         </I>
+         <I id='N5' N='Node 5' T='N5'/>
+      </B>
+   </Body>
+</Grid>

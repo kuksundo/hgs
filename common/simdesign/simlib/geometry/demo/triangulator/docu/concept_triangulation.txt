@@ -1,0 +1,265 @@
+For the N-dimensional triangulation there are some concepts, applying both to 2D and 3D.
+
+Basic entities
+==============
+
+Minimum volume element (triangle/tetrahedon)
+--------------------------------------------
+
+2D: Triangle2D: 
+- Triangle consisting of 3 vertices
+- The 3 edges (lines) connect to other triangles (neighbours)
+- A triangle edge line may be part of a segment (part of the boundary)
+- Delaunay circle: the circle passing through the 3 vertices
+- Delaunay property: no neighbour triangle points lay within the delaunay circle
+- Area: 1/2 * (V2-V1) x (V3-V1)
+- Normals: pointing out from the edges, unit length
+  N1 = |(V2-V1) x (0 0 1)|
+  N2 = |(V3-V2) x (0 0 1)|
+  N3 = |(V1-V3) x (0 0 1)|
+- Vertex angle: Each vertex corner occupies some part of the unit circle around the 
+  vertex: arc part / total circumference on the unit circle. To simplify things, we
+  use the cosine of the angle. 
+- Smallest angle: smallest of the 3 vertex angles. 
+
+3D: Tetra3D: 
+- Tetrahedon consisting of 4 vertices
+- The 4 edges (planes) connect to other tetrahedons (neighbours)
+- A tetrahedon edge plane may be part of a segment (part of the boundary)
+- Delaunay sphere: the sphere passing through the 4 vertices
+- Delaunay property: no neighbour tetrahedon points lay within the delaunay sphere
+- Volume: 1/6 * ((V2-V1) x (V3-V1)) * (V4-V1)
+- Normals: pointing out from the edge planes, unit length
+  N1 = |(V3-V1) x (V2-V1)|
+  N2 = |(V3-V2) x (V4-V2)|
+  N3 = |(V1-V3) x (V4-V3)|
+  N4 = |(V1-V4) x (V2-V4)|
+- Vertex angle: Each vertex corner occupies some part of the unit sphere around the 
+  vertex: arc part / total circumference on the unit sphere. To simplify things, we
+  use the product of the 3 cosines of the angles to the other vertices. 
+- Smallest angle: smallest of the 4 vertex angles.
+
+Vertex
+------
+
+2D: Vertex2D: a vertex is a point in space, defined by X and Y coordinate
+3D: Vertex3D: a vertex is a point in space, defined by X and Y and Z coordinate
+
+Quality Mesh
+------------
+
+2D: TriMesh2D: 
+- Has list of vertices making up the (delaunay) triangles
+- Has a list of triangles
+- Has a list of steiner points (vertices) that are added for the quality mesh
+
+3D: TetraMesh3D: 
+- Has list of vertices making up the (delaunay) tetrahedons
+- Has a list of tetrahedons
+- Has a list of steiner points (vertices) that are added for the quality mesh
+
+Boundary
+--------
+
+2D: Graph2D
+- List of segments
+- List of vertices
+
+3D: Graph3D
+- List of segments
+- List of vertices
+
+Segment
+-------
+2D: Segment2D
+- This is a line, connected to two vertices
+
+3D: Segment3D
+- This is a *polyline*, connecting N vertices, defining a plane. For simplicity
+  we assume now that this should always be a convex polyline of at least 3 points
+
+Segment intersection
+--------------------
+
+2D: Inters2D
+- This is a vertex, resulting from intersecting 2 Segment2D elements. It can be 
+  reduced to nothing, in case the segments do not intersect.
+
+3D: Inters3D
+- This is a line, defined by two vertices, resulting from intersecting 2 Segment3D
+  elements. It can be reduced to just a point, or nothing, in case the segments
+  just touch, or do not intersect.
+  
+
+General concepts
+================
+
+Calculating delaunay circle/sphere
+----------------------------------
+2D:
+3D:
+
+Test: vertex above edge
+-----------------------
+2D: Ni x (P - Vi) > 0
+3D: Ni x (P - Vi) > 0
+
+Test: point in volume element
+------------------------------
+2D: 
+- for each edge: point not above edge
+- for each vertex: point on vertex (with tolerance)
+- for each edge (line): point on edge (with tolerance)
+Return "inside", "on edge", "on vertex"
+
+3D:
+- for each edge: point not above edge
+- for each vertex: point on vertex (with tolerance)
+- for each edge (plane): point on plane (with tolerance)
+Return "inside", "on edge", "on vertex"
+
+Body spit
+---------
+2D:
+- Subdivide triangle T into 3 new triangles: T1, T2, T3
+3D:
+- Subdivide tetrahedon T into 4 new tetrahedons: T1, T2, T3, T4
+
+Edge split
+----------
+2D: 
+- Triangle T1, T2 and shared edge line E
+- Subdivide T1 into T11, T12
+- Subdivide T2 into T21, T22
+3D:
+- Tetrahedon T1, T2 and shared edge plane E
+- Subdivide T1 into T11, T12, T13
+- Subdivide T2 into T21, T22, T23
+
+Delaunay swap
+-------------
+2D: Triangle swap
+- Two triangles, V1V2V3 and W1W2W3, we assume that V1 and W1 are not on the shared edge.
+- Swap to two new triangles
+  T1: V1V2W1
+  T2: W1W2V1
+- Also hook up new neighbours and change segment pointers accordingly
+
+3D: Tetrahedon swap
+- Consider 6 vertices P1, P2, P3, P4, P5, P6
+- Consider 4 tetrahedons T1, T2, T3, T4
+  T1=P1P2P3P4
+  T2=P5P3P2P4
+  T3=P1P3P6P4
+  T4=P5P6P3P4
+- We want to swap T1 so it will include vertex P5 (opposite of T1's P2P3P4 edge plane)
+ (these checks were done before:
+  - Diagonal P3P4 should not have any other connecting tetrahedons
+  - Vertices P1, P2, P5, P6 should project on P3P4)
+- We can swap the diagonal P3P4 to diagonal P1P5
+  T1=P1P2P3P5
+  T2=P5P1P2P4
+  T3=P1P3P6P5
+  T4=P5P6P1P4
+- Also hook up new neighbours and change segment pointers accordingly
+
+Check swap
+----------
+2D:
+- for each edge line:
+  - edge not part of segment?
+  - if yes.. triangle neighbour?
+  - if yes.. all triangle points projects *on* diagonal (not above/below)
+  - if yes.. return ok
+3D:
+- for each edge plane:
+  - edge not part of segment?
+  - if yes.. tetrahedon neighbour?
+  - if yes.. find other tetrahedons sharing the diagonal to be swapped
+  - if yes.. only two other tetrahedons?
+  - if yes.. all tetrahedon points project *on* diagonal (not above/below)
+  - if yes.. return ok
+
+Add segment
+-----------
+2D:
+- Find triangle chain connecting from segment vertex V1 to V2
+- Test: any of the triangles references a segment that intersects our segment?
+  Yes: Split segments, remove current segment and add new split segments to the list, exit
+- More than one triangle? Swap triangles in chain until no triangle edges intersect our segment
+- Add segment reference to triangles that connect V1 and V2
+- Check all swapped and removed triangles in chain for delaunay
+3D:
+- Find tetrahedon chain connecting from segment vertex V1 to V2
+
+Delaunay triangulation
+----------------------
+
+- Start with enough volume
+  2D: rectangle consisting of 4 vertices and 2 triangles, large enough to
+      contain all vertices
+  3D: parallelipedum consisting of 8 vertices and 12 tetrahodons, large enough to
+      contain all vertices
+- Add all vertices from the graph, split a body or edge appropriately. 
+  - New vertex "inside": split body
+  - New vertex "on edge": split edge
+  - New vertex "on vertex": do not add new vertex, signal to graph that this one is replaced by old
+- Check newly added volume elements for delaunay, swap if necessary
+  - for each edge: opposite point of connecting element in delaunay circle/sphere? 
+  - if yes.. check swap
+  - if ok: do delaunay swap
+  - if swapped: add all new neighbours to list which must be checked as well
+  - keep on checking/swapping until list has no more elements
+
+Constrained triangulation
+-------------------------
+
+- for each segment in list: Add segment. The list can grow, because segments may be split and new
+  parts added to the end of the list.
+
+Sphere through 4 points:
+-----------------------
+
+Equation:
+
+   |x ^2 + y ^2 + z ^2   x    y    z   1|
+   |x1^2 + y1^2 + z1^2   x1   y1   z1  1|
+det|x2^2 + y2^2 + z2^2   x2   y2   z2  1|=0
+   |x3^2 + y3^2 + z3^2   x3   y3   z3  1|
+   |x4^2 + y4^2 + z4^2   x4   y4   z4  1|
+
+r1 = x1*x1 + y1*y1 + z1*z1
+r2 = x2*x2 + y2*y2 + z2*z2
+r3 = x3*x3 + y3*y3 + z3*z3
+
+func Det3x2(const a11, a12, a21, a22, a31, a32): double;
+// a13, a23, a33 always 1
+begin
+  Result := a11 * (a22 - a32) - a21 * (a12 - a32) + a31 * (a12 - a22);
+end;
+
+func Det4x3(const a11, a12, a13, a21, a22, a23, a31, a32, a33, a41, a42, a43: double): double
+// a14, a24, a34, a44 always 1
+begin
+  Result := 
+   + a11 * Det3x2(a22, a23, a32, a33, a42, a43) 
+   - a21 * Det3x2(a12, a13, a32, a33, a42, a43)
+   + a31 * Det3x2(a12, a13, a21, a23, a42, a43)
+   - a41 * Det3x2(a12, a13, a21, a23, a32, a33);
+end;
+
+M11 = Det4x3(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) * 2;
+M12 = Det4x3(r1, y1, z1, r2, y2, z2, r3, y3, z3, r4, y4, z4)
+M13 = Det4x3(r1, x1, z1, r2, x2, z2, r3, x3, z3, r4, x4, z4)
+M14 = Det4x3(r1, x1, y1, r2, x2, y2, r3, x3, y3, r4, x4, y4)
+
+xc =  M12 / M11;
+yc = -M13 / M11;
+zc =  M14 / M11;
+
+rsqr = sqr(x1 - xc) + sqr(y1 - yc) + sqr(z1 - zc)
+r = sqrt(rsqr)
+
+
+
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Simple Gantt chart</h2>
+         A demonstration of TreeGrid application showing simple Gantt chart - timetable of tasks and their completion.<br/>
+         <br />
+         <b>This example shows tree structure, with freedom for levels.</b><br />
+         When row does not contain any (not deleted) children it is <b>standard task</b> and its data can be changed.<br />
+         When row contains some (not deleted) children it is <b>computed group task</b> and shows summary of its children.<br />
+         <br />         
+
+      <div style="WIDTH:100%;HEIGHT:520px;">
+         <bdo Debug="check" Layout_Url="GanttSimpleDef.xml" Data_Url="GanttSimpleData.xml"></bdo>
+      </div>
+
+      <script>
+
+// --- For new rows changes parent row to group task ---
+Grids.OnRowAdd = function(G,row){
+var P = row.parentNode;
+if(P.Def==G.Def.R) G.ChangeDef(P,"Task");
+}
+
+// --- When row is moved its new parent is changed to group task and the old parent if does not contain any children to standard task ---
+Grids.OnRowMove = function(G,row,par){
+var P = row.parentNode;
+if(P.Def==G.Def.R) G.ChangeDef(P,"Task");
+if(par.Def) { 
+   for(var p=par.firstChild;p;p=p.nextSibling) if(p.Visible && !p.Deleted) break;
+   if(!p) G.ChangeDef(par,"R");
+   }
+}
+
+// --- When row is deleted and its parent does not contain any children, the parent is changed to standard task ---
+Grids.OnRowDelete = function(G,row){
+var par = row.parentNode;
+if(par.Def) { 
+   for(var p=par.firstChild;p;p=p.nextSibling) if(p.Visible && !p.Deleted) break;
+   if(!p) G.ChangeDef(par,"R");
+   }  
+}
+
+// --- For undeleted rows changes parent row to group task ---
+Grids.OnRowUndelete = function(G,row){
+var P = row.parentNode;
+if(P.Def==G.Def.R) G.ChangeDef(P,"Task");
+}
+		
+      </script>
+   </body>
+</html>

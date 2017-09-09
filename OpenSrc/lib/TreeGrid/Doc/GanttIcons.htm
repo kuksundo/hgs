@@ -1,0 +1,727 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt icons Flag &amp; Point</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Movable, but not resizable
+Gantt objects, without dependencies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Flag><b><span style='font-size:20.0pt;color:blue'>Flag</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Information for date(s) - </span></b><i><span
+style='font-size:10.0pt'>one or more different icons, text boxes or both</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defined by <a
+href="#CGanttFlags">GanttFlags</a> (date ranges) and <a href="#CGanttFlagTexts">GanttFlagTexts</a>
+(texts for individual flags, displayed as text box or tooltip).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttFlags><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlags</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Gantt
+source – column name or exact value                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of dates (separated by
+semicolon) where to display a flag with information specified by <a
+href="#CGanttFlagTexts">GanttFlagTexts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to column, the column
+must be <b>Type='Date' Range='1'</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be column name, a list
+of date string (M/d/yyyy hh:mm:ss) or a list of counts of milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttFlagsType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagsType</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Reserved</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - The flag will be shown as icon. As default icon or
+icon defined in <a href="#CGanttFlagIcons">GanttFlagIcons</a>. The <a
+href="#CGanttFlagTexts">GanttFlagTexts</a> will be shown as tooltip on mouse
+over.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - The flag will be shown as text defined in <a
+href="#CGanttFlagTexts">GanttFlagTexts</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - The flag will be shown as icon and text (right next
+to the icon) defined in <a href="#CGanttFlagTexts">GanttFlagTexts</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttFlagTexts><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagTexts</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       Gantt
+source – column name or exact value                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of information for the
+individual flags. Separated by semicolon. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This information is shown as text
+right to the icon or as hint (TITLE) for the flag, according to the <a
+href="#CGanttFlagsType">GanttFlagsType</a> setting. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be column name or a
+list of strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttFlagIcons><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagIcons</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       Gantt
+source – column name or exact value                              <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of icons for the
+individual flags. Separated by semicolon. The icon is the exact url of the
+icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The icon can be empty to show
+default Flag icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The icon can be '-' (minus)
+to not show any icon, only the text (only for <a href="#CGanttFlagsType">GanttFlagsType</a>=3)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hover icons can be set by <a
+href="#CGanttHoverIcons">GanttHoverIcons</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttFlagClasses><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagClasses</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> Gantt
+source – column name or exact value                              <span
+style='color:red'>new 9<b>.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of CSS classes for the
+individual flag texts defined in <a href="#CGanttFlagTexts">GanttFlagTexts</a>.
+Separated by semicolon. The value is exact CSS class name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string[*] </i></span><a
+name=CGanttFlagIconList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagIconList</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of predefined icons.
+The icon is the exact url of the icon. First character separated array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This list is shown in popup
+menu to choose the flag icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string[*] </i></span><a
+name=CGanttFlagClassList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagClassList</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                            <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of predefined CSS
+classes. The value is the exact CSS class. First character separated array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string[*] </i></span><a
+name=CGanttFlagIconNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagIconNames</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                            <span
+style='color:red'>new <b>6.1</b></span><span style='color:#0070C0'>; upd <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains menu item names
+for the GanttFlagIconList. First character separated array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The item name can contain: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>%1</span></b><span
+style='font-size:10.0pt'> to be replaced by the icon from IconList (in
+&lt;span&gt;&lt;/span&gt; tag)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>%2</b> to
+be replaced by the CSS class from ClassList (open &lt;span&gt; tag) and <b>%3</b>
+as close &lt;/span&gt; tag)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not defined, the exact
+icon is shown as the item and short tag with CSS class.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttFlagsTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagsTip</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Tip shown on mouse hover the
+flag. It can contain HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it shows the value
+for the flag from <a href="#CGanttFlagTexts">GanttFlagTexts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also show values from
+other cells in row, set by <b>*col*</b> where col is the column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can show also the
+specials: <b>*Text*</b> - show the <a href="#CGanttFlagTexts">GanttFlagTexts</a>,
+<b>*Start*</b> - date of the flag, <b>*Index*</b> - the flag index (from 1)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: “*Index*.
+*Start*&amp;lt;br&gt;*Text*”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To dynamically generate the
+tip text use <a href="GanttAPI.htm#OnGanttTip">OnGanttTip</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttFlagsTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagsTop</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Vertical position of all
+flags in the cell, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttFlagsMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFlagsMove</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how the flags can be
+moved</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - no, <b>1</b> - inside row, <b>2</b> - also between
+rows</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The dragging can be more controlled
+by API <a href="GanttAPI.htm#OnDragGantt">OnDragGantt</a> event.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnGanttFlagMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttFlagMove</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>,
+<i>int </i><b>date</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>, <i>string</i>
+<b>tocol</b>, <i>int</i> <b>toindex</b>, <i>int</i> <b>todate</b>)           <span
+style='color:red'>new <b>9.3</b></span><span style='color:#0070C0'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called befor flag moved to
+another row. Called instead OnGanttChange. Return true to cancel the action</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>When flag moved inside the
+same row, there is called only <a href="GanttAPI.htm#OnGanttChange">OnGanttChange</a>(grid,row,col,&quot;Flags&quot;,newval,null,oldval,null,&quot;Move&quot;)
+where newval/oldval are the values of GanttFlags cell </span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'>, <b>row</b>, <b>col</b> is source cell, <b>togrid</b>,
+<b>torow</b>, <b>tocol</b> is destination cell. Now the grid is always equal to
+togrid, but it can be changed in future.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is position in source GanttFlags array. <b>toindex</b>
+is position in destination GanttFlags array (it is equal to length of
+destination GanttFlags array)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is an original start date of the flag, in count of
+millisencods, the <b>todate</b> is a new start date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=OnGanttFlagMoved><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttFlagMoved</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>,
+<i>int </i><b>date</b>, <i>TGrid</i> <b>togrid</b>, <i>TRow</i> <b>torow</b>, <i>string</i>
+<b>tocol</b>, <i>int</i> <b>toindex</b>, <i>int</i> <b>todate</b>)           <span
+style='color:red'>new <b>9.3</b></span><span style='color:#0070C0'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after flag moved to
+another row. Called instead OnGanttChanged.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>When flag moved inside the
+same row, there is called only <a href="GanttAPI.htm#OnGanttChanged">OnGanttChanged</a>(grid,row,col,&quot;Flags&quot;,newval,null,oldval,null,&quot;Move&quot;)
+where newval/oldval are the values of GanttFlags cell </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Parameters are the same as <a
+href="#OnGanttFlagMove">OnGanttFlagMove</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=COnGetGanttFlagText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetGanttFlagText</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>,
+<i>string </i><b>text</b>)             <span style='color:red'>new <b>9.3</b></span><span
+style='color:#0070C0'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the flag text
+HTML content to render it. It can return any HTML code or text.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is the Flag index inside the Flags, <b>text</b> is original
+text to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called only if <a
+href="#CGanttFlagsType">GanttFlagsType</a> is <b>2</b> or <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=COnGetGanttFlagIcon><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetGanttFlagIcon</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>,
+<i>string </i><b>icon</b>)            <span style='color:red'>new <b>9.3</b></span><span
+style='color:#0070C0'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the flag icon.
+It can return exact url of the icon.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is the Flag index inside the Flags, <b>icon</b> is
+original icon url.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called only if <a
+href="#CGanttFlagsType">GanttFlagsType</a> is <b>1</b> or <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=COnGetGanttFlagIconHover><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnGetGanttFlagIconHover</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>index</b>,
+<i>string </i><b>icon</b>)  <span style='color:red'>new <b>9.3</b></span><span
+style='color:#0070C0'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get the flag icon
+displayed under mouse cursor. It can return exact url of the icon.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is the Flag index inside the Flags, <b>icon</b> is
+original icon url.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called only if <a
+href="#CGanttFlagsType">GanttFlagsType</a> is <b>1</b> or <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsMoveGanttFlag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>MoveGanttFlag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Attached to <b>OnDragGantt</b>,
+cannot be attached anywhere else            <span style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves flag by mouse dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails, if mouse is not above
+flag or the flag cannot be moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsNewGanttFlag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>NewGanttFlag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>           Attached to <b>OnDblClickGantt</b>
+event                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new flag on mouse
+position and lets a user edit its text.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeleteGanttFlag><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>DeleteGanttFlag</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                  Attached
+to <b>OnCtrlClickGantt</b> event                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes one flag under mouse
+cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no flag
+under mouse cursor</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsEditGanttFlag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>EditGanttFlag</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Attached
+to <b>OnDblClickGantt</b> event                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Lets a user to edit text of
+flag under mouse cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is not flag
+under mouse cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsChooseGanttFlagIcon><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>ChooseGanttFlagIcon</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    Not
+attached to any event                                             <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Lets a user to choose icon
+and / or class of the flag under mouse cursor. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The possible icons and
+classes are defined by <a href="#CGanttFlagIconList">GanttFlagIconList</a>, <a
+href="#CGanttFlagClassList">GanttFlagClassList</a> and <a
+href="#CGanttFlagIconNames">GanttFlagIconNames</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Point><b><span style='font-size:20.0pt;color:blue'>Point</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Point at date(s) - </span></b><i><span
+style='font-size:10.0pt'>one or more different movable bullets</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttPoints><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPoints</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                Gantt
+source – column name or exact value                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The GanttPoints can be
+defined by four ways:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Comma separated list of
+column names where are the individual values stored, for example <b>GGanttPoints</b>=’A,B,C’
+<b>A</b>=’1/1/2000’ <b>B</b>=’2/1/2000’ <b>C</b>=’4/2/2000’ (columns A,B,C must
+be<b> Type='Date'</b>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Column name where are the
+column names stored, for example <b>GGanttPoints</b>=’X’ <b>X</b>=’A,B,C’ <b>A</b>=’1/1/2000’
+<b>B</b>=’2/1/2000’ <b>C</b>=’4/2/2000’ (columns A,B,C must be<b> Type='Date'</b>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Direct list of values,
+comma or semicolon separated, <i>it is <u>not</u> changeable</i>, for example <b>GGanttPoints</b>=’1/1/2000;2/1/2000;4/2/2000’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- Column name where are the
+direct values stored, for example <b>GGanttPoints</b>=’X’ <b>X</b>=’1/1/2000;2/1/2000;4/2/2000’
+(column X must be <b> Type='Date' Range='1'</b>)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only the last definition
+supports checking exclude and constraints when editing the source cell.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttPointsIcons><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPointsIcons</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  Gantt
+source – column name or exact value                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of icons for the
+individual points, in the same order. Separated by comma or semicolon. The icon
+is the exact url of the icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be also one of
+predefined classes 1 – 8, defined in Grid.css as GxGanttPoint1 – GxGanttPoint8:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – black, <b>2</b> – red, <b>3</b> – blue, <b>4</b> –
+green, <b>5</b> – pink, <b>6</b> – yellow, <b>7</b> – light blue, <b>8</b> -
+gray</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example GanttPointsIcons=”1;4;Red.gif;Green.gif;6;Blue.gif”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Hover icons can be set by <a
+href="#CGanttHoverIcons">GanttHoverIcons</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string[]  </i></span><a
+name=CGanttPointsEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPointsEdit</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                         <span
+style='color:red'>new <b>6.4</b></span><span style='color:#0070C0'>; upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the individual points can
+be changed by a user. Comma separated list of 0/1/2 values.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – not editable, <b>1</b> fully editable, <b>2</b> <i>(since
+7.0)</i> can move, but cannot delete</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttPointsTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPointsTip</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Tip shown on mouse hover the
+point. It can contain HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also show values from
+other cells in row, set by <b>*col*</b> where col is the column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can show also the
+specials: <b>*Start*</b> - date of the point, <b>*Index*</b> - the point index
+(from 1), <b>*Col*</b> - name of the column where the point value is stored</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: “*Col* = *Start*”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To dynamically generate the
+tip text use <a href="GanttAPI.htm#OnGanttTip">OnGanttTip</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttPointsTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPointsTop</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                     <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Vertical position of all
+points in the cell, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;      </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>            <i>int        </i></span><a
+name=CGanttPointsShift><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttPointsShift</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    [3]                                                                       
+<span style='color:red'>new <b>6.4; deleted 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a
+href="#CGanttShift">GanttShift</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal distance between
+adjacent points. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If points are on the same
+place, the next will be shifted right for this value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsMoveGanttPoint><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>MoveGanttPoint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       Attached
+to <b>OnDragGantt</b>, cannot be attached anywhere else            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves point by mouse
+dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails, if mouse is not above
+point or the point cannot be moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsNewGanttPoint><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>NewGanttPoint</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Attached to <b>OnDblClickGantt</b>
+event                                         <span style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new point on mouse
+position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeleteGanttPoint><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>DeleteGanttPoint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    Attached
+to <b>OnCtrlClickGantt</b> event                                          <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes the point under mouse
+cursor.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It fails if there is no point
+under mouse cursor</span></p>
+
+</div>
+
+</body>
+
+</html>

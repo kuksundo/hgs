@@ -1,0 +1,74 @@
+<!-- Source table layout definition, the data are in CarsData.xml -->
+<Grid>
+   <Cfg id="Cars" SuppressCfg="0"/> <!-- Base definition, saves configuration to cookies -->
+   <Cfg MaxHeight="1" MinTagHeight="400"/> <!-- Size settings just for the example. Maximizes the grid height. -->
+   <Cfg Sort="BRAND,NAME"/> <!-- Predefined sorting -->
+   <Cfg Paging="2"/> <!-- Client paging with pager -->
+   <Pager Width="200"/> <!-- Width of the right pager -->
+
+   <!-- Columns definitions -->
+   <Cols>
+      <C Name="BRAND"/>
+      <C Name="TYPE"/>
+      <C Name="NAME"/>
+      <C Name="MODEL"/>
+      <C Name="TRANS"/>
+      <C Name="COLOR"/>
+      <C Name="COUNT" Type="Float"/>
+      <C Name="PRICE" Type="Float"/>
+      <C Name="TOTAL" Type="Float" Formula="PRICE*COUNT"/>
+      <C Name="DATE" Type="Date" Format="dddd, dddddd MMMM yyyy"/>
+      <C Name="YEAR" Formula="DateToString(DATE,'yyyy')" Visible="0"/>
+      <C Name="QUARTER" Formula="DateToString(DATE,'MMMMM')" Type="Enum" Enum="|I|II|III|IV" RawSort="2" Visible="0"/>
+      <C Name="MONTH" Formula="DateToString(DATE,'MMMM')" Type="Enum" Enum="|January|February|March|April|May|June|July|August|September|October|November|December" RawSort="2" Visible="0"/>
+      <C Name="DAY" Formula="DateToString(DATE,'dd')" Visible="0"/>
+      <C Name="WEEK" Formula="var d=DateToString(DATE,'ddddddd'); return 'Week '+(d&lt;10?'0'+d:d)" Visible="0"/>
+      <C Name="WEEKDAY" Formula="DateToString(DATE,'dddd')" Type="Enum" Enum="|Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday" RawSort="2" Visible="0"/>
+   </Cols>
+   
+   <!-- Filter definition -->
+   <Head>
+      <Filter BRANDButton="Defaults" BRANDDefaults="|*FilterOff|*RowsAll" BRANDRange="1" BRANDShowMenu="0"
+              TYPEButton="Defaults" TYPEDefaults="|*FilterOff|*RowsAll" TYPERange="1" TYPEShowMenu="0"
+              NAMEButton="Defaults" NAMEDefaults="|*FilterOff|*RowsAll" NAMERange="1" NAMEShowMenu="0"
+              MODELButton="Defaults" MODELDefaults="|*FilterOff|*RowsAll" MODELRange="1" MODELShowMenu="0"
+              TRANSButton="Defaults" TRANSDefaults="|*FilterOff|*RowsAll" TRANSRange="1" TRANSShowMenu="0"
+              COLORButton="Defaults" COLORDefaults="|*FilterOff|*RowsAll" COLORRange="1" COLORShowMenu="0"
+              />
+   </Head>
+
+   <!-- Hides useless toolbar buttons -->
+   <Toolbar Sort="0" Calc="0"/>
+
+   <!-- The solid rows are nearly the same as in Pivot table - to set up the pivot if the pivot is hidden -->
+   <!-- It differs only in control buttons in the third row and their function -->
+   <Solid>
+      <I Kind="Topbar2" Panel="0" Space="0" Cells="COLS1,COLS2,COLS3"
+         COLS1Type="DropCols" COLS1="BRAND,TYPE,NAME,MODEL,TRANS,COLOR"
+         COLS1RelWidth="6" COLS1MaxWidth="100" COLS1AutoWidth="7" COLS1MinTextWidth="0" COLS1Text="" COLS1CanAdd="0" COLS1CanDelete="0" COLS1CanMove="0" COLS1CanCopy="2" COLS1ShowHint="0"
+         COLS2Type="DropCols" COLS2="YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY"
+         COLS2RelWidth="6" COLS2MaxWidth="100" COLS2AutoWidth="7" COLS2MinTextWidth="0" COLS2Text="" COLS2CanAdd="0" COLS2CanDelete="0" COLS2CanMove="0" COLS2CanCopy="2" COLS2ShowHint="0"
+         COLS3Type="DropCols" COLS3="PRICE,COUNT,TOTAL"
+         COLS3RelWidth="3" COLS3MaxWidth="100" COLS3AutoWidth="7" COLS3MinTextWidth="0" COLS3Text="" COLS3CanAdd="0" COLS3CanDelete="0" COLS3CanMove="0" COLS3CanCopy="2" COLS3ShowHint="0"
+         />
+      <I id="PIVOT" Kind="Topbar1" Space="0" Cells="RCAP,ROWS,CCAP,COLS,DCAP,DATA"
+         RCAPType="Html" RCAP="Pivot Rows:" RCAPWrap="0"
+         ROWSType="DropCols" ROWSRelWidth="1" ROWSText="Drag column caption here" ROWSFormula="Grids.Pivot.PivotRows?Grids.Pivot.PivotRows:''" ROWSOnChange="Grids.Pivot.PivotRows = Value"
+         ROWSAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY" ROWSDuplicates="0" ROWSSingle=",COLS,,DATA" ROWSSingleType="1"
+         CCAPType="Html" CCAP="Columns:" CCAPLeft="10"
+         COLSType="DropCols" COLSRelWidth="1" COLSText="Drag column caption here" COLSFormula="Grids.Pivot.PivotCols?Grids.Pivot.PivotCols:''" COLSOnChange="Grids.Pivot.PivotCols = Value"
+         COLSAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY" COLSDuplicates="0" COLSSingle=",ROWS,,DATA" COLSSingleType="1"
+         DCAPType="Html" DCAP="Data:" DCAPLeft="10"
+         DATAType="DropCols" DATARelWidth="1" DATAText="Drag column caption here" DATAFormula="Grids.Pivot.PivotData?Grids.Pivot.PivotData:''" DATAOnChange="Grids.Pivot.PivotData = Value"
+         DATAAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY,PRICE,COUNT,TOTAL" DATADuplicates="0" DATASingle=",ROWS,,COLS" DATASingleType="1"
+         />
+      <I id="CONTROL" Kind="Topbar2" Space="0" Cells="PIVOT,SWITCH,CLEAR,SUM,DEF"
+         PIVOTType="Button" PIVOTButton="Button" PIVOT="Create pivot" PIVOTOnClick="if(!Grids.Pivot.CreatePivot()) alert('Incorrect or incomplete input settings'); else Grid.SetAttribute(Row,'SWITCH','Visible',1,1);"
+         SWITCHType="Button" SWITCHButton="Button" SWITCH="Show pivot" SWITCHOnClick="Grids.Pivot.SwitchPivotGrid(1);"
+         SUMType="Bool" SUMLabel="Show summary columns" SUMLeft="10" SUMFormula="Grids.Pivot.PivotShowParent?1:0" SUMCanEdit="1"
+         SUMOnChange="Grids.Pivot.PivotShowParent = Value; Grids.Pivot.CreatePivot(); " SUMTip="If the summary columns are hidden, their data are shown when the column is collapsed."
+         DEFType="SelectPivot" DEFLeft="10" DEFLabel="Predefined pivots:" DEFRelWidth="1" DEFCanEdit="1"
+         DEFDefaults="|BRAND,TYPE,NAME,MODEL : YEAR,MONTH,WEEK,WEEKDAY : TOTAL|YEAR,MONTH,WEEK,WEEKDAY : BRAND,TYPE,NAME,MODEL : TOTAL|BRAND,TYPE,NAME,MODEL : YEAR,MONTH : PRICE,COUNT|TYPE,BRAND : YEAR,MONTH : NAME|NAME : WEEKDAY : COUNT|NAME : TRANS : COLOR|WEEKDAY : BRAND,NAME : COLOR|YEAR,QUARTER,MONTH : BRAND,NAME : TOTAL|YEAR,MONTH,DAY : BRAND,TYPE,NAME : TRANS,COLOR|MONTH,DAY : NAME : PRICE,COUNT|BRAND : YEAR : TOTAL"
+         />
+   </Solid>
+</Grid>

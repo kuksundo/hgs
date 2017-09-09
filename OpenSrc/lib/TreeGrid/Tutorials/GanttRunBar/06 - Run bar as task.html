@@ -1,0 +1,127 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <script>
+   // ------------------------------------------------------------------------------------
+   // Returns custom Run bar content, only for row 21
+   Grids.OnGetGanttRunText = function(G,row,col,run,idx,text,width){
+   if(row.id!=21) return text;
+   var B = G.GetGanttRunBox(row,col,idx);
+   return "<div style='background:#008;color:white;float:left;font-size:14px;border:1px solid black;'>"+(idx/2+1)+"</div>"
+      + "<div style='background:#AFA;float:right;border:1px solid black;'><img src='"+["Green.gif","Yellow.gif","Red.gif"][idx/2%3]+"'/></div>"
+      + "<div style='clear:both;'>"
+      + "<div style=\"background:green;color:white;padding:1px;\">&nbsp;"+DateToString(B.Start,"dddddd")+" - "+DateToString(B.End,"dddddd")+"</div>"
+      + "<div style=\"background:yellow;padding:1px;border:1px solid #CCC;\">&nbsp;"+(B.Text?B.Text:"")+"</div>"
+      + "</div>";
+   }
+   // ------------------------------------------------------------------------------------
+   // Returns custom class for Run bar, only for row 21
+   Grids.OnGetGanttRunClass = function(G,row,col,run,idx,cls){
+   if(row.id!=21) return cls;
+   if(run[idx][1]=="empty") return cls; // Ignores empty boxes (the space between boxes)
+   return "None"; // The None class means no border or background
+   }
+   // ------------------------------------------------------------------------------------
+   </script>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttRunBar"><b>Gantt Run bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>6. Run bar as task</center>
+   <center style='font:bold italic;'>Complex and extended Gantt task from individual parts</center>
+   <div style='margin-bottom:6px;'><a href='06 - Run bar as task.xml'>06 - <h2>Run bar as task</h2>.xml</a></div>
+   <div style="font-size:11px;">
+      This example demonstrates also many ways of dragging Run bars:  
+      Dragging bar by <b>left</b> mouse button moves the single bar and if required, moves the others. By <b>right</b> button moves the whole task.<br /> 
+      By <b>ctrl + left</b> button moves the bar freely and joins it with other bars if overlapped. By <b>ctrl + right</b> button moves the bar and if required shrinks the others (removes spaces between them).<br />
+      By <b>shift + left</b> button moves the bar to another row. By <b>shift + right</b> button moves the entire task (all boxes, including fixed) to another row.
+   </div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='06 - Run bar as task.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         There are five tutorials for Gantt task types and features:
+         <ul>
+            <li><a href='../GanttMainBar/01 - Main bar.html'>1. Simple Main bar and Milestone</a> - Continuous bar or one milestone</li>
+            <li><a href='../GanttMainBar/02 - Main bar parts.html'>2. Main bar parts</a> - Discrete main bar with more milestones</li>
+            <li><a href='../GanttMainBar/03 - Main bar plans.html'>3. Main bar plans</a> - More independent main bars or milestones in one row</li>
+            <li>6. Run bar as task - Complex and extended Gantt task from individual parts</li>
+            <li><a href='07 - Run box as task.html'>7. Run box as task</a> - Every Run box as independent Gantt task</li>
+
+         </ul>
+      </li>
+      <li>
+         There are five tutorials for Gantt Run to show the run definition and all its features:
+         <ul>
+            <li><a href='01 - Run array definition.html'>1. Run array definition</a> - Defining Gantt Run by Array string in GanttRun attribute</li>
+            <li><a href='02 - Run JSON definition.html'>2. Run JSON definition</a> - Defining Gantt Run by JSON string in GanttRun attribute</li>
+            <li><a href='03 - Run summary definition.html'>3. Run summary definition</a> - Defining Gantt Run by child main bars</li>
+            <li><a href='04 - Run drag.html'>4. Run drag</a> - Run box resizing and moving by mouse dragging</li>
+            <li><a href='05 - Run groups and API.html'>5. Run groups and API</a> - Identification of Run boxes and API to manipulate individual boxes and their groups</li>
+         </ul>
+      </li>
+      <li>See documentation for <b><a href="../../Doc/GanttRun.htm">Run bar</a></b></li>
+      <li><b>To use Run bar as task set "<h4>run</h4>" flag to </b><h3>GanttTask</h3>.<br />
+         In this case all the boxes together will compose one Gantt task. So there can be only one Run bar as task per Gantt cell.<br />
+         To have every Run box as Gantt task set "box" to GanttTask, see the tutorial <a href='07 - Run box as task.html'>7. Run box as task</a>.
+      </li>
+      <li>
+         The Run bar as task works similarly to discrete main bar (GanttParts), 
+         but it provides more settings to individual boxes and also extended moving and resizing possibilities, including moving the boxes between rows or grids.
+      </li>
+      <li>
+         The Run is defined by <h3>GanttRun</h3> attribute. This attribute lists all the Run boxes and their individual settings.<br />
+         There are two formats of the GanttRun, Array definition and JSON definition. See the <a href="../../Doc/GanttRun.htm#CGanttRun">GanttRun</a> documentation for more information.<br />
+         This example uses Array definition, the next example for Run boxes uses the JSON definition.
+      </li>
+      <li>
+         The Run bar supports also Start, End and Duration cells to show and change the whole task dates. <br />
+         They are set by <h3>GanttRunStart</h3>, <h3>GanttRunEnd</h3>, <h3>GanttRunDuration</h3>.<br />
+         In data these cells are expected to be empty, the data are read (calculated) from and saved to <b>GanttRun</b> and optionally <b>GanttRunStart</b>.<br />
+      </li>
+      <li>
+         The Run bar <h4>percentage completion</h4> is set by <h3>GanttRunComplete</h3> attribute in range 0 - 100.
+         The completion is computed for whole task.<br />
+         If used calendar / excluded dates, the percentage completion can be shown preciselly for the excluded dates if set <b>GanttExcludeComplete</b>.<br />
+         To round the percentage completion to some units (GanttUnits or GanttDataUnits) when is set by click to bar use <b>GanttRoundComplete</b>. 
+         It restricts also incomplete bars for very small completion.
+      </li>
+      <li>
+         The Run bar can be <h4>disabled</h4> or <h4>locked</h4>. The state is set by <h3>GanttRunDisabled</h3> attribute or column.<br />
+         Disabled task cannot be changed and is also ignore in all calculations. Locked tasks cannot be changed.<br />
+         It is possible to permit changing the disabled/locked tasks manually by a user by <b>GanttEditDisabled</b>='1'.<br />
+         To have not editable task, remove the run... flags from <b>GanttEdit</b> and also set <b>CanEdit='0'</b> to all the source cells.<br />
+      </li>
+      <li>
+         <h4>Dependencies</h4> are attached for the whole Run. Normally by <h3>GanttDescendants</h3> or by <h3>GanttAncestors</h3>.<br />
+         To the first box are attached start dependencies, to the last box are attached finish dependencies.<br />
+         If the GanttTask contains only the "run", the Run need not be identified for dependency and the row id is enough, e.g. GanttDescendants = "R1" or "R2#11;R3"<br />
+         If the are more flags in GanttTask, the run is identified by '<b>-</b>' (minus), e.g. GanttDescendants="-@R1" or "-,-@R2#11;-,1@R3"<br />
+         See documentation for <a href="../../Doc/GanttCompute.htm#Dependencies">Defining dependencies</a>.
+      </li>
+      <li>
+         <h4>Manual start</h4> for correcting dependencies is set for the whole Run by <h3>GanttRunManual</h3>. <br />
+         It is permitted / controlled by attributes <b>GanttRunManualChange</b> and <b>GanttManualSide</b>.<br />
+      </li>
+      <li>
+         <h4>Resources</h4> are attached for the whole Run by <b>GanttRunResources</b>.<br />
+         See documentation for <a href="../../Doc/GanttResources.htm#Assign">Resources assign</a>.
+      </li>
+      <li>
+         The Run bar as Gantt task still supports different settings for <h4>individual boxes</h4> like <b>text</b>, <b>tooltip</b>, <b>class</b>, <b>color</b> and so on.<br />
+         It does <b>not</b> support only these attributes for individual boxes: 
+         <b style="text-decoration:line-through;">Disabled</b> and <b style="text-decoration:line-through;">Locked</b> state,<b style="text-decoration:line-through;">Complete</b>, 
+         <b style="text-decoration:line-through;">Resources</b> and <b style="text-decoration:line-through;"> Manual</b>. 
+         All these setting can be set only by cell attributes for the whole run.
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of server side paging width sorting, uploading and export features
+Uses MS Access database Database.mdb and "TableData" as data and XML file SortingExport_Layout.xml as TreeGrid layout
+Uses support file SortingExport_Data.aspx as data generating script
+Uses support file SortingExport_Upload.aspx as script saving changes to database
+Uses support file SortingExport_Page.aspx as source for individual pages
+Uses support file SortingExport_Export.aspx as script for generating export
+! Check if ASP.NET application has write access to Database.mdb file 
+-->
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Server side paging with uploading changes, sorting and export</h2>
+      <div style="WIDTH:100%;HEIGHT:99%">
+         <bdo Debug='1'
+              Layout_Url="SortingExport_Layout.xml" Layout_Bonus="<Grid><Cfg Paging='3'/></Grid>"
+              Data_Url="SortingExport_Data.aspx"
+              Upload_Url="SortingExport_Upload.aspx" Upload_Format="Internal" Upload_Data="TGData"
+              Page_Url="SortingExport_Page.aspx" Page_Format="Internal" Page_Data="TGData"
+              Export_Url="SortingExport_Export.aspx" Export_Data="TGData" Export_Param_File="AjaxTablePaging.xls" Export_Type="1"
+              ></bdo>
+      </div>
+   </body>
+</html>

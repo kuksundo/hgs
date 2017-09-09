@@ -1,0 +1,244 @@
+<Grid>
+   <Cfg id="Defaults" MainCol="N" Sorting="0" ColMoving="0"/>
+
+   <DefCols>
+      <D Name="C"/>
+      <D Name="DAY" Width="40" Type="Float" CanEmpty="1" Format=",0"/>
+      <D Name="WORKDAY" Def="DAY"/>
+      <D Name="WEEKEND" Def="DAY" Color="#AFF"/>
+      <D Name="NAME" CanEdit="0"/>
+      <D Name="VALUE"/>
+      <D Name="SUM" Formula="MySum(Grid,Row,Col)" Type="Float" Format=",0"/>
+      <D Name="SEP" Width="3" Color="#333" Class="Sep" CanFocus="0"/>
+   </DefCols>
+
+   <LeftCols>
+      <C Name="N" Width="200"/>
+   </LeftCols>
+
+   <Cols>
+      <C Name="SUN1" Def="WEEKEND,NAME"/> <C Name="SUV1" Def="WEEKEND,VALUE"/> <C Name="MON1" Def="WORKDAY,NAME"/> <C Name="MOV1" Def="WORKDAY,VALUE"/> 
+      <C Name="TUN1" Def="WORKDAY,NAME"/> <C Name="TUV1" Def="WORKDAY,VALUE"/> <C Name="WEN1" Def="WORKDAY,NAME"/> <C Name="WEV1" Def="WORKDAY,VALUE"/>
+      <C Name="THN1" Def="WORKDAY,NAME"/> <C Name="THV1" Def="WORKDAY,VALUE"/> <C Name="FRN1" Def="WORKDAY,NAME"/> <C Name="FRV1" Def="WORKDAY,VALUE"/>
+      <C Name="SAN1" Def="WEEKEND,NAME"/> <C Name="SAV1" Def="WEEKEND,VALUE"/>
+      <C Name="SUM1" Def="SUM"/>
+      <C Name="SEP1" Def="SEP"/>
+
+      <C Name="SUN2" Def="WEEKEND,NAME"/> <C Name="SUV2" Def="WEEKEND,VALUE"/> <C Name="MON2" Def="WORKDAY,NAME"/> <C Name="MOV2" Def="WORKDAY,VALUE"/> 
+      <C Name="TUN2" Def="WORKDAY,NAME"/> <C Name="TUV2" Def="WORKDAY,VALUE"/> <C Name="WEN2" Def="WORKDAY,NAME"/> <C Name="WEV2" Def="WORKDAY,VALUE"/>
+      <C Name="THN2" Def="WORKDAY,NAME"/> <C Name="THV2" Def="WORKDAY,VALUE"/> <C Name="FRN2" Def="WORKDAY,NAME"/> <C Name="FRV2" Def="WORKDAY,VALUE"/>
+      <C Name="SAN2" Def="WEEKEND,NAME"/> <C Name="SAV2" Def="WEEKEND,VALUE"/>
+      <C Name="SUM2" Def="SUM"/>
+   </Cols>
+
+   <Head>
+      <Header N="Day" Spanned="1" 
+         SUN1="Sunday" SUN1Span="2" MON1="Monday" MON1Span="2" TUN1="Tuesday" TUN1Span="2" WEN1="Wednesday" WEN1Span="2" 
+         THN1="Thursday" THN1Span="2" FRN1="Friday" FRN1Span="2" SAN1="Saturday" SAN1Span="2"
+         SUN2="Sunday" SUN2Span="2" MON2="Monday" MON2Span="2" TUN2="Tuesday" TUN2Span="2" WEN2="Wednesday" WEN2Span="2"
+         THN2="Thursday" THN2Span="2" FRN2="Friday" FRN2Span="2" SAN2="Saturday" SAN2Span="2"
+         SUM1="" SUM2="" SEP1="" SEP1Color="#333" SEP1Class="Sep"
+         />
+      <Header id="Header" N="Car"
+         SUN1="Name" SUV1="Value" MON1="Name" MOV1="Value" TUN1="Name" TUV1="Value" WEN1="Name" WEV1="Value" THN1="Name" THV1="Value" FRN1="Name" FRV1="Value" SAN1="Name" SAV1="Value"
+         SUN2="Name" SUV2="Value" MON2="Name" MOV2="Value" TUN2="Name" TUV2="Value" WEN2="Name" WEV2="Value" THN2="Name" THV2="Value" FRN2="Name" FRV2="Value" SAN2="Name" SAV2="Value"
+         SUM1="Sum" SUM2="Sum" SEP1="" SEP1Color="#333" SEP1Class="Sep"
+         />
+   </Head>
+
+   <Def>
+      <D Name="SEPARATOR" LeftHtml="" MidHtml="" RightHtml="" Height="10" CDef="" CanFocus="0"/>
+
+      <D Name="NODE" CanEdit="0" SUM1Formula="sum()" SUM2Formula="sum()" Calculated="1"/>
+
+      <D Name="BRAND" Def="NODE" CDef="TYPE" AcceptDef="TYPE" NClass="Big"/>
+      <D Name="TYPE" Def="NODE" CDef="NAME" AcceptDef="NAME" NClass="Bold"/>
+      <D Name="NAME" Def="NODE" CDef="COLOR" AcceptDef="COLOR,Red,Green,Blue,Black,White" Color="#FFEEEE"/>
+
+      <D Name="COLOR" CDef="" AcceptDef="" N="Unknown" NType="Enum" NEnum="|Red|Green|Blue|White|Black" NOnChange="Grid.ChangeDef(Row,Value)"/>
+
+      <D Name="Red" Def="COLOR" N="Red" Class="Red"/>
+      <D Name="Green" Def="COLOR" N="Green" Class="Green"/>
+      <D Name="Blue" Def="COLOR" N="Blue" Class="Blue"/>
+      <D Name="Black" Def="COLOR" N="Black" Class="Black"/>
+      <D Name="White" Def="COLOR" N="White" Class="White"/>
+   </Def>
+
+   <Root CDef="BRAND" AcceptDef="BRAND"/>
+
+   <Body>
+      <B>
+         <I N="Chevrolet">
+            <I N="Car">
+               <I N="Corvette">
+                  <I Def="Red" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+                  <I Def="Blue" TUN1="39000" TUV1="3" FRN1="42000" FRV1="1" FRN2="40000" FRV2="3"/>
+               </I>
+            </I>
+            <I N="SUV">
+               <I N="Equinox">
+                  <I Def="Blue" WEN1="60000" WEV1="1" THN1="58000" THV1="2" SAN1="56000" SAV1="1" MON2="60000" MOV2="2"/>
+               </I>
+               <I N="Traverse">
+                  <I Def="White" TUN1="40000" TUV1="1"/>
+                  <I Def="Black" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+            <I N="Truck">
+               <I N="Avalanche">
+                  <I Def="Red" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+               <I N="Colorado">
+                  <I Def="Green" MON1="40000" MOV1="3" FRN1="30000" FRV1="2"/>
+                  <I Def="Black" WEN1="42000" WEV1="7" MON2="43000" MOV2="1"/>
+               </I>
+            </I>
+            <I N="Van">
+               <I N="Express">
+                  <I Def="Blue" TUN1="45000" TUV1="1" WEN1="42000" WEV1="1" THN1="40000" THV1="2" SUN2="45000" SUV2="1" WEN2="45000" WEV2="1"/>
+               </I>
+            </I>
+         </I>
+         <I Def="SEPARATOR"/>
+         <I N="Ford">
+            <I N="Car">
+               <I N="Fusion">
+                  <I Def="Blue" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+               <I N="Mustang"><I Def="Green" MON1="40000" MOV1="3" FRN1="30000" FRV1="2"/>
+               </I>
+               <I N="Taurus">
+                  <I Def="Blue" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+                  <I Def="White" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+            <I N="SUV">
+               <I N="Edge">
+                  <I Def="Red" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+               <I N="Explorer">
+                  <I Def="White" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+            <I N="Truck">
+               <I N="F-250">
+                  <I Def="White" MON1="40000" MOV1="3" FRN1="30000" FRV1="2"/>
+               </I>
+               <I N="F-450">
+                  <I Def="White" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+            <I N="Van">
+               <I N="Transit">
+                  <I Def="Green" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+         </I>
+         <I Def="SEPARATOR"/>
+         <I N="Skoda">
+            <I N="SUV">
+               <I N="Yeti">
+                  <I Def="Blue" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+                  <I Def="Red" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+         </I>
+         <I Def="SEPARATOR"/>
+         <I N="Subaru">
+            <I N="Car">
+               <I N="BRZ">
+                  <I Def="Green" TUN1="40000" TUV1="1"/>
+               </I>
+               <I N="Impreza">
+                  <I Def="Green" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+               <I N="Legacy">
+                  <I Def="Red" MON1="40000" MOV1="3" FRN1="30000" FRV1="2"/>
+               </I>
+            </I>
+            <I N="SUV">
+               <I N="Forester">
+                  <I Def="Red" TUN1="40000" TUV1="1"/>
+                  <I Def="Black" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+               </I>
+               <I N="Tribeca">
+                  <I Def="White"/>
+               </I>
+               <I N="XV Crosstrek">
+                  <I Def="White" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+         </I>
+         <I Def="SEPARATOR"/>
+         <I N="Toyota">
+            <I N="Car">
+               <I N="Camry">
+                  <I Def="Green" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+                  <I Def="Blue" TUN1="45000" TUV1="1" WEN1="42000" WEV1="1" THN1="40000" THV1="2" SUN2="45000" SUV2="1" WEN2="45000" WEV2="1"/>
+               </I>
+               <I N="Corolla">
+                  <I Def="Blue" TUN1="40000" TUV1="1"/>
+               </I>
+               <I N="Yaris">
+                  <I Def="Black" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+            <I N="SUV">
+               <I N="FJ Cruiser">
+                  <I Def="Green" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+                  <I Def="Red" TUN1="40000" TUV1="1"/>
+               </I>
+               <I N="Highlander">
+                  <I Def="Blue" TUN1="45000" TUV1="1" WEN1="42000" WEV1="1" THN1="40000" THV1="2" SUN2="45000" SUV2="1" WEN2="45000" WEV2="1"/>
+               </I>
+               <I N="RAV4">
+                  <I Def="White" MON1="40000" MOV1="3" FRN1="30000" FRV1="2"/>
+               </I>
+               <I N="Sequoia">
+                  <I Def="Red" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+            <I N="Truck">
+               <I N="Tacoma">
+                  <I Def="Green" TUN1="40000" TUV1="1"/>
+               </I>
+               <I N="Tundra">
+                  <I Def="Black" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+            <I N="Van">
+               <I N="Sienna">
+                  <I Def="White" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+            </I>
+         </I>
+         <I Def="SEPARATOR"/>
+         <I N="Volkswagen">
+            <I N="Car">
+               <I N="Beetle"><I Def="Blue" TUN1="40000" TUV1="1"/></I>
+               <I N="Golf">
+                  <I Def="Black" TUN1="45000" TUV1="1" WEN1="42000" WEV1="1" THN1="40000" THV1="2" SUN2="45000" SUV2="1" WEN2="45000" WEV2="1"/>
+               </I>
+               <I N="Passat">
+                  <I Def="Red" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+            <I N="SUV">
+               <I N="Tiguan">
+                  <I Def="Red" TUN1="45000" TUV1="1" WEN1="42000" WEV1="1" THN1="40000" THV1="2" SUN2="45000" SUV2="1" WEN2="45000" WEV2="1"/>
+                  <I Def="White" SUN1="25000" SUV1="1" MON1="28000" MOV1="2" THN1="23000" THV1="4" TUN2="33000" TUV2="2" THN2="30000" THV2="1"/>
+               </I>
+               <I N="Touareg">
+                  <I Def="Black" MON1="40000" MOV1="1" THN1="45000" THV1="2"/>
+               </I>
+            </I>
+            <I N="Van">
+               <I N="Routan">
+                  <I Def="Blue" FRN1="42000" FRV1="2" FRN2="43000" FRV2="1"/>
+               </I>
+            </I>
+         </I>
+      </B>
+   </Body>
+   <Toolbar Outdent="0" Indent="0"/>
+</Grid>

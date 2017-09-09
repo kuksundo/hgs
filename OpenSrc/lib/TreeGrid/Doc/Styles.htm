@@ -1,0 +1,1756 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - CSS styles</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>CSS styles</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are six files in
+separate directories: <b>Standard</b>, <b>Light</b>, <b>Office</b>, <b>Modern</b>,
+<b>Borders</b> and <b>Robust</b>. All styles are complete with all CSS settings
+and images.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>More or even all styles can
+be used in one HTML page for different grids. Every style has its own class
+prefix to let grid to use appropriate style. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Prefixes: Standard: <b>GS</b>,
+Light: <b>GL</b>, Office: <b>GO</b>, Modern: <b>GM</b>, Border: <b>GB</b>,
+Robust: <b>GR</b>. The style prefix or style name used in grid is set by
+&lt;Cfg <a href="CellStyle.htm#CfgStyle">Style</a>/&gt; attribute, default is
+modern style: &lt;Cfg Style=’Modern’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set the Style attribute,
+TreeGrid automatically downloads appropriate Grids.css style for given style.
+If the Grid.css style is placed in another location than in /Grid/<i>style</i>/,
+its url can be set by &lt;Cfg <a href="CellStyle.htm#CfgCSS">CSS</a>/&gt;
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All images in TreeGrid are
+referenced from the Grid.css style sheet and can be easily replaced by another
+icon set. All the four styles have the same icons placed in the same files on
+the same positions, so the images can be easily copied and used in another
+style.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Grid.css contains all
+TreeGrid style settings, many of them are required for functionality and must
+not be changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every cell can have specified
+individual class and background color in XML or dynamically by events. In the
+XML you can specify custom class for cell as row or cell <a
+href="CellStyle.htm#CClass">Class</a> attribute, background color as row or
+cell attribute <a href="CellStyle.htm#CColor">Color</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Dynamically can be the class
+returned by <a href="CellStyle.htm#OnGetClass">OnGetClass</a> API event and
+background color by <a href="CellStyle.htm#OnGetDefaultColor">OnGetDefaultColor</a>
+and <a href="CellStyle.htm#OnGetColor">OnGetColor</a> API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The custom class (set by
+Class,OnGetClass) is added to all standard classes assigned to the cell. The
+class is assigned to &lt;TD&gt; tag, so it ignores <b><s>margin</s></b>
+setting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=styles><b><span
+style='font-size:24.0pt'>Style sheet</span></b></a><b><span style='font-size:
+24.0pt'> (Grid.css)</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To easily find out where
+which class is used, show some TreeGrid and view it with Firebug or similar
+tool.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Listed are only classes
+that can be changed! Change only properties explicitly listed!</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><i><span
+style='font-size:10.0pt'> Don’t set <b>margin</b>, <b>border</b> or <b>padding</b>
+to strings (like “medium”), use always value in <b>pixels</b> (like “1px”).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Main table</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>MainTable</span></b><span
+style='font-size:10.0pt'>          Main TreeGrid table, contains the grid
+sections, &lt;TABLE&gt; tag. Can be set <b>margin</b>, <b>border</b>. Must not
+be set <b><s>padding</s></b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Top</span></b><span
+style='font-size:10.0pt'>                        The tag rendered above the
+MainTable. It is rendered only when there exist some of the Top0 – Top9. Set <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Top0</span></b><span
+style='font-size:10.0pt'> – <b>Top9</b>       The tags rendered into the Top
+tag. Only tags with <b>height</b> attribute set are rendered. Set <b>height</b>,
+<b>border</b>, <b>margin</b>, <b>padding</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               By
+appropriate combinations of settings you can show <b><i>rounded corners</i></b>
+or something similar above the grid. See <b>Light</b> style for round corners.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bottom</span></b><span
+style='font-size:10.0pt'>                 The tag rendered below the MainTable.
+It is rendered only when there exist some of the Bottom0 – Bottom9. Set <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bottom0</span></b><span
+style='font-size:10.0pt'> – <b>Bottom9</b>          The tags rendered into the
+Bottom tag. Only tags with <b>height</b> attribute set are rendered. Set <b>height</b>,
+<b>border</b>, <b>margin</b>, <b>padding</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               By
+appropriate combinations of settings you can show <b><i>rounded corners</i></b>
+or something similar below the grid. See <b>Light</b> style for round corners.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=sections><b><span
+style='font-size:16.0pt'>Sections</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can control section border
+and spaces between grid sections, change <b>border</b>, <b>padding</b> and <b>margin</b>.
+Set them with relation to <a href="#special">Space rows</a> settings.
+&lt;DIV&gt; tag.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><i><span
+style='font-size:10.0pt'> Sections on vertical direction (...Left, ...Mid,
+...Right) must have the same width (border+padding+margin)</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><i><span
+style='font-size:10.0pt'> Sections on horizontal direction (Head..., Body...,
+Foot) must have the same height (border+padding+margin)</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeadLeft</span></b><span
+style='font-size:10.0pt'>             Fixed head rows, left fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeadMid</span></b><span
+style='font-size:10.0pt'>              Fixed head rows, variable columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeadRight</span></b><span
+style='font-size:10.0pt'>           Fixed head rows, right fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>BodyLeft</span></b><span
+style='font-size:10.0pt'>             Variable rows, left fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>BodyMid</span></b><span
+style='font-size:10.0pt'>              Variable rows, variable columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>BodyRight</span></b><span
+style='font-size:10.0pt'>           Variable rows, right fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FootLeft</span></b><span
+style='font-size:10.0pt'>               Fixed foot rows, left fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FootMid</span></b><span
+style='font-size:10.0pt'>               Fixed foot rows, variable columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FootRight</span></b><span
+style='font-size:10.0pt'>            Fixed foot rows, right fixed columns</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>VScroll</span></b><span
+style='font-size:10.0pt'>                 Vertical scrollbar, you can set also
+its <b>background</b> and in IE scrollbar specific attributes</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HScroll</span></b><span
+style='font-size:10.0pt'>                 Horizontal scrollbar, you can set also
+its <b>background</b> and in IE scrollbar specific attributes</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>XScroll</span></b><span
+style='font-size:10.0pt'>                 Right bottom space between
+scrollbars, here you can set its <b>background</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=space></a><a
+name=special><b><span style='font-size:16.0pt'>Space rows</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can set <b>border,
+padding</b>, <b>margin</b> and <b>background</b> of special solid rows. Set them
+with relation to <a href="#sections">Sections</a> settings. &lt;DIV&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every solid space row is
+individual section and is set independently.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The class is assigned
+according to the row <b>Kind</b> attribute, you can assign any custom Kind name
+to your space rows and create appropriate ...Row CSS class.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>SpaceRow</span></b><span
+style='font-size:10.0pt'>            Base space row with no special kind
+(Kind=”Space”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GroupRow</span></b><span
+style='font-size:10.0pt'>           Space group row (Kind=”Group”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>SearchRow</span></b><span
+style='font-size:10.0pt'>          Space search row (Kind=”Search”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolbarRow</span></b><span
+style='font-size:10.0pt'>       Space toolbar row (Kind=”Toolbar”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabberRow</span></b><span
+style='font-size:10.0pt'>         Space tabber row (Kind=”Tabber”)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerRow</span></b><span
+style='font-size:10.0pt'>            Space pager row (Kind=”Pager”), for
+backward compatibility, it is replaced by cell Type=”Pages”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FillRow</span></b><span
+style='font-size:10.0pt'>                Automatically generated empty space
+row when set &lt;Cfg ConstHeight=’1’/&gt;. To fill the rest of empty space in
+grid to preserve constant height.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RowAbove</span></b><span
+style='font-size:10.0pt'>           Space row positioned above grid (Space =
+-1)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RowBelow</span></b><span
+style='font-size:10.0pt'>           Space row positioned below grid (Space = 5)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Row heights</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>SpaceRowHeight</span></b><span
+style='font-size:10.0pt'>               Set only <b>height</b> attribute. Here
+you can set <u>minimal</u> height of all space rows that have no Height
+attribute set. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Without
+row padding, margin and border. The resulted minimal height is at least as high
+as the highest cell content in the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               This
+class is not assigned to HTML, just read by script.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RowHeight</span></b><span
+style='font-size:10.0pt'>          Set only <b>height</b> attribute. Here you
+can set <u>minimal</u> height of all standard rows (including header), that
+have no Height attribute set.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>The
+resulted minimal height is at least as high as the highest cell content in the
+row.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>This class is not assigned to HTML, just read by
+script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Pages</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Page      </span></b><span
+style='font-size:10.0pt'>                Every body page except the first when
+showing all pages, you can set its <b>border-top</b>, <b>border-bottom</b>, <b>padding-top</b>,
+<b>padding-bottom</b> or <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PageFirst</span></b><span
+style='font-size:10.0pt'>             The first body page when showing all
+pages, you can set its <b>border-top</b>, <b>border-bottom</b>, <b>padding-top</b>,
+<b>padding-bottom</b> or <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PageOne</span></b><span
+style='font-size:10.0pt'>              A body page if only one page is shown or
+paging is not used, you can set its <b>border-top</b>, <b>border-bottom</b>, <b>padding-top</b>,
+<b>padding-bottom</b> or <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ChildPage</span></b><span
+style='font-size:10.0pt'>            Area with all children of row, you can set
+its<b> border-top</b>, <b>border-bottom</b>, <b>padding-top</b>, <b>padding-bottom</b>,<b>
+margin-top</b>,<b> margin-bottom</b> or <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ChildPart</span></b><span
+style='font-size:10.0pt'>             Area with one child part, when children
+of rows are divided to parts, you can set its<b> border-top</b>, <b>border-bottom</b>,
+<b>padding-top</b>, <b>padding-bottom</b>,<b> margin-top</b>,<b> margin-bottom</b>
+or <b>background</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=cells><b><span
+style='font-size:16.0pt'>Cells</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can control
+individual cells, their <b>border</b>, <b>padding</b> and <b>background</b>. It
+is set for &lt;TD&gt; tag, so you cannot set <b><s>margin</s></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here can be also set <b>font</b>
+and other text attributes like <b>text-align</b>, <b>white-space</b>, etc.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>background</b> <b>color</b>
+of standard cells is computed from <a href="#colors">Cell colors</a> classes
+according to cell state, so setting background here may not have effect and
+setting it as !important will disable the state colors.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellHeaderPanel</span></b><span
+style='font-size:10.0pt'>               Header left panel</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellFilterPanel</span></b><span
+style='font-size:10.0pt'>                  Filter left panel</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellPanel</span></b><span
+style='font-size:10.0pt'>                             Any other cell panel
+except Space, Filter and Header</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellHeader</span></b><span
+style='font-size:10.0pt'>                         Standard Header cell except
+the panel</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellFilter</span></b><span
+style='font-size:10.0pt'>                             Standard Filter cell
+except panel</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cell</span></b><span
+style='font-size:10.0pt'>                                       Standard cell
+except Header, Filter, Panel and Space</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellUser</span></b><span
+style='font-size:10.0pt'>                               User HTML section
+displayed when set <b>Sec.Html</b> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellEmpty</span></b><span
+style='font-size:10.0pt'>                           Cell displayed for
+ConstWidth column (fills the empty grid space right side, when set &lt;Cfg <a
+href="GridSize.htm#CfgConstWidth">ConstWidth</a>=’1’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellHeaderEmpty</span></b><span
+style='font-size:10.0pt'>             Cell displayed for Header of ConstWidth
+column (fills the empty grid space right side, when set &lt;Cfg <a
+href="GridSize.htm#CfgConstWidth">ConstWidth</a>=’1’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpacePanel</span></b><span
+style='font-size:10.0pt'>                  Panel Type Space cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceButton</span></b><span
+style='font-size:10.0pt'>                Button Type Space cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceButtonButton</span></b><span
+style='font-size:10.0pt'>   Button Type Space cell with Button=”Button”</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceBool</span></b><span
+style='font-size:10.0pt'>                   Bool Type Space cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceSelect</span></b><span
+style='font-size:10.0pt'>                 Space cell with right side Default Button
+or space cell Type Select</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceEditButton</span></b><span
+style='font-size:10.0pt'>        Editable Space cell with right side Button,
+except Defaults</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceEditIcon</span></b><span
+style='font-size:10.0pt'>            Editable Space cell with left side Icon,
+like Enum, but without right side Button.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceEdit</span></b><span
+style='font-size:10.0pt'>                    Editable Space cell, without any
+Icon or Button.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpace</span></b><span
+style='font-size:10.0pt'>                            Any other Space cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceAbove</span></b><span
+style='font-size:10.0pt'>                Added to cell in space row positioned
+above grid (Space = -1)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellSpaceBelow</span></b><span
+style='font-size:10.0pt'>                 Added to cell in space row positioned
+below grid (Space = 5)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>CellHidden</span></b><span
+style='font-size:10.0pt'>                          Completely hidden cell,
+including horizontal border, used for RowSpan</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderFocus</span></b><span
+style='font-size:10.0pt'>                      Class is added to CellHeader
+when the cell is being dragged to mark which cell is dragged.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderDrag</span></b><span
+style='font-size:10.0pt'>                       Header cell as object under
+mouse cursor when dragged, used with HeaderText.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderGroup</span></b><span
+style='font-size:10.0pt'>                     Column name displayed in DropCols
+cell, in Group row. You can set here also <b>font</b> and other text settings.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderGroupFocus</span></b><span
+style='font-size:10.0pt'>          Class is added to HeaderGroup when the cell
+is being dragged to new position inside the row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderGroupDelete</span></b><span
+style='font-size:10.0pt'>         Class is added to HeaderGroup when the cell
+is being dragged outside the row to remove it.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderGroupCustom</span></b><span
+style='font-size:10.0pt'>      DropCols custom part without column names, in
+Group row. You can set here also <b>font</b> and other text settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Tree</span></b><span
+style='font-size:10.0pt'>                                      Class added to
+tree cell (to Cell class) when the tree image is displayed by more parts by
+inner &lt;div&gt; tag. </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>It should be used only for correction of difference between
+displaying tree image directly in &lt;TD&gt; tag and in inner &lt;DIV&gt; tag.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The tree image is displayed by more parts when the
+full icon does not exist for it or always in IE6.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>NoTreeLines1</span></b><span
+style='font-size:10.0pt'>                    Class added to tree cell instead
+of <b>Tree</b> class when set &lt;Cfg NoTreeLines=’1’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>NoTreeLines2</span></b><span
+style='font-size:10.0pt'>                    Class added to tree cell instead
+of <b>Tree</b> class set &lt;Cfg NoTreeLines=’2’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Panel</span></b><span
+style='font-size:10.0pt'>                                    Class added to
+fast panel image class in the inner &lt;DIV&gt; panel, only in IE6. Use only
+for corrections.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Text</span></b><span
+style='font-size:10.0pt'>, <b>Lines</b>, <b>Int</b>, <b>Float</b>, <b>Date</b>,
+<b>Enum</b>, <b>Bool</b>, <b>Html</b>, <b>Pass</b>, <b>Link</b>, <b>Img</b>, <b>Radio</b>,
+<b>List</b>, <b>DropCols</b>, <b>Abs</b>, <b>Pages</b>, <b>Gantt</b>                        Cell
+settings according to its <b><i>Type</i></b>. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><span style='font-size:10.0pt'>It
+is added to the <b>Cell…</b> class, so both the classes are used. <i>Remember,
+when one setting is defined in both classes, only the setting defined later is
+used.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The Cell
+classes should set border or padding and Type classes should set font and other
+text settings or also padding. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HeaderText</span></b><span
+style='font-size:10.0pt'>                        Class used for Header cell
+instead of Type class.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RadioText</span></b><span
+style='font-size:10.0pt'>                           Class used for Radio type
+instead of Radio class when printing or displaying &lt;input&gt; tags instead
+of icons.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RadioInput</span></b><span
+style='font-size:10.0pt'>                          Class used for Radio type &lt;input&gt;
+tag when the type shows them instead of icons.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerEdit</span></b><span
+style='font-size:10.0pt'>                            Class used in Pager Type
+cell, for edit box to enter page number, internal cell Type is PagerEdit.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Hidden</span></b><span
+style='font-size:10.0pt'>                                 Class used for hidden
+cells (cell attribute Visible=’0’) instead of Type class.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HiddenSpace</span></b><span
+style='font-size:10.0pt'>                      Class used for hidden cells
+(cell attribute Visible=’0’) instead of Type class in Space row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>User</span></b><span
+style='font-size:10.0pt'>                                      User HTML
+section displayed when set <b>Sec.Html</b> attribute. Used with CellUser class.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RightButton</span></b><span
+style='font-size:10.0pt'>                        Class used for &lt;BUTTON&gt;
+tag for right side custom button (cell Button=’Button’). You can set any
+attribute here.      </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RightHtml</span></b><span
+style='font-size:10.0pt'>                           Class added to Cell class
+for right side custom HTML button (cell Button=’Html’). Remember, with of the
+right section is set by &lt;C WidthPad/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>RightImg</span></b><span
+style='font-size:10.0pt'>                             Class used for
+&lt;IMG&gt; tag for right side custom image (cell Button=’Img’). You can set
+any attribute here.                </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>MergedCellH</span></b><span
+style='font-size:10.0pt'>                     A merged cell (Merge=’...’),
+&lt;TD&gt; tag in the inner table inside the original cell. Used with <b>Type</b>
+class. When merged cell horizontally</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>MergedCellV</span></b><span
+style='font-size:10.0pt'>                      A merged cell (Merge=’...’),
+&lt;TD&gt; tag in the inner table inside the original cell. Used with <b>Type</b>
+class. When merged cell vertically</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagesLink</span></b><span
+style='font-size:10.0pt'>                           One link in Pages Type. The
+Pages type cell shows all pages as number links. It can have horizontal scrollbar
+when there are too many pages.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagesLinkActive</span></b><span
+style='font-size:10.0pt'>               The actual page link in Pages Type.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Gantt cell</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt Type cell shows Gantt
+chart computed from other cells in the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All the CSS classes have its
+own prefix “Gantt”.  There is also defined another custom set with “GanttG”
+prefix to use when set &lt;C <a href="GanttChart.htm#CGanttClass">GanttClass</a>=’GanttG’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can define also your own
+custom set with some prefix and set this prefix to &lt;C <a
+href="GanttChart.htm#CGanttClass">GanttClass</a>/&gt;. There are always used
+both styles, base <b>Gantt</b> and the custom one. So the custom prefix classes
+should be defined after the base Gantt classes to take it effect. The custom
+class prefix is not applied to dependencies and header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual layouts are
+placed over themselves in this order: Background, Main bar or Milestone, Real flow,
+Mark, Dependencies, Resources, Flags</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt</span></b><span
+style='font-size:10.0pt'>                                                                    Cell
+class for the Gantt Type chart cell, set like other Type class for &lt;TD&gt;
+tag. You can set <b>background</b>, <b>border</b> and <b>padding</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt0Out</span></b><span
+style='font-size:10.0pt'>                                                          Outer
+tag of not yet started task, set <b>margin-top</b> to move the bar vertically, <b>border</b>,
+<b>padding</b> and <b>background</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt0In                                              </span></b><span
+style='font-size:10.0pt'>                Inner tag of not yet started task, set
+<b>height</b> to control the height of whole main bar and <b>background</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                              You
+can set also <b>border</b> and <b>padding</b>, but remember to difference in
+height for strict and quirks mode in IE.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt10Out</span></b><span
+style='font-size:10.0pt'>, <b>Gantt10In                    </b>               Not
+yet completed part of incomplete task, see Gantt0Out and Gantt0In.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt90Out</span></b><span
+style='font-size:10.0pt'>, <b>Gantt90In                   </b>                Already
+completed part of incomplete task, see Gantt0Out and Gantt0In.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt100Out</span></b><span
+style='font-size:10.0pt'>, <b>Gantt100In              </b>                Fully
+completed task, see Gantt0Out and Gantt0In.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttNullOut</span></b><span
+style='font-size:10.0pt'>, <b>GanttNullIn                            T</b>ask
+with unknown completion state, usually grouped row, see Gantt0Out and Gantt0In.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttHoverOut</span></b><span
+style='font-size:10.0pt'>                                                 Outer
+tag of highlighted task under mouse cursor, class added to default outer class,
+</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The height of the tag should not be changed =&gt; the
+border width + padding must be still the same as in original outer class.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttFlowOut</span></b><span
+style='font-size:10.0pt'>                                                   Outer
+tag for Flow bar, set <b>margin-top</b> to move the bar vertically, <b>border</b>,
+<b>padding</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttFlowIn                                                      </span></b><span
+style='font-size:10.0pt'>Inner tag for Flow bar, set <b>height</b> to control
+the height of whole main bar and <b>background</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                              You
+can set also <b>border</b> and <b>padding</b>, but remember to difference in
+height for strict and quirks mode in IE.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttFlowHover                               </span></b><span
+style='font-size:10.0pt'>                Outer tag of highlighted Flow bar under
+mouse cursor, class added to GanttFlowOut class, </span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The height of the tag should not be changed =&gt; the
+border width + padding must be still the same as in GanttFlowOut.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttMilestone</span></b><span
+style='font-size:10.0pt'>                                                 Icon
+for Milestone, set <b>background</b>, <b>height</b> and <b>width</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttMilestoneHover</span></b><span
+style='font-size:10.0pt'>                                     Icon for
+Milestone under mouse cursor, added to GanttMilestone class, set <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttFlag</span></b><span
+style='font-size:10.0pt'>                                                           Icon
+for Flag, set <b>background</b>, <b>height</b> and <b>width</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttFlagHover</span></b><span
+style='font-size:10.0pt'>                                                               Icon
+for Flag under mouse cursor, added to GanttFlag class, set <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttMark</span></b><span
+style='font-size:10.0pt'>                                                         Class
+for Mark line. Set only <b>background</b> to specify the color of the line.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttResource</span></b><span
+style='font-size:10.0pt'>                                                  Class
+for Resource text. Set <b>margin-top</b> to move the text vertically, <b>border</b>,
+<b>padding</b>, <b>background</b>, <b>font</b> and other text attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttResourceChar</span></b><span
+style='font-size:10.0pt'>                                         Average width
+of one character in Resource text, to let Gantt column resize to show it
+complete. Set only <b>width</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDep</span></b><span
+style='font-size:10.0pt'>                                                            Parent
+tag for dependencies</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVert     </span></b><span
+style='font-size:10.0pt'>                                               Vertical
+line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVertTop</span></b><span
+style='font-size:10.0pt'>                                            Vertical
+top half line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVertTop2</span></b><span
+style='font-size:10.0pt'>                                          Vertical top
+half line, used to connection to top horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVertBottom</span></b><span
+style='font-size:10.0pt'>                                      Vertical bottom
+half line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVertBottom2</span></b><span
+style='font-size:10.0pt'>                                    Vertical bottom
+half line, used to connection to bottom horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepVertBottom3</span></b><span
+style='font-size:10.0pt'>                                    Vertical bottom
+half line, used to connection to bottom horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepHorzIn</span></b><span
+style='font-size:10.0pt'>                                               Inner
+part of middle horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepHorzInLag</span></b><span
+style='font-size:10.0pt'>                                       Inner part of
+middle horizontal line of lag</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepHorzTop</span></b><span
+style='font-size:10.0pt'>                                           Inner part
+of top horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepHorzBottom</span></b><span
+style='font-size:10.0pt'>                                     Inner part of
+bottom horizontal line</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepHorzOut</span></b><span
+style='font-size:10.0pt'>                                            Outer part
+of all horizontal lines</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepErr</span></b><span
+style='font-size:10.0pt'>                                                     Modification
+of all dependency lines colors for incorrect dependencies</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepLagErr</span></b><span
+style='font-size:10.0pt'>                                              Modification
+of dependency lag color for incorrect dependencies</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepIcon     </span></b><span
+style='font-size:10.0pt'>                                               Parent
+for arrow icon</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepArrowLeft</span></b><span
+style='font-size:10.0pt'>, <b>GanttDepArrowRight</b>,                            Icons
+of left / right arrows in dependency lines.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepArrowErrLeft</span></b><span
+style='font-size:10.0pt'>, <b>GanttDepArrowErrRight</b>               Icons of
+left / right arrows in incorrect dependency lines.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttDepStart</span></b><span
+style='font-size:10.0pt'>, <b>GanttDepEnd</b>                       The width
+of start and end part of the arrow, set only <b>width</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttBack1</span></b><span
+style='font-size:10.0pt'>, <b>GanttBack2</b>, <b>GanttBack3</b>,<b> GanttBack4</b>,
+<b>GanttBack5</b>    Five backgrounds used for individual backgrounds in &lt;C <a
+href="GanttChart.htm#CGanttBackground">GanttBackground</a>/&gt;. Set only <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttHeader</span></b><span
+style='font-size:10.0pt'>                                                      Gantt
+header in Header row, inner &lt;DIV&gt; containing all Gantt header lines.</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>You can set <b>margin-top</b>, <b>margin-left</b> to
+move the header and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttHeaderTable</span></b><span
+style='font-size:10.0pt'>                                           Individual
+Gantt header lines, &lt;TABLE&gt; tag. Set <b>background</b> and <b>border</b>.
+Don’t set <b><s>padding</s></b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GanttHeader1</span></b><span
+style='font-size:10.0pt'>, <b>GanttHeader2</b>, <b>GanttHeader3</b>, <b>GanttHeader4</b>,
+<b>GanttHeader5</b>              Five tags used for individual headers set by
+&lt;C <a href="GanttChart.htm#CGanttHeader1">GanttHeader1</a> –
+GanttHeader5/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                              You
+can set all attributes. &lt;DIV&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Tree lines and icons images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tree images are composed
+from predefined parts: 0, 1, T, TL, C, CL, E, EL. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>0 – no vertical line, 1 –
+vertical line, T – end no icon, TL – end no icon, last row, C – collapse icon,
+CL – collapse icon, last row, E – expand icon, EL – expand icon last row.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To reduce count of tags
+displaying the tree and speed up the grid, there are many common combinations
+predefined as one image (e.g. 000T is 3 empty tiles and ending icon).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When there exists predefined
+combination for whole tree icon, it is rendered directly into &lt;TD&gt; tag
+otherwise there are rendered more &lt;U&gt; tags to compose the tree icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The classes for &lt;U&gt; tag
+are defined separately and must have set <b>padding-left</b> as width of the tree
+icon part.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>000</span></b><span
+style='font-size:10.0pt'>, <b>010</b>, <b>001</b>, <b>011</b>, <b>100</b>, <b>110</b>,
+<b>101</b>, <b>111</b>        All combinations of three line tiles images </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>000T</span></b><span
+style='font-size:10.0pt'>, <b>010T</b>, <b>001T</b>, <b>011T</b>, <b>100T</b>, <b>110T</b>,
+<b>101T</b>, <b>111T</b>                All combinations of three line tiles
+with ending icon images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>00</span></b><span
+style='font-size:10.0pt'>, <b>01</b>, <b>10</b>, <b>11</b>                                      All
+combinations of two line tiles images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>00T</span></b><span
+style='font-size:10.0pt'>, <b>01T</b>, <b>10T</b>, <b>11T</b>                          All
+combinations of two line tiles with ending icon images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0T</span></b><span
+style='font-size:10.0pt'>, <b>1T</b>, <b>0TL</b>, <b>1TL</b>, <b>0C</b>,
+ <b>1C</b>, <b>0CL</b>, <b>1CL</b>, <b>0E</b>, <b>1E</b>, <b>0EL</b>, <b>1EL</b>
+     All combinations of one line tile and all ending icons images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>, <b>1</b>, <b>T</b>, <b>TL</b>, <b>C</b>, <b>CL</b>, <b>E</b>,
+<b>EL</b>                 All tree one tile images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>D0</span></b><span
+style='font-size:10.0pt'>, <b>D1</b>, <b>D2</b>, <b>D3</b>                                    Dragging
+images, shows where the dragged row will be dropped (0 – nowhere, 1 above, 2
+into children, 2 below)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>D0L</span></b><span
+style='font-size:10.0pt'>, <b>D1L</b>, <b>D2L</b>, D3L                        Dragging
+images for last row (with no continuing vertical line)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Tree icons without lines images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set &lt;Cfg
+NoTreeLines/&gt;, grid does not display the tree lines, only expand/collapse
+and dragging icons. It can slightly reduce rendering speed of huge trees.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The expand and collapse icons
+are placed directly to the &lt;TD&gt; tag except in IE6. The dragging icons and
+in IE6 are placed to &lt;U&gt; tag to specify its height.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>NC</span></b><span
+style='font-size:10.0pt'>, <b>NE</b>                                 Collapse
+and expand images</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ND0</span></b><span
+style='font-size:10.0pt'>, <b>ND1</b>, <b>ND2</b>, <b>ND3</b>        Dragging
+images, shows where the dragged row will be dropped (0 – nowhere, 1 above, 2
+into children, 2 below)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Panel images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Icons displayed on panel.
+There is one icon for enabled button and one for disabled (inactive). Only the
+select button has third icon for selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The classes have the same
+names as Panel buttons specified by the Panel cell value, you can easily define
+custom class here and assign its name to Panel value. Remember the Panel prefix
+(e.g. .GMPanel) must be added to such class.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These images used when the
+Panel Type cell has set its value (as the list of buttons) or is set &lt;Cfg
+FastPanel=’0’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PanelImage</span></b><span
+style='font-size:10.0pt'>                        Class added to &lt;U&gt; cell
+for custom panel buttons displaying custom icon as background (e.g. &lt;I
+Panel=’Custom’ Custom=’CustomIcon.gif’/&gt;) </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PanelMove</span></b><span
+style='font-size:10.0pt'>, <b>PanelMoveOff</b>           The first icon for
+dragging row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PanelSelect</span></b><span
+style='font-size:10.0pt'>, <b>PanelSelectOn</b>, <b>PanelSelectOff</b>                            The
+second icon for selecting rows, it has special state PanelSelectOn for selected
+rows (Selected=’1’)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PanelDelete</span></b><span
+style='font-size:10.0pt'>, <b>PanelDeleteOff</b>                                         The
+third icon for deleting / undeleting rows </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PanelCopy</span></b><span
+style='font-size:10.0pt'>, <b>PanelCopyOff</b>                                            The
+fourth icon for copying / add rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Fast panel images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set &lt;Cfg
+FastPanel=’1’/&gt; (default) and the panel contains only standard buttons
+(Move, Select, Delete, Copy), so the panel buttons are displayed only according
+to global settings in &lt;Cfg&gt; and &lt;Panel&gt; it displays fast panel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The fast panel is the only
+image with all buttons and is rendered directly into &lt;TD&gt; tag. The only
+advantage of the fast panel is rendering speed and reducing count of tags.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The fast panel contains all
+possible combinations of the four buttons, for every combination is shows one
+class.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every panel class consist
+from P and four characters for the four buttons:  PMSDC (M – Move, S - Select,
+D – Delete, C – Copy), e.g. P12x0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The button character can be <b>0
+</b>– disabled, <b>1</b> – enabled, <b>2</b> – on (only Select), <b>x </b>– not
+displayed. There are set all 3*4*3*3 = 108 combinations.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>PSpace1</b> – <b>4</b>
+classes are added to Space row panel according to the size (count of buttons
+1-4) of standard row panel. In IE6 it is added to &lt;U&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Button type</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The icons and buttons for
+Button Type cell and the default icons shown on Toolbar.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabHtml</span></b><span
+style='font-size:10.0pt'>                                             Class
+added to Cell class for Button Type cell for Button=”Tab”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Here
+you can set <b>border</b>, <b>padding</b>, <b>background</b>, <b>font</b> and
+other text attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabHtml1</span></b><span
+style='font-size:10.0pt'>                                           Class
+replaced TabHtml when the Button Type cell value is 1 (=&gt; checked).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabSep</span></b><span
+style='font-size:10.0pt'>                                                Tab
+separator tag automatically added right side to Button type cell with
+Button=”Tab”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabSepRight</span></b><span
+style='font-size:10.0pt'>, <b>TabSepLeft</b>              It replaces TabSep
+when the next or previous cell has <u>not</u> Button=”Tab”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TabSepFirst</span></b><span
+style='font-size:10.0pt'>, <b>TabSepLast</b>               Class added to Cell
+class for Button Type cell for Button=”TabSep”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolHtml                                            </span></b><span
+style='font-size:10.0pt'>Class added to Cell class for Button Type cell for
+Button=”Html”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Here
+you can set <b>border</b>, <b>padding</b>, <b>background</b>, <b>font</b> and
+other text attributes. Used by default for Style change buttons on Toolbar.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolHtml1</span></b><span
+style='font-size:10.0pt'>                                          Class
+replaced ToolHtml when the Button Type cell value is 1 (=&gt; checked).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolButton</span></b><span
+style='font-size:10.0pt'>                                         Class added
+to Cell class for Button Type cell for Button=”Button”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Here
+you can set <b>border</b>, <b>padding</b> and <b>background</b> attributes.
+Used by default for Search action buttons.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolButtonButton</span></b><span
+style='font-size:10.0pt'>                            Class for &lt;BUTTON&gt;
+tag for Button Type cell for Button=”Button”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Here
+you can set all attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolButtonButton1</span></b><span
+style='font-size:10.0pt'>                          Class replaced
+ToolButtonButton when the Button Type cell value is 1 (=&gt; checked).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolSpaceButton</span></b><span
+style='font-size:10.0pt'>                              Used instead of class
+ToolButtonButton for Space rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolSpaceButton1</span></b><span
+style='font-size:10.0pt'>                            Used instead of class
+ToolButtonButton1 for Space rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IconHtml</span></b><span
+style='font-size:10.0pt'>                                             Class
+added to Button type cell if it contains <b>Icon</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolHeader</span></b><span
+style='font-size:10.0pt'>                                        Displayed
+inside cell when Button type cell shows its menu defined by <b>List</b>
+attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolMenuHeader</span></b><span
+style='font-size:10.0pt'>                             Displayed outside cell
+when Button type cell shows its menu defined by <b>List</b> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolMenuItem</span></b><span
+style='font-size:10.0pt'>                                  One menu item in
+menu shown by Button type cell defined by <b>List</b> attribute</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolMenuOuter</span></b><span
+style='font-size:10.0pt'>                                Whole menu tag shown
+by Button type cell defined by <b>List</b> attribute</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolMenuBody</span></b><span
+style='font-size:10.0pt'>                                 Inner menu tag shown
+by Button type cell defined by <b>List</b> attribute</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Special Toolbar buttons</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolSave</span></b><span
+style='font-size:10.0pt'>, <b>ToolReload</b>, <b>ToolRepaint</b>, <b>ToolAdd</b>,
+<b>ToolAddChild</b>, <b>ToolSort1</b>, <b>ToolSort</b>, <b>ToolCalc1</b>, <b>ToolCalc</b>,</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolExpandAll</span></b><span
+style='font-size:10.0pt'>, <b>ToolCollapseAll</b>, <b>ToolColumns</b>, <b>ToolCfg</b>,
+<b>ToolHelp</b>, <b>ToolResize</b>, <b>ToolPrint</b>, <b>ToolExport</b>, <b>ToolDebug</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The standard Toolbar
+button images. The Button Type cell will show them just when the cell has the
+name (e.g. &lt;I Cells=“Save” SaveType=”Button”/&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                When the
+button supports two states (Calc, Sort), the class without prefix is for off
+and with <b>1</b> prefix is on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Here you can
+set <b>background-image</b> and <b>background-position</b>, but also <b>background-color</b>,
+<b>border</b> and <b>padding</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToolPagerFirst</span></b><span
+style='font-size:10.0pt'>, <b>ToolPagerFirst1</b>, <b>ToolPagerPrev</b>, <b>ToolPagerPrev1</b>,
+<b>ToolPagerNext</b>, <b>ToolPagerNext1</b>, <b>ToolPagerLast</b>, <b>ToolPagerLast1</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The pager
+buttons for cell Type Pager. The cell Type Pager is automatically converted to
+the Button Type cells with appropriate settings and icons.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The class
+without prefix is for disabled button and with <b>1</b> prefix is for enabled
+button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Here you can
+set <b>background-image</b> and <b>background-position</b>, but also <b>background-color</b>,
+<b>border</b> and <b>padding</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ResizeGrid</span></b><span
+style='font-size:10.0pt'>          The special bottom right icon for resizing
+grid main tag, set <b>background</b>, <b>border,</b> <b>padding</b> and <b>display</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Cell images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell images are included
+directly to &lt;TD&gt; cell tag as background images. Only the Right side
+images can be placed in separated &lt;TD&gt; tag next to the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In IE6 when placed to the
+next right tag are placed into inner &lt;U&gt; tag, so for the &lt;U&gt; tag
+should be set padding-left as icon width.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IconLeft</span></b><span
+style='font-size:10.0pt'>, <b>IconRight</b>, <b>IconCenter</b>                  Custom
+icon displayed on the left or on the right cell side, set by <b>Icon</b>
+attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DateLeft</span></b><span
+style='font-size:10.0pt'>, <b>DefaultsLeft</b>, <b>EnumLeft</b>               Calendar,
+Defaults and Enum buttons displayed on the left side inside cell as left
+aligned background. </span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>For Enum is it the default setting.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DateRight</span></b><span
+style='font-size:10.0pt'>, <b>DefaultsRight</b>, <b>EnumRight</b>        Calendar,
+Default and Enum buttons displayed on the right side.</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>It can be displayed as background in the next right
+&lt;TD&gt; tag or inside cell as right aligned background.</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>When displayed inside cell, the cell text will be
+written through the button icon when the cell is overflowed.</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>When displayed in next &lt;TD&gt; tag, it will always
+have width set by the &lt;C WidthPad/&gt;, globally for the whole column.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DefaultsSpaceLeft</span></b><span
+style='font-size:10.0pt'>, <b>DefaultsSpaceRight</b>     Different button
+Defaults displayed in Space row</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio0Left</span></b><span
+style='font-size:10.0pt'>                                                         Unchecked
+Radio button displayed on the left side of the caption</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio0Right</span></b><span
+style='font-size:10.0pt'>                                                      Unchecked
+Radio button displayed on the right side of the caption</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio1Left</span></b><span
+style='font-size:10.0pt'>, <b>Radio1Right</b>                                              Checked
+Radio button displayed on the left or right.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio2Left</span></b><span
+style='font-size:10.0pt'>, <b>Radio2Right</b>                                              Unchecked
+Radio button displayed on the left or right. A different icon, by default
+checkbox instead of radio</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio3Left</span></b><span
+style='font-size:10.0pt'>, <b>Radio3Right</b>                                              Checked
+Radio button checkbox displayed on the left or right.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bool0</span></b><span
+style='font-size:10.0pt'>, <b>Bool1</b>                                                      Checkbox
+image for Bool Type cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bool0RO</span></b><span
+style='font-size:10.0pt'>, <b>Bool1RO</b>                                         Disabled
+checkbox image for read only Bool Type cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bool0Space</span></b><span
+style='font-size:10.0pt'>, <b>Bool1Space</b>, <b>Bool0SpaceRO</b>, <b>Bool1SpaceRO</b>  Different
+checkbox image displayed in Space row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>BoolChar0</span></b><span
+style='font-size:10.0pt'>, <b>BoolChar1</b>, <b>BoolChar2</b>, <b>BoolChar0RO</b>,
+<b>BoolChar1RO</b>, <b>BoolChar2RO</b>                 Bool Type cell as text
+(BoolIcon=’6’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>BoolCharIE</span></b><span
+style='font-size:10.0pt'>                                                       Added
+to Bool Type cell as text (BoolIcon=’6’) in quirks mode in IE.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Filter0</span></b><span
+style='font-size:10.0pt'>, <b>Filter1</b>                                                  Filter
+panel image – checkbox to switch on/off the filtering. <i>Filter is standard
+row not <s>Space</s> row!</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Group0</span></b><span
+style='font-size:10.0pt'>, <b>Group1</b>                                               Group
+panel image - checkbox to switch on/off the grouping</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Search0</span></b><span
+style='font-size:10.0pt'>, <b>Search1</b>                                              Search
+panel image - checkbox to switch on/off the searching</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Filter images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Filter0Left</span></b><span
+style='font-size:10.0pt'> – <b>Filter12Left</b>              Filter cell operator
+images displayed on the left side inside cell as left aligned background</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt'>0</span></b><span style='font-size:10.0pt'> – Off, <b>1</b>
+– Equal, <b>2</b> - Not equal, <b>3</b> - Less than, <b>4</b> - Less than or
+equal, <b>5</b> - Greater than, <b>6</b> - Greater than or equal, </span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt'>7</span></b><span style='font-size:10.0pt'> – Begins
+with,  <b>8</b> – Does not begin with, <b>9</b> - Ends with, <b>10</b> – Does
+not end with, <b>11</b> – Contains, <b>12</b> – Does not contain</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Filter0Right</span></b><span
+style='font-size:10.0pt'> – <b>Filter12Right</b>         Alternate images to
+display the filter operator icon on the right side, inside or outside the
+Filter cell</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Filter0Menu</span></b><span
+style='font-size:10.0pt'> – <b>Filter12Menu</b>         The filter operator
+images displayed in popup filter menu</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FilterMenuHeader</span></b><span
+style='font-size:10.0pt'>                           The popup filter menu
+caption. It contains the actually selected filter icon, as inner tag. </span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Here you can set <b>border</b>, <b>margin</b>, <b>padding</b>
+and <b>background</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Sort images</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you should change only <b>background-image</b>,
+<b>background-position</b> and <b>padding-left</b> as image width.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Sort0Right</span></b><span
+style='font-size:10.0pt'> – <b>Sort6Right</b>                 Sorting images
+displayed in header on right side, inside or outside the header cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               <b>0</b>
+– off, <b>1</b> – first asc, <b>2</b> – second asc, <b>3</b> – third asc, <b>4</b>
+– first desc, <b>5</b> – second desc, <b>6</b> – third desc</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Sort0Left</span></b><span
+style='font-size:10.0pt'> – <b>Sort6Left</b>                      Alternate
+images to display the sorting icons on the left side inside cell as left
+aligned background.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Right side pager</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerMain</span></b><span
+style='font-size:10.0pt'>                          Main pager tag, it is
+related to <a href="#sections">Sections</a> settings, &lt;DIV&gt; tag. Set <b>border</b>,
+<b>padding</b>, <b>margin</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerHeader</span></b><span
+style='font-size:10.0pt'>                      Pager header tag, &lt;DIV&gt;
+tag. Set <b>border</b>, <b>padding</b>, <b>margin</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerCaption</span></b><span
+style='font-size:10.0pt'>                     Pager caption tag, &lt;DIV&gt;
+tag. Set <b>font</b> and other text attributes and also <b>border</b>, <b>padding</b>,
+<b>margin</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerBody</span></b><span
+style='font-size:10.0pt'>                          Pager body tag with pages,
+without header, &lt;DIV&gt; tag, shows scrollbars if required. Set <b>border</b>,
+<b>padding</b>, <b>margin</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerItem</span></b><span
+style='font-size:10.0pt'>                           One pager page,&lt;DIV&gt;
+tag. Set <b>height</b> and <b>font</b> and other text attributes and also <b>border</b>,
+<b>padding</b>, <b>margin</b> and <b>background</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerHover</span></b><span
+style='font-size:10.0pt'>                        Highlight page under mouse
+cursor, done by absolute tag with opacity. Set <b>border</b>, <b>background</b>
+and <b>opacity</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerFocus</span></b><span
+style='font-size:10.0pt'>                         Pager cursor marks currently
+displayed pages, it can mark more, even incomplete, pages or only one, even
+incomplete page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               Done
+by absolute tag with opacity , you can set here <b>border</b>, <b>background</b>
+and <b>opacity</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerSort1</span></b><span
+style='font-size:10.0pt'>,<b> PagerSort2</b>, <b>PagerSort3         </b>Item
+names are marked according to sorted columns, 1 is most important, 3 least, </span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The complete page is placed to &lt;B&gt; tag, the incomplete
+to &lt;SPAN&gt; tag.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PagerSortS</span></b><span
+style='font-size:10.0pt'>                         Item name separator,  | and
+=&gt; , &lt;SPAN&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=colors><b><span
+style='font-size:16.0pt'>Background state colors</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Color...</b> classes
+set a background color for particular state. Can have set only <b>background-color</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every cell or row can be in
+more states at one time and the resulted background color is computed from all
+the state colors by summing their differences from #FFFFFF.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Class...</b> classes
+set other CSS attribute for particular state. Can have set <b>border</b>, <b>font</b>
+and <b>color</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is defined since
+version <b>6.3</b>, in v6.0 – v6.2 were these CSS attributes defined in
+Color... classes instead.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used only for some
+states or / and if it is permitted by appropriate XML attribute for the state.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Coloring classes can slow
+down the grid, because the rows must be refreshed and not just recolored to
+take effect of the settings.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The colors except
+FocusedCell... and HoveredCell... are <u>not</u> used for <b>Space</b>, <b>Header</b>,
+<b>Panel</b> and <b>Button</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorDefault</span></b><span
+style='font-size:10.0pt'>                                      Base color for
+all cells.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorNoFocus</span></b><span
+style='font-size:10.0pt'>, <b>ClassNoFocus</b>       Not focusable cell
+(CanFocus=’0’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorReadOnly</span></b><span
+style='font-size:10.0pt'>, <b>ClassReadOnly</b>  Read only cell (CanEdit=’0’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorPreview</span></b><span
+style='font-size:10.0pt'>, <b>ClassPreview</b>         Preview cell (CanEdit=’2’).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorAlternate</span></b><span
+style='font-size:10.0pt'>, <b>ClassAlternate</b>    Alternate color replaced
+ColorDefault for odd (or next) rows when set &lt;Cfg <a
+href="CellStyle.htm#CfgAlternate">Alternate</a>/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorSelected</span></b><span
+style='font-size:10.0pt'>, <b>ClassSelected</b>         Selected row
+(Selected=’1’) or selected cell (cell Selected=’1’ and row Selected=’2’).</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>To use ClassSelected for individual selected cells
+(not rows) you must set &lt;Cfg <a href="RowSelect.htm#CfgSelectClass">SelectClass</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorError</span></b><span
+style='font-size:10.0pt'>, <b>ClassError</b>                 Invalid cell
+(Error=’...’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorAdded</span></b><span
+style='font-size:10.0pt'>, <b>ClassAdded</b>                Added row
+(Added=’1’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorDeleted</span></b><span
+style='font-size:10.0pt'>, <b>ClassDeleted</b>            Deleted row
+(Deleted=’1’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorMoved1</span></b><span
+style='font-size:10.0pt'>, <b>ClassMoved1</b>         Moved row inside its
+parent (Moved=’1’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorMoved2</span></b><span
+style='font-size:10.0pt'>, <b>ClassMoved2</b>         Moved row to another
+parent (Moved=’2’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorChanged</span></b><span
+style='font-size:10.0pt'>, <b>ClassChanged</b>      Changed row (Changed=’1’).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorChangedCell</span></b><span
+style='font-size:10.0pt'>, <b>ClassChangedCell</b>       Changed cell
+(Changed=’1’).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorMaxChildren</span></b><span
+style='font-size:10.0pt'>, <b>ClassMaxChildren</b>     Automatically created
+child rows when children count reaches row’s <a
+href="TreePaging.htm#IMaxChildren">MaxChildren</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorDetail</span></b><span
+style='font-size:10.0pt'>, <b>ClassDetail</b>                 Master row with
+children that can be displayed in detail grid.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorDetailSelected</span></b><span
+style='font-size:10.0pt'>, <b>ClassDetailSelected</b>  Master row that’s
+children are actually displayed in detail gird.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFound1</span></b><span
+style='font-size:10.0pt'>, <b>ClassFound1</b>           Marked found cells by
+cell Mark action. The ClassFound is used only if set &lt;Cfg <a
+href="Search.htm#CfgSearchClass">SearchClass</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFound2</span></b><span
+style='font-size:10.0pt'>, </span><b><span lang=CS style='font-size:10.0pt'>ClassFound2</span></b><span
+style='font-size:10.0pt'>           The next found cell when called search with
+new Mark action and another search expression.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFound3</span></b><span
+style='font-size:10.0pt'>, <b>ClassFound3</b>           The next found cell
+when called search with new Mark action and another search expression.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHovered</span></b><span
+style='font-size:10.0pt'>                                   Color when hovered
+any row. Only when set <a href="Cursor.htm#IHoverRow">HoverRow</a>=’Color’.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCell</span></b><span
+style='font-size:10.0pt'>, <b>ClassHoveredCell</b>       Color of editable cell
+when hovered.  </span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The ColorHoveredCell is used only if set <a
+href="Cursor.htm#IHoverCell">HoverCell</a>=’Color’, the ClassHoveredCell is
+used only if set <a href="Cursor.htm#IHoverCell">HoverCell</a>=’Class’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellReadOnly</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>         Color of read-only
+(CanEdit=’0’) cell when hovered, similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellNoFocus</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>            Color of not focusable
+(CanFocus=’0’) cell when hovered, similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellHeader</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>              Color of header cell
+when hovered, similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellPanel</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>                  Color of Panel Type
+cell when standard (no fast) panel is used. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal style='margin-left:141.6pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Standard panel is rendered into inner div, so there is
+no interference between background-color and panel image.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellFastPanel</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>          Color of Panel Type cell
+when fast panel (FastPanel=’1’) is used. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                               Fast
+panel is rendered directly into the TD tag, so there can be interference
+between background-color and panel image.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellSpace</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>                 Color of <u>not</u>
+editable Space cell. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellSpaceEdit</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>         Color of editable Space
+cell. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellSpaceBool</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>        Color of Space cell type
+Button. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellButton</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>                Color of Button Type
+cell. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellButton1</span></b><span
+style='font-size:10.0pt'>, <b>Class</b> <b>...             </b>Color of Button
+Type cell switched on (value = 1). Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellTab</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>                     Color of Button
+Type cell with Button=”Tab”. Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorHoveredCellTab1</span></b><span
+style='font-size:10.0pt'>, <b>Class...</b>                  Color of Button
+Type cell with Button=”Tab” switched on (value = 1). Similar to ColorHoveredCell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFocused</span></b><span
+style='font-size:10.0pt'>, <b>ClassFocused</b>         Color of focused row
+(grid.FRow). </span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The ColorFocused is used only if set <a
+href="Cursor.htm#IFocusRow">FocusRow</a>=’Color’, the ClassFocused is used only
+if set <a href="Cursor.htm#IFocusRow">FocusRow</a>=’Class’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFocusedCell</span></b><span
+style='font-size:10.0pt'>, <b>ClassFocusedCell</b>                         Absolute
+color of focused cell (grid.FRow, grid.FCol). </span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The ColorFocusedCell color is set directly as
+background-color without any computing with others.</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>The ColorFocusedCell is used only if set <a
+href="Cursor.htm#IFocusRow">FocusRow</a>=’Color’, the ClassFocusedCell is used
+only if set <a href="Cursor.htm#IFocusRow">FocusRow</a>=’Class’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorFocusedCellSpace</span></b><span
+style='font-size:10.0pt'>,<b> ClassFocusedCellSpace</b>   Absolute color of
+focused Space cell (grid.FRow, grid.FCol). Similar to ColorFocusedCell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorEditedCell</span></b><span
+style='font-size:10.0pt'>                                Absolute color of
+focused cell being edited. This color is set directly as background-color
+without any computing with others.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                               Set
+only <b>background-color</b>. All other attributes can be set by <b>EditInput</b>
+and <b>EditTextarea</b> classes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ColorViewedCell</span></b><span
+style='font-size:10.0pt'>                               Absolute color of
+focused cell being viewed – read only edit mode, similar to ColorEditedCell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Cursors</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cursors are absolutely
+positioned tags above the grid to mark the cursor cell and row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HoverPanelBackground</span></b><span
+style='font-size:10.0pt'> Background of hovered row above the row left (left
+only) panel. You can set <b>background</b> and <b>opacity</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HoverRowBackground</span></b><span
+style='font-size:10.0pt'>   Background of hovered row except the row left (left
+only) panel. You can set <b>background</b> and <b>opacity</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HoverRowBorder</span></b><span
+style='font-size:10.0pt'>             Border around of hovered row. You can set
+<b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>. The
+background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>HoverCellBorder</span></b><span
+style='font-size:10.0pt'>              Border around of hovered cell. You can
+set <b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>. The
+background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FocusPanelBackground</span></b><span
+style='font-size:10.0pt'>  Background of focused row above the row left (left
+only) panel. You can set <b>background</b> and <b>opacity</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FocusRowBackground</span></b><span
+style='font-size:10.0pt'>    Background of focused row except the row left
+(left only) panel. You can set <b>background</b> and <b>opacity</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FocusRowBorder</span></b><span
+style='font-size:10.0pt'>              Border around of focused row. You can set
+<b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>. The
+background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FocusCellBorder</span></b><span
+style='font-size:10.0pt'>               Border around of focused cell. You can
+set <b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>. The
+background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>FocusCellSpaceBorder</span></b><span
+style='font-size:10.0pt'>    Border around of focused Space cell. You can set <b>z-index</b>,
+<b>border</b>, <b>padding</b> and <b>background</b>. The background and padding
+is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>EditCellBorder</span></b><span
+style='font-size:10.0pt'>                  Border around of edited cell. You
+can set <b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>.
+The background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>EditCellSpaceBorder</span></b><span
+style='font-size:10.0pt'>       Border around of edited Space cell. You can set
+<b>z-index</b>, <b>border</b>, <b>padding</b> and <b>background</b>. The
+background and padding is inner border.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>EditCellInput</span></b><span
+style='font-size:10.0pt'>                      Tag above the editable part of
+the cell, excluding side button and tree image. Set <b>border</b>, <b>padding</b>
+or <b>background</b>.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Inside it is displayed the &lt;INPUT&gt; or
+&lt;TEXTAREA&gt; tag, see EditInput and EditTextarea classes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Dragging</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>MouseObject</span></b><span
+style='font-size:10.0pt'>       Absolute tag displayed under mouse when
+dragging. It contains the dragged content. You can set <b>border</b>, <b>padding</b>
+and <b>opacity</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DragObject</span></b><span
+style='font-size:10.0pt'>         Absolute tag displayed under mouse when
+dragging rows and is set &lt;Cfg DragObject=’2’/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>DragColInsideTop</span></b><span
+style='font-size:10.0pt'>, <b>DragColInsideBottom</b>, <b>DragColOutsideTop</b>,
+<b>DragColOutsideBottom</b>      The icons marking new position of dragging columns</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The Inside is
+inside the section, the Outside is to another section. You can set <b>background</b>,
+<b>width</b>, <b>height</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Messages</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Message</span></b><span
+style='font-size:10.0pt'>                               The status message
+shown on longer actions in grid. Absolutely positioned, centered into the grid,
+modal. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Set <b>background</b>, <b>border</b>, <b>padding</b>, <b>font</b>
+and other text attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>MessageShadow</span></b><span
+style='font-size:10.0pt'>                 The shadow box placed under the
+Message, just shadow visual effect. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Set <b>margin-top</b>, <b>margin-left</b> to specify
+how much is the shadow moved relative to the message. Set <b>background</b> and
+<b>opacity</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>PageMessage</span></b><span
+style='font-size:10.0pt'>      The message shown inside page or child pages
+when they are loading or rendering. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>It is centered inside page, but can be shown more
+times when the page is higher than grid.  </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Set <b>background</b>, <b>border</b>, <b>padding</b>, <b>font</b>
+and other text attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GridMessage</span></b><span
+style='font-size:10.0pt'>      <i><span style='color:red'>No grid (GM,GS,...)
+prefix here!</span> </i>Used for initial message when the prefix is not known
+yet. Centered inside main tag.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Set <b>background</b>, <b>border</b>, <b>padding</b>, <b>font</b>
+and other text attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GridErrorMessage</span></b><span
+style='font-size:10.0pt'>           <i><span style='color:red'>No grid (GM,GS,...)
+prefix here!</span></i> Used for critical error message when grid cannot
+render. Centered inside main tag.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Set <b>background</b>, <b>border</b>, <b>padding</b>, <b>font</b>
+and other text attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Debug</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>... Not finished
+yet ...</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>&nbsp;</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Menus (Lib)</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>... Not finished
+yet ...</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Grid configuration menus</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>... Not finished
+yet ...</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>&nbsp;</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Calendar (Lib)</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>... Not finished
+yet ...</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Hint / Tip</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>... Not finished
+yet ...</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

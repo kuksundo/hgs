@@ -1,0 +1,741 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Paging root rows</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Paging root rows</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can automatically split
+root rows to pages and display them only on demand – when the page becomes
+visible due scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The page names and links can
+be displayed in large <a href="Pager.htm#SidePager">vertical pager</a> or in
+simple horizontal pager row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For other possibilities of
+paging see <a href="../Tutorials/Paging/01%20-%20Client%20root%20paging.html">paging
+tutorial</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also examples in
+downloadable trial, for your server side script. For server paging see “Ajax
+table with server paging and export” example.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This paging type can page
+only root rows and cannot divide children of root rows to pages. So in tree
+this paging can become ineffective.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For paging child rows in tree
+use &lt;Cfg <a href="TreePaging.html#CfgChildPaging">ChildPaging</a>/&gt; and /
+or &lt;Cfg <a href="TreePaging.htm#CfgChildParts">ChildParts</a>/&gt;, see <a
+href="TreePaging.htm">paging in tree</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The paging in tree is
+permitted by default – opposite to root paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Paging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Method of root paging used. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This paging is done only for
+root rows, it is the best for plain grids or trees with many root nodes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>0</span></b><span
+style='font-size:10.0pt'>             <b><i>No paging</i></b></span> </p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows are in one page,
+pager cannot be visible. All rows are rendered on start. This means slow start
+and fast use.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for small grids,
+up to about 1000 rows in root.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>1</span></b><span
+style='font-size:10.0pt'>             <b><i>Show all</i></b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pages are automatically
+created, but all are rendered on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <a href="#CfgAllPages">AllPages</a>
+= <b>1</b> it renders all pages on start, but asynchronously and also pager
+components can be shown and used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <a href="#CfgAllPages">AllPages</a>
+= <b>0</b> is the same as <b>2</b> – Client paging. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for medium grids,
+250 – 1000 rows in root, to let users to easy navigate between parts in grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can be used also to
+avoid browser “Slow script” message when rendering too many rows without
+paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also suppress the
+rendering message by setting &lt;Lang&gt;&lt;Text
+RenderProgressText=&quot;&quot;/&gt;&lt;/Lang&gt; and render all the pages on
+background. But it will slow the grid interaction responses.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>2</span></b><span
+style='font-size:10.0pt;color:blue'> </span><span style='font-size:10.0pt'>            <b>Client
+paging      </b>(auto – fully done by TreeGrid) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pages are automatically
+created</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <a href="#CfgAllPages">AllPages</a>
+= <b>1</b> is page rendered only when it is visible in window by scrolling.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <a href="#CfgAllPages">AllPages</a>
+= <b>0</b> is page rendered immediately, but it is visible only one page at a
+time and after switch to another page, the body is re-rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for large grids up
+to 10 000 rows. All functions still work offline, include sorting, filtering,
+grouping, searching and calculations.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The client paging does <u>not</u>
+require any server side support.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>3</span></b><span
+style='font-size:10.0pt'>             <b>Server paging     </b>(load – done by
+server )</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pages are created by server
+and TreeGrid downloads only page(s) being displayed. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server is responsible for
+sending data for requested page and also for sorting, filtering, grouping,
+searching and aggregate calculation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculations are still
+possible offline on client, but must be prepared on server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for very large
+grids, with more then 10&nbsp;000 rows or for grids with special relations or
+grids need to be online.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The server
+paging requires a lot of <u>your</u> code on server side.</span></i><span
+style='font-size:10.0pt'> To simplify this task you can use <a href="DLL.htm">TreeGrid.dll/so</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>For more information see <a
+href="PagingServer.htm">server paging</a>.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you are not able to do
+sorting, filtering or grouping on server and you still want to use these
+features, you can set <a href="#CfgOnePage">OnePage</a> attribute (and <a
+href="#CfgAllPages">AllPages</a>=0) to do them partially in actual page.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Server paging cannot be
+used with Gantt chart.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAllPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AllPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                        [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Paging display mode</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             Shows one page at a time and switches to
+pages only by pager click or by pressing PageUp / PageDown key.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             Shows all pages in grid at once and
+renders pages on demand, when they are displayed by scrolling.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageLength><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageLength</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [20]                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Average count of rows in
+page. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For client paging there are
+all pages created to contain this number of rows (except the last one).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For server paging it
+determines height of page – it is default value of &lt;B <a
+href="PagingServer.htm#BCount">Count</a>&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Exact count of rows in pages
+can differ due to adding or deleting rows or in last incomplete page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every page must contain at
+least one row otherwise it is deleted. Exception is when grid does not contain
+any row, so it contains one empty page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In TreeGrid server is this
+parameter used to set count of rows in page.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is also possible to
+change it dynamically by API, but after change must be called
+grid.CreatePages(); grid.Render();</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageTime><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageTime</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [200]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long (in ms) must be page
+visible (by scroll) before it loads data or renders (for <a href="#CfgAllPages">AllPages</a>=1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [20]                                                                                                     <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum rendered root pages
+in grid, only for <a href="#CfgAllPages">AllPages</a> = ‘1’ and <a
+href="#CfgPaging">Paging</a> &gt;= 2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid contains more
+rendered pages, the pages longer not accessed are cleared (only in HTML, pages
+data are <u>not</u> affected).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to <u>not</u> slow down
+the browser when too many HTML tags are displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For large pages you can lower
+this value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actually displayed pages
+are never cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> to disable
+clearing pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRemoveUnusedPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveUnusedPages</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [2]                                                                               <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it never
+removes unused root pages, child pages/parts and column pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it
+removes unused pages due <a href="#CfgMaxPages">MaxPages</a>, <a
+href="TreePaging.htm#CfgMaxChildParts">MaxChildParts</a> and <a
+href="ColPaging.htm#CfgMaxColPages">MaxColPages</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>3</b>, it
+removes also data of unused root pages or child pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It removes only page or child
+page that does not contain changed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will behave changed rows
+on RemoveCollapsed or RemoveUnused.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows and selected rows. If
+there is any such row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows. If there is any such
+row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Remove changed rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - Save changes and remove rows immediately</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4 </span></b><span
+style='font-size:10.0pt'>- Save changes and wait for the server success
+response before removing rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageWindowAdd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageWindowAdd</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                           <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Increase this value to load
+and render the pages sooner than they are shown.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How many pixels before or
+after page can remain, before it is rendered or loaded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default (for 0) is page
+rendered after it is at least partially shown.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, when scrolling
+grid, the pages are rendered after the scrolling finishes, regardless on this
+value.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetPageNum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPageNum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>page</b>)                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns position of page
+(page index) inside body, from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=GetPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>num</b>)                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns page object by page
+index (from 0).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=GetRowPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetRowPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TRow</i>
+<b>row</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns root page inside that
+row is placed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetPagePos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPagePos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns row’s position in its
+root page. It counts only visible rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree it counts all rows
+above the row inside the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=PagePosToRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>PagePosToRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TRow</i>
+<b>page</b>, <i>int</i> <b>pos</b>)                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns row on given position
+on page. It counts only visible rows. It is only for loaded pages (State&gt;2).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree it counts all visible
+expanded rows within the tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=GoToPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GoToPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                    (<i>TRow</i>
+<b>page</b>)                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Scrolls or moves to given
+page. To get page object by index use <a href="#GetPage">GetPage</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves actual focus to appropriate
+row in the page (e.g. if the third row on the actual page was focused, the
+third row on the new page become focused).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnGoToPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGoToPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>             (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>, <i>int</i> <b>pagepos</b>)                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when grid displays
+another page. Return true to cancel change.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>page</span></b><span
+style='font-size:10.0pt'> is page (&lt;B&gt; tag) which will be changed to,  <b>pagepos</b>
+is this page position inside body, from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called from <a
+href="#GoToPage">GoToPage</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called when user clicks
+page link on pager.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> called when a
+user scrolls or focuses to new page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=GoToNextPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GoToNextPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Scrolls or moves to the next
+page. Moves actual focus to appropriate row in the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you call this function
+from external button onclick, you should cancel the event by adding <a
+href="GlobalSettings.htm#CancelEvent">CancelEvent</a> (event) to your handler
+or use <a href="Focus.htm#CfgStaticCursor">StaticCursor</a>=’1’ to preserve
+grid from loosing focus.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=GoToPrevPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GoToPrevPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Scrolls or moves to previous
+page. Moves actual focus to appropriate row in the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you call this function
+from external button onclick, you should cancel the event by adding <a
+href="GlobalSettings.htm#CancelEvent">CancelEvent</a> (event) to your handler
+or use <a href="Focus.htm#CfgStaticCursor">StaticCursor</a>=’1’ to preserve
+grid from loosing focus.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (
+)                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts loading and rendering
+displayed pages. Asynchronous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call this method if pages are
+not rendered automatically when you do some unusual changes in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=CreatePages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CreatePages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( )                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-creates pages. After call
+must be called <a href="Create.htm#Render">Render</a> to re-render the grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful when <a
+href="#CfgPageLength">PageLength</a> was changed by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=AddPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AddPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>string</i>
+<b>name</b>, <i>string</i> <b>xml</b>, <i>int</i> <b>count</b>)                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new page to the end of
+pages. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is page name in pager, can contain HTML code.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>xml</span></b><span
+style='font-size:10.0pt'> is xml content for page, it can contain only rows
+like “&lt;I A=’10’/&gt;&lt;I A=’20’/&gt;”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For server paging (<a
+href="#CfgPaging">Paging</a>=3) xml can be null and data for page will be
+loaded from server, in this case <b>count</b> is supposed count of rows on
+page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRenderPageStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of
+the root page or child page started rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired before start of rendering children
+when a parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderPageFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the root page or
+child page is fully rendered and ready. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired after children are rendered when a
+parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RefreshPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TRow</i>
+<b>page</b>, <i>bool</i> <b>always</b> = 0)                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-renders page or row’s
+children. For always = 1 re-renders the page also if it is not visible due
+scroll or expand state.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRemovePage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemovePage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                                          <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after removing data
+from page or child page, when set <a href="#CfgRemoveUnusedPages">RemoveUnusedPages</a>
+= <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         int<i>        </i></span><a
+name=OnRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                               <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called if removing page
+containing some changed (or selected row for RemoveChanged==0)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For RemoveChanged==2 is
+called always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value for
+RemoveChanged to use - 1, 2, 3, 4</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRepaint></a><a name=Repaint><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Repaint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Refreshes pages, when too
+many pages are displayed, the grid can slow down</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRenderPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>RenderPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>             Attached to
+event <b>OnClickButtonRepaint</b>                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Switches for <b>Paging</b>, <b>ColPaging</b>
+and <b>ChildParts</b> between value <b>1</b> and <b>2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If any of the attribute is <b>2</b>,
+it switches to <b>1</b> and renders all not yet rendered pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If all attributes are <b>1</b>,
+it switches to <b>2</b> and clears all unused pages according to the MaxPages,
+MaxColPages and MaxChildParts settings.</span></p>
+
+</div>
+
+</body>
+
+</html>

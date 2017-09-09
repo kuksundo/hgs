@@ -1,0 +1,136 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// ------------------------------------------------------------------------------------------------------------------   
+// Loads all pages on background
+function LoadAllPages(G){
+for(var r=G.Body.firstChild;r;r=r.nextSibling) if(r.State==0) { 
+   Grids.OnDataReceive = function(G,IO){ 
+      if(IO.Row) { 
+         if(IO.Row.nextSibling) G.LoadPage(IO.Row.nextSibling); 
+         else Grids.OnDataReceive = null; 
+         }
+      }
+   G.LoadPage(r); 
+   break; 
+   }
+}
+// ------------------------------------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>6. Server root paging</center>
+   <center style='font:bold italic;'>Manual paging of root rows on server side</center>
+   <div style='margin-bottom:6px;'>
+   <i style='color:red'>This example does <u>not</u> use any server script, so it does <u>not</u> sort, filter and group the rows !</i><br />
+   To see how to support server side sort, filter and group run the examples at <b>/Examples/<i>xxx</i>/Paging/</b> and <b>/Examples/<i>xxx</i>/PagingDLL/</b>.
+   </div>
+   
+   
+   <table>
+      <tr>
+         <td valign='top' width='620'>
+            <div style='margin-bottom:6px;'>
+               <a href='06 - Layout.xml'>06 - <h2>Layout</h2>.xml</a>
+               &nbsp;
+               <a href='06 - Data.xml'>06 - <h2>Data</h2>.xml</a>
+               &nbsp;
+               <a href='06 - Page1.xml'>06 - <h2>Page1</h2>.xml</a>
+               &nbsp;
+               <a href='06 - Page2.xml'>06 - <h2>Page2</h2>.xml</a>
+            </div>
+            <div style='width:350px; height:550px;'>
+               <bdo Debug='check,io' DebugTag='TGDebug'
+                  Layout_Url='06 - Layout.xml' 
+                  Data_Url='06 - Data.xml' Data_Method='Get'
+                  Page_Url='06 - Page*Pos.xml' Page_Method='Get'
+                  ></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='float:right;'><button onclick='document.getElementById("TGDebug").innerHTML="";'>Clear</button></div>
+            <div style='margin-bottom:6px;height:20px;'>Server communication</div>
+            
+            <div id='TGDebug' style='width:330px; height:550px; overflow:auto; background:#EEE; border:1px solid black; padding-left:3px;'></div>
+         </td>
+      </tr>
+   </table>
+   
+   <ul>
+      <li>
+         Server side paging is done by server script that generates the page list and the individual rows on demand.<br />
+         <b><i>Implementation of server paging is not easy and requires a lot of work on server side!</i></b>
+         For more information see <a href='../../Doc/PagingServer.htm'>Server paging documentation</a>.<br />
+         TreeGrid provides server side DLL/SO library that provides the most of work to support the server paging, 
+         but it can be used only some cases, see the <a href='../../Doc/DLL.htm'>DLL documentation</a>.<br />
+      </li>
+      <li>
+         <h4>How server root paging works</h4><br />
+         <ul>
+         <li>
+         On start it uploads to data source <h3>Data_Url</h3> actual state of sorting, filtering, grouping and search 
+         and downloads back the list of pages.<br /> 
+         The server script should prepare the list of pages according to the uploaded information.<br />
+         </li>
+         <li>
+         When any page becomes visible due scroll, TreeGrid uploads to data source <h3>Page_Url</h3> the page identification 
+         (and also the sorting, filtering, grouping and search state) and downloads back all the rows for the page. <br />
+         The server script should find the rows for the page and return them back to the grid. 
+         It can use the information about the grid state or use some data prepared in the first request for the body.<br />
+         </li>
+         <li>
+         When any grid state of sorting, filtering, grouping or search is changed by a user, 
+         grid reloads the pages list from <b>Data_Url</b> with the new state information and starts again downloading the visible pages.
+         </li>
+         </ul>
+      </li>
+      <li>
+         Server root paging is set by Cfg attribute <h3>Paging</h3><b>='3'</b> defined in <b>Layout</b> data source (e.g. in Layout_Url).<br />
+         Both the data sources (Data_ and Layout_) must be used. The <b>Layout</b> must define the whole grid configuration, all columns and all Fixed and Space rows.
+         The <b>Data</b> must return only pages.<br />
+      </li>
+      <li>
+         The Data response is a list of pages as list of of &lt;B> tags.<br />
+         The &lt;B> can contain rows list like page in client paging to fill the page immediately without downloading on demand.<br />
+         Or it is empty &lt;B> tag as page to be downloaded on demand. 
+         It can have attribute <b>Count</b> as expected count of the rows in the page.
+         And attribute <b>Name</b> as the page name shown in the right side pager.
+      </li>
+      <li>
+         <b>Remember, server must return the rows already sorted, grouped and filtered.</b> 
+         The grid on client side does not sort, filter or group the data, just provides interface for users to change the state and after the change it reloads newly arranged data from server.<br />
+         <i>The server side script is not a part of TreeGrid and must be created by developers!</i>. 
+         Although TreeGrid provides many examples that can be used as fundamental to create the server script.<br />
+         TreeGrid also provides the mentioned DLL/SO library that sorts, filters and groups the data automatically and serves the pages on demand.<br />
+      </li>
+      <li>
+         <h4>Calculations in server paging</h4><br />
+         If the grid contains some summary rows or cells in fixed / space rows, the data must be precalculated on server side by server script.<br />
+         The results of the summary functions must be filled as attributes to the &lt;B> tags in format ColNameFuncName='result on page'.<br />
+         In this tutorial example the toolbar formula sums all values in column named N. So all the pages (&lt;B> tags) must have attribute Nsum='xxx' as sum of all cells in the N column on this page.<br />
+      </li>
+      <li>
+         The Cfg attribute <h3>OnePage</h3> can be used if the server is not able to provide some or all the features (sort, filter, group).<br />
+         To use the OnePage, there must be also set <b>AllPages='0'</b> to show only one at a time.<br />
+         When set OnePage, the feature (sort, filter, group) is done by TreeGrid on client and only on the actually displayed page, so it does not affect the other pages in grid.<br />
+      </li>
+      <li>
+         <h4>Static files</h4><br />
+         In the most cases the body and the pages are created and served dynamically by some server script.<br />
+         But it is also possible, like in this tutorial example, to load the body and the pages from static files. <br />
+         For static file it is required to set Data_Method='Get' and / or Page_Method='Get'.<br />
+         In this case the data source address supports wildcards according to the page identification and sorting state: *Pos, *id, *Rows, *Sort0, *Sort1, *Sort2.<br />
+      </li>
+   </ul>
+</body>
+</html>

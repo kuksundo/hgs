@@ -1,0 +1,720 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Paging in tree</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Paging in tree</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ChildPaging><b><span style='font-size:16.0pt'>ChildPaging </span></b></a><b><span
+style='font-size:16.0pt'>– download or render children on expand</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree you can render or
+download children on background when their parent is being expanded at first
+time (or even next times).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent row must be
+collapsed to be paged. You have to set its <a href="Tree.htm#IExpanded">Expanded</a>
+attribute to 0. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To send all rows collapsed
+you can set for default row named “R”: &lt;Def&gt;&lt;D Name=’R’ Expanded=’0’/&gt;&lt;/Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The maximum of children in
+row is limited, because all the children are rendered at once. By default there
+can be 1000 children. If the count of children overruns this limit, the
+children are divided to newly created rows. See row’s attribute <a
+href="#IMaxChildren">MaxChildren</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>An alternative to <b>client</b>
+<b>ChildPaging</b> are also <a href="#ChildParts">ChildParts</a>.  </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In tree you can of course
+use also standard <a href="Paging.htm">paging</a> for root rows.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgChildPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChildPaging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [2]                                                                                                      <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Method of paging of children
+rows in tree. How will be rendered or downloaded children rows after parent is
+expanded for the first time.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, default setting
+is <b>2 </b>– client paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>0</span></b><span
+style='font-size:10.0pt'>             <b><i>No paging</i></b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows, including all children
+are rendered on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This means slow start and
+fast use. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rendering on scroll by <a
+href="#ChildParts">ChildParts</a> is still applicable, but limiting children
+count by <a href="#MaxChildren">MaxChildren</a> is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             <i>not applicable</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>2</span></b><b><span
+style='font-size:10.0pt'>             Client paging</span></b><span
+style='font-size:10.0pt'>      (render on expand)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rendered on start are only
+children of expanded rows. Children of collapsed parent are rendered on first
+access.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This means faster start for
+collapsed tree, but slower first expanding of collapsed node.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The client paging is fully
+done by TreeGrid.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>3</span></b><span
+style='font-size:10.0pt'>             <b>Server paging     </b>(download and
+render on expand or on scroll). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Children of collapsed rows
+are downloaded on first expand. Server must be able to send the children of the
+row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0 also the
+children of expanded rows can be downloaded from server when they become
+visible due scroll.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="PagingServer.htm">server
+paging documentation</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The server paging requires
+cooperation with server and you are responsible for sending children from
+server.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For server application you
+can use also <a href="DLL.htm">TreeGrid.dll/so</a>.</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgRemoveCollapsed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveCollapsed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rendered children are
+removed when parent row collapses. To speed up grid with many collapsed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>0</span></b><span
+style='font-size:10.0pt'>             <b>None</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does not remove the
+children, just hides them. The next expanding is faster.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             <i>not applicable</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>2</span></b><span
+style='font-size:10.0pt'>             <b>Html      </b>(render on next expand
+will be needed)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows are removed from
+html page only and stay in data unchanged. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set only for <b>client</b>
+or <b>server</b> <a href="#CfgChildPaging">ChildPaging</a> (<b>2</b> or <b>3</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The next expanding is as slow
+as the first. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It speeds up grids with many
+rows that were expanded and back collapsed, to <u>not</u> have too many HTML
+tags rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             <b>Data</b>       (download and render on
+next expand will be needed)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows are removed from
+both html and data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set only for <b>server</b>
+<a href="#CfgChildPaging">ChildPaging</a> (3). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes in speed are the same
+as for value <b>2 </b>(Html).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This setting can be used when
+children are generated dynamically to regenerate new children in every
+expanding.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The unsaved changes in all
+children are lost! Also all selection is lost.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void     </span><a
+name=OnRemoveCollapsed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveCollapsed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the row is
+collapsed and its children are deleted from data, only if set &lt;Cfg <a
+href="#CfgRemoveCollapsed">RemoveCollapsed</a>=’3’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will behave changed rows
+on RemoveCollapsed or RemoveUnused.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows and selected rows. If
+there is any such row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows. If there is any such
+row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Remove changed rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - Save changes and remove rows immediately</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4 </span></b><span
+style='font-size:10.0pt'>- Save changes and wait for the server success
+response before removing rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         int<i>        </i></span><a
+name=OnRemoveChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                               <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called if removing page
+containing some changed (or selected row for RemoveChanged==0)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For RemoveChanged==2 is
+called always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value for
+RemoveChanged to use - 1, 2, 3, 4</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRenderPageStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of
+the root page or child page started rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired before start of rendering children
+when a parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderPageFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the root page or
+child page is fully rendered and ready. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired after children are rendered when a
+parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=MaxChildren><b><span style='font-size:16.0pt'>MaxChildren</span></b></a><b><span
+style='font-size:16.0pt'> – limit children count</span></b></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Applied only when used
+child paging (<a href="#CfgChildPaging">ChildPaging</a>&gt;=2), (by default is
+ChildPaging=’2’).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expanding rows with too many
+children can be very slow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can limit the maximal
+count of immediate children by row’s attribute <a href="#IMaxChildren">MaxChildren</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row children exceed
+this count, in row’s children are automatically created new collapsed rows that
+will contain the row’s children.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the attributes of the creates temporary parents are
+read from the default row named CPage (&lt;D Name=’CPage’/&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorting, filtering, grouping
+and calculations will still work with all the children like they were not
+moved.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>An alternative to <b>MaxChildren</b>
+are also <a href="#ChildParts">ChildParts</a>.  </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=IMaxChildren><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxChildren</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [10000]                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of row’s
+children. <i>Applied only when used child paging (<a href="#CfgChildPaging">ChildPaging</a>&gt;=2).</i></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Default value 10000 is
+very high and nearly disables the feature.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the count of children
+exceeds this limit, in row are created sub nodes that contain parts of the
+children list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This means that if MaxChildren
+is 1000 and row contain 3500 children, there will be created four sub nodes
+with 3x1000 and 1x500 children rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The text displayed in child
+page is in &lt;Grid&gt;&lt;Lang&gt;&lt;Text
+Items=’...’/&gt;&lt;/Lang&gt;&lt;/Grid&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=IMaxChildrenDiff><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxChildrenDiff</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[20]                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The children rows are grouped
+to sub nodes only if their count exceeds <a href="#IMaxChildren">MaxChildren</a>
++ MaxChildrenDiff.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To avoid creating sub nodes
+with 1000 + 1 node or so.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=IMaxChildrenMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxChildrenMin</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[1]                                                                                           <span
+style='color:red'>new<b> 9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal length of the group.
+To avoid creating sub nodes with 1000+1000+1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The last group with less
+children than the MaxChildrenMin is merged with previous group.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgMaxChildrenEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxChildrenEmpty</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                      
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used when the count of
+children exceeds <a href="#IMaxChildren">MaxChildren</a> value and in row are
+created children pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the child page row shows
+all values of its parent [0] or shows only value in main cell [1].</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ChildParts><b><span style='font-size:16.0pt'>ChildParts </span></b></a><b><span
+style='font-size:16.0pt'>– rendering children parts on scroll</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Because standard <b>paging</b>
+is applied only on root rows, in deep tree the root page can be very long and
+the root paging become ineffective. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to render
+parts of child rows only on scroll, similarly to root paging (by default it is
+permitted, see <a href="#CfgChildParts">ChildParts</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You should play with <a
+href="#CfgChildPartLength">ChildPartLength</a> and <a href="#CfgChildPartMin">ChildPartMin</a>
+to get the best settings for your tree – for different tree structures
+different settings are the best.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the child part
+length is applied only to immediate children, not for sub nodes, so for deep
+slim tree you should set <a href="#CfgChildPartMin">ChildPartMin</a>=’<b>0</b>’
+to take the child parts its effect.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgChildParts></a><a name=CfgChildPages><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>ChildParts</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0/2]                                                                                        <span
+style='color:red'>new <b>6.0</b>; chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Since version <b>7.0</b>
+the original and also default value <b>1</b> was changed to <b>2</b> to be
+compatible with other paging types (Paging, ColPaging, ChildPaging).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, all
+children are rendered on expand or on start for all expanded parents</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 7.0) </span></i><span
+style='font-size:10.0pt'>If set to <b>1</b>, all children are rendered on
+expand or on start for all expanded parents, but with progress dialog and is
+possible to cancel the rendering and render it on demand</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(in 7.0 was changed from 1)
+</span></i><span style='font-size:10.0pt'>If set to <b>2</b>, it renders only
+visible (by scroll) parts of expanded children, similarly when paged root rows
+with all pages displayed.   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On start or first expand of
+the children it renders only few rows (set by <a href="#CfgChildPartMin">ChildPartMin</a>)
+and next actually visible child rows renders when grid is scrolled and the part
+become visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set to <b>2</b>
+in grid with more than 200 children and in grids with server paging or server child
+paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int</i>        
+</span><a name=CfgChildPartLength></a><a name=CfgChildPageLength><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>ChildPartLength</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [20]                                                                                         <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of rows in one part for
+<a href="#CfgChildParts">ChildParts</a>. The part is rendered whenever is (at
+least partially) visible by scroll.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the child part
+length is applied only to immediate children, not for sub nodes, so for deep
+slim tree you should set <a href="#CfgChildPartMin">ChildPartMin</a>=’<b>0</b>’
+to take the child parts its effect.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int</i>        
+</span><a name=CfgChildPartMin></a><a name=CfgChildPageMin><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>ChildPartMin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [3]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal count of rows
+rendered immediately the parent row is expanded or rendered expanded. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be also <b>0</b> to not
+render anything immediately – it is should be set in deep slim tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int</i>        
+</span><a name=CfgMaxChildParts><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>MaxChildParts</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum rendered child parts
+in grid, only for <a href="#CfgChildParts">ChildParts</a> = 2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid contains more
+rendered child parts, the child parts longer not accessed are cleared (only in
+HTML, data are <u>not</u> affected).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to <u>not</u> slow down
+the browser when too many HTML tags are displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For large child parts you can
+lower this value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actually displayed child
+parts are never cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> to disable
+clearing child parts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRemoveUnusedPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveUnusedPages</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [2]                                                                               <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it never
+removes unused root pages, child pages/parts and column pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it
+removes unused pages due <a href="Paging.htm#CfgMaxPages">MaxPages</a>, <a
+href="TreePaging.htm#CfgMaxChildParts">MaxChildParts</a> and <a
+href="ColPaging.htm#CfgMaxColPages">MaxColPages</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>3</b>, it
+removes also data of unused root pages or child pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It removes only page or child
+page that does not contain changed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>RemoveChanged</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will behave changed rows
+on RemoveCollapsed or RemoveUnused.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows and selected rows. If
+there is any such row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Don't remove changed rows. If there is any such
+row, the removing is not done.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Remove changed rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - Save changes and remove rows immediately</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4 </span></b><span
+style='font-size:10.0pt'>- Save changes and wait for the server success
+response before removing rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderChildPartStart><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderChildPartStart</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, int <b>index</b>)                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of a
+part of children is started rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>index</b> is an index
+of the part from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderChildPartFinish><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderChildPartFinish</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, int <b>index</b>)                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the part of
+children is rendered and ready.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>index</b> is an index
+of the part from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRemovePage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemovePage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                                          <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after removing data
+from page or child page, when set <a href="#CfgRemoveUnusedPages">RemoveUnusedPages</a>
+= <b>3</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         int<i>        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnRemoveChanged</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                               <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called if removing page
+containing some changed (or selected row for RemoveChanged==0)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For RemoveChanged==2 is
+called always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new value for
+RemoveChanged to use - 1, 2, 3, 4</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

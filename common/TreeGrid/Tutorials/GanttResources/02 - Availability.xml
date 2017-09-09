@@ -1,0 +1,114 @@
+<Grid>
+   <Cfg id="Availability" MainCol="N" NoVScroll="1"/>
+   <Panel Visible="0"/>
+   <LeftCols>
+      <C Name="N" Width="50"/>
+      <C Name="A" Width="100" Button="Dates" DatesRepeatType="Enum" DatesRepeatEnum="||Weekly|Daily" DatesRepeatEnumKeys="||w|d" DatesValueType="Float" DatesValueFormat="0.00" DatesValueCaption="Count"/>
+      <C Name="B" Width="100" Button="Dates" DatesRepeatType="Enum" DatesRepeatEnum="||Weekly|Daily" DatesRepeatEnumKeys="||w|d" DatesValueType="Float" DatesValueFormat="0.00" DatesValueCaption="Count"/>
+      <C Name="C" Width="100" Button="Dates" DatesRepeatType="Enum" DatesRepeatEnum="||Weekly|Daily" DatesRepeatEnumKeys="||w|d" DatesValueType="Float" DatesValueFormat="0.00" DatesValueCaption="Count"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt"
+         GanttAvailability="A,B,C"
+         GanttChartMaxStart="10/1/2011" GanttChartMinEnd="12/1/2011"
+         GanttUnits="d" GanttWidth="12"
+         GanttHeader1="d#&quot;&lt;div style='font-size:9px;'>&quot;%d&quot;&lt;/div>&quot;" GanttHeader2="d#ddddd" GanttHeader3="w#d.M.yyyy" GanttHeader4="M#MMMM yyyy"
+         GanttAvailabilityZero="0"
+         GanttExclude="d#17:00~8:00;d#12:00~13:00;w#11/5/2011~11/7/2011" GanttHideExclude="0" GanttAvailabilityExclude="0"
+         GanttAvailabilityFormat="0.##" 
+         GanttAvailabilityUnits="w"
+         GanttAvailabilitySplit="0"
+         GanttAvailabilityJoin="1"
+         GanttAvailabilitySum="0"
+         />
+   </Cols>
+   <Def>
+      <D Name="R"/>
+      
+   </Def>
+   <Body>
+      <B>
+         <I N="1" Calculated="1" AFormula="sumrange()" BFormula="sumrange()" AButton="" BButton="" Height="50" 
+               GANTTGanttAvailabilityClass=",Black" GANTTGanttAvailabilityTextWidth="20">
+            <I N="1.1" A="5;w#11/1/2011~11/4/2011#3" Height="30"/>
+            <I N="1.2" A="-1;w#11/2/2011~11/5/2011#2" Height="30"/>
+            <I N="1.3" A="w#11/1/2011~11/6/2011#5" B="w#11/3/2011~11/5/2011#3;w#11/5/2011~11/7/2011#1" GANTTGanttAvailabilityClass="Red,Green" Height="30"/>
+            <I N="1.4" A="-6;w#10/1/2011#1;w#10/3/2011#1" GANTTGanttAvailabilityType="2" Height="30"/>
+            <I N="1.5" GANTTGanttAvailabilityType="2" GANTTGanttAvailabilityClass="Red,Green,Blue" Height="100"
+               A="w#11/5/2011~11/7/2011#3;w#11/11/2011~11/20/2011#3;d#11/14/2011 8:00~11/20/2011 12:00#-2"
+               B="w#11/6/2011~11/9/2011#2"
+               CFormula="A+';'+negav(B)" Calculated="1" CButton=""
+               />
+            <I N="1.6" A="5;w#11/5/2011~11/9/2011#10;w#11/7/2011~11/9/2011#10;M#11/20/2011~11/30/2011#-30" 
+               GANTTGanttAvailabilityMax="10" GANTTGanttAvailabilityMin="-10" Height="30"/>
+            <I N="1.7" A="10/2/2011~10/12/2011#5;10/12/2011~10/22/2011#5;10/22/2011~11/2/2011#5;11/2/2011~11/12/2011#8;11/12/2011~11/22/2011#8;11/22/2011~12/2/2011#8;11/28/2011~12/2/2011#2"/>
+         </I>
+         <I N="2" Calculated="1" AFormula="sumrange()" AButton="" BButton="" Height="50" GANTTGanttAvailabilityTextWidth="20">
+            <I GANTTGanttAvailabilityClass="Red" A="w#11/5/2011~11/7/2011#5;w#11/7/2011~11/10/2011#1;w#11/5/2011~11/8/2011#5"/>
+            <I GANTTGanttAvailabilityClass="Maroon" A="w#11/5/2011~11/7/2011#5;w#11/7/2011~11/10/2011#1"/>
+            <I GANTTGanttAvailabilityClass="Orange" A="w#11/6/2011~11/9/2011#3"/>
+            <I GANTTGanttAvailabilityClass="Yellow" A="2;d#8:00~12:00#6"/>
+            <I GANTTGanttAvailabilityClass="Olive" A="M#11/1/2011~11/10/2011"/>
+            <I GANTTGanttAvailabilityClass="Lime" A="w#11/1/2011~11/5/2011#3;M#11/2/2011~11/10/2011#2" />
+            <I GANTTGanttAvailabilityClass="Green" A="w#11/3/2011~11/8/2011#5;d#0:00~12:00#-3"/>
+            <I GANTTGanttAvailabilityClass="Aqua" A="M#11/5/2011~11/15/2011#-6;10/10/2011~11/20/2011#10"/>
+            <I GANTTGanttAvailabilityClass="Teal" A="10/25/2011~11/5/2011#-20"/>
+            <I GANTTGanttAvailabilityClass="Blue" A="3;w#11/11/2011~11/13/2011#-10"/>
+            <I GANTTGanttAvailabilityClass="Navy" A="w#10/11/2011" GANTTGanttAvailabilityType="2"/>
+            <I GANTTGanttAvailabilityClass="Fuchsia" A="-5;d#10/5/2011#1;w#10/8/2011#-5" GANTTGanttAvailabilityType="2"/>
+            <I GANTTGanttAvailabilityClass="Purple" A="w#10/10/2011~11/20/2011#3.5;w#10/10/2011~10/13/2011#-2.5"  GANTTGanttAvailabilityFormat="0.00"/>
+            <I GANTTGanttAvailabilityClass="Black" A="w#10/10/2011~11/12/2011" GANTTGanttAvailabilityExclude="0"/>
+            <I GANTTGanttAvailabilityClass="Gray" A="w#10/10/2011~11/12/2011" GANTTGanttAvailabilityExclude="1"/>
+            <I GANTTGanttAvailabilityClass="Silver" A="w#10/10/2011~11/12/2011" GANTTGanttAvailabilityExclude="2"/>
+            <I GANTTGanttAvailabilityClass="White" A="w#10/10/2011~11/11/2011" GANTTGanttAvailabilityExclude="1"/>
+         </I>
+      </B>
+   </Body>
+   <Solid>
+      <Topbar Space="0"
+         Cells="Exclude,Split,Units,Join,Sum,Zero,Show"
+         ExcludeType='Select'
+         ExcludeDefaults='|Ignore exclude|Exclude bounds|Exclude all'
+         ExcludeFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.GANTT.GanttAvailabilityExclude)'
+         ExcludeOnChange='Grid.Cols.GANTT.GanttAvailabilityExclude=Grid.GetDefaultsIndex(Row,Col,Value); Grid.RefreshGantt();'
+         ExcludeTip='Controls showing chart through excluded dates. Only for Work type Availability chart.'
+
+         SplitType='Select' SplitWidth='70' SplitLeft='15'
+         SplitDefaults='|Nothing|Split|Split and join'
+         SplitFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.GANTT.GanttAvailabilitySplit)'
+         SplitOnChange='Grid.Cols.GANTT.GanttAvailabilitySplit = Grid.GetDefaultsIndex(Row,Col,Value); Grid.RefreshGantt();'
+         SplitTip='If and how the ranges will be split to selected units'
+
+         UnitsType='Select' UnitsWidth='50'
+         UnitsLabel=' to units'
+         UnitsDefaults='|6 Hours|Days|Weeks|Months'
+         UnitsFormula='{"h6":"6 Hours","d":"Days","w":"Weeks","M":"Months"}[Grid.Cols.GANTT.GanttAvailabilityUnits]'
+         UnitsOnChange='Grid.Cols.GANTT.GanttAvailabilityUnits = {"6 Hours":"h6","Days":"d","Weeks":"w","Months":"M"}[Value]; Grid.RefreshGantt();'
+         UnitsTip='Gantt units to split the ranges to, if selected the split action'
+
+         JoinType='Bool' JoinCanEdit='1' JoinLeft='15'
+         JoinLabelRight='Join the same ranges'
+         JoinFormula='Grid.Cols.GANTT.GanttAvailabilityJoin'
+         JoinOnChange='Grid.Cols.GANTT.GanttAvailabilityJoin = Value; Grid.RefreshGantt();'
+         JoinTip='If set, joins all adjacent ranges with the same value'
+
+         SumType='Select' SumWidth='50' SumLabel='Sum in units' SumLeft='15'
+         SumDefaults='|None|6 Hours|Days|Weeks|Months'
+         SumFormula='{"0":"None","h6":"6 Hours","d":"Days","w":"Weeks","M":"Months"}[Grid.Cols.GANTT.GanttAvailabilitySum]'
+         SumOnChange='Grid.Cols.GANTT.GanttAvailabilitySum = {"None":"0","6 Hours":"h6","Days":"d","Weeks":"w","Months":"M"}[Value]; Grid.RefreshGantt();'
+         SumTip='If set, all the values shown on the chart will be multiplied by the length of the range in the selected units'
+
+         ZeroType='Bool' ZeroCanEdit='1' ZeroLeft='15'
+         ZeroLabelRight='Show also zero values'
+         ZeroFormula='Grid.Cols.GANTT.GanttAvailabilityZero'
+         ZeroOnChange='Grid.Cols.GANTT.GanttAvailabilityZero = Value; Grid.RefreshGantt();'
+         ZeroTip='If set, shows also bars with zero value, as little bars'
+
+         ShowType='Select' ShowWidth='90' ShowLabel='Show' ShowLeft='15'
+         ShowDefaults='|Nothing|Bars|Values|Bars and values'
+         ShowFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.GANTT.GanttAvailabilityShow)'
+         ShowOnChange='Grid.Cols.GANTT.GanttAvailabilityShow = Grid.GetDefaultsIndex(Row,Col,Value); Grid.RefreshGantt();'
+         ShowTip='What will be shown in the availability chart'
+         />
+   </Solid>
+</Grid>

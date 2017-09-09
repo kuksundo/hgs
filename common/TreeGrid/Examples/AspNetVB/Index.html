@@ -1,0 +1,540 @@
+<html>
+<head>
+      <link href="../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+   <body>
+   <style> <!--	
+   a.H { color:red; font-weight:bold; }
+   a.G { color:green; font-weight:bold; }
+   a.H:hover { color:blue;}
+   a:hover { color:green;}
+   a:active { color:gray;}
+   a.C { font-weight:bold; }
+   a.L { }
+   a.D { }
+   
+   h1 { font-size:50px;text-align:center; font-weight:bold; } /* Main caption */
+   h2 { font-size:35px;text-align:center; font-weight:bold; margin:10px; padding:0px; color:black; } /* Section caption */
+   h5 { font-size: medium; font-weight:normal; background:#F5FFF5; border:1px solid #88F;padding:3px;margin:3px;color:red; } /* Exclamation */
+   
+	--></style>
+<script>
+function Local(){
+if(!location.host){ 
+   alert("You cannot run server examples locally from your filesystem.\nYou can run server examples only from local or remote web server with IIS and ASP.NET\nFor example from 'http://localhost/treegrid/Examples/'"); 
+	return false;
+   }
+}
+</script>
+<br /><br />
+<h1>ASP.NET <span style="color:Red;">Visual Basic</span> examples</h1>
+<h5>Do <b>not</b> run this file locally</h5>
+Run it from your (local) web server where is installed IIS and ASP.NET (1.0, 1.1, 2.0, 3.0, ...).<br>
+<br>
+<h5>The examples use <b>SQLite Database.db</b> file as SQL database. </h5>
+You can switch to <b>MS Access MDB database</b> by setting <b>UseMDB</b> property to true in apropriate ASPX file. <br />
+The MDB database can be used only in <b>32bit</b> mode of IIS. 
+Also the ASP.NET service program must have <b>write</b> access to the Database.mdb file.<br />
+To permit 32bit application on 64bit IIS, go to IIS manager, display application pools list (usually in root under computer name).
+Choose DefaultAppPool (or the pool you use for the ASP.NET applications the TreeGrid examples are run on), select Advanced configuration and set Permit 32bit application to true.
+<br>    
+<hr>
+<h2>Example index</h2>
+<table width=100%>
+<tr><td colspan=2><center><a class='C' href='#ajax'>Basic AJAX</a></center></td></tr>
+<tr><td colspan=2><i>Basic usage of asynchronous background (new style) communication with server and SQL database communication</i></td></tr>
+<tr>
+   <td><a href='#a1' class='L'>DataTable database access</a></td>
+   <td><i>The simplest demonstration of using ASP.NET and AJAX with classes DataTable and OleDbDataAdapter</i></td>
+   <td><a class=D href="./BasicAjax/DataTable.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a2' class='L'>OleDbCommand database access</a></td>
+   <td><i>The simplest demonstration of using ASP.NET and AJAX with classes OleDbCommand and OleDbDataAdapter</i></td>
+   <td><a class=D href="./BasicAjax/SqlCommand.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a3' class='L'>Using TreeGrid ASP.NET framework</a></td>
+   <td><i>How to generate data from and update data to SQL database using prepared TreeGridFramework.aspx</i></td>
+   <td><a class=D href="./BasicAjax/Framework.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a4' class='L'>Page in old ASP style</a></td>
+   <td><i>How to use old style page creating by direct code instead of use Page_Load event</i></td>
+   <td><a class=D href="./BasicAjax/FrameworkAspStyle.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a5' class='L'>Page with code behind</a></td>
+   <td><i>How to use excluded code to .vb file by @Page Src attribute</i></td>
+   <td><a class=D href="./BasicAjax/CodeBehind.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a6' class='L'>ASP.NET web service</a></td>
+   <td><i>The demonstration of ASP.NET SOAP web service that creates and processes TreeGrid XML data</i></td>
+   <td><a class=D href="./BasicAjax/Service.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a7' class='L'>Tree in database</a></td>
+   <td><i>How to generate tree from and store tree to SQL database table</i></td>
+   <td><a class=D href="./BasicAjax/TreeFramework.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#a8' class='L'>TreeGrid API for communication and reloading</a></td>
+   <td><i>Using TreeGrid Extended API</i></td>
+   <td><a class=D href="./BasicAjax/API.html" onclick='return Local();'>link</a></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#submit'>Basic &lt;form> Submit</a></center></td></tr>
+<tr><td colspan=2><i>Basic usage of synchronous (old style) communication with server and SQL database communication</i></td></tr>
+<tr>
+   <td><a href='#s1' class='L'>DataTable database access</a></td>
+   <td><i>The simplest demonstration of using ASP.NET and &lt;form> submit with classes DataTable and OleDbDataAdapter</i></td>
+   <td><a class=D href="./BasicSubmit/DataTable.aspx" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#s2' class='L'>OleDbCommand database access</a></td>
+   <td><i>The simplest demonstration of using ASP.NET and &lt;form> submit with classes OleDbCommand and OleDbDataAdapter</i></td>
+   <td><a class=D href="./BasicSubmit/SqlCommand.aspx" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#s3' class='L'>Using TreeGrid ASP.NET framework</a></td>
+   <td><i>How to generate data from and update data to SQL database using prepared TreeGridFramework.aspx</i></td>
+   <td><a class=D href="./BasicSubmit/Framework.aspx" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#s4' class='L'>Page in old ASP style</a></td>
+   <td><i>How to use old style page creating by direct code instead of use Page_Load event</i></td>
+   <td><a class=D href="./BasicSubmit/FrameworkAspStyle.aspx" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#s5' class='L'>Page with code behind</a></td>
+   <td><i>How to use excluded code to .vb file by @Page Src attribute</i></td>
+   <td><a class=D href="./BasicSubmit/CodeBehind.aspx" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#s6' class='L'>Tree in database</a></td>
+   <td><i>How to generate tree from and store tree to SQL database table</i></td>
+   <td><a class=D href="./BasicSubmit/TreeFramework.aspx" onclick='return Local();'>link</a></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#applications'>Applications</a></center></td></tr>
+<tr><td colspan=2><i>Few more complex applications with TreeGrid upon SQL database and AJAX communication</i></td></tr>
+<tr>
+   <td><a href='#grid' class='L'>Grid from database table</a></td>
+   <td><i>Demonstrates advanced generating from and updating to database</i></td>
+   <td><a class=D href="./AppGrid/Grid.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#schools' class='L'>Complete application - Schools</a></td>
+   <td><i>Complete application to demonstrate generating from and updating to different database tables with various structure</i></td>
+   <td><a class=D href="./AppSchools/Schools.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#browser' class='L'>File and directory browser</a></td>
+   <td><i>Demonstration of manipulating files and directories with TreeGrid</i></td>
+   <td><a class=D href="./AppBrowser/Browser.html" onclick='return Local();'>link</a></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#paging'>Server paging</a></center></td></tr>
+<tr><td colspan=2><i>Examples of writing server side support scripts for server side paging upon SQL database</i></td></tr>
+<tr>
+   <td><a href='#p1' class='L'>Sorting, uploading changes and export</a></td>
+   <td><i>Demonstrates sorting feature, saves changes back to database, supports also export to Excel, all upon SQL database</i></td>
+   <td><a class=D href="./Paging/SortingExport.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#p2' class='L'>Grouping</a></td>
+   <td><i>Demonstrates grouping with server paging and client child paging - all children from groups are sent to server at once</i></td>
+   <td><a class=D href="./Paging/Grouping.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#p3' class='L'>Grouping with server child paging</a></td>
+   <td><i>Demonstrates grouping with server paging and also server child paging</i></td>
+   <td><a class=D href="./Paging/GroupingChild.html" onclick='return Local();'>link</a></td>
+</tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td colspan=2><center><a class='C' href='#dll'>Server paging with TreeGrid server library</a></center></td></tr>
+<tr><td colspan=2><i>Examples of writing server side support scripts for server side paging with helper library shipped with TreeGrid</i></td></tr>
+<tr>
+   <td><a href='#d1' class='L'>DataTable database access</a></td>
+   <td><i>Demonstrates using TreeGrid server library upon SQL database with classes DataTable and OleDbDataAdapter</i></td>
+   <td><a class=D href="./PagingDLL/DBDataTable.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#d2' class='L'>OleDbCommand database access</a></td>
+   <td><i>Demonstrates using TreeGrid server library upon SQL database with classes OleDbCommand and OleDbDataAdapter</i></td>
+   <td><a class=D href="./PagingDLL/DBSqlCommand.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#d3' class='L'>Complex application upon XML file</a></td>
+   <td><i>Shows using TreeGrid server library upon XML file on disk with all supported features, especially grouping</i></td>
+   <td><a class=D href="./PagingDLL/File.html" onclick='return Local();'>link</a></td>
+</tr>
+<tr>
+   <td><a href='#d4' class='L'>Sharing and synchronization upon XML file</a></td>
+   <td><i>Shows sharing data among more clients and automatic updating client's data after data on server are modified by another client</i></td>
+   <td><a class=D href="./PagingDLL/FileSharing.html" onclick='return Local();'>link</a></td>
+</tr>
+
+</table>
+<br>
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='ajax'/>
+<hr>
+<h2>Basic AJAX</h2>
+Basic usage of asynchronous background (new style) communication with server.<br>
+Basic demonstration of generating data from and uploading data to <b>SQL</b> database.<br>
+All examples are located at "Examples/AspNetVB/<b>BasicAjax/..</b>" directory.<br>
+Data are downloaded from or uploaded to server by JavaScript XmlHttpRequest object on background, 
+   without reloading/submitting the page content.<br>
+You can check from configuration menu option <b>Auto update changes to server</b> for immediate updates after edit/modify.<br>
+When debugging, you can set &lt;treegrid ... <b>Debug</b>='<b>3</b>' ... > to see communication with server. 
+   It opens two new browser's windows. You can see XML data or ASP.NET error server returned.<br>
+Remember, in Ajax communication, the ASP.NET page must return only xml data, not any standard html tags like &lt;html> 
+   or &lt;!doctype>.<br>
+See documentation <a href="../../Doc/DataCommunication.htm#AJAX">AJAX communication</a>.<br>
+   
+<a name='a1'></a>   
+<br>
+<a class=H href="./BasicAjax/DataTable.html" onclick='return Local();'>DataTable database access</a><br>
+<i>Main file <A href="./BasicAjax/DataTable.html" onclick='return Local();'><b>DataTable.html</b></A>, 
+   support code <A href="./BasicAjax/DataTable.aspx">DataTable.aspx</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP.NET and AJAX. It generates data from database table 1:1 including <b>id</b>. 
+   Also updates changes to database according to <b>id</b>.<br>
+It uses .NET classes <b>DataTable</b> and <b>OleDbDataAdapter</b> to access database. 
+   It uses class <b>XmlDocument</b> to process and generate XML.<br>
+
+<a name='a2'></a>
+<br>
+<a class=H href="./BasicAjax/SqlCommand.html" onclick='return Local();'>OleDbCommand database access</a><br>
+<i>Main file <A href="./BasicAjax/SqlCommand.html" onclick='return Local();'><b>SqlCommand.html</b></A>, 
+   support code <A href="./BasicAjax/SqlCommand.aspx">SqlCommand.aspx</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP.NET and AJAX. It generates data from database table 1:1 including <b>id</b>. 
+   Also updates changes to database according to <b>id</b>.<br>
+It uses .NET classes <b>OleDbCommand</b> and <b>OleDbDataReader</b> to access database. 
+   It uses class <b>XmlDocument</b> to process XML, but generates XML as standard <b>string</b>.<br>
+
+<a name='a3'></a>
+<br>
+<a class=H href="./BasicAjax/Framework.html" onclick='return Local();'>Using TreeGrid ASP.NET framework</a><br>
+<i>Main file <A href="./BasicAjax/Framework.html" onclick='return Local();'><b>Framework.html</b></A>, 
+   support code <A href="./BasicAjax/Framework.aspx">Framework.aspx</A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous two, but with using functions from <b>TreeGrid ASP.NET Framework</b>. 
+   It also shows using custom parameters in &lt;treegrid> tag.<br>
+
+<a name='a4'></a>
+<br>
+<a class=H href="./BasicAjax/FrameworkAspStyle.html" onclick='return Local();'>Page in old ASP style</a><br>
+<i>Main file <A href="./BasicAjax/FrameworkAspStyle.html" onclick='return Local();'><b>FrameworkAspStyle.html</b></A>, 
+   support code <A href="./BasicAjax/FrameworkAspStyle.aspx">AjaxTableFrameworkAspStyle.aspx</A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous one, but uses old style page creating by direct code instead of use Page_Load event.<br>
+
+<a name='a5'></a>
+<br>
+<a class=H href="./BasicAjax/CodeBehind.html" onclick='return Local();'>Page with code behind</a><br>
+<i>Main file <A href="./BasicAjax/CodeBehind.html" onclick='return Local();'><b>CodeBehind.html</b></A>, 
+   support code <A href="./BasicAjax/CodeBehind.aspx">CodeBehind.aspx</A>, 
+   code behind <A href="./BasicAjax/CodeBehind.aspx.vb">CodeBehind.aspx.vb</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as the first example, but uses code excluded to <b>.vb</b> file by @Page <b>Src</b> attribute.<br>
+When using Visual Studio, you can use <b>CodeBehind</b> attribute instead of <b>Src</b>, 
+   but you need to compile the <b>.vb</b> file.<br>
+
+<a name='a6'></a>
+<br>
+<a class=H href="./BasicAjax/Service.html" onclick='return Local();'>ASP.NET web service</a><br>
+<i>Main file <A href="./BasicAjax/Service.html" onclick='return Local();'><b>DataTable.html</b></A>, 
+   support code <A href="./BasicAjax/Service.asmx">Service.asmx</A><br>
+Layout file in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The demonstration of ASP.NET SOAP web service that creates and processes TreeGrid XML data.<br>
+
+<a name='a7'></a>
+<br>
+<a class=H href="./BasicAjax/TreeFramework.html" onclick='return Local();'>Tree in database</a><br>
+<i>Main file <A href="./BasicAjax/TreeFramework.html" onclick='return Local();'><b>TreeFramework.html</b></A>, 
+   support code <A href="./BasicAjax/TreeFramework.aspx">TreeFramework.aspx</A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicAjax/TreeDef.xml">TreeDef.xml</A>, data in database table "<b>TreeData</b>".<br></i>
+Generates treetable from database table with column <b>Parent</b> where are relations Parents/Children. 
+   <b>Parent</b> column contains parent's <b>id</b> of the child. 
+   For root rows it contains "#Body", for fixed rows "#Head" or "#Foot".<br>
+Uploaded rows are still identified by preset and standardly generated <b>id</b> attributes.<br>
+Uses functions from <b>TreeGrid ASP.NET Framework</b>.<br>
+
+<a name='a8'></a>
+<br>
+<a class=H href="./BasicAjax/API.html" onclick='return Local();'>TreeGrid API for communication and reloading</a><br>
+<i>Main file <A href="./BasicAjax/API.html" onclick='return Local();'><b>API.html</b></A>, 
+   support codes <A href="./BasicAjax/Framework.aspx">Framework.aspx</A> 
+   and <A href="./BasicAjax/TreeFramework.aspx">TreeFramework.aspx</A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout files in <A href="./BasicAjax/DBDef.xml">DBDef.xml</A> and <A href="./BasicAjax/TreeDef.xml">TreeDef.xml</A>, 
+   data in database tables "<b>TableData</b>" and "<b>TreeData</b>".<br></i>
+It shows two tables from previous examples and demonstrates Extended API functions for <b>reloading</b>, 
+   changing data source when reloading, catching data event and so on.<br>
+<br>
+
+
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='submit'/>
+<hr>
+<h2>Basic &lt;form> Submit</h2>
+Basic usage of synchronous (old style) communication with server.<br>
+Basic demonstration of generating data from and uploading data to <b>SQL</b> database.<br>
+All examples are located at "Examples/AspNetVB/<b>BasicSubmit/..</b>" directory.<br>
+Data are included in page in hidden &lt;input>. 
+   Changes are sent to server in this hidden &lt;input> of submitted &lt;form> on page.<br>
+See documentation <a href="../../Doc/DataCommunication.htm#Submit">Submit communication</a>.<br>
+   
+<a name='s1'></a>
+<br>
+<a class=H href="./BasicSubmit/DataTable.aspx" onclick='return Local();'>DataTable database access</a><br>
+<i>Main file <A href="./BasicSubmit/DataTable.aspx" onclick='return Local();'><b>DataTable.aspx</b></A><br>
+Layout file in <A href="./BasicSubmit/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP.NET and standard page submit. 
+   It generates data from database table 1:1 including <b>id</b>. 
+   Also updates changes to database according to <b>id</b>.<br>
+It uses .NET classes <b>DataTable</b> and <b>OleDbDataAdapter</b> to access database. 
+   It uses class <b>XmlDocument</b> to process and generate XML.<br>
+
+<a name='s2'></a>
+<br>
+<a class=H href="./BasicSubmit/SqlCommand.aspx" onclick='return Local();'>OleDbCommand database access</a><br>
+<i>Main file <A href="./BasicSubmit/SqlCommand.aspx" onclick='return Local();'><b>SqlCommand.aspx</b></A><br>
+Layout file in <A href="./BasicSubmit/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The simplest demonstration of using ASP.NET and standard page submit. 
+   It generates data from database table 1:1 including <b>id</b>. 
+   Also updates changes to database according to <b>id</b>.<br>
+It uses .NET classes <b>OleDbCommand</b> and <b>OleDbDataReader</b> to access database. 
+   It uses class <b>XmlDocument</b> to process XML, but generates XML as standard <b>string</b>.<br>
+
+<a name='s3'></a>
+<br>
+<a class=H href="./BasicSubmit/Framework.aspx" onclick='return Local();'>Using TreeGrid ASP.NET framework</a><br>
+<i>Main file <A href="./BasicSubmit/Framework.aspx" onclick='return Local();'><b>Framework.html</b></A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicSubmit/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous two, but with using functions from <b>TreeGrid ASP.NET Framework</b>. 
+Also shows using custom parameters.<br>
+
+<a name='s4'></a>
+<br>
+<a class=H href="./BasicSubmit/FrameworkAspStyle.aspx" onclick='return Local();'>Page in old ASP style</a><br>
+<i>Main file <A href="./BasicSubmit/FrameworkAspStyle.aspx" onclick='return Local();'><b>FrameworkAspStyle.aspx</b></A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicSubmit/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous one, but uses old style page creating by direct code instead of use Page_Load event.<br>
+
+<a name='s5'></a>
+<br>
+<a class=H href="./BasicSubmit/CodeBehind.aspx" onclick='return Local();'>Page with code behind</a><br>
+<i>Main file <A href="./BasicSubmit/CodeBehind.aspx" onclick='return Local();'><b>./BasicSubmit/CodeBehind.aspx</b></A>, 
+   code behind <A href="./BasicSubmit/CodeBehind.vb">CodeBehind.vb</A><br>
+Layout file in <A href="./BasicSubmit/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+The same example as previous one, but uses code excluded to <b>.vb</b> file by @Page <b>Src</b> attribute.<br>
+When using Visual Studio, you can use <b>CodeBehind</b> attribute instead of <b>Src</b>, 
+   but you need to compile the <b>.vb</b> file.<br>
+
+<a name='s6'></a>
+<br>
+<a class=H href="./BasicSubmit/TreeFramework.aspx" onclick='return Local();'>Tree in database</a><br>
+<i>Main file <A href="./BasicSubmit/TreeFramework.aspx" onclick='return Local();'><b>TreeFramework.aspx</b></A>, 
+   framework code <A href="./Framework/TreeGridFramework.aspx">/Framework/TreeGridFramework.aspx</A><br>
+Layout file in <A href="./BasicSubmit/TreeDef.xml">TreeDef.xml</A>, data in database table "<b>TreeData</b>".<br></i>
+Generates treetable from database table with column <b>Parent</b> where are relations Parents/Children. 
+   <b>Parent</b> column contains parent's <b>id</b> of the child. 
+   For root rows it contains "#Body", for fixed rows "#Head" or "#Foot".<br>
+Uploaded rows are still identified by preset and standardly generated <b>id</b> attributes.<br>
+Uses functions from <b>TreeGrid ASP.NET Framework</b>.<br>
+<br>
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='applications'/>
+<hr>
+<h2>Applications</h2>
+Few more complex applications with TreeGrid upon SQL database and AJAX communication.<br>
+
+<a name='grid'></a>
+<br>
+<a class=H href="./AppGrid/Grid.html" onclick='return Local();'>Grid from database table</a><br>
+<i>Main file <A href="./AppGrid/Grid.html" onclick='return Local();'><b>Grid.html</b></A>, 
+   support codes <A href="./AppGrid/GridLayout.aspx">GridLayout.aspx</A> as layout, 
+   <A href="./AppGrid/GridData.aspx">GridData.aspx</A> as data,
+   <A href="./AppGrid/GridUpload.aspx">GridUpload.aspx</A> as upload<br>
+Data are in database table "<b>TableData</b>".<br></i>
+Demonstrates <b>advanced generating</b> from and updating to database.<br>
+Generates treetable from standard database table. Also flips the table and shows data in changed layout.<br>
+For every action there is used another support code (Layout, Data, Upload). The layout is also generated.<br>
+Rows are identified by one unique editable column, with using full ids (including parents ids).<br>
+For demonstration it shows id column, to see what ids are generated by TreeGrid.<br>
+
+<a name='schools'></a>
+<br>
+<a class=H href="./AppSchools/Schools.html" onclick='return Local();'>Complete application - Schools</a><br>
+<i>Main file <A href="./AppSchools/Schools.html" onclick='return Local();'><b>Schools.html</b></A><br>
+Support codes <A href="./AppSchools/Schools.aspx">Schools.aspx</A> (main file generates data and also saves changes to database or adds new user), <br>
+<A href="./AppSchools/SchoolsRatings.aspx">SchoolsRatings.aspx</A> (loads reviews for given record, used for server child paging), <br>
+<A href="./AppSchools/SchoolsReview.aspx">SchoolsReview.aspx</A> (saves one review to database, called as custom AJAX call). <br>
+Layout file in <A href="./AppSchools/SchoolsDef.xml">SchoolsDef.xml</A>, 
+   data in database tables "<b>Schools_Schools</b>", "<b>Schools_Ratings</b>" and "<b>Schools_Users</b>".<br>
+Uses also file SchoolsStars.gif (<img src='./AppSchools/SchoolsStars.gif'>)<br></i>
+Complete application to demonstrate generating from and updating to <b>different database tables</b> with various structure. 
+   Demonstrates also <b>server child paging</b> feature (loading children on demand). 
+And also <b>custom AJAX call</b>.<br>
+The application show list of schools that can be sorted and filtered. 
+   The records can be added/deleted or modified by logged user or admin. 
+   The records can be rated and reviewed by visitors.<br>
+<br>
+
+<a name='browser'></a>
+<br>
+<a class=H href="./AppBrowser/Browser.html" onclick='return Local();'>File and directory browser</a><br>
+<i>Main file <A href="./AppBrowser/Browser.html" onclick='return Local();'><b>Browser.html</b></A>, 
+layout file <A href="./AppBrowser/BrowserDef.xml">BrowserDef.xml</A>, 
+script returning  directory and file tree <A href="./AppBrowser/BrowserData.aspx">BrowserData.aspx</A> as data xml.<br>
+Suppors JavaScript is in <A href="./AppBrowser/Browser.js">Browser.js</A>, 
+the sample directory tree is located in <A href="./AppBrowser/TestFiles/">TestFiles/</A> subdirectory.<br></i>
+The files can be shown in directories or as direct list, also various sorting and filtering is possible.<br />
+The files can be added, moved, deleted, copied and viewed by clicking to left panel of by right click popup menu.<br />
+The sample directories and files are located in <b>/TestFiles</b> directory and are independent on the examples distribution so they can be modifed or deleted without problems.
+The changes are done after click to Save button.<br>
+<br>
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='paging'/>
+<hr>
+<h2>Server paging</h2>
+Examples of writing server side support scripts for server side paging upon <b>SQL database</b>.<br>
+Demonstration of implementation of various TreeGrid features, like sorting, grouping and export.<br>
+All examples use AJAX communication (server side paging cannot be done by synchronous communication).<br>
+All examples are located at "Examples/AspNetVB/<b>Paging/..</b>" directory.<br>
+
+<a name='p1'></a>
+<br>
+<a class=H href="./Paging/SortingExport.html" onclick='return Local();'>Sorting, uploading changes and export to Excel</a><br>
+<i>Main file <A href="./Paging/SortingExport.html" onclick='return Local();'><b>SortingExport.html</b></A><br>
+Layout is in static file <A href="./Paging/SortingExport_Layout.xml">SortingExport_Layout.xml</A><br>
+Script for generating data (page list) <A href="./Paging/SortingExport_Data.aspx">SortingExport_Data.aspx</A><br>
+Script for uploading changes back to database <A href="./Paging/SortingExport_Upload.aspx">SortingExport_Upload.aspx</A><br> 
+Script for generating individual page <A href="./Paging/SortingExport_Page.aspx">SortingExport_Page.aspx</A><br> 
+Script for exporting data to Excel <A href="./Paging/SortingExport_Export.aspx">SortingExport_Export.aspx</A><br>
+Data are in database table "<b>TableData</b>".<br></i>
+Demonstrates server side paging upon SQL database. 
+Demonstrates <b>sorting</b> feature, <b>saves changes</b> back to database, supports also <b>export to Excel</b>.<br>
+The pages are downloaded on demand from server (when the page is visible by scrollbars).<br>
+It is simple example with ineffective database access - it loads all table for every page and throws the rest away.<br>
+It also simply reloads all body when rows are added or deleted instead of handling changes in pages.<br>
+
+<a name='p2'></a>
+<br>
+<a class=H href="./Paging/Grouping.html" onclick='return Local();'>Grouping</a><br>
+<i>Main file <A href="./Paging/Grouping.html" onclick='return Local();'><b>Grouping.html</b></A><br> 
+Layout is in static file <A href="./Paging/Grouping_Layout.xml">Grouping_Layout.xml</A><br>
+Script for generating data (page list) <A href="./Paging/Grouping_Data.aspx">Grouping_Data.aspx</A><br>
+Script for generating individual page <A href="./Paging/Grouping_Page.aspx">Grouping_Page.aspx</A><br>
+Data are in database table "<b>TableData</b>".<br></i>
+Demonstrates server side paging upon SQL database. 
+Demonstrates <b>grouping</b> feature.<br>
+Demonstrates server paging but <b>client child paging</b> - all children from groups are sent to server at once.<br>
+This is only simple example with not ideal database access (for every page gets all data)<br>
+The pages are downloaded on demand from server (when the page is visible by scrollbars).<br>
+
+<a name='p3'></a>
+<br>
+<a class=H href="./Paging/GroupingChild.html" onclick='return Local();'>Grouping with server child paging</a><br>
+<i>Main file <A href="./Paging/GroupingChild.html" onclick='return Local();'><b>GroupingChild.html</b></A><br> 
+Layout is in static file (the same as in previous example) <A href="./Paging/Grouping_Layout.xml">Grouping_Layout.xml</A><br>
+Script for generating data (page list) (the same as in previous example) <A href="./Paging/Grouping_Data.aspx">Grouping_Data.aspx</A><br>
+Script for generating individual page and for individual groups <A href="./Paging/GroupingChild_Page.aspx">GroupingChild_Page.aspx</A><br>
+Data are in database table "<b>TableData</b>".<br></i>
+Demonstrates server side paging upon SQL database. 
+Demonstrates <b>grouping</b> feature.<br>
+Demonstrates server paging with <b>server child paging</b> - group downloads its children only when it is expanded.<br>
+This is only simple example with not ideal database access (for every page gets all data)<br>
+The pages are downloaded on demand from server (when the page is visible by scrollbars).<br>
+<br>
+
+<!----------------------------------------------------------------------------------------------------------------->
+<a name='dll'/>
+<hr>
+<h2>Server paging with TreeGrid server library</h2>
+Examples of writing server side support scripts for server side paging with helper library shipped with TreeGrid.<br>
+Demonstration of implementation of various TreeGrid features, like sorting, filtering, grouping and export.<br>
+All examples use <a href='../../Doc/DLL.htm'><b>TreeGrid server library</b></a>
+   The library is named <b>TreeGrid.dll</b> and is located at <b>/Server/TreeGrid.dll</b> <br>
+Some examples stores data in <b>SQL database</b>, some on <b>disk</b> in XML files.<br>   
+All examples use AJAX communication (server side paging cannot be done by synchronous communication).<br>
+All examples are located at "Examples/AspNetVB/<b>PagingDLL/..</b>" directory.<br>
+<br>
+You can compare these example with the examples in previous section (<b>Server paging</b>) 
+   how TreeGrid server library simplifies server side paging implementation.<br>
+
+<a name='d1'></a>
+<br>
+<a class=H href="./PagingDLL/DBDataTable.html" onclick='return Local();'>DataTable database access</a><br>
+<i>Main file <A href="./PagingDLL/DBDataTable.html" onclick='return Local();'><b>DBDataTable.html</b></A>, 
+   support code <A href="./PagingDLL/DBDataTable.aspx">DBDataTable.aspx</A><br>
+Layout file in <A href="./PagingDLL/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+Demonstration of using TreeGrid server library for server side paging upon <b>SQL database</b>.<br>
+This example shows all TreeGrid features 
+   <b>sorting</b>, <b>filtering</b>, <b>grouping</b>, <b>calculations</b>, <b>uploading changes</b> and <b>export to Excel</b>.<br>
+It uses .NET classes <b>DataTable</b> and <b>OleDbDataAdapter</b> to access database. 
+   It uses class <b>XmlDocument</b> to process and generate XML.<br>
+
+<a name='d2'></a>
+<br>
+<a class=H href="./PagingDLL/DBSqlCommand.html" onclick='return Local();'>OleDbCommand database access</a><br>
+<i>Main file <A href="./PagingDLL/DBSqlCommand.html" onclick='return Local();'><b>DBSqlCommand.html</b></A>, 
+   support code <A href="./PagingDLL/DBSqlCommand.aspx">DBSqlCommand.aspx</A><br>
+Layout file in <A href="./PagingDLL/DBDef.xml">DBDef.xml</A>, data in database table "<b>TableData</b>".<br></i>
+Demonstration of using TreeGrid server library for server side paging upon <b>SQL database</b>.<br>
+This example shows all TreeGrid features 
+   <b>sorting</b>, <b>filtering</b>, <b>grouping</b>, <b>calculations</b>, <b>uploading changes</b> and <b>export to Excel</b>.<br>
+It uses .NET classes <b>OleDbCommand</b> and <b>OleDbDataReader</b> to access database. 
+   It uses class <b>XmlDocument</b> to process XML, but generates XML as standard <b>string</b>.<br>
+
+<a name='d3'></a>
+<br>
+<a class=H href="./PagingDLL/File.html" onclick='return Local();'>Complex application upon XML file</a><br>
+<i>Main file <A href="./PagingDLL/File.html" onclick='return Local();'><b>File.html</b></A>, 
+   support code <A href="./PagingDLL/File.aspx">File.aspx</A><br>
+Layout file in <A href="./PagingDLL/FileDef.xml">FileDef.xml</A>, 
+   data in file <A href="./PagingDLL/FileData.xml">FileData.xml</A>.<br></i>
+Demonstration of using TreeGrid server library for server side paging upon <b>XML file</b> on disk.<br>
+This example shows all TreeGrid features
+   <b>sorting</b>, <b>filtering</b>, <b>grouping</b>, <b>calculations</b>, <b>uploading changes</b> and <b>export to Excel</b>.<br>
+It demonstrates especially complex <b>grouping</b> feature and cell editing in various groups.<br>
+The complete description is in the example itself.<br>          
+
+<a name='d4'></a>
+<br>
+<a class=H href="./PagingDLL/FileSharing.html" onclick='return Local();'>Sharing and synchronization upon XML file</a><br>
+<i>Main file <A href="./PagingDLL/FileSharing.html" onclick='return Local();'><b>FileSharing.html</b></A>, 
+   support code <A href="./PagingDLL/FileSharing.aspx">FileSharing.aspx</A><br>
+Layout file in <A href="./PagingDLL/FileDef.xml">FileDef.xml</A>, 
+   data in file <A href="./PagingDLL/FileData.xml">FileData.xml</A>.<br></i>
+Demonstration of using TreeGrid server library for server side paging upon <b>XML file</b> on disk.<br>
+This example shows all TreeGrid features
+   <b>sorting</b>, <b>filtering</b>, <b>grouping</b>, <b>calculations</b>, <b>uploading changes</b> and <b>export to Excel</b>.<br>
+Demonstrates <b>sharing data among more clients</b> and automatic updating client's data after data on server 
+   are modified by another client.<br>
+The complete description is in the example itself.<br>          
+<br>
+<hr>
+<br>
+
+
+
+   </body>
+</html>

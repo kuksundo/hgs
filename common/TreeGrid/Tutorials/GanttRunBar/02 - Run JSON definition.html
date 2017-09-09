@@ -1,0 +1,202 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+<script>
+// ------------------------------------------------------------------------------------
+var BIE5 = navigator.appName.search("Microsoft")>=0 && document.compatMode!="CSS1Compat" && document.documentMode<10; // IE5 quirks mode
+// ------------------------------------------------------------------------------------
+// Returns custom Run bar content, only for row 27
+Grids.OnGetGanttRunText = function(G,row,col,run,idx,text,width){
+if(row.id!=27) return text;
+var B = G.GetGanttRunBox(row,col,idx);
+var pad = BIE5? "" : "padding:1px;"; // In IE5 quirks mode is the height of text calculated with padding, so no padding is needed here
+return "<div style='border:1px solid black;padding:1px;'><div style='background:#FAA;padding-left:2px;float:left;font-size:20px;line-height:20px;'>"+(idx/2+1)+"</div><div>"
+   + "<div style=\"background:green;color:white;"+pad+"\">&nbsp;"+DateToString(B.Start,"dddddd")+" - "+DateToString(B.End,"dddddd")+"</div>"
+   + "<div style=\"background:blue;color:white;"+pad+"\">&nbsp;"+(B.Length/24/3600/1000)+" days </div>"
+   + "<div style=\"background:red;color:yellow;"+pad+"font-weight:bold;\">&nbsp;"+(B.Text?B.Text:"")+"</div>"
+   + "</div></div>";
+}
+// ------------------------------------------------------------------------------------
+// Returns custom class for Run bar, only for row 27
+Grids.OnGetGanttRunClass = function(G,row,col,run,idx,cls){
+if(row.id!=27) return cls;
+return "None"; // The None class means no border or background
+}
+// ------------------------------------------------------------------------------------
+</script>
+   <style>
+      .GMGanttCustom1In { background:#FDA; color:blue; font:bold 10px Verdana; }
+      .GMGanttCustom1Out { border:1px dotted blue; }
+      .GMGanttCustom1OutHover { border:2px dotted red; }
+      .GMGanttCustom2In { background:url(../../Grid/Modern/Backgrounds.gif) 0px -1px; color:white; font:italic 9px Verdana; padding:0px; text-align:right; }
+      .GMGanttCustom2Out { margin:0px; border:2px solid lime;  }
+      .GMGanttCustom2OutHover { border:2px solid green; }
+   </style>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttRunBar"><b>Gantt Run bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Run JSON definition</center>
+   <center style='font:bold italic;'>Two ways of defining Run in JSON format</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Run JSON independent.xml'>02 - <h2>Run JSON independent</h2>.xml</a> - Run defined by <b>Start</b> + <b>End</b> or <b>Duration</b> for every box. <span style="font-size:12px;">Demonstrates also <b>FastGantt</b> and <b>GanttLastUnit</b> attributes.</span></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Run JSON independent.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Run JSON continuous.xml'>02 - <h2>Run JSON continuous</h2>.xml</a> - Run defined by <b>global Start</b> for the whole Run and <b>adjacent</b> boxes with only <b>Duration</b></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Run JSON continuous.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttRun.htm">Gantt Run</a></b>.
+      </li>
+      <li>
+         <i>This example shows the same grids and description as the <a href="01 - Run array definition.html">01 - Run array definition</a>, just uses Gantt Run JSON format instead of Array format.</i>
+      </li>
+      <li>
+      The Run is universal Gantt object to show one or more resizable and movable bars and / or movable milestones in one cell.<br />
+      The Run can be used as <b>one Gantt task</b>, as <b>Gantt task per box</b> or for any <b>bar chart</b>, not only Gantt.<br />
+      The advantages of the runs are especially various bar types (normal, solid, fixed, ...), 
+      different texts and classes for individual bars inside one cell, different vertical positions and heights of the bars,
+      many options for moving and resizing the run bars, search for the bars inside whole chart and large JavaScript API.<br />
+      To speed up the Run rendering, you can set Cfg attribute <b>FastGantt='1'</b>, the look is slightly worse, but every Run box is done by one HTML tag. <i>Demonstrated in the first grid.</i><br />
+      </li>
+      
+      <li>
+         <h4>JSON definition</h4><br />
+         It is defined by <h3>GanttRun</h3> attribute containing JSON array of box objects like "[{...},{...},{...}]".<br />
+         The JSON definition must start with "[" as the first character, without any white space before. In other places are white spaces permitted.<br />
+         Attribute names are sensitive, but in input data are possible two variants first letter upper case (e.g. Start) and all letters lowercase (e.g. start). In output is used always first letter upper case (e.g. Start).<br />
+         All the parameters are optional, e.g. {} is empty separating box, {Duration:xxx} is standard box.<br />
+         To use JSON definition for new boxes in empty run, define the GanttRunNewStart in the JSON format, e.g. GanttRunNewStart="[{Duration:'0.0001'}]".<br />
+         <i>The JSON definition is slower to parse and save than the Array definition.</i><br />
+         <ul>
+            <li>
+               <h4>Independent boxes</h4> are defined by only <h3>GanttRun</h3> attribute, every Run box is specified by its Start date and End date or by Start date and Duration in GanttDataUnits.<br />
+               <b><i>Demonstrated in the first grid.</i></b><br />
+               You define only boxes, the spaces between boxes are added automatically.
+               Internally the Run is always defined as continuous, so between all not joined boxes is always one Empty type box (even with zero or negative duration).<br />
+               <ul>
+                  <li>
+                     To define <b>joined boxes</b> (directly or by <b>Nbsp</b>), you must also define the second and next boxes only by Duration (like in the continuous definition), without Start date to not add spaces between them.
+                  </li>
+                  <li>
+                     It is possible to define the boxes in random order, but there must be set <b>GanttRunError='Sort'</b>.<br />
+                     Remember, the GanttRunError='sort' on start slows down the initialization, because all the boxes must be sorted on start.
+                  </li>
+                  <li>
+                     By default are the Run saved back with Start+End (if not defined GanttRunStart attribute). 
+                     To save Run by Start+Duration set <b>GanttRunSave='2'</b>.
+                  </li>
+                  <li>
+                     If set <b>GanttLastUnit</b> (usually to 'd' as days), the End date in definition is the last unit (e.g. day), not the exact date. Simply, the End date definition is by the one unit less than the exact end date.
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h4>Continuous Run</h4> is defined by start date for the whole Run in <h3>GanttRunStart</h3> 
+               and all bars <b>adjacent</b> defined in <h3>GanttRun</h3> by only the bar Duration.<br />
+               <b><i>Demonstrated in the second grid.</i></b><br />
+               You must define all bars including spaces between them.
+               <ul>
+                  <li>
+                     If two Run bars don't have Empty box between them, they are <b>joined</b>.<br />
+                     To define two not joined bars, you must include <b>Empty</b> box between them, even if they are adjacent.<br />
+                     To shorten the definition, the Empty box between adjacent bars can be added by completely empty definition ({}) like "[{Duration:2},{},{Duration:1}]".
+                  </li>
+                  <li>
+                     Empty type box can have also negative duration to move the next box over the previous one.
+                  </li>  
+                  <li>
+                     The continuous run definition is shorter and faster to parse than the independent boxes, especially for many boxes per cell.
+                  </li> 
+               </ul>
+            </li>
+         </ul>
+      </li>
+
+      <li>
+         <h4>Array definition</h4><br />
+         It is defined by the same attributes like the JSON definition, the <b>GanttRun</b> uses just Array format instead of array.<br />
+         <b><i>Demonstrated in previous example <a href="01 - Run array definition.html">01 - Run array definition</a></i></b>
+      </li>
+            
+      <li>
+         <h4>Summary definiton</h4><br />
+         It is also possible to define the individual Run boxes by child main bars (one per one). 
+         In this type of definition the GanttRun attribute is used just internally.<br />
+         The child tasks can be visible to let manipulate with the bars or hidden to be used just for definition. 
+         The changes in Run are done also to source main bars and can be also uploaded to server.<br />
+         <b><i>Demonstrated in next example <a href="03 - Run summary definition.html">03 - Run summary definition</a></i></b>
+      </li>
+      <li>
+         Run box <h4>type</h4> is set by GanttRun box <b>2nd</b> attribute <b>Type</b>. <i>Demonstrated in many rows, e.g. in 12, 13, 14, 15 .</i><br />
+         The Type can be Box (standard box), Solid (not resizable), Fixed (not movable and resizable), 
+         Left (fixed left), Right (fixed right), Empty (empty space between boxes, inactive), 
+         Nbsp (empty space between joined boxes), Bound (not movable start or end), End (automatic movable start or end).<br />
+         It can define also milestones by Milestone (movable milestone) and Stop (not movable milestone).
+      </li>
+      <li>
+         Run box <h4>content</h4> is set by GanttRun box <b>3rd</b> attribute <b>Text</b>. <i>Demonstrated in many rows, especially in row 25.</i><br />
+         It can contain any HTML code. The box height is updated according to its HTML content, except FastGantt is set.<br />
+         Remember the characters <b>&lt;</b> <b>&amp;</b> <b>"</b> <b>'</b> must be replaced by XML entities (&amp;lt; &amp;amp; &amp;quot; &amp;#x27;) when placed to XML (but not in JavaScript API).<br />
+         Also remember it cannot contain the GanttRun separators. The default separators are '<b>,</b>' and '<b>;</b>' if you want to use them in HTML code, define different GanttRun separators on its start.<br />
+         The box content can be calculated also by <b>GanttRunHtml</b> attribute, it can automatically compose the content from the box start/end date, duration, text and many other box settings.<br />
+         The box content can be also created dynamically by <b>OnGetGanttRunText</b> API event. <i>Demonstrated in row 27.</i>
+      </li>
+      <li>
+         Run box <h4>side text</h4> is set by GanttRun box <b>14th</b> and <b>15th</b> attributes <b>TextLeft</b> and <b>TextRight</b>. It can contain any HTML code. <i>Demonstrated in rows 5, 6.</i><br />
+         The texts horizontal position is controlled by <b>GanttRunHtmlLeftEdge</b> and <b>GanttRunHtmlRightEdge</b>, the available positions are before, inside left, centered, inside right and after.<br />
+         Vertical position is set by <b>GanttRunHtmlShift</b>. It is also possible to generate the side texts by API event <b>OnGetGanttRunSideText</b> to achieve any count and positions of the main bar side content.<br />
+      </li>
+      <li>
+         Run box <h4>tooltip</h4> is set by GanttRun box <b>5th</b> attribute <b>Tip</b>. It can contain any HTML code. <i>Demonstrated in row 1.</i><br />
+         The box tooltip can be calculated also by <b>GanttRunTip</b> attribute, it can automatically compose the content from the box start/end date, duration, text and many other box settings.<br />
+         The box tooltip can be also created dynamically by <b>OnGanttTip</b> API event.
+      </li>
+      <li>
+         Run box <h4>style</h4> is set by GanttRun box <b>4th</b> attribute <b>Class</b>. It is a part of custom CSS class. <i>Demonstrated in rows 18, 19, 20.</i><br />
+         The box CSS class can be also created dynamically by <b>OnGetGanttRunClass</b> API event.
+         For side texts use <b>GanttRunHtmlLeftClass</b> and <b>GanttRunHtmlRightClass</b>.<br />
+      </li>
+      <li>
+         Run box <h4>vertical position</h4> and <h4>height</h4> is set by GanttRun <b>9th</b> and <b>10th</b> attributes <b>Top</b> and <b>Height</b>. The Height is inner box height in pixels. <i>Demonstrated in row 25.</i><br />
+         The values can be set also for boxes in the run by attributes <b>GanttRunTop</b> and <b>GanttRunHeight</b>.<br />
+         Row height is automatically updated to show all the boxes if set <b>GanttBottom</b> attribute (by default is set).<br />
+         New boxes can be created or moved to different vertical levels if set <b>GanttRunLevels</b>. <i>Demonstrated in row 26.</i>
+      </li>
+      <li>
+         <h4>Overlaid (error) boxes</h4> can be handled in more ways. <i>Demonstrated in rows 17, 23, 24, 25, 26</i>.
+         <ul>
+            <li>
+               To mark the overlaid boxes as error in red set <b>GanttRunErrors</b>='1'. It is default behavior. Marked is always only the next (right) box from the two overlaid boxes.
+            </li>
+            <li>
+               To place the overlaid boxes vertically below themselved to show all the boxes set <b>GanttRunErrorsShift</b> to pixel value how the second box will be shifted vertically. 
+               Usual value is 17 for standard height boxes to move it by the whole height.
+            </li>
+            <li>
+               To permit Run boxes overlay when moving or resizing them, add keyword "<b>Errors</b>" to <b>GanttRunAdjust</b> attribute(s).
+            </li>
+            <li>
+               When set keyword "<b>Sort</b>" into <b>GanttRunError</b> (default setting), the boxes are sorted in GanttRun by their start date after any change.
+               You can add also keyword "<b>Merge</b>" to the GanttRunError to merge the overlaid boxes after any change.
+            </li>
+         </ul>
+      </li>
+      <li>
+      Run <h4>milestone</h4> is defined by GanttRun box <b>2nd</b> attribute <b>Type</b>, values <b>Milestone</b> as movable milestone and <b>Stop</b> as not movable milestone.<br />
+      The milestone has always zero duration. It is also possible to have resizable zero duration box. Use <b>GanttRunMilestones</b> attribute to control creating the milestones / zero duration boxes.
+      </li>
+   </ul>
+</body>
+</html>

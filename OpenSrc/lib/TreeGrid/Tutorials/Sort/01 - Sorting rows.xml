@@ -1,0 +1,109 @@
+<Grid>
+   <Cfg id="Sort" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1"/>
+   <Cfg Sort="TEXT"/>
+   <Cols>
+      <C Name="INT" Type="Int" Width="90"/>
+      <C Name="FLOAT" Type="Float" Width="90"/>
+      <C Name="TEXT" Type="Text" Width="130" CaseSensitive="0" WhiteChars=" "/>
+      <C Name="ENUM" Type="Enum" Enum="||One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten" Width="80"/>
+      <C Name="DATE" Type="Date" Width="110" DefaultDate="1/1/2000" Format="dddddd MMM"/>
+      <C Name="BOOL" Type="Bool" CanEmpty="1" NumberSort="1"/>
+      <C Name="ICON" Type="Icon" Width="80"/>
+      <C Name="HTML" Type="Html" Width="80"/>
+   </Cols>
+   <Head>
+      <I
+         INTType="Enum" INT="0" INTEnum="|As number|As string" INTOnChange="Grid.Cols.INT.NumberSort = !Value; Grid.ChangeSort('INT');"
+         FLOATType="Enum" FLOAT="0" FLOATEnum="|As number|As string" FLOATOnChange="Grid.Cols.FLOAT.NumberSort = !Value; Grid.ChangeSort('FLOAT');"
+         TEXTType="Enum" TEXT="0" TEXTEnum="|No case, no spaces|Case, no spaces|No case, spaces|Case, spaces" 
+         TEXTOnChange="Grid.Cols.TEXT.CaseSensitive = Value&amp;1; Grid.Cols.TEXT.WhiteChars = Value&amp;2?'':' '; Grid.ChangeSort('TEXT');"
+         ENUMType="Enum" ENUM="0" ENUMEnum="|By value|By index" ENUMOnChange="Grid.Cols.ENUM.RawSort = Value?2:0; Grid.ChangeSort('ENUM');"
+         DATEType="Enum" DATE="0" DATEEnum="|As number|As string" DATEOnChange="Grid.Cols.DATE.NumberSort = !Value; Grid.ChangeSort('DATE');"
+         BOOLCanEdit="0" BOOLVisible="0"
+         ICON="By icon name" ICONType="Text" ICONCanEdit="0"
+         HTML="By SortValue" HTMLType="Text" HTMLCanEdit="0"
+         />
+   </Head>
+   <Solid>
+      <Tabber Cells="LABEL,ONE,LAST,FIRST,SHIFT,RIGHT"
+         LABELType="Html" LABEL="Adding columns to sorting" LABELCanFocus="0" LABELWrap="0" LABELRelWidth="1"
+
+         ONEButtonText="Only one column" ONETip="Only one column can be sorted"
+         ONEOnCheck="Grid.Actions.OnClickSort='SortAscOne OR SortDescOne'; Grid.Actions.OnClickSortUp='SortAscOne'; Grid.Actions.OnClickSortDown='SortDescOne';"
+
+         LASTButtonText="Last clicked" LAST="1" LASTTip="Last clicked column will be the first one in sorting, the old columns become less important.&lt;br>It is the default TreeGrid sorting behavior."
+         LASTOnCheck="Grid.Actions.OnClickSort='SortAsc OR SortDesc'; Grid.Actions.OnClickSortUp='SortAsc'; Grid.Actions.OnClickSortDown='SortDesc';"
+
+         FIRST="First clicked within 2s" FIRSTTip="First clicked column will be the first in the sorting, the second clicked column will be the second and so on.&lt;br>If there is no click to column header for two second, the order is cleared and next click again changes the first column."
+         FIRSTOnCheck="Grid.Actions.OnClickSort='SortAscAdd OR SortDescAdd'; Grid.Actions.OnClickSortUp='SortAscAdd'; Grid.Actions.OnClickSortDown='SortDescAdd'; Grid.Actions.OnShiftClickSort=''; Grid.Actions.OnShiftClickSortUp=''; Grid.Actions.OnShiftClickSortDown='';"
+
+         SHIFT="Add with shift (like Outlook)" SHIFTTip="Click to column sorts only by this column and clears all other sorting.&lt;br>Click with shift key held adds the column as the second or next to the sorting.&lt;br>This behavior is used in MS Outlook or Excel."
+         SHIFTOnCheck="Grid.Actions.OnClickSort='SortAscOne OR SortDescOne'; Grid.Actions.OnClickSortUp='SortAscOne'; Grid.Actions.OnClickSortDown='SortDescOne'; Grid.Actions.OnShiftClickSort='SortAscAppend OR SortDescAppend'; Grid.Actions.OnShiftClickSortUp='SortAscAppend'; Grid.Actions.OnShiftClickSortDown='SortDescAppend';"
+
+         RIGHT="Add by right button" RIGHTTip="Click to column sorts only by this column and clears all other sorting.&lt;br>Click by mouse right button adds the column as the second or next to the sorting."
+         RIGHTOnCheck="Grid.Actions.OnClickSort='SortAscOne OR SortDescOne'; Grid.Actions.OnClickSortUp='SortAscOne'; Grid.Actions.OnClickSortDown='SortDescOne'; Grid.Actions.OnRightClickSort='SortAscAppend OR SortDescAppend,1'; Grid.Actions.OnRightClickSortUp='SortAscAppend,1'; Grid.Actions.OnRightClickSortDown='SortDescAppend,1';"
+         />
+      <Toolbar1 Cells="DEFAULT,CLICK,ACTIVE,REVERSED,AUTO"
+         DEFAULTType="Select" DEFAULT="INT" DEFAULTDefaults="||INT|FLOAT|TEXT|ENUM|DATE|BOOL|ICON|HTML" DEFAULTLabel="Default sort by" DEFAULTWidth="40"
+         DEFAULTOnChange="Grid.DefaultSort = Value; Grid.SortRows();" DEFAULTTip="Default column for sorting. &lt;br>This column is used as the last column in sorting,&lt;br>when the rows have the same values in all the other sorting columns&lt;br>or no sorting is active."
+
+         CLICKType="Select" CLICKLabel="Sorting click" CLICKDefaults="|Simple, no icons|Simple|Directional, icons only|Directional"  CLICK="Simple"
+         CLICKOnChange="Grid.SortIcons = Grid.GetDefaultsIndex(Row,Col,Value); Grid.RefreshRow(Grid.Header);"
+         CLICKTip="How the sort icons can be clicked to do sort&lt;br>Simple, no icon - Icons are not visible, first click to header sorts ascending, next descending&lt;br>Simple - Icons are visible, first click to header sorts ascending, next descending&lt;br>Directional, icons only - Only icons can be clicked, top half to sort ascending, bottom half descending&lt;br>Directional - The whole header can be clicked, top half to sort ascending, bottom half descending"
+
+         ACTIVEType="Bool" ACTIVE="0" ACTIVELabelRight="Show only active icons" ACTIVETip="If shows all sorting incons in header or only icons for actually sorted columns"
+         ACTIVEOnChange="Grid.Header.SortIcons = Value?2:1; Grid.RefreshRow(Grid.Header);"
+
+         REVERSEDType="Bool" REVERSED="0" REVERSEDLabelRight="Reversed sort icons" REVERSEDTip="If shows the icons with reversed direction (up / down).&lt;br/>Some people prefer such opposite direction"
+         REVERSEDOnChange="Grid.ReversedSortIcons = Value; Grid.RefreshRow(Grid.Header);"
+
+         AUTOType="Bool" AUTO="0" AUTOLabelRight="Auto sort row after change value"
+         AUTOOnChange="Grid.AutoSort = Value;" AUTOTip="If automatically re-sorts row after changing its value in sorted column"
+         />
+   </Solid>
+   <Panel CanPrint="1"/>
+   <Toolbar Kind="Toolbar2" Styles="2"/>
+   <Body>
+      <B>
+         <I INT="10" FLOAT="6.65" TEXT="Not sorted due SortPos" ENUM="Three" DATE="1/8/2000" BOOL="1" SortPos="1" Color="#F2F2F2"/>
+         <I/>
+         <I INT="1" FLOAT="1.3" TEXT="One" ENUM="One" DATE="1/1/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="2" FLOAT="6" TEXT="One" ENUM="One" DATE="1/1/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="3" FLOAT="66" TEXT="ONE" ENUM="One" DATE="1/2/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="4" FLOAT="3.6" TEXT="ONE" ENUM="One" DATE="1/2/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="5" FLOAT="-6.5" TEXT="O n e" ENUM="One" DATE="1/3/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLSortValue="2"/>
+         <I INT="6" FLOAT="12" TEXT="one" ENUM="One" DATE="1/6/2000" BOOL="1" HTMLSortValue="empty"/>
+         <I INT="7" FLOAT="16" TEXT="Two" ENUM="Two" DATE="1/6/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLSortValue="2"/>
+         <I INT="8" FLOAT="2.4" TEXT="tw o" ENUM="Two" DATE="1/6/2000" HTMLSortValue="empty"/>
+         <I INT="9" FLOAT="-12.5" TEXT="Two" ENUM="Two" DATE="1/8/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="10" FLOAT="6.65" TEXT="Three" ENUM="Three" DATE="1/8/2000" BOOL="1" HTMLSortValue="empty"/>
+         <I INT="11" FLOAT="2.3" TEXT="THREE" ENUM="Three" DATE="1/8/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="12" FLOAT="-5.5" TEXT="T h r e e" ENUM="Three" DATE="1/9/2000" HTMLSortValue="empty"/>
+         <I INT="13" FLOAT="11" TEXT="Three" ENUM="Three" DATE="1/11/2000" HTMLSortValue="empty"/>
+         <I INT="14" FLOAT="11.4" TEXT="Four" ENUM="Four" DATE="1/13/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="15" FLOAT="1.06" TEXT="f o u r"  ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="16" FLOAT="0.5" TEXT="Four"  ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="17" FLOAT="-0.6" TEXT="S I X"  ENUM="Six" DATE="1/14/2000" BOOL="0" HTMLSortValue="empty"/>
+         <I INT="18" FLOAT="22" TEXT="Six" ENUM="Six" DATE="1/14/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLSortValue="2"/>
+         <I INT="19" FLOAT="4" TEXT="Seven" ENUM="Seven" DATE="1/16/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="20" FLOAT="5.9" TEXT=" seven" ENUM="Seven" DATE="1/17/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="21" FLOAT="6.23" TEXT="seven" ENUM="Seven" DATE="1/18/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="22" FLOAT="16" TEXT="Seven" ENUM="Seven" DATE="1/18/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="23" FLOAT="6.18" TEXT="Se ven" ENUM="Seven" DATE="1/20/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="24" FLOAT="5.2" TEXT="Eight" ENUM="Eight" DATE="1/21/2000" BOOL="0" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLSortValue="2"/>
+         <I INT="25" FLOAT="-6.345" TEXT="Eight" ENUM="Eight" DATE="1/22/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="26" FLOAT="3" TEXT="Nine" ENUM="Nine" DATE="1/25/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="27" FLOAT="-0.02" TEXT="NINE" ENUM="Nine" DATE="1/26/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="28" FLOAT="-22.9" TEXT="N IN E" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLSortValue="empty"/>
+         <I INT="29" FLOAT="-5.9" TEXT="Ni ne" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLSortValue="empty"/>
+         <I INT="30" FLOAT="6.2" TEXT="N  ine" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLSortValue="empty"/>
+         <I INT="31" FLOAT="22" TEXT=" Ten" ENUM="Ten" DATE="1/29/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="32" FLOAT="6" TEXT="Ten" ENUM="Ten" DATE="1/30/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLSortValue="2"/>
+         <I INT="33" FLOAT="-3" TEXT="t e n" ENUM="Ten" DATE="1/31/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLSortValue="1"/>
+         <I INT="34" FLOAT="-5" TEXT="ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLSortValue="3"/>
+         <I INT="35" FLOAT="2" TEXT="Ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" HTMLSortValue="empty"/>
+         <I INT="11" FLOAT="-6.65" TEXT="Not sorted due SortPos" ENUM="Four" DATE="1/11/2000" BOOL="0" SortPos="-2" Color="#F2F2F2"/>
+         <I INT="10" FLOAT="6.65" TEXT="Not sorted due SortPos" ENUM="Three" DATE="1/8/2000" BOOL="1" SortPos="-1" Color="#F2F2F2"/>
+      </B>
+   </Body>
+</Grid>

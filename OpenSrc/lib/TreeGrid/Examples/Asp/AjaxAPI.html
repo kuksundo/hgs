@@ -1,0 +1,139 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of using Extended API functions like Reload or Save
+-->
+<html>
+   <head>
+      <script src="../../Grid/GridE.js"> </script>
+      <link href="../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body style='overflow:hidden;' onresize='Resize();' onload='Resize()'>
+   <h2>Ajax Extended API with reloading</h2>
+   <div style='height:100%;width:100%;' id=D>
+   <table>
+      <tr>
+         <td id=T1>
+            <div align=center style='width:150px;font-size:14pt'>First grid</div>
+            <div align=center style='width:150px;'>Grids[0]</div>
+            <br>
+            <button onclick="Save(0)" style='width:150px;'>Save changes</button><br>
+            <button onclick="Reload(0)" style='width:150px;'>Cancel changes</button><br>
+            <button onclick="Load(0)" id=BLoad0 style='width:150px;'>Load Tree example</button><br>
+            <br>
+            <div align=center>Automatic updates <input type=checkbox ID="IAuto0" onclick='AutoUpdateClick(0,this)'></div>
+            <br>
+            <div id=Status0 style='width:150px;border:1px solid #ddd;background:#eee;text-align:center;'>Loading</div>
+         </td>
+         
+         <td>
+            <div style="width:500; HEIGHT:300;border:1px solid #eee;" id=G1>
+               <bdo Debug='1'
+                  Layout_Url="TableDef.xml" Layout_Bonus="<Grid><Cfg MaxHeight='0' MaxWidth='0'/></Grid>"
+                  Data_Url="AjaxTableFramework.asp"
+                  Upload_Url="AjaxTableFramework.asp" Upload_Format="Internal" Upload_Data="TGData"
+                  Export_Url="Export.asp" Export_Data="TGData" Export_Param_File="AjaxAPI.xls"
+                  ></bdo>
+            </div>
+         </td>
+      </tr>
+      
+      <tr><td colspan=2 id='H'><hr></td></tr>
+      
+      <tr>
+         <td id=T2>
+            <div align=center style='width:150px;font-size:14pt'>Second grid</div>
+            <div align=center style='width:150px;'>Grids[1]</div>
+            <br>
+            <button onclick="Save(1)" style='width:150px;'>Save changes</button><br>
+            <button onclick="Reload(1)" style='width:150px;'>Cancel changes</button><br>
+            <button onclick="Load(1)" id=BLoad1 style='width:150px;'>Load Table example</button><br>
+            <br>
+            <div align=center>Automatic updates <input type=checkbox ID="IAuto1" onclick='AutoUpdateClick(1,this)'></div>
+            <br>
+            <div id="Status1" style='width:150px;border:1px solid #ddd;background:#eee;text-align:center;'>Loading</div>
+         </td>  
+      
+         <td>
+            <div style="WIDTH:500;HEIGHT:300;border:1px solid #eee;" id=G2>
+               <bdo Debug='1'
+                  Layout_Url="TreeDef.xml" Layout_Bonus="<Grid><Cfg MaxHeight='0' MaxWidth='0'/></Grid>"
+                  Data_Url="AjaxTreeFramework.asp"
+                  Upload_Url="AjaxTreeFramework.asp" Upload_Format="Internal" Upload_Data="TGData"
+                  Export_Url="Export.asp" Export_Data="TGData" Export_Param_File="AjaxAPI.xls"
+                  ></bdo>
+            </div>
+         </td>
+      </tr></table></div>
+      <script>
+      
+      function Save(idx){ // Uploads changes to server
+      Grids[idx].Save(); 
+      }
+      
+      function Reload(idx){ // Reloads body - cancels changes
+      Grids[idx].ReloadBody(); 
+      var S = document.getElementById("Status"+idx);
+      S.innerHTML="Reloading";
+      }
+      
+      function Load(idx){  // Loads new data, Table or Tree
+      var D = Grids[idx].Data;
+      var B = document.getElementById("BLoad"+idx);
+      if(B.innerHTML=="Load Tree example"){ // Loads tree
+         D.Layout.Url = "TreeDef.xml";
+         D.Data.Url = "AjaxTreeFramework.asp";
+         D.Upload.Url = "AjaxTreeFramework.asp";
+         B.innerHTML="Load Table example";
+         }
+      else { // Loads table
+         D.Layout.Url = "TableDef.xml";
+         D.Data.Url = "AjaxTableFramework.asp";
+         D.Upload.Url = "AjaxTableFramework.asp";
+         B.innerHTML="Load Tree example";
+         }
+      Grids[idx].Reload(D);
+      var S = document.getElementById("Status"+idx);
+      S.innerHTML="Loading";
+      }
+      
+      function AutoUpdateClick(idx,S){   // Called when user changed Auto update checkbox
+      Grids[idx].AutoUpdate = S.checked;
+      }
+      
+      Grids.OnLoaded = function(G){      // Fired when all data are loaded
+      var S = document.getElementById("IAuto"+G.Index);
+      S.checked = G.AutoUpdate;
+      }
+      
+      Grids.OnRenderStart = function(G){ // Fired when rendering starts
+      var S = document.getElementById("Status"+G.Index);
+      S.innerHTML="Rendering";
+      }
+
+      Grids.OnRenderPageFinish = function(G){ // Fired when (every) page has been rendered
+      var S = document.getElementById("Status"+G.Index);
+      S.innerHTML="Ready";
+      }
+      
+      Grids.OnCfgChanged = function(G){ // Fired when user changed configuration in menu
+      var S = document.getElementById("IAuto"+G.Index);
+      S.checked = G.AutoUpdate; 
+      }
+      
+      function Resize(){ // Resizes grids to fill whole browser's window, called from body.onresize event
+      var G1 = GetElem("G1"), G2 = GetElem("G2"), T1 = GetElem("T1"), D=GetElem("D");
+      var B = document.documentElement.clientHeight;
+      if(!B) B = document.body.clientHeight;
+      var width = D.offsetWidth - T1.offsetWidth - 10;
+      G1.style.width = width;
+      G2.style.width = width;
+      var height = D.offsetHeight;
+      if(height>B) height = B-20;
+      var height = Math.floor((height-GetElem('H').offsetHeight-40)/2);
+      G1.style.height = height;
+      G2.style.height = height;
+      }
+      
+      </script>     
+   </body>
+</html>

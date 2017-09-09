@@ -1,0 +1,85 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Basic grid</center>
+   <center style='font:bold italic;'>Basic grid with rows and columns</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Basic grid.xml'>01 - <h2>Basic grid</h2>.xml</a></div>
+   <div style='width:550px; height:210px;'>
+      <bdo Debug='check' Data_Url='01 - Basic grid.xml'></bdo>
+   </div>
+   <ul>
+      <li> <h4>TreeGrid XML</h4>
+         <ul>
+            <li> Every grid XML is defined inside <h3>&lt;Grid> ... &lt;Grid></h3> tag. It is the only possible root tag in TreeGrid XML. See <b><a href="../../Doc/DataFormats.htm">TreeGrid data formats</a></b></li>
+            <li> The simplest empty grid can be created as &lt;Grid> &lt;Body> &lt;B/> &lt;/Body> &lt;/Grid> - no columns and no rows (one empty page).</li>
+            <li> TreeGrid base configuration is defined in <h3>&lt;Cfg/></h3> tag.</li>
+            <li> Instead of XML can be used also <b><a href="../../Doc/DataFormats.htm#JSONFormat">JSON format</a></b>, the tag and attribute names are the same as in XML format.</li>
+         </ul>
+      </li>
+      <li> <h4>Rows</h4>
+         <ul>
+         <li>TreeGrid is <b>row based</b> grid. Data are defined in rows. Many features like sort, group and filter are available for rows only, not for columns.<br /></li>
+         <li>The <b>variable</b> (body) rows are defined as <h3>&lt;I></h3> tags inside <h3>&lt;Body>&lt;B> ... &lt;/B>&lt;/Body></h3> tags.</li>
+         <li>The <b>fixed</b> rows are defined as <h3>&lt;I></h3> tags inside <h3>&lt;Head> ... &lt;/Head></h3> and <h3>&lt;Foot> ... &lt;/Foot></h3> tags.</li></li>
+         <li>For more information see <b><a href='02 - Rows.html'>Row types tutorial</a></b> and <a href="../../Doc/RowBasics.htm">Row basics documentation</a>.</li>
+         </ul>
+      <li>
+         <h4>Columns</h4>
+         <ul>
+            <li>The column defines name, position and width of all the cells in the column. The column optionally defines also cell attributes like Type, Format, CanEdit, etc. for all the cells in the column.</li>
+            <li>The <b>variable</b> (middle) columns are defined by <h3>&lt;C></h3> tag inside <h3>&lt;Cols> &lt;/Cols></h3> tags. </li>
+            <li>The <b>fixed</b> columns are defined by <h3>&lt;C></h3> tag inside <h3>&lt;LeftCols> &lt;/LeftCols></h3> and <h3>&lt;RightCols> &lt;/RightCols></h3> tags.</li>
+            <li>All three sections can be horizontally scrolled. By default only the middle section is scrollable, the left and right sections are fixed and always visible.</li>   
+            <li>Column can be moved (dragged) inside its section and also to another section. Column can be shown / hidden by users in columns menu (icon on toolbar).</li>
+            <li>For more information see <b><a href='03 - Columns.html'>Columns and sections tutorial</a></b> and <a href="../../Doc/ColBasics.htm">Column basics documentation</a>.</li>
+         </ul>
+      </li>
+      <li>
+         <h4>Cells</h4>
+         <ul>
+            <li>TreeGrid data in cells are defined in rows, not in columns.</li>
+            <li>The <b>cell values</b> are defined in &lt;I> tag with attribute named as the column Name. For example &lt;I Col1='10' Col2='20'/>. </li>
+            <li>All <b>cell attributes</b> (except for column size and position like Width) can be defined for the whole column (in &lt;C> tag, e.g. &lt;C Name='Col1' Type='Int' Format='0.00'/>) or for individual cell (in &lt;I> tag as column name+attribute name, e.g. &lt;I Col1Type='Int' Col1Format='0.00' Col1='10'/>).</li>
+            <li>For more information see <b><a href='../Index.html#Cells'>Cells tutorials</a></b> and <a href="../../Doc/CellBasics.htm">Cell basics documentation</a>.</li>
+         </ul>
+      </li>
+      <li>
+         <h4>Predefined items</h4><br />
+         There are four predefined items in grid: Header, Panel, Toolbar and Pager. All of them can be hidden, moved, redefined or created more times. All the default definitions are in file <b><a href="../../Grid/Defaults.xml">Grid/Defaults.xml</a></b>.
+         <ul>
+            <li><h4>Header</h4> - fixed row <b>&lt;Header id='Header'/></b> as <b>main header</b> containing column captions. It is defined by <h3>&lt;Header/></h3> tag placed directly in &lt;Grid> tag.<br />
+               Hide it by &lt;Header Visible='0'/>. Define the column captions as normal row cells, like &lt;Header Col1='Column 1'/>. 
+               Change the main header position by placing into &lt;Head> or &lt;Foot> section as &lt;Header id='Header'/>.<br />
+               For more information see <b><a href='02 - Rows.html'>Rows tutorial</a></b>.
+            </li>
+            <li><h4>Toolbar</h4> - solid row <b>&lt;Toolbar id='Toolbar'/></b> as <b>main toolbar</b> containing basic TreeGrid buttons. It is defined by <h3>&lt;Toolbar/></h3> tag placed directly in &lt;Grid> tag. <br /> 
+            Hide it by &lt;Toolbar Visible='0'/>. Hide the default icons by setting their names to 0 like &lt;Toolbar Print='0' ExpandAll='0'/>. Move the toolbar by setting its Space attribute.<br />
+            Add new icons or other cells to the toolbar by redefining Cells attribute. Use default Cells definition in Grid/Defaults.xml and extend it (see next tutorial).<br />
+            See <a href="../../Doc/GlobalSettings.htm#DefaultToolbar">Default toolbar documentation</a>.
+            </li>
+            <li><h4>Panel</h4> - left column <b>&lt;Panel Name='Panel' Type='Panel'/></b> as <b>row left panel</b> containing control buttons for individual rows. It is defined by <h3>&lt;Panel/></h3> tag placed directly in &lt;Grid> tag. <br />
+            Hide it by &lt;Panel Visible='0'/>. Hide / show the Panel button by setting their name to 0/1 like &lt;Panel Select='0' Copy='1'/>. 
+            Change the panel position by placing into &lt;LeftCols>, &lt;Cols> or &lt;RightCols> tag as &lt;C Name='Panel'/>.<br />
+            See <a href="../../Doc/TypePanel.htm">Panel Type documentation</a>.
+            </li>
+            <li><h4>Pager</h4> - side vertical pager <b>&lt;Pager Name='Pager'/></b> with root pages names. Shown only in paged grid (set &lt;Cfg Paging/> attribute). It is defined by <h3>&lt;Pager/></h3> tag placed directly in &lt;Grid> tag. <br />
+            Hide it by &lt;Pager Visible='0'/>. Set its width by Width attribute. Move it to left by Left='1'.<br />
+            See <a href="../../Doc/Pager.htm">Pager documentation</a>.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

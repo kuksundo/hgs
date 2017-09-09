@@ -1,0 +1,165 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttResources"><b>Gantt resources</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Resources</center>
+   <center style='font:bold italic;'>Assigning resources and prices to tasks and showing their summary usage</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Resources.xml'>01 - <h2>Resources</h2>.xml</a> - Resources chart shown in the same grid in fixed rows</div>
+   <i style='font-size:12px;color:red;'>In this example the resource usage chart in the first grid is not fully updated by changes done in the second grid, because in real application it is not expected to have two resource charts for one data.</i>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Resources.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Resources grid.xml'>01 - <h2>Resources grid</h2>.xml</a> - Shows resource usage from the previous grid</!--div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Resources grid.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         <h4>Resource list</h4><br />
+         The list of available resources is defined in root <b>Resources</b> tag, the individual resources are defined inside by <b>R</b> tags.<br />
+         The <b>R</b> tag can have these attributes: 
+         <ul>
+         <li>
+         <b>Name</b> as unique identification of the resource.
+         </li>
+         <li>
+         <b>Text</b> as optional resource name to be displayed instead of the Name in popup resources menu.
+         </li>
+         <li>
+         <b>Price</b> as price of the resource used in calculation of task or project price.
+         </li>
+         <li>
+         <b>Availability</b> as count of the available resources, when actual resource usage exceeds this count, the bars in Resource chart are displayed in red.<br />
+         The Availability can also contain one or more date ranges to specify the resource counts depending on dates.<br />
+         The Availability can be easily edited by users in dialog by <b>Dates</b> type Button.<br />
+         </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Resource assign</h4><br />
+         The resources are assigned individually per main bar plan by <h3>GanttResources<i>X</i></h3> attribute, where the X is the main bar plan number, empty for the first one.<br />
+         The resources for run bar (when GanttTask contains "Run") are assigned by <h3>GanttRunResources</h3>.<br /> 
+         The resources for run box (when GanttTask contains "Box") are assigned in the box attribute <h3>Resources</h3> in the <b>GanttRun</b> definition.<br />
+         The format is: name1<b>*</b>amount1<b>+</b>extra1<b>;</b>name2<b>*</b>amount2<b>+</b>extra2<b>;</b>... <br />
+         For run box resources definition is the '<b>;</b>' separator replaced by '<b>#</b>'.
+         <ul>
+         <li>
+            Resources are separated by semicolon (defined by &lt;Format ValueSeparator/>).
+            The name and amount are separated by asterisk (defined by &lt;Format CountSeparator/>).
+            The extra is separated by plus (defined by &lt;Format AddSeparator/>).
+         </li>
+         <li>
+            The name is resource Name.
+         </li>
+         <li>
+            The amount is amount of resource units per task data unit. The amount can be omitted if it is 1 and the extra is not used or is 0 and extra is used.
+         </li>
+         <li>
+            The extra are extra resource units independent on the task duration. The extra can be omitted if it is 0.<br />
+            If the name and amount are omitted, the extra is extra price for the task independent on resources and task duration. There should be only one such extra price per task.
+         </li>
+         </ul>
+      The resources can be assigned by users in Gantt popup menu, shown by action <b>EditGanttResources</b> attached by default to OnDblClickGantt event.<br />
+      The resources can be also changed in right click Gantt popup menu, "Change resources" menu item.<br />
+      <ul>
+      <li>
+      Attribute <h3>GanttResourcesAssign</h3> specifies how the resources are chosen in the resources menu, possible options are:<br />
+      0 - single resource, 1 - resources without count, only checkboxes shown, 2 - resources count can be selected in combo 1 - 10, 
+      3 - resources count is editable integer, 4 - resources count is editable float, 5 - only extra resource units and task price.
+      </li>
+      <li>
+      Attribute <h3>GanttResourcesExtra</h3> controls if and how can be added the extra prices for the resources.<br />
+      0 - none, 1 - one extra price per whole task, 2 - extra units per resources, 3 - both.<br />
+      If permitted extra price per task, the resource names should not be numbers.
+      </li>
+      <li>
+      Or the resources menu can be defined by custom <h3>GanttResourcesMenu</h3> as standard TreeGrid JSON menu.
+      </li>
+      </ul>
+      </li>
+
+      <li> <h4>Resources filter</h4><br />
+      The tasks can be filtered according to assigned resources, to show only tasks for selected resources.<br />
+      The predefined filter can be set by <b>GanttResourcesFilter</b> attribute.<br />
+      Users can choose the resources to filter in Space cell of Type <b>SelectGanttResources</b>.<br />
+      </li>
+
+      <li>
+         <h4>Resources calculation</h4><br />
+         There are three calculation functions to use in formulas for support of calculation resources.<br />
+         <ul>
+         <li>
+         <b>ganttresourcepeak</b> returns maximal count of the resource used in grid at one time.
+         </li>
+         <li>
+         <b>ganttresourceunits</b> returns count of all allocated units for given resource in the whole grid.
+         </li>
+         <li>
+         <b>ganttresourceextra</b> returns summary of extra prices assigned to tasks for given resource, or for all extra prices for whole task.
+         </li>
+         </ul>
+         There are also three support API function for custom resources calculation.
+         <ul>
+            <li>
+               <b>GetGanttPrice</b> returns price of the task according to its duration and assigned resources.
+            </li>
+            <li>
+               <b>GetResourceErrors</b> returns all errors or usage in grid for the resource name in two dimensional array.
+            </li>
+            <li>
+               <b>GetResourceUsage</b> returns Availability string as usage of given resource in chart.
+            </li>
+            <li>
+               <b>GetGanttResourceCount</b> returns information about given resource usage in given date range (peak, units or average usage).
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Resources usage chart</h4><br />
+         It is special Gantt chart row showing usage of one resource in the whole project.<br />
+         The cell shows the Resource usage chart when set <h3>GanttAvailability</h3> to special format specifying the chart type.<br />
+         The GanttAvailability format is: <b>resource_name#chart_type#def_name</b>, where <b>chart_type</b> can be: <br />
+            <ul>
+            <li><b>1</b> – resource usage by the tasks in chart. Uses Green class by default.</li>
+            <li><b>2</b> – resource usage, for Work is the same as 1, for Material shows constant usage, not incremental. Uses Green class by default.</li>
+            <li><b>3</b> – availability chart, shows chart for the resource Availability value. Uses Yellow Class by default.</li>
+            <li><b>4</b> – actual availability at given times, for Work it is the same as 3, for Material is similar to 5, but shifted by one GanttDataUnit. Uses Yellow Class by default.</li>
+            <li><b>5</b> – free resources chart (availability minus usage). Uses default (blue/red) class by default.</li>
+            <li><b>6</b> – resource errors (availability minus usage, only negative values). Uses Red class by default.</li>
+            <li><b>7</b> – resource errors, positive (availability minus usage, only negative values as positive values). Uses Red class by default.</li>
+            <li><b>8</b> – resource errors, full (availability minus usage, only negative values as full usage at given time). Uses Red class by default.</li>
+            </ul>
+         The <b>def_name</b> is optional name of Def row, to show resources from only rows with this attribute.<br />
+         The number format is set by <b>GanttAvailabilityFormat</b> attribute.<br />
+         The Resource usage chart shows bars (blue, red or yellow), one per one GanttUnit, with number as count of resources consumed in the GanttUnit. <br />
+         The blue bars are for resource usage, red bars for resource errors and yellow bars for resource availability.<br />
+         The bar colors can be redefined by <b>GanttAvailabilityClass</b> attribute.<br />
+         The resource usage chart can be shown in the same grid as the source tasks, usually in fixed rows, or in another grid, see below.<br />
+      </li>
+      <li>
+         <h4>Automatically generated Resources usage chart</h4><br />
+         It is possible to automatically create the Resource usage chart from source in another grid.<br />
+         The resources list can be modified, the resources can be added, deleted, changed or renamed via the resource chart.<br />
+         <br />
+         The source grid must contain tasks with resources and resource list. The source grid can be even hidden, to work only as data source for the Resource usage chart, set <b>&lt;bdo Hidden='1' ... ></b><br />
+         The resource grid should have defined only layout xml, because body rows are automatically generated from the resource list in source grid.<br />
+         <br />
+         The resource grid must define these &lt;Cfg> attributes: <h3>GanttResourceMaster</h3> as id of the source grid 
+         and <b>GanttResourceName</b>, <b>GanttResourcePrice</b> and <b>GanttResourceAvailability</b> as columns in resource grid, where will be shown these attribute of source <b>R</b> tag.<br />
+         <i>For more information see documentation.</i>
+      </li>
+   </ul>
+</body>
+</html>

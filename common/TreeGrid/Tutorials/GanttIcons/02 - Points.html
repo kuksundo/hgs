@@ -1,0 +1,71 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttIcons"><b>Gantt icons</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Points</center>
+   <center style='font:bold italic;'>Movable math points on exact dates</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Points.xml'>02 - <h2>Points</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Points.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttIcons.htm#Point">Point</a></b>.
+      </li>
+      <li>
+         The points represents movable marks on exact dates.<br />
+         They are expected to use in math charts to display values from one or more source columns.<br />
+         To just mark some date in chart by icon and information use <b>GanttFlags</b> instead of GanttPoints. See tutorial <a href="07 - Flags.html">07 Flags</a>.<br />
+         Point icon is centered directly to its date.
+      </li>
+      <li>
+         The points are defined by <h3>GanttPoints</h3> attribute in possible four ways:
+         <ul>
+            <li>
+               Comma separated list of column names where are the individual values stored, for example GGanttPoints=’A,B,C’ A=’1/1/2000’ B=’2/1/2000’ C=’4/2/2000’.<br />
+               Users cannot add more points than the column count, but can change the source columns values, delete points and add new points up to source column count.
+            </li>
+            <li>
+               Column name where are the column names stored, for example GGanttPoints=’X’ X=’A,B,C’ A=’1/1/2000’ B=’2/1/2000’ C=’4/2/2000’.<br />
+               Users can change the source column list and also can change the source columns values, delete points and add new points up to actual source column count.
+            </li>
+            <li>
+               Direct list of values, comma or semicolon separated, for example GGanttPoints=’1/1/2000;2/1/2000;4/2/2000’.<br />
+               It is not changeable by users.
+            </li>
+            <li>
+               Column name where are the direct values stored, for example GGanttPoints=’X’ X=’1/1/2000;2/1/2000;4/2/2000’.<br />
+               It has not limited count of the points added by users. Users can freely add, delete and move the points.
+            </li>
+         </ul>
+      </li>
+      <li>
+         There are eight predefined icons for the points, every next point in the cell will have next icon from the list.<br />
+         From ninth point the icons are cycled from beginning.<br />
+         It is possible to show custom icons for the points or change the assigning order of predefined icons by attribute <h3>GanttPointsIcons</h3>.<br />
+         The GanttPointsIcons contains semicolon separated list of the icon urls (relative to the actual page) or number 1-8 for predefined icon. The icons are assigned to the points in that order.
+      </li>
+      <li>
+         There can be more points on the same date, the next point is shifted for <b>GanttPointsShift</b> pixels right to not completely hide the previous point.
+      </li>
+      <li>
+         Attribute <h3>GanttPointsEdit</h3> specifies if the individual points can be moved or deleted. In the order they are defined in GanttPoints.<br />
+         To not edit any point remove rather Points keyword from <b>GanttEdit</b>.
+      </li>
+      <li>
+         Tooltip for the points can be formatted by <h3>GanttPointsTip</h3> to show specific information for the point like its date, index and source column name.
+      </li>
+   </ul>
+</body>
+</html>

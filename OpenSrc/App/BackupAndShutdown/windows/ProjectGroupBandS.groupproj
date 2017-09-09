@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{82E448F0-2319-4E16-B4C3-5F3C232C678E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="client\source\BandS.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="plugins\MySQLDump\source\MySQLDump.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="plugins\ftp\source\FTP.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BandS">
+        <MSBuild Projects="client\source\BandS.dproj"/>
+    </Target>
+    <Target Name="BandS:Clean">
+        <MSBuild Projects="client\source\BandS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BandS:Make">
+        <MSBuild Projects="client\source\BandS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MySQLDump">
+        <MSBuild Projects="plugins\MySQLDump\source\MySQLDump.dproj"/>
+    </Target>
+    <Target Name="MySQLDump:Clean">
+        <MSBuild Projects="plugins\MySQLDump\source\MySQLDump.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MySQLDump:Make">
+        <MSBuild Projects="plugins\MySQLDump\source\MySQLDump.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FTP">
+        <MSBuild Projects="plugins\ftp\source\FTP.dproj"/>
+    </Target>
+    <Target Name="FTP:Clean">
+        <MSBuild Projects="plugins\ftp\source\FTP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FTP:Make">
+        <MSBuild Projects="plugins\ftp\source\FTP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BandS;MySQLDump;FTP"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BandS:Clean;MySQLDump:Clean;FTP:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BandS:Make;MySQLDump:Make;FTP:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

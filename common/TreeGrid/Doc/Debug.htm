@@ -1,0 +1,612 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Debug window</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Debugging and testing</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=window><b><span style='font-size:20.0pt'>Debug window</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid since 6.0 contains
+new feature for debugging: a debug window.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The window shows various
+information from TreeGrid runtime. Errors, warning, timer, status and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This window is displayed on
+bottom of page by default, the position can be changed in Grid.css, CSS
+attribute GridDebugTag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The window is shown
+automatically if some message is printed or on click to Debug icon on toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What will be printed to the
+debug window is controlled by &lt;treegrid&gt; / &lt;bdo&gt; attribute <a
+href="#Debug">Debug</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>[]  </span><a
+name=Debug><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Debug</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [“Problem,IOError”]                                                                                          <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Global debugging settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of comma separated keywords
+specified what information will be printed to the <b>Debug</b> window. The
+keywords are case insensitive.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Default setting of Debug
+is to print all errors and warning, it strongly recommended to use at least
+this settings during development!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In final release you
+should set Debug=”” to disable debugging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Error</span></b><span
+style='font-size:10.0pt'>                    Prints <b>errors</b> (<b><span
+style='color:red'>red</span></b> , if something failed in grid – data
+communication, action, formula) and <b>fatal errors</b> (<b><span
+style='color:red'>big red</span></b>, TreeGrid cannot render)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Problem</span></b><span
+style='font-size:10.0pt'>               Prints <b>warnings</b> (<b><span
+style='color:#993300'>brown</span></b>, something is wrong in TreeGrid, but it
+may or may not have influence on running), <b>errors</b> and <b>fatal errors</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Info</span></b><span
+style='font-size:10.0pt'>                       Prints <b>status</b> (<b>black</b>,
+something started, something finished, something called), <b>timers</b> (<b>black</b>,
+profiling information), <b>warnings</b>, <b>errors</b> and <b>fatal errors</b></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Check</span></b><span
+style='font-size:10.0pt'>                    Checks all input XML attributes
+and prints all unknown attributes that are not used by TreeGrid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               It
+is useful when upgrading to see unsupported attributes and also to find typing
+errors.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Remember,
+it can do false alarms if you use custom grid, row, col, cell attributes, you
+can define them in <a href="#DebugCheckIgnore">DebugCheckIgnore</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                               This
+option can remarkably slow down data loading in large grids!</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IOError</span></b><span
+style='font-size:10.0pt'>               Lists input / output <b>data</b> from <b>erroneous</b>
+communication</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IO</span></b><span
+style='font-size:10.0pt'>                          Lists <b>all</b> input /
+output <b>data</b>. Sets *_Debug=”In,Out” for every data source that has not
+set its Debug attribute, except Defaults and Text.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Cookie</span></b><span
+style='font-size:10.0pt'>                  Prints all information about grid
+configuration loaded from cookies.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Page</span></b><span
+style='font-size:10.0pt'>                      Prints status information for
+downloading pages, cells (DefaultsServer), AutoUpdate</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Event</span></b><span
+style='font-size:10.0pt'>                    All mouse over events to see what
+part in grid is marked by what action event name. Useful for attaching events. <i>Very
+talkative.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>[]  </span><a
+name="xxx_Debug"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Debug</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Debugging settings for
+appropriate data source (e.g. Upload_Debug=”Out”)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of comma separated
+keywords specified what information will be printed to the <b>Debug</b> window.
+The keywords are case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>In</span></b><span
+style='font-size:10.0pt'>                           Lists all input XML
+downloaded from server</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Out</span></b><span
+style='font-size:10.0pt'>                        Lists all output XML uploaded
+to server</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Raw</span></b><span
+style='font-size:10.0pt'>                       Lists all output XML directly
+as it is uploaded to server</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>[]  </span><a
+name=DebugCheckIgnore><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DebugCheckIgnore</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of all
+attributes that Debug[“Check”] will ignore.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These attributes will be
+ignored for every tag except &lt;treegrid&gt; / &lt;bdo&gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These attributes are also
+ignored for every cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name=DebugTag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DebugTag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An <b>id</b> of existing tag
+on HTML page to print the debug information to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, default TreeGrid
+debug tag is created and used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name=DebugWindow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DebugWindow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of new window to print
+debug list to another window instead of DebugTag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>      </span><a
+name=AlertError><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AlertError</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> it alerts
+a message to user when communication with server failed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetScrollLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Debug</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>int</i>
+<b>type</b>, <i>string</i> <b>arg1</b>, <i>string</i> <b>arg2</b>, <i>string</i>
+<b>arg3</b>, ...)                                               <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Prints information to the
+TreeGrid Debug window</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> is <b>0</b> – fatal error, <b>1</b> – error, <b>2</b>
+– warning (shown when Debug contains Problem), <b>3</b> – list (shown always), <b>4</b>
+– info (shown when Debug contains Info). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>arg</b> are strings to
+display, are shown without any separator, every even string is displayed bold.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnDebug><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDebug</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>int</i>
+<b>level</b>, <i>type[]</i> <b>arguments</b>)                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for every debug print,
+regardless on debug level, except input / output data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used for redirecting
+the debug prints to another output.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>level</span></b><span
+style='font-size:10.0pt'> is debug level (importance), like type in <a
+href="#Debug">Debug</a> function.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>arguments</span></b><span
+style='font-size:10.0pt'> is array of the printed strings, the first item is
+also the level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDebugUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>DebugUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>     Attached to <b>OnCtrlAltD</b>
+event                                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Prints to new window all
+actions done from last clearing undo. Prints only actions that can be undone. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It prints the actions as
+calling API methods, so the developer can easily redo the actions by simply
+adding the list to the script.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Works only when set &lt;Cfg <a
+href="Undo.htm#CfgUndo">Undo</a>=’1’/&gt; and <a href="#Debug">Debug</a>
+contains “Error”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used when reporting
+bugs, to get the action list that led to incorrect behavior:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>When you face some
+incorrect behavior during testing, press Ctrl+Alt+D to show the window. </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Click to <b>Test</b>
+button to reload grid and to do automatically all the actions again.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If the problem rises again,
+it means it can be simulated by this action list. </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Press again Ctrl+Alt+D and
+select and copy all the message text to clipboard and send it to developer with
+all the example data to simulate the bug.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=test><b><span style='font-size:20.0pt'>Automated testing</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>bool</i>      </span><a
+name=CfgTestIds><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TestIds</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [0]                                                                                                       <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, many
+TreeGrid and Gantt HTML elements get unique id attribute to be accessible by
+automated testing tools like <b>Selenium</b> <b>WebDriver</b>.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>It is strongly
+recommended to use the ids only for testing, not for controlling the TreeGrid
+HTML - for it use API instead.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The id has mostly this
+syntax: TG<b>name</b>-<b>grid</b>-<b>row</b>-<b>col</b>-<b>part</b>, where </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is the TreeGrid internal name of element, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'> is grid index (starts from 0 for first grid on page),
+</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'> is row id attribute, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is column name, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>part</span></b><span
+style='font-size:10.0pt'> is specific identification of the element, usually
+its index inside its cell</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span lang=CS style='font-size:
+10.0pt'>- is a separator defined by <a href="#CfgTestIdSeparator">TestIdSeparator</a>,
+be default it is '-'.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every <b><u>cell</u></b>,
+including header and space cells, gest id: <b>TGCell</b>-<i>grid</i>-<i>row</i>-<i>col</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell is &lt;td&gt; tag
+and includes also its side Icon (e.g. the Enum or Filter icon). It does <u>not</u>
+include its side Button (e.g. calendar, defaults or sort buttons) and tree
+button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Because the side <b><u>Icon</u></b>
+is included in cell and cannot get its separate id, you can use for testing
+purposes right side Button instead of the Icon. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Enum do &lt;C
+Type=&quot;Enum&quot; Icon=&quot;&quot; Button=&quot;Enum&quot;/&gt;. For
+filter row do for every related cell &lt;Filter Col1Button=&quot;Filter&quot;
+... /&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every cell right side <b><u>Button</u></b>
+gets id: <b>TGButton</b>-<i>grid</i>-<i>row</i>-<i>col</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The id is attached to the
+&lt;td&gt; tag containing the button or icon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every <b><u>tree</u></b> part
+gets id: <b>TGTree</b>-<i>grid</i>-<i>row</i>-<i>col</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The id is attached to the
+&lt;td&gt; tag containing the whole tree part, not only the expand/collapse buttons.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For testing purposes you can
+attach the Expand / Collapse actions to the whole tree part by: &lt;Actions
+OnClickTree=&quot;Expand OR Collapse&quot; OnDblClickTree=&quot;Expand OR
+Collapse&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><u>resizing</u></b>
+grid button (placed bottom right in the grid) gets id: <b>TGResize</b>-<i>grid</i>.
+In IE quirks mode there will be also defined <b>TGResizeIE</b>-<i>grid</i> for
+parent tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;<b><u>input</u></b>&gt;
+or &lt;<b><u>textarea</u></b>&gt; tag shown for in-cell editing in grid gets
+id: <b>TGInput</b>-<i>grid</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In <b><u>Gantt chart</u></b>
+there are defined these ids:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Main bar: <b>TGMain</b><i>plan</i>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;
+<b><i>plan</i></b> is number of plan, 0 for the first plan</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Main bar side icons: <b>TGMain</b><i>plan</i><b>SideIcon1</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;
+<b>TGMain</b><i>plan</i><b>SideIcon2</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Main bar side manual
+constraint: <b>TGMain</b><i>plan</i><b>SideManual</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Main bar side html: <b>TGMain</b><i>plan</i><b>SideLeft</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;
+<b>TGMain</b><i>plan</i><b>SideRight</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Run bar: <b>TGRun</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Run bar side manual
+constraint: <b>TGRunSideManual</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Run bar side html: <b>TGRunSideLeft</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;
+<b>TGRunSideRight</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Flags icon: <b>TGFlag</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>;
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Flags text: <b>TGFlagText</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Points: <b>TGPoint</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Constraints: <b>TGMinStart</b>-<i>grid</i>-<i>row</i>-<i>col</i>,
+<b>TGMaxStart</b>-<i>grid</i>-<i>row</i>-<i>col</i>, <b>TGMinEnd</b>-<i>grid</i>-<i>row</i>-<i>col</i>,
+<b>TGMaxEnd</b>-<i>grid</i>-<i>row</i>-<i>col</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt Base: <b>TGBase</b>-<i>grid</i>-col</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt Finish: <b>TGFinish</b>-<i>grid</i>-col</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt Header cell: <b>TGGanttHeader</b>-<i>grid</i>-<i>col</i>-<i>index</i>-<i>date</i>,
+where <b>index</b> is the GanttHeader index from 1 and <b>date</b> is starting
+date of the cell in milliseconds since 1/1/1970</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Paged Gantt Header line: <b>TGGanttHeaderPage</b>-<i>grid</i>-<i>col</i>-<i>index</i>
+(defined only in GanttPaging when the header line is paged by
+GanttHeaderPaging)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In side <b><u>pager</u></b>
+there are defined these ids:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every pager page gets id: <b>TGPager</b>-<i>grid</i>-<i>name</i>-<i>index</i>,
+where <b>name</b> is name of the pager and <b>index</b> is the pager page index
+from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The pager caption gets id: <b>TGPagerCaption</b>-<i>grid</i>-<i>name</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every link to page in <b><u>Pages</u></b>
+type cell get id: <b>TGPages</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>page</i>,
+where <b>page</b> is the index (from <b>1</b>) the link points to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every item in <b><u>DropCols</u></b>
+type cell get id: <b>TGDropCols</b>-<i>grid</i>-<i>row</i>-<i>col</i>-<i>index</i>.
+The Text part of the DropCols get id: <b>TGDropColsText</b>-<i>grid</i>-<i>row</i>-<i>col</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In popup <b><u>calendar</u></b>
+dialog there are defined these ids:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every calendar date button
+has this id: <b>TGCalendar</b>-<i>grid</i>-<i>type</i>-<i>date</i>, where <b>type</b>
+is: &quot;WD&quot; as workday, &quot;Sa&quot; as Saturday, &quot;Su&quot; as
+Sunday, &quot;OM&quot; as other month day, &quot;Now&quot; as today,
+&quot;Sel&quot; as selected day. <b>date</b> is date of the day as count of
+milliseconds since 1/1/1970</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The time &lt;input&gt; gets id:
+<b>TGCalendarTime</b>-<i>grid</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The empty button gets id: <b>TGCalendarEmpty</b>-<i>grid</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The control buttons get ids: <b>TGCalendarOk</b>-<i>grid</i>,
+<b>TGCalendarClear</b>-<i>grid</i>, <b>TGCalendarToday</b>-<i>grid</i>, <b>TGCalendarYesterday</b>-<i>grid</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In popup <b><u>menu</u></b>
+dialog (used by Menu, Enum Defaults, CfgMenu, Columns, ...) there are defined
+these ids:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every menu item gets id: <b>TGMenu</b>-<i>grid</i>-<i>itemid</i>,
+where <b>itemid</b> is the id attribute of the item. If the menu item has not
+defined its id, it is its Name or Text with replaced all white characters by
+'_'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The control buttons get ids: <b>TGMenuOk</b>-<i>grid</i>,
+<b>TGMenuCancel</b>-<i>grid</i>,<b> TGMenuClear</b>-<i>grid</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><u>custom scrollbar</u></b>
+(set by &lt;Cfg CustomScroll/&gt;) buttons get these ids: <b>TGScrollUp</b>-<i>grid</i>,
+<b>TGScrollDown</b>-<i>grid</i>, <b>TGScrollLeft</b>-<i>grid</i>-<i>sec</i>, <b>TGScrollRight</b>-<i>grid</i>-<i>sec</i>,
+where the <b>sec</b> is &quot;Left&quot;, &quot;Mid&quot; or &quot;Right&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other <b><u>internal</u></b> ids
+used by TreeGrid: <b>TGFastColumns</b>-<i>grid</i>, <b>TGHoverCursors</b>-<i>grid</i>,
+<b>TGFocusCursors</b>-<i>grid</i>, <b>TGTmpFocusGrid</b>-<i>grid</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special <b><u>global</u></b> <b><u>internal</u></b>
+ids: <b>TreeGridStyle</b>-<i>prefix</i> (the prefix is e.g. 'GM' for Modern
+style), <b>TreeGridMessageStyle</b>, <b>TreeGridControls</b>, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string</i>    </span><a
+name=CfgTestIdSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TestIdSeparator</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     ['-']                                                                                          <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Separator used in <a
+href="#CfgTestIds">TestIds</a>. Define it different is some your row id or column
+name contains the '-' to some character not used in any your row id and column
+name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

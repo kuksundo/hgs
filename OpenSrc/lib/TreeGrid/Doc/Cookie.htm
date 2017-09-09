@@ -1,0 +1,801 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Configuration in cookies</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Configuration in cookies</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Many TreeGrid settings are
+automatically saved in client browser and are persistent between sessions. So
+the server does <u>not</u> need to care about it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The saved settings override
+the settings in xml, so <b>the settings in xml are used only for the first
+visit</b>, when no settings are saved in cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the grid layout is
+changed, you should increase <a href="#CfgVersion">Version</a> attribute to
+delete old configuration from cookies and use the new setting from xml.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.4 the Version is
+automatically generated because of setting AutoVersion=’1’.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can suppress saving
+configuration completely by <a href="#CfgSuppressCfg">SuppressCfg</a>=’3’ or
+you can suppress only some setting by appropriate …<b>Lap</b> attribute (for
+example SortLap=’1’ suppresses only sorting).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Configuration is saved under the
+grid <a href="#Cfgid">id</a> name. Grids with the same <a href="#Cfgid">id</a>
+will share their saved settings, but only if cookie or persistent storage is
+shared between those pages. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can control cookie
+setting also by API properties <a href="CookieExpires">Grids.CookieExpires</a>
+and <a href="#CookieParam">Grids.CookieParam</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The settings are saved to
+cookies by default. Because of cookies size limit (4096 B) you can save it to
+browser persistent storage instead. The persistent storage is supported only by
+IE 5.0+ and Firefox 2.0+. See <a href="#CfgPersistentCfg">PersistentCfg</a>
+attribute.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also possible to upload
+to and download from server the actual configuration in XML (<a
+href="DataUpload.htm#Upload_Type">Upload_Type</a>=”Settings”) or in black box <a
+href="#CfgCookie">Cookie</a> (<a href="DataUpload.htm#Upload_Type">Upload_Type</a>=”Cookie”).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt'>To cookies (or persistent
+storage) is saved <b>by default</b></span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Columns' visibility,
+     positions and widths</span></b><span style='font-size:10.0pt'> </span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:17.4pt'><span
+style='font-size:10.0pt'>Attributes &lt;C Visible&gt;, &lt;C Width&gt; and
+positions of tags &lt;C&gt; inside their section</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Column sections widths</span></b><span
+     style='font-size:10.0pt'> </span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:17.4pt'><span
+style='font-size:10.0pt'>Attributes &lt;Cfg LeftWidth MidWidth RightWidth/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:17.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><span style='font-size:10.0pt'>S<b>ort, filter, group and
+     search</b> settings</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Cfg
+Sort AutoSort Sorted/&gt; </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Cfg
+Group Grouped/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Cfg
+SearchExpression SearchAction SearchMethod SearchCaseSensitive SearchCells
+SearchDefs SearchCols Searched/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Filter&gt;
+cell <b><i>values</i></b> and cell <b>Filter</b> attribute and &lt;Cfg
+Filtered/&gt; attribute.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Configuration settings</span></b><span
+     style='font-size:10.0pt'> – set in configuration menu and from toolbar</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:17.4pt'><span
+style='font-size:10.0pt'>&lt;Cfg ShowDeleted Calculated AutoUpdate ShowDrag
+AllPages Hover SortIcons CustomScroll ScrollAction/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:53.4pt;text-indent:17.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Width and height of main
+     tag</span></b><span style='font-size:10.0pt'> if grid <a
+     href="GridSize.htm#CfgResizingMain">resizing</a> is permitted (css style
+     height and width of the main tag).</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Export</span></b><span
+     style='font-size:10.0pt'> settings</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Cfg
+ExportType, ExportFormat /&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Printing and PDF Export</span></b><span
+     style='font-size:10.0pt'> settings</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>&lt;Cfg
+PDFPageSize, PDFPageOrientation, PDFFitPage, PDFText, PrintExpanded,
+PrintFiltered, PrintPageBreaks, PrintRows /&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Gantt chart</span></b><span
+     style='font-size:10.0pt'> settings – attributes of Gantt type column</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:34.8pt'><span
+style='font-size:10.0pt'>From menu: GanttCorrectDependencies,
+GanttCheckDependencies, GanttCorrectDependenciesFixed, GanttFixComplete,
+GanttStrict, </span></p>
+
+<p class=MsoNormal style='margin-left:71.4pt;text-indent:34.8pt'><span
+style='font-size:10.0pt'>GanttHideExclude, GanttBaseProof, GanttFinishProof,
+GanttBasePreferred, GanttFinishPreferred, GanttCheck, GanttCheckExclude</span></p>
+
+<p class=MsoNormal style='margin-left:71.4pt;text-indent:34.8pt'><span
+style='font-size:10.0pt'>GanttMinSlack, GanttErrSlack, GanttSeparateSlack</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:34.8pt'><span
+style='font-size:10.0pt'>Zoom: GanttZoom, GanttWidth, GanttDate</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:34.8pt'><span
+style='font-size:10.0pt'>Other: GanttResourcesFilter</span></p>
+
+<p class=MsoNormal style='margin-left:18.0pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For grids with more
+columns to decrease cookie size of saved data, you should name columns as short
+as possible, the best to up to three characters.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt'>To cookies (or persistent
+storage) you can also save:</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Scroll left</span></b><span
+     style='font-size:10.0pt'> and <b>top</b> (permit it by <b>ScrollLeftLap</b>=’0’
+     / <b>ScrollTopLap</b>=’0’)</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt'>All <b>expanded / collapsed</b>
+     state in tree (row <b>Expanded</b> attribute) (permit it by <a
+     href="#CfgSaveExpanded">SaveExpanded</a>)</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt'>All <b>expanded cells</b>
+     (permitted by <b>ExpandCells</b> or <b>ExpandRows</b>)</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt'>All <b>selected rows</b> state
+     (row <b>Selected</b> attribute) (permit it by <a href="#CfgSaveSelected">SaveSelected</a>)</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt'>All <b>pending changes</b>
+     (changed cell values, added, deleted, moved rows) (permit it by <a
+     href="#CfgSaveValues">SaveValues</a>)</span></li>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Custom filters</span></b><span
+     style='font-size:10.0pt'> (permit it by <a href="Filter.htm#CfgSaveFilters">SaveFilters</a>)</span></li>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Server session</span></b><span
+     style='font-size:10.0pt'> (IO <a href="DataCommunication.htm#IOSession">Session</a>
+     attribute) (permit it by <a href="#CfgSaveSession">SaveSession</a>)</span></li>
+ <li class=MsoNormal><b><span style='font-size:10.0pt'>Chosen grid style</span></b><span
+     style='font-size:10.0pt'> (&lt;Cfg <a href="CellStyle.htm#CfgStyle">Style</a>/&gt;)</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-left:18.0pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Take care about the length
+of saved data, especially if you are saving to cookies and not to persistent
+storage. You can usually permit saving of these setting only for small grids.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt; &lt;treegrid/bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string    </i></span><a
+name=id></a><a name=Cfgid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [...]
+                  <i>Both letters lowercase!</i>                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique ID of created TreeGrid
+on the page. <i>It must be string, not number, to not collide with grid
+indexes.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Under this name will be
+stored configuration to cookies or persistent storage if not set <a
+href="#CfgCfgId">CfgId</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCfgId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CfgId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                               <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Under this name will be
+stored configuration to cookies</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to set when more grids
+on page share the same configuration</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgVersion><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Version</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                         <span
+style='color:red'>chg <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Version of data. Grid loads configuration
+from cookies only if the Version is the same as saved. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Change this number whenever
+data structure (especially number of columns, column names and types) changes
+to delete old configuration saved to cookies.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since <b>6.4</b> the not
+set Version is automatically generated when set AutoVersion=’1’ (it is set by
+default)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAutoVersion><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoVersion</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [1]                                                                                                      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+configuration <a href="#CfgVersion">Version</a> is automatically generated
+according to the actual values in XML layout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Whenever is the XML layout
+changed (only the attributes saved to cookies), the whole cookie is cleared and
+new values from XML are used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a href="#CfgVersion">Version</a>
+or  <a href="#CfgCookie">Cookie</a> attribute, the AutoVersion is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The XML attributes ignored in
+AutoVersion calculation: values (SaveValues), Selected (SaveSelected), Expanded
+(SaveExpanded), main tag width, scroll position.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, when upgrading
+TreeGrid to higher version, there are often added new items to cookie, so in
+this case the Version changes and the old configuration is cleared when set
+AutoVersion=’1’.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSuppressCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SuppressCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If does not use any client
+settings in cookies (0 – uses, 1 – does not load, 2 – does not save, 3 –
+nothing)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 4 does not load or
+save configuration from cookies, but still accepts and returns configuration in
+<a href="#CfgCookie">Cookie</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good to set
+SuppressCfg=’1’ for development.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDefaultCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DefaultCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [3]                                                                                                      <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which default configuration is
+saved to be available to be restored by <a href="#RestoreCfg">RestoreCfg</a></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - default configuration in XML</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - configuration loaded from cookies on start</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - both</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDefaultCfgMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DefaultCfgMenu</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                           <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls Defaults button in
+configuration menu. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - button will be hidden</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - button loads default configuration in XML (must be
+set DefaultCfg to 1 or 3)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - button loads configuration loaded from cookies on
+start (must be set DefaultCfg to 2 or 3)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPersistentCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PersistentCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                           <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> or <b>2</b>
+uses persistent browser cache instead of cookies for saving configuration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The persistent cache can
+store much more data, at least one megabyte (shared among all pages).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> This persistent cache is used as <b>localStorage</b>
+in IE8+, Firefox 3.0+, Chrome 4+, Safari 4+, Opera 10.5; <i>Maximal capacity
+5MB</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>IE6 and IE7 uses <b>userData</b>
+behavior with maximal capacity 128kB</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Firefox 2.0 uses <b>globalStorage</b>
+with maximal capacity 1 MB</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In many browsers the
+persistent cache is <u>not</u> used when running locally on protocol file://.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – use cookies, <b>1</b> – use persistent cache if
+available otherwise use cookies, <b>2</b> – use only persistent cache, if
+available.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]  </span><a
+name=CfgSaveAttrs><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveAttrs</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>chg <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated array of pairs
+row_id, attribute_name. Saves all these attribute/cell values to cookies. To
+save cell value, just specify its column name (as even value).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <i>row_id</i> (the odd
+item) is empty, saves attribute of &lt;Cfg&gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also save any your
+custom row, column or grid/Cfg attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+“R1,Col1,R6,Col7CanEdit,Col1,CanEdit,,Adding” = saves values R1.Col1 and
+R6.Col7CanEdit, column Col1 attribute CanEdit and Cfg.Adding</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> it can save also column attribute. <i>In case the
+column name collides with row id, the column is used.</i></span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>!</span></i></b><i><span
+style='font-size:10.0pt'> Remember, the configuration from cookies is loaded
+after layout xml (if present) is loaded, so to save attributes from rows loaded
+in data xml is impossible !</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSaveAttrsTrim><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveAttrsTrim</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [50]                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default are all values
+saved by SaveAttrs trimmed to 50 characters, because the size of cookie is
+small, you can change the predefined length here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCookie><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Cookie</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Whole configuration in string
+as it was saved to cookie. Use this attribute to get or return configuration
+saved on server by <a href="DataUpload.htm#Upload_Type">Upload_Type</a>=”<b>Cookie</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this attribute is set, the
+configuration is loaded from it instead of cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Loading configuration is
+still affected by <a href="#CfgSuppressCfg">SuppressCfg</a> (see also its value
+4), <a href="#CfgVersion">Version</a> and other such settings. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, this setting must
+not be modified, it must be completely the same as the setting returned by grid
+when saving.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To send configuration to
+server by API you can use such code: <a href="DataCommunication.htm#AjaxCall">AjaxCall</a>
+(“url to send”, grid.<a href="DataUpload.htm#GetXmlData">GetXmlData</a>(“Cookie”));
+</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>or
+save it in API event: Grids.<a href="#OnCfgSaved">OnCfgSaved</a> =
+function(G,cookie) { <a href="file:///S:\Doc\DataCommunication.htm#AjaxCall">AjaxCall</a>
+(“url to send”, cookie, function(){}); }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global prop.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><b><i><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>Grids</span></i></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>.<a
+name=CookieExpired></a><a name=CookieExpires><u>CookieExpires</u></a></span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When configuration in cookies
+expires, 0 (default) never, 1 only this session, &gt;1 after xxx seconds, or
+can be of type <i>Date</i> – exact expiration date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global prop.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><b><i><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>Grids</span></i></b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>.<a
+name=CookieParam><b><u>CookieParam</u></b></a></span><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other cookie parameters
+(path, domain, secure) in string, starting with ‘;’. For example “; path=/”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnLoadCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnLoadCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                  (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>cfg</b>)                                                             <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when configuration is
+being loaded, return true to suppress loading. Called even if <a
+href="#CfgSuppressCfg">SuppressCfg</a> set.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>cfg</span></b><span style='font-size:10.0pt'> is
+cookie string that was passed to <a href="#LoadCfg">LoadCfg</a>, if any.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnCfgLoaded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCfgLoaded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>cfg</b>)                                                             <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after configuration is
+loaded to provide own update to cfg.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>cfg</span></b><span style='font-size:10.0pt'> is
+cookie string that was passed to <a href="#LoadCfg">LoadCfg</a>, if any.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnSaveCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSaveCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                  (<i>TGrid</i>
+<b>grid</b>, <i>bool</i> <b>return</b>)                                                           <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when configuration is
+being saved to cookies, return true to suppress saving. Called even if <a
+href="#CfgSuppressCfg">SuppressCfg</a> set.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>return</span></b><span style='font-size:10.0pt'> is
+set to true if configuration is not saved to cookies, it is just read</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCfgSaved><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCfgSaved</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>               (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>cfg</b>)                                                             <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when TreeGrid cookie
+is to be saved to browser cookies or local storage, return true to suppress
+saving.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can upload the cookie
+to server by AjaxCall to be later loaded to grid by <a href="#CfgCookie">Cookie</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnLoadCustomCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnLoadCustomCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>custom</b>, <i>string</i> <b>cfg</b>)                           <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to load custom
+configuration saved by OnSaveCustomCfg. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>custom</b> is the
+custom configuration string. Is null, if no custom configuration was saved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cfg</span></b><span
+style='font-size:10.0pt'> is cookie string that was passed to <a href="#LoadCfg">LoadCfg</a>,
+if any.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnSaveCustomCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSaveCustomCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>bool</i> <b>return</b>)                                                <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to add any custom string
+to saved configuration. Return the string to add.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>return</span></b><span
+style='font-size:10.0pt'> is set to true if configuration is not saved to
+cookies, it is just read</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=LoadCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>LoadCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> ( <i>string</i>
+<b>cookie</b> = null )                                                                                      <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Loads configuration from
+cookies. Does not display any changes.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> it can be called also after grid is rendered to apply
+the configuration changes again</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> The <b>cookie</b> can be cookie string got by <b>SaveCfg</b>
+method or GetXmlData with Cookie setting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=SaveCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SaveCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( <i>bool</i>
+<b>return</b> = false )                                                                                      <span
+style='color:#0070C0'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Saves configuration to
+cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it after some custom
+setting changed to save changes to cookies.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> If set <b>return</b> = true, it returns the
+configuration in string instead of saving it cookie. To be later used by <b>LoadCfg</b>
+or by <a href="#CfgCookie">Cookie</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RestoreCfg><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RestoreCfg</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>int
+type = 1</i>)                                                                                        <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reloads specified
+configuration saved by <a href="#CfgDefaultCfg">DefaultCfg</a></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type = 1</span></b><span
+style='font-size:10.0pt'> - default configuration in XML, <b>2</b> -
+configuration loaded from cookies on start</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=SaveCache><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SaveCache</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>id</b>, <i>string</i> <b>val</b>)                                                                                 <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Saves value to persistent
+cache according to given id. See <a href="#CfgPersistentCfg">PersistentCfg</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also redefine this function
+to do your own caching mechanism when set &lt;Cfg <a href="#CfgPersistentCfg">PersistentCfg</a>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=LoadCache><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>LoadCache</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>string</i>
+<b>id</b>)                                                                                            <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Loads and returns value from
+persistent cache saved by <a href="#SaveCache">SaveCache</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

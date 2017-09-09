@@ -1,0 +1,2861 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Sorting rows</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Changes from 5.9 to 6.0</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>CSS styles</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>.                                  </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Grid.css</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  CSS
+styles changed remarkably                                                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now all the style definitions
+are in file Grid.css in appropriate style sub directory in /Grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All grid images are
+referenced only from Grid.css file and <u>never</u> directly from TreeGrid
+code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The structure in Grid.css has
+completely changed from 5.9, if you have any custom CSS styles for grid, you
+must rewrite them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="Styles.htm">Styles</a>
+documentation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>.</span><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>                       &lt;Styles&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>  Tag
+completely removed and replaced by CSS styles                                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>.                                  </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>&lt;Style&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     Tag
+completely removed and replaced by CSS styles                                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>.                                  </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>&lt;Img&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        Tag
+completely removed and replaced by CSS styles                                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Styles&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>          bool<i> </i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>UsePrefix</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]        Replaced
+by &lt;Cfg <b>UsePrefix</b>/&gt;                                                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Styles&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>          string<i> </i>   </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Style</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]        Replaced
+by &lt;Cfg <b>Style</b>/&gt;                                                                               <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>Data communication</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="Upload_Format"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Format</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [“Internal”]         Default
+value changed                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="xxx_Method"></a><a name=Method></a><a name="Upload_Method"><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Data_Method</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [“GET”/”POST”]
+ Default value changed                                                 <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is POST when
+set server paging (Paging=’3’), otherwise is GET</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int        </i></span><a
+name=Cache><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Cache</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [0]                                           </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>Default
+value changed</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now it is 0 by
+default also in registered version</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>Actions and events</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>.                                  </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;Actions&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Tag
+attributes changed remarkably                                                                   <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now all attribute names
+(events) start with prefix <b>On</b>                                               </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The mouse event names
+(targets) changed remarkably, the mouse event targets have different structure,
+see <a href="Events.htm">Events</a> document.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyMenuEnd…F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                            Replaced
+by &lt;Panel&gt; &lt;Space cell&gt; <b>CopyMenu</b>             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyRowMenu…F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                           Replaced
+by &lt;Panel&gt; &lt;Space cell&gt; <b>CopyMenu</b>             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyChildMenu…F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                         Replaced
+by &lt;Panel&gt; &lt;Space cell&gt; <b>CopyMenu</b>             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyRowMenuEnd…F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                 Replaced
+by &lt;Panel&gt; &lt;Space cell&gt; <b>CopyMenu</b>             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyChildMenuEnd…F</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>               Replaced
+by &lt;Panel&gt; &lt;Space cell&gt; <b>CopyMenu</b>             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CCopyRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                              Replaced
+by <b>Copy</b>                                                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’0’ CopyFocused=’1’
+CopyCols=1’’/&gt; &lt;Actions OnCtrlC=’Copy’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CCopyCol</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                Replaced
+by <b>Copy                                           </b>            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’0’ CopyFocused=’30’
+CopyCols=’0’/&gt; &lt;Actions OnCtrlC=’Copy’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CCopyColLevel</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                   Replaced
+by <b>Copy                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’0’ CopyFocused=’20’
+CopyCols=’0’/&gt; &lt;Actions OnCtrlC=’Copy’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CCopyCell</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                           Replaced
+by <b>Copy                                           </b><span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’0’ CopyFocused=’1’
+CopyCols=’0’/&gt; &lt;Actions OnCtrlC=’Copy’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CCopySelected</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                   Replaced
+by <b>Copy                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’1’ CopyFocused=’0’
+CopyCols=’1’/&gt; &lt;Actions OnCtrlC=’Copy’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ExcludeRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                          Replaced
+by <b>Exclude</b>                                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’0’ CopyFocused=’1’
+CopyCols=1’’/&gt; &lt;Actions OnCtrlC=’Exclude’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ExcludeSelected</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                               Replaced
+by <b>Exclude               </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg CopySelected=’1’ CopyFocused=’0’
+CopyCols=1’’/&gt; &lt;Actions OnCtrlC=’Exclude’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                          Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’1’
+PasteCols=’4’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRowFill</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                  Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’2’
+PasteCols=’4’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRowAdd</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                               Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’4’
+PasteCols=’4’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToNewRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                               Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’6’
+PasteCols=’4’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToSelected</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                               Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’1’ PasteFocused=’0’
+PasteCols=’4’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToCol</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                            Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’3’
+PasteCols=’0’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColLevel</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                               Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’2’
+PasteCols=’0’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColFill</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                    Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’3’
+PasteCols=’3’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColFillLevel</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                       Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’2’
+PasteCols=’3’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRowFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                              Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’1’
+PasteCols=’1’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRowFillFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                      Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’2’
+PasteCols=’1’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToRowAddFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’4’
+PasteCols=’1’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToNewRowFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’6’
+PasteCols=’1’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToSelectedFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’1’ PasteFocused=’0’
+PasteCols=’1’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                 Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’30’
+PasteCols=’0’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColLevelFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’20’
+PasteCols=’0’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColFillFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                         Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’30’
+PasteCols=’3’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                 </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>PasteToColFillLevelFirst</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                       Replaced
+by <b>Paste                   </b>                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Cfg PasteSelected=’0’ PasteFocused=’20’
+PasteCols=’3’ /&gt; &lt;Actions OnCtrlV=’Paste’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>XML attributes</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>
+[] </span><a name=CfgSortCols><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>SortCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> [“”]                    Replaced
+by <b>Sort</b>                                                                                <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Sort is now string and
+not array also for API</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><a
+name=CfgSortTypes><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>SortTypes</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        [“”]        Replaced
+by <b>Sort</b>                                                                                <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>1</b> is set as minus
+in front of the column name</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DefaultSortCol</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                      Renamed
+to <b>DefaultSort</b>                                                          <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MaxSortColumns</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>   [3]        Renamed
+to <b>MaxSort</b>                                                               <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EmptyChildPages</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>              Renamed
+to <b>MaxChildrenEmpty</b>                                              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>IdCompare</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        [0]        Replaced
+by <b>CaseSensitiveId</b>                                                              <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>IdCompare = 4 =&gt;
+CaseSensitiveId = 0;   IdCompare = 0 =&gt; CaseSensitiveId = 1</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DropFree</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            [0]        Removed                                                                                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now is permitted free drop by
+default and can be restricted by Def / AcceptDef.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyFree</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]        Removed                                                                                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now is permitted free drop by
+default and can be restricted by Def / AcceptDef.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>string</i>[]<a name=CfgGroupCols></a><a name=CfgGroup></a>  </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Group</span></u></b><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Cols</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                    Renamed
+to <b>Group</b>                                                                              <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Group is now string and
+not array also for API</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GroupTypes</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                Removed                                                                                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the grouping is
+controlled by column attributes for grouping and cannot be saved to cookies or
+sent to server</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>2</b> (<b>&amp;2</b>)
+             &lt;C LocaleCompare&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>3</b> (<b>&amp;4</b>)&nbsp;             &lt;C
+CaseInsensitive&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>4</b> (<b>&amp;8</b>)
+             &lt;C WhiteChars&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>5</b> (<b>&amp;16</b>)
+          &lt;C GroupEmpty&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>6</b> (<b>&amp;32</b>)
+          &lt;C GroupSingle&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>7</b> (<b>&amp;64</b>)
+          &lt;C GroupEmpty&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>8</b> (<b>&amp;128</b>)
+        &lt;C GroupDeleted&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GroupFlags</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      [0]        Replaced
+by <b>GroupRestoreSort</b> and <b>GroupSortMain</b>                           <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>1.</span></b><span
+style='font-size:10.0pt'> bit (<b>&amp;1</b>)             Removed, the action
+is done always</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>2.</span></b><span
+style='font-size:10.0pt'> bit (<b>&amp;2</b>)             &lt;Cfg
+GroupRestoreSort&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>3.</span></b><span
+style='font-size:10.0pt'> bit (<b>&amp;4</b>)             &lt;Cfg
+GroupSortMain&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>4.</span></b><span
+style='font-size:10.0pt'> bit (<b>&amp;8</b>)             &lt;Cfg GroupSortMain&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>UnGroupAction</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        [0]        Replaced
+by &lt;Actions <b>OnUngroup</b>&gt;                                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>SearchType</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     [176(16+32+128)]          Replaced
+by various Search attributes                          <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. bit (<b>&amp;1</b>)             &lt;Cfg
+SearchCells/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2. bit (<b>&amp;2</b>)             &lt;Cfg
+SearchHidden&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3. bit (<b>&amp;4</b>)             &lt;Cfg
+SearchCaseSensitive/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4. bit (<b>&amp;8</b>)             &lt;Cfg
+SearchExpand/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5. bit (<b>&amp;16</b>)          &lt;Cfg
+SearchFocused=’2’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6. bit (<b>&amp;32</b>)          &lt;Cfg
+SearchFocused=’3’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7. bit (<b>&amp;64</b>)          &lt;Cfg
+SearchFocused=’0’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>8. bit (<b>&amp;128</b>)        &lt;Cfg
+SearchNotFound/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Pasting</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [1]        Settings
+&gt;1 replaced by other attributes                                                           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>1. </span></b><span
+style='font-size:10.0pt'>bit (<b>&amp;1</b>)                             &lt;Cfg
+PasteSelected&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>2.</span></b><span
+style='font-size:10.0pt'>,<b> 3.</b>,<b> 4. </b></span><span style='font-size:
+10.0pt'>bit (<b>&amp;2</b>,<b> 4</b>, <b>8</b>)         &lt;Cfg
+PasteFocused&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>5.</span></b><span
+style='font-size:10.0pt'>,<b> 6.</b></span><span style='font-size:10.0pt'> bit
+(<b>&amp;16</b>,<b> 32</b>)              &lt;Cfg PasteCols&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>HidePanel</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          [0]        Replaced
+by &lt;Panel Visible/&gt;                                                              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt; &lt;treegrid / bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int
+</i></span><a name=CfgSuppressMessage><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>SuppressMessage</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+&nbsp;&nbsp;&nbsp;&nbsp; [0]        Added more options                                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Which TreeGrid
+status messages will be suppressed.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Messages during loading and updating grid on start and on reload</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>0</b> + Informational messages shown when longer task is run</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>1</b> + Message inside loading or rendering page</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>2</b> + Error message if TreeGrid cannot show</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DebugCalc</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[1/0]     Replaced
+by &lt;treegrid / bdo <b>Debug</b>=’problem’&gt;                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DebugActions</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[1/0]                 Replaced
+by &lt;treegrid / bdo <b>Debug</b>=’problem’&gt;            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>AlertWidths</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[0]        Replaced
+by &lt;treegrid / bdo <b>Debug</b>=’info’&gt;                                          <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EmptyNumber</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           Replaced
+by &lt;C <b>CanEmpty</b>/&gt; and &lt;C <b>EmptyValue</b>/&gt;                            <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EmptyDate</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                    Replaced
+by &lt;C <b>CanEmpty</b>/&gt; and &lt;C <b>EmptyValue</b>/&gt;                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EmptyEnum</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                Replaced
+by &lt;C <b>CanEmpty</b>/&gt; and &lt;C <b>EmptyValue</b>/&gt;                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShowVScrollbar</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      Renamed
+to <b>ShowVScroll</b>                                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>bool</i> &nbsp;&nbsp;&nbsp;&nbsp; </span><a name=CfgPrintExpanded><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Print</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[0]         Replaced by various printing attributes                                                 <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>2.bit (<b>&amp;2</b>)
+                                                                           &lt;Cfg
+PrintExpanded/&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>5.,6.,7.,8.,9. bit
+(<b>&amp;16, &amp;32, &amp;64, &amp;128, &amp;256</b>)&nbsp;         &lt;I
+CanPrint/&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>10. bit (<b>&amp;512</b>)
+                                                                   &lt;Cfg
+PrintPageBreaks/&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Top</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>              Replaced
+by CSS classes <b>GxTop</b>, <b>GxTop1</b> – <b>GxTop5</b>                                                  <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Bottom</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     Replaced
+by CSS classes <b>GxBottom</b>, <b>GxBottom1</b> – <b>GxBottom5</b>                                  <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Section displayed
+bellow the grid, the same structure as <a
+href="http://treegrid.com/treegrid5_9/Doc/TreeGridXmlCfg.htm#CfgTop">Top</a>
+attribute.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Example of rounded corners with five pixels height and one pixel border:</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Bottom='|1,1,#E0E0E0,2,#F0F0E0,1,#E0E0E0,1|2,1,#E0E0E0,1,#F0F0F0,1,#E0E0E0,2|3,2,#E0E0E0,1,#F0F0E0,2,#E0E0E0,3|5,0,,1,#E0E0E0,0,,5'</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OverflowDialog</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        Removed
+completely                                                                           <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MaxMenuHeight</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      Replaced
+by TMenu <b>MaxHeight</b>                                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ZIndex</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      Replaced
+by CSS attribute <b>z-index</b> in various classes                                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CellSpacing</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     Removed
+completely and the functionality is <b><span style='color:red'>unsupported</span></b>                               <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MovingColBorder</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3]        Replaced
+by CSS classes <b>GxDragCol...</b>                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowMessage</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>   </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3,3,3,3]            Replaced
+by CSS class <b>GxMessageShadow</b>                <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowDialog</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3,3,3,3]            Replaced
+by CSS class <b>GxMenuShadow</b>                     <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowEnum        </span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3,3,3,3]            Replaced
+by CSS class <b>GxMenuShadow</b>                      <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowEnumIcon</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            [3,3,3,3]            Replaced
+by CSS class <b>GxMenuShadow</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowFilter</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            [3,3,3,3]                        Replaced
+by CSS class <b>GxMenuShadow</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowFilterIcon</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            [3,3,3,3]            Replaced
+by CSS class <b>GxMenuShadow</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowMenu</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[9,9,3,3]                       Replaced
+by CSS class <b>GxMenuShadow</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowHint</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>   </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3,3,3,3]                       Replaced
+by CSS class <b>GxHintShadow</b>                       <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShadowTip</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[3,3,3,3]                       Replaced
+by CSS class <b>GxTipShadow</b>                         <span style='color:
+red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i> []     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>TipPos</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[0,16]               Removed,
+the functionality is done automatically                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>type      </i></span><a name=CfgDateStrings><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>DateStrings</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+&nbsp;&nbsp;&nbsp;&nbsp;
+[0/1]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default value
+changed                                                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>By default it is
+set to <b>0</b>, if some date in input XML is set as number of milliseconds,
+otherwise is set to <b>1</b>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i></span><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:silver'>VarHeight</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> &nbsp;&nbsp;&nbsp;&nbsp;
+[0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removed,
+the functionality is done automatically                               <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i></span><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:silver'>RowHeight</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp;&nbsp;&nbsp; [0]&nbsp;        Renamed to <b>MinRowHeight</b>                                                                 <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i></span><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>NoFormatEscape</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+&nbsp;&nbsp;&nbsp;&nbsp; [0]     Default value changed                                                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>By default is <b>0</b>
+for text and <b>1</b> for number and date.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>int         </i></span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>MaxTagHeight</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;                     Renamed
+to <b>MaxVScroll</b>                                                          <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The attribute in
+6.0 exists, but has different functionality, the original functionality is done
+by MaxVScroll.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></b><i><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>int         </span></i><a name=CfgInEditMode><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>InEditMode</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [2]        Default value changed to new option                                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></b><span style='font-size:10.0pt'>the edit mode is run when user clicks
+to already focused editable cell or double clicks some editable cell or presses
+character key or Enter, F2 or Backspace.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>type      </i></span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>AddRowEnd</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> &nbsp;&nbsp;&nbsp;&nbsp;
+[0]      Replaced by actions <b>AddRowEndPage</b> and <b>AddRowEndGrid</b>              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;Panel&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ClassOuter</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Replaced
+by <b>Class</b>                                                                                          <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Class</b> usage is
+different, because it is added to the default CSS classes instead of replacing
+them like in 5.9.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Class</b> is applied
+to &lt;TD&gt; tag and not to &lt;DIV&gt; tag like in 5.9.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Panel&gt; &lt;Header cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>  <i>string</i>
+</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ClassOuterHover</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>      Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EnumType</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        Removed
+completely, &lt;SELECT&gt; tag is <b><span style='color:red'>unsupported</span></b>                                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>EnumKeys</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        Removed,
+not required                                                                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GanttHeaderOptions</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       Renamed
+to <b>GanttHeaderTrim</b>                                                 <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GanttOptions</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>             Replaced
+by various Gantt options                                                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>.bit (&amp;1)              &lt;C GanttHover/&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>.bit (&amp;<b>2</b>)              &lt;C
+GanttIcons/&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>4.</span></b><span
+style='font-size:10.0pt'>bit (&amp;8)              &lt;C GanttEdit/&gt;,
+Resources item</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>5.</span></b><span
+style='font-size:10.0pt'>bit (&amp;16)            &lt;C GanttEdit/&gt;, Main
+item</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>6.</span></b><span
+style='font-size:10.0pt'>bit (&amp;32)            &lt;C GanttEdit/&gt;, Flow
+item</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>7.</span></b><span
+style='font-size:10.0pt'>bit (&amp;64)            &lt;C GanttEdit/&gt;, Flags
+item</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>8.</span></b><span
+style='font-size:10.0pt'>bit (&amp;128)         &lt;C GanttEdit/&gt;,
+Dependency item</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>NoFFDrag</span></u></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[0]        Removed,
+not required                                                                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>SortType</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>[0]         Replaced
+by various Sort settings                                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>2</b> (<b>&amp;2</b>)
+             &lt;C LocaleCompare&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>3</b> (<b>&amp;4</b>)&nbsp;             &lt;C
+CaseInsensitive&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>4</b> (<b>&amp;8</b>)
+             &lt;C WhiteChars&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>string&nbsp;&nbsp;&nbsp; </i></span><a name=CWhiteChars><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>WhiteChars</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     Now
+used whenever defined                                                                            <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;I&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ToolTip</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                Renamed
+to <b>Tip</b>                                                                                              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;
+&lt;cell&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string&nbsp;&nbsp;&nbsp;
+</span></i><a name=CButton><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Button</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Various
+changes                                                                                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>None</span></b><span
+style='font-size:10.0pt'> value changed to empty string.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>Img</span></b><span
+style='font-size:10.0pt'> value removed, now the image is shown if the image
+file is directly assigned to the Button.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;cell&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>int        </span></i><a
+name=CWidthPad><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>WidthPad</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>           [20]      Removed
+completely, functionality <b><span style='color:red'>unsupported</span></b>                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the WidthPad
+attribute is supported only for &lt;C&gt; tag, for the whole column</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       <i>string</i>
+[*] </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>MenuIcons</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                  Replaced
+by <b>Menu</b> attribute, TMenuItem <b>Icon</b>                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MenuCaption</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>              Replaced
+by Menu attribute, TDialog Header                                         <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>char </i>     </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>AutoWidthChar</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        Removed
+completely, functionality done by another way                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>AutoWidthPlus</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>         [0]        Removed
+completely, functionality done by another way      <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       <i>bool
+</i>     </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>OverflowEllipsis</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>      [0]        Replaced
+by CSS attribute <b>text-overflow:ellipsis</b>                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>To show the
+ellipsis in cell (in IE only), set the text-overflow:ellipsis to the class
+GxCell, GxHeader or to other Cell CSS classes</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>              <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>Action</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>OnChange</b> and <b>OnClick</b> XML actions                                           <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>For Button type use
+OnClick, for Select or editable cell use OnChange XML event</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string </i>   </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Action</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   Replaced
+by <b>OnGroup</b> XML event                                                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle style='text-indent:35.4pt'><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>TreeIconLeftX</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]        Removed
+completely, functionality <b><span style='color:red'>unsupported</span></b>                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>TreeIconTopY</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]        Removed
+completely, functionality <b><span style='color:red'>unsupported</span></b>                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ClassEdit</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>           Removed
+completely, functionality <b><span style='color:red'>unsupported</span></b>                                              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>string[]  </i></span><a name=CellMerge><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Merge</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [0]        Changed syntax                                                                                              <span
+style='color:red'>chg <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the Merge
+contains list of columns and not their count</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MergeStart</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        [0]        Replaced
+by <b>Merge</b>                                                                             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>string    </i></span><a name=CellMergeEdit><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>MergeEdit</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Changed
+syntax                                                                                              <span
+style='color:red'>chg <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now it contains
+column name and not column position.</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>          <i>string </i>   </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Html</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            Replaced
+by cell Type=’Html’                                                                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ToolTipChecked</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     Removed completely,
+functionality <b><span style='color:red'>unsupported</span></b>                                  <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>LeftVal</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>      Replaced by <b>LeftHtml</b>                                                                                                 <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>MidVal</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>      Replaced by <b>MidHtml</b>                                                                                                 <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                   <i>string
+</i>   </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>RightVal</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>  Replaced by <b>RightHtml</b>                                                                                               <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Filter&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>            <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>FilterType</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          [0]        Replaced
+by various Filter attributes                                                     <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>2</b> (<b>&amp;2</b>)
+             &lt;C LocaleCompare&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>3</b> (<b>&amp;4</b>)&nbsp;             &lt;C
+CaseInsensitive&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>4</b> (<b>&amp;8</b>)
+             &lt;C WhiteChars&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>          <i>int[][*]
+</i>  </span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>Types</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                    Removed
+                                                                                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the grouping is
+controlled by column attributes for grouping and cannot be saved to cookies or
+sent to server</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>2</b> (<b>&amp;2</b>)
+             &lt;C LocaleCompare&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>3</b> (<b>&amp;4</b>)&nbsp;             &lt;C
+CaseInsensitive&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>4</b> (<b>&amp;8</b>)
+             &lt;C WhiteChars&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>5</b> (<b>&amp;16</b>)
+          &lt;C GroupEmpty&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>6</b> (<b>&amp;32</b>)
+          &lt;C GroupSingle&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>7</b> (<b>&amp;64</b>)
+          &lt;C GroupEmpty&gt;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>bit <b>8</b> (<b>&amp;128</b>)
+        &lt;C GroupDeleted&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Toolbar&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>int </i>       </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ColumnsCount</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>         [1]                    Replaced
+by &lt;Cfg <b>MenuColumnsCount</b>/&gt;                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>SortSpan
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>          [0]                                Removed
+completely, attribute not required                  <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CalendarButtons
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>   [0/7]                 Replaced by &lt;C&gt; &lt;cell&gt; <b>CalendarButtons</b>                    <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;MenuCfg&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>      <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShowIcons
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>                                          Replaced by <b>SortClick</b>                                                 <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Visible
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                                     &lt;Panel&gt;
+has all attributes of &lt;C&gt;                                  <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>CanHide
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'> []                                              &lt;Panel&gt;
+has all attributes of &lt;C&gt;                                  <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                  <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ClassEnum
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>     [‘’]                                Replaced completely                                                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>The Enum look in cell
+can be controlled by Class and ClassInner.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>The Enum list menu
+can be controlled by EnumMenu, parameter Class.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>
+[*] </span><a name=CDefaults><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Defaults</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                Changed
+functionality                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The special item
+*+X (collapsible level) is replaced by TreeGrid menu Level settings</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The special item *-
+(separator) is replaced by ‘-‘</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [<b>*</b>]
+</span><a name=CMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Menu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>&nbsp;                                                      Changed
+functionality                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The special item
+*+X (collapsible level) is replaced by TreeGrid menu Level settings</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The special item *-
+(separator) is replaced by ‘-‘</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Wrap
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                                        &lt;Header&gt;
+has all attributes of &lt;I&gt;                                 <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Visible
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                                    &lt;Header&gt;
+has all attributes of &lt;I&gt;                                 <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>PanelVisible
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                      &lt;Header&gt; has all
+attributes of &lt;I&gt;                                 <span style='color:
+blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>CanExport
+</span></u></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>                                           &lt;Header&gt;
+has all attributes of &lt;I&gt;                                 <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>bool</i>      </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CanDrag</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                 Removed
+completely, useless                                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Rows</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                         Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>In 6.0 there can be
+more &lt;Header&gt; tags in grid in &lt;Head&gt; and &lt;Foot&gt; section and
+they replace all multiline attributes from 5.9</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Main</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           [0]                                            Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>LeftRC</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      [“”]                                            Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>LeftRCSpan</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     [1]                                Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>RightRC</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>   [“”]                                            Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>int</i>        
+</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>RightRcSpan</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> [1]                                Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>MidRC</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       [“”]                                            Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>         <i>int</i>        
+</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>MidRcSpan</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>      [1]                                Replaced
+by more &lt;Header&gt; tags                                <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;I&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   <i>string</i>    </span><a
+name=CClassInner><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ClassInner</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>&nbsp;&nbsp;                                         Different
+usage                                                            <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>ClassInner now adds
+new &lt;DIV&gt; tags into the cell and sets its class attribute.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'><a
+href="http://treegrid.com/treegrid/Doc/CellStyle.htm#CWrap">Wrap</a> and <a
+href="http://treegrid.com/treegrid/Doc/CellStyle.htm#CAlign">Align</a> and type
+classes are applied to this &lt;DIV&gt; instead of the cell itself.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Use ClassInner to
+add some <b>inner</b> <b>border</b> and <b>margin</b> to the cell, for other
+settings use <a href="http://treegrid.com/treegrid/Doc/CellStyle.htm#CClass">Class</a>
+attribute instead.</span></p>
+
+<p class=MsoNormalCxSpMiddle><i><span style='font-size:10.0pt'>Remember,
+setting ClassInner for many cells can <b>slow down</b> the grid rendering and
+usage!</span></i></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    
+</i></span><a name=CellFormula><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Formula</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                 Behavior
+changed                                                        <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the cell
+formula is always used instead of column formula, also if row is <u>not</u>
+calculated.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now the column
+formula is used also in calculated row.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string</i>    </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Class</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [“GSpace”]                                Target
+changed                                                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The row Class
+attribute is now class for all cells in the row.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The CSS class for
+the space row can be set by custom <b>Kind</b> attribute.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    <i>int        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Tab</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                             Replaced
+by <b>Radio</b>                                                      <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>API events</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetClass><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetClass</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>cls</b>)&nbsp;                                                   <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>The OnGetClass now
+replaces only custom cell class set by Class attribute. cls is the Class
+attribute value</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnGetEnum</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>enum</b>)&nbsp;                                               <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now the enum is string, not
+array. It should return also string and not array.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>int        </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OnCanDrag</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      (<i>...</i>)
+                              Renamed to <b>OnCanDrop</b>                                              <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle>&nbsp;</p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><a
+name=OnPrint><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrint</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i> <b>grid</b>,
+<i>Window</i> <b>window</b>, <i>string</i> <b>report</b>)                   Parameters
+changed                 <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now it should not
+return array of strings to change the report, but only one string as the report
+itself</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>void      </i></span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>OnShowDialog</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> &nbsp;&nbsp;&nbsp; (<i>...</i>)                       Removed
+completely, event <b><span style='color:red'>unsupported</span></b>                    <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>void      </i></span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>OnEvent...</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> &nbsp;&nbsp;&nbsp; (<i>...</i>)                                   Replaced
+by <b>On...</b>                                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>bool      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OnCanFilter</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp;&nbsp; (<i>...</i>)                              Renamed to <b>OnFilter                                                   </b><span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnGroup</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>group</b>)                                            Parameters
+changed                 <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnPaste><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPaste</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i> <b>grid</b>, <i>string[]</i>
+<b>pastedtext</b>, <i>string[]</i> <b>cols</b>)                  Parameters
+changed                 <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span lang=CS style='font-size:14.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=OnPasteFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPasteFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i> <b>grid</b>)                                          Parameters
+changed                 <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnClick</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>x</b>,
+<i>int</i> <b>y</b>, <i>Event</i> <b>event</b>)        Parameters changed           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removed parameter handled, so
+the event parameter is now shifted</span></p>
+
+<p class=MsoNormal><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnContextMenu</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>result</b>)      Parameters
+changed           <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt'>Index</span></b><span
+style='font-size:10.0pt'> parameter removed and <b>result</b> is shifted</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;        <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OnTabOutside</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          (<i>...</i>)                                                       Replaced
+by &lt;Cfg <b>TabStop</b>/&gt;        <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string    </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnGetInputValue</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)     Parameters
+changed           <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>val</b> is now the
+value itself and not any object.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnEndEdit</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>&nbsp;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>save</b>,
+<i>string</i> <b>val</b>)        Return value changed           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now can return only
+1 or 0 to cancel finish or not. The return value is ignored when save is 0.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnDataError</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>object</i> <b>source</b>, <i>int</i> <b>result</b>, <i>string</i>
+<b>message</b>, <i>string</i> <b>data</b>)            Parameters changed     <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OnDataErrorDebug</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           (<i>...</i>)                               Replaced
+by <b>OnDataError                    </b><span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>void</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnDataReceive</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<i>TGrid</i> <b>grid</b>, object <b>source</b>)        Parameters
+changed                             <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now it called with data
+source and not with the row. The row is accessible by source.Row.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;        <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>OnPanelClick</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp;&nbsp; (<i>TGrid</i> <b>grid</b>, <i>int <b>index</b></i>)           Replaced
+by XML events <b>OnClickButton...</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;        <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnCanShowCfgItem</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>...</i>)       Removed
+completely, event <b><span style='color:red'>unsupported</span></b>                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;        <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnShowCfg</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TMenu</i> <b>menu</b>)                    Parameters changed                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;        <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnShowColumns</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TMenu</i> <b>menu</b>)        Parameters changed                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:20.0pt'>API methods and properties</span></b></p>
+
+</div>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>KeyInt</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>Event
+</i><b>event</b><i>, string </i><b>Value</b>)&nbsp;       Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>KeyFloat</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>Event
+</i><b>event</b><i>, string </i><b>Value</b>)&nbsp;       Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>KeyDate</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>   </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>Event
+</i><b>event</b><i>, string </i><b>Value</b>)&nbsp;       Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>int        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetKey</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>Event
+</i><b>event</b>)&nbsp;                           Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>object   </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>CopyObject</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>object
+</i><b>o</b>)&nbsp;                     Removed completely                                                   <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>global func.</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>ShowHTML</span></u></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>(<i>string
+</i><b>HTML</b><i>, string </i><b>name</b>)&nbsp;       Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;
+<i>TRow</i> &nbsp;&nbsp; </span><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>XB</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+silver'>                                                                                      </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Renamed
+to <b>Body</b><span style='color:red'>                                del 6<b>.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;
+<i>TRow</i> &nbsp;&nbsp; </span><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>XH</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+silver'>                                                                                      </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Renamed
+to <b>Head</b><span style='color:red'>                                del 6<b>.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;
+<i>TRow</i> &nbsp;&nbsp; </span><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>XF</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+silver'>                                                                                       </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Renamed
+to <b>Foot</b><span style='color:red'>                                 del 6<b>.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;
+<i>TRow</i> &nbsp;&nbsp; </span><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>XS</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+silver'>                                                                                      </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Renamed
+to <b>Solid</b><span style='color:red'>                                del 6<b>.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>&nbsp;&nbsp;&nbsp;&nbsp;
+<i>TRow</i> &nbsp;&nbsp; </span><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>XHeader</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+silver'>                                                                        </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>Renamed
+to <b>Header      </b><span style='color:red'>                        del 6<b>.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>bool      </span></i><a
+name=Update></a><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>SetScrollBars</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> &nbsp;&nbsp;&nbsp;&nbsp; (
+)                                                  Renamed to <b>Update</b>                             <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TMenu  </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>Dialog</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                              Type
+changed                                      <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>Now it points to
+TMenu object</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>StopCalc</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                       Replaced
+by <b>Calculated</b>                       <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     <i>object   </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Data</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                   Renamed
+to <b>Source</b>                             <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;        <i>type[]    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetColLeft</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        (<i>int
+left</i>)                                                Removed completely                            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In 6.0 version exists
+function with the same name, but with completely different functionality</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>TRow[]  </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetRows</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp;&nbsp; (<i>int <b>sec</b></i>)                                                      Removed
+completely                            <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Use such loop:
+for(var r=grid.Head.firstChild;r;r=r.nextSibling){ ... }</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>ChangeSort</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>string</i>
+<b>sortcols</b>)                                   Parameters changed                             <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now it has only one parameter
+as the sort string</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><a
+name=UpdateBody></a><a name=RenderBody></a><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:silver'>UpdateBody</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp; ( )                                                        Renamed
+to <b>RenderBody</b>                     <span style='color:red'>del</span><span
+style='color:red'> 6.0</span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DelRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp; (<i>TRow</i> <b>row</b>)                                                      Renamed
+to <b>RemoveRow</b>                     <span style='color:red'>del</span> <b><span
+style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetCDef</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp; (<i>TRow</i> <b>row</b>)                                                    Removed
+completely                            <span style='color:red'>del</span> <b><span
+style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetRow</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp; (<i>TRow</i> <b>row</b>, <i>int</i> <b>sec</b>)                              Removed
+completely, function <b><span style='color:red'>unsupported</span></b>    <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is strongly recommended to
+<u>not</u> access the row DOM, only cell content.</span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetRowChildren</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>
+&nbsp;&nbsp; (<i>TRow</i> <b>row</b>, <i>int</i> <b>sec</b>)        Removed
+completely, function <b><span style='color:red'>unsupported</span></b>    <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is strongly recommended to
+<u>not</u> access the row children DOM, only cell content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object   </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>GetCell</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                 (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                          Reduced
+functionality                           <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now the GetCell method always
+returns the cell DOM, tag &lt;TD&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TMenu  </span></i><a
+name=ShowDialog><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowDialog</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>...</i>)                                                      Return
+value changed                           <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object   </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>ShowMenu</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>...</i>)                                           Replaced
+by global <b>ShowMenu</b> function            <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string    </i></span><a
+name=ValueToString><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ValueToString</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          (<i>...</i>)                               Removed
+completely                                        <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>StringToValue</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           (<i>...</i>)                               Removed
+completely                                        <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string</i>[]  </span><a
+name=GetEnum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GetEnum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)               Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enum is now accessible always
+as plain string</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>int</i>        </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetEnumIndex</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)           Removed
+completely                <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><a
+name=SetIdentity><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>SetIdentity</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       (<i>string</i>
+<b>tag</b> = “”, <i>string</i> <b>id</b> = “”)     Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now the identity should not
+be changed on fly. You can only add and remove grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><a
+name=DelIdentity><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>DelIdentity</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       (
+)                                            Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now the identity should not
+be changed on fly. You can only add and remove grids.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><a
+name=Communicate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>Communicate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> (<i>object</i>
+<b>DataIO</b>, <i>string</i> <b>Data</b>, <i>function</i> <b>Func</b>)       Replaced
+by global function <b>AjaxCall</b>          <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>Communicate2</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>  (<i>object</i>
+<b>DataIO</b>, <i>string</i> <b>Data</b>, <i>function</i> <b>Func</b>)    Replaced
+by method <b>AjaxCall</b>           <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>DownloadData</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>  (<i>object</i>
+<b>DataIO</b>, <i>function</i> <b>Func</b>)           Replaced by <b>ReadData </b>                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><a
+name=UpdateRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>UpdateRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>  (
+)                                            Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string    </i></span><a
+name=GetCellHtml><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GetCellHtml</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)               Removed completely,
+function <b><span style='color:red'>unsupported</span></b>    <span
+style='color:red'>del</span> <b><span style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>int        </i></span><a
+name=GetColor><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GetColor</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>            (<i>TRow</i>
+<b>row</b>)                               Removed completely, function <b><span
+style='color:red'>unsupported</span></b>    <span style='color:red'>del</span> <b><span
+style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string    </i></span><a
+name=GetText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GetText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>               (<i>string</i>
+<b>ident</b>)                            Replaced by <b>Lang.Text</b>[ident]<b>   </b>                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GetAlert</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>               (<i>string</i>
+<b>ident</b>)                            Replaced by <b>Lang.Alert</b>[ident]<b>  </b>                        <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><a
+name=TabInside><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>TabInside</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>         (<i>Event</i>
+<b><i>event</i></b>, <i>int</i> <b><i>move</i></b>)             Replaced by
+&lt;Cfg <b>TabStop </b>/&gt;                          <span style='color:red'>del
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>void      </i></span><a
+name=DoSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>DoSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                 (<i>bool</i>
+<b>show</b>)                              Replaced by <b>SortRows</b>                                    <span style='color:red'>del</span><span style='color:red'> <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>bool      </i></span><a
+name=DoAction><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>DoAction</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>           (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)               Removed completely                                       <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>TClick   </i></span><a
+name=GetClick><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GetClick</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>             (<i>MouseEvent</i>
+<b>e</b>)                         Removed completely, function <b><span
+style='color:red'>unsupported</span></b>    <span style='color:red'>del</span> <b><span
+style='color:red'>6.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;    <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>SetStyle</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>
+&nbsp; (<i>string</i> <b>Style</b>, <i>string</i> <b>CSS</b>, <i>bool</i> <b>render</b>)               Parameters
+changed                             <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>&nbsp;    <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>GetPrintable</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>
+&nbsp;&nbsp; (<i>function </i><b>func</b>)                                     Parameters
+changed                             <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Now it uses options
+according to grid print settings</span></p>
+
+<p class=MsoNormalCxSpMiddle><span style='font-size:10.0pt'>Usable also when
+report is generated asynchronously by setting PrintRows</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;    </span><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><a
+name=UpdatePrintable><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>UpdatePrintable</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     (<i>HTMLElement</i>
+<b>table</b>)    Removed completely, function not required            <span
+style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>&nbsp;    </span><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>void      </span></i><a
+name=ChangeAction><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ChangeAction</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          (<i>string</i>
+<b>name</b>, <i>string</i> <b>action</b>)       Replaced by Actions[name] =
+action   <span style='color:red'>del <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

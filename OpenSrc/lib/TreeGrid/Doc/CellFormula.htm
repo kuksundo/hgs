@@ -1,0 +1,1566 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Calculations - cell formulas</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Calculations - cell formulas</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCalculated><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Calculated</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]        Saved
+to cookies                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If calculating in grid is
+enabled by user. If disabled, formula cells are not re-calculated after change.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Space</span></i></b><i><span
+style='font-size:10.0pt'> rows are always (re-)calculated independently on
+Calculated setting.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CFormula><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Formula</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                   <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formula for calculated
+column. If set, all cells in the column are calculated.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, set <a
+href="#ICalcOrder">CalcOrder</a> for every row if you use in some formula
+result of another formula on the same row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The calculated cell is set as
+not editable by default. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set <a
+href="CellEdit.htm#CCanEdit">CanEdit</a>=’1’ to let a user to edit this cell,
+but the cell content is recalculated after the value is edited, so the cell
+value should be set as source in formula to take the editing effect.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellFormula><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Formula</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                   <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formula for calculated cell.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The <b>cell</b> <b>Formula</b>
+is used <u>only</u> if the <b>row</b> is </span></i><i><span style='font-size:
+10.0pt;color:blue'><a href="#ICalculated">Calculated</a></span></i><i><span
+style='font-size:10.0pt;color:red'> <u>or</u> the <b>column</b> also has </span></i><i><span
+style='font-size:10.0pt;color:blue'><a href="#CFormula">Formula</a></span></i><i><span
+style='font-size:10.0pt;color:red'>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set cell Formula in
+calculated column (column with Formula) to empty string to not calculate this
+cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=IxxxFormula></a><a name=CellxxxFormula><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxxFormula</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can calculate also any
+row or cell attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &lt;I
+CanEditFormula=’...’ Col1ColorFormula=’...’ CalcOrder=’CanEdit,Col1Color’/&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The attribute <b>xxxFormula</b>
+is used <u>only</u> if the attribute is listed in the <b>row</b> <a
+href="#ICalcOrder">CalcOrder</a> array.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, not all row /
+cell attributes can be correctly calculated, some state attributes like Deleted
+or Visible should not be changed by formula.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=ICalculated><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Calculated</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row is calculated. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Set this attribute if the
+row cells contain <a href="#CellFormula">Formula</a> attribute(s) in not
+calculated column (column without <a href="#CFormula">Formula</a>).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Space rows is this
+attribute set automatically according to their Formula attributes in their
+cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [] </span><a
+name=ICalcOrder><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalcOrder</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+calculated cells to specify order in which the cells are calculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specify the CalcOrder when
+some formulas have other formula results as their sources to specify which
+formula will calculated first.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>If <b>CalcOrder</b>
+is <u>not</u> set, the calculation order is always according to <b>alphabet</b>
+order of column names.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If you set CalcOrder, you
+must specify all cells you want to calculate. If some cell is not listed, it is
+ignored even if it or its column has Formula set.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>As CalcOrder item you can use
+asterisk (*) to calculate all row’s children on this position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can use asterisk with
+number (*1,*2,...) to calculate row’s children according to its <a
+href="#ICalcOrderX">CalcOrderX</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                =&gt; you can
+divide calculation of children to more phases where you can calculate different
+cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> []
+</span><a name=ICalcOrderX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>CalcOrder<i>X</i></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can define more CalcOrder
+attributes, X is number value, for example CalcOrder<b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This CalcOrder(s) you can
+reference in parent CalcOrder attribute by *X, where X is the CalcOrder number.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use such complex
+calculation order, you usually need to set <a href="#IRecalc">Recalc</a>
+attribute of all rows to 256, to recalculate whole grid after change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+[] </span><a name=CfgCalcOrder><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>CalcOrder</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Global calculation order for
+fixed rows if you have more fixed rows and want calculate cells in fixed rows
+at random.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set it is used instead of <a
+href="#ICalcOrder">CalcOrder</a> attribute in fixed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this array you can point
+to individual cells by id$col, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “F1$A,F2$C,*”
+calculates cell [F1,A], next [F2,C] and next all variable rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=IRecalc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Recalc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [3]                                                                                                                              <span
+style='color:#0070C0'>upd <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What to recalculate, if any
+value in row has been changed or row moves / is deleted / added. Binary mask:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Row, <b>2</b> – Calculated parents, <b>4</b> – All
+parents, <b>8</b> – Immediate children, <b>16</b> – All children, <b>32</b> – <i>(since
+8.0)</i> All siblings, <b>256</b> – Whole table</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.1)</span></i><span
+style='font-size:10.0pt'> If set to <b>-1</b>, it does not recalculate anything
+(neither fixed rows)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It must contain at least
+all bits as in cell’s <a href="#CellRecalc">Recalc</a> parameters to ensure
+appropriate recalculations.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CellRecalc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Recalc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [3]                                                                                                                              <span
+style='color:#0070C0'>upd <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What to recalculate, if cell
+value has been changed. Binary mask:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Row, <b>2</b> – Calculated parents, <b>4</b> – All
+parents, <b>8</b> – Immediate children, <b>16</b> – All children, <b>32</b> – <i>(since
+8.0)</i> All siblings, <b>256</b> – Whole table</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.1)</span></i><span
+style='font-size:10.0pt'> If set to <b>-1</b>, it does not recalculate anything
+(neither fixed rows)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It must <u>not</u> contain
+more bits than row’s <a href="#CellRecalc">Recalc</a> parameters to ensure
+appropriate recalculations.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;                   </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><a
+name=IAggChildren><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AggChildren</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - when row’s parent calculates some aggregate
+functions on its children, this row calculates its children instead of itself –
+behaves like its children was directly in its parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is usually set in <a
+href="Group.htm#DGroup1">Group</a> default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgCalculateSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalculateSelected</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are formulas in grid
+that use selected rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, all calculated rows
+are recalculated after selection changes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgCalculatedChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalculatedChanges</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                               <span
+style='color:red'>new <b>9.0</b></span><span style='color:#0070C0'>; upd <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it marks
+as changed all changed calculated cells and rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.2)</span></i><span
+style='font-size:10.0pt'> If set to <b>2</b>, it marks as changed also the cell
+calculated for first time if resulted to different value</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1) </span></i><span
+style='font-size:10.0pt'>It can be set to comma separated list of columns to
+affect only these columns. Cannot be set by API to this list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In the first cell calculation
+it stores the calculated value. If some next calculation returns different
+result the stored one, it marks the cell changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the next calculation
+returns the same result as the first stored result, the changed flag is
+cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It will also upload these
+changes to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;B cell&gt; &lt;cell&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>type     </span></i><a
+name=BCellsum></a><a name=Cellsum><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>sum</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>, </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>count</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>,
+...   Server paging                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set in &lt;<b>B</b>&gt; tag
+for Cfg.<a href="PagingServer.htm">Paging</a> = <b>3</b> or in &lt;<b>I</b>&gt;
+tag for Cfg.<a href="PagingServer.htm#ChildPaging">ChildPaging</a> = <b>3</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Contain results of aggregate
+function on children rows in the column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &lt;I
+Asum=’123.5’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgReCalc><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ReCalc</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]        Server
+paging. Output attribute only.                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is filled in Request XML
+as request for re-calculating grid after calculations have been permitted by
+user.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Take care, because of backward
+compatibility it is Re<b><span style='color:red'>C</span></b>alc, not Recalc.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCalculate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCalculate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>bool </i><b>show</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before grid is
+calculated or recalculated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used for custom
+calculations. Return true to suppress default calculations.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define this event if you want
+to calculate cells in special order that cannot be covered by <a
+href="#ICalcOrder">CalcOrder</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for initial
+calculation or for recalculation of whole grid after reload or filter is
+applied. From <a href="#Calculate">Calculate</a> and <a href="#Recalculate">Recalculate</a>
+methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <i>row</i> is set, it is
+called to calculate only row’s children after loading of page. If col is set,
+it is a called after some cell changed to recalculate appropriate formulas.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In custom calculations you
+cannot use predefined formulas, you just have to provide your owns to calculate
+cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="RowAPI.htm">row
+API</a> how to iterate rows by API. You can also test row’s attributes <a
+href="RowBasics.htm#IVisible">Visible</a> and <a href="RowDelete.htm#IDeleted">Deleted</a>.
+Or any other row’s attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnCalculateFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCalculateFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>bool </i><b>show</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>)                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after grid is
+calculated or recalculated. Called from <a href="#Calculate">Calculate</a> and <a
+href="#Recalculate">Recalculate</a> methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>type      </span></i><a
+name=OnCalculateCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCalculateCell</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>,
+<i>bool</i> <b>show</b>, <i>TCalc</i> <b>Calc</b>)<span style='color:#0070C0'>    upd
+<b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before cell value or
+attribute is calculated.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is column name or attribute name to calculate.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>val</span></b><span
+style='font-size:10.0pt'> is new calculated value that will be set to the cell.
+</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 9.0)</span></i><span
+style='font-size:10.0pt'> <b>Calc</b> is calculation object for given cell, it
+is possible to call calculation functions like sum() as methods of this object.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns new value to set to
+the cell or null to use <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=Calculate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Calculate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>bool
+</i><b>show</b> = 0, bool <b>calconly</b> = 0)                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>show</b> = 1 displays
+all changes. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>calconly</b> = 1
+calculates only <a href="#ICalculated">Calculated</a> rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=Recalculate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Recalculate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>show</b> = 0)                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-calculates grid after
+given cell changes, according to cell’s or row’s parameter <a href="#IRecalc">Recalc</a>.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Always recalculates fixed calculated
+rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It recalculates also Gantt
+chart in that row, if any</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=RecalculateRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RecalculateRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow[]</i>
+<b>rows</b>, <i>bool</i> <b>show</b> = 0)                                                              <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates given rows in
+given order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates also Gantt chart
+in these rows. If the recalculation changes Gantt size, it refreshes whole Gantt
+chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u>
+recalculate any other row (except the Gantt, see above), so if the calculation
+affects some other rows, they should be recalculated manually too.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this function
+breaks CalcOrder in tree, as stated above</span></i><i><span lang=CS
+style='font-size:10.0pt'>!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To display the changes in
+grid call the function with the second parameter (<b>show</b>) as <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>rows</b> can be: a)
+array of TRow object, b) one TRow object, c) array of row ids (strings), d) one
+row id (string)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCalcOn></a><a name=CalcOn><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CalcOn</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Attached
+to event <b>OnClickButtonCalc</b>                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enables calculations in grid
+and recalculates it. It fails if calculations are already enabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsCalcOff></a><a name=CalcOff><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>CalcOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Attached
+to event <b>OnClickButtonCalc</b>                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Disables calculations in
+grid. It fails if calculations are already disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Formulas><b><span style='font-size:20.0pt'>Formulas</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formulas in TreeGrid have
+JavaScript syntax. The formula code is run as JavaScript function in <b>TCalc</b>
+object context so all <b>TCalc</b> methods are directly accessible like global
+functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TCalc object contains all the
+<a href="#AggFunc">aggregate functions</a> like sum and properties Grid, Row, Col
+as the actual cell see <a href="#CustomFunc">custom functions</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you have any problems with
+calculations, you can set &lt;bdo <a href="Debug.htm">Debug</a>=’Problem’&gt;
+to see all errors in formulas in debug window.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Values><b><i><span style='font-size:16.0pt'>Input
+values</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In formula you can use cell
+values from the same row. These values are identified by column name. If you
+use calculations, choose column names and fixed rows ids carefully to not
+conflict with other keywords.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+Formula=’Col1+Col2*Col3’ where Col1,Col2,Col3 are column names.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special keywords usable in
+the formula: <b>Grid</b>, <b>Parent</b>, <b>Row</b>, <b>Col</b>, <b>Attr</b>, <b>Value</b>
+and function <b>Get</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use cell values from
+all fixed and Space rows. These values can be accessed by function <b><span
+style='color:#C00000'>Get</span></b> (<b><i>id</i></b>, “column”). <b><i>id</i></b>
+is keyword (row’s id), but column is quoted string with column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use cell values from
+immediate parent row. These values can be accessed by function <b><span
+style='color:#C00000'>Get</span></b> (<b><span style='color:#C00000'>Parent</span></b>,
+“column”). <b><span style='color:#C00000'>Parent</span></b> is keyword (exact
+word Parent), but column is quoted string with column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also access any other
+row’s attributes given in input data, even any user defined attributes by <b><span
+style='color:#C00000'>Get</span></b> (<b><span style='color:#C00000'>Row</span></b>,
+”attribute”). <b><span style='color:#C00000'>Row</span></b> is keyword (exact
+word Row), but attribute is string with attribute name. Instead of Row you can
+use also Parent or id as mentioned above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is also keyword <b><span
+style='color:#C00000'>Col</span></b> as actual column name where the formula is
+called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 7.0)</span></i><span
+style='font-size:10.0pt'> For calculated cell attributes, there is keyword <b><span
+style='color:#C00000'>Attr</span></b> to get the attribute name (like
+“Col1Class”) and keyword <b><span style='color:#C00000'>Value</span></b> to get
+actual cell value).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is also keyword <b><span
+style='color:#C00000'>Grid</span></b> as the actual grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=CalcOrder><b><i><span style='font-size:14.0pt'>Calculation
+order</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells in row are calculated
+in order given by <a href="#ICalcOrder">CalcOrder</a> attribute – it is comma
+separated array string of column names or row attributes. If <a
+href="#ICalcOrder">CalcOrder</a> is not set for the row, cells are calculated
+in alphabetical order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a href="#ICalcOrder">CalcOrder</a>
+is set, only these cells are calculated, even if other cells have <a
+href="#CFormula">Formula</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In vertical direction, first
+are calculated body rows and after them fixed rows and finally Space rows. In
+tree, first are calculated children and after them parent row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can change the direction
+by advanced calculation order, see below. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>If you use
+another calculated cell value as input in formula, you can reference only
+cells, which are prior (in calculation order) to the actual cell!</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><a name=CalcOrderX><b><i><span style='font-size:14.0pt'>Advanced
+calculation order</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can control calculation
+order by more advanced way:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>a) Fixed rows’ cells you can
+calculate by random by setting &lt;Cfg&gt; <a href="#CfgCalcOrder">CalcOrder</a>
+attribute, and there you can set individual cells by id$col, for example
+“F1$A,F2$C”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>b) In any row’s CalcOrder or
+global CalcOrder you can set position of calculating row’s children by placing
+‘*’ to CalcOrder</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>c) You can define more
+calculating phases in tree by dividing CalcOrder to more attributes: CalcOrder,
+CalcOrder1, CalcOrder2 ,...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                and you can
+reference these CalcOrders in parent CalcOrder by *X, where X is number in
+CalcOrder (1,2,...).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example you can have
+parent’s (or global) CalcOrder = “*,A,B,*1” and all children’s CalcOrder =
+“*,A,B” and CalcOrder1 = “C,D,*1”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                =&gt; The
+grid will calculate columns A,B upstairs (children first) and after it will
+calculate columns C,D downstairs (parent first)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also <a
+href="../Tutorials/Calculations%20tutorial.html#5">CalcOrder tutorial</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use advanced calc
+order, you usually need to set <a href="#IRecalc">Recalc</a> attribute of all
+rows to 256 – to recalculated whole grid after change.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><a name=Tree><b><i><span style='font-size:14.0pt'>Aggregate
+functions</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In the tree, all aggregate
+functions in row iterate row’s immediate children only, without their children.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is fixed,
+aggregate functions iterate all variable root rows without their children. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default, row’s children
+are computed before the row or you can use advanced calculation order by
+asterisks, see above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deleted and filtered rows are
+not iterated in aggregate functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Operators><b><i><span style='font-size:14.0pt'>Operators
+</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Operators use standard
+C++/JavaScript syntax: +, -, *, /, ! (not), % (modulo), &amp; (bit AND), | (bit
+OR), ^ (bit XOR), &amp;&amp; (logical and), || (logical OR), &lt;&lt;, &gt;&gt;
+(bit shift), == (equals), != (not equals), &lt;=, &gt;=, &lt;, &gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Priority of operators is the
+same as in JavaScript. Always you can use ( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can also be used operator
+(<i>condition</i> <b>?</b> <i>true_result</i> <b>:</b> <i>false_result</i>).
+This operator has the least priority so you must use () for other calculation.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the ‘<b>&amp;</b>’
+and ‘<b>&lt;</b>’ characters are XML entities and must be replaced by <b>&amp;amp;</b>
+and <b>&amp;lt;</b></span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Keywords><b><i><span style='font-size:14.0pt'>Keywords</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined keywords for
+TreeGrid are column names, row ids, aggregate function names, any custom
+function names, <b>Get</b>, <b>Row</b>, <b>Col</b>, <b>Grid</b>, <b>GetChildren</b>.
+These keywords must not conflict with each other and with all JavaScript
+reserved keywords. Keywords are not quoted in formulas. Keywords are case
+sensitive. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>JavaScript reserved keywords
+are: break, case, catch, continue, default, delete, do, else, false, finally,
+for, function, if, in, instanceof, new, null, return, switch, this, throw,
+true, try, typeof, var, void, while, with.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Types><b><i><span style='font-size:16.0pt'>Strings
+&amp; numbers</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data type can be <b>number</b>
+or <b>string</b> like in JavaScript.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>All numbers in
+grid are always numbers and <u>not</u> strings independently on cell type!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Take care about summing
+strings and numbers. string + number = string. But string – number = number. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can always explicitly
+convert value to string by (<b>val+””</b>) and to number by (<b>val-0</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Empty cells are strings
+except for <b><a href="TypeNumber.htm">Int</a></b> and <b><a
+href="TypeNumber.htm">Float</a></b> types without <a
+href="TypeNumber.htm#CCanEmpty">CanEmpty</a> set to 1.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="TypeDate.htm">Date</a></span></b><span
+style='font-size:10.0pt'> type is number (count of milliseconds since
+1/1/1970). Empty Date is string except <a href="TypeDate.htm#CCanEmpty">CanEmpty</a>
+is set to 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=Constants><b><i><span style='font-size:14.0pt'>Constants</span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Number constants are written
+normally in English (C++/JavaScript) notation. String constants are in quotes
+or double quotes. If string contains quote, double quote or backslash it must
+be preceded by backslash.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date constants are in seconds
+from 1/1/1970 00:00:00 GMT, so you can add constant to datetime or test two
+dates if less/greater. For example to add one day you need to add constant
+24*60*60*1000.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Constants also can be
+calculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=WhiteSpace><b><i><span style='font-size:14.0pt'>White
+space </span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>White space characters
+&lt;=32 are ignored except in string constants.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=FunctionCalls><b><i><span style='font-size:14.0pt'>Function
+calls </span></i></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function calls use standard
+C++/JavaScript syntax: funcname (argument1, argument2, ...). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function names are case
+sensitive. All TreeGrid calculation function names are written in lower case
+except Get macro.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=MathFunc><b><span style='font-size:16.0pt'>Mathematical
+functions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Constants</span></i></b></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>E</span></b><span style='font-size:10.0pt'>                                  e
+= 2.718281828459045</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>LN10</span></b><span style='font-size:10.0pt'>                          ln
+(10) = 2.302585092994046</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>LN2</span></b><span style='font-size:10.0pt'>                            ln
+(2) = 0.6931471805599453</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>LOG10E</span></b><span style='font-size:10.0pt'>                   log
+10 (e) = 0.4342944819032518</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>LOG2E</span></b><span style='font-size:10.0pt'>                     log
+2 (e) = 1.4426950408889633</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>PI</span></b><span style='font-size:10.0pt'>                                 π
+= 3.141592653589793</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>SQRT1_2</span></b><span style='font-size:10.0pt'>                  1
+/ √2 = 0.7071067811865476</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><span
+style='font-size:10.0pt'>SQRT2</span></b><span style='font-size:10.0pt'>                      √2
+= 1.4142135623730951</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Functions             </span></i></b></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>random</span></u></b><span style='font-size:10.0pt'> (
+)                 random number in range 0.0 – 1.0</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>abs</span></u></b><span style='font-size:10.0pt'> (x)                        absolute
+value</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>round</span></u></b><span style='font-size:10.0pt'>
+(x)                   rounds to integer, for example 2.5 =&gt; 3,  -1.4 =&gt;
+-1, -2.5 =&gt; -2</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>ceil</span></u></b><u><span style='font-size:10.0pt'> </span></u><span
+style='font-size:10.0pt'>(x)                        nearest bigger number, for
+example 1.3 =&gt; 2, -1.3 = &gt; -1</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>floor</span></u></b><span style='font-size:10.0pt'>
+(x)                     nearest smaller number, for example 1.3 =&gt; 1, -1.3 =
+&gt; -2</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>exp</span></u></b><span style='font-size:10.0pt'> (x)                        e
+power x</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>log</span></u></b><span style='font-size:10.0pt'> (x)                        ln
+x, decimal logarithm is LOG10E * log(x), binary is LOG2E*log(x).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>pow</span></u></b><span style='font-size:10.0pt'> (x,
+y)                   x power y.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>sqrt</span></u></b><span style='font-size:10.0pt'> (x)                       √x</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>sin</span></u></b><span style='font-size:10.0pt'> (x)                         sin
+x, in radians</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>cos</span></u></b><span style='font-size:10.0pt'> (x)                        cos
+x, in radians</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>tan</span></u></b><span style='font-size:10.0pt'> (x)                        tan
+x, in radians</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>acos</span></u></b><span style='font-size:10.0pt'> (x)                      arccos
+x, x must be in range –1.0 to 1.0</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>asin</span></u></b><span style='font-size:10.0pt'> (x)                       arcsin
+x, x must be in range –1.0 to 1.0</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>atan</span></u></b><span style='font-size:10.0pt'> (x)                      arctan
+x</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Math.</span></i><b><u><span
+style='font-size:10.0pt'>atan2</span></u></b><span style='font-size:10.0pt'>
+(y,x)                 arctan x/y</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Other functions</span></i></b></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>maximum</span></u></b><span
+style='font-size:10.0pt'> (a,b,c,...)           returns maximum of given values</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>minimum</span></u></b><span
+style='font-size:10.0pt'> (a,b,c,...)            returns minimum of given
+values</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=AggFunc><b><span style='font-size:16.0pt'>Aggregate
+functions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All aggregate functions
+iterate by default all children of the row, where is function used. If row has
+not children return 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deleted and filtered rows are
+by default <u>not</u> iterated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In fixed rows aggregate
+functions iterate all variable root rows (in pure grid all variable rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used server paging (<b><a
+href="PagingServer.htm#ChildPaging">ChildPaging</a></b>=3 or <b><a
+href="PagingServer.htm">Paging</a></b>=3), the not yet loaded body or parent
+row must contain result of the function. The attribute name is “col +
+function_name”, for example Col1sum for column named Col1. Or use <b>server</b>
+parameter to name the attribute if the function supports it.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>Only
+function <a href="#count">count</a> called without parameters reads Count
+attribute, so it does not be precalculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>Basic aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=sum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all values in column <b>col</b>,
+in rows where the conditions are satisfied. If <b>col</b> is missing or null,
+sums actual column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All parameters are optional
+and can be missing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>condition</span></b><span
+style='font-size:10.0pt'> is formula to evaluate, must return boolean value. <b>condition</b>
+is running in context of TCalc like standard formula. The <b>Row</b> variable
+contains actually iterated row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> specifies which rows will be iterated, bit array:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                type<b>&amp;1</b>
+include filtered rows, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>type<b>&amp;2</b>
+include deleted rows, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>type<b>&amp;4</b>
+include all children, not only immediate, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>type<b>&amp;8</b>
+selected rows only (the count is not updated after selection changes except <a
+href="#CfgCalculateSelected">CalculateSelected</a> is set), </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>type<b>&amp;16</b>
+ignore <a href="Group.htm#DAggChildren">AggChildren</a> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>server</span></b><span
+style='font-size:10.0pt'> is set only in server paging to use precalculated
+values from attribute “sum”+<b>server</b>. If not set, the col + “sum” is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Examples:             </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum ( )                                                  Sums
+all values in column where is called. Iterates only visible, <u>not</u>
+deleted, <u>immediate</u> children (for fixed row all root rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (‘A’)                                              Sums
+all values in column ‘A’. Iterates only visible, <u>not</u> deleted, <u>immediate</u>
+children (for fixed row all root rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (7)                                                 Sums
+all values in column where is called. Iterates <u>all</u> children (for fixed
+row all root rows and their children). Including deleted and hidden rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (‘Row.Def.Name==”N1”’)       Sums
+all values in column where is called. Iterates only children with Def=’N1’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (‘A’, 4)                                         Sums
+all values in column ‘A’. Iterates <u>selected</u> children (for fixed row all
+root rows and their children).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (“A”,”A&lt;5”)                Sums values in column A, only values less than 5.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (“A”, “B&gt;=5 &amp;&amp;
+B&lt;10”, 4)     Sums values in column A, only values from rows where B is in
+range &lt;5,10), iterates whole tree</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>sum (“A&lt;5 &amp;&amp;
+B&lt;10 ||A&gt;=5 &amp;&amp; Get(F1,’B’)&lt;10”,3)                Sums
+values in actual column in rows that satisfied the condition, including deleted
+and hidden rows</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the ‘<b>&amp;</b>’
+and ‘<b>&lt;</b>’ characters are XML entities and should be replaced by <b>&amp;amp;</b>
+and <b>&amp;lt;</b> to produce valid XML (TreeGrid accepts also invalid XML,
+but its processing can be slower).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=count><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>count</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        (<i>string</i>
+<b>condition</b> = null, <i>int</i> <b>type</b> = 0, <i>string</i> <b>server</b>
+= null)                                               <span style='color:red'>chg
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns count of rows. See <a
+href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>type      </i></span><a
+name=calc></a><a name=Fcalc><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>calc</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> (<i>string</i>
+<b>formula</b>, <i>int</i> <b>type</b> = 0, <i>string</i> <b>server</b> = null)                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Runs the formula for every
+row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>formula</b> is running
+in context of TCalc like standard formula. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actual temporary result
+is stored in variable <b><span style='color:red'>Result</span></b>, formula
+should read and use it. Return value of formula is stored back to Result and is
+available for the next row formula.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Result</span></b><span
+style='font-size:10.0pt'> is <b>0</b> on beginning.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Row</b> variable
+contains actually iterated row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>formula</b> can
+contain any JavaScript expression.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="#sum">sum</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Examples:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>calc (“Result+A”)                               Sums
+all values in column ‘A’. Iterates only visible, <u>not</u> deleted, <u>immediate</u>
+children (for fixed row all root rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>calc (“Result+A-B”)                           Computes
+value in ‘A’ minus value in ‘B’ and sums the results. Iterates only visible, <u>not</u>
+deleted, <u>immediate</u> children (for fixed row all root rows).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>calc (“Result&gt;A?Result:A”)             Returns
+maximal value from column ‘A’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>calc (“if(Result&gt;A) return
+Result; else return A;”)       Returns maximal value from column ‘A’. The same
+as previous, different notation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>calc(“maximum(Result,A)”)            Returns
+maximal value from column ‘A’. The same as previous, different notation.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>Special aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=max><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>max</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns maximum value from
+the column. If there is no row to iterate, returns “”. See <a href="#sum">sum</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=min><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>min</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns minimum value from
+the column. If there is no row to iterate, returns “”. See <a href="#sum">sum</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=sumrange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumrange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)      <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all dates in column with
+Range=1 Type=”Date”. It just creates new range from all intervals and updates
+it to not contain duplicate value cross intervals.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a href="#sum">sum</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=sumsq><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumsq</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all squares of values.
+See <a href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=counta><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>counta</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Counts all non blank values
+in the column. See <a href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=countblank><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>countblank</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)      <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Counts all blank values in
+the column. See <a href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=product><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>product</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Multiplies all values in
+column. See <a href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>String aggregate functions</span></i></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=join><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>join</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                                  <span
+style='color:red'>new 9<b>.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Joins values in column. The
+values are separated by ValueSeparator (semicolon by default)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=joinsum><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>joinsum</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>new 9<b>.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Joins values in column. The
+values are separated by ValueSeparator (semicolon by default)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same values will be
+counted and placed once as &quot;count x value&quot;. If the input values are
+already joined values, it splits them and recalculates the counts</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>type      </i></span><a
+name=sumjoin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumjoin</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)                      <span
+style='color:red'>new 9<b>.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums values in column as
+standard <a href="#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If any value is a not empty
+string, it joins the values as <a href="#joinsum">joinsum</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If all the values are empty
+strings or no values are in the column, returns empty string instead of zero.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt'>Other aggregate functions that cannot be used for
+server paging (cannot be pre-calculated)</span></i></b></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><a name=average></a><a name=Faverage><b><u><span
+style='font-size:10.0pt'>average</span></u></b></a><span style='font-size:10.0pt'>
+</span><span style='font-size:10.0pt'>(<i>string</i> col)                           Calculates
+average of column values (sum/count)</span></p>
+
+<p class=MsoNormal><a name=median></a><a name=Fmedian><b><u><span
+style='font-size:10.0pt'>median</span></u></b></a><span style='font-size:10.0pt'>
+</span><span style='font-size:10.0pt'>(<i>string</i> col)                            Returns
+median of column (middle value of range)</span></p>
+
+<p class=MsoNormal><a name=mode></a><a name=Fmode><b><u><span style='font-size:
+10.0pt'>mode</span></u></b></a><span style='font-size:10.0pt'> </span><span
+style='font-size:10.0pt'>(<i>string</i> col)                Returns modus of
+column (the most frequent value in range)</span></p>
+
+<p class=MsoNormal><a name=avedev></a><a name=Favedev><b><u><span
+style='font-size:10.0pt'>avedev</span></u></b></a><span style='font-size:10.0pt'>
+</span><span style='font-size:10.0pt'>(<i>string</i> col)                             Calculates
+average deviation of column</span></p>
+
+<p class=MsoNormal><a name=stdev></a><a name=Fstdev><b><u><span
+style='font-size:10.0pt'>stdev</span></u></b></a><span style='font-size:10.0pt'>
+</span><span style='font-size:10.0pt'>(<i>string</i> col)                                Calculates
+standard deviation of column</span></p>
+
+<p class=MsoNormal><a name=stdevp></a><a name=Fstdevp><b><u><span
+style='font-size:10.0pt'>stdevp</span></u></b></a><span style='font-size:10.0pt'>
+</span><span style='font-size:10.0pt'>(<i>string</i> col)                              Calculates
+standard deviation of column. column is the selection of data.</span></p>
+
+<p class=MsoNormal><a name=vara></a><a name=Fvara><b><u><span style='font-size:
+10.0pt'>vara</span></u></b></a><span style='font-size:10.0pt'> </span><span
+style='font-size:10.0pt'>(<i>string</i> col)                                 Calculates
+the sample variance of column</span></p>
+
+<p class=MsoNormal><a name=varp></a><a name=Fvarp><b><u><span style='font-size:
+10.0pt'>varp</span></u></b></a><span style='font-size:10.0pt'> </span><span
+style='font-size:10.0pt'>(<i>string</i> col)                                 Calculates
+the sample variance of column. column is the selection of data.</span></p>
+
+<p class=MsoNormal><a name=rank></a><a name=Frank><b><u><span style='font-size:
+10.0pt'>rank</span></u></b></a><b><span style='font-size:10.0pt'> </span></b><span
+style='font-size:10.0pt'>(<i>string</i> col, <i>object</i> val)             Returns
+position of val in sorted column (column is sorted ascending). Starting from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=SpecialFunc><b><span style='font-size:16.0pt'>Special
+functions for actions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=choose><b><u><span style='font-size:10.0pt'>choose</span></u></b></a><span
+style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>(value,
+values[], items[],custom)       Returns one item from <i>items</i> on position
+where <i>values</i>[pos] == <i>value</i>. If no value equals, returns <i>custom</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If <i>value</i>
+is null, uses cell value instead. If <i>values</i> is null, tests cell <a
+href="CellEdit.htm#CDefaults">Defaults</a>, if Defaults is also null, uses
+array [0,1,2,3,...]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Call with
+null <i>value</i> and null <i>values</i> if you want to convert cell value from
+Defaults to another value or index.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If <i>items</i>
+is null, returns one item from cell <a href="CellEdit.htm#CDefaults">Defaults</a>,
+if Defaults is also null, returns the index to values. If <i>custom</i> is
+null, returns cell <b>Custom</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Call with
+null <i>items</i> and <i>custom</i> if you want to get item from Defaults
+according to index or another condition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Example:
+choose (“B”,[“A”,”B”,”C”],[“X”,”Y”,”Z”],”None”) - returns “Y”, because value
+“B” is on second position in values and “Y” is second in items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                This function
+can be used also for <a href="TypeEnum.htm">Select</a> type cells.</span></p>
+
+<p class=MsoNormal><a name=split><b><u><span style='font-size:10.0pt'>split</span></u></b></a><span
+style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>(<i>value</i>, <i>separator</i>)      Splits
+value string to array. Items are separated by separator. If <i>value</i> is
+null, uses cell value instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If separator
+is null, splits by the first character in value. The first empty item is
+discarded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=CustomFunc></a><a name=Custom></a><a name=UserFunc><b><span
+style='font-size:16.0pt'>Custom functions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In formula you can use any
+JavaScript global function. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can define any your
+custom global JavaScript function and call it from any formula. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also call from
+formula any grid method by Grid object.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Global parameters and
+methods to use in formula</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TGrid     </span></i><span
+style='font-size:10.0pt'> <a name=TCalcGrid><b><u>Grid</u></b> </a>                    Pointer
+to actual grid where calculation is running. You can call any its method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TRow     </span></i><span
+style='font-size:10.0pt'> <a name=TCalcRow><b><u>Row</u></b></a>                      Actual
+row, where the being computed cell lies.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>string     </span></i><span
+style='font-size:10.0pt'> <a name=TCalcCol></a><b><u>Col</u></b>                        Actual
+column, where the being computed cell lies.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TRow </span></i><span
+style='font-size:10.0pt'>[]   <a name=TCalcChildren><b><u>GetChildren</u></b></a><b><u>
+( )</u></b>  Returns all immediate child rows of actual rows. For fixed row it returns
+all root variable rows. It does not contain deleted and filtered rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example Formula =
+“escape(Col1)” or Formula=’’Grid.GetText(‘Picture’) + Col3”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

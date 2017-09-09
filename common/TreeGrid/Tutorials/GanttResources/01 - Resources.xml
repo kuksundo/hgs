@@ -1,0 +1,197 @@
+<Grid>
+   <Cfg id="Resources" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1" MainCol="id" HideRootTree="1"/>
+   <Cfg DefaultDate="1/1/2000"/>
+   <LeftCols>
+      <C Name="id" Type="Text" CanEdit="0" CanSort="0" Width="40"/>
+      <C Name="A"/>
+      <C Name="B" Width="65"/>
+      <C Name="C"/>
+      <C Name="D"/>
+      <C Name="E"/>
+      <C Name="F"/>
+      <C Name="G" Type="Float" Format="0.00" Formula="Grid.GetGanttPrice(Row,'GANTT')" Width="47"/>
+   </LeftCols>
+   <Def>
+      <D Name="R" CanEdit="0"/>
+      <D Name="MAIN" Spanned="1" 
+         AType="Date" AFormat="MMM d" ACanEdit="1" BType="Date" BFormat="MMM d" BCanEdit="1" CType="Float" CCanEdit="1"
+         DType="Text" DCanEdit="0" DSpan="3"
+         GANTTGanttStart="A" GANTTGanttEnd="B" GANTTGanttDuration="C"
+         />
+      <D Name="PARTS" Spanned="1" AType="Date" ARange="1" ASpan="3" AFormat="MMM d" 
+         DType="Text" DCanEdit="0" DSpan="3"
+         GANTTGanttParts="A"
+         />
+      <D Name="RUN" Spanned="1" AType="Text" ASpan="3"
+         DType="Text" DCanEdit="0" DSpan="3"
+         GANTTGanttRun="A"
+         />
+      <D Name="CHART" Spanned="1" Calculated="1"
+         GANTTGanttAvailability="D"
+         ASpan="3" AType="Select" ADefaults="|" AOnClickSideDefaults="Grid.ShowGanttResources(Row,Col)" AHtmlPrefix="Resource &lt;span style='color:red;'>"
+         DSpan="3"
+         GANTTGanttResources=""
+         />
+
+   </Def>
+   <Cols>
+      <C Name="GANTT" Type="Gantt" 
+         GanttLeft="1" GanttRight="0"
+         GanttHeader1="d#%d"
+         GanttHeader2="d#ddddd" GanttHeaderId2="ResHeader"
+         GanttHeader3="d#%d" GanttHeaderId3="ResHeader"
+         GanttTask="Main,Box" GanttRunHtml="*Resources*"
+         GanttResourcesAssign="4"
+         GanttResourcesExtra="3"
+         GanttResources="D"
+         GanttShowHtml="3"
+         GanttChartRound="d"
+         GanttRunIds="3"
+         />
+   </Cols>
+   <Header id="id" SortIcons='0' Spanned="1" DSpan="3" A="Start" B="End" C="Dur" D="Resource" G="Price"/>
+   <Body>
+      <B>
+         <I id="1" CanFilter="2" AggChildren="1">
+            <I id="2" Def="MAIN" Recalc="35"
+               A="12/16/1999" B="1/13/2000" D="One"
+               />
+            <I id="3" Def="MAIN" Recalc="35"
+               A="12/31/1999" B="1/6/2000" D="Three*2;Four*2.5;Mat+24"
+               />
+            <I id="4" Def="MAIN" Recalc="35" 
+               A="12/16/1999" B="12/29/1999" D="25;Four*1.5"
+               />
+            <I id="5" Def="MAIN" Recalc="35"
+               A="1/8/2000" B="1/12/2000" D="Two*2"
+               />
+            <I id="6" Def="CHART" 
+               A="Four" AHtmlPostfix="&lt;/span> of siblings"
+               DFormula="Grid.GetResourceUsage(A,1,Row,4)" 
+               />
+         </I>
+         <I id="7" Def="CHART" CanFilter="2" AggChildren="1"
+               A="Five" AHtmlPostfix="&lt;/span> of children"
+               DFormula="Grid.GetResourceUsage(A,1,Row,1)"
+            >
+            <I id="8" Def="MAIN" 
+               A="1/4/2000" B="1/11/2000" D="One+14"
+               />
+            <I id="9" Def="MAIN" 
+               B="1/11/2000" D="1000"
+               />
+            <I id="10" Def="PARTS" 
+               A="12/16/1999~12/27/1999;12/28/1999~12/29/1999;12/31/1999;1/3/2000~1/5/2000" D="200;Two*0.2+12;Five*1.5+5"
+               />
+            <I id="11" Def="PARTS"
+               A="12/16/1999~12/23/1999;1/1/2000~1/7/2000" D="Three;Five*1.5"
+               />
+         </I>
+         <I id="12" Def="RUN" DFormula="Grid.GetGanttRunResourcesString(Row)" Calculated="1"
+            A="[{Start:'12/16/1999',Duration:4,Resources:'Two*2;Mat'},{Start:'12/22/1999',Duration:3,Resources:'One+10'},
+            {Start:'12/25/1999',Duration:2,Resources:'One'},
+            {Duration:2,Resources:'Four'},
+            {Start:'12/30/1999',Duration:6,Resources:'Three*3+10;Mat'},
+            {Start:'1/8/2000',Duration:3,Resources:'Three'}]"
+            />
+      </B>
+   </Body>
+   <Resources>
+      <R Name="One" Price="10" Availability="3" Type="1"/>
+      <R Name="Two" Price="12" Availability="3" Type="1"/>
+      <R Name="Three" Price="30" Availability="2;w#1/3/2000~1/6/2000" Type="1"/>
+      <R Name="Four" Price="14" Availability="12/24/1999~1/15/2000#3" Type="1"/>
+      <R Name="Five" Price="25" Availability="5" Type="1"/>
+      <R Name="Mat" Price="5" Availability="2;w#12/20/1999~1/12/2000#10" Type="2"/>
+   </Resources>
+
+   <!-- Resources usage sub table -->
+   <Def>
+      <!-- Default row for resources -->
+      <D Name='RES' CanDelete="0" CanSelect="0" Calculated="1" CalcOrder="A,B,C,D,E,F,G"
+         GANTTGanttAvailability="A#3,A#1,A#8" GANTTGanttAvailabilityFormat="0.#"
+         AFormula="Row.GANTTGanttChartResource" AType="Text"
+         BType="Text" BCanEdit="1"
+         BFormula="Grid.Resources[A] ? Grid.Resources[A].Availability : 0" 
+         BOnChange="Grid.Resources[Row.A].Availability = Value;"
+         BButton="Dates" 
+         BDatesRepeatType="Enum" BDatesRepeatEnum="||Weekly|Daily" BDatesRepeatEnumKeys="||w|d" 
+         BDatesValueType="Enum" BDatesValueEnum="|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15" BDatesValueCaption="Count"
+         CType="Float" CFormat="0.00" CFormula="ganttresourceunits(A)"
+         DType="Float" DFormat="0.00" DFormula="ganttresourcepeak(A)"
+         EType="Enum" EEnum="|wrk|mat" EEnumKeys="|1|2" ECanEdit="1"
+         EFormula="Grid.Resources[A] ? Grid.Resources[A].Type : 1"
+         EOnChange="Grid.Resources[Row.A].Type = Value; Grid.Calculate(1)"
+         FType="Float" FFormat="0.00" FEditMask="^\d*[\d\.\,]?\d*$" FCanEdit="1"
+         FFormula="Grid.Resources[A] ? Grid.Resources[A].Price : 0" 
+         FOnChange="Grid.Resources[Row.A].Price = Value; Grid.Calculate(1)"
+         GType="Float" GFormat="0.00" GFormula="F*C"
+         />
+   </Def>
+   <Foot>
+      <Header id='ResHeader' idVisible='0' SortIcons='0' CanPrint='1'
+         A='Resource' B='Availability' C='Total&#x0a;count' D='Peak' E='Type' F='Unit&#x0a;price' G='Total&#x0a;price' 
+         />
+      <I id="90" Def="RES" GANTTGanttChartResource="One"/>
+      <I id="91" Def="RES" GANTTGanttChartResource="Two"/>
+      <I id="92" Def="RES" GANTTGanttChartResource="Three"/>
+      <I id="93" Def="RES" GANTTGanttChartResource="Four"/>
+      <I id="94" Def="RES" GANTTGanttChartResource="Five"/>
+      <I id="95" Def="RES" GANTTGanttChartResource="Mat" Height="40"/>
+   </Foot>
+   <!-- End of resources usage sub table -->
+
+   <Toolbar Cells="RES,USE,AVAIL,FREE,ERR,Reload,Print,Undo,Redo,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo,Empty,Formula" Styles="2" CanFocus="0"
+      RESType="SelectGanttResources"
+      RESHtmlPrefix='&lt;b>Show &lt;span style="color:blue;">' RESHtmlPostfix='&lt;/span>&lt;/b>'
+      RESEmptyValue='all resources'
+      RESWidth='120'
+
+      USEType='Bool' USENoColor='1' USECanEdit='1' USELeft='5' USECanFocus='0'
+      USELabelRight='Used res.' USE='1'
+      USEOnChange='
+         Grid.Def.RES.GANTTGanttAvailability = (Row.AVAIL?",A#3":"") + (Row.USE?",A#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",A#8":"") + (Row.FREE?",A#5":"") + (Row.ERR?",A#6":"");
+         if(!Row.AVAIL&amp;&amp;!Row.FREE&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      AVAILType='Bool' AVAILNoColor='1' AVAILCanEdit='1' AVAILLeft='5' AVAILCanFocus='0'
+      AVAILLabelRight='Available res.' AVAIL='1'
+      AVAILOnChange='
+         Grid.Def.RES.GANTTGanttAvailability = (Row.AVAIL?",A#3":"") + (Row.USE?",A#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",A#8":"") + (Row.FREE?",A#5":"") + (Row.ERR?",A#6":"");
+         if(!Row.USE&amp;&amp;!Row.FREE&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      FREEType='Bool' FREENoColor='1' FREECanEdit='1' FREELeft='5' FREECanFocus='0'
+      FREELabelRight='Free res.' FREE='0'
+      FREEOnChange='
+         Grid.Def.RES.GANTTGanttAvailability = (Row.AVAIL?",A#3":"") + (Row.USE?",A#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",A#8":"") + (Row.FREE?",A#5":"") + (Row.ERR?",A#6":"");
+         if(!Row.USE&amp;&amp;!Row.AVAIL&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      ERRType='Bool' ERRNoColor='1' ERRCanEdit='1' ERRCanFocus='0' ERRLeft='5'
+      ERRLabelRight='Res. errors' ERR='0'
+      ERROnChange='
+         Grid.Def.RES.GANTTGanttAvailability = (Row.AVAIL?",A#3":"") + (Row.USE?",A#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",A#8":"") + (Row.FREE?",A#5":"") + (Row.ERR?",A#6":"");
+         if(!Row.USE&amp;&amp;!Row.AVAIL&amp;&amp;!Row.FREE) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      FormulaLabel="Total price" 
+      Formula="sum('G')+' USD'"
+      />
+</Grid>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzInterfList" invoke="none">
+		<description>
+			create a new dzlist for storing interfaces
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyInterfaceList
+                  </text>
+                  <hint>
+                    Name of the list class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    IMyInterface
+                  </text>
+                  <hint>
+                    The item type to be stored in the list
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes;
+
+{$DEFINE __DZ_LIST_TEMPLATE__}
+type
+  /// the ancestor class for the template, can be TObject or TInterfacedObject
+  /// or anything else you like
+  _LIST_ANCESTOR_ = TInterfacedObject;
+  /// Container type used to actually store the items: TList or TInterfacelist
+  _LIST_CONTAINER_ = TList;
+  /// The native item type of the list container (Pointer for TList, IInterface for TInterfaceList
+  _LIST_CONTAINER_ITEM_TYPE_ = pointer;
+  /// The item type to be stored in the list
+  _ITEM_TYPE_ = TObject;
+{$INCLUDE 't_dzListTemplate.tpl'}
+
+type
+  |listtype| = class(_DZ_LIST_TEMPLATE_)
+  protected
+    {: Frees a |itemtype| }
+    procedure FreeItem(_Item: |itemtype|); override;
+  end;
+
+implementation
+
+{$INCLUDE 't_dzListTemplate.tpl'}
+
+procedure |listtype|.FreeItem(_Item: |itemtype|);
+begin
+  // Do nothing, Items are interfaces and therefore automatically
+  // freed.
+end;
+
+]]>
+		</code>
+	</template>
+</codetemplate>

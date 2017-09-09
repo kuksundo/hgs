@@ -1,0 +1,359 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row height</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row height</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every row is as high as its
+highest cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Any row can have set minimal
+height by <a href="#IHeight">Height</a> (or global <a href="#CfgMinRowHeight">MinRowHeight</a>)
+and maximal height by <a href="#IMaxHeight">MaxHeight</a>. Fixed and Space rows
+can have computed relative height to completely fill the main tag by ratio, set
+by <a href="#IRelHeight">RelHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every standard (non Space)
+row has up to three independent sections (left, mid, right) and these sections
+must have the same height to not break grid layout. If cells in the row have
+different height, the height of the row and its sections must be updated by
+script (row by row). It can slow down grid, if there are many rows, so if you
+know the height of the highest cell, specify row <a href="#IHeight">Height</a>
+or global <a href="#CfgMinRowHeight">MinRowHeight</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinRowHeight></a><a name=CfgRowHeight><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>MinRowHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Base minimal row height in
+pixels. It overrides the base row height set in CSS style by G_RowHeight class
+and is used if the row has not its <a href="#IHeight">Height</a> attribute set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It specifies minimal height
+of standard (non space) row. But the row is always at least as high as its
+content – cannot overflow its content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set the RowHeight if most or
+all your rows’ contents are higher than usual, to speed up row measurement. Or
+set it if you want to have rows higher than their content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This height is used also in <b>server
+paging</b> when computing height of not yet loaded page or child page, the
+resulted height is page.Count * grid.MinRowHeight.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinSpaceRowHeight><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinSpaceRowHeight</span></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                    </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red;background:
+yellow'>new <b>6.0</b></span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:yellow'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Base minimal space row height
+in pixels. It overrides the base space row height set in CSS style by
+G_SpaceRowHeight class and is used if the row has not its <a href="#IHeight">Height</a>
+attribute set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The minimal height of row is
+at least as high as its content. This height is without space row margin,
+border and padding, just height of the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it if you want have space
+rows higher than their content. Be careful, in some styles setting the space
+row height can break down the style.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Space&gt;&lt;B&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int      </i></span><a
+name=IHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Height</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Minimal</span></u></b><span
+style='font-size:10.0pt'> row height in pixels. Used only if its content is
+smaller. It is height of the row, including cell border and padding (see
+difference to <a href="#IMaxHeight">MaxHeight</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set the row Height if you
+know the maximal height of the row content to speed up row measurement.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or set it if you want to have
+the row higher than its content. The row is always as high as its highest cell
+or minimally as Height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This height is used also in <b>client
+paging</b> when computing height of not yet rendered page or child page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Space&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int        </i></span><a
+name=IMaxHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal height of row cells
+in pixels. By default in variable rows it affects and overflows only <u>multiline</u>
+Type cells: <b>Lines</b>, <b>Html</b>, <b>Radio</b>, <b>Img</b>, <b>List</b>,
+see <a href="#IMaxHeightAll">MaxHeightAll</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is the height of the cell
+content, without cell border and padding (see difference to minimal <a
+href="#IHeight">Height</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting to 0 disables the
+attribute usage. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It does <u>not</u> affect <a
+href="#IRelHeight">RelHeight</a> row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;I&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   <i>int        </i></span><a
+name=CMaxEditHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxEditHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal height in pixels of
+multiline cell while editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the <a
+href="#IMaxHeight">MaxHeight</a> is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Space&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>bool</i>      </span><a
+name=IMaxHeightAll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeightAll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0/1]                                                                                                               <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <a href="#IMaxHeight">MaxHeight</a>
+attribute is applied for all cells or for only multiline.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is 0 for
+variable rows and 1 for fixed and space rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting to 1 for all variable
+rows can slightly slow down the grid rendering, because it adds one new
+&lt;DIV&gt; tag to every cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the <a
+href="#IMaxHeight">MaxHeight</a> is applied only to <u>multiline</u> Type
+cells: <b>Lines</b>, <b>Html</b>, <b>Radio</b>, <b>Img</b>, <b>List</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Space&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int        </i></span><a
+name=IRelHeight></a><a name=SpaceRelHeight><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>RelHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, the row height is
+automatically computed to fill all the remaining space in <b>main tag</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The height is automatically
+recalculated whenever the height of the main tag or its content changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are more RelHeight
+rows in grid, their height is computed as ratio of their RelHeight values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The RelHeight rows together
+fill the remaining vertical space in main tag, so the grid has always constant
+height of the main tag.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Can be set only for fixed
+or Space rows. Ignored when set &lt;Cfg <a href="GridSize.htm#CfgNoVScroll">NoVScroll</a>
+or <a href="GridSize.htm#CfgMaxVScroll">MaxVScroll</a> or <a
+href="GridSize.htm#CfgNoScroll">NoScroll</a> /&gt; attributes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set row <a
+href="#IMinHeight">MinHeight</a> attribute to specify minimal height of the
+row. For standard (not Space) rows the MinHeight cannot be set to 0.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The result height of the
+RelHeight row can exceed MaxHeight bound!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;&lt;Space&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int        </i></span><a
+name=IMinHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal height of <a
+href="#IRelHeight">RelHeight</a> row in pixels. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For standard (non Space) rows
+it cannot be lower than the row's content. If the row shows only custom HTML by
+LeftHtml, MidHtml and RightHtml, the minimal MinHeight value is 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Space rows it can be also
+0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It has different meaning and
+usage than <a href="#IHeight">Height</a> attribute and is related only to <a
+href="#IRelHeight">RelHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetRowHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetRowHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TRow</i>
+<b>row</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It returns height of the row
+in pixels. For already rendered rows returns its exact height, for not rendered
+rows returns its Height or MinRowHeight.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be called also for
+page and it returns height of all its rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=UpdateRowHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UpdateRowHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>bool</i> <b>callUpdate</b>)                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Updates height of all row
+sections to be the same and also shrinks the row to its minimal possible
+height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it to immediately
+correct the layout if the row content height was changed externally.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <i>callUpdate</i>,
+calls <b>Update</b> method after change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if the layout is
+correct and false if it could not be corrected and the section still have
+different height – the layout is broken.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool</i>      </span><a
+name=UpdateHeights><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UpdateHeights</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>          (<i>int</i> <b>always</b>
+= 0)                                                                        <span
+style='color:red'>new <b>6.0</b></span><span style='color:#0070C0'>; upd <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Immediately corrects grid
+layout, updates height of all sections to be the same. This method is called in
+interval to preserve layout break.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it after expected change
+of layout to correct the layout immediately and do not wait for the interval.
+This method checks first if there is some problem and if not, it returns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It calls also <b>Update</b>
+method if there has been any change in layout.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 9.0) </span></i><span
+style='font-size:10.0pt'>If set <b>always</b> = <b>1</b>, it iterates, checks
+and corrects always all rows in grid. It can be very slow. Call it if the
+layout is still broken down even after calling UpdateHeights(0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If set <b>always</b>
+= <b>2</b>, it does the action in timeout, after actual script finishes. It can
+be called more times in the actual script and will be done only once.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

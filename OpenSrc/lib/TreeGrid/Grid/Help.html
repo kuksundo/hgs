@@ -1,0 +1,405 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="en-us">
+      <style>
+			u,em {
+				display:inline;
+				margin-left:3px;
+				margin-right:3px;
+				height:17px;
+				overflow:hidden;
+				background-repeat:no-repeat;
+				padding-left:13px;
+				text-decoration:none;
+			   }
+			em {
+			   padding-left:20px;
+			   height:20px;
+			   }   
+         li { padding-bottom:2px; }
+         b { color:#00A; }
+	    </style>
+	</head>
+	<body>
+        
+		<p align="center"><b style='color:black'><font size="6">Using EJS TreeGrid</font></b></p>
+      <p align="center"><i style='color:red;'>All these settings can be fully customized by developers, therefore this help should be modified to match the actual state</i></p>
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Mouse">Mouse functions</a></b></i></p>
+		<ul>
+			<li><b>Click to cell</b> focuses and lets edit (editable) cell (by pressing character key).</li>
+         <li><b>Right click to cell</b> shows popup menu for the cell, if defined</li>
+         <li><b>Mouse wheel</b> scrolls active grid vertically. The active grid is the grid clicked last time.</li>
+         <li><b>Dragging by right</b> mouse button scrolls grid section under mouse cursor in the move direction(s)</li>
+         <li style='visibility:hidden;'></li>
+
+			<li><b>Click to</b><u style='background:url(Modern/Panel.gif) -101px 0px;'></u>in row panel selects or un-selects row</li>
+         <li><b>Click to<u style='background:url(Modern/Panel.gif) -101px 0px;'></u>in header</b> selects or unselects all rows</li>
+         <li><b>Ctrl + Click to<u style='background:url(Modern/Panel.gif) -101px 0px;'></u>in header</b> inverts selection of all rows</li>
+			<li><b>Dragging</b><u style='background:url(Modern/Panel.gif) -101px 0px;'></u>in row panel inverts selection in continuous range of rows</li>
+         <li><b>Ctrl + Dragging cell</b> selects or unselects range of rows or cells</li>
+			<li><b>Ctrl + Click</b> selects or unselects clicked row</li>
+			<li><b>Shift + Click</b> selects range of rows between focused and clicked, include these two. If any row in the range is selected, unselects the range</li>
+         <li style='visibility:hidden;'></li>
+
+			<li><b>Click to</b><u style='background:url(Modern/Panel.gif) -251px 0px;'></u>deletes or un-deletes row</li>
+         <li><b>Click to<u style='background:url(Modern/Panel.gif) -251px 0px;'></u>in header</b> deletes or un-deletes selected rows</li>
+			<li><b>Click to</b><u style='background:url(Modern/Panel.gif) -351px 0px;'></u>adds new row or or duplicates the row or copies selected rows above or below the row</li>
+         <li><b>Click to<u style='background:url(Modern/Panel.gif) -351px 0px;'></u>in header</b> adds new row or duplicates focused row or copies selected rows above or below focused row</li>
+         <li><b>Dragging</b><u style='background:url(Modern/Panel.gif) -3px 0px;'></u>moves row to new position, always moves single row, not selected rows</li>
+         <li><b>Dragging<u style='background:url(Modern/Panel.gif) -3px 0px;'></u>by right</b> mouse button copies row to new position, always moves single row, not selected rows</li>
+         <li><b>Ctrl + Dragging<u style='background:url(Modern/Panel.gif) -3px 0px;'></u>by right</b> mouse button copies row and its children to new position, always moves single row, not selected rows</li>
+			<li><b>Dragging cell</b> moves row to new position indicated by icon in the tree:
+            <u style='background:url(Modern/TreeN.gif) -13px 0px;'></u>cannot drop to this position,
+				<u style='background:url(Modern/TreeN.gif) -58px 0px;'></u>drop above this row,
+				<u style='background:url(Modern/TreeN.gif) -158px 0px;'></u>drop below this row, 
+				<u style='background:url(Modern/TreeN.gif) -111px 0px;'></u>drop into row's children, to the end.<br>
+				If you drag <b>selected</b> row, all selected rows are dragged together to new place, but only if they are all of the same type.<br> 
+				You can drag rows even among more grids, if these are present. In master-detail you can drag rows from detail to master to move rows from one detail row to another.<br>
+				<b>When dragging</b>, there are other functions available:<br>
+				<ul>
+				<li>&nbsp;When mouse moves above<u style='background:url(Modern/TreeN.gif) -260px -2002px;'></u>icon, the row expands its children.</li> 
+				<li>&nbsp;When mouse moves above header or head rows, the grid scrolls up, above toolbar or foot rows, the grid scrolls down. To scroll you can use mouse wheel too.</li>
+				<li>&nbsp;When mouse moves above pager, the grid switches to page under mouse cursor.</li>
+				</ul></li>
+			<li style='visibility:hidden;'></li>
+
+         <li><b>Click to<u style='padding-left:16px; background:url(Modern/Filter.gif) -1px 0px;'></u>in filter</b> shows menu to choose filter operator</li>
+         <li><b>Click to<u style='padding-left:16px; background:url(Modern/BoolSpace.gif) -1px -252px;'></u>in filter / group / search row panel</b> enables / disables actual filter / group / search settings</li>
+         <li><b>Click to<u style='background:url(Modern/Bool.gif) -1px -502px;'></u>in filter cell</b> enables boolean filter by value 1, 
+            next click to<u style='background:url(Modern/Bool.gif) -1px -252px;'></u> filters by value 0 
+            and next click to<u style='background:url(Modern/Bool.gif) -1px -2px;'></u> switches the filter back off</li>
+         <li style='visibility:hidden;'></li>
+
+			<li><b>Click to header</b> cell sorts rows by this column ascending, next click sorts descending.<br /> 
+				Sort direction and order is indicated by sorting icon:<u style='background:url(Modern/Sort.gif) 0px -2px;'></u>no sort, 
+				<u style='background:url(Modern/Sort.gif) 0px -252px;'></u>first column asccending, 
+				<u style='background:url(Modern/Sort.gif) 0px -1002px;'></u>first column descending, 
+				<u style='background:url(Modern/Sort.gif) 0px -502px;'></u><u style='background:url(Modern/Sort.gif) 0px -1252px;'></u>second column,
+				<u style='background:url(Modern/Sort.gif) 0px -752px;'></u><u style='background:url(Modern/Sort.gif) 0px -1502px;'></u>third column.
+         </li>
+         <li><b>Ctrl + Click to more header</b> cells within 2 seconds adds these columns to sorting in this order.</li>
+         <li style='visibility:hidden;'></li>
+
+			<li><b>Dragging column's edge in header</b> resizes column. Dragging right side pager header edge resizes pager.</li>
+			<li><b>Dragging column's header</b> moves column to new position.<br /> 
+				New potential position is marked by<u style='padding-left:10px;background:url(Modern/Sort.gif) -1px -1752px;'></u>blue arrows inside the same section and<u style='padding-left:10px;background:url(Modern/Sort.gif) -1px -1792px;'></u>red arrows outside.<br />
+            While dragging column on edge of scrollable column section, it scrolls left or right.
+            </li>
+         <li><b>Dragging column's header to group row</b> adds this column to grouping and groups by it.<br />
+         Dragging column's header within the group row changes the grouping order. <br />
+         Dragging column's header outside the grouping row removes the column from grouping.</li>
+         <li><b>Dragging separator between horizontal sections</b> (left/middle and middle/right) resizes / shrinks the column sections</li>
+         <li style='visibility:hidden;'></li>
+
+  			<li><b>Click to</b><u style='padding-left:16px; background:url(Modern/Button.gif) 0px -250px;'></u>shows calendar to change date value</li>
+         <li><b>Click to</b><u style='padding-left:16px; background:url(Modern/Button.gif) -1px 0px;'></u>shows list of predefined values for the cell</li>
+			<li><b>Click to</b><u style='background:url(Modern/TreeN.gif) -260px -2002px;'></u>expands row's children</li>
+			<li><b>Click to</b><u style='background:url(Modern/TreeN.gif) -260px -52px;'></u>collapses row's children</li>
+			<li><b>Click to<u style='background:url(Modern/TreeN.gif) -260px -2002px;'></u> in header</b> expands column's children</li>
+			<li><b>Click to<u style='background:url(Modern/TreeN.gif) -260px -52px;'></u> in header</b> collapses column's children</li>
+         <li style='visibility:hidden;'></li>
+         
+         <li><b>Dragging cell with Shift</b> fills values of all selected cells by the first cell in the range</li>
+		</ul>
+
+      <p><i><b style='color:#008000;font-size:22px;'><a name="Gantt">Mouse functions in Gantt chart</a></b></i></p>
+      <ul>
+         <li><b>Dragging bar edge</b> resizes the bar. Resizing the bar to zero width deletes the bar.</li>
+         <li><b>Dragging bar or icon</b> moves the item inside the cell</li>
+         <li><i>Only the Run bars or flag icons can be moved to another row or grid, this behavior is not set by default, but can be done by any mouse dragging action.</i></li>
+         <li><b>Dragging from bar or milestone icon outside the row</b> to another bar or milestone icon creates new dependency between the items.</li>
+         <li><b>Dragging on empty space</b> creates new bar.</li>
+         <li><b>Right button Dragging</b> selects Run boxes inside rectangle.</li>
+         <li><b>Ctrl + Click to bar or icon or dependency end</b> deletes the item</li>
+         <li><b>Double Click to bar or item or dependency end</b> changes the item, e.g. lets enter text of the bar, lets assign resources, lets enter dependency lag etc. Or it can select Run box.</li>
+         <li><b>Double Click to empty space</b> creates new icon at the point</li>
+         <li><b>Ctrl + Right Click to bar</b> changes percentage completion to the selected point</li>
+         <li><b>Shift + Right Click to bar</b> lets enter the percentage completion</li>
+         <li><b>Right Click to cell</b> shows popup menu with all action items related to Gantt item under mouse cursor</li>
+         <li style='visibility:hidden;'></li>
+         <li><b>Dragging Gantt header</b> zooms to selected date range</li>
+         <li><b>Click to Gantt header</b> zooms to selected date</li>
+         <li><b>Right Click to Gantt header</b> unzooms back to previous zoom level or zooms out</li>
+      </ul>
+
+      <p><i><b style='color:#008000;font-size:22px;'><a name="Touch">Touch screen functions (especially for Apple iPad tablets and Android tablets)</a></b></i></p>
+      <ul>
+         <li>Touch pads support all standard mouse functions except with <b>Right mouse button</b> and with control keys <b>Ctrl</b> and <b>Shift</b></li>
+         <li><i>All touch pad events can be customized independently on the standard mouse and key events</i></li>
+         <li style='visibility:hidden;'></li>
+
+         <li><b>Scrollbars</b> behave like standard browser scrollbars. <br />
+         Dragging the slider scrolls in opposite direction, <br />
+         touching arrows instantly scrolls in the direction slowly, <br />
+         touching between slider and arrow instantly scrolls in the direction faster.<br />
+         The <b>scrollbar size</b> can be chosen in configuration menu <em style='background:url(Modern/Toolbar.gif) -553px 0px;'></em> by Scrollbar type menu item.
+         </li>
+         <li style='visibility:hidden;'></li>
+
+         <li><b>Dragging not focused cell</b> by one finger scrolls tablet surface as standard iPad feature. Or scrolls grid horizontally and tablet vertically.</li>
+         <li><b>Tap to cell</b> focuses the cell.</li>
+         <li><b>Dragging focused cell</b> by one finger moves the row to another position or selects or fills the cell values.</li>
+         <li><b>Tap to focused cell</b> starts editing the cell.</li>
+         <li><b>Finish editing</b> - editing finishes by tapping enter on keyboard or tapping outside the cell.<br />
+            There is no escape, you can cancel the changes by tapping Undo on keyboard or accept the changes and click to TreeGrid Undo button <em style='background:url(Modern/Toolbar.gif) -1353px 0px;'></em>.
+         </li>
+         <li><b>Tapping focused cell by two fingers</b> shows popup menu for the cell, if defined. Tap by one finger while the second finger is touching pad.</li>
+         <li><b>Dragging cell by two fingers</b> zooms page as standard iPad feature.</li>
+         <li><b>Dragging<u style='background:url(Modern/Panel.gif) -3px 0px;'></u></b>by one finger moves row to new position like dragging by mouse</li>
+         <li><b>Dragging<u style='background:url(Modern/Panel.gif) -3px 0px;'></u>by two fingers</b> copies row like dragging by mouse right button</li>
+         <li><b>Dragging<u style='background:url(Modern/Panel.gif) -3px 0px;'></u>by three fingers</b> copies row and its children like dragging by mouse right button with ctrl</li>
+         <li style='visibility:hidden;'></li>
+
+         <li><b>Dragging<u style='background:url(Modern/Panel.gif) -101px 0px;'></u></b>by one finger inverts selection in continuous range of rows like dragging by mouse</li>
+         <li style='visibility:hidden;'></li>
+
+         <li><b>Dragging header</b> by one finger behaves like by mouse, resizes column by dragging edge, moves or groups column by dragging body. Including pager header.</li>
+         <li><b>Dragging separator between horizontal sections</b> by one finger (left/middle and middle/right) resizes / shrinks the column sections</li>
+         <li style='visibility:hidden;'></li>
+      </ul>
+
+      <p><i><b style='color:#008000;font-size:22px;'><a name="TouchGantt">Touch screen functions in Gantt chart (especially for Apple iPad tablets and Android tablets)</a></b></i></p>
+      <ul>
+         <li><i>On touch screen there should be editing menu or toolbar to choose which bars and editing actions will be permitted, to simplify editing.</i></li>
+         <li><b>Tap to bar, icon or dependency</b> focuses the item. It also focused the Gantt cell.</li>
+         <li><b>Tap to empty space</b> or inactive item focuses the Gantt cell.</li>
+         <li><b>Tap to focused bar, icon or depencency</b> shows popup menu to choose the action to do.</li>
+         <li><b>Tap to empty space in focused cell</b> shows popup menu to choose the action to do.</li>
+         <li><b>Dragging focused bar edge</b> resizes the bar.</li>
+         <li><b>Dragging focused bar or icon</b> moves the item. If the item cannot be moved and supports dependencies, it creates new dependency.</li>
+         <li><b>Dragging empty space in focused celll</b> creates new bar.</li>
+         <li style='visibility:hidden;'></li>
+         <li><b>Dragging Gantt header by one finger</b> zooms to selected date range</li>
+         <li><b>Tap to Gantt header</b> by one finger  shows popup menu to choose the action to do.</li>
+      </ul>
+     
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Keys">Control keys</a></b></i></p>
+		<ul>
+			<li><b>Arrow keys</b> change focused cell</li>
+			<li><b>Tab</b> moves focus to the next cell</li>
+			<li><b>Shift + Tab</b> moves focus to the prior cell</li>
+			<li><b>Tab</b> in edit mode edits next editable cell</li>
+			<li><b>Shift + Tab</b> in edit mode edits prior editable cell</li>
+         <li><b>Any character key</b> starts edit focused cell</li>
+			<li><b>Enter</b> or <b>F2</b> starts edit focused cell</li>
+			<li><b>Enter</b> in edit mode confirms edit changes</li>
+			<li><b>Alt + Enter</b> in edit mode in multi line textarea confirms edit changes</li>
+			<li><b>Ctrl + Enter</b> in edit mode in multi line textarea confirms edit changes</li>
+			<li><b>Esc</b> in edit mode cancels edit changes</li>
+			<li><b>Space</b> selects or unselects row</li>
+			<li><b>Ctrl + Space</b> selects or unselects all rows</li>
+			<li><b>Del</b> deletes or un-deletes row</li>
+			<li><b>Ctrl + Del </b>deletes or un-deletes selected rows</li>
+			<li><b>Ins</b> inserts new row to cursor position</li>
+			<li><b>Ctrl + Ins</b> inserts new row into children of focused row</li>
+         <li><b>Shift + Ins</b> copies focused row above</li>
+         <li><b>Shift + Ctrl + Ins</b> copies focused row with its children above</li>
+			<li><b>Ctrl + Enter </b>expands / collapses row's children</li>
+			<li><b>Home</b> focuses first variable row</li>
+			<li><b>End</b> focuses last variable row</li>
+			<li><b>Page Up</b> moves focus up by one page</li>
+			<li><b>Page Down</b> moves focus down by one page</li>
+			<li><b>Ctrl + Enter</b> not in edit mode expands or collapses row's children</li>
+         <li><b>Ctrl + Z</b> undoes last change in data, if undo is permitted</li>
+         <li><b>Ctrl + Y</b> does again the last undone change</li>
+         <li><b>Ctrl + down arrow</b> shows popup dialog with default list or calendar if the cell has defined some</li>
+		</ul>
+		<p><i><b style='color:#008000;font-size:22px;'><a name="CopyPaste">Copy &amp; paste</a></b></i></p>
+		<ul>
+			<li><b>Ctrl + C</b> copies values from all selected rows to clipboard. If no row is selected, copies focused row. 
+			Only if grid is not in edit mode. Data are in plain text, cells are separated by tabulator, rows are separated by enter (CRLF).
+			This data can be pasted back to the grid or to any text editor or spreadsheet program like MS Excel. 
+         Not in Opera browser.</li>
+         <li><b>Ctrl + V</b> pastes values from clipboard to selected rows. If no row is selected, copies first row to focused row. 
+         Only if grid is not in edit mode.
+			Cells in data are tab separated, rows are CRLF or CR or LF separated. Changes only cells that can be edited. 
+			If pasted data has less columns than grid, pastes them from actual focused column, otherwise from first column. 
+         Not in Opera browser.</li>
+      </ul>
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Toolbar">Toolbar</a></b></i></p>
+      <i>The button is shown only if the grid permits the action. The buttons can be shown also in another or in more rows.</i>
+      
+		<ul>
+			<li><em style='background:url(Modern/Toolbar.gif) -3px 0px;'></em>
+			   <b>Submits</b> <b>changed data</b> to server and accepts all pending changes, if server validated them, otherwise marks invalid cells.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -53px 0px;'></em>
+			   <b>Reloads</b> <b>data</b> from server and cancels pending changes.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -103px 0px;'></em>
+			   <b>Renders all pages</b> or switches off rendering all pages</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -753px 0px;'></em>
+			   <b>Prints the grid</b>, opens new browser window with printable version of the grid</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -803px 0px;'></em>
+            <b>Exports all data</b> to spreadsheet program</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1953px 0px;'></em>
+            <b>Exports the grid to PDF</b></li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1353px 0px;'></em>
+            <b>Undoes</b> last change in data</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1453px 0px;'></em>
+            <b>Does again</b> the last undone change</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -153px 0px;'></em>            
+			   <b>Adds</b> <b>new row</b> to the cursor position if parent row accepts children.<br> 
+			   Or if there are <b>selected</b> rows, the menu is displayed and you can choose to move or copy selected rows or to ignore selection and add new row.</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -203px 0px;'></em>
+			   <b>Adds</b> <b>new row</b> to focused row's <b>children</b>, to the end, if this row accepts children.<br>
+			   Or if there are <b>selected</b> rows, the menu is displayed and you can choose to move or copy selected rows or to ignore selection and add new row.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -2153px 0px;'></em>
+            <b>Outdents</b> focused row by one level (places it below its parent)</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -2153px 0px;'></em>
+            <b>Indents</b> focused row by one level (places into its previous sibling's children, as the last child)</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -253px 0px;'></em>
+			   <b>Enables</b> or disables <b>sorting</b>. When enabling sorting, re-sorts grid according to actual sorting.
+			   <br/>You can disable sorting, if you need to choose new sorting according to more columns to avoid multiple re-sorting, especially in paged grids.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -353px 0px;'></em>
+			   <b>Enables</b> or disables <b>calculations</b>. When enabling calculations, re-calculates all cells.
+            <br/>You can disable calculations when editing large grids.</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -453px 0px;'></em>
+			   <b>Expands all rows</b>. 
+				For large grids expands only some rows to avoid locking browser. Starts expanding from focused row.</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -503px 0px;'></em>
+			   <b>Collapses all rows</b>.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -2003px 0px;'></em>
+			   <b>Joins (spans)</b> all selected cells together.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -2053px 0px;'></em>
+			   <b>Splits</b> spanned cell.</li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1550px 0px;'></em>
+			   <b>Corrects all dependency errors</b> in Gantt chart. </li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1803px 0px;'></em>
+			   <b>Zooms in</b> Gantt chart. </li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1703px 0px;'></em>
+			   <b>Zooms out</b> Gantt chart. </li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1900px 0px;padding-left:25px;'></em>
+			   <b>Zooms to fit</b> to window size the Gantt chart. </li>
+         <li><em style='background:url(Modern/Toolbar.gif) -853px 0px;padding-left:25px;'></em>
+			   <b>Goes to the first page</b></li>
+         <li><em style='background:url(Modern/Toolbar.gif) -953px 0px;padding-left:25px;'></em>
+			   <b>Goes to the previous page</b></li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1053px 0px;padding-left:25px;'></em>
+			   <b>Goes to the next page</b></li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1153px 0px;padding-left:25px;'></em>
+			   <b>Goes to the last page</b></li>
+			<li><em style='background:url(Modern/Toolbar.gif) -653px 0px;'></em>
+			   Displays menu to choose which <b>columns</b> will be <b>displayed</b>. </li>
+			<li><em style='background:url(Modern/Toolbar.gif) -553px 0px;'></em>
+			   <b>Displays</b> TreeGrid <b>configuration</b> window. 
+				These settings are saved to client cookies and therefore are persistent. See Configuration description below.</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -603px 0px;'></em>
+			   <b>Displays</b> this <b>help</b></li>
+         <li><em style='background:url(Modern/Toolbar.gif) -1253px 2px;'></em>
+			   <b>Displays debug</b> window</li>
+			<li><em style='background:url(Modern/Toolbar.gif) -703px -2px;'></em>
+			   You can <b>resize grid</b> by mouse dragging this icon on the right bottom corner. By double click you can restore to original size.</li>
+			</ul>
+
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Configuration">Configuration</a></b></i></p>
+      <i>The item is shown only if the grid permits the action.</i>
+		<ul>
+			<li><b>Show deleted rows (in red)</b>. 
+				If checked, deleted rows are still visible and colored and can be undeleted. If you check Auto updates, this option have no sense.</li>
+         <li><b>Reversed tree (like in MS Excel)</b>. 
+				If checked, parent row's children are shown above the parent row instead of below.</li>
+			<li><b>Auto sort rows after change</b>. 
+				If checked, after user modify value in column according to is grid sorted, row is sorted and moved to the new position</li>
+         <li><b>Sort click</b>. How sorting can be set by clicking to column caption.</li>
+			<li><b>Auto update changes to server</b>.
+				If checked, all modifications (value changing, rows moving, adding, deleting) are immediately uploaded to server. 
+				Does not wait for server response, grid is still accessible. After server response clears changed flags.
+				If it is not checked, updates can be send by submit button<em style='background:url(Modern/Toolbar.gif) -3px 0px;'></em>.</li>
+         <li><b>Check for updates on server</b>. How often the grid checks new data on server when used synchronization with server.</li>
+         <li style='visibility:hidden;'></li>
+         <li><b>Scrollbars type</b>. Scrollbars size (none, thin, standard, wide), especially for touch screens (iPad).</li>
+         <li><b>Scroll by</b>. The way of scrolling by dragging content at touch screen (iPad). (none, by one finger, two fingers, three fingers).</li>
+			<li><b>Mouse hover</b>. What blinks under mouse cursor. Hovering all cells can slow down browser responses.</li>
+			<li><b>Show dragged object</b>. If checked, dragging rows or moving columns are attached to the mouse cursor.</li>
+			<li><b>Show row's left panel</b>. If it is not checked, the left panel<u style='padding-left:64px;background:url(Modern/FastPanel1.gif) 0px 0px;'></u>
+                is hidden and its functions can be performed by keys only.</li>
+			<li><b>Show pager</b>. If checked, the pager with page names is visible on the right of the grid.</li>
+			<li><b>Show all pages</b>. If checked, all pages are visible at once and can be accessed by sliding scrollbar or moving cursor. 
+				The page is rendered only when is scrolled to the window. 
+				<br>If it is not checked, only one page is visible at a time and other pages can be accessed by clicking on pager or by PgUp and PgUp keys.
+         </li>
+		</ul>
+   		<p><i><b style='color:#008000;font-size:22px;'><a name="Configuration">Configuration items for Gantt chart</a></b></i></p>
+      <i>The item is shown only if the grid permits the action.</i>
+      <ul>
+         <li><b>Circular dependencies</b>. If creating circular dependencies is permitted, like A -> B -> C -> A.</li>
+         <li><b>Starting tasks on holidays</b>. If permitted to start tasks on excluded dates. Just "visual" setting, all calculations in chart are always done only in non excluded dates.</li>
+         <li><b>Incorrect manual inputs</b>. How the changes done in Gantt source cells are handled, if violate the Gantt constraints and other restrictions.</li>
+         <li><b>Schedule tasks</b>. If the tasks are scheduled automatically or manually after any change in Gantt chart.</li>
+         <li><b>Schedule tasks from</b>. Scheduling direction, from project start or finish.</li>
+         <li><b>Schedule tasks method</b>. How much the tasks are moved to satisfy their dependencies and constraints.</li>
+         <li><b>Auto schedule also the changed task</b>. For "on" it can move also the tasks, its change invoked the correcting dependencies. For "off" this task is never moved.</li>
+         <li><b>Schedule also already started tasks</b>. For "off" it never moves tasks with percentage complete > 0. For "on" it ignores percentage completion when correcting dependencies.</li>
+         <li><b>Show holidays in chart</b>. For "off" all the excluded dates are removed from display.</li>
+         <li><b>Can move objects before project start</b>. If Gantt bars and icons can be moved by a user to start before project start</li>
+         <li><b>Can move objects after project finish</b>. If Gantt bars and icons can be moved by a user to end after project finish</li>
+         <li><b>Project start is preferred to constraints</b>. What is preferred when correcting dependencies and there is no room for the task due constraint and project start violation.</li>
+         <li><b>Project finish is preferred to constraints</b>. What is preferred when correcting dependencies and there is no room for the task due constraint and project finish violation.</li>
+         <li><b>Minimal slack for critical task</b>. If tasks's slack is less than or equal to this value, the task is marked as critical. Slack means, how much can be the task moved right (to be late) to not affect the project finish.</li>
+         <li><b>Minimal slack bound for error task</b>. If tasks's slack is less than this value, the task is marked as error task. It means it should be moved left to correct the project finish violation.</li>
+         <li><b>Calculate critical path individually</b>. For "on" the project finish is calculated for every independent group of tasks. For "off" there will be only one global project finish.</li>
+      </ul>
+
+		<p><b style='color:#008000;font-size:22px;'><i><a name="Filter">Filter row</a></i></b></p>
+		<ul>
+			<li>Filter row is special row, usually displayed on the top, under header.
+				There can be set filter conditions for every column.
+				If other rows has in this column value which satisfies the filter condition, the row is displayed, otherwise is hidden.</li>
+			<li>Filtered can be only variable rows. Some rows can be marked as always visible. 
+				These are often rows with children rows in tree to filter only some levels.</li>
+			<li>A cell in filter row contains filter operator and its parameter value. 
+				Some operators are used for some column types only. Filtering is fired after operator or value changes.</li>
+			<li>You can select filter operator from menu. 
+				By default filter is disabled:<u style='padding-left:16px;background:url(Modern/Filter.gif) 0px 0px;'></u>.</li>
+		</ul>
+		<p><b style='color:#008000;font-size:22px;'><i><a name="Group">Group row</a></i></b></p>
+		<ul>
+			<li>Group row is special row, usually displayed on the top, under header and fixed rows. 
+			   You can group rows to tree according same values in appropriate column(s).</li>
+			<li>Grouped can be only variable rows. Some rows can be marked that cannot be grouped. 
+				In tree there will be only one level of rows to be grouped.</li>
+			<li>You can select predefined grouping from select box.</li>
+			<li>Or you can drag column caption to the group row to be grouped by this column. If some column(s) are placed there already, 
+			you can put the new column to appropriate place. To remove column from grouping, just drag its caption from group row outside.</li>
+		</ul>
+		<p><b style='color:#008000;font-size:22px;'><i><a name="Search">Search row</a></i></b></p>
+		<ul>
+			<li>Search row is special row, usually displayed on the top, under header and fixed rows.</li>
+			<li>You can search rows or cells in grid for simple string like Google or by complex formula.</li>
+			<li>The found rows can be filtered, selected, colored or focused.</li>
+			<li>Or you can select predefined search formulas from select box.</li>
+         <li>There are many settings to more specify the searching options.</li>
+		</ul>
+
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Other">Other</a></b></i></p>
+		<ul>
+			<li>If you move focus to another cell in edit mode, the changed value is accepted as if you pressed Enter.</li>
+			<li>After confirm new value after edit, calculated cells are recalculated. 
+				If Auto sort is set and sorting is enabled by this column, row is moved to another position by sort order. 
+				If Auto update is set, value is submitted to server.
+         </li>
+		</ul>
+		<p><i><b style='color:#008000;font-size:22px;'><a name="Colors">Colors</a></b></i></p>
+		<ul><li><span style="background:rgb(255,205,205); padding-left:50px">&nbsp;</span> - Deleted row</li>
+			<li><span style="background:rgb(205,255,205); padding-left:50px">&nbsp;</span> - Added row</li>
+			<li><span style="background:rgb(215,235,235); padding-left:50px">&nbsp;</span> - Moved row - row has been moved to another parent</li>
+			<li><span style="background:rgb(235,235,255); padding-left:50px">&nbsp;</span> - Changed row - any cell value has been changed</li>
+			<li><span style="background:rgb(205,205,255); padding-left:50px">&nbsp;</span> - Changed cell</li>
+			<li><span style="background:rgb(255,255,127); padding-left:50px">&nbsp;</span> - Selected row</li>
+			<li><span style="background:rgb(230,230,230); padding-left:50px">&nbsp;</span> - Focused row</li>
+			<li><span style="background:rgb(90,255,255);  padding-left:50px">&nbsp;</span> - Focused cell</li>
+			<li><span style="background:rgb(255,220,255); padding-left:50px">&nbsp;</span> - Focused cell in edit mode</li>
+			<li><span style="background:rgb(255,238,255); padding-left:50px">&nbsp;</span> - Focused cell in read only edit mode</li>
+			<li><span style="background:rgb(240,240,240); padding-left:50px">&nbsp;</span> - Cell cannot be focused</li>
+			<li><span style="background:rgb(244,244,244); padding-left:50px">&nbsp;</span> - Read only cell</li>
+			<li><span style="background:rgb(255,240,255); padding-left:50px">&nbsp;</span> - Master row in master / detail relationship</li>
+			<li><span style="background:rgb(255,240,225); padding-left:50px">&nbsp;</span> - Master row displayed in detail table</li>
+			<li><span style="background:rgb(255,255,240); padding-left:50px">&nbsp;</span> - Child page</li>
+			<li><span style="background:rgb(250,250,245); padding-left:50px">&nbsp;</span> - Row under mouse cursor</li>
+			<li><span style="background:rgb(220,240,255); padding-left:50px">&nbsp;</span> - Cell under mouse cursor</li>
+		</ul>
+		<p><i><b style='color:#008000;font-size:22px;'>More info</b></i></p>
+		<ul>
+			<li><a href="http://www.treegrid.com/" target="_top">http://www.treegrid.com/</a></li>
+		</ul>
+	</body>
+</html>

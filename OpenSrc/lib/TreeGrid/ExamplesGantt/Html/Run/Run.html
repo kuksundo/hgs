@@ -1,0 +1,99 @@
+<html>
+<head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+
+<!-- BodyStart --> 
+<style type="text/css">
+
+ .Info { padding-top:1px!important; line-height:9px; font-size:9px; } /* Style for top right Info tag on tabber */
+
+ /* Custom styles for the two custom boxes */
+.GMGanttCustom1In { background:#FDA; color:Blue; font:bold 11px Verdana; }
+.GMGanttCustom1Out { border:1px dotted blue; padding:0px; }
+.GMGanttCustom2In { background:url(../../../Grid/Modern/Backgrounds.gif); color:white; font:italic 11px Verdana; }
+.GMGanttCustom2Out { margin:0px; border:2px solid pink; padding:0px; }
+
+</style>
+
+<script>
+var BIE5 = navigator.appName.search("Microsoft")>=0 && document.compatMode!="CSS1Compat" && document.documentMode<10; // IE5 quirks mode
+// ------------------------------------------------------------------------------------
+// Returns custom Run bar content, only for row Custom
+Grids.OnGetGanttRunText = function(G,row,col,run,idx,text,width){
+if(row.id!="Custom") return text;
+var B = G.GetGanttRunBox(row,col,idx);
+var pad = BIE5? "" : "padding:1px;"; // In IE5 quirks mode is the height of text calculated with padding, so no padding is needed here
+return "<div style='background:#FAA;padding-left:2px;float:right;font-size:20px;line-height:20px;'>"+(idx/2+1)+"</div><div>"
+   + "<div style=\"background:green;color:white;"+pad+"\">&nbsp;"+DateToString(B.Start,"dddddd")+" - "+DateToString(B.End,"dddddd")+"</div>"
+   + "<div style=\"background:blue;color:white;"+pad+"\">&nbsp;"+(B.Length/24/3600/1000)+" + "+((B.End-B.Start-B.Length)/24/3600/1000)+" days </div>"
+   + "<div style=\"background:red;color:yellow;"+pad+"font-weight:bold;\">&nbsp;"+(B.Text?B.Text:"")+"</div>"
+   + "</div>";
+}
+// ------------------------------------------------------------------------------------------------------------
+// Used to show tip on Gantt header row
+// For Gantt chart rows and objects use rather OnGanttTip instead
+Grids.OnTip = function(G,row,col,tip,clientx,clienty,x,y){
+if(col=="G" && row.id=="ID") { // Gantt header row
+   var A = G.GetGanttHeaderXY(row,col,x,y);
+   if(!A) return;
+   tip = "<b>"+G.Lang.GanttUnits[A.Units]+"</b><br>" 
+       + DateToString(A.Start,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + " - " + DateToString(A.End,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + "<br><br>"
+       + "<i>Click to zoom to this date</i><br><i>Right click to zoom back to previous zoom level</i><br><i>Drag by mouse to zoom to selected range</i>";
+
+   }
+return tip;
+}
+// ------------------------------------------------------------------------------------
+// Changes style also for the RunSources
+Grids.OnAfterSetStyle = function(G,name) { 
+if(G.id!="Run") return;
+var R = Grids.RunSources;
+if(!R) return;
+if(name=="GB") name = "GM"; // Borders style is too wide
+if(R.Style!=name) R.SetStyle(name,null,1);
+}
+// ------------------------------------------------------------------------------------------------------------
+// Called on grid loaded, here used just for change on iPad
+Grids.OnUpdated = function(G){
+if(Grids.Tablet) G.NoVScroll = 1;                      // No vertical scroll on iPad
+}
+// ------------------------------------------------------------------------------------
+</script>
+<h2 id="ExampleTitle">Interactive Run chart example</h2>
+<div id="ExampleDescription">
+   This example demonstrates <b>Continuous Run</b>, complex and universal bar type in Gantt chart. It supports more bars in one cell, with different features, size, color, class, text and tooltip.<br />
+   <b>New box</b> can be added by dragging it from the right grid or by dragging empty space in the left grid.<br />
+   Box can be <b>resized</b> by dragging its edge. Fixed or solid box by dragging the edge with <b>Ctrl</b>.<br />
+   Box can be <b>moved inside</b> the cell by mouse dragging. Box can be <b>moved outside</b> the cell by dragging with <b>Ctrl</b>.<br />
+   Dragging box to the edge of other box <b>joins</b> the boxes, the boxes are moved together. The boxes can be <b>separated</b> by dragging one box with <b>Shift</b>.<br />
+   When dragging box with <b>Shift</b>, the box can be placed everywhere, even to <b>incorrect position</b>.<br />
+   Box can be <b>deleted</b> by resizing it to empty width or from popup menu.<br />
+   The box type, color, text and tooltip can be <b>changed</b> from popup menu (right click).<br />
+   Chart can be <b>zoomed</b> by selecting date range by mouse draging or clicking to one date in Gantt header, <b>unzoomed</b> by right click Gantt header.<br />
+   In this example are excluded <b>weekends</b> as <b>holidays</b>, except the weekend 24~25th May. The weekends are excluded from the run lengths, the runs cannot start or end in weekend.<br />
+   <i>All these control settings can be changed in XML</i>.<br />
+</div>
+<table style='width:100%;'>
+<tr>
+<td style='width:100%'>
+<div id='Gantt' style='width:100%; height:400px; overflow:hidden;'>
+   <bdo Sync="1" Layout_Url="RunDef.xml" Data_Url="RunData.xml"></bdo>
+</div>
+</td>
+<td style='width:125px;' valign='top'>
+<div id='Sources' style='width:125px; height:400px; overflow:hidden;margin-top:24px;'>
+   <bdo Sync="1" Data_Url="RunSources.xml"></bdo>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- BodyEnd -->
+<script>
+if(location.hostname.search(/coqsoft\.|treegrid\./i)>=0) setTimeout('location.replace("../../../www/#..*Examples*Html*Gantt*Run.html"+location.hash.replace("#","\'"));',500);
+</script>
+</body>
+</html>

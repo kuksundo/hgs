@@ -1,0 +1,92 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// -------------------------------------------------------------------------------
+// --- Creates cell content to better see the cells ---
+Grids.OnLoaded = function(G){
+function update(row){
+   for(var r=row.firstChild,i=1;r;r=r.nextSibling,i++) {
+      for(var c in G.Cols) if(c!="Panel" && r[c]==null) { r[c] = r.id+" "+c; }
+      if(r.firstChild) update(r);
+      }
+   }
+update(G.Body.firstChild); // First page   
+}
+// -------------------------------------------------------------------------------
+   </script>
+
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Tree</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Column tree</center>
+   <center style='font:bold italic;'>Expanding and collapsing columns and optionally also rows</center>
+   <div style='margin-bottom:6px;'><a href='02 - Column tree.xml'>02 - <h2>Column tree</h2>.xml</a></div>
+   <div style='width:100%; height:450px;'>
+      <bdo Debug='check' Data_Url='02 - Column tree.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         <h4>Column tree</h4> is done by simply showing and hiding listed columns. There is <u>no</u> limit in column count or levels.<br /> 
+         The columns in tree, unlike row tree, are <u>not</u> nested and are defined normally like without the tree.<br />
+         The tree is simply defined by Expand button in some cell (usually, but not necessary, in Header) and list of columns to hide / show them on click to this button.<br />
+         To be the expanding fast, you should <u>not</u> change default setting of Cfg attribute <b>FastColumns='1'</b>.<br />
+         The initially hidden column should have set both <h3>Visible</h3><b>='0'</b> and <h3>Hidden</h3><b>='1'</b> to be rendered on grid start as hidden column and the expanding will be fast.<br />
+      </li>
+      <li>
+         For column tree define <h3>Button</h3><b>='Expand'</b> or <h3>Icon</h3><b>='Expand'</b> in cell in grid, usually in Header cell.<br />
+         And define <h3>ExpandCols</h3> as list of columns to show or hide on click to the button.<br />
+         The Expand button will be marked as expanded, if any of the columns in ExpandCols will be shown.<br />
+         In more complex cases you can define cell <h3>Expanded</h3> attribute to preset the expanded state of the Expand button. It should be related to the visibility of the ExpandCols columns.<br />
+         The expanded columns don't need to be adjacent, nor in the same section. They should be adjacent only if some cells are spanned among them.
+      </li>
+      <li>
+         More Expand buttons can control the same column.<br />
+         In this case set the column attribute <h3>ExpandLevel</h3> to specify how many Expand buttons will need to be expanded to show the column (and collapsed to hide the columns).<br />
+         Every expanding of button increase ExpandLevel of all columns in its ExpandCols list and every collapsing of the button decreases ExpandLevel of the columns.<br />
+         The column is shown if its ExpandLevel is positive (higher than 0). 
+         The column is hidden if its ExpandLevel is zero or negative (less or equal to 0).<br />
+         The ExpandLevel must be set accordingly to initial Expanded state of the buttons and visibility of the column.<br />
+         For example you have two buttons expanding one column, the column settings can be:
+         <ul>
+            <li>
+               ExpandLevel='-1' Visible='0' - both the buttons must be expanded to show the column
+            </li>
+            <li>
+               ExpandLevel='0' Visible='0' - at least one button must be expanded to show the column
+            </li>
+            <li>
+               ExpandLevel='1' Visible='1' - at least one button must be collapsed to hide the column (visible state of the ExpandLevel='-1')
+            </li>
+            <li>
+               ExpandLevel='2' Visible='1' - both the buttons must be collapsed to hide the column (visible state of the ExpandLevel='0')
+            </li>
+         </ul>
+         Remember, there is no limit in count of buttons expanding the same column and also more columns can be expanded by one button, so there are unlimited combinations for expanding.
+      </li>
+      <li>
+         If set attribute <h3>HideParentCol</h3><b>='1'</b>, it hides parent column when expanding children.<br />
+         It simply shows the column children instead of the column itself and vice versa.
+      </li>
+      <li>
+         <h4>Row tree</h4> - it is possible also to control visibility of any rows similarly to the columns behavior described above.<br />
+         The row list is defined by <h3>ExpandRows</h3>.<br />
+         It is possible to define both <b>ExpandCols</b> and <b>ExpandRows</b> for one Expand button, usually to show next (Header) row with next Expand buttons for next column level(s).<br />
+         <i>Remember, this row tree type is intended as support for the column tree. For standard row tree use rather the <b>MainCol</b> and nested rows or <b>grouping</b> feature, because it is much faster and support many next features.</i>
+      </li>
+      <li>
+         There are also provided actions to expand/collapse one cell (<b>ExpandCell</b>) and all Header cells (<b>ExpandAllCells</b>,<b>CollapseAllCells</b>).<br />
+         There are also API methods to expand / collapse given cell (<b>ExpandCell</b>) and to check the expanded state of the cell (<b>IsCellExpanded</b>).
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,2085 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Data communication with server</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Data communication with server</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This document contains basic
+information about TreeGrid data communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can download data
+from remote server, local server, local files or from XML placed directly in
+the source HTML page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can upload data to
+remote or local server or include the data to HTML page and submit it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The communication type, urls
+and other settings are specified by base &lt;<b><u>treegrid</u></b>&gt; or &lt;<b><u>bdo</u></b>&gt;
+tag that defines TreeGrid on HTML page or by global <b><u>TreeGrid</u></b>
+function that creates TreeGrid dynamically by API</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are possible
+communication types:</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>AJAX</span></u></b><span
+style='font-size:10.0pt'> – Background communication without reloading page.
+Supports all TreeGrid communication features like server paging.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>AJAX</span></u></b><b><u><span
+style='font-size:10.0pt'> SOAP</span></u></b><span style='font-size:10.0pt'> – AJAX communication with XML in SOAP envelope. Supports all TreeGrid communication features
+like server paging.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Submit</span></u></b><span
+style='font-size:10.0pt'> – Old communication style by submitting and reloading
+the whole page. It does not support TreeGrid server paging, auto update and
+reloading body.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Direct</span></u></b><span
+style='font-size:10.0pt'> – XML data directly included in &lt;treegrid&gt; /
+&lt;bdo&gt; tag attribute values. It does not support uploading to server and
+server paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All these communications can
+be combined in one grid, e.g. use Direct communication for downloading layout
+and data and AJAX for uploading changes to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every data source has its own
+prefix before its attribute name (for example Data_Url, Data_ is prefix and Url
+is attribute name).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=AJAX><b><span style='font-size:20.0pt'>AJAX communication</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Modern background communication
+without reloading page. Supports all TreeGrid communication features like
+server paging or reload body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For AJAX communication you
+must specify the <b>URL</b> where the data will be downloaded from and
+optionally sent to, for example Layout_Url = “../app/getLayout.jsp”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other attributes are optional
+and often work with the default settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="xxx_Url"></a><a name=Url><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>xxx_Url</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                Postfix
+to data source (e.g. Data_Url)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An URL to connect to. From
+this URL are data downloaded or to this URL are data uploaded. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This URL can an URL of static
+file to download or any web page or web service. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>This URL must be
+in the same domain as the page where TreeGrid is shown. It cannot be changed,
+because of browser security restrictions for AJAX. Use <a href="#JSONP">Jsonp</a>
+instead.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this URL  is <b>relative</b>,
+it is relative to the actual page URL, see <a href="#xxx_Relative">xxx_Relative</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For download it can contain
+parameters for GET <a href="#Method">method</a> only (beyond the ‘?’). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For upload it cannot contain
+parameters (beyond the “?”), because the POST method used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute value can
+contain wildcards to change it according to grid or page settings. All these
+strings will be replaced by appropriate runtime value:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>*Sort0</span></b><span
+style='font-size:10.0pt'>, <b>*Sort1</b>, <b>*Sort2</b>     Column name
+according to is grid sorted. With prefix ‘-‘ for descendant sorting</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>If grid is not sorted or Sort count is less than 3,
+the not used wildcards are removed.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>*id</span></b><span
+style='font-size:10.0pt'>          Row or page id (only for Page_Url)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>*Pos</span></b><span
+style='font-size:10.0pt'>       Page position (only for Page_Url)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>*Rows</span></b><span
+style='font-size:10.0pt'>   Page’s attribute Rows (only for Page_Url), this
+attribute can be set to anything, for example to generate the whole URL.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+Data_Url=’..\Source\Body*Sort0.xml’ Page_Url=’..\Source\Page*Pos.xml’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>
+     </span><a name="xxx_Relative"><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>xxx_Relative</span></b></a><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[0/1]                                                                                                    <span
+style='color:red'>new <b>9.2</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where the relative <a
+href="#xxx_Url">xxx_Url</a> or <a href="#xxx_Jsonp">xxx_Jsonp</a> will be
+related to.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - to the actual page URL (defined in window.location).
+It means nothing is added before the relative url.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - to the Grid/ folder, where main TreeGrid script
+GridE.js is placed. Before url is added the path to Grid folder from actual
+location.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is <b>0</b> for
+all data sources.  Only Defaults and Text data sources without Url / Jsonp
+attribute set have Relative set to <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Relative url is an url that
+starts <u>neither</u> with protocol (xxx://) <u>nor</u> by slash (/).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>
+   </span><a name=AjaxData><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Data</span></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>[“Data”]             Postfix
+to data source (e.g. Data_Data)                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of parameter where to
+store uploaded data or data of request. Default value is “<b>Data</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this parameter can be read
+the data on server, similar to name of the &lt;input&gt; tag in submitting
+&lt;form&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="xxx_Method"></a><a name=Method></a><a name="Upload_Method"><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>xxx_Method</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [“GET”/”POST”]
+ Postfix to data source (e.g. Data_Method)        <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTTP method of uploading data
+to server. Case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is default <b>GET</b> for
+sources <b>Defaults</b>, <b>Text</b>, <b>Base</b>, <b>Layout</b>. It is <b>GET</b>
+also for <b>Data</b> if used client or no paging (&lt;Cfg Paging&lt;=2)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is default <b>POST</b> for
+sources <b>Upload</b>, <b>Page</b>, <b>Export</b>, <b>Cell</b>. It is <b>POST</b>
+also for <b>Data</b> if used server paging (&lt;Cfg Paging=3)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>GET</span></b><span
+style='font-size:10.0pt'>      For download data only. Uses HTTP method GET. <u>No</u>
+data is sent in parameter <a href="#AjaxData">Data</a> - no configuration or
+uploaded changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>Params</b>
+and <b>Param</b> settings are coded into URL string after ‘?’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>POST</span></b><span
+style='font-size:10.0pt'>    For download or upload. Uses HTTP method POST. The
+data is sent in parameter <a href="#AjaxData">Data</a> – the configuration in
+request or uploaded changes.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>Params</span></b><span
+style='font-size:10.0pt'> and <b>Param</b> settings are sent also in body of
+the HTTP request..</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The HTTP data
+format is <b>application/x-www-form-urlencoded</b>, the same as submitting
+&lt;form&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The HTTP
+charset is always UTF8: <b> </b></span><b><span style='font-size:10.0pt;
+font-family:"Courier New"'>charset=UTF-8</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>SOAP</span></b><span
+style='font-size:10.0pt'>    For download or upload. Uses HTTP method POST and
+uploads data in SOAP XML envelope. See AJAX SOAP.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   
+</span><a name="xxx_Format"></a><a name="Upload_Format"><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>xxx_Format</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [“Internal”]         Postfix
+to data source (e.g. Data_Format)        <span style='color:red'>chg <b>6.0</b></span><span
+style='color:blue'>;upd <b>6.6</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to “DTD”, the uploaded
+XML will be in <b><u>DTD</u></b> format instead of the Internal.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to “JSON”, the
+uploaded data will be JSON string</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used for uploading data or
+for request, input data format is always automatically recognized.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   
+</span><a name="xxx_Bonus"></a><a name=Bonus><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Bonus</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Postfix
+to data source (e.g. Data_Bonus)                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A string with direct XML data
+for TreeGrid. This data is read and added after main data in Url/Tag/Data are
+read to change some default behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For download sources only
+(Text, Defaults, Base, Layout, Data)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>int</i>       </span><a
+name="xxx_Timeout"></a><a name=Timeout><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Timeout</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [60]      Postfix
+to data source (e.g. Data_Timeout)                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Timeout in seconds. How long the
+grid will wait for server response. <b>0</b> means forever.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the timeout expires, the
+grid asks a user if he wants to wait or cancel the communication. Depends on <a
+href="#Repeat">Repeat</a> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>int</i>       </span><a
+name="xxx_Repeat"></a><a name=Repeat><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Repeat</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]        Postfix
+to data source (e.g. Data_Repeat)                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Behavior when <a
+href="#Timeout">Timeout</a> expires. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – alerts the problem to user (“Cannot download /
+upload data, timeout expired”), but does not let user to try it again</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – does not alert anything to user, just silent error.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – alerts the problem to user (“Cannot download /
+upload data, server timeout ! Do you want to repeat request ?”) and let him to
+choose to repeat the attempt </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – Automatically repeats the attempt</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>bool</i>     </span><a
+name="xxx_Xml"></a><a name="Upload_Xml"><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Xml</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]        Postfix
+to data source (e.g. Data_Xml)                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the uploaded data will be
+send as is or will be sent with coded entities.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> (default) are uploaded
+data encoded to string (&amp; and &lt;,&gt; are replaced by &amp;amp; &amp;lt;
+&amp;gt;). The web service’s parameter is type of string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>0</b> is required
+value when submitting form due security validation in some server script like
+ASP.NET.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> data are
+uploaded as XML without any change, the web service’s parameter is type of
+XmlDocument (or similar type).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="xxx_Param_xxx"></a><a name=Param><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Param_xxx</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       Postfix
+to data source and prefix to parameter name (e.g. Data_Param_Test)        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is second prefix for custom
+parameters to send with the request.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The case
+sensitivity of parameter name is unsure, the name is always converted to format
+“First letter upper, other letters lower” !</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:
+Data_Param_Test=”12” =&gt; it added custom parameter named “Test” with value “12”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string   </span></i><a
+name="xxx_Params"></a><a name=Params><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Params</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                Postfix
+to data source (e.g. Data_Params)                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All custom parameters in one
+string, just to be added to data being sent. Its format varies according to
+used <a href="#Method">Method</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use this attribute instead of
+<a href="#Param">Param</a> prefix if you need exact case sensitivity of the
+parameter names.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For methods <b>GET</b> and <b>POST</b>
+it contains standard parameters for URL,
+“paramname=paramvalue&amp;paramname2=paramvalue2”. Without the first “?”. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example “name=peter&amp;value=smith”. The string is encoded by JavaScript
+encodeURI function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For method <b>SOAP</b>: It
+contains XML nodes in format
+&lt;ParamName&gt;ParamValue&lt;/ParamName&gt;&lt;ParamName2&gt;ParamValue2&lt;/ParamName2&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;  </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       </span><a
+name="xxx_Cache"></a><a name=SourceCache><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Cache</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]        Postfix
+to data source (e.g. Data_Cache)                                             .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Caching setting for
+individual data source. See <a href="#Cache">Cache</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid with structure
+downloaded from static file. Data is downloaded from aspx web page, with
+parameter Do = “Load”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changed data is uploaded to
+the same aspx page, with parameters TGData=”changed data in XML”, Do=”Save”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Exported data is uploaded to
+export aspx page, with parameters TGData=”the exported data”,
+File=”Export.xls”, the aspx page is expected just to return this data to client
+in the file specified.</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>treegrid</span></b></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Layout</b></span><b><span
+lang=CS>_Url</span></b><span lang=CS>=&quot;TreeGridSampleDef.xml&quot; </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Data_Url</b></span><span
+lang=CS>=&quot;TreeGridSample.aspx&quot; <b>Data_</b><b>Param_Do</b>=“Load“</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Upload</b></span><b><span
+lang=CS>_Url</span></b><span lang=CS>=&quot;TreeGridSample.aspx&quot; <b>Upload</b><b>_Data</b>=“TGData“ <b>Upload</b><b>_XML</b>=“1“ <b>Upload</b><b>_Param_Do</b>=“Save“</span></pre><pre
+style='background:#EEEEEE'><b><span lang=CS>    Export</span></b><b><span
+lang=CS>_Url</span></b><span lang=CS>=&quot;TreeGridExport.aspx&quot; <b>Export</b><b>_Data</b>=“TGData“ <b>Export</b><b>_Param_File</b>=“Export.xls“</span></pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>treegrid</span></b>&gt; </pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;  </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="xxx_Static"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Static</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [???]     Postfix
+to data source (e.g. Data_Cache)                                  <span
+style='color:red'>new <b>7.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Caches static data under this
+name to not load the data from source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It should be used only for
+static files like Defaults.xml.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set to
+Defaults_ and Text_ data sources if they have not set the _Url.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=SOAP></a><b><span style='font-size:20.0pt'>AJAX</span></b><b><span
+style='font-size:20.0pt'> SOAP envelope</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>AJAX</span><span
+style='font-size:10.0pt'> communication with XML in SOAP envelope. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Similar to standard AJAX
+communication, but uploads the request XML in SOAP XML envelope.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Uses all listed AJAX
+attributes above and these attributes for specifying SOAP Envelope</span></b><span
+style='font-size:10.0pt'>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>xxx_Method</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [“GET”/”POST”]
+ Postfix to data source (e.g. Data_Method)        <span style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set the Method to “<b>SOAP</b>”
+for SOAP communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="xxx_Function"></a><a name="Upload_Function"><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>xxx_Function</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             Postfix
+to data source (e.g. Data_Function)                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of SOAP function. This
+function will be called in the web service.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string   </i></span><a
+name="xxx_Namespace"></a><a name="Upload_Namespace"><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>xxx_Namespace</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     Postfix
+to data source (e.g. Data_Namespace)                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of SOAP namespace. The
+namespace the Function belongs to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   </span><a
+name="xxx_Envelope"></a><a name=Envelope><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Envelope</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            Postfix
+to data source (e.g. Data_Envelope)                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Envelope tag for SOAP. set it
+if default envelope cannot be used by provider.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is “&lt;soap:Envelope
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid with structure
+downloaded from static file. Data is downloaded from soap webservice, method <i>string
+Load (string Grid)</i>, with parameter Grid = “Grid1”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data is uploaded to soap web
+service, method string <i>Save (XmlDocument Data, string Grid, int Test)</i>,
+with parameters TGData=”changed data in XML”, Grid=”Grid1”, Test=12</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>treegrid</span></b></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Layout</b></span><b><span
+lang=CS>_Url</span></b><span lang=CS>=&quot;TreeGridSampleDef.xml&quot; </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Data_Url</b></span><span
+lang=CS>=&quot;TreeGridSample.asmx&quot; <b>Data_</b><b>Method</b>=“Soap“ <b>Data_</b><b>Function</b>=“Load“</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Data_</b><b>Namespace</b>=“www.treegrid.com“ <b>Data_</b><b>Param_Grid</b>=“Grid1“</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Upload</b></span><b><span
+lang=CS>_Url</span></b><span lang=CS>=&quot;TreeGridSample.asmx&quot; <b>Upload</b><b>_Method</b>=“Soap“ <b>Upload</b><b>_Function</b>=“Save“</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Upload</b><b>_Namespace</b>=“www.treegrid.com“ <b>Upload</b><b>_Data</b>=“TGData“ <b>Upload</b><b>_XML</b>=“1“</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Upload</b><b>_Param_Grid</b>=“Grid1“ <b>Upload</b><b>_Param_Test</b>=“12“</span></pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>treegrid</span></b>&gt; </pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>SOAP envelope <u>request</u>
+structure</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data are sent as “</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>text/xml; charset=UTF-8<span style='font-family:"Times New Roman","serif"'>”</span><span style='font-family:"Times New Roman","serif"'>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;soap:Envelope
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'> 
+&lt;soap:Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>   
+&lt;<b><a href="#Upload_Function">Function</a></b> xmlns=&quot;<b><a
+href="#Upload_Namespace">Namespace</a></b>&quot;&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>     
+&lt;<b><a href="#Data">Data</a></b>&gt;... uploaded data if any, in string (if <a
+href="#Upload_Xml">Xml</a> is 0) or in xml (if <a href="#Upload_Xml">Xml</a> is
+1) ...&lt;/<b><a href="#Data">Data</a></b>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>     
+&lt;<b><a href="#Param">Param1</a></b>&gt;... parameter value ...&lt;/<b><a
+href="#Param">Param1</a></b>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>     
+&lt;<b><a href="#Param">Param2</a></b>&gt;... parameter value ...&lt;/<b><a
+href="#Param">Param2</a></b>&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:8.0pt;font-family:"Courier New"'>     
+... next parameters ...</span></i></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>   
+&lt;/<b><a href="#Upload_Function">Function</a></b>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'> 
+&lt;/soap:Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;/soap:Envelope&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where <b>Function</b>, <b>Namespace</b>
+and <b>Data</b> are values of these attributes of &lt;treegrid&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where <b>Param1</b>, <b>Param2</b>,
+... are attribute prefix names, e.g. for “Data_Param_P1” is “P1”. <i>Remember
+that parameter names must have the first letter uppercase and other lowercase!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In request is also sent HTTP
+header attribute <b>SOAPAction</b>=</span><b><span style='font-size:8.0pt;
+font-family:"Courier New"'><a href="#Upload_Namespace">Namespace</a>/<a
+href="#Upload_Function">Function</a></span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Usual SOAP envelope <u>response</u>
+structure</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data are in the tag &lt;<i>Function</i><b>Result</b>&gt;
+as string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is the standard output
+of the XML web service, if function returns string and data were sent as SOAP
+XML envelope.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usual envelope (the full XML
+response) is:</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;soap:Envelope
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'> 
+&lt;soap:Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>   
+&lt;<b><a href="#Upload_Function">Function</a></b> xmlns=&quot;<b><a
+href="#Upload_Namespace">Namespace</a></b>&quot;&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>     
+&lt;<b><a href="#Upload_Function">Function</a></b>Result&gt;... returned xml
+data in string (escaped entities) or in xml (not escaped) ...&lt;/<b><a
+href="#Upload_Function">Function</a></b>Result&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>   
+&lt;/<b><a href="#Upload_Function">Function</a></b>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'> 
+&lt;/soap:Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:8.0pt;font-family:"Courier New"'>&lt;/soap:Envelope&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where <b>Function</b> and <b>Namespace</b>
+are values of these attributes of &lt;treegrid&gt; tag.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TreeGrid does not parse
+the SOAP envelope response, it just searches for inner &lt;Grid&gt; tag or
+&amp;lt;Grid&amp;gt; in text node</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Submit><b><span style='font-size:20.0pt'>Submit
+communication</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Old communication style by
+submitting and reloading the whole page. It does not support TreeGrid server
+paging, auto update and reloading body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In download are data read
+from hidden input. The input value is cleared after reading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In upload are data set into
+hidden input value and the &lt;form&gt; where the input is placed is submitted
+to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   
+</span><a name="xxx_Tag"></a><a name=Tag><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>xxx_Tag</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                         Postfix
+to data source (e.g. Data_Tag)                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An <b>id</b> of tag (usually
+hidden input).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In download are data read
+from its attribute value. When data are read, the value is cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In upload to this value are
+changes written when submitting form.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is alternative to <a
+href="#Url">Url</a> and cannot be set both. For upload this must be id of &lt;<b>input</b>&gt;
+tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set for upload, data are
+uploaded <b>by form submit</b> and TreeGrid Auto update option cannot be used. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When uploading, don’t forget
+to place this hidden input on HTML form with specified Action attribute as
+usual, when uploading forms to sever.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When user clicks <b>Save</b>
+button, the input’s value is filled by changed data and form to which the input
+belongs is submitted to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the form to which the
+input belongs is submitted by any other way, before submit, the input value is
+filled by changed data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default are uploaded data
+html encoded (&amp;,&lt;,&gt; to entities) because of security validation in
+server scripts, you can change it by <a href="DataUpload.htm#Xml">Xml</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid with structure read
+direct from string, data downloaded from static file, uploaded by form submit
+in hidden input GridData.</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:#993300'>input</span></b> <b>type</b>=“hidden“ <b>name</b>=“grid“ <b>id</b>=“GridData“&gt;</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>div</span></b> <b>style</b>=&quot;width:100%;height:100%;&quot;&gt; </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>treegrid </span></b></span></pre><pre
+style='background:#EEEEEE'><b><span lang=CS style='color:maroon'>    </span><span
+lang=CS>Layout</span></b><span lang=CS>_<b>Data</b>=&quot;&amp;lt;Grid&gt;&amp;lt;Cols&gt;&amp;lt;C Name=‘C1‘/&gt;&amp;lt;/Cols&gt;&amp;lt;/Grid&gt;&quot; </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Data</b></span><span lang=CS>_<b>Url</b>=&quot;../data/TreeGridSample.xml&quot; </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>    <b>Upload</b>_<b>Tag</b>=&quot;GridData&quot;&gt;</span></pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>treegrid</span></b>&gt; </pre><pre
+style='background:#EEEEEE'><span lang=CS>&lt;/<b><span style='color:#993300'>div</span></b>&gt;</span></pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>Global prop.    </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>int</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        </span><b><i><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>Grids</span></i></b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>.<a
+name=NoTryActiveX><b><u>NoTryActiveX</u></b></a></span><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set to 1
+ in IE does not try to create ActiveX objects, event if it is possible and uses
+slower script XML parsing, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>but don’t show any message to
+a user about ActiveX. See example <a
+href="../Examples/Html/SubmitNoActiveX.html">Examples/Html/SubmitNoActiveX.html</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This property has sense only
+if is <u>not</u> used AJAX and all data, include <a href="Files.htm#DefaultsXml">Defaults.xml</a>
+and <a href="Files.htm#TextXml">Text.xml</a>, are included in HTML page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Data><b><span style='font-size:20.0pt'>Directly included data</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>XML or JSON data directly
+included in &lt;treegrid&gt; / &lt;bdo&gt; tag attribute values. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used only for
+download and also does not support server paging and reloading body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used for grids
+generated by JavaScript on client.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the including
+xml directly to html page can be combined with other communication types,
+especially for upload.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>
+  </span><a name="xxx_Data"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Data</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                        Postfix
+to data source (e.g. Data_Data)                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String with direct data for
+TreeGrid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is alternative to </span><a
+href="#Url"><span style='font-size:10.0pt'>Url</span></a><span
+style='font-size:10.0pt'> and </span><a href="#Tag"><span style='font-size:
+10.0pt'>Tag</span></a><span style='font-size:10.0pt'> and can be set only one
+from them. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For download only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, when including XML
+into HTML attribute, you should encode the HTML entities.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you include some &amp;,
+&lt; “ or’ into XML attribute value, you need to convert it twice, if you
+include it to HTML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: &lt;treegrid
+Data_Data=”&lt;Grid&gt;&lt;Body&gt;&lt;B&gt;&lt;I Col1=’One <b>&amp;amp;amp;</b>
+Two <b>&amp;amp;lt; </b>Four’/&gt;&lt;/B&gt;&lt;/Body&gt;&lt;/Grid&gt;”&gt;&lt;/treegrid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Simple TreeGrid with data
+directly included</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>treegrid </span></b></span></pre><pre
+style='background:#EEEEEE'><b><span lang=CS style='color:maroon'>    </span><span
+lang=CS>Data</span></b><span lang=CS>_<b>Data</b>=&quot;&lt;Grid&gt;&lt;Cols&gt;&lt;C Name=‘A‘/&gt;&lt;/Cols&gt;&lt;Body&gt;&lt;B&gt;&lt;I A=‘1‘/&gt;&lt;/B&gt;&lt;/Body&gt;&lt;/Grid&gt;&quot;</span></pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>treegrid</span></b>&gt; </pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>
+  </span><a name="xxx_Script"><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>xxx_Script</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        Postfix
+to data source (e.g. Data_Script)                                              <span
+style='color:red'>new <b>6.6</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>JavaScript global variable
+name that contains string with data XML or JSON or JavaScript object with the
+same structure as JSON format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is alternative to </span><a
+href="#Url"><span style='font-size:10.0pt'>Url</span></a><span
+style='font-size:10.0pt'> and </span><a href="#Tag"><span style='font-size:
+10.0pt'>Tag</span></a><span style='font-size:10.0pt'> and can be set only one
+from them. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For download only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Simple TreeGrid with data
+directly included in JavaScript</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>script</span></b></span>&gt;</pre><pre
+style='background:#EEEEEE'>var TGData1 = {Cols:{A:{}},Body:[[{A:1}]]};</pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>script</span></b>&gt; </pre><pre
+style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>treegrid </span></b></span></pre><pre
+style='background:#EEEEEE'><b><span lang=CS style='color:maroon'>    </span><span
+lang=CS>Data</span></b><span lang=CS>_<b>Script</b>=&quot;TGData1&quot;</span></pre><pre
+style='background:#EEEEEE'>&lt;/<b><span style='color:#993300'>treegrid</span></b>&gt; </pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=JSONP><b><span style='font-size:20.0pt'>Cross domain or
+local communication by JSONP</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date loaded in JSONP format,
+loaded by added dynamically &lt;script src='...'&gt; tag into the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method provides access
+to different domains and also loading local files without server (page run in
+file:// protocol). Normally these two options are restricted in AJAX
+communication in the most browsers.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Usable only for download!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accepts also attributes </span><a
+href="#xxx_Relative"><span style='font-size:10.0pt'>xxx_Relative</span></a><span
+style='font-size:10.0pt'>, </span><a href="#xxx_Bonus"><span style='font-size:
+10.0pt'>xxx_Bonus</span></a><span style='font-size:10.0pt'>, </span><a
+href="#xxx_Timeout"><span style='font-size:10.0pt'>xxx_Timeout</span></a><span
+style='font-size:10.0pt'>, </span><a href="#xxx_Repeat"><span style='font-size:
+10.0pt'>xxx_Repeat</span></a><span style='font-size:10.0pt'>, </span><a
+href="#xxx_Cache"><span style='font-size:10.0pt'>xxx_Cache</span></a><span
+style='font-size:10.0pt'>, </span><a href="#xxx_Static"><span style='font-size:
+10.0pt'>xxx_Static</span></a><span style='font-size:10.0pt'>, </span><a
+href="#xxx_Param"><span style='font-size:10.0pt'>xxx_Param</span></a><span
+style='font-size:10.0pt'>, </span><a href="#xxx_Params"><span style='font-size:
+10.0pt'>xxx_Params</span></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>
+  </span><a name="xxx_Jsonp"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Jsonp</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        Postfix to data
+source (e.g. Data_Script)                                              <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>URL to JSONP file in format:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>a) TreeGridLoad(<i>{the JSON
+data}</i>), e.g. TreeGridLoad ( { Cols: [ { Name:&quot;A&quot; ] } , Body: [ [
+{ A:&quot;value \&quot;A&amp;1\&quot;&quot; } ] ] } )</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>b) TreeGridLoad(&quot;<i>the
+XML data</i>&quot;), e.g. TreeGridLoad(&quot;&lt;Grid&gt;&lt;Cols&gt;&lt;C
+Name='A'/&gt;&lt;/Cols&gt;&lt;Body&gt;&lt;B&gt;&lt;I A='Value
+\&quot;A&amp;amp;1\&quot;'/&gt;&lt;/B&gt;&lt;/Body&gt;&lt;/Grid&gt;&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Jsonp has the same format
+as </span><a href="#xxx_Url"><span style='font-size:10.0pt'>xxx_Url</span></a><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The data must not contain
+any syntax error, otherwise they are ignored!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      
+</span></i><a name=TreeGridLoaded><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>TreeGridLoaded</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>type</i>
+<b>Input</b>)                                                                             <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Function called from JSONP
+script file to add the JSON or XML data to grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Can be called only in
+JSONP script, not in any other code.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Sessions><b><span style='font-size:20.0pt'>Sessions (AJAX)</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How to identify one continuous
+access (session) to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    </span><a
+name=Session><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Session</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial identity for
+communication session. The session identity is sent in every request to server
+in &lt;IO </span><a href="#IOSession"><span style='font-size:10.0pt'>Session</span></a><span
+style='font-size:10.0pt'>&gt; attribute to identify the session. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If server returns in its
+response the &lt;IO </span><a href="#IOSession"><span style='font-size:10.0pt'>Session</span></a><span
+style='font-size:10.0pt'>/&gt; attribute, the session identity is set to this
+attribute value to start new session.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default the Session value
+is not persistent, therefore if user reloads page, the Session value is lost
+and new session is started.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can let TreeGrid to store
+Session value to hidden input or to cookies by &lt;Cfg </span><a
+href="#CfgSaveSession"><span style='font-size:10.0pt'>SaveSession</span></a><span
+style='font-size:10.0pt'>/&gt; attribute.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The session is <u>not</u>
+used by TreeGrid on client, it is intended only to identify the client on
+server in your server code.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>string    </i></span><a
+name=IOSession><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Session</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If session identity has been
+set for this grid, it is sent to server in every request in the &lt;IO <b>Session</b>/&gt;
+to identify the client session.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The session identity can be
+set by &lt;treegrid </span><a href="#Session"><span style='font-size:10.0pt'>Session</span></a><span
+style='font-size:10.0pt'>&gt; on session start or can be set or changed by any
+server response(s) by the &lt;IO <b>Session</b>/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, the IO is not sent
+to server if &lt;treegrid *_</span><a href="#Method"><span style='font-size:
+10.0pt'>Method</span></a><span style='font-size:10.0pt'>=’<b>Get</b>’&gt; is
+used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default the Session value
+is not persistent, therefore if user reloads page, the Session value is lost.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can let TreeGrid to store
+Session value to hidden input or to cookies by &lt;Cfg </span><a
+href="#CfgSaveSession"><span style='font-size:10.0pt'>SaveSession</span></a><span
+style='font-size:10.0pt'>/&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgSaveSession><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveSession</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set to ‘<b>1</b>’
+to save </span><a href="TreeGridXmlBasics.htm#IOSession"><span
+style='font-size:10.0pt'>Session</span></a><span style='font-size:10.0pt'>
+attribute value to cookies. It saves Session regardless of values of </span><a
+href="#CfgSuppressCfg"><span style='font-size:10.0pt'>SuppressCfg</span></a><span
+style='font-size:10.0pt'> and </span><a href="#CfgVersion"><span
+style='font-size:10.0pt'>Version</span></a><span style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or it can be set to <b>id</b>
+of hidden input, it stores </span><a href="TreeGridXmlBasics.htm#IOSession"><span
+style='font-size:10.0pt'>Session</span></a><span style='font-size:10.0pt'>
+attribute value to this input to be persistent for page reloading.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Only
+some browsers preserve input values for page reloading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The hidden
+input must be placed to page in HTML and not by JavaScript. Also don’t place it
+into TreeGrid main tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute should not be
+set in data xml, only in layout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetSession><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetSession</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>       (<i>string</i> <b>Session</b>)                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets grid </span><a
+href="#Session"><span style='font-size:10.0pt'>Session</span></a><span
+style='font-size:10.0pt'> attribute that identifies it in server requests.
+Saves the Session according to the </span><a href="#CfgSaveSession"><span
+style='font-size:10.0pt'>SaveSession</span></a><span style='font-size:10.0pt'>
+setting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usable especially to clear
+the Session when wants to start new session with new data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ServerResponse><b><span style='font-size:20.0pt'>Server
+response (</span></b></a><b><span style='font-size:20.0pt'>AJAX</span></b><b><span
+style='font-size:20.0pt'>)</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>int        </i></span><a
+name=IOResult><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Result</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>General result of the <b>server</b>
+response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid distinguishes only
+two values:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&gt;=
+0 as OK, the communication succeeded. The data sent from server have been
+accepted. For upload, all pending changes were accepted.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;  
+0 as Error, the communication failed. The data sent from server have been
+discarded. For upload, all pending changes are still pending.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Values <b>-1</b> to <b>-9</b>
+should be reserved to TreeGrid.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Since 7.0</span></i></b><i><span
+style='font-size:10.0pt'> for results -2 to -9 in save response is displayed
+error alert. To not show it, remove the ErrorSave value from Text.xml</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can define API event </span><a
+href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> where you can access or change the Result by
+grid.IO.Result before it is processed by grid. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Here
+you can read also any other custom IO attributes set by server to get more
+information about response status.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>string    </i></span><a
+name=IOMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Message</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server response message. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is set, this text is
+alerted to user, independently on </span><a href="#IOResult"><span
+style='font-size:10.0pt'>Result</span></a><span style='font-size:10.0pt'> value
+and before </span><a href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is intended to inform a
+user about some error or important change sent from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>string    </i></span><a
+name=IOHtmlMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HtmlMessage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server response message that
+can contain HTML code. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is shown to user by
+TreeGrid modal ShowMessage inside TreeGrid main tag. It can be shown only for
+time specified by </span><a href="#IOHtmlMessageTime"><span style='font-size:
+10.0pt'>HtmlMessageTime</span></a><span style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is set, this text is
+shown to a user independently on </span><a href="#IOResult"><span
+style='font-size:10.0pt'>Result</span></a><span style='font-size:10.0pt'> value
+and after the incoming data is added to grid or discarded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is intended to inform a
+user about some error or important change sent from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>int        </i></span><a
+name=IOHtmlMessageTime><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HtmlMessageTime</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long will be the </span><a
+href="#IOHtmlMessage"><span style='font-size:10.0pt'>HtmlMessage</span></a><span
+style='font-size:10.0pt'> shown, in milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set or set to 0, the
+message is shown forever with OK button to hide it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to negative number,
+the message is shown for the (positive) time, but also with OK button to hide
+it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>int        </i></span><a
+name=IOReload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Reload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> reloads
+all body rows / pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is useful to regenerate
+pages for server paging when pages were changed on server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be also used if there
+are many updates on server and is faster to reload them all from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, when set to 1, Data
+source xml can contain only variable rows, all other definitions like columns,
+fixed rows and so on must be in Layout source xml.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The reload body is done after
+</span><a href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> event, you can change this parameter in this event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>string    </i></span><a
+name=IOReloadMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ReloadMessage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server response confirm
+message for reload.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is set, shows confirm
+dialog before reloading, to confirm this action by user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is independent on </span><a
+href="#IOResult"><span style='font-size:10.0pt'>Result</span></a><span
+style='font-size:10.0pt'> value and is displayed before </span><a
+href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> event</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;IO&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                <i>string    </i></span><a
+name=IOUpdateMessage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>UpdateMessage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Server response confirm
+message for accepting changes sent from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is set, shows confirm
+dialog before the changes received from server are added to grid, to confirm
+this action by user</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used especially
+when used </span><a href="DataServerChanges.htm#CheckForUpdates"><span
+style='font-size:10.0pt'>checking for updates</span></a><span style='font-size:
+10.0pt'> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is independent on </span><a
+href="#IOResult"><span style='font-size:10.0pt'>Result</span></a><span
+style='font-size:10.0pt'> value and is displayed before </span><a
+href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object</i>   </span><a
+name=IO><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>IO</span></u></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:aqua'>                                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A response &lt;IO&gt; tag
+accessible by API. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is accessible in event </span><a
+href="#OnDataReceive"><span style='font-size:10.0pt'>OnDataReceive</span></a><span
+style='font-size:10.0pt'> to check the server response result and confirm or
+reject the downloaded data and changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, the IO object is
+reset for every response got from server, even if this response does not
+contain &lt;IO&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=SynchronousAJAX><b><span style='font-size:20.0pt'>Synchronous
+communication (</span></b></a><b><span style='font-size:20.0pt'>AJAX</span></b><b><span
+style='font-size:20.0pt'>)</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default TreeGrid loads all
+AJAX data asynchronously, one by one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After load it updates data,
+sorts, filters, groups them and so on. Every this action is done also
+asynchronously one by one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The advantage of asynchronous
+communication is that the page with TreeGrid is still accessible for user.
+TreeGrid also shows status messages to inform user what it is doing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But asynchronous
+communication is slower, especially for smaller grids. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid can be completely
+downloaded and rendered synchronously by setting Sync attribute. The grid can
+be even fully created and rendered during page load.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The changes can be also
+uploaded to server synchronously to not let user to change any data unless the
+upload finishes, set Upload_Sync attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int</i>        </span><a
+name=Sync><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sync</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>chg <b>6.0</b></span><span style='color:#0070C0'>; upd <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> TreeGrid
+is created and rendered fully synchronously.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If created by TreeGrid
+function, it is rendered in time the function returns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can be created and
+rendered synchronously also during HTML page loading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If TreeGrid is created synchronously
+it does <u>not</u> display any message during loading and updating.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If TreeGrid is created
+synchronously it loads its CSS style sheet by AJAX, you should <u>not</u>
+include the CSS style to page in this case.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute value does <u>not</u>
+affect uploading and loading pages in server paging! For these you must set the
+</span></i><a href="#Upload_Sync"><i><span style='font-size:10.0pt'>Upload_Sync</span></i></a><i><span
+style='font-size:10.0pt'> and / or </span></i><a href="#Page_Sync"><i><span
+style='font-size:10.0pt'>Page_Sync</span></i></a><i><span style='font-size:
+10.0pt'>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The synchronous creating is
+faster, especially for small grids, but disables browser during creating.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Individual data loading can
+be controlled by </span><a href="#xxx_Sync"><span style='font-size:10.0pt'>xxx_Sync</span></a><span
+style='font-size:10.0pt'> attribute of the given data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> <i>(since 8.0)</i>,
+it loads data asynchronously, but permits only one request per html page. It
+always waits to finish actual request before starting new request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects all grids at page
+and all their requests. It does not permit simultaneous data requests to
+server.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2</span></i><span
+style='font-size:10.0pt'> it queues the requests, so they are always processed
+in the order they are started.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to not create more new
+threads on server side for the page.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It must be set when using
+TreeGrid server DLL with PHP FastCGI to not create more instances of the DLL.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>      </span><a
+name="Page_Sync"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Page_Sync</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets synchronous download of
+page or child page in server paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is disabled during
+load and waits for server response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>      </span><a
+name="Upload_Sync"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Sync</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets synchronous upload for AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is disabled during
+upload and waits for server response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>      </span><a
+name="xxx_Sync"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxx_Sync</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Postfix
+to data source (e.g. Data_Sync)                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets synchronous download of
+given data source when used AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is disabled during
+load and waits for server response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set Sync attributes
+for data sources Defaults, Text, Base, Layout and Data by &lt;treegrid </span><a
+href="#Sync"><span style='font-size:10.0pt'>Sync</span></a><span
+style='font-size:10.0pt'>/&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgSynchroCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SynchroCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [100]                                                                                                   ,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When count of rendered rows (</span><a
+href="RowAPI.htm#RowCount"><span style='font-size:10.0pt'>RowCount</span></a><span
+style='font-size:10.0pt'>) is higher than this value, many actions like sorting,
+grouping, column resizing and so on are done asynchronously,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                grid is
+disabled and message is displayed. See also </span><a
+href="Export.htm#ExportRows"><span style='font-size:10.0pt'>ExportRows</span></a><span
+style='font-size:10.0pt'> and </span><a href="Print.htm#PrintRows"><span
+style='font-size:10.0pt'>PrintRows</span></a><span style='font-size:10.0pt'>
+attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These actions run
+asynchronously also when <b>Paging</b> is used regardless to SynchroCount
+settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Caching><b><span style='font-size:20.0pt'>Caching (</span></b></a><b><span style='font-size:20.0pt'>AJAX</span></b><b><span style='font-size:20.0pt'>)</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is known problem that
+browsers sometimes does not download the newest data, even if they were changed
+and use the old ones from their cache.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid by default solves
+this problem by forcing browser to not cache the items at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The not caching files is
+useful especially during development when the files are changed frequently.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For final version you should
+consider letting browser to cache some files to speed up the communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>int</i>       </span><a
+name=Cache><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Cache</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How source files are cached /
+refreshed. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The default
+value is <b>0</b> that is expected for <b>development</b>. For final release
+you should set higher value to speed up the communication.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects all TreeGrid
+required files – <b>Defaults.xml</b>, <b>Text.xml</b>, <b>Grid.css,</b> <b>Help.html</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects also all data
+source files downloaded by AJAX, but only by </span><a href="#Method"><span
+style='font-size:10.0pt'>method</span></a><span style='font-size:10.0pt'> <b>Get</b>.
+Individual data source can be cached according to its attribute </span><a
+href="#SourceCache"><span style='font-size:10.0pt'>Cache</span></a><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects all cells of type </span><a
+href="TypeHtml.htm#TImg"><span style='font-size:10.0pt'>Img</span></a><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the only file
+that is <u>not</u> affected by Cache setting is main script <b>GridE.js</b>,
+you should control its caching by yourself.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – Never cache - files are always downloaded from
+server when they are requested. Useful for development when the files are
+changed frequently.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Component version - files are downloaded only when
+TreeGrid is upgraded to new version or build otherwise is used standard browser
+cache.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – Cache version - files are downloaded only when </span><a
+href="#CacheVersion"><span style='font-size:10.0pt'>CacheVersion</span></a><span
+style='font-size:10.0pt'> attribute changes otherwise is used standard browser
+cache.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – Standard cache - caching depends on browser and
+server settings, files are <i><u>usually</u></i> downloaded when they are
+modified.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  int       </span><a
+name=CacheVersion><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CacheVersion</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Version for caching when </span><a
+href="#Cache"><span style='font-size:10.0pt'>Cache</span></a><span
+style='font-size:10.0pt'>=2. When the value is increased, the files are forced
+to download.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>API (</span></b></a><b><span style='font-size:20.0pt'>AJAX</span></b><b><span style='font-size:20.0pt'>)</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnDataSend><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDataSend</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>object</i> <b>source</b>, <i>string</i> <b>data</b>, <i>function</i>
+<b>Func</b>)                           <span style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the request or
+changed data are sent to server by AJAX.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout. The source.<b>Name</b> contains the name of source, e.g.
+“Layout”.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is XML in string that will be sent to server, it can
+be XML with request or changes to upload.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Func</span></b><span
+style='font-size:10.0pt'> is function that must be called if (and only if) the
+handler returns true for custom communication. function <b>Func</b> (int
+result), result &lt; 0 error, &gt;=0 success.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>In this event handler
+you can do:</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Update parameters to be sent
+with the data, by source.Param and source.Params and <b>return null</b> to
+continue</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Modify the XML data string to
+sent and <b>return string</b> with the modified XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Do your own communication and
+<b>return true</b> to <u>not</u> continue. You must call the <b>Func</b> after
+the custom communication finishes. Use function </span><a
+href="#AddDataFromServer"><span style='font-size:10.0pt'>AddDataFromServer</span></a><span
+style='font-size:10.0pt'> to add your own data to grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCustomAjax><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCustomAjax</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TGrid</i>
+<b>grid</b>, <i>object</i> <b>source</b>, <i>string</i> <b>data</b>, <i>function</i>
+<b>Func</b>)               <span style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it for custom AJAX
+communication to replace TreeGrid built-in AJAX routine. Return true for the
+custom communication.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is a <u>copy</u> of the data source that is accessed,
+for example <u>copy</u> of grid.Source.Layout. The source.<b>Name</b> contains
+the name of source, e.g. “Layout”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                When
+downloading page or row children, it has set source.Row as the page or parent
+row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                It is the
+copy of source, because there can be more simultaneous requests for one source
+with different Row settings.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is XML in string that should be sent to server, it
+can be XML with request or changes to upload.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After your communication
+finishes, call function <b>Func</b> (<b>code</b>, <b>result</b>);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>code</b>
+is the integer error code, negative for error, 0 or positive for success</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>result</b>
+is a) returned data string with XML or JSON for <b>code</b> &gt;=0 or b) error
+message string for <b>code </b>&lt; 0</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Simple example: Grids.OnCustomAjax
+= function(G,IO,data,func){ var ret = AjaxCall(IO.Url,data); if(ret&lt;0)
+func(ret,&quot;Error&quot;); else func(0,ret); return true; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string</i>     </span><a
+name=OnDataGet><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDataGet</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, object <b>source</b>, string <b>data</b>, object <b>IO</b>)                                 <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when received successful
+server response with correct data in AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called after
+the &lt;IO&gt; tag is parsed, but before the downloaded data are added to grid,
+changes accepted or body is reloaded (&lt;IO Reload=’1’/&gt;).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout. The source.<b>Name</b> contains the name of source, e.g.
+“Layout”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For <b>Page</b>
+data source the <b>source.<span style='color:#C00000'>Row</span></b> contains
+the row or page the data are loaded for.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is XML in string received from server as the server
+response.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>IO</span></b><span
+style='font-size:10.0pt'> is parsed </span><a href="#ServerResponse"><span
+style='font-size:10.0pt'>&lt;IO&gt;</span></a><span style='font-size:10.0pt'>
+tag with the server response header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this event handler you can
+read and change all <b>IO</b> attributes, including custom attributes sent from
+server in &lt;IO&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also modify the
+received data and return the modified data from this handler (in string).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void</i>       </span><a
+name=OnDataReceive><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDataReceive</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, object <b>source</b>)                                                       <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when received
+successful server response with correct data in AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called after
+all the received data have been added to grid, but before changes are accepted
+or body is reloaded (&lt;IO Reload=’1’/&gt;).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout. The <b>source.<span style='color:#C00000'>Name</span></b>
+contains the name of source, e.g. “Layout”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For <b>Page</b>
+data source the <b>source.<span style='color:#C00000'>Row</span></b> contains
+the row or page the data are loaded for.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this event handler you can
+update the grid after it received the data from server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnDataError><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDataError</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>object</i> <b>source</b>, <i>int</i> <b>result</b>, <i>string</i>
+<b>message</b>, <i>string</i> <b>data</b>)            <span style='color:red'>chg
+<b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when communication
+with server failed and got server HTTP error response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called also if the
+server returned success, but its response does not contain TreeGrid XML data
+(tag &lt;Grid&gt;) – it probably contains some error message from server.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout. The source.<b>Name</b> contains the name of source, e.g.
+“Layout”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For <b>Page</b>
+data source the <b>source.<span style='color:#C00000'>Row</span></b> contains
+the row or page the data are loaded for.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>result</span></b><span
+style='font-size:10.0pt'> is TreeGrid error code if exception raised or bad
+data downloaded:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'> <b>-1
+</b>empty URL, <b>-2</b> bad URL, <b>-3</b> URL not found, <b>-4</b> bad
+document format (no tag &lt;Grid&gt;), <b>-5</b> empty response, <b>-6</b>
+Timeout</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>result</span></b><span
+style='font-size:10.0pt'> is HTTP response error code (e.g 404 as not found) if
+  AJAX communication failed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>message</span></b><span
+style='font-size:10.0pt'> is HTTP response error message (statusText) or
+JavaScript exception message when HTTP communication failed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is a response got from server. It can be HTTP error page
+or the response HTML received from server for successful AJAX, with invalid
+format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For timeout (result = -6) the
+handler can change the source.<b>Repeat</b> and <b>RepeatText</b> to change
+repeating behavior on the timeout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     string     </span><a
+name=AjaxCall><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AjaxCall</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>Url</b>, <i>string</i> <b>Data</b>, <i>function</i> <b>Func</b>)                                                              <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Universal function to do
+synchronous or asynchronous AJAX call to send data to and / or receive data
+from server.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Url</span></b><span
+style='font-size:10.0pt'> is server URL to communicate with. It can be absolute
+or relative, or even static local file.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Url</span></b><span
+style='font-size:10.0pt'> can be also JavaScript object as the TreeGrid data
+source like grid.Source.Layout with its parameters like Url, Method, Param,
+etc. set.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Data</span></b><span
+style='font-size:10.0pt'> is the data to send to server in parameter named <b>Data</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>Func</b> is <u>not</u>
+set, the function does <u>synchronous</u> AJAX call and returns the received
+response in string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>Func</b> is set,
+the function does <u>asynchronous</u> AJAX call and after finish it calls <b>Func</b>:
+function (int result, string response).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     string     </span><a
+name=APIAjaxCall><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AjaxCall</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>object</i>
+<b>Source</b>, <i>string</i> <b>Data</b>, <i>function</i> <b>Func</b>)                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method does synchronous
+or asynchronous AJAX call to given TreeGrid data source and adds the server
+response to grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This method is related to
+TreeGrid, to do custom AjaxCall, use global </span></i><a href="#AjaxCall"><i><span
+style='font-size:10.0pt'>AjaxCall</span></i></a><i><span style='font-size:10.0pt'>
+function.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>source</span></b><span
+style='font-size:10.0pt'> is the data source that is accessed, for example
+grid.Source.Layout.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Data</span></b><span
+style='font-size:10.0pt'> is the data to send to server.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Func</span></b><span
+style='font-size:10.0pt'> is called after the communication is finished, <b>Func</b>:
+function (int result).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=AddDataFromServer><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AddDataFromServer</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>string</i>
+<b>Data</b>)                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds the XML <b>Data</b>
+(“&lt;Grid&gt;...&lt;Changes&gt; ... &lt;/Changes&gt; ... &lt;/Grid&gt;”) into
+grid like it was sent from server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accepts all changes and does
+not send anything to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it to modify data by
+&lt;Changes&gt; tag with rows Added/Changed/Deleted/Moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="xxx_Name"></a><a name=Name><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>xxx.Name</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         [0]        Postfix
+to data source (e.g. grid.Source.Data.Name)                 <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of the data source,
+e.g “Defaults” or “Layout”. To distinguish the data source in API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="Page_Row"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Page.Row</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                     Data
+source Page attribute (grid.Source.Page.Row)                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When downloading page or
+child page, the grid.Source.Page.Row contains the page that is downloading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="Upload_Row"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Upload.Row</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>               Data
+source Upload attribute (grid.Source.Upload.Row)            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When uploading change of only
+one row in AutoUpdate, the grid.Source.Upload.Row contains the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="Cell_Row"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Cell.Row</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                    Data
+source Cell attribute (grid.Source.Cell.Row)                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When requesting changes for
+some cell, the grid.Source.Cell.Row contains the cell row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="Cell_Col"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Cell.Col</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                           Data
+source Cell attribute (grid.Source.Cell.Col)             <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When requesting changes for
+some cell, the grid.Source.Cell.Col contains the cell column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable      </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><a
+name="Cell_Value"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Cell.Value</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                     Data
+source Cell attribute (grid.Source.Cell.Value)                     <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When requesting Suggest list
+for some cell, the grid.Source.Cell.Value contains the actually entered value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

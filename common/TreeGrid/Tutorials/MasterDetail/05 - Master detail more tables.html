@@ -1,0 +1,83 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// ------------------------------------------------------------------------------------------
+// Sets header of the last grid DetailDetail
+Grids.OnShowDetailFinish = function(G,D,row){
+if(D.id=="DetailDetail") D.SetValue(D.Header,"V",G.Rows.Sum.V+"'s "+row.N+" - raw value",1);
+}   
+// ------------------------------------------------------------------------------------------
+   
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Master / Detail</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>5. Master detail more tables</center>
+   <center style='font:bold italic;'>Master detail relation among more plain tables</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='420'>
+            <div style='margin-bottom:6px;'><a href='05 - Master1.xml'>05 - <h2>Master1</h2>.xml</a></div>
+            <div style='width:400px; height:250px;'>
+               <bdo Debug='check' Data_Url='05 - Master1.xml'></bdo>
+            </div>
+            <br />
+            <div style='margin-bottom:6px;'><a href='05 - Master1.xml'>05 - <h2>Master2</h2>.xml</a></div>
+            <div style='width:400px; height:250px;'>
+               <bdo Debug='check' Data_Url='05 - Master2.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='05 - DetailDef.xml'>05 - <h2>DetailDef</h2>.xml</a>&nbsp;<a href='05 - Detail1.xml'>05 - <h2>Detail1</h2>.xml</a></div>
+            <div style='width:400px; height:200px;'>
+               <bdo Debug='check' Layout_Url='05 - DetailDef.xml' Data_Url='05 - Detail1.xml'></bdo>
+            </div>
+            <br />
+            <div style='margin-bottom:6px;'><a href='05 - DetailDef.xml'>05 - <h2>DetailDef</h2>.xml</a>&nbsp;<a href='05 - Detail2.xml'>05 - <h2>Detail2</h2>.xml</a></div>
+            <div style='width:400px; height:200px;'>
+               <bdo Debug='check' Layout_Url='05 - DetailDef.xml' Data_Url='05 - Detail2.xml'></bdo>
+            </div>
+            <br />
+            <div style='margin-bottom:6px;'><a href='05 - DetailDetail.xml'>05 - <h2>DetailDetail</h2>.xml</a></div>
+            <div style='width:400px; height:100px;'>
+               <bdo Debug='check' Data_Url='05 - DetailDetail.xml' Data_Static='DetailDetail'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>
+         One master grid can show its rows in more different detail grids, even every row in different detail grid.<br />
+         One master row can be show in more detail grids at once.<br />
+         In one detail grid can be shown data from more master grids, but not at once.<br />
+         Even detail grid can work also as master grid and show its rows in another detail grid.<br />
+      </li>
+      <li>
+         This example shows two master grids 1 and 2. Every master grid shows every its row in next two detail grids 1 and 2. 
+         And the detail grids 1 and 2 show their rows in the last detail grid.
+      </li>
+      <li>
+         The data are always in the main master grids. The detail grids that works also as master grids do not contain any data, all their data are still copied from their masters.<br />
+      </li>
+      <li>
+         The master row attribute <h3>Detail</h3> can contain more detail grids ids to be copies to all these grids.<br />
+      </li>
+      <li>
+         To choose which master rows children will be copied to which detail grid define Cfg attribute <h3>MasterDef</h3> in detail grid, with list of row default names. 
+         Only row with Def attribute listed in MasterDef will be copied to given grid.<br />
+         It is even possible to copy one child row to more detail grids, the changes in such row will be mirrored among all the grids.<br />
+         If the detail grid works also as master grid for another detail, the defaults for the second detail must be listed in the MasterDef too (in this example the 'DETAIL' def).<br />
+      </li>
+   </ul>
+</body>
+</html>

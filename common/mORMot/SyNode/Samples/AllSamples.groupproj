@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{42C0E2B5-379F-41A3-A321-BD6E3E5AA2F1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="02 - Bindings\SpiderMonkey45Binding.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="01 - Dll Modules\math-module\src\mathModule.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SpiderMonkey45Binding">
+        <MSBuild Projects="02 - Bindings\SpiderMonkey45Binding.dproj"/>
+    </Target>
+    <Target Name="SpiderMonkey45Binding:Clean">
+        <MSBuild Projects="02 - Bindings\SpiderMonkey45Binding.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SpiderMonkey45Binding:Make">
+        <MSBuild Projects="02 - Bindings\SpiderMonkey45Binding.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="mathModule">
+        <MSBuild Projects="01 - Dll Modules\math-module\src\mathModule.dproj"/>
+    </Target>
+    <Target Name="mathModule:Clean">
+        <MSBuild Projects="01 - Dll Modules\math-module\src\mathModule.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="mathModule:Make">
+        <MSBuild Projects="01 - Dll Modules\math-module\src\mathModule.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SpiderMonkey45Binding;mathModule"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SpiderMonkey45Binding:Clean;mathModule:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SpiderMonkey45Binding:Make;mathModule:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

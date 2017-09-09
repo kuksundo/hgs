@@ -1,0 +1,35 @@
+<Grid>
+   <Cfg id="ServerPaging" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1"/>
+   <Cfg Paging="3"/>
+   <Cfg Sort="R,C" AutoSort="1"/>
+   <Cfg Group="R" Grouped="0" GroupMain="C" GroupRestoreSort="1"/>
+   <Cfg PrintLoad="1"/>
+   <Cfg Style="Borders"/>
+   <Pager Width="80"/>
+   <Cols>
+      <C Name="id" Type="Int" CanEdit="0"/>
+      <C Name="R" Type="Text" CaseSensitive="0" Width="130"/>
+      <C Name="C" Type="Text" CaseSensitive="0" Width="130" GroupWidth="260"/>
+      <C Name="N" Type="Int" Width="50"/>
+      <C Name="NN" Type="Int" Width="50" Formula="N*N"/>
+   </Cols>
+   <Def><D Name="Group" idVisible="0" Calculated="1" NFormula="sum()"/></Def>
+   <Head>
+      <Filter idVisible="0" RRange="1" RButton="Defaults" RDefaults="|*FilterOff|*RowsAll" RShowMenu="0" RDefaultFilter="1" RCanEdit="0"/>
+   </Head>
+   <Solid>
+      <I id="PAGER" Cells="NAV,LIST,ONE,GROUP" Space="4"
+         NAVType="Pager"
+         LISTType="Pages" LISTRelWidth="1" LISTAlign="left" LISTLeft="10"
+         ONEType="Bool" ONEFormula="Grid.AllPages?0:1" ONECanEdit="1" ONELabelRight="Show one page with sort, filter &amp; group"
+         ONEOnChange="Grid.AllPages = !Value; Grid.OnePage = Value?7:0; Grid.RenderBody();"
+         GROUPType="Bool" GROUPLabelRight="Group rows" GROUPOnChange="GroupOn || GroupOff" GROUPCanFocus="0"
+         />
+   </Solid>
+   <Header id="id" R="Region" C="Country" N="Num" NN="N*N"/>
+   <Toolbar 
+      Cells="Reload,Print,Add,Sort,Columns,Cfg,StyleLabel,StyleCombo,ALL,Empty,Formula"
+      Styles="2" Formula="'Rows: &lt;b>'+count()+'&lt;/b>, Num sum:&lt;b>'+sum('N')+'&lt;/b>'" FormulaLeft="5"
+      ALLType="Button" ALLButton="Button" ALLOnClick="LoadAllPages(Grid);" ALL="Load all pages" ALLTip="Download all pages on background"
+      />
+</Grid>

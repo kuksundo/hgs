@@ -1,0 +1,51 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Client child paging in tree</center>
+   <center style='font:bold italic;'>Automatic paging of child rows in tree on client side</center>
+   <div style='margin-bottom:6px;'><a href='02 - Client child paging.xml'>02 - <h2>Client child paging</h2>.xml</a></div>
+   <div style='width:350px; height:550px;'>
+      <bdo Debug='check' Data_Url='02 - Client child paging.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         There are three independent ways, how to page children in tree.
+         None of the method affect root rows, they affect only children of some parent rows.
+      </li>
+      <li>
+         <h4>Render children on expand</h4> by Cfg attribute <h3>ChildPaging</h3><b>='2'</b>.<br />
+         The parent rows must be collapsed (must have set <b>Expanded='0'</b>) to take the child paging effect.
+         To collapse all rows in grid define &lt;Def>&lt;D Name='R' Expanded='0'/>&lt;/Def>.
+         <br />
+         It is default setting, the ChildPaging is set to 2 by default.<br />
+         The children are rendered only on first expand. 
+         To not slow the grid if there are too many children rendered, set <b>RemoveCollapsed='2'</b> to remove the rendered children on collapse and render them on every expand.
+      </li>
+      <li>
+         <h4>Render children on scroll</h4> by Cfg attribute <h3>ChildParts</h3><b>='2'</b>.<br />
+         It renders children when they become visible by scrolling, similarly to root pages. It can render only subset of children of one parent.<br />
+         The count of children rendered at once (the size of the part) is set by Cfg attribute <b>ChildPartLength</b>.<br />
+         When the parent is expanded or expanding, it can render immediately few first children to speed the rendering. Their count is set by Cfg attribute <b>ChildPartMin</b>.<br />
+         When grid has too many rendered rows, it can be slow. It is possible to remove unused child parts by setting <b>MaxChildParts</b> attribute.<br />
+         It is also possible to render all children on start or on expand, but with progress dialog to cancel the rendering and render the rest on demand, for this behavior set <b>ChildParts='1'</b>. See the second icon on toolbar.<br />
+      </li>
+      <li>
+         <h4>Group children to sub parents</h4> by row attribute <h3>MaxChildren</h3>.<br />
+         When row children count exceeds its MaxChildren value, there are created new sub rows and the children are grouped to these rows, by MaxChildren count.<br />
+         To not group children with count only few rows above MaxChildren set <b>MaxChildrenDiff</b>, the rows are grouped after the count is higher than MaxChildren+MaxChildrenDiff.<br />
+         Some attributes of the newly created row can be specified in default row named <b>CPage</b> (&lt;D Name='CPage' ... />).
+      </li>
+   </ul>
+</body>
+</html>

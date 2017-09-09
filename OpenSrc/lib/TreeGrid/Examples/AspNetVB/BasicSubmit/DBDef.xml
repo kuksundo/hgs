@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Grid>
+   <!-- Cfg tag is splitted by attributes just for comments, you should merge them in your standard applications -->
+	<Cfg id="DB"/> <!-- Grid identification for saving configuration to cookies -->
+   <Cfg Paging='2' ChildPaging='2'/> <!-- Both paging set to client -->
+   <Cfg PageLength='21'/> <!-- count of rows at one page -->
+   <Cfg SaveSession='1'/> <!-- Stores IO Session to cookies to identify the client on server and access appropriate grid instance -->
+   <Cfg ShowDeleted='0'/> <!-- This example hides deleted row instead of coloring them red -->
+   <Cfg MaxHeight='1'/> <!-- Grid maximizes height of the main tag on page -->
+   <Cfg IdChars='0123456789' NumberId='1'/> <!-- row ids are set by numbers -->
+   <Cfg Sort='Project,Resource'/> <!-- To sort grid according to Project and Resource for first time (when no configuration saved) -->
+   <Cfg GroupMain='Project'/> <!-- Shows grouping tree in column Project -->
+   <Cfg Dragging='0'/> <!-- In this example is dragging not permitted -->
+   <Cfg UsePrefix='1'/><!-- Uses prefix (GS,GL,GO,GM,GB,GP,GR) for custom class names to support all style -->
+   <Cfg Alternate='3'/> <!-- Custom style setting, every third row will have different color -->
+   <Cols>
+      <C Name='Project' Width='250' Type='Text'/>
+      <C Name='Resource' Width='120' Type='Text'/>
+      <C Name='Week' Width='60' Type='Int'/>
+      <C Name='Hours' Width='60' Type='Float' Format='0.###'/>
+   </Cols>
+   <Def>
+		<D Name='Group' ProjectVisible='0' ResourceVisible='0' AggChildren='1' 
+         Calculated='1' WeekFormula='min()+"-"+max()' WeekType='Text' WeekClassInner='Number' HoursFormula='sum()'/>
+      <!-- Default row for grouping, calculates summary for its group -->
+   </Def>
+   <Head>
+      <Filter />
+      <!-- Filter row -->
+      <Group Space='1' Panel='1'
+         Cells='List,Custom'
+         List='|Group by none|Group by Project|Group by Resource|Group by Project -> Resource'
+         ListCustom='Custom grouping'
+         ListWidth='180'
+         Cols='||Project|Resource|Project,Resource'
+         />
+      <!-- Grouping row -->
+   </Head>
+   <Foot>
+      <I CanEdit='0' Project='Summary' 
+         Calculated='1' WeekFormula='min()+"-"+max()' WeekType='Text' WeekClassInner='Number' HoursFormula='sum()' HoursFormat='0.##'/>
+      <!-- Calculated summary row -->
+   </Foot>
+   <Pager Width='170'/> <!-- Right side pager -->
+</Grid>

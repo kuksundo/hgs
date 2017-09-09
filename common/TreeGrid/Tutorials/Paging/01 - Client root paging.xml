@@ -1,0 +1,185 @@
+<Grid>
+   <Cfg id="Paging" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1"/>
+   <Cfg Paging="2" PageLength="10" MaxPages="20"/>
+   <Cfg Sort="R,C" AutoSort="1"/>
+   <Cfg Group="R" Grouped="0" GroupMain="C" GroupRestoreSort="1"/>
+   <Cfg Style="Borders"/>
+   <Pager Width="250"/>
+   <Cols>
+      <C Name="id" Type="Int" CanEdit="0"/>
+      <C Name="R"  Type="Text" CaseSensitive="0" Width="150"/>
+      <C Name="C"  Type="Text" CaseSensitive="0" Width="130" GroupWidth="280"/>
+      <C Name="N" Type="Int" Width="50"/>
+   </Cols>
+   <Def><D Name="Group" idVisible="0" Calculated="1" NFormula="sum()"/></Def>
+   <Solid>
+      <I Kind="Tabber" Cells="NONE,ONE,ALL,DEMAND" Space="5"
+         NONEType="Button" NONESwitch="1" NONERadio="1" NONEButton="Tab" NONEButtonText="No paging"
+         NONEFormula="Grid.Paging==0" NONETip="Sets Paging = 0&lt;br>The rows are not paged at all"
+         NONEOnCheck="Grid.Paging = 0; Grid.CreatePages(); Grid.Rows.PAGER.Visible = 0; Grid.Render();"
+         ONEType="Button" ONESwitch="1" ONERadio="1" ONEButton="Tab" ONEButtonText="One page at a time"
+         ONEFormula="Grid.Paging &amp;&amp; !Grid.AllPages" ONETip="Sets Paging = 2; AllPages = 0 &lt;br>Displays only one page in grid at a time"
+         ONEOnCheck="Grid.AllPages = 0; if(!Grid.Paging) { Grid.Paging = 2; Grid.CreatePages(); Grid.Rows.PAGER.Visible = 1; Grid.Render(); } else { Grid.Paging = 2; Grid.RenderBody(); }"
+         ALLType="Button" ALLSwitch="1" ALLRadio="1" ALLButton="Tab" ALLButtonText="All pages on start"
+         ALLFormula="Grid.Paging==1 &amp;&amp; Grid.AllPages" ALLTip="Sets Paging = 1; AllPages = 1&lt;br>Shows all pages in grid at once and renders them all on start and also after any change in sort / group / filter / search setting"
+         ALLOnCheck="if(!Grid.Paging) { Grid.Paging = 1; Grid.AllPages = 1; Grid.CreatePages(); Grid.Rows.PAGER.Visible = 1; Grid.Render(); } else { Grid.Paging = 1; if(Grid.AllPages) Grid.ShowPages(); else { Grid.AllPages = 1; Grid.RenderBody(); } }"
+         DEMANDType="Button" DEMANDSwitch="1" DEMANDRadio="1" DEMANDButton="Tab" DEMANDButtonText="Pages on demand"
+         DEMANDFormula="Grid.Paging==2 &amp;&amp; Grid.AllPages" DEMANDTip="Sets Paging = 2; AllPages = 1;&lt;br>Shows all pages in grid at once, but renders the page only if it becomes visible due scroll"
+         DEMANDOnCheck="if(!Grid.Paging) { Grid.Paging = 2; Grid.AllPages = 1; Grid.CreatePages(); Grid.Rows.PAGER.Visible = 1; Grid.Render(); } else { Grid.Paging = 2; if(Grid.AllPages) Grid.ShowPages(); else { Grid.AllPages = 1; Grid.RenderBody(); } }"
+         />
+      <I id="PAGER" Cells="NAV,LIST,GROUP" Space="4"
+         NAVType="Pager"
+         LISTType="Pages" LISTRelWidth="1" LISTAlign="left" LISTLeft="10"
+         GROUPType="Bool" GROUPLabelRight="Group rows" GROUPOnChange="GroupOn || GroupOff" GROUPCanFocus="0"
+         />
+   </Solid>
+   <Head>
+      <Filter idVisible="0" RRange="1" RButton="Defaults" RDefaults="|*FilterOff|*RowsAll" RShowMenu="0" RDefaultFilter="1" RCanEdit="0"/>
+   </Head>
+   <Header id="id" R="Region" C="Country" N="Num"/>
+   <Toolbar Styles="2" Formula="'Rows: &lt;b>'+count()+'&lt;/b>, Num sum:&lt;b>'+sum('N')+'&lt;/b>'"/>
+   <Body>
+      <B>
+         <I id='1' R='Central &amp; South Asia' C='ARMENIA' N='3'/>
+         <I id='2' R='Central &amp; South Asia' C='AZERBAIJAN' N='4'/>
+         <I id='3' R='Central &amp; South Asia' C='BANGLADESH' N='2'/>
+         <I id='4' R='Central &amp; South Asia' C='INDIA' N='5'/>
+         <I id='5' R='Central &amp; South Asia' C='KAZAKSTAN' N='6'/>
+         <I id='6' R='Central &amp; South Asia' C='PAKISTAN' N='3'/>
+         <I id='7' R='Central &amp; South Asia' C='SRI LANKA' N='8'/>
+         <I id='8' R='East Asia &amp; the Pacific' C='AUSTRALIA' N='9'/>
+         <I id='9' R='East Asia &amp; the Pacific' C='BRUNEI' N='7'/>
+         <I id='10' R='East Asia &amp; the Pacific' C='CHINA' N='0'/>
+         <I id='11' R='East Asia &amp; the Pacific' C='HONG KONG' N='0'/>
+         <I id='12' R='East Asia &amp; the Pacific' C='INDONESIA' N='9'/>
+         <I id='13' R='East Asia &amp; the Pacific' C='JAPAN' N='6'/>
+         <I id='14' R='East Asia &amp; the Pacific' C='KOREA, DPR' N='4'/>
+         <I id='15' R='East Asia &amp; the Pacific' C='MALAYSIA' N='3'/>
+         <I id='16' R='East Asia &amp; the Pacific' C='MONGOLIA' N='2'/>
+         <I id='17' R='East Asia &amp; the Pacific' C='MYANMAR' N='1'/>
+         <I id='18' R='East Asia &amp; the Pacific' C='NEW ZEALAND' N='5'/>
+         <I id='19' R='East Asia &amp; the Pacific' C='PAPUA NEW GUINEA' N='4'/>
+         <I id='20' R='East Asia &amp; the Pacific' C='PHILIPPINES' N='5'/>
+         <I id='21' R='East Asia &amp; the Pacific' C='SINGAPORE' N='3'/>
+         <I id='22' R='East Asia &amp; the Pacific' C='SOUTH KOREA' N='1'/>
+         <I id='23' R='East Asia &amp; the Pacific' C='TAIWAN' N='2'/>
+         <I id='24' R='East Asia &amp; the Pacific' C='THAILAND' N='7'/>
+         <I id='25' R='East Asia &amp; the Pacific' C='VIETNAM' N='6'/>
+         <I id='26' R='East Europe' C='ALBANIA' N='5'/>
+         <I id='27' R='East Europe' C='BELARUS' N='2'/>
+         <I id='28' R='East Europe' C='BULGARIA' N='8'/>
+         <I id='29' R='East Europe' C='CROATIA' N='5'/>
+         <I id='30' R='East Europe' C='CZECH REPUBLIC' N='1'/>
+         <I id='31' R='East Europe' C='ESTONIA' N='0'/>
+         <I id='32' R='East Europe' C='HUNGARY' N='7'/>
+         <I id='33' R='East Europe' C='LATVIA' N='5'/>
+         <I id='34' R='East Europe' C='LITHUANIA' N='4'/>
+         <I id='35' R='East Europe' C='MOLDOVA' N='1'/>
+         <I id='36' R='East Europe' C='POLAND' N='9'/>
+         <I id='37' R='East Europe' C='ROMANIA' N='3'/>
+         <I id='38' R='East Europe' C='RUSSIA' N='4'/>
+         <I id='39' R='East Europe' C='SERBIA-MONTENEGRO' N='5'/>
+         <I id='40' R='East Europe' C='SLOVAK REPUBLIC' N='6'/>
+         <I id='41' R='East Europe' C='SLOVENIA' N='5'/>
+         <I id='42' R='East Europe' C='UKRAINE' N='2'/>
+         <I id='43' R='Middle East &amp; North Africa' C='ALGERIA' N='1'/>
+         <I id='44' R='Middle East &amp; North Africa' C='BAHRAIN' N='0'/>
+         <I id='45' R='Middle East &amp; North Africa' C='EGYPT' N='0'/>
+         <I id='46' R='Middle East &amp; North Africa' C='IRAN' N='9'/>
+         <I id='47' R='Middle East &amp; North Africa' C='IRAQ' N='8'/>
+         <I id='48' R='Middle East &amp; North Africa' C='ISRAEL' N='7'/>
+         <I id='49' R='Middle East &amp; North Africa' C='JORDAN' N='4'/>
+         <I id='50' R='Middle East &amp; North Africa' C='KUWAIT' N='3'/>
+         <I id='51' R='Middle East &amp; North Africa' C='LEBANON' N='8'/>
+         <I id='52' R='Middle East &amp; North Africa' C='LIBYA' N='2'/>
+         <I id='53' R='Middle East &amp; North Africa' C='MOROCCO' N='5'/>
+         <I id='54' R='Middle East &amp; North Africa' C='OMAN' N='6'/>
+         <I id='55' R='Middle East &amp; North Africa' C='QATAR' N='7'/>
+         <I id='56' R='Middle East &amp; North Africa' C='SAUDI ARABIA' N='8'/>
+         <I id='57' R='Middle East &amp; North Africa' C='SYRIA' N='5'/>
+         <I id='58' R='Middle East &amp; North Africa' C='TUNISIA' N='4'/>
+         <I id='59' R='Middle East &amp; North Africa' C='UAE' N='3'/>
+         <I id='60' R='Middle East &amp; North Africa' C='YEMEN' N='8'/>
+         <I id='61' R='North &amp; Central America' C='BAHAMAS' N='3'/>
+         <I id='62' R='North &amp; Central America' C='CANADA' N='2'/>
+         <I id='63' R='North &amp; Central America' C='COSTA RICA' N='9'/>
+         <I id='64' R='North &amp; Central America' C='CUBA' N='8'/>
+         <I id='65' R='North &amp; Central America' C='DOMINICAN REPUBLIC' N='5'/>
+         <I id='66' R='North &amp; Central America' C='EL SALVADOR' N='4'/>
+         <I id='67' R='North &amp; Central America' C='GUATEMALA' N='5'/>
+         <I id='68' R='North &amp; Central America' C='HAITI' N='6'/>
+         <I id='69' R='North &amp; Central America' C='HONDURAS' N='2'/>
+         <I id='70' R='North &amp; Central America' C='JAMAICA' N='1'/>
+         <I id='71' R='North &amp; Central America' C='MEXICO' N='9'/>
+         <I id='72' R='North &amp; Central America' C='NICARAGUA' N='8'/>
+         <I id='73' R='North &amp; Central America' C='PANAMA' N='7'/>
+         <I id='74' R='North &amp; Central America' C='TRINIDAD &amp; TOBAGO' N='5'/>
+         <I id='75' R='North &amp; Central America' C='UNITED STATES' N='4'/>
+         <I id='76' R='South America' C='ARGENTINA' N='3'/>
+         <I id='77' R='South America' C='BOLIVIA' N='5'/>
+         <I id='78' R='South America' C='BRAZIL' N='9'/>
+         <I id='79' R='South America' C='CHILE' N='3'/>
+         <I id='80' R='South America' C='COLOMBIA' N='4'/>
+         <I id='81' R='South America' C='ECUADOR' N='2'/>
+         <I id='82' R='South America' C='GUYANA' N='3'/>
+         <I id='83' R='South America' C='PARAGUAY' N='6'/>
+         <I id='84' R='South America' C='PERU' N='4'/>
+         <I id='85' R='South America' C='SURINAME' N='5'/>
+         <I id='86' R='South America' C='URUGUAY' N='2'/>
+         <I id='87' R='South America' C='VENEZUELA' N='9'/>
+         <I id='88' R='Sub-Saharan Africa' C='ANGOLA' N='6'/>
+         <I id='89' R='Sub-Saharan Africa' C='BOTSWANA' N='3'/>
+         <I id='90' R='Sub-Saharan Africa' C='BURKINA FASO' N='2'/>
+         <I id='91' R='Sub-Saharan Africa' C='CAMEROON' N='3'/>
+         <I id='92' R='Sub-Saharan Africa' C='CONGO' N='8'/>
+         <I id='93' R='Sub-Saharan Africa' C='CONGO DR' N='1'/>
+         <I id='94' R='Sub-Saharan Africa' C='COTE D&apos;IVOIRE' N='2'/>
+         <I id='95' R='Sub-Saharan Africa' C='ETHIOPIA' N='0'/>
+         <I id='96' R='Sub-Saharan Africa' C='GABON' N='7'/>
+         <I id='97' R='Sub-Saharan Africa' C='GAMBIA' N='6'/>
+         <I id='98' R='Sub-Saharan Africa' C='GHANA' N='3'/>
+         <I id='99' R='Sub-Saharan Africa' C='GUINEA' N='2'/>
+         <I id='100' R='Sub-Saharan Africa' C='GUINEA-BISSAU' N='4'/>
+         <I id='101' R='Sub-Saharan Africa' C='KENYA' N='3'/>
+         <I id='102' R='Sub-Saharan Africa' C='LIBERIA' N='4'/>
+         <I id='103' R='Sub-Saharan Africa' C='MADAGASCAR' N='3'/>
+         <I id='104' R='Sub-Saharan Africa' C='MALAWI' N='2'/>
+         <I id='105' R='Sub-Saharan Africa' C='MALI' N='4'/>
+         <I id='106' R='Sub-Saharan Africa' C='MOZAMBIQUE' N='5'/>
+         <I id='107' R='Sub-Saharan Africa' C='NAMIBIA' N='8'/>
+         <I id='108' R='Sub-Saharan Africa' C='NIGER' N='8'/>
+         <I id='109' R='Sub-Saharan Africa' C='NIGERIA' N='7'/>
+         <I id='110' R='Sub-Saharan Africa' C='SENEGAL' N='9'/>
+         <I id='111' R='Sub-Saharan Africa' C='SIERRA LEONE' N='0'/>
+         <I id='112' R='Sub-Saharan Africa' C='SOMALIA' N='7'/>
+         <I id='113' R='Sub-Saharan Africa' C='SOUTH AFRICA' N='6'/>
+         <I id='114' R='Sub-Saharan Africa' C='SUDAN' N='4'/>
+         <I id='115' R='Sub-Saharan Africa' C='TANZANIA' N='4'/>
+         <I id='116' R='Sub-Saharan Africa' C='TOGO' N='5'/>
+         <I id='117' R='Sub-Saharan Africa' C='UGANDA' N='8'/>
+         <I id='118' R='Sub-Saharan Africa' C='ZAMBIA' N='2'/>
+         <I id='119' R='Sub-Saharan Africa' C='ZIMBABWE' N='5'/>
+         <I id='120' R='West Europe' C='AUSTRIA' N='6'/>
+         <I id='121' R='West Europe' C='BELGIUM' N='4'/>
+         <I id='122' R='West Europe' C='CYPRUS' N='5'/>
+         <I id='123' R='West Europe' C='DENMARK' N='6'/>
+         <I id='124' R='West Europe' C='FINLAND' N='7'/>
+         <I id='125' R='West Europe' C='FRANCE' N='8'/>
+         <I id='126' R='West Europe' C='GERMANY' N='3'/>
+         <I id='127' R='West Europe' C='GREECE' N='1'/>
+         <I id='128' R='West Europe' C='ICELAND' N='3'/>
+         <I id='129' R='West Europe' C='IRELAND' N='6'/>
+         <I id='130' R='West Europe' C='ITALY' N='4'/>
+         <I id='131' R='West Europe' C='LUXEMBOURG' N='3'/>
+         <I id='132' R='West Europe' C='MALTA' N='2'/>
+         <I id='133' R='West Europe' C='NETHERLANDS' N='1'/>
+         <I id='134' R='West Europe' C='NORWAY' N='4'/>
+         <I id='135' R='West Europe' C='PORTUGAL' N='5'/>
+         <I id='136' R='West Europe' C='SPAIN' N='6'/>
+         <I id='137' R='West Europe' C='SWEDEN' N='7'/>
+         <I id='138' R='West Europe' C='SWITZERLAND' N='8'/>
+         <I id='139' R='West Europe' C='TURKEY' N='9'/>
+         <I id='140' R='West Europe' C='UNITED KINGDOM' N='3'/>
+      </B>
+   </Body>
+</Grid>

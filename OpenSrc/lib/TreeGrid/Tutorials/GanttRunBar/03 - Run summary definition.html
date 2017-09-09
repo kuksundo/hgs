@@ -1,0 +1,90 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttRunBar"><b>Gantt Run bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Run summary definition</center>
+   <center style='font:bold italic;'>Grouping main bars to one row with Run boxes</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Run summary group.xml'>03 - <h2>Run summary group</h2>.xml</a> <i>Creates Run from plain grid with main bars by grouping.</i> <i style="font-size:12px;">Uses Run <b>Box</b> as Gantt task.</i></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='03 - Run summary group.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Run summary data.xml'>03 - <h2>Run summary data</h2>.xml</a> <i>Creates Run from child main bars</i> <i style="font-size:12px;">Uses whole Run <b>Bar</b> as Gantt task.</i></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='03 - Run summary data.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Run summary tree.xml'>03 - <h2>Run summary tree</h2>.xml</a> <i>Creates Run from data in (hidden) child rows. Shows also tree of the Runs.</i> <i style="font-size:12px;">Uses whole Run <b>Bar</b> as Gantt task.</i></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='03 - Run summary tree.xml'></bdo>
+   </div>
+   <br />
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttSummary.htm#RunMain">Editable Run bar as summary of child Main bars</a></b>.<br />
+         See also documentation for <a href="../../Doc/GanttRun.htm">Run bar</a> and <a href="../../Doc/GanttMain.htm">Main bar</a>.
+      </li>
+
+     <li> 
+      Normally the Run is defined by one long string with all boxes for one row. 
+      These examples shows alternate definition - creates Run from child rows, where every child row defines one Run box.<br />
+      Every change in Run boxes is done also in the child data and these changes can be uploaded to server.
+     <ul>
+      <li>
+      The first <b>Run Group</b> example defines only the child main bars in plain grid and creates the parent Run rows by grouping.<br />
+      </li>
+      <li>
+      The second <b>Run Data</b> example defines both the child main bars and parent Run bars in tree in the input data.<br />
+      </li>
+      <li>
+      The third <b>Run Tree</b> example does not define the main bars, but calculates the Run just from data in child rows. It also shows tree of the runs - how to mix the child Run data with child Runs.
+      </li>
+      </ul>
+     </li>
+
+     <li>
+      Set it up by
+      <ul>
+      <li>
+      Create new column Type='Text' and Visible='0' and assign is to <b>GanttRun</b> attribute.<br />
+      </li>
+      <li>
+      Set Formula='<h3>ganttrunsum()</h3>' to the parent rows to the new column cells to calculate the Run from data in children.<br />
+      </li>
+      <li>
+      Set <h3>GanttRunSummary</h3><b>='X'</b> to the parent rows Gantt cells to mirror the changes done in the Run to the child data. The <b>X</b> is the child main bar plan, "0" for the first one.<br />
+      </li>
+      <li>
+      Optionally define other Run columns like GanttRunStart, GanttRunEnd, GanttRunDuration, GanttRunComplete and calculate them by formulas: ganttrunstart, ganttrunend, ganttrunduration, ganttpercent(). Define right CalcOrder for the rows to be first calculated the Run by ganttrunsum.<br />
+      These columns will be used for the parent rows with Run.
+      </li>
+      <li>
+      Optionally define new columns with data in child rows for individual boxes. They can define all the Run box attributes: Start,End,Width,Type,Text,Class,Tip,Id,Group,State,Top,Height,Manual,Complete,Resources,HtmlLeft,HtmlRight.<br />
+      Set their names to <h3>GanttSummaryCols</h3> attribute of the Gantt cell in parent row to link them with the child data. 
+      </li>
+      <li>
+      Optionally define <b>GanttSummarySeparators</b> attribute to use different separators in Run definition. If some of the data can contain the default separators (comma and semicolon).
+      </li>
+      <li>
+      Optionally define <b>GanttSummaryCDef</b> attribute to distinguish child rows used as data for parent Run and other child rows.
+      </li>
+      <li>
+      Optionally define the main bars to show them in child rows, by standard attributes GanttStart, GanttEnd, GanttDuration.
+      </li>
+      </ul>
+     </li>
+     
+   </ul>
+</body>
+</html>

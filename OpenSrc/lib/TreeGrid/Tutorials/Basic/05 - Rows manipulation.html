@@ -1,0 +1,205 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// Simulated save, shows the data to be sent to server in "Output" tag
+Grids.OnSave = function(G){
+GetElem("Output").value = G.GetXmlData().replace(/\</g,"\n<");
+}
+
+Grids.OnLoaded = function(G){ GetElem("Output").value = ""; } // Clears the Output on start
+
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>5. Rows manipulation</center>
+   <center style='font:bold italic;'>Adding, deleting, copying, moving, selecting rows</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='05 - Rows manipulation.xml'>05 - <h2>Rows manipulation</h2>.xml</a></div>
+            <div style='width:500px; height:400px;'>
+               <bdo Debug='check' Data_Url='05 - Rows manipulation.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0' HtmlMessage='Simulated save to server, see the moved row ids changed' HtmlMessageTime='1000'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'>Changes to be sent to server</div>
+            <textarea id='Output' style="width:400px;height:390px;"></textarea>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>
+         <h4>Selecting rows and cells</h4>
+         <ul>
+            <li>See documentaion for <b><a href="../../Doc/RowSelect.htm">Row and cell select</a></b>.</li>
+            <li>
+               Selected rows are shown by default in <b>yellow</b> background.<br />
+               The selected rows can be deleted, moved or copied together. Or they can be used for any custom action, get them by API method <b>GetSelRows</b>.<br />
+            </li>
+            <li>
+               One row can be selected or unselected by panel <b>Select</b> button or by <b>ctrl+click</b> or by pressing <b>space</b> key on focused row.<br />
+               All rows can be selected or unselected by header panel <b>Select</b> button. If there are both selected and not selected rows, the rows are unselected.<br />
+               Range of rows can be selected by <b>click</b> to the first row and <b>shift+click</b> to the last row. And by <b>ctrl+drag</b> rows.<br />
+               All rows selection can be inverted by <b>ctrl+click</b> to the header panel <b>Select</b> button. Range of rows can be inverted by <b>dragging</b> panel <b>Select</b> buttons.<br />
+               Rows can be selected and unselected also by <b>Search</b> feature, see tutorial <a href="../Filter/03 - Search and advanced filters.html">Search and advanced filters</a>.<br />
+               Rows can be selected and unselected also by <b>API</b>, methods <b>SelectRow</b> and <b>SelectAllRows</b>.<br />
+            </li>
+            <li>
+               Default actions set for selecting in Defaults.xml in &lt;Actions> tag:<br />
+               <b style="color:black;">OnCtrlClickCell</b>="SelectCell OR DeselectCell OR SelectRow OR DeselectRow,1"
+		         <b style="color:black;">OnShiftClickCell</b>="InvertCellRangeFirst OR InvertRowRangeFirst,1"<br />
+               <b style="color:black;">OnCtrlDragRow</b>="InvertCellsFirst OR InvertRowsFirst"
+               <b style="color:black;">OnClickPanelSelect</b>="SelectRow OR DeselectRow"
+               <b style="color:black;">OnDragPanelSelect</b>="InvertOddRows"
+               <b style="color:black;">OnClickHeaderSelect</b>="DeselectAll OR SelectAll" 
+		         <b style="color:black;">OnCtrlClickHeaderSelect</b>="InvertAll"
+            </li>
+            <li>
+               Selecting in grid can be restricted by setting &lt;Cfg> attribute <b>Selecting='0'</b>.<br />
+               Individual row can be set as unselectable by row attribute <b>CanSelect='0'</b>.
+            </li>
+            <li>
+               The selected row is marked by row attribute <b>Selected='1'</b>. It can be set in input data and can be read by API.<br /> 
+               Selected rows can be also uploaded to server when <b>Upload_Type</b> contains flag "<b>Selected</b>". <br />
+               The selected rows can be also saved to cookies by &lt;Cfg> attribute <b>SaveSelected</b>.<br />
+            </li>
+            <li>
+               It is possible also select individual cells or cell ranges by setting &lt;Cfg> attribute <b>SelectingCells='1'</b>.<br />
+               The selected cells are not used by TreeGrid and can be used for custom actions, get them by API method <b>GetSelRanges</b>.<br />
+            </li>
+            <li>
+               To permit selection only one row at time set &lt;Cfg> attribute <b>SelectingSingle='1'</b><br />
+               To have not persistent selection, to clear it after some action or when selecting new selection attach action <b>ClearSelection</b> to given events.
+               For example &lt;Actions OnClickCell='ClearSelection,FocusEdit' OnClickOutside='ClearSelection,Blur'/> to clear the selection after any click.
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Deleting rows</h4>
+         <ul>
+            <li>See documentaion for <b><a href="../../Doc/RowDelete.htm">Row deleting</a></b>.</li>
+            <li>
+               Deleted rows are shown by default in <b>red</b> background. Or they are hidden if set &lt;Cfg> attribute <b>ShowDeleted='0'</b>.<br />
+               The deleted rows are removed from grid after successfull save changes on server or accepting changes by API method <b>AcceptChanges</b>.<br />
+            </li>
+            <li>
+               One row can be deleted by clicking to row panel <b>Delete</b> button or by pressing <b>del key</b> on focused row. <br />
+               More selected rows can be deleted by clicking header panel <b>Delete</b> icon or by pressing <b>ctrl + del</b> key.<br />
+               One row can be deleted also by API method <b>DeleteRow</b> or <b>DeleteRowT</b>. Selected rows by API method <b>ActionDeleteSelected</b>.<br />
+               Row can be also physically removed from grid by API method <b>RemoveRow</b> - the change cannot be send to server.
+            </li>
+            <li>
+               Default actions set for deleting in Defaults.xml in &lt;Actions> tag:<br />
+               <b style="color:black;">OnClickPanelDelete</b>="DeleteRow OR UndeleteRow" <b style="color:black;">OnDel</b>="DeleteRowF OR UndeleteRowF,1"/><br />
+               <b style="color:black;">OnClickHeaderDelete</b>="UndeleteSelected OR DeleteSelected" <b style="color:black;">OnCtrlDel</b>="UndeleteSelected OR DeleteSelected,1"/><br />
+            </li>
+            <li>
+               Deleting row with children deletes also all the children. The children are deleted even if they are marked as undeletable.
+            </li>
+            <li>
+               Deleted row is marked by row attribute <b>Deleted='1'</b>. Deleted child due deleting its parent is marked by <b>Deleted='2'</b>.<br /> 
+               The Deleted attribute is set in uploading changes to server XML, it can be read by API and can be also set in server response XML to delete the row from server.<br />
+            </li>
+            <li>
+               Deleted rows can be undeleted by clicking to panel Delete button or by pressing del key on focused row.<br />
+               Selected rows can be undeleted by clicking to header panel Delete button or by pressing ctr+del key. If there are selected both deleted and undeleted rows, the rows are undeleted.<br />
+               Row can be undeleted also by API method <b>DeleteRow</b> with parameter for undelete.<br />
+            </li>
+            <li>
+               Deleting rows can be suppressed by &lt;Cfg> attribute <b>Deleting='0'</b>.<br />
+               One row can be set as undeletable by row attribute <b>CanDelete='0'</b>.<br />
+               The permissions can be set also dynamically by API event <b>OnCanRowDelete</b>. It is not called for row children.<br />
+            </li>
+            <li>
+               For every deleted / undeleted row, including children, is called API event <b>OnRowDelete</b> / <b>OnRowUndelete</b>.<br />
+            </li>
+            <li>
+               The deleted rows cannot be moved or copied. Only deleted children can be moved with parent, but not copied.<br />
+               Deleted rows can be copied if set &lt;Cfg> attribute <b>CopyDeleted='1'</b>.<br />
+            </li>
+         </ul>
+      </li>
+      <li><h4>Adding new rows</h4>
+         <ul>
+            <li>See documentaion for <b><a href="../../Doc/RowAdd.htm#Adding">Adding new empty rows</a></b>.</li>
+            <li>
+               Added rows are shown by default in <b>green</b> background.<br />
+            </li>
+            <li>
+               New row can be added before focused row, after focused row or to the end of grid by clicking to toolbar <b>Add</b> button.<br />
+               New row can be added into focused row children to beginning or to the end by clicking to toolbar <b>AddChild</b> button.<br />
+               New row can be added before actual row, after actual row, to actual row's children to beginning or end by clicking to row panel <b>Copy</b> button. This button can be shown by <b>&lt;Panel Copy='1'/></b>.<br />
+               New row can be added before focused row by <b>ins</b> key and to the children of focused row by <b>ctrl+ins</b>.<br />
+               New row can be added by API method <b>AddRow</b>.<br />
+            </li>
+            <li>
+               Default actions set for adding and copying in Defaults.xml in &lt;Actions> tag:<br />
+               <b style="color:black;">OnClickButtonAdd</b>="CopyMenuF OR AddRowF OR AddRowEnd" <b style="color:black;">OnClickButtonAddChild</b>="CopyMenuF OR AddChildEndF"<br />
+               <b style="color:black;">OnClickPanelCopy</b>="CopyMenu" <b style="color:black;">OnClickHeaderCopy</b>="CopyMenuF OR AddRowF OR AddRowEnd"<br />
+               <b style="color:black;">OnIns</b>="AddRowF" <b style="color:black;">OnCtrlIns</b>="AddChildEndF" <b style="color:black;">OnShiftIns</b>="CopyRowF" <b style="color:black;">OnShiftCtrlIns</b>="CopyTreeF"<br />
+            </li>
+            <li>
+               New row is marked by attribute <b>Added='1'</b>.<br />
+               The Added flag and green color is removed from added row after successfull save changes on server or accepting changes by API method <b>AcceptChanges</b>.<br />
+               The row position is uploaded to server in attributes <b>Parent</b>, <b>Next</b> and <b>Prev</b> as ids of these rows.<br />
+            </li>
+            <li>
+               Adding new rows can be restricted by &lt;Cfg> attribute <b>Adding='0'</b>.<br />
+               Restrict adding root rows can be set by <b>x&lt;Root CDef=""/></b>, adding new children to row by its attribute <b>CDef=""</b>.<br />
+               Adding permissions can be controlled also dynamically by API event <b>OnCanRowAdd</b>.<br />
+            </li>
+            <li>
+               New row will be empty or read its attributes and cell values from its default row set by <b>Def</b> attribute.<br /> 
+               The value of Def attribute for the new row is read from parent row's <b>CDef</b> attribute.<br />
+            </li>
+            <li>
+               For every new row added or copied are called API events <b>OnRowAdd</b> and <b>OnRowAdded</b>.<br />
+            </li>
+         </ul>
+      </li>
+      <li><h4>Moving and copying rows</h4><br />
+      It is demonstrated in tutorials <b><a href="../Drag/01 - Dragging rows.html">1. Dragging and copying rows</a></b> and <b><a href="../Drag/02 - Dragging rows between grids.html">2. Dragging rows between grids</a></b>
+      <ul>
+         <li>
+            Moving row(s) by dragging. Inside one grid or between grids. See documentation <a href="../../Doc/RowMove.htm">Row moving and dragging</a>.
+         </li>
+         <li>
+            Moving row(s) by changing row level - actions Indent and Outdent. Only inside one grid. See documentation <a href="../../Doc/Tree.htm#ActionsIndent">Actions Indent and Outdent</a>.
+         </li>
+         <li>
+            Copying row(s) by dragging. Inside one grid or between grids. See documentation <a href="../../Doc/RowMove.htm">Row moving and dragging</a>.
+         </li>
+         <li>
+            Copying row(s) by Panel or Toolbar Add button. Only inside one grid. See documentation <a href="../../Doc/RowAdd.htm#Copying">Copying existing rows</a>.
+         </li>
+         <li>
+            Copying and pasting row(s) via clipboard. Inside one grid or between grids or into and from external source like MS Excel. See documentation <a href="../../Doc/CopyPaste.htm">Copy &amp; paste via clipboard</a>.
+         </li>
+      </ul>
+
+      </li>
+      <li><h4>Fixed rows</h4><br />
+         <ul>
+            <li>
+               Fixed rows can be selected or deleted, but cannot be added, copied or moved.<br /> 
+               Can be copied to clipboard and cells changed by pasting, but not added by pasting.<br />
+               They are not affected by SelectAll or DeletedSelected actions.<br />
+            </li>
+         </ul>
+         
+      </li>
+   </ul>
+</body>
+</html>

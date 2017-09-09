@@ -1,0 +1,54 @@
+<html>
+<head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+<style type="text/css">
+.GMGanttRunCustom1In { background:#FDA; color:Blue; font:bold 11px Verdana; }
+.GMGanttRunCustom1Out { border:1px dotted blue; padding:0px; }
+.GMGanttRunCustom2In { background:url(../../../Grid/Modern/Backgrounds.gif); color:white; font:italic 11px Verdana; }
+.GMGanttRunCustom2Out { margin:0px; border:2px solid pink; padding:0px; }
+</style>
+<h2>Interactive Run chart example</h2>
+This example demonstrates <b>Continuous Run</b>, complex and universal bar type in Gantt chart. It supports more bars in one cell, with different features, size, color, class, text and tooltip.<br />
+<b>New box</b> can be added by dragging it from the right grid or by dragging empty space in the left grid.<br />
+Box can be <b>resized</b> by dragging its edge. Fixed or solid box by dragging the edge with <b>Ctrl</b>.<br />
+Box can be <b>moved inside</b> the cell by mouse dragging. Box can be <b>moved outside</b> the cell by dragging with <b>Ctrl</b>.<br />
+Dragging box to the edge of other box <b>joins</b> the boxes, the boxes are moved together. The boxes can be <b>separated</b> by dragging one box with <b>Shift</b>.<br />
+When dragging box with <b>Shift</b>, the box can be placed everywhere, even to <b>incorrect position</b>.<br />
+Box can be <b>deleted</b> by resizing it to empty width or from popup menu.<br />
+The box type, color, text and tooltip can be <b>changed</b> from popup menu (right click).<br />
+Chart can be <b>zoomed</b> by selecting date range by mouse draging or clicking to one date in Gantt header, <b>unzoomed</b> by right click Gantt header.<br />
+In this example are excluded <b>weekends</b> as <b>holidays</b>, except the weekend 24~25th May. The weekends are excluded from the run lengths, the runs cannot start or end in weekend.<br />
+<i>All these control settings can be changed in XML</i>.<br />
+<table style='width:100%;'>
+<tr>
+<td style='width:100%'>
+<div id='Gantt' style='width:100%; height:400px; overflow:hidden;'>
+   <bdo Sync="1" Layout_Url="RunDef.xml" Data_Url="RunData.xml"></bdo>
+</div>
+</td>
+<td style='width:125px;' valign='top'>
+<div id='Sources' style='width:125px; height:400px; overflow:hidden;'>
+   <bdo Sync="1" Data_Url="RunSources.xml"></bdo>
+</div>
+</td>
+</tr>
+</table>
+<script>
+Grids.OnAfterSetStyle = function(G,name) { 
+if(G.id!="Run") return;
+var R = Grids.RunSources;
+if(!R) return;
+if(name=="GB") name = "GM"; // Borders style is too wide
+if(R.Style!=name) R.SetStyle(name,null,1);
+}
+
+function Test(){
+var G = Grids.Run;
+G.RefreshCell(G.GetLast(),'G');
+}
+</script>
+</body>
+</html>

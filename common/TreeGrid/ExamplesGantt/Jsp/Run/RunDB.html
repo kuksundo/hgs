@@ -1,0 +1,60 @@
+<html>
+<head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+
+<style type="text/css">
+.GMGanttRunCustom1In { background:#FDA; color:Blue; font:bold 11px Verdana; }
+.GMGanttRunCustom1Out { border:1px dotted blue; padding:0px; }
+.GMGanttRunCustom2In { background:url(../../../Grid/Modern/Backgrounds.gif); color:white; font:italic 11px Verdana; }
+.GMGanttRunCustom2Out { margin:0px; border:2px solid pink; padding:0px; }
+</style>
+
+<h2>Gantt Run database</h2>
+This example demonstrates <b>Continuous Run</b>, complex and universal bar type. It supports more bars in one cell, with different features, size, color, class, text and tooltip.<br />
+<b>New box</b> can be added by dragging it from the right grid or by dragging empty space in the left grid.<br />
+Box can be <b>resized</b> by dragging its edge. Fixed or solid box by dragging the edge with <b>Ctrl</b>.<br />
+Box can be <b>moved inside</b> the cell by mouse dragging. Box can be <b>moved outside</b> the cell by dragging with <b>Ctrl</b>.<br />
+Dragging box to the edge of other box <b>joins</b> the boxes, the boxes are moved together. The boxes can be <b>separated</b> by dragging one box with <b>Shift</b>.<br />
+When dragging box with <b>Shift</b>, the box can be placed everywhere, even to <b>incorrect position</b>.<br />
+Box can be <b>deleted</b> by resizing it to empty width or from popup menu.<br />
+The box type, color, text and tooltip can be <b>changed</b> from popup menu (right click).<br />
+<br />
+This example shows how to generate Gantt Run chart from and save changes to SQL database.<br />
+<br />
+<table style='width:100%;'>
+<tr>
+<td style='width:100%' valign='top'>
+
+<div id='Gantt' style='width:100%; height:400px; overflow:hidden;'>
+   <bdo Sync="1" 
+      Layout_Url="RunDBDef.xml" 
+      Data_Url="RunDBData.jsp"
+      Upload_Url="RunDBUpload.jsp"
+      ></bdo>
+</div>
+
+</td>
+<td style='width:125px;' valign='top'>
+
+<div id='Sources' style='width:125px; height:400px; overflow:hidden;'>
+   <bdo Sync="1" Data_Url="RunSources.xml"></bdo>
+</div>
+
+</td>
+</tr>
+</table>
+
+<script>
+Grids.OnAfterSetStyle = function(G,name) { 
+if(G.id!="RunDB") return;
+var R = Grids.RunSources;
+if(!R) return;
+if(name=="GB") name = "GM"; // Borders style is too wide
+if(R.Style!=name) R.SetStyle(name,null,1);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<Grid>
+   <Cfg id="Gantt" SuppressCfg="1"/> <!-- Base settings, suppresses saving configuration to cookies -->
+   <Cfg Sort="id"/> <!-- Default sort is by ID column -->
+   <Cfg DefaultDate="1/1/2013"/> <!-- Default date in calendar for empty date -->
+   <Cfg ResizingMain="3"/> <!-- Users can resize grid by right bottom edge -->
+   <Cfg NoTreeLines="2"/> <!-- Does not show the tree lines, to let center the expand / collapse buttons -->
+   <Cfg Group="REG,CN"/> <!-- Groups the grid by columns Region and country -->
+   <Cfg GroupMain="GROUP"/> <!-- When grouped, shows the tree in GROUP column -->
+   <Cfg FastGantt="1"/> <!-- Shown simpler boxes to speed the chart up -->
+   <Cfg IdChars="0123456789" NumberId="1"/> <!-- New row ids will be generated as numbers -->
+   <Cfg Undo="1"/>  <!-- Permits undo / redo -->
+   <Cfg MaxHeight="1"/> <!-- Maximizes the grid height to the page content. Remove it for complex layouts -->
+   <Cfg Style="ExtJS"/> <!-- Switches to ExtJS CSS style -->
+   <Cfg PrintLocation="2" PrintPaddingHeightFirst="140"/> <!-- Prints to the same page and position -->
+   <Cfg MinTagHeight="500"/> <!-- Minimal height of main tag, in pixels -->
+   <Cfg NameCol="CITY"/> <!-- The CITY is visual row identification -->
+   <Panel Width="19"/> <!-- Width of the Panel column, in pixels -->
+   <Def>
+      <!-- Default settings for all rows, especially for data (not group) rows -->
+      <D Name="R" CDef=""/> <!-- The standard rows cannot have children -->
+      <D Name="R" Height="62" MaxHeight="62"/> <!-- Default height of all rows in pixels -->
+      <D Name="R" PanelRotate="3" idRotate="3" REGRotate="3" CNRotate="3" CITYRotate="3"
+         I1Rotate="3" I2Rotate="3" I3Rotate="3" I4Rotate="3"
+         R1Rotate="3" R2Rotate="3" R3Rotate="3" COLORRotate="3"
+         STARTRotate="3" ENDRotate="3" DURRotate="3" NEXTRotate="3" PREVRotate="3" COMPRotate="3"
+         /> <!-- Rotates all data cells -->
+      <D Name="R" Panel="Copy,Delete,Select"/> <!-- Defines buttons on right panel -->
+      <D Name="R" GGanttMenu=""/> <!-- No right click menu is defined for main bars -->
+      <D Name="R" R1="0" R2="0" R3="0" CITY="unknown"/> <!-- Default settings for new rows -->
+
+      <!-- Default values for filter row, override the "R" settings -->
+      <D Name="Filter" Def="R" R1="" R2="" R3="" CITY=""/>
+
+      <!-- Default setting used for new Run boxes -->
+      <D Name="New" REG="Region" CN="Country" CITY="City" I1="White" I2="White" I3="White" I4="White" R1="0" R2="0" R3="0" COLOR="0" DUR="0"/> 
+
+      <!-- Defines the parent rows created by grouping -->
+      <D Name="Group" CDef="R" Calculated="1" CalcOrder="RUN,START,END,DUR"/> <!-- Grouping row is calculated to show summary for its children -->
+      <D Name="Group" AggChildren="1"/> <!-- This group row is never calculated by its parent - always calculates its children -->
+      <D Name="Group" GGanttRunSummary="0" GGanttRun="RUN" RUNFormula="ganttrunsum()"/> <!-- The main formula to create the summary Run row -->
+      <D Name="Group" Expanded="1" CanExpand="1"/> <!-- The group row is expanded and can expand by default. Set them to 0 to show only the group rows -->
+      <D Name="Group" Spanned="1" GROUPSpan="16" GROUPClass="VAlign" GROUPClassInner="Inner"/>
+      <D Name="Group" CanSelect="0"/> <!-- Restricts selection of the group row -->
+      <D Name="Group" GGanttMenu="DelGanttRunPart,DelGanttRun"/> <!-- Right click menu have two items to delete one box and all boxes -->
+      <D Name="Group" GGanttRunStart="START" GGanttRunEnd="END"/>   <!-- -->
+      <D Name="Group" STARTFormula="ganttstart()" ENDFormula="ganttend()" DURFormula="START ? Grid.DiffGanttDate(START,END) : ''"/> <!-- Calculates run start, end and duration -->
+      <D Name="Group" GGanttStart="" GGanttEnd="" GGanttDuration=""/> <!-- Clears definition for main bars, because Group row uses only Run bars -->
+   </Def>
+
+   <Head>
+      <!-- Top filter row -->
+      <Filter Def="Filter" ShowHint="0" MaxHeightAll="0" Height="50" MaxHeight="50"
+              PanelRotate="0" Panel=""
+              idVisible="" 
+              GROUPIcon="Enum" GROUPOnClick="ShowDefaults" GROUPOnMouseOverContent="CursorPointer" GROUPIconAlign="Right" GROUPDefaults="|*FilterOff|*RowsAllDefGroup" GROUPRange="1" GROUPShowMenu="0"
+              REGIcon="Enum" REGOnClick="ShowDefaults" REGOnMouseOverContent="CursorPointer" REGIconAlign="Right" REGDefaults="|*FilterOff|*RowsAllDefR" REGRange="1" REGShowMenu="0"
+              CNIcon="Enum" CNOnClick="ShowDefaults" CNOnMouseOverContent="CursorPointer" CNIconAlign="Right" CNDefaults="|*FilterOff|*RowsAllDefR" CNRange="1" CNShowMenu="0"
+              CITYIcon="Enum" CITYOnClick="ShowDefaults" CITYOnMouseOverContent="CursorPointer" CITYIconAlign="Right" CITYDefaults="|*FilterOff|*RowsAllDefR" CITYRange="1" CITYShowMenu="0" CITY="" CITYEmptyValue=""
+              COMPIconAlign="Right" COLORRange="1" I1Range="1" I2Range="1" I3Range="1" I4Range="1" R1IconAlign="Right" R2IconAlign="Right" R3IconAlign="Right"
+              STARTIcon="Filter" STARTButton="" STARTOnClickContent="ShowCalendar" STARTOnMouseOverContent="CursorDefault"
+              ENDIcon="Filter" ENDButton="" ENDOnClickContent="ShowCalendar" ENDOnMouseOverContent="CursorDefault"
+              DURIconAlign="Right" DURHtmlPostfix=""
+              />
+   </Head>
+   
+   <!-- Column captions -->
+   <Header G="Gantt" GROUP="Location" id="ID" REG="Region" CN="Country" CITY="City" 
+           I1="Icon 1" I2="Icon 2" I3="Icon 3" I4="Icon 4"
+           R1="Source 1" R2="Source 2" R3="Source 3" COLOR="Color"
+           START="Start" END="End" DUR="Duration" NEXT="Next" PREV="Previous" COMP="Complete"/> <!-- Caption texts -->
+   <Header PanelRotate="3" GROUPRotate="3" idRotate="3" REGRotate="3" CNRotate="3" CITYRotate="3"
+           I1Rotate="3" I2Rotate="3" I3Rotate="3" I4Rotate="3"
+           R1Rotate="3" R2Rotate="3" R3Rotate="3" COLORRotate="3"
+           STARTRotate="3" ENDRotate="3" DURRotate="3" NEXTRotate="3" PREVRotate="3" COMPRotate="3"/> <!-- Rotates all the cells (because Header does not use Default "R" -->
+   <Header idIcon="Sort" REGIcon="Sort" CNIcon="Sort" CITYIcon="Sort"
+           I1Icon="Sort" I2Icon="Sort" I3Icon="Sort" I4Icon="Sort"
+           R1Icon="Sort" R2Icon="Sort" R3Icon="Sort" COLORIcon="Sort"
+           STARTIcon="Sort" ENDIcon="Sort" DURIcon="Sort" NEXTIcon="Sort" PREVIcon="Sort" COMPIcon="Sort"/> <!-- Shows the sort icon as icon instead of Button, used for rotation -->
+   <Header idIconAlign="Right" REGIconAlign="Right" CNIconAlign="Right" CITYIconAlign="Right"
+           I1IconAlign="Right" I2IconAlign="Right" I3IconAlign="Right" I4IconAlign="Right"
+           R1IconAlign="Right" R2IconAlign="Right" R3IconAlign="Right" COLORIconAlign="Right"
+           STARTIconAlign="Right" ENDIconAlign="Right" DURIconAlign="Right" NEXTIconAlign="Right" PREVIconAlign="Right" COMPIconAlign="Right"/> <!-- Shows the sort icon on right (top for rotated cells) -->
+   <Header GROUPClass="Group" /> <!-- Special class defined in Html -->
+   <Header Panel="Select" CanSelect="0"/> <!-- Hides panel buttons in header -->
+   <Header NoEscape="1"/> <!-- Permits HTML in column captions -->
+   <Header MaxHeight="50"/> <!-- Maximal height in pixels, required so set for the too long rotated captions -->
+   <Header ShowHint="0"/> <!-- Does not show Hint for rotated cells -->
+   <Header SortIcons="2"/> <!-- Hides unused sort icons -->
+
+   <!-- Data columns -->
+   <LeftCols>
+      <C Name="GROUP" Type="Text" Width="1" GroupWidth="50" WidthPad="0"/> <!-- Column used to display tree when grid grouped. For not grouped grid it is hidden -->
+      <C Name="id" Type="Int" Width="20" WidthPad="0" CanEdit="0" CanFilter="0"/> <!-- id / row number column -->
+      <C Name="REG" Width="20" Type="Text"/> <!-- Region column -->
+      <C Name="CN" Width="20" Type="Text"/>  <!-- Country column -->
+      <C Name="CITY" Width="20" Type="Text"/>  <!-- City column -->
+      <C Name="COMP" Width="20" Type="Float" Format="0\%"/>  <!-- Complete column -->
+      <C Name="COLOR" Width="20" Type="Enum" Enum="|White|Cyan|Blue|Yellow|Lime|Silver|Orange|Green"/> <!-- Background color for the box -->
+      <C Name="I1" Width="20" Type="Enum" Enum="|White|Green|Yellow|Red"/> <!-- First icon on top -->
+      <C Name="I2" Width="20" Type="Enum" Enum="|White|Green|Yellow|Red"/> <!-- Second icon on top -->
+      <C Name="I3" Width="20" Type="Enum" Enum="|White|Green|Yellow|Red"/> <!-- Third icon on top -->
+      <C Name="I4" Width="20" Type="Enum" Enum="|White|Green|Yellow|Red"/> <!-- Fourth icon on top -->
+      <C Name="R1" Width="20" Type="Float" Format="0\%"/> <!-- First resource -->
+      <C Name="R2" Width="20" Type="Float" Format="0\%"/> <!-- Second resource -->
+      <C Name="R3" Width="20" Type="Float" Format="0\%"/> <!-- Third resource -->
+      <C Name="PREV" Width="20" Type="Text" CanFilter="0"/> <!-- Previous column (dependencies) -->
+      <C Name="NEXT" Width="20" Type="Text" CanFilter="0"/> <!-- Next column (dependencies) -->
+      <C Name="START" Width="20" DefaultDate="1/1/2013" Type="Date" CanEdit="0" ShowHint="0" Icon="Date" IconAlign="Right" Format="MMM dd, '&lt;span style=&quot;color:red&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Start date column -->
+      <C Name="END" Width="20" DefaultDate="1/1/2013" Type="Date" CanEdit="0" ShowHint="0" Icon="Date" IconAlign="Right" Format="MMM dd, '&lt;span style=&quot;color:red&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH" CanEmpty="1"/> <!-- End date column -->
+      <C Name="DUR" Width="20" Type="Text" HtmlPostfix=" hours"/> <!-- Duration column -->
+      <C Name="RUN" Visible="0" Type="Text"/> <!-- Hidden column with calculated Run for grouping rows -->
+      <C Name="RES" Visible="0" Type="Text" Formula="'Green*'+R1+';Yellow*'+R2+';Red*'+R3"/> <!-- Hidden column with calculated resources in format required to calculate TreeGrid resource usage charts -->
+   </LeftCols>
+   <Cols>
+      <!-- Gantt chart column -->
+      <!-- Defines all Gantt chart setting -->
+      <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
+      <C Name="G" GanttStart="START" GanttEnd="END" GanttDuration="DUR" GanttDescendants="NEXT" GanttAncestors="PREV"/> <!-- Defines source columns for Main tasks -->
+      <C Name="G" GanttRunHeight="62" /> <!-- Defines height of the run boxes, in pixels -->
+      <C Name="G" GanttRunMoveRight="Move" GanttRunAdjust="Shrink" GanttRunAdjustShift="Slip"/> <!-- Defines behavior for dragging run boxes -->
+      <C Name="G" GanttStrict="1" GanttManualChange="4" GanttIncorrectDependencies="1" GanttCorrectDependencies="1" GanttCorrectDependenciesFixed="0"/> <!-- Sets correcting dependencies routine to behave like in MS Project -->
+      <C Name="G" GanttExclude="w#1/5/2013~1/7/2013"/> <!-- Sample calendar, excludes weekends -->
+      <C Name="G" GanttChartMinStart="1/1/2000" GanttChartMaxEnd="1/1/2020"/> <!-- Maximal range for zoom -->
+      <C Name="G" GanttZoom="days and quarters"/> <!-- Predefine zoom level name -->
+      <C Name="G" GanttDataUnits="h" /> <!-- All lengths in input data XML (like Dependency lags) are in hours -->
+      <C Name="G" GanttDataModifiers="m:1/60,h:1,d:8,w:40"/> <!-- Modifiers that can be used in Dependency lag values to multiply the value to get hour count -->
+      <C Name="G" GanttLastUnit=""/> <!-- All the end dates are set exactly and not as the last unit -->
+      <C Name="G" GanttShowDependencies="1" GanttShowConstraints="1"/> <!-- Shows the constraints and dependency lines. Set them to 0 to hide them -->
+      <C Name="G" GanttResources="RES" GanttShowHtml="0"/> <!-- Defines resources column to calculate resource usage and does not print the resources to the Gantt chart -->
+      <C Name="G" GanttEdit="Main,Run,RunCorrect"/> <!-- Permits changing only bars, not dependencies -->
+      <C Name="G" GanttClass="Void"/> <!-- Class without border and background for all main bars -->
+      <C Name="G" GanttRunClass="Void"/> <!-- Removes the standard border from the boxes -->
+      <C Name="G" GanttHeight="55"/> <!-- Height of the main bars, used to correctly connect the dependency arrows -->
+      <C Name="G" GanttHover="2"/> <!-- Permits hovering and tip also for not editable objects, here especially for dependencies -->
+      <C Name="G" GanttDependencyColor="21"/> <!-- Default dependency color, thin inset green -->
+      <C Name="G" GanttDependencyTip="*From* (*Start*) => *To* (*End*)"/> <!-- Tip shown on dependency hover -->
+   </Cols>
+
+   <!-- Gantt Zoom defines zoom levels definition -->
+   <!-- The individual levels predefine various Gantt zoom settings -->
+   <!-- GanttUnits and GanttWidth specify the zooming size, to GanttUnits are all the dates rounded for display and drag -->
+   <!-- GanttChartRound specifies rounding of first and last date in the chart -->
+   <!-- Some zoom levels changes GanttBackground to mark different units -->
+   <!-- GanttHeader1 specifies the dates shown in the first line in Gantt header -->
+   <!-- GanttHeader2 and possibly also 3,4,5 specify next lines in Gantt header -->
+   <!-- The ...Ex values are chosen when Exclude is hidden, they are appropriate only for the actual Exclude dates (days and hours) -->
+   <Zoom>
+      <Z Name="years and halves" GanttUnits="M6" GanttChartRound="y" GanttWidth="18" GanttWidthEx="25.2" GanttPrintRound="y" GanttBackground=";y#1/1/2008" 
+         GanttHeader1="y#yyyy" GanttHeader2="M6#MMMMMM"/>
+      <Z Name="years and quarters" GanttUnits="M3" GanttChartRound="y" GanttWidth="24" GanttWidthEx="28.8" GanttPrintRound="y" GanttBackground=";y#1/1/2008" 
+         GanttHeader1="y#yyyy" GanttHeader2="M3#MMMMM"/>
+      <Z Name="halves and months" GanttUnits="M" GanttChartRound="y" GanttWidth="18" GanttWidthEx="25.2" GanttPrintRound="M6" GanttBackground=";M6#1/1/2008" 
+         GanttHeader1="M6#MMMMMM. yyyy" GanttHeader2="M#MM"/>
+      <Z Name="quarters and months" GanttUnits="M" GanttChartRound="M6" GanttWidth="28" GanttWidthEx="39.2" GanttPrintRound="M3" GanttBackground=";M3#1/1/2008" 
+         GanttHeader1="M3#MMMMM. yyyy" GanttHeader2="M#MMM"/>
+      <Z Name="months and weeks" GanttUnits="d" GanttChartRound="M" GanttWidth="3" GanttWidthEx="4.2"  GanttPrintRound="M" GanttBackground=";M#1/1/2008" 
+         GanttHeader1="M#MMM yyyy" GanttHeader2="w#d."/>
+      <Z Name="months and days" GanttUnits="d" GanttChartRound="M" GanttWidth="8" GanttWidthEx="11.2" GanttPrintRound="M"
+         GanttHeader1="M#MMMM yyyy" GanttHeader2="d#'&lt;div style=&quot;font:8px Arial;&quot;>'DDDDDD'&lt;br/>'DDDDDDD'&lt;/div>'" GanttHeaderHeight2="20"/>
+      <Z Name="weeks and days" GanttUnits="d" GanttChartRound="w" GanttWidth="18" GanttWidthEx="25.2" GanttPrintRound="w"
+         GanttHeader1="w#'&lt;span style=&quot;color:red;font-size:8px;&quot;>week 'ddddddd'&lt;/span>' MMMM yyyy" GanttHeader2="d#%d" GanttHeader3="d#ddddd"/>
+      <Z Name="days and quarters" GanttUnits="h" GanttChartRound="w" GanttWidth="3" GanttPrintRound="d"
+         GanttHeader1="d#dd MMM yyyy" GanttHeader2="d#dddd" GanttHeader3="h6#HH" GanttHeaderRound3="1"/>
+      <Z Name="days and hours" GanttUnits="h" GanttChartRound="d" GanttWidth="8" GanttPrintRound="d"
+         GanttHeader1="d#dddd dddddd MMMM yyyy" GanttHeader2="h#'&lt;div style=&quot;font:8px Arial;&quot;>'HHHH'&lt;br/>'HHHHH'&lt;/div>'" GanttHeader2Ex="h#HH" GanttHeaderHeight2="20"/>
+
+      <!-- Zoom levels with GanttSize set and right side pager -->
+      <Z Name="halves and hours" GanttUnits="h" GanttChartRound="d" GanttWidth="19" GanttPrintRound="h12" GanttBackground="w#1/6/2008#5"
+         GanttHeader1="h12#dddd dddddd MMMM yyyy tt" GanttHeader1Ex="d#dddd dddddd MMMM yyyy" GanttHeader2="h#HH"
+         GanttSize="w" GanttSizeLeft="24" GanttSizeRight="24" PagerPageSize="w" PagerChartSize="M6" PagerFormat="Week ddddddd" PagerTipFormat="M/d; - M/d" PagerCaptionFormat="MMMMMM. yyyy"/>
+      <Z Name="hours and quarters" GanttUnits="h" GanttChartRound="d" GanttWidth="70" GanttPrintRound="h3" GanttBackground="w#1/5/2008~1/7/2008; h#00:00" 
+         GanttHeader1="h3#dddd dddddd MMMM yyyy" GanttHeader2="h#HH 'hour'" GanttHeader3="m15#mm"
+         GanttSize="d" GanttSizeLeft="3" GanttSizeRight="3" PagerPageSize="d" PagerChartSize="M" PagerFormat="dddddd" PagerTipFormat="M/d" PagerCaptionFormat="MMMM"/>
+      <Z Name="hours and 5 minutes" GanttUnits="m5" GanttChartRound="h" GanttWidth="18" GanttPrintRound="h" GanttBackground="w#1/5/2008~1/7/2008; h#00:00" 
+         GanttHeader1="h#dddd dddddd MMMM yyyy" GanttHeader2="h#HH 'hour'" GanttHeader3="m5#mm"
+         GanttSize="d" GanttSizeLeft="12" GanttSizeRight="12" PagerPageSize="d" PagerChartSize="M" PagerFormat="dddddd" PagerTipFormat="M/d" PagerCaptionFormat="MMMM"/>
+      <Z Name="hours and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="8" GanttPrintRound="h" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="h#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH 'hour&lt;/span>'"
+         GanttHeader2="m#'&lt;div style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/div>'" GanttHeaderHeight2="20"
+         GanttSize="h6" GanttSizeLeft="60" GanttSizeRight="60" PagerPageSize="h" PagerChartSize="d" PagerFormat="HH:00" PagerTipFormat="M/d HH:00" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="halves and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="12" GanttPrintRound="m30" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="m30#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm '&lt;/span>'"
+         GanttHeader2="m#'&lt;div style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/div>'" GanttHeaderHeight2="20"
+         GanttSize="h3" GanttSizeLeft="30" GanttSizeRight="30" PagerPageSize="h" PagerChartSize="d" PagerFormat="HH:00" PagerTipFormat="M/d HH:00" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="quarters and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="18" GanttPrintRound="m15" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="m15#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm '&lt;/span>'" GanttHeader2='m#mm'
+         GanttSize="h2" GanttSizeLeft="15" GanttSizeRight="15" PagerPageSize="h" PagerChartSize="d" PagerFormat="HH:00" PagerTipFormat="M/d HH:00" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="5 minutes and minutes" GanttUnits="m" GanttChartRound="m15" GanttWidth="36" GanttPrintRound="m5" GanttBackground="m5#00:00; h#00:00"
+         GanttHeader1="m5#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm'&lt;/span>'" GanttHeader2="m#mm"
+         GanttSize="h" GanttSizeLeft="5" GanttSizeRight="5" PagerPageSize="m15" PagerChartSize="h6" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="minutes and 15 seconds" GanttUnits="s15" GanttChartRound="m15" GanttWidth="18" GanttPrintRound="m2" GanttBackground="m#00:00; h#00:00"
+         GanttHeader1="m2#dddd d MMM yyyy" GanttHeader2="m#HH:mm" GanttHeader3="s15#ss"
+         GanttSize="m30" GanttSizeLeft="8" GanttSizeRight="8" PagerPageSize="m5" PagerChartSize="h2" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="minutes and 5 seconds" GanttUnits="s5" GanttChartRound="m15" GanttWidth="18" GanttPrintRound="m" GanttBackground="m#00:00; h#00:00"
+         GanttHeader1="m#dddd dddddd MMMM yyyy" GanttHeader2="m#HH:mm" GanttHeader3="s5#ss"
+         GanttSize="m15" GanttSizeLeft="12" GanttSizeRight="12" PagerPageSize="m5" PagerChartSize="h2" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="minutes and seconds" GanttUnits="s" GanttChartRound="m5" GanttWidth="8" GanttPrintRound="m" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="m#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm 'minute&lt;/span>'"
+         GanttHeader2="s#'&lt;div style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/div>'" GanttHeaderHeight2="20"
+         GanttSize="m5" GanttSizeLeft="60" GanttSizeRight="60" PagerPageSize="m" PagerChartSize="m30" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="halves and seconds" GanttUnits="s" GanttChartRound="m5" GanttWidth="12" GanttPrintRound="s30" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="s30#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm 'minute&lt;/span>'"
+         GanttHeader2="s#'&lt;div style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/div>'" GanttHeaderHeight2="20"
+         GanttSize="m2" GanttSizeLeft="15" GanttSizeRight="15" PagerPageSize="m" PagerChartSize="m30" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="quarters and seconds" GanttUnits="s" GanttChartRound="m" GanttWidth="18" GanttPrintRound="s15" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="s15#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm:ss'&lt;/span>'" GanttHeader2="s#ss"
+         GanttSize="m2" GanttSizeLeft="15" GanttSizeRight="15" PagerPageSize="m" PagerChartSize="m30" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="5 seconds and seconds" GanttUnits="s" GanttChartRound="s15" GanttWidth="36" GanttBackground="s5#00:00; m#00:00"
+         GanttHeader1="s5#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm'&lt;/span>'" GanttHeader2="s#ss"
+         GanttSize="m" GanttSizeLeft="5" GanttSizeRight="5" PagerPageSize="m" PagerChartSize="m30" PagerFormat="HH:mm" PagerTipFormat="M/d HH:mm" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="seconds and 100 ms" GanttUnits="ms100" GanttChartRound="s2" GanttWidth="9" GanttPrintRound="s2" GanttBackground="s#00:00; m#00:00"
+         GanttHeader1="s2#dddd dddddd MMMM yyyy" GanttHeader2="s#HH:mm:ss" GanttHeader3="ms100#%f"
+         GanttSize="s15" GanttSizeLeft="20" GanttSizeRight="20" PagerPageSize="s5" PagerChartSize="m2" PagerFormat="HH:mm:ss" PagerTipFormat="M/d HH:mm:ss" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="seconds and 100 ms 2" GanttUnits="ms100" GanttChartRound="s" GanttWidth="60" GanttPrintRound="s" GanttBackground="s#00:00; m#00:00"
+         GanttHeader1="s#dddd dddddd MMMM yyyy" GanttHeader2="ms100#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'f'&lt;/span>'"
+         GanttSize="s5" GanttSizeLeft="10" GanttSizeRight="10" PagerPageSize="s5" PagerChartSize="m2" PagerFormat="HH:mm:ss" PagerTipFormat="M/d HH:mm:ss" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="100 ms and 10 ms" GanttUnits="ms10" GanttChartRound="ms100" GanttWidth="10" GanttPrintRound="ms100" GanttBackground="ms100#00:00; s#00:00"
+         GanttHeader1="ms100#ddd d MMM yyyy" GanttHeader2="ms100#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'f'&lt;/span>'" GanttHeader3="ms10#ffff"
+         GanttSize="s" GanttSizeLeft="10" GanttSizeRight="10" PagerPageSize="s" PagerChartSize="s30" PagerFormat="HH:mm:ss" PagerTipFormat="M/d HH:mm:ss" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="100 ms and 10 ms 2" GanttUnits="ms10" GanttChartRound="ms100" GanttWidth="65" GanttPrintRound="ms100" GanttBackground="ms100#00:00; s#00:00"
+         GanttHeader1="ms100#dddd dddddd MMMM yyyy"  GanttHeader2="ms10#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'ff'&lt;/span>'"
+         GanttSize="s" GanttSizeLeft="10" GanttSizeRight="10" PagerPageSize="s" PagerChartSize="s30" PagerFormat="HH:mm:ss" PagerTipFormat="M/d HH:mm:ss" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="10 ms and ms" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="11" GanttPrintRound="ms10" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1="ms10#ddd d MMM yyyy" GanttHeader2="ms10#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'ff'&lt;/span>'" GanttHeader3="ms#fffff"
+         GanttSize="ms100" GanttSizeLeft="10" GanttSizeRight="10" PagerPageSize="ms100" PagerChartSize="s2" PagerFormat="HH:mm:ss.fff" PagerTipFormat="M/d HH:mm:ss.fff" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="10 ms and ms 2" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="70" GanttPrintRound="ms10" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1='ms10#dddd dddddd MMMM yyyy' GanttHeader2="ms#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'fff'&lt;/span>'"
+         GanttSize="ms100" GanttSizeLeft="10" GanttSizeRight="10" PagerPageSize="ms100" PagerChartSize="s2" PagerFormat="HH:mm:ss.fff" PagerTipFormat="M/d HH:mm:ss.fff" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+      <Z Name="10 ms and ms 3" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="180" GanttPrintRound="ms" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1='ms#dddd dddddd MMMM yyyy' GanttHeader2="ms#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'fff'&lt;/span>'"
+         GanttSize="ms10" GanttSizeLeft="1" GanttSizeRight="1" PagerPageSize="ms10" PagerChartSize="ms100" PagerFormat="HH:mm:ss.fff" PagerTipFormat="M/d HH:mm:ss.fff" PagerCaptionFormat="dddddd MMM&lt;br>yyyy"/>
+   </Zoom>
+
+   <!-- Side pagers showing Gantt zoom dates -->
+   <Pagers>
+      <P Name="Year" Caption="Year" Type="Gantt" PageSize="y" ChartSize="0" Left="0" Format="yyyy" Width="35" ZoomToPage="5"/>
+      <P Name="Month" Caption="Month" Type="Gantt" PageSize="M" ChartSize="y" Left="0" Format="MMM" Width="50" ZoomToPage="5"/>
+      <P Name="Pager" Caption="Pager" Type="Gantt" Width="70" FirstZoom="halves and hours" ZoomToPage="4" ChartPrev="1" ChartNext="1"/>
+   </Pagers>
+
+   <Solid>
+      <!-- Defines the first top toolbar with combos to choose grouping, zoom and calendars -->
+      <Group id="Group" Space="0" Panel="0" Cells="List,Zoom,HidEx,HidRes" CanPrint="5"
+        
+         ListLeft="5"
+         ListHtmlPrefix='&lt;b>Group by &lt;span style="color:blue;">' ListHtmlPostfix='&lt;/span>&lt;/b>'
+  			List='|none|Region|Country|Region and Country'
+         Cols='||REG|CN|REG,CN'
+			ListWidth='170'
+         ListPrintHPage='1'
+			
+         ZoomType='SelectGanttZoom'
+         ZoomHtmlPrefix='&lt;b>Zoom to &lt;span style="color:blue;">' ZoomHtmlPostfix='&lt;/span>&lt;/b>'
+         ZoomLeft='5'
+         ZoomWidth='170'
+         ZoomPrintHPage='1'
+       
+         HidExType='Bool' HidExNoColor='1' HidExLeft='5' HidExCanFocus='0' HidExPrintHPage="2"
+         HidExLabelRight='Hide holidays'
+         HidExFormula='Grid.Cols.G.GanttHideExclude'
+         HidExOnChange='Grid.SetHideExclude(Value)'
+         HidExCanEditFormula='gantthasexclude()!=0'
+         HidExTip='Hides dates excluded by the global calendar'
+
+         HidResType='Bool' HidResNoColor='1' HidResLeft='5' HidResCanFocus='0' HidResPrintHPage="2"
+         HidResLabelRight='Hide resources'
+         HidResTip='Hides resource charts in grid bottom'
+         HidResOnChange='
+               var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+               for(var i=0;i&lt;F.length;i++) if(!Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+               Grid.EndUpdate();'
+             
+         />
+   </Solid>
+
+
+   <!-- Resources definition -->
+   <Resources>
+      <R Name="Green" Price="1" Type="1" Availability="100"/>
+      <R Name="Yellow" Price="2" Type="1" Availability="100"/>
+      <R Name="Red" Price="3" Type="1" Availability="100"/>
+   </Resources>
+
+   <!-- Resources usage sub table -->
+   <Def>
+      <!-- Default row for resources -->
+      <D Name='Resource' GGanttAvailability="CITY#1#R" GGanttAvailabilityFormat="0.#"/> <!-- Defines the resource usage chart -->
+      <D Name='Resource' CanEdit='0' CanDelete="" CanSelect="0" Calculated="1" Panel=""/> <!-- The resource chart row does not permit any changes -->
+      <D Name='Resource' GGanttStart="" GGanttEnd="" GGanttEdit="" GGanttComplete="" GGanttAncestors="" GGanttDescendants=""/> <!-- Clears the setting from <C> column -->
+      <D Name='Resource' Spanned='1' CITYSpan='15' CITYRotate='0' Height='30' PanelVisible='0' idVisible='0' GROUPVisible='0' CITY="Resource"/> <!-- Defines the look of the other cells -->
+   </Def>
+   <Foot>
+      <Header id='-2' SortIcons='0' idVisible='0' GROUPVisible='0' Spanned='1' CITYSpan='15' CITY='Resource name' G='Resource chart' CanPrint='1'/>  <!-- Header of resources sub table with column captions -->
+      <I id="-3" Def="Resource" CITY="Green" GGanttAvailabilityClass="Green"/> <!-- Green resource usage chart -->
+      <I id="-4" Def="Resource" CITY="Yellow" GGanttAvailabilityClass="Yellow"/> <!-- Yellow resource usage chart -->
+      <I id="-5" Def="Resource" CITY="Red" GGanttAvailabilityClass="Red"/> <!-- Red resource usage chart -->
+   </Foot>
+   <!-- End of resources usage sub table -->
+
+   <Toolbar Add="0" AddChild="0" Indent="0" Outdent="0" Sort="0" Calc="0"/> <!-- Hides unused Toolbar buttons -->
+</Grid>

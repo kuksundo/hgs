@@ -1,0 +1,154 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttDisplay"><b>Gantt display</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Zoom</center>
+   <center style='font:bold italic;'>Zooming in chart, zoom levels and smooth zoom</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Zoom.xml'>02 - <h2>Zoom</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Zoom.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Zoom - Numbers.xml'>02 - <h2>Zoom - Numbers</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Zoom - Numbers.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         For <b>next options</b> in zooming see <b><a href="03 - Paging.html">Gantt paging tutorial</a></b>.
+      </li>
+      <li>
+         The Gantt <h4>Zoom size</h4> is defined by two attributes <h3>GanttUnits</h3> and <h3>GanttWidth</h3>.<br />
+         See documentation for <b><a href="../../Doc/GanttDisplay.htm#Zoom">Zoom options</a></b>.<br />
+         GanttUnits specifies base display units in chart and GanttWidth specifies width of the one GanttUnits in pixels.<br />
+         <i>Remember, GanttUnits are used only for display, size of unit in data is set by <b>GanttDataUnits</b> and is independent on zoom setting.</i><br />
+         <ul>
+            <li>
+               GanttUnits for <b>dates</b> are: <br />
+               ‘<b>ms</b>’ – milliseconds, ’<b>ms10</b>’ – 10 milliseconds, ’<b>ms100</b>’ – 100 milliseconds,<br />
+               ‘<b>s</b>’ – seconds, ‘<b>s2</b>’ – 2 seconds, ’<b>s5</b>’ – 5 seconds, ’<b>s10</b>’ – 10 seconds, ’<b>s15</b>’ – 15 seconds, ’<b>s30</b>’ – 30 seconds,<br />
+               ‘<b>m</b>’ - minutes, ‘<b>m2</b>’ – 2 minutes, ’<b>m5</b>’ – 5 minutes, ’<b>m10</b>’ – 10 minutes, ’<b>m15</b>’ – quarters of hour, ’<b>m30</b>’ – halves of hour, <br />
+               ’<b>h</b>’ - hours, ’<b>h2</b>’ – 2 hours, ’<b>h3</b>’ – 3 hours, ’<b>h6</b>’ – quarters of day, ’<b>h8</b>’ – thirds of day, ’<b>h12</b>’ – halves of day, <br />
+               ’<b>d</b>’ - days, ’<b>w</b>’ – weeks (starting by Sunday), ’<b>w1</b>’ – weeks (starting by Monday, in Hirji starts by Saturday), <br />
+               ’<b>M</b>’ - months, ’<b>M3</b>’ – quarters of year, ’<b>M6</b>’ – halves of year, ’<b>y</b>’ – years.<br />
+            </li>
+            <li>
+               GanttUnits for <b>numbers</b> are set by any number like '1', '10', '13', '1.3', '0.01' and so on.
+            </li>
+            <li>
+               It is possible also to define custom GanttUnits units by <a href="../../Doc/GanttDisplay.htm#AddGanttUnits">AddGanttUnits</a> API function.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         The Gantt <h4>Data unit size</h4> is defined by <h3>GanttDataUnits</h3> and is <b><i>independent on zoom setting</i></b>.<br />
+         See documentation for <b><a href="../../Doc/GanttCompute.htm#Data">Data units</a></b>.<br />
+         The GanttDataUnits specify the unit size for duration of main bar, lag of dependencies or width of Run boxes.<br />
+         The GanttDataUnits are the same values as <b>GanttUnits</b> listed above.<br />
+         <ul>
+         <li>
+         The units can be extended by <h3>GanttDataModifiers</h3>, this attribute defines list of possible suffixes and their multiply values.<br />
+         For example GanttDataUnits='h' GanttDataModifiers='h:1,d:8,w:40', so GanttDuration for two weeks can be '2w', '10d', '80h' or '80'. 
+         </li>
+         </ul>
+      </li>
+      <li>
+         Predefined <h4>Zoom levels</h4> are set in root <b>Zoom</b> tag by individual <b>Z</b> tags.<br />
+         See documentation for <b><a href="../../Doc/GanttDisplay.htm#ZoomList">Zoom selection</a></b>.<br />
+         Every <b>Z</b> tag has set its <b>Name</b> attribute and the zoom attributes like GanttUnits to preset them.<br />
+         When some zoom level is chosen, from <b>Z</b> tag are copied all its attributes (except Name) to the Gantt column.<br />
+         So the <b>Z</b> tag can contain attributes affecting zoom, but not attributes affecting data or calculations. <br />
+         Usual attributes that <b>Z</b> tag defines are: <b>GanttUnits</b>, <b>GanttWidth</b>, <b>GanttChartRound</b>, <b>GanttHeader</b> and <b>GanttBackground</b>.<br />
+         It is possible to define different set of attributes used when set <b>GanttHideExclude='1'</b>, by suffix Ex, for example GanttWidth='20' GanttWidthEx='43'.<br />
+      </li>
+      <li><h4>Initial zoom size and position</h4><br />
+         Zoom chosen on start is defined by <h3>GanttZoom</h3> attribute, assign here the Name of the <b>Z</b> tag.<br />
+         To zoom and scroll to some date on start, define <h3>GanttZoomDate</h3> attribute, useful especially for high zoom levels, when the whole chart is not visible on start.<br />
+      </li>
+      <li><h4>Cookies</h4><br />
+         Actual zoom level and unit width is stored in cookies and restored next time. It can be suppressed by &lt;Cfg> attribute <b>GanttLap='1'</b>.<br />
+         It is possible to save also actual scroll position by setting &lt;Cfg> attribute <b>ScrollLeftLap='0'</b>.<br />
+      </li>
+      <li><h4>Synchronization</h4><br />
+         The zoom level and position can be synchronized between two or more grids. To have more Gantt charts placed vertically, e.g. to have more vertically scrolled Gantt chart sections.<br />
+         Set &lt;Cfg> attribute <b>Sync</b> to all the synchronized grids, use flags <b style="color:black">Zoom</b> and <b style="color:black">Horz</b>, optionally also <b style="color:black">Sec</b>.<br />
+      </li>
+      <li>
+         <h3>GanttSmoothZoom</h3><b>='1'</b> permits increasing GanttWidth of the selected zoom level to show exactly the selected range 
+         (by clicking to header date or choosing range in header or by API).<br/>
+         In this case the GanttWidth defines minimal unit width for the zoom level.<br />
+         If set GanttSmoothZoom='0', the GanttWidth is always preserved, so the zoom works roughly, just chooses the nearest zoom level for selected range.<br />
+      </li>
+      <li>
+         <h4>Zoom actions</h4><br />
+         All the zoom actions can be changed, disabled or attached to different events in <b>Actions</b> tag, by default defined in Defaults.xml.
+         <ul>
+            <li>
+               Left click to some header date zooms to the date, to be the one date unit as wide as visible area of the chart.<br />
+               It is done by action <b>ZoomHeader</b> attached to OnClickGanttHeader event.
+            </li>
+            <li>
+               Selecting date range in header by mouse dragging zooms to selected range, to be the range as wide as visible area of the chart.<br />
+               It is done by action <b>ZoomGantt</b> attached to OnDragGanttHeader event.
+            </li>
+            <li>
+               Right click to header anywhere undoes last zoom action. Or if there is no previous zoom action, zooms out by one level.<br />
+               It is done by actions <b>UndoZoom</b> and <b>ZoomOut</b> attached to OnRightClickGanttHeader event.<br />
+            </li>
+            <li>
+               Toolbar buttons ZoomIn and ZoomOut zooms in and out by one zoom level. If there is no more zoom level, do nothing.<br />
+               It is done by actions <b>ZoomIn</b> and <b>ZoomOut</b> attached to OnClickButtonZoomIn and OnClickButtonZoomOut events.
+            </li>
+            <li>
+               Toolbar button ZoomFit to show the whole chart as wide as possible without showing horizontal scrollbar.<br />
+               It is done by action <b>ZoomFitAll</b> attached to event OnClickButtonZoomFit.
+            </li>
+            <li>
+               Zoom levels combo to choose the zoom level from list.<br />
+               It can be added to grid by defining Space cell of Type <b>SelectGanttZoom</b>.
+            </li>
+            <li>
+               Zoom to fit particular bar is done by action <b>ZoomBar</b>. It can be run also from right click Gantt menu. <i>This example attaches it to double click to the bar.</i><br />
+               Zoom to fit all Gantt objects in particular Gantt cell is done by action <b>ZoomAll</b>. It can be run also from right click Gantt menu.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Width limitation</h4> for the zoomed charts.<br />
+         Maximal width of the Gantt column in pixels is set by <h3>MaxWidth</h3> attribute. <br />
+         There is also internal limitation for various browsers, maximal width for IE7 and IE8/9 quirks mode is 178 957 pixels, except if used <a href="../../Doc/GanttDisplay.htm#CGanttPaging">GanttPaging</a>. Old versions of Opera were limited by 23 000 pixels.<br />
+         Maximal width for IE in <a href="../../Doc/GanttDisplay.htm#CGanttPaging">GanttPaging</a> is 1 193 049 for IE8 strict mode, 1 342 177 for IE8 quirks mode and 1 533 918 for other IE versions. Other browsers are not limited.<br />
+         When the width of the column reaches the limit, it shows only part of the chart. The next hidden parts can be accessed only by zooming out and selecting another part to zoom in.<br />
+         To display too narrow Gantt wide at least specified width set <b>MinWidth</b> attribute.
+      </li>
+      <li>
+         <h4>Zoom API</h4><br />
+         <ul>
+            <li>
+               <b>ChangeZoom</b> changes zoom level to given one.
+            </li>
+            <li>
+               <b>ZoomTo</b> zooms to given date range, to show it as wide as possible.
+            </li>
+            <li>
+               <b>ScrollToDate</b> scrolls to given date, even if it is in hidden part of chart due zoom width limitation.
+            </li>
+            <li>
+               <b>OnZoom</b> event is called on every zoom or chart size change.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

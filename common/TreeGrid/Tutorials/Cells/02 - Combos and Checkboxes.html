@@ -1,0 +1,78 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Combos and Checkboxes</center>
+   <center style='font:bold italic;'>Attributes and types for selectable popup lists and for clickable checkboxes</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='650'>
+            <div style='margin-bottom:6px;'><a href='02 - Combos.xml'>02 - <h2>Combos</h2>.xml</a></div>
+            <div style='width:350px; height:350px;'>
+               <bdo Debug='check' Data_Url='02 - Combos.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='02 - Checkboxes.xml'>02 - <h2>Checkboxes</h2>.xml</a></div>
+            <div style='width:350px; height:350px;'>
+               <bdo Debug='check' Data_Url='02 - Checkboxes.xml'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   
+   <ul>
+      <li>
+         <h3>Enum</h3> type shows <b>combo</b> to select one or more values from popup list, similarly to <b>SELECT</b> html tag. To select more values, set <b>Range</b>='1'. Enum items can contain any HTML code.<br />
+         The list of values is defined by <b>Enum</b> attribute. The cell value can be direct value(s) from the list or the index(es) of the value in list or a key(s), if defined list of keys by <b>EnumKeys</b> attribute.<br />
+         The Enum and EnumKeys lists can be creates also on demand by custom JavaScript in event <b>OnGetEnum</b> and <b>OnGetEnumKeys</b>. Enum, opposite to defaults, cannot load dynamically from server side.<br />
+         The popup menu can show simple list of the defined items, or list of items with checkboxes for Range. 
+         Or you can define custom menu by <b>EnumMenu</b>, here you can use all advanced TreeGrid menu features like collapsing levels or submenus.<br />
+         The Enum lists in one row can be <b>related</b>, the list in one cell is chosen according to values in other cell(s). Set relation by <b>Related</b> and <b>Clear</b> attributes. 
+         Relation is for example Continent -> Country -> State -> Region -> City, it means that for selected continent Europe will be listed only european countries in the country combo.<br />
+      </li>
+      <li>
+         <h3>Select</h3> type is <b>simple combo</b> similar to Enum type, with different look. It is shortcut to Type='Html' CanEdit='0' Button='Defaults'. 
+         It shows list of items to choose one or more of them to the cell. The items can contain any HTML code. The menu supports all TreeGrid menu features like collapsible levels or submenus.
+         It is used mostly in Space rows as simple combo.
+      </li>
+      <li>
+         <b>Button</b> <h3>Defaults</h3> shows right side button, with popup list to choose one or more items for the cell. It can be used for any cell Type.
+         The cell can be still editable and is possible to input different values than in the list - it differs from Enum type.<br />
+         It is set by <b>Button="Defaults"</b> and the list is defined by <b>Defaults</b> attribute. The defaults menu supports all TreeGrid menu features like collapsible levels or submenus.<br />
+         In the list can be used various keywords starting by <b>*</b> to show values from other cells - from this column, other column, from only some rows, the most frequent values and so on. It can be done especially in Filter cell.
+         The automatic values can be also grouped to submenus according alphabet, when the list is too large.<br />
+         It is possible to download dynamically the list from server side (<b>DefaultsServer</b>='1') or to create it on demand by JavaScript in API event <b>OnGetDefaults</b>.<br />
+      </li>
+      <li>
+         <b>Attribute</b> <h3>Suggest</h3> shows a list during typing with items suggested for actual input (like Google suggest input). It can be used for every editable cell type. Can be combined also with Button Defaults.<br />
+         The complete list is defined by the <b>Suggest</b> attribute and grid automatically updates the list during typing to show only items that contain (or start by) the typed text.<br />
+         There are many options set by <b>SuggestType</b> - when the list will be shown, case-sensitivity, accepting custom items (typed, not selected), automatic completion and so on.<br />
+         Suggest is also compatible with <b>Range</b> cells, suggests values for individual parts in the cell range. The Suggest list also supports keywords with <b>*</b> to fill it automatically from other cells like in Defaults list.<br />
+         It is possible to download dynamically the list from server side (<b>SuggestServer</b>='1') for actually typed value or to create it on demand by JavaScript in API event, the whole by <b>OnGetSuggest</b> or for actually typed value by <b>OnSuggest</b>.<br />
+      </li>
+      <li>
+         <h3>Bool</h3> type shows <b>one checkbox</b> in cell. It has two states, checked and unchecked. It can have three states (checked, unchecked, empty) if set <b>CanEmpty</b>="1".<br />
+         The Bool cells can be grouped in column by <b>BoolGroup</b> and in row by <b>Radio</b> attribute. Only one Bool cell inside the same group can be checked, checking another unchecks the previous one.<br />
+         The groups can also permit or restrict all checkboxes unchecked by <b>Uncheck</b> attribute. There are more icons for the checkboxes chosen by <b>BoolIcon</b>.
+      </li>
+      <li>
+         <h3>Radio</h3> type shows <b>more checkboxes</b> in one cell. The checkboxes are grouped, to permit only one checkbox in the cell checked. If set <b>RadioUncheck</b>="1", permits also all checkboxes to be unchecked.<br />
+         The Radio can be used in <b>Range</b> cell, here it checks / unchecks the checkboxes independently, more checkboxes can be checked in one cell. There are more icons for the checkboxes chosen by <b>RadioIcon</b>.<br />
+         The Radio lists in one row can be <b>related</b>, similarly to Enum type, the options in one cell are chosen according to values in other cell(s). Set relation by <b>Related</b> and <b>Clear</b> attributes. 
+         It is even possible to related Radio and Enum types together. Related Radio can be used also in <b>Range</b> cells, the dependent Radio will merge options for all buttons checked in the source Radio cell.<br />
+      </li>
+   </ul>
+</body>
+</html>

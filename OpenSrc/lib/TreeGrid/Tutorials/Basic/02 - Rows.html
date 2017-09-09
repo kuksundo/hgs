@@ -1,0 +1,96 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Row types</center>
+   <center style='font:bold italic;'>TreeGrid rows by kind and by position</center>
+   <br />
+   <div id="OUT"></div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Rows.xml'>02 - <h2>Rows</h2>.xml</a></div>
+   <div style='width:550px; height:600px;'>
+      <bdo Debug='check' Data_Url='02 - Rows.xml'></bdo>
+   </div>
+   <ul>
+      <li>See <a href="../../Doc/RowBasics.htm">Row basics documentation</a>.</li>
+      <li> <h4>Rows by position</h4><br />
+         There are three row types in TreeGrid according to the <b>position and structure</b>:
+         <ul>
+         <li> 
+            <h4>Variable rows</h4> (<b>Scrollable</b>, Body section)
+            <ul>
+               <li>Contain cells in columns. Cells can be spanned in both directions, similarly to HTML &lt;TABLE> tag.  Cells can be spanned vertically only within root row page, horizontally in column page and column section. </li>
+               <li>Only variable rows can be: scrolled vertically, nested in tree, sorted, filtered, grouped, paged, added, deleted, moved (dragged) inside the Body section</li>
+               <li>Can contain only data rows, not feature rows.</li>
+               <li>Defined as <h3>&lt;I></h3> tags inside <h3>&lt;Body>&lt;B> ... &lt;/B>&lt;/Body></h3> tags.<br /> 
+               The <b>&lt;B>&lt;/B></b> is a page. Only grid using <b>server paging</b> can contain more pages in data, all other grids have all rows in one page.
+               </li>
+            </ul>
+         </li>
+         <li>
+            <h4>Fixed rows</h4> (<b>Frozen</b>, Head and Foot section)
+            <ul>
+               <li>Contain cells in columns. Cells can be spanned in both directions, similarly to HTML &lt;TABLE> tag. Cells can be spanned vertically only within the section (Head or Foot), horizontally in column page and column section. </li>
+               <li>Can contain data rows and these feature rows: <b>&lt;Header/></b> and <b>&lt;Filter/></b></li>
+               <li>Defined as <h3>&lt;I></h3> (or &lt;Header/> or &lt;Filter/>) tags inside <h3>&lt;Head> ... &lt;/Head></h3> (above variable rows) and <h3>&lt;Foot> ... &lt;/Foot></h3> (below variable rows) tags.</li>
+               <li>There is one predefined fixed row <b>&lt;Header id='Header'/></b> as <b>main header</b> containing column captions. It is defined by <h3>&lt;Header/></h3> tag placed directly in &lt;Grid> tag.</li>
+            </ul>
+         </li>
+         <li>
+            <h4>Solid space rows</h4> (<b>Floating</b>, Solid sections between other section)
+            <ul>
+               <li>Define their own cells (in <b>Cells</b> array) not related to TreeGrid columns. Every Space row can have different cells (their names, widths and other attributes like Type and Format).
+               The cells cannot be spanned in any direction.
+               </li>
+               <li>Can contain data rows (but with their own cells!) and these feature rows: <b>&lt;Toolbar/></b>, <b>&lt;Group/></b>, <b>&lt;Search/></b> and <b>&lt;Tabber/></b></li>
+               <li>Defined as <h3>&lt;I></h3> (or &lt;Toolbar/> or &lt;Group/> or &lt;Search/> or &lt;Tabber/>) tags inside <h3>&lt;Solid> ... &lt;Solid></h3> tag.</li>
+               <li>Place in grid is set by their <b>Space</b> attribute (-1 above grid, 0 above Head, 1 between Head and Body, 2 between Body and Foot, 3 between Foot and scrollbar, 4 below scrollbar, 5 below grid. </li>
+               <li>Place outside grid is set by <b>Tag</b> attribute.</li>
+               <li>There is one predefined solid row <b>&lt;Toolbar id='Toolbar'/></b> as <b>main toolbar</b> containing basic TreeGrid buttons. It is defined by <h3>&lt;Toolbar/></h3> tag placed directly in &lt;Grid> tag.</li>
+               <li>To place some cells to right edge or to fill the rest of the row by cell(s), set the cell <b>RelWidth</b> attribute.</li>
+               <li>See <a href="../../Doc/RowSpace.htm">Solid space rows documentation</a>.</li>
+            </ul>
+         </li>
+         </ul>
+      </li>
+      <li><h4>Rows by kind</h4>
+      <ul>
+         <li><h4>Data rows</h4>
+            <ul>
+            <li>Data rows are base TreeGrid rows with data. They are expected to load their cells data from server and optionally upload the changes back.</li>
+            <li>Can be used in all three rows section (Variable, Fixed and Solid). Only data rows can be placed in Variable section. </li>
+            </ul>
+         </li>
+         <li><h4>Feature rows</h4><br />
+            Feature rows to control particular TreeGrid feature. Every special row can be placed in grid more times.<br />
+            The feature rows values are usually saved to cookies and not uploaded to server, although uploading to server is also possible.<br />
+            All the Solid feature rows can be defined also by normal Space rows with cells - to merge functionality of more feature rows in one row (e.g. show grouping and search settings on toolbar).
+            <ul>
+            <li><b>Header</b> row defined by &lt;Header> tag. Can be placed only in Fixed rows. Shows column captions. Provides column resizing and moving. Controls sorting settings.<br />
+            Header row has cells like any data row, it is possible to define Type, Format and other cell attributes like &lt;Header Col1='Column &amp;lt;b>1&amp;lt;/b>' Col1Type='Html'/>.<br />
+            The Header cells are not editable, but can be changed from popup list like Defaults. The default cell Type for Header row is Lines, new line can be added by '&amp;#x0a;' or can be retyped to Html and used &lt;br>.
+            </li>
+            <li><b>Filter</b> row defined by &lt;Filter> tag. Can be placed only in Fixed rows. Controls filter settings. See <a href="../../Doc/Filter.htm#Filter">Filter row documentation</a>.</li>
+            <li><b>Group</b> row defined by &lt;Group> tag. Can be placed only in Solid rows. Controls grouping settings. See <a href="../../Doc/Group.htm#Group">Group row documentation</a>.</li>
+            <li><b>Search</b> row defined by &lt;Search> tag. Can be placed only in Solid rows. Controls search settings. See <a href="../../Doc/Search.htm#Search">Search row documentation</a>.</li>
+            <li><b>Toolbar</b> row defined by &lt;Toolbar> tag. Can be placed only in Solid rows. Shows control image buttons. Nearly normal Space row with predefined type of new cells and different look. See <a href="../../Doc/TypeButton.htm#KToolbar">Toolbar kind row documentation</a>.</li>
+            <li><b>Topbar</b> row defined by &lt;Topbar> tag. Can be placed only in Solid rows. Shows control image buttons. Just different look than Toolbar. See <a href="../../Doc/TypeButton.htm#KTopbar">Topbar kind row documentation</a>.</li>
+            <li><b>Tabber</b> row defined by &lt;Tabber> tag. Can be placed only in Solid rows. Shows control tabs buttons. Nearly normal Space row with predefined type of new cells and different look. See <a href="../../Doc/TypeButton.htm#KTabber">Tabber kind row documentation</a>.</li>
+            </ul>
+         </li>
+      </ul>
+
+      </li>
+   </ul>
+</body>
+</html>

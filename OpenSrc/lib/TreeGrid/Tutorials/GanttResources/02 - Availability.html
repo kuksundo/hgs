@@ -1,0 +1,76 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttResources"><b>Gantt resources</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Availability chart</center>
+   <center style='font:bold italic;'>Bar charts defined by a list of date ranges and count</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='02 - Availability.xml'>02 - <h2>Availability</h2>.xml</a></div>
+   <div style='width:1160px; height:550px;'>
+      <bdo Debug='check' Data_Url='02 - Availability.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+        The Availability chart is defined by attribute <h3>GanttAvailability</h3>.<br />
+        The Availability format is: <b>repeater1#date1a~date1b#count1;repeater2#date2a~date2b#count2;....</b>.<br />
+        The <b>date range</b> is range where the <b>count</b> of resources is available.
+        If set <b>repeater</b>, it repeats the date range every given time unit, e.g. "w" as week, "d" as day or "10" as 10 units in number chart.<br />
+      </li>
+      <li>
+         There are two possible Availability chart types, <b>work</b> and <b>material</b>. It is set by <h3>GanttAvailabilityType</h3>.<br />
+         (1) <b>work</b> is not consumed resource. Work resource is available only in defined range. <br />
+         (2) <b>material</b>, consumed resource. Material resource arrives on defined date and is available forever.<br />
+      </li>
+      <li>
+         One cell can contain more charts defined by more GanttAvailability values, set GanttAvailability attribute to list of cells containing the Availability formats.
+      </li>
+      <li>
+         Every chart can have different color set by <h3>GanttAvailabilityClass</h3>.<br />
+         It is possible also have different colors for every bar or group of bars in one chart, depending on the bar height, it can be controlled dynamically in 
+         <b>OnGetAvailabilityClass</b> API event.
+      </li>
+      <li>
+         By default the upper and lower bound is the highest and smallest value in the one chart. 
+         It is possible to preset the bounds by <h3>GanttAvailabilityMax</h3> and <h3>GanttAvailabilityMin</h3>.
+      </li>
+      <li>
+         The Availability chart sources can be simply summed up by formula function <b>sumrange</b>. Or by simple add formula plus semicolon like: "A+';'+B+";'+C".<br />
+         The chart sources can be also subtracted by summing them with negate sign add by <b>negav</b> Formula function.
+      </li>
+      <li>
+         The Availability chart source can be created also as resource usage (of GanttResource value) by method <b>GetResourceUsage</b>.
+      </li>
+      <li>
+         The <b>GanttAvailability</b> attribute can have also special format to show various resource usage charts. See previous tutorial <b>Resources</b>.
+      </li>
+      <li>
+         The Availability bars can be rounded or split to GanttExclude parts, set the option by <b>GanttAvailabilityExclude</b>. It can be done only for Work resources.
+      </li>
+      <li>
+         The Availability bars can be split to selected date units by <b>GanttAvalilabilitySplit</b> and <b>GanttAvailabilityUnits</b>.
+      </li>
+      <li>
+         The adjacent ranges with the same value are automatically joined. To not do it, set <b>GanttAvailabilityJoin</b>="0".
+      </li>
+      <li>
+         The availability values can show summary in selected date ranges set by <b>GanttAvailabilitySum</b>.
+      </li>
+      <li>
+         It is possible to show only texts, only bars or both, by <b>GanttAvailabilityShow</b>
+      </li>
+      <li>
+         It is possible to show also zero value boxes as a little height boxes by <b>GanttAvailabilityZero</b>.
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,211 @@
+The 1.0 series
+==============
+
+2005-03-14 [1.0.0.2]
+ - initial release
+
+2005-04-05 [1.0.1.3]
+ - fixed minor playback window size calculation bug
+ - fixed pause bug
+ - made default language selectable
+
+2005-04-06 [1.0.2.4]
+ - fixed pause bug again (i.e. should now work in fullscreen mode, too)
+ - fixed OSD unpause bug
+ - using MPlayer's "-nokeepaspect" option to avoid MPlayer-specific bug with
+   non-4:3 displays
+
+2005-04-08 [1.0.3.7]
+ - French translation by François Gagné
+
+2005-04-18 [1.0.4.8]
+ - (partly working) Polish translation by Pawel Wieczorek
+
+The road to 1.1
+===============
+
+2005-04-24 [1.0.9.9] (pre-release)
+ - some fixes in Polish translation
+ - MPlayer 1.0-pre7 is out with a fixed DirectSound driver, so DirectSound is
+   the default audio output device now
+ - native fullscreen mode
+ - preliminary support for on-the-fly audio track changing with key 191
+   (but be warned, MPlayer is _very_ unstable!)
+ - the log window can be used to send MPlayer arbitrary command lines
+ - speed control via Ctrl+NumpadMultiply and Ctrl+NumpadDivide
+
+2005-04-25 [1.0.9.11] (pre-release)
+ - (unfinishd) playlist support
+ - DirectSound device selector in options dialog
+   -> MPlayer 1.0-pre7 is now REQUIRED
+
+2005-10-23 [1.1.0.12] (pre-release)
+ - complete playlist support
+ - integrated a bunch of translations
+ - re-designed user interface
+ - added status bar with precise timing information; however, the seek bar
+   still operates with the old, accustomed percentages, thus avoiding problems
+   with some media files (paradigm: displaying wrong times is acceptable, but
+   breaking seeks is not)
+
+2005-10-24 [1.1.0.13] (pre-release)
+ - reintroduced fsAlwaysOnTop for child dialogs
+ - current file name is now displayed in the title bar
+
+2005-10-30 [1.1.0.14] (pre-release)
+ - added multi-select in the playlist "add file" dialog
+
+2005-11-15 [1.1.0.15] (pre-release)
+ - always-on-top mode wasn't restored when leaving fullscreen mode. fixed.
+
+The 1.1 series
+==============
+
+2005-12-27 [1.1.0.16]
+ - added simplistic icons
+ - fixed some charset issues -- but there seem to be a bunch of others left :(
+ - changed the seekbar style
+
+2006-01-30 [1.1.1.17]
+ - did NOT fix high CPU consumption bug, and did NOT increase priority level --
+   I didn't find a solution for the former one, which effectively makes the
+   latter a no-go
+ - added .m3u support
+ - added volume control
+ - fixed broken MPlayer version display in About dialog
+
+2006-02-03 [1.1.2.18]
+ - added clip information window (however, almost all translations are missing
+   for this window)
+ - fixed duration display (MPlayer now uses floating-point times, and I wasn't
+   prepared for that)
+ - Mute button is now disabled if the clip has no audio
+ - double-click on the video now enables full-screen mode,
+   single-click toggles pause
+ - disabling fullscreen mode mouse cursor with ShowCursor() now, I hope that
+   works more reliably than the previous method (SomeWidget.Cursor:=-1;)
+ - fixed input box in MPlayer log window (didn't resize with the rest of window)
+
+2006-02-09 [1.1.3.19]
+ - now using a Windows XP Common Controls Manifest for styled controls in
+   XP's "Teletubbie Mode"
+ - built with Delphi 2005 PE now, no more graphical glitches in "Teletubbie
+   Mode" (however, development continues to be Delphi6-based, because I can't
+   stand that Microsoftish IDE of newer Delphi versions)
+ - added two undocumented command-line options: "-fs" enters fullscreen mode
+   directly after starting video playback, "-autoquit" quits MPUI after
+   playback of the last file finished
+ - removed single-click pause functionality; it conflicted with the double-click
+   fullscreen mode toggle
+ - OpenURL dialog uses the current clipboard contents as the default URL now
+ - "Cache fill:" status is now reduced to 1 line
+ - Aspect Ratio display in the Clip Info window is now more readable (e.g.
+   "4:3" instead of "1.333:1")
+ - added error reporting if CreateProcess() fails
+ - slightly improved playlist and info window handling, including some docking
+ - mouse wheel volume control is now synchronized with the volume slider
+ - the MPlayer build delivered with the 4MB .zip file package is now a minimal,
+   no-frills, custom-built one and includes the vo_directx 100% CPU usage fix
+
+2006-02-18 [1.1.4.23]
+ - screensaver is now disabled in fullscreen mode
+ - fixed stupid bug that caused some systems to start up with Belarusian
+   language (effectively showing nothing but question marks in the UI)
+ - added "higher priority" option. THIS IS ACTIVATED BY DEFAULT, so be warned
+   that you'll run into trouble with some graphics cards if you use a
+   "off-the-shelf" MPlayer version instead of the one that comes with MPUI
+ - added -softvol option, enables playback with volume settings way above 100%
+ - whole directories can now be added to the playlist; however, the UI will be
+   unresponsive while adding the directories (this will be fixed soon)
+ - added fullscreen controls: simple move the mouse to the bottom of the screen
+ - added right-click popup menu
+ - not using ShowCursor() any longer (like in <1.1.2) because the cursor would
+   be invisible in the popup menu in fullscreen mode
+ - added "compact mode" (without caption, menu bar and navigation). Note that
+   some keyboard shortcuts (Alt+n for example) don't work in this mode.
+ - fixed position of some (but not all) keyboard shortcut hints in the menus;
+   I hope there are no side effects since this involved a change in the shortcut
+   handling system, too
+ - changed "always on top" shortcut from Ctrl+T to just T
+ - "always on top" mode should no longer interfere with fullscreen mode
+ - the technical/internal captions for untranslated controls were changed into
+   terse, but clear english ones
+ - compiled with Delphi 6 again, because D2005, despite having XP style support,
+   got the menus totally wrong: checked items were indistinguishable from
+   unchecked ones
+ - added the Ukrainian translation I got some time ago, but never integrated
+
+2006-03-18 [1.1.5.27]
+ - replaced the main menu by a toolbar that only looks like a menu. This
+   resolves a bunch of issues all at the same time:
+   - partially white menu bar in XP's Themed ("Teletubbie") Mode is gone
+   - most shortcuts line up correctly in the menus
+   - keys like T, F or O are no longer mistaken as shortcuts
+   - Alt+$x and Ctrl+$x shortcuts work in compact mode
+ - playlists and directories can now be specified at the command line
+ - all arguments of the command line will be concatenated into a single
+   argument string. This helps a bit with broken file associations
+   (MPUI.exe %1 instead of MPUI.exe "%1"), but not for file names with two or
+   more successive blanks.
+   Fix your associations, folks. That's not (yet) my job.
+ - fixed the -softvol option (I misinterpreted the MPlayer manpage)
+ - made the info button functional
+ - fixed typo in options window
+ - command box in log window works again
+ - added Alt+Enter as an alias for "toggle fullscreen mode"
+ - added support for multimedia control keys (Play/Pause, Stop, Previous Track,
+   Next Track) on modern keyboards
+ - added Bulgarian, Chinese, Italian and Esperanto translation
+ - suppressing repeated lines in the log window
+ - disabling power management while playing now
+ - added "-compact" command-line switch to start up in compact mode
+ - ShoutCast/Icecast streamed title tags are now shown in the Info window
+ - issuing a warning on Win9x systems now
+ - 'S' key makes screenshots now (shot0001.png in the work directory where MPUI
+   was started)
+ - 'L' key toggles playlist window now
+ - the Pause button now acts as a single-step button
+ - Shuffle and Repeat playback modes
+
+2006-03-23 [1.1.6.28]
+ - added Korean translation
+ - fixed mis-positioned shuffle/repeat checkboxes
+ - added option to save playlists
+ - fixed icon order in video pop-up menu
+ - added cache fill indicator (but eats up CPU cycles like hell ... this is due
+   to MPlayer's strange behavior, I'm afraid)
+ - AutoPlay now plays multiple files and playlists
+ - (hopefully) repaired DVD playback (it collided with the recursive directory
+   search feature, argh!)
+ - mapped Alt+4...Alt+8 keys to popup the main menus
+ - MPUI logo is now hidden between files (when multiple files are played)
+
+2006-03-30 [1.1.7.29]
+ - fixed mispositioned Save Playlist button
+ - added Romanian translation
+ - replaced GetWindowsDirectory() by GetEnvironmentVariable("windir") -- one
+   user had trouble with the former, so let's hope the latter one works for all
+ - window is now always restored when switching normal/fullscreen/compact mode
+   (this fixes issues when switching to fullscreen while the window is
+   maximized)
+
+2006-04-25 [1.1.8.30]
+ - fixed software volume mode (the MPlayer guys made -softvol-max work as
+   documented :)
+ - updated Simplified Chinese, Polish and Ukrainian translations
+ - added Traditional Chinese, Portuguese, Danish, Japanese and Slovak
+   translations
+ - added code to set up the UI properly if compiled with Delphi versions newer
+   than 6.0
+
+2006-06-12 [1.1.9.31]
+ - fixed mute disabling itself after volume changes
+ - added .flv to autoplay detection
+ - enabling previous/next buttons after errors now
+ - updated Japanese, Belarusian and Russian translations
+ - added Arabic translation (but couldn't test it, sorry)
+ - shipping with the brand-new MPlayer 1.0-pre8 now :)
+
+2006-06-22 [1.1.10.33]
+ - shuffle mode is truly random now
+ - updated Ukrainian and Japanese translation, added Dutch translation

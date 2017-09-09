@@ -1,0 +1,1744 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt zoom</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Zoom></a><a name=Global></a><a name=GlobalOptions><b><span
+style='font-size:20.0pt'>Zoom options</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attributes to control unit size
+and rounding for whole Gantt chart column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>float      </i></span><a
+name=CGanttWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [18]      Saved
+to cookies, to avoid it set &lt;<b>Cfg</b> <b>GanttLap</b>=’1’/&gt;              <span
+style='color:blue'>upd <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width in pixels of one base
+unit set by <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be automatically
+increased for smooth zoom, see <a href="#CGanttSmoothZoom">GanttSmotthZoom</a>.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When <a
+href="GanttCompute.htm#CGanttExclude">Exclude</a> dates are hidden, the
+GanttWidth is increased to have the same average unit width as with Exclude
+visible.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.3 it can be
+floating point number and not only integer.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttUnits><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttUnits</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [‘d’]                                                                                                    <span
+style='color:blue'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Base unit time, in these
+units is the Gantt chart shown, it can be <b>date units</b>: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>‘<b>ms</b>’
+– milliseconds, “<b>ms10</b>” – 10 milliseconds, “<b>ms100</b>” – 100
+milliseconds,</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>‘<b>s</b>’
+– seconds, ‘<b>s2</b>’ – 2 seconds, ’<b>s5</b>’ – 5 seconds, ’<b>s10</b>’ – 10
+seconds, ’<b>s15</b>’ – 15 seconds, ’<b>s30</b>’ – 30 seconds,</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'> ‘<b>m</b>’
+- minutes, ‘<b>m2</b>’ – 2 minutes, ’<b>m5</b>’ – 5 minutes, ’<b>m10</b>’ – 10
+minutes, ’<b>m15</b>’ – quarters of hour, ’<b>m30</b>’ – halves of hour, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>’<b>h</b>’
+- hours, ’<b>h2</b>’ – 2 hours, ’<b>h3</b>’ – 3 hours, ’<b>h6</b>’ – quarters
+of day, ’<b>h8</b>’ – thirds of day, ’<b>h12</b>’ – halves of day, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>’<b>d</b>’
+- days, ’<b>w</b>’ – weeks (starting by Sunday), <b>’w1’</b> – weeks (starting
+by Monday, in Hirji starts by Saturday), </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>’<b>M</b>’
+- months, ’<b>M2</b>’ – <i>(new 10.0) </i>two months, ’<b>M3</b>’ – quarters of
+year, ’<b>M4</b>’ – <i>(new 10.0) </i>four months, ’<b>M6</b>’ – halves of
+year, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>’<b>y</b>’
+– years, ’<b>y2</b>’ – 2 years, ’<b>y3</b>’ – 3 years, ’<b>y4</b>’ – 4 years, ’<b>y5</b>’
+– 5 years, ’<b>y10</b>’ – 10 years, ’<b>y20</b>’ – 20 years, ’<b>y50</b>’ – 50
+years <i>(2-50 year is  new 10.0)</i></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.4</span></i><span
+style='font-size:10.0pt'> it can be also any number for <b>number units</b>, “<b>1</b>”as
+base number units, but it can be for example “0.5”,
+“2”, “10”, “0.2”, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To these units are all the
+dates rounded for display (but not dependency errors and other computing), if
+set <a href="#CGanttRoundUnits">GanttRoundUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To these units are also
+rounded all box resizing and moving changes (but not the resulted dates
+themselves)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example date “1/1/2000 10:00” moved by 60 hours for units ‘d’ (days), the
+change will be rounded to 48 hours and the result will be “1/3/2000 10:00”.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.3 it is never used
+for Gantt calculations, only for display.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> it is possible to define also any <b>custom units</b>,
+even with variable length, by global API function <a href="#AddGanttUnits">AddGanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttRoundUnits><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttRoundUnits</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                           <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> rounds all
+objects in chart except Run and Points to actual GanttUnits. It is default
+behavior in TreeGrid prior 8.0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it does not
+round any date and displays the objects exactly where they are. The minimal
+object width is usually 6 pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttNewStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttNewStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rounding start date for
+newly created main bars and rounding date of newly created objects (starting main
+bar Milestone, starting constraints, Flag, Point).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To this date part will be the
+new date rounded within <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for GanttUnits=’d’
+GanttNewStart=’1/1/2000 8:00’ all newly created tasks will start at 8:00.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, for editing Date
+type cell you can set <a href="TypeDate.htm#CDefaultDate">DefaultDate</a> for
+the cell to predefine missing parts of the date.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttNewEnd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttNewEnd</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rounding end date for
+newly created main bars and rounding date of newly created objects (ending main
+bar Milestone, ending constraints)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To this date part will be the
+new date rounded within <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for
+GanttUnits=’d’ GanttNewEnd=’1/1/2000 17:00’ all newly created tasks will end at
+17:00.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, for editing Date
+type cell you can set <a href="TypeDate.htm#CDefaultDate">DefaultDate</a> for
+the cell to predefine missing parts of the date.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttChartRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChartRound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt chart time rounding, to
+these units will be rounded the first and the last date for the whole chart,
+possible values are the same as <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rounding never shrinks
+the chart width. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string    </i></span><a
+name=CGanttRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttRound</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    [‘m’]                                                                                             
+<span style='color:red'>deleted <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Used always <a
+href="#CGanttUnits">GanttUnits</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:#999999'>Base unit time
+rounding, to these units will be all dates rounded, possible values are the
+same as <a href="#CGanttUnits"><span style='color:#999999'>GanttUnits</span></a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:#999999'>It can be set
+also to empty string to not to round. In this case the same start and due dates
+will produce no bar at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string    </i></span><a
+name=CGanttFlowRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttFlowRound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                            <span
+style='color:red'>deleted <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Used always <a
+href="#CGanttUnits">GanttUnits</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:#999999'>Flow rounding,
+to these units will be all dates in <a href="#CGanttFlow"><span
+style='color:#999999'>GanttFlow</span></a> rounded, possible values are the
+same as <a href="#CGanttUnits"><span style='color:#999999'>GanttUnits</span></a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttPrintRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPrintRound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Gantt chart time rounding
+when splitting chart to pages when printing. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To these units will be
+rounded the first and the last date for the chart parts, possible values are
+the same as <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [0]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>                   new</span><span
+style='color:blue'> </span><b><span style='color:red'>8.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Cfg attribute! </span></i><span
+style='font-size:10.0pt'>If set, it prints only visible part of the actually
+scrolled / zoomed Gantt chart (horizontally)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed via print
+menu and is saved to cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintGanttSplit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintGanttSplit</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                    
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If Gantt chart column can be
+split if it is wider than selected page by <a href="Print.htm#CfgPrintPageWidth">PrintPageWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintGanttSplitMin><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintGanttSplitMin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [100]                                                                 
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal size in pixels of
+printed part of Gantt when split by <a href="#CfgPrintGanttSplit">PrintGanttSplit</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects the first and last
+page part of the printed Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      
+</span></i><a name=AddGanttUnits><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>AddGanttUnits</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>string</i>
+<b>units</b>, <i>int</i> <b>width</b>, <i>int</i> <b>exactwidth</b> = null)                             <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new <a
+href="#CGanttUnits">GanttUnits</a> to the TreeGrid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is global function, it can
+(and should) be called after TreeGridcode (GridE.js file) is loaded, even
+before any grid is created.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The new units can be used
+like standard Gantt units in GanttUnits, GanttDataUnits, GanttHeader,
+GanttBackground and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The new units <u>cannot</u>
+be used to define GanttExclude and Gantt calendars.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>units</span></b><span
+style='font-size:10.0pt'> is the units name that will be used, e.g. in
+GanttUnits.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>width</span></b><span
+style='font-size:10.0pt'> is the units length in milliseconds. For units with
+variable length must be set to average length.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>exactwidth</span></b><span
+style='font-size:10.0pt'> is the exact units length in milliseconds. It is
+usually the same as <b>width</b> or null for units with variable length.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For units with variable
+length (e.g. months or years) or units not starting on 1/1/1970 (e.g. weeks) or
+if set GMT='0' must be defined <a href="#OnIncDate">OnIncDate</a> and <a
+href="#OnRoundDate">OnRoundDate</a> API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example how to define <b><span
+style='color:red'>fiscal year</span></b> starting on April (for different month
+change the two 3 in the OnRoundDate). Use it like GanttHeader1=&quot;<b>yf</b>#yyyy&quot;
+GanttSize=&quot;<b>yf</b>&quot;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>AddGanttUnits(&quot;yf&quot;,86400000*365.2425,null);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnRoundDate = function(G,d,t){
+if(t==&quot;yf&quot;) { d = new Date(d); d.setUTCHours(0,0,0,0);
+d.setUTCFullYear(d.getUTCFullYear()-(d.getUTCMonth&lt;<b>3</b>?1:0),<b>3</b>,1);
+return d-0; } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnIncDate = function(G,d,t,c){
+if(t==&quot;yf&quot;) { d = new Date(d);
+d.setUTCFullYear(d.getUTCFullYear()+c); return d-0; } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnGetGanttHeader =
+function (G,val,index,date,nextdate,units,width,partial,col){ if(units=='yf')
+return DateToString(date,'yyyy') + &quot; - &quot; +
+DateToString(nextdate,'yyyy'); return val; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnRoundDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRoundDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>date</b>, <i>string</i> <b>units</b>)                                             <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to round the date to
+the start of the custom Gantt units. See <a href="#AddGanttUnits">AddGanttUnits</a>
+for example of usage.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is a date in milliseconds since 1/1/1970. <b>units</b>
+is the custom defined units.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return the rounded date in
+milliseconds since 1/1/1970 or Date object. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event can be called also
+for standard Gantt units, so for all other units than the custom ones return
+null.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The event is called many
+times, so the code in the event must be very fast.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnIncDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnIncDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                    (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>date</b>, <i>string</i> <b>units</b>, <i>int</i> <b>count</b>)
+                             <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to increase the date
+by given count of custom Gantt units. See <a href="#AddGanttUnits">AddGanttUnits</a>
+for example of usage.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is a date in milliseconds since 1/1/1970. <b>units</b>
+is the custom defined units.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>count</span></b><span
+style='font-size:10.0pt'> is a count of the units to increase / decrease the
+date by. It can be negative. It is always integer.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The increased date must <u>not</u>
+be rounded, it should preserve all other parts (e.g. increasing 5/6/2000 10:15
+by 10 years will be 5/6/2010 10:15)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return the changed date in
+milliseconds since 1/1/1970 or Date object. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event can be called also
+for standard Gantt units, so for all other units than the custom ones return
+null.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The event is called many
+times, so the code in the event must be very fast.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Size><b><span style='font-size:20.0pt'>Chart size limits</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Limits the size of the chart
+to this unit. The values are the same as the <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example GanttSize='M'
+shows always Gantt chart for one month.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This value can be used to
+show only part of the chart or for paging in Gantt chart using <b>side pager</b>
+<a href="Pager.htm#Gantt">Type='Gantt'</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>empty string</b>,
+it tries to show the whole chart. Also moving Gantt object outside the visible
+range will resize the visible range. <i>It is default behavior in grid prior 9.0.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it tries
+to show the whole chart, moving Gantt object outside the visible range never
+resizes the visible range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttSizeLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSizeLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of GanttUnits added
+before <a href="#CGanttSize">GanttSize</a> range, to show it from previous
+range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttSizeRight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSizeRight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of GanttUnits added
+after <a href="#CGanttSize">GanttSize</a> range, to show it from next range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttSizeFit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSizeFit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [0]                                                                               <span
+style='color:red'>new <b>9.2</b></span><span style='color:#0070C0'>; upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it resizes
+/ shrinks the Gantt chart for the selected GanttSize to the space for the Gantt
+chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It calculates and modifies <a
+href="#CGanttWidth">GanttWidth</a> attribute only.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0) </span></i><span
+style='font-size:10.0pt'>If set for GanttSize=&quot;&quot; or &quot;0&quot;, it
+shrinks the chart to show only the Gantt objects also on zoom change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttFitVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttFitVisible</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, only
+visible rows are used to specify Gantt width (for GanttSize='0' or GanttSize=''
+and fit width for GanttSizeFit='1' or GanttZoom='' or action ZoomFit)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+set to <b>1</b>, it also resizes Gantt after applying filter. But <u>not</u>
+after calling API ShowRow / HideRow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>3</b>, it
+behaves like <b>1</b> and also ignores GanttBase and GanttFinish when
+calculating GanttWidth</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttChartMinStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChartMinStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All dates before will never
+be displayed in the chart. It can be date string or integer.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set GanttChartMinStart and
+GanttChartMaxStart to the same value, the chart will always start here, except
+width limits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced GanttMin</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttChartMaxStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChartMaxStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The chart will always start
+at least at this date or before. It can be date string or integer.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttChartMaxEnd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChartMaxEnd</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All dates after will never be
+displayed in the chart. It can be date string or integer.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set GanttChartMinEnd and
+GanttChartMaxEnd to the same value, the chart will always end here, except
+width limits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced GanttMax</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttChartMinEnd><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttChartMinEnd</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The chart will always end at
+least at this date or after. It can be date string or integer.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int        </i></span><a
+name=CGanttMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttMin</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                                              <span
+style='color:red'>renamed <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by GanttChartMinStart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int        </i></span><a
+name=CGanttMax><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttMax</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                                             <span
+style='color:red'>renamed <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by GanttChartMaxEnd</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A count of empty base units that
+will be displayed before the whole Gantt chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set GanttChartMinStart,
+objects cannot be moved or resized before GanttChartMinStart+GanttLeft*GanttUnits</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttRight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttRight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A count of empty base units that
+will be displayed after the whole Gantt chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set GanttChartMaxEnd,
+objects cannot be moved or resized after GanttChartMaxEnd-GanttRight*GanttUnits</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CMinWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal width of the column
+in pixels.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can be automatically
+decreased, if the whole Gantt in actual zoom between GanttChartMinStart and
+GanttChartMaxEnd is smaller than the MinWidth.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CMaxWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [10000/1193049]                                                                      <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal width of the column
+in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the zoom level is too high
+and the Gantt chart reaches this limit, there is displayed only part of the chart
+and the rest can be displayed only by unzoom.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Maximal width for IE7 and
+IE8/9 quirks mode is 178957 pixels, except if used <a href="#CGanttPaging">GanttPaging</a>.
+Old versions of Opera were limited by 23000 pixels.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Maximal width for IE in <a
+href="#CGanttPaging">GanttPaging</a> is 1193049 for IE8 strict mode, 1342177 for
+IE8 quirks mode and 1533918 for other IE versions. Other browsers are not
+limited.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The MaxWidth can be
+automatically overflown if one unit of <a href="#CGanttChartRound">GanttChartRound</a>
+x <a href="#CGanttWidth">GanttWidth</a> is wider than the MaxWidth (except the
+maximums in IE browsers).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default MaxWidth is 10000
+except for <a href="#CGanttPaging">GanttPaging</a> that is 1193049<i> (since 10.0)</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ZoomList><b><span style='font-size:20.0pt'>Zoom selection</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attributes to specify and
+change zoom level for whole Gantt chart column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual zoom levels
+can be defined globally by root <b>&lt;Zoom&gt;</b> tag  and individual <b>&lt;Z&gt;
+</b>tags <i>(since 6.4)</i> or for the specified Gantt column by <b>GanttZoomList</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Cols&gt;&lt;C ... <b>GanttZoom</b>=&quot;weeks&quot;
+<b>... /&gt; ... &lt;/Cols&gt;</b></span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Zoom&gt;</span></p>
+
+<p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Z Name='weeks'
+GanttUnits='w' GanttChartRound='M' GanttHeader1='w#%d'/&gt;</span></p>
+
+<p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Z Name='days' 
+GanttUnits='d' GanttChartRound='w' GanttHeader1='d#%d'/&gt;</span></p>
+
+<p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Z Name='hours'
+GanttUnits='h' GanttChartRound='d' GanttHeader1='h#HH:'/&gt;</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;/Zoom&gt;</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>OR</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Cols&gt;&lt;C ... <b>GanttZoom</b>=&quot;weeks&quot;
+<b>GanttZoomList</b>=&quot;[</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>   {
+Name:'weeks',GanttUnits:'w',GanttChartRound:'M',GanttHeader1:'w#%d' },</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>   {
+Name:'days',GanttUnits:'d',GanttChartRound:'w',GanttHeader1:'d#%d' },</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>   { Name:'hours',GanttUnits:'h',GanttChartRound:'d',GanttHeader1:'h#HH:'
+}</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt;
+font-family:"Courier New"'>   ]&quot; ... /&gt; ... &lt;/Cols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Zoom&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>            </i></span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;<a
+name=ZoomZ><u>Z</u></a>&gt;</span></b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:yellow'>                                                                                                                                     <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Z&gt; tag defines
+individual one Gantt zoom level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be placed in root
+&lt;Zoom&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can have set its <b>Name</b>
+attribute to display in SelectGanttZoom Type dialog and to access by GanttZoom
+attribute.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>Every
+&lt;Z&gt; tag can contain individual settings for Gantt attributes from <a
+href="#Zoom">Zoom options</a>, <a href="#Header">Header</a>, <a
+href="#Background">Background</a>.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>After
+the zoom level is selected, all the attributes are set to the Gantt column and
+Gantt chart is recalculated.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>To
+use smooth zoom in / zoom out the list of &lt;Z&gt; tags inside &lt;Zoom&gt; must
+be sorted according to zoom size, from smallest zoom size up.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>Zoom
+size is specified by <a href="#CGanttUnits">GanttUnits</a> and <a
+href="#CGanttWidth">GanttWidth</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set
+different zoom settings for case the <a href="GanttCompute.htm#Exclude">Exclude</a>
+is active by items with suffix <b>Ex</b>, like ... GanttWidth:18,GanttWidth<b>Ex</b>:22
+...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Z&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=ZName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the zoom level. It
+will be used by GanttZoom attribute and in the SelectGanttZoom combo.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttZoomList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoomList</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of predefined zoom
+levels in JSON format. It contains an array of individual objects as zoom
+levels. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can be used instead of
+global &lt;Zoom&gt; tag when there are more Gantt columns in grid, or if JSON
+format is preferred by the developer.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every object has set its <b>Name</b>
+attribute to display in SelectGanttZoom Type dialog.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>Every
+object can contain individual settings of attributes from <a href="#Zoom">Zoom
+options</a>, <a href="#Header">Header</a>, <a href="#Background">Background</a>.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>After
+the zoom level is selected, all the attributes are set to the Gantt column and
+Gantt chart is recalculated.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>To
+use smooth zoom in / zoom out the list must be sorted according to zoom size,
+from smallest zoom size up.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>Zoom
+size is specified by <a href="#CGanttUnits">GanttUnits</a> and <a
+href="#CGanttWidth">GanttWidth</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set
+different zoom settings for case the <a href="GanttCompute.htm#Exclude">Exclude</a>
+is active by items with suffix <b>Ex</b>, like ... GanttWidth:18,GanttWidth<b>Ex</b>:22
+...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Saved
+to cookies, to avoid it set &lt;<b>Cfg</b> <b>GanttLap</b>=’1’/&gt;  <span
+style='color:red'>new <b>6.3</b>; chg <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the actually selected
+or predefined item from GanttZoomList.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1)</span></i><span
+style='font-size:10.0pt'> If set to empty string, it fits the zoom to fill the
+whole available width, it calls action <a href="#ActionZoomFit">ZoomFit</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttZoomDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoomDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [
+]                                                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date to scroll to in Gantt
+for given zoom.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be date string in English
+format or count of milliseconds since 1/1/1970.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttZoomDateAlign><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoomDateAlign</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [“Center”]                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where the <a
+href="#CGanttZoomDate">GanttZoomDate</a> will be shown, can be <b>Left</b>, <b>Center</b>,
+<b>Right</b>. Case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttSmoothZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSmoothZoom</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                   <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the chosen zoom level unit
+width (<a href="#CGanttWidth">GanttWidth</a>) attribute can be increased to
+display exactly the selected range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For zoom by dragging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0)</span></i><span
+style='font-size:10.0pt'> If set to <b>2</b> it increases the GanttWidth except
+it in the last zoom level and does not shrink it in the first zoom.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttZoomChange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoomChange</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How will behave changing zoom
+level.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Actual view size will be preserved for
+GanttSize=&quot;&quot; and &quot;0&quot;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Actual view size will be reset for
+GanttSize=&quot;&quot; and &quot;0&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttZoomFit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttZoomFit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls action <a
+href="#ActionsZoomFit">ZoomFit</a>. Bit array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. + 2. bit,  &amp;3      <b>0</b>
+- fits the Gantt into actual width of the column section where the Gantt column
+is.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt'>1</span></b><span style='font-size:10.0pt'> - fits the
+Gantt into maximal width of the column section where the Gantt column is. See <a
+href="GridSize.htm#Widths">Widths of individual column sections</a>. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><b><span
+style='font-size:10.0pt'>2</span></b><span style='font-size:10.0pt'> - fits the
+Gantt into minimal width of the column section where the Gantt column is. See <a
+href="GridSize.htm#Widths">Widths of individual column sections</a>.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - reserved</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>. bit, &amp;4               Reduces the section available
+width by other column widths in the section, if any. 4 replaces <a
+href="#ActionsZoomFitAll">ZoomFitAll</a> action.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'>. bit, &amp;8               Ignores side texts set by <a
+href="GanttMain.htm#CGanttShowHtml">GanttShowHtml</a> = 3 and <a
+href="GanttRun.htm#CGanttRunShowHtml">GanttRunShowHtml</a> = 3.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=CTypeSelectGanttZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Type=”</span><a
+name=SelectGanttZoom><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SelectGanttZoom</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                               <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special combo box to select
+zoom level defined by <a href="#CGanttZoomList">GanttZoomList</a>. It displayed
+and changes <a href="#CGanttZoom">GanttZoom</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It presets these cell
+attribute: Type=”Html” Button=”Defaults” Defaults=<i>GanttZoomList</i>
+OnChange=<i>change GanttZoom</i> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CfgSync><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sync</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                  <b>                        </b>                                                           <span
+style='color:red'>new <b>8.1</b></span><span style='color:#0070C0'>; upd <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What settings to synchronize
+among selected grids - among all grids with the same <a href="#CfgSyncId">SyncId</a>
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+keywords, case insensitive.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>All</span></b><span
+style='font-size:10.0pt'> (substitution for
+Sort,Filter,Group,Search,Cols,Style), <b>Sort</b>, <b>Filter</b>, <b>Group</b>,
+<b>Search</b>, <b>Cols</b> (size, visibility and position),<b> Sec</b> (<i>new
+9.3,</i> width of column section), <b>Horz</b> (horizontal scroll), <b>Vert</b>
+(vertical scroll), <b>Style</b> (<i>new 9.0</i>, CSS style), <b>Zoom</b> (<i>new
+9.3</i>, Gantt zoom level and width)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For synchronizing Gantt
+charts by Zoom the Gantt should have the same width by setting the same
+GanttSize. All the grids should have the same Sync value to be synchronized in
+both ways.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For more information see <a
+href="MasterDetail.htm#Synchronizing">Synchronizing grids</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=ChangeZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeZoom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>Name</b>)                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes actual zoom level (<a
+href="#CGanttZoom">GanttZoom</a>) to item Name from <a href="#CGanttZoomList">GanttZoomList</a>
+and refreshes Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true for success,
+false for error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=ZoomTo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ZoomTo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>Date</i>
+<b>start</b>, <i>Date</i> <b>end</b>, <i>int</i> <b>width</b> = null)                                                  <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selects appropriate zoom to
+display date range from <b>start</b> to <b>end</b> to be wide <b>with</b>
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>width</b> is null,
+it is the maximal visible space available for Gantt chart within actual Main
+tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If required, it also scrolls
+the Gantt column to show the given range.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0) </span></i><span
+style='font-size:10.0pt'>The width can be set negative to use null width increased
+by this number of pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true for success,
+false for error.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ScrollToDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ScrollToDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>Date</i>
+<b>date</b>, <i>string</i> <b>align</b> = “Center”)                                                        <span
+style='color:red'>new 7<b>.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Scrolls to given date. <b>align</b>
+can be “<b>Left</b>”, “<b>Center</b>”, “<b>Right</b>”. Case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the date is not displayed
+because of actual zoom level, it shows the appropriate part of the chart, but
+never changes zoom level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=CanZoomIn><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanZoomIn</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (
+)                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if the actual <a
+href="#CGanttZoom">GanttZoom</a> value is <u>not</u> the last from <a
+href="#CGanttZoomList">GanttZoomList</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=CanZoomOut><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanZoomOut</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> ( )                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if the actual <a
+href="#CGanttZoom">GanttZoom</a> value is <u>not</u> the first from <a
+href="#CGanttZoomList">GanttZoomList</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnZoom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>zoom</b>, <i>int</i> <b>FirstDate</b>, <i>int</i>
+<b>LastDate</b>)                                         <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after zoom level in
+chart changes or when the first or last displayed date changes (Gantt is
+scrolled to another window).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The zoom is name of actual
+zoom level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>FirstDate</b> is the
+first (left) date (in milliseconds) that is displayed in chart (regardless on
+scroll).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>LastDate</b> is the
+last (right) date (in milliseconds) that is displayed in chart (regardless on
+scroll) <b>plus 1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object[] </i></span><a
+name=GetZoomList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetZoomList</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>string</i>
+<b>col</b>)                                                                                          <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns actual zoom levels
+list defined in &lt;<a href="#ZoomZ">Zoom</a>&gt; tag or <a
+href="#CGanttZoomList">GanttZoomList</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns JavaScript Array of
+the individual zoom level objects (&lt;Z&gt; tags).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to modify the
+individual zoom level attributes or even add or delete the individual zoom
+level objects.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The changes are shown only
+after change of zoom level, not in actual zoom level. To change actual zoom
+level settings, modify them directly in Gantt column and refresh the Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomGantt><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomGantt</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>       Attached to <b>OnDragGanttHeader</b>
+event, can be attached also to <b>OnDragGantt</b>    <span style='color:red'>new
+<b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Provides zoom by dragging
+functionality.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user selects a range by
+mouse dragging to be zoomed into.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUndoZoom><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>UndoZoom</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>       Attached to <b>OnRightClickGanttHeader</b>
+event                                        <span style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Switches back to previously
+chosen zoom level by <a href="#ActionsZoomGantt">ZoomGantt</a> action or <a
+href="#ZoomTo">ZoomTo</a> method. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be called more times
+to go back in the queue.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomIn><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomIn</span></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:lime'>                Attached to <b>OnClickGanttHeader</b>
+event                                                 <span style='color:red'>new
+<b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Chooses next zoom level from <a
+href="#CGanttZoomList">GanttZoomList</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomOut><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomOut</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            Attached to <b>OnRightClickGanttHeader</b>
+event                                        <span style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Chooses previous zoom level
+from <a href="#CGanttZoomList">GanttZoomList</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomFit><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomFit</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>               Not attached
+to any event                                                        <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Chooses zoom level to show
+the whole Gantt chart without horizontal scrolling.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1) </span></i><span
+style='font-size:10.0pt'>It is also called on start when set
+GanttZoom=&quot;&quot;.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0)</span></i><span
+style='font-size:10.0pt'> Its functionality is controlled by <a
+href="#CGanttZoomFit">GanttZoomFit</a> attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>                    </span><a
+name=ActionsZoomFitAll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ZoomFitAll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>        Not attached to any
+event                                                <span style='color:red'>new
+<b>6.3; </b>deleted<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a
+href="#ActionsZoomFit">ZoomFit</a> and <a href="#CGanttZoomFit">GanttZoomFit</a>
+= <b>4</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomHeader><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomHeader</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>   Attached to <b>OnClickGanttHeader</b>
+event                                                <span style='color:red'>new
+<b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Zooms to the exact header
+unit under mouse cursor if the cursor is above header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomBar><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomBar</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>             Not attached to any
+event                                                                    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Zooms to fit the actual bar
+(main, run)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsZoomAll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ZoomAll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>              Not attached to
+any event                                                                    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Zooms to fit all the objects
+in the Gantt cell (main, run, flags, points, constraints)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Paging><b><span style='font-size:20.0pt'>Paging in Gantt</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>Vertical paging (rows)</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows in TreeGrid with Gantt
+chart can be paged vertically like in normal tree / grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can use <a
+href="Paging.htm">root rows paging</a>, <a href="TreePaging.htm">child paging</a>
+and <a href="TreePaging.htm#ChildParts">child parts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also <a
+href="PagingServer.htm">server paging</a> and <a
+href="PagingServer.htm#ChildPaging">server child paging</a> is supported for
+Gantt chart grids with few restrictions. Dependencies cannot be linked between
+tasks on different pages or child pages. The Gantt size cannot be calculated
+according to its content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>Horizontal paging by side
+pager</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set the
+Gantt chart to show only part of its range and switch among the parts by API or
+by one or more <b>side pager</b> <a href="Pager.htm#Gantt">Type='Gantt'</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:14.0pt'>Horizontal paging by
+scroll</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Render only visible (due horizontal
+scroll) part of Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPaging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [0]                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, permits paging in
+Gantt by horizontal scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttPagingFixed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPagingFixed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [6]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What will be paged in Gantt
+chart, bit mask. Used only if set <a href="#CGanttPagingFixed">GanttPaging</a>='1'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the bit is set to <b>0</b>,
+the part is rendered for the whole Gantt chart. It will slow the Gantt initial
+rendering. Also showing too many items can slow down the grid responses or even
+throw JS errors, especially in IE. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the bit is set to <b>1</b>,
+the part is rendered only to Gantt page and is re-rendered for every page
+change. It can slow down the page rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The variable rows are paged
+always. By default are paged Foot rows and Background.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. bit (&amp;<b>1</b>)             Head
+rows with Gantt header. If set to 0, the individual header rows can be paged by
+<a href="#CGanttHeaderPaging1">GanttHeaderPaging1</a>...X attributes. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>It is recommended to display the first header with
+large units fully and next headers with small units paged.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2. bit (&amp;<b>2</b>)             Foot
+rows. <i>If the Gantt header is also in Foot rows, both the Head and Foot bits
+(&amp;3) must be set the same.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3. bit (&amp;<b>4</b>)             GanttBackground
+in variable rows. Background in fixed rows is controlled by the bits above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttHeaderPaging1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderPaging1</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>, ..., </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeaderPaging<span
+style='color:#0070C0'>X</span></span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>     [0]                    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the header will be paged.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only if <u>not</u> set
+the first bit of <a href="#CGanttPagingFixed">GanttPagingFixed</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to display fully only
+header(s) with large units to identify the position and the rest of headers
+(with small) display only inside actual page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>type      </i></span><a
+name=CGanttPageWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttPageWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [&quot;200%&quot;]                                                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the Gantt page in
+pixels (e.g. &quot;2000&quot;) or in percent (e.g. &quot;200%&quot;). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The percentage is of width of
+the actual visible columns section (the section with the horizontal scrollbar).
+It should be equal to or greater than 100%.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>MaxWidth</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [10000/1193049]                                                                      <span
+style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>; upd<b> 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal width of the column
+in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the zoom level is too high
+and the Gantt chart reaches this limit, there is displayed only part of the
+chart and the rest can be displayed only by unzoom.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Maximal width for IE7 and
+IE8/9 quirks mode is 178957 pixels, except if used <a href="#CGanttPaging">GanttPaging</a>.
+Old versions of Opera were limited by 23000 pixels.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Maximal width for IE in <a
+href="#CGanttPaging">GanttPaging</a> is 1193049 for IE8 strict mode, 1342177 of
+IE8 quirks mode and 1533918 of other IE versions. Other browsers are not
+limited.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The MaxWidth can be
+automatically overflown if one unit of <a href="#CGanttChartRound">GanttChartRound</a>
+x <a href="#CGanttWidth">GanttWidth</a> is wider than the MaxWidth (except the
+maximums in IE browsers).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default MaxWidth is 10000
+except for <a href="#CGanttPaging">GanttPaging</a> that is 1193049<i> (since 10.0)</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnGanttPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>, <i>int[]</i> <b>size</b>, <i>bool</i> <b>zoom</b>,
+<i>TRow</i> <b>dragrow</b>)                 <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before new Gantt page is
+rendered.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>size</span></b><span
+style='font-size:10.0pt'> is an array [<b>left</b>, <b>width</b>, <b>dragleft</b>,
+<b>dragwidth</b>]:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>left</span></b><span
+style='font-size:10.0pt'> is position of the Gantt page in pixels, the <b>width</b>
+is width of the Gantt page in pixels. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Use <a href="GanttAPI.htm#GetGanttDate">GetGanttDate</a>
+API method to convert the <b>left</b> or <b>left</b>+<b>width</b> to dates.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>dragleft</span></b><span
+style='font-size:10.0pt'> and <b>dragwidth</b> are the position and width of
+Gantt page during dragging Gantt object. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>Use if changing data in the event for <b><i>server
+paging</i></b>. At least the <b>dragrow</b> should contain all data from this
+window and not from <b>left</b>, <b>width</b> window.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>If no dragging, they are the same as <b>left</b>, <b>width</b>.
+Use <a href="GanttAPI.htm#GetGanttDate">GetGanttDate</a> API method to convert
+the <b>dragleft</b> or <b>dragleft</b>+<b>dragwidth</b> to dates.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to change the <b>left</b>
+and <b>width</b> values to render different page. The left and width are values
+as returned from <a href="#UpdateGanttPage">UpdateGanttPage</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to return <b>true</b>
+to not render the Gantt page now, e.g. for asynchronous downloading data. In
+this case <a href="#RenderGanttPage">RenderGanttPage</a>(col, size[0], size[1])
+must be called later.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to return <b>false</b>
+to always render the Gantt page now, even if set <b>zoom</b> = true.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>null</b> or <b>zoom</b>
+to render the Gantt page only if set <b>zoom</b> = false.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>zoom </span></b><span
+style='font-size:10.0pt'>is true if called on start or on zoom change, actual
+left scroll is always 0 in this case.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to change the source
+Gantt data in the OnGanttPage to simulate <b><i>server paging</i></b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>dragrow</b>, you
+cannot delete old data from the Gantt by deleting the <b>dragrow</b>, because
+it contains source data being dragged. You have to add the new data to the <b>dragrow</b>
+cells instead.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>dragrow</span></b><span
+style='font-size:10.0pt'> is set to source row when the OnGanttPage is called
+during dragging in Gantt chart. </span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RenderGanttPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RenderGanttPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>col</b>, <i>int</i> <b>left</b>, <i>int</i> <b>width</b>)                                                    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Renders actual Gantt page on
+given position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it when OnGanttPage
+returned true or called <a href="UpdateGanttPage">UpdateGanttPage</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int[]      </i></span><a
+name=UpdateGanttPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UpdateGanttPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>string</i>
+<b>col</b>)                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates new Gantt page
+according to actual scroll position and returns [left,width] as position and
+width in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called automatically
+after horizontal scroll is changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can call it to update the
+Gantt page immediately. There must be called also <a href="#RenderGanttPage">RenderGanttPage</a>
+after the UpdateGanttPage.</span></p>
+
+</div>
+
+</body>
+
+</html>

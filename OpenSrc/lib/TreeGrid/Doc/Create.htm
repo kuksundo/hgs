@@ -1,0 +1,1094 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Creating TreeGrid</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Creating TreeGrid</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Basics</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The simplest page with
+TreeGrid:</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&lt;<b><span style='color:maroon'>html</span></b>&gt;</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>head</span></b>&gt;</span></pre><pre style='background:
+#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>script</span></b> <b>src</b>=&quot;GridE.js&quot;&gt; &lt;/<b><span
+style='color:maroon'>script</span></b>&gt;                    <span
+style='color:#999999'>&lt;!-- including TreeGrid script --&gt;</span></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<b><span
+style='color:maroon'>head</span></b>&gt;</span></pre><pre style='background:
+#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp; &lt;<b><span style='color:maroon'>body</span></b>&gt;</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>div</span></b> <b>style</b>=&quot;width:100%;height:500px;&quot;&gt;               <span
+style='color:#999999'>&lt;!-- TreeGrid main div tag --&gt;</span></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>            &lt;<b><span
+style='color:maroon'>treegrid</span></b> <b>Data_Url</b>=&quot;Data.xml&quot;&gt;</span><span
+lang=CS> </span><span lang=CS>&lt;/<b><span style='color:maroon'>treegrid</span></b>&gt;       <span
+style='color:#999999'>&lt;!-- TreeGrid data source definition --&gt;</span></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>        &lt;/<b><span
+style='color:maroon'>div</span></b>&gt;</span></pre><pre style='background:
+#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp; &lt;/<b><span style='color:maroon'>body</span></b>&gt;</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>&lt;/<b><span style='color:maroon'>html</span></b>&gt;</span></pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Synchronous creating</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fully create and render
+TreeGrid during page loading you can use such HTML code:</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>div</span></b> <b>id</b>=&quot;Main&quot; <b>style</b>=&quot;width:100%;height:500px;&quot;&gt;     <span
+style='color:#999999'>&lt;!-- TreeGrid main div tag with </span><span
+style='color:red'>id</span><span style='color:#999999'> --&gt;</span></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>            &lt;<b><span
+style='color:maroon'>script</span></b>&gt; TreeGrid('&lt;<b><span
+style='color:maroon'>treegrid</span></b> <b>Sync</b>=&quot;1&quot; <b>Data_Url</b>=&quot;Data.xml&quot;&gt;</span><span
+lang=CS> </span><span lang=CS>&lt;/<b><span style='color:maroon'>treegrid</span></b>&gt;',&quot;Main&quot;); &lt;/<b><span
+style='color:maroon'>script</span></b>&gt;</span></pre><pre style='background:
+#EEEEEE'><span lang=CS>        &lt;/<b><span style='color:maroon'>div</span></b>&gt;</span></pre>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, all JavaScript
+code, API events, support functions and so on must be defined <u>before</u> the
+TreeGrid call, but <u>not</u> inside the Main tag.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Creating by API</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid is created after
+click to button Create:</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>div</span></b> <b>id</b>=&quot;Main&quot; <b>style</b>=&quot;width:100%;height:500px;&quot;&gt; &lt;/<b><span
+style='color:maroon'>div</span></b>&gt; <span style='color:#999999'>&lt;!-- TreeGrid main div tag with </span><span
+style='color:red'>id</span><span style='color:#999999'> --&gt;</span></span></pre><pre
+style='background:#EEEEEE'><span lang=CS>        &lt;<b><span style='color:
+maroon'>button</span></b> <b>onclick</b>='Create()'&gt;Create&lt;/<b><span
+style='color:maroon'>button</span></b>&gt;              </span></pre><pre
+style='background:#EEEEEE'><span lang=CS>        &lt;<b><span style='color:
+maroon'>script</span></b>&gt;</span></pre><pre style='background:#EEEEEE'><span
+lang=CS>           function Create(){ TreeGrid( { Data:{ Url:&quot;Data.xml&quot; } },&quot;Main&quot; ); }</span></pre><pre
+style='background:#EEEEEE'><span lang=CS>        &lt;/<b><span
+style='color:maroon'>script</span></b>&gt;</span></pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Version upgrade</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When you are upgrading to new
+version or registered license or newly compiled script you can add some version
+info as query string to GridE.js to ensure using the new one and suppress
+caching the old one, for example:</span></p>
+
+<pre style='background:#EEEEEE'><span lang=CS>&nbsp;&nbsp;&nbsp; &lt;<b><span
+style='color:maroon'>script</span></b> <b>src</b>=&quot;../Grid/GridE.js?Version=6.0.24&quot;&gt; &lt;/<b><span
+style='color:maroon'>script</span></b>&gt;</span></pre>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Basic><b><span style='font-size:20.0pt'>Basic information</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can be <b>placed to
+HTML</b> page by tag &lt;<a href="#TagTreeGrid">treegrid</a>&gt; or &lt;<a
+href="#TagBdo">bdo</a>&gt; or can be <b>created dynamically </b>by API function
+<a href="#TreeGrid">TreeGrid</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The
+&lt;treegrid&gt; or &lt;bdo&gt; tags must always have enclosing tag
+(&lt;treegrid&gt; &lt;/treegrid&gt; or &lt;bdo&gt; &lt;/bdo&gt;).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In &lt;<a href="#TagTreeGrid">treegrid</a>&gt;
+/ &lt;<a href="#TagBdo">bdo</a>&gt; tag or <a href="#TreeGrid">TreeGrid</a>
+function you define data sources to download XML data from and upload data to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can download data
+from remote server, local server, local files or from XML placed directly in
+the source HTML page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can upload data to
+remote or local server or include the data to HTML page and submit it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can be fully <b>deleted</b>
+from page by calling <a href="#Dispose">Dispose</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can be <b>reloaded</b>
+by calling <a href="#Reload">Reload</a> method. Or you can reload only body
+rows by calling <a href="#ReloadBody">ReloadBody</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can is <b>accessible
+by API</b> by <a href="#Grids">Grids</a> array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the
+communication <b>asynchronous</b>, you can set &lt;treegrid <a
+href="DataCommunication.htm#Sync">Sync</a>=’1’/&gt; to use <b>synchronous</b>
+communication. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The synchronous communication
+is faster, but disables the whole page usage during loading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Encoding strings in XML</span></i></b><span
+style='font-size:10.0pt'>. If you want to store any string to xml, you need to
+encode these characters: <b><span style='color:blue'>&lt;</span></b>, <b><span
+style='color:blue'>&amp;</span></b> and <b><span style='color:blue'>“</span></b>
+or <b><span style='color:blue'>‘</span></b> depending on quotations used in
+your xml attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And if you want to store this
+xml data to html page in any attribute <b>as string</b> you have to make the
+same encoding once more (<i>you again stores string in xml/html</i>). The only
+exception is that HTML accepts <b><span style='color:blue'>&lt;</span></b>
+character in attribute values, but if you encode it, it will be better.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Creating><b><span style='font-size:20.0pt'>Creating</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;HTML tag&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;<a
+name=TagTreeGrid>treegrid</a>&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>          Basic TreeGrid
+definition on page                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Places one grid to HTML page
+and defined base grid attributes, the data sources to download XML data from
+and upload to.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;treegrid&gt; tag is
+placed to parent <b>div</b> tag that is called <b><u>Main tag</u></b>. The <b>Main
+tag</b> can be also any server control to control this tag from server script,
+but it always needs to be a block (not inline) tag. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All content of the <b>Main
+tag</b> will be overridden by TreeGrid content after the grid is created.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Main tag</b> is
+partially controlled by TreeGrid, especially its <u>size</u> and overflow
+(depending on <a href="#GridSize.htm">size and scroll settings</a>), but all
+other properties can be set as to standard HTML tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the page is loaded (in body
+onload event), all &lt;treegrid&gt; tags on page are processed and replaced by
+appropriate grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To process the
+&lt;treegrid&gt; tags later, call <a href="#StartTreeGrid">StartTreeGrid</a>
+method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To create grid dynamically by
+API call <a href="#TreeGrid">TreeGrid</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All the attributes are
+accessible by API by grid.<a href="#Source">Source</a> attribute.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The
+&lt;treegrid&gt;tag must always have enclosing tag (&lt;treegrid&gt;
+&lt;/treegrid&gt; <u>not</u> <s>&lt;treegrid /&gt;</s> ).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;HTML tag&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;<a
+name=TagBdo>bdo</a>&gt;</span></b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:yellow'>                    An alternative to
+&lt;treegrid&gt; tag                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use &lt;bdo&gt; tag
+instead of &lt;treegrid&gt; to support some old browsers like Safari 3.x that
+don’t accept non HTML tags. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;bdo&gt; is a standard
+HTML tag to setting text direction, but without its <b>dir</b> attribute has no
+sense and can be used as TreeGrid definition.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The &lt;bdo&gt;tag
+must always have enclosing tag (&lt;bdo&gt; &lt;/bdo&gt; <u>not</u> <s>&lt;bdo /&gt;</s>
+).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>TGrid    
+</span></i><a name=TreeGrid><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>TreeGrid</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>object</i>
+<b>Source</b>, <i>string</i> <b>tag</b> = “”, <i>string</i> <b>id</b> = “”)                                          <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates and renders new grid
+by API according to settings in <b>Source</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Source</span></b><span
+style='font-size:10.0pt'> can be:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) string
+with &lt;treegrid&gt; or &lt;bdo&gt; tag with all settings like it is included
+directly to HTML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Example:
+TreeGrid(“&lt;treegrid Data_Url=’Grid2.xml’&gt;&lt;/treegrid&gt;”,”Main”);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) string
+with XML to create the grid from. The grid will have only Data_Data source
+defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Example:
+TreeGrid(“&lt;Grid&gt;&lt;Cols&gt;&lt;C
+Name=’A’/&gt;&lt;/Cols&gt;&lt;Body&gt;&lt;B&gt;&lt;I
+A=’xxx’/&gt;&lt;/B&gt;&lt;/Body&gt;&lt;/Grid&gt;”,”Main”);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                c) object
+with parsed &lt;treegrid&gt; / &lt;bdo&gt; tag. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>All multilevel attributes (data sources) containing
+‘_’ must be set as nested objects, split by the ‘_’, </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>for example Data_Param_Test is accessed as
+Source.Data.Param.Test and set as {Data:{Param:{Test:’val’}}}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Eample:
+TreeGrid({Layout:{Url:”Grid2Def.xml”},Data:{Url:”Grid2.xml”}},”Main”);</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>tag</span></b><span
+style='font-size:10.0pt'> is the <b>main div tag</b> to render grid into. The <b>tag</b>
+can be an id of the tag or the HTMLElement itself. The htm tag must exist in
+time of calling the function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the
+parameter is missing, the id of the tag must be set in input XML by attribute
+&lt;Cfg <b>Tag</b>/&gt;. See &lt;<a href="#TagTreeGrid">treegrid</a>&gt; tag
+description.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>id</span></b><span
+style='font-size:10.0pt'> is the unique id of the grid, used to identify it,
+especially in saving configuration to the cookies. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the parameter is missing, the id of the grid can be set in input XML by
+attribute &lt;Cfg <b>id</b>/&gt; </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The function returns created <b><a
+href="#ClassTGrid">TGrid</a></b> object. Remember, loading and rendering is
+asynchronous by defaults, so at the moment of function return, the grid is <u>not</u>
+fully loaded and rendered yet. You can change it by setting <a
+href="DataCommunication.htm#Sync">Sync</a> to 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It returns null for fatal
+error. It fails if the <b>Source</b> is null or cannot be used as one of the
+three options.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After finish will be fired <a
+href="#OnRenderFinish">OnRenderFinish</a> and <a href="#OnRenderPageFinish">OnRenderPageFinish</a>
+or <a href="#OnLoadError">OnLoadError</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Source</b> is
+accessible by API by grid.<a href="#Source">Source</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=StartTreeGrid><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>StartTreeGrid</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>
+</i>)                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates all grids on page
+from all HTML tags &lt;treegrid&gt; / &lt;bdo&gt;.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid creating is
+asynchronous procedure by default, so in time of function return the grids are
+not fully created yet.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is called from
+window.onload event. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call this function after you
+place new &lt;treegrid&gt; / &lt;bdo&gt; tag to your page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This function creates grid in
+place of &lt;treegrid&gt; / &lt;bdo&gt; tag and destroys it, so it can be
+called as many times as you want.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Deleting><b><span style='font-size:20.0pt'>Deleting</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Dispose><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Dispose</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( )                                                                                                                   <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Completely removes the grid
+from page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It frees memory allocation
+for the TreeGrid by calling <a href="#Clear">Clear</a>() and removes the Grid
+from <a href="#Grids">Grids</a> array.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The disposed grid must not
+be used.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The indexes of disposed grids
+are not used again, except if was called <a href="#DisposeGrids">DisposeGrids</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=DisposeGrids><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DisposeGrids</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>
+</i>)                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Completely removes all grid
+from page. Calls for all grids <a href="#Dispose">Dispose</a>().</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets also <a href="#Grids">Grids</a>.length
+to 0 to start indexing new grids from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Clear><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Clear</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (
+)                                                                                                                   <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Frees memory allocation for
+the TreeGrid. If you delete grid from JavaScript, call this function to free
+browser’s memory.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is used especially to
+avoid memory leaks in IE.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid calls this function
+automatically when reloading or when window is closing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cleared can be only
+reloaded (called grid.Reload()).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Reloading><b><span style='font-size:20.0pt'>Reloading</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TGrid    </i></span><a
+name=Reload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Reload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>object</i>
+<b>Source</b> = null, <i>string</i> <b>id</b> = null, bool <b>confirm</b> =
+true)                                <span style='color:blue'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reloads and re-renders the whole
+grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns newly created grid or
+null for error or cannot reload.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The actual grid object is
+cleared and must <u>not</u> be used after reload! It can be only again reloaded
+if the Reload function failed.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is asynchronous
+and returns before the loading starts (like <a href="#TreeGrid">TreeGrid</a>
+function). You can set <a href="DataCommunication.htm#Sync">Sync</a>=1 in <b>Source</b>
+to reload synchronously.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After finish will be fired <a
+href="#OnRenderFinish">OnRenderFinish</a> and <a href="#OnRenderPageFinish">OnRenderPageFinish</a>
+or <a href="#OnLoadError">OnLoadError</a> event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Source</b> is data
+source settings for grid, the same as in <a href="#TreeGrid">TreeGrid</a>
+function. If the source is null, it is used original grid data source <a
+href="#Source">Source</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This function can be
+called to reload data from the same source to get the newest one or to reload
+another data from another source.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>id</b> is new <a
+href="#Cfgid">id</a> to change the grid id, under this id will be now the grid
+accessible in <a href="#Grids">Grids</a> array. <i>(Since 7.0) </i>To preserve
+old grid id, set it to null, to load id from new data, set it to empty string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are some pending changes
+in grid, it confirms reloading by a user. The user can cancel reloading and the
+method returns false.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>confirm</b> = false,
+it never asks a user about reloading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnReload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnReload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called from <a href="#Reload">Reload</a>
+method or when user clicks to reload icon on toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+reloading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCanReload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCanReload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>changed</b>, bool <b>cancel</b>)                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when <b>reload</b> is
+requested - called from <a href="#Reload">Reload</a> method and when changed <b>server</b>
+side sorting/filtering/grouping/searching/export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called <u>instead</u> of
+confirming message to a user. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return false to cancel
+action.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>changed</span></b><span
+style='font-size:10.0pt'> = bit array, &amp;<b>1</b> – grid contains changed
+rows, &amp;<b>2</b> – grid contains selected rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cancel</span></b><span
+style='font-size:10.0pt'> is <b>true</b> if changes should be canceled (called
+from <a href="#Reload">Reload</a> method), <b>false</b> if changes should be
+saved (server side request). </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>To
+save changes call <a href="DataUpload.htm#Save">Save</a> function from this
+event.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsReload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Reload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                  Attached to
+event <b>OnClickButtonReload</b>                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reloads the grid, cancels
+changes, see <a href="#Reload">Reload</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ReloadBody><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ReloadBody</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>function</i>
+<b>Func</b>)                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reloads whole body (from
+source grid.<a href="#Source">Source</a>.<b>Data</b>), all variable rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is asynchronous
+and returns before the reloading finishes. You can set <a
+href="DataCommunication.htm#Sync">Sync</a>=1 in <b>Source.Data</b> to reload
+body synchronously.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After finish, it calls
+function <b>Func</b>. function <b><i>Func</i></b> (<i>int</i> code).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The grid.<a href="#Source">Source</a>.<b>Data</b>
+source can contain only variable rows (&lt;Grid&gt;&lt;Body&gt;...
+&lt;/Body&gt;&lt;/Grid&gt;), all other definitions like columns, fixed rows and
+so on must be defined in <a href="#Source">Source</a>.<b>Layout</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RenderingGrid><b><span style='font-size:20.0pt'>Rendering</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>bool     </i></span><a
+name=treegridHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Hidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> the grid
+is never rendered and can be used as invisible data source for other grids or
+other page components.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The hidden grid has <u>not</u>
+set <a href="#MainTag">MainTag</a> and cannot be shown at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnRenderStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>)                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering or
+re-rendering of whole grid started.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called on create grid,
+from Render method, but also in various other situations where the grid is
+re-rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel
+rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>)                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when rendering or
+re-rendering of grid is finished and grid is ready to work. Use if you need to
+do some post-render actions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used (client or server) <b>paging</b>
+(&lt;Cfg Paging&gt;1), the body rows are <u>not</u> rendered yet in time of
+this handler call. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Use
+<a href="#OnRenderPageFinish">OnRenderPageFinish</a> that is called after
+specific page is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used <b>child parts</b> (&lt;Cfg
+ChildParts=’1’), not all rows in tree are rendered yet in time of this handler
+call.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Use <a
+href="#OnRenderChildPartFinish">OnRenderChildPartFinish</a> that is called
+after specific part of child page is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRenderPageStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of
+the root page or child page started rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired before start of rendering children
+when a parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderPageFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderPageFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the root page or
+child page is fully rendered and ready. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used child paging
+(&lt;Cfg ChildPaging), this event is fired after children are rendered when a
+parent row is being expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderChildPartStart><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderChildPartStart</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, int <b>index</b>)                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of a
+part of children is started rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>index</b> is an index
+of the part from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderChildPartFinish><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderChildPartFinish</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, int <b>index</b>)                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the part of
+children is rendered and ready.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>index</b> is an index
+of the part from 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRenderColPageStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderColPageStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>sec</b>)                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of
+the column page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The sec is the section index
+to <b>ColNames</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderColPageFinish><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderColPageFinish</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>sec</b>)                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called the column page is
+fully rendered and ready.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The sec is the section index
+to <b>ColNames</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     bool     </span><a
+name=Rendering><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Rendering</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set during render or
+other function that updates grid HTML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to not update grid
+layout by <b>Update</b> method during such function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it if you manipulate more
+rows or columns to not to update grid layout to speed up the action. After that
+you must call the <a href="GridSize.htm#Update">GridSize.htm#Update</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Rerender><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Rerender</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (
+)                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Asynchronously renders the
+whole grid into main tag’s innerHTML. Or it renders synchronously if set
+&lt;treegrid Sync=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calls <a href="#Render">Render</a>
+asynchronously or synchronously.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Render><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Render</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (
+)                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Synchronously renders whole
+grid into main tag’s innerHTML. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The previous grid HTML is
+cleared, it takes care about memory leaks.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This function may be slow, if
+many rows are present.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If used paging, the pages are
+rendered asynchronously.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it if you want to do
+many changes in grid to speed up the action – do not show the changes and after
+finish render the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RenderBody></a><a name=UpdateBody><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>RenderBody</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (
+)                                                                                               
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-renders the whole body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In paging, call it to clear
+all already rendered pages and render them again.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it if you want to do
+many changes in body rows to speed up the action – do not show the changes and
+after finish render the body.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>Accessing by API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> <i>TGrid </i>[] </span><a
+name=Grids><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Grids</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>          <span
+style='color:red'>read only</span>                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is global array of all
+created grids on page. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual grid can be
+accessed by Grids[“id”] where the <a href="#Id">id</a> is an &lt;treegrid
+id&gt; or &lt;Cfg id&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual grid can be
+also accessed by Grids[Index], where the Index is grid index that got assigned
+in creating process.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accessing individual grids by
+index is not recommended if more grids are on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To iterate all grids on page
+use such loop: for(var i=0;i&lt;Grids.length;i++) { var G = Grids[i]; if(G){
+... } }, remember some indexes can be missing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grids are added to the
+array by creating grids on start or by function <a href="#TreeGrid">TreeGrid</a>
+( ) or <a href="#StartTreeGrid">StartTreeGrid</a> ( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Existing grid can be removed
+by <a href="#Dispose">Dispose</a> ( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>TGrid
+</span></i><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:aqua'>[]<i> </i> </span><a name=GetGrids><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>GetGrids</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>
+</i>)                                                                                                        <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all grids on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name=treegridid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An <b>id</b> of the grid. By
+this id the grid can be accessed from JavaScript as <a href="#Grids">Grids</a>[id].
+This parameter can be also set in data, in &lt;Cfg <b>id</b> /&gt; attribute</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>id</b> is set
+neither in &lt;treegrid <b>id</b>&gt; nor in &lt;Cfg <b>id</b> /&gt;, it is
+created default as “Table”+grid_index.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>id</b> is set in
+both &lt;treegrid <b>id</b>&gt; and &lt;Cfg <b>id</b> /&gt;, the &lt;Cfg <b>id</b>
+/&gt; is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By this <b>id</b> the grid
+saves configuration to cookies, if two grids have the same <b>id</b>, they
+share their configuration in cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>    </span><a
+name=Cfgid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An <b>id</b> of the grid, see
+the &lt;<a href="#Id">treegrid id</a>&gt; attribute description.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     string    </span><a
+name=id><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>id</span></u></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:aqua'>       <span style='color:red'>read only</span>                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An id of the grid set by &lt;<a
+href="#Id">treegrid id</a>&gt; or &lt;<a href="#CfgId">Cfg id</a>&gt; or
+created as “Table”+<a href="#Index">Index</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=Index><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Index</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         <span
+style='color:red'>read only</span>                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique index of the grid in
+global array <a href="#Grids">Grids</a>. Newly created grid gets the first
+available index (from 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By this index you can access
+the grid, but you should rather use its <a href="#Id">id</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The indexes of disposed grids
+are not used again, except if was called <a href="#DisposeGrids">DisposeGrids</a>
+function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object</i>   </span><a
+name=Source><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Source</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                                                                                                   
+<span style='color:red'>renamed <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actual data sources
+settings. It is the parsed &lt;<a href="#TagTreeGrid">treegrid</a>&gt;
+attribute or the source set in TreeGrid function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can change the individual
+settings to download or upload data from different location.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:
+grid.Source.Data.Url = “new.xml”; grid.ReloadBody(); </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:
+grid.Source.Upload.Sync = 1; grid.Source.Upload.Url = “save.jsp”; grid.Save();</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object   </i></span><a
+name=MainTag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MainTag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> <span
+style='color:red'>read only</span>                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The main grid where the grid
+is rendered inside.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set during creating. It
+is the HTMLElement object itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

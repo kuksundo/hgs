@@ -1,0 +1,185 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// --------------------------------------------------------------------------------------------------------
+Grids.OnGetGanttHeader = function(G,val,idx,d1,d2,rep,width,partial,col){
+if(idx==1){ // Creates the captions for the first Gantt header
+   return "Week <b style='color:#F8F'>" + DateToString(d1,"ddddddd") + "</b>,  "
+    + DateToString(d1,"dddddd MMMM yyyy") + " - " + DateToString(d2-1,"dddddd MMMM yyyy");
+   }
+if((idx==2||idx==3) && new Date(d1).getDay()==0){ // Colors sundays in blue in header 2 and 3
+   return "<div style='background:#00F;'>"+val+"</div>";
+   }
+if(idx==3 && new Date(d1).getDay()==3){ // Colors wednesday in green and blue text in header 3
+   return "<div style='background:#0F0;color:blue;'>"+val+"</div>";
+   }
+if((idx==4||idx==5) && new Date(d1).getUTCHours()==17){ // Colors the 17:00 in the bottom header in red
+   return "<div style='color:#F88;font-weight:bold;'>"+val+"</div>";
+   }
+
+return val;
+}   
+// --------------------------------------------------------------------------------------------------------
+// Creates custom GanttUnits 'wh' as working hours, 8:00, 12:00, 13:00, 17:00
+// Replace the 8,12,13,17 numbers in the code below to have different working hours
+
+AddGanttUnits("wh",24*3600000/4,null); // Four units per day, but with different length
+
+Grids.OnRoundDate = function(G,d,t){
+if(t=="wh"){
+   var dw = d%(3600000*24);
+   if(dw>=17*3600000) return d-dw+17*3600000;
+   if(dw>=13*3600000) return d-dw+13*3600000;
+   if(dw>=12*3600000) return d-dw+12*3600000;
+   if(dw>=8*3600000) return d-dw+8*3600000;
+   return d-dw+(17-24)*3600000;
+   }
+}
+
+Grids.OnIncDate = function(G,d,t,c){
+if(t=="wh"){
+   if(c<0) { c = -c; d -= Math.floor((c/4)+1)*24*3600000; c = 4-(c%4); }
+   else if(c>=4) { d += Math.floor(c/4)*24*3600000; c = c%4;  }
+   if(!c) return d;
+   var dm = d%3600000; // Preserves time in minutes. Set it to 0 if the work hours are not whole hours.
+   for(var i=0;i<c;i++) {
+      var dw = d%(3600000*24);
+      if(dw<8*3600000) d += 8*3600000+dm-dw;
+      else if(dw<12*3600000) d += 12*3600000+dm-dw;
+      else if(dw<13*3600000) d += 13*3600000+dm-dw;
+      else if(dw<17*3600000) d += 17*3600000+dm-dw;
+      else  d += (24+8)*3600000+dm-dw;
+      }
+   return d;
+   }
+}
+// --------------------------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttDisplay"><b>Gantt display</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Header, Background and Mark</center>
+   <center style='font:bold italic;'>Gantt header dates and formats and highlighting dates and date ranges in chart</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Header and Background.xml'>01 - <h2>Header and Background</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Header and Background.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         <h4>Header</h4> Gantt column can contain up to <b>5</b> different headers defined by <h3>GanttHeader1</h3> - <b>GanttHeader5</b> attributes.<br />
+         See documentation for <b><a href="../../Doc/GanttDisplay.htm#Header">Gantt Header</a></b>.
+         <ul>
+            <li>
+               The header line format is "<b>repeater</b>#<b>format</b>#<b>shift</b>".<br />
+               <ul>
+                  <li>
+                     The <b>repeater</b> repeats the header value for every given unit like days or weeks, the possible repeater value is the same as <b>GanttUnits</b>, e.g "d" or "w".<br />
+                  </li>
+                  <li>
+                     The <b>format</b> is standard TreeGrid date format, used for Date type.<br />
+                     The format can be also standard TreeGrid number format, if repeater is number.<br />
+                  </li>
+                  <li>
+                     The <b>shift</b> is optional value to move the whole line to the left for given number of the repeater units. It is usually decimal value, to move for only part of the repeater.<br />
+                  </li>
+               </ul>
+            </li>
+            <li>
+               By default are all header lines displayed in main TreeGrid header row. 
+               To display the individual lines in other header rows, set appropriate <h3>GanttHeaderId1</h3> - <b>GanttHeaderId5</b>.
+            </li>
+            <li>
+               If the default formatting options does not fulfill your requirements, you can create the individual formatted items dynamically by API event <h3>OnGetGanttHeader</h3>.<br />
+               In this event it is possible also to highlight some header cells by background or other CSS attributes by returning the cell value in appropriate &lt;div>.
+            </li>
+            <li>
+               By default are the incomplete header units (the first and the last) displayed normally with appended "...". To display only the "..." set <b>GanttHeaderTrim='1'</b>.<br />
+               When some dates are hidden by GanttExclude, it is possible to display the nearest visible date in header by <b>GanttHeaderRound1='1'</b> (- GanttHeaderRound5='1').
+            </li>
+            <li>
+               If the Headers together contain too many units you will get debug message "Too many units in Gantt column header" and the headers are not rendered fully.<br />
+               In this case define wider Header units in the repeater, or decrease the Gantt column width by using different zoom or use Gantt paging (<a href="../../Doc/GanttDisplay.htm#CGanttPaging">GanttPaging</a>='1') and page the header(s) by <a href="../../Doc/GanttDisplay.htm#CGanttHeaderPaging1">GanttHeaderPaging1</a> - 5 attributes.<br />
+               The limit is 10000 units for all headers together and is set by <b>GanttHeaderMaxUnits</b>. This limit can be increased, but it is not recommended, because it can cause problems, especially in IE.<br />
+            </li>
+            <li> 
+               It is possible to define <h4>custom Gantt units</h4> to be used in GanttHeader, GanttBackground, but also in PageSize, ChartSize, GanttUnits, and so on. The custom units cannot be used in GanttExclude.<br />
+               The custom units can have even variable size, e.g. this example defines custom units '<b>wh</b>' as work hours 9:00 - 13:00, 13:00 - 14:00, 14:00 - 18:00, 18:00 - 9:00, see it in top grid in zoom level "All in workhours".<br />
+               The custom units are created by global API function <b>AddGanttUnits</b> that should be called before any Gantt chart is created.<br />
+               If the custom units have variable length or don't start on 1/1/1970 00:00:00, they must be calculated in API events <b>OnRoundDate</b> and <b>OnIncDate</b>.<br />
+               See documentation for <a href="../../Doc/GanttDisplay.htm#AddGanttUnits">Custom Gantt units</a>.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Background</h4> is defined by <h3>GanttBackground</h3> attribute. The background is usually the same for all rows in grid.<br />
+         See documentation for <b><a href="../../Doc/GanttDisplay.htm#Background">Gantt Background</a></b>.<br />
+         <ul>
+            <li>
+               The background format is "<b>repeater1</b>#<b>date1a</b>~<b>date1b</b>#<b>classindex1</b>;<b>repeater2</b>#<b>date2a</b>~<b>date2b</b>#<b>classindex2</b>;...".<br />
+               <ul>
+                  <li>
+                     The <b>repeater</b> repeats the header value for every given unit like days or weeks, the possible repeater value is the same as <b>GanttUnits</b>, e.g "d" or "w".<br />
+                     If the repeater is missing, only the exact date range is colored, without repeating.<br />
+                  </li>
+                  <li>
+                     The <b>dateXa~dateXb</b> is date range. These dates don't need to be inside chart range, they just need to specify the range inside one repeater unit.<br />
+                  </li>
+                  <li>
+                     The <b>classindex</b> is optional index for GxGanttBackX class to use for coloring. If not present, the item position in the background definition is used (from 1). <br />
+                     There are predefined 1-5 css classes for background by default, it is possible to define next classes like GxGanttBack6.
+                  </li>
+               </ul>
+             </li>
+            <li>
+               If the Background contains too many units you will get debug message "Too many units in Gantt background" and the background is not rendered fully.<br />
+               In this case define wider Background units in the repeater, or decrease the Gantt column width by using different zoom or use Gantt paging (<a href="../../Doc/GanttDisplay.htm#CGanttPaging">GanttPaging</a>='1') and page the background by <a href="../../Doc/GanttDisplay.htm#CGanttPagingFixed">GanttPagingFixed</a> attribute.<br />
+               The limit is 10000 units and is set by <b>GanttBackgroundMaxUnits</b>. This limit can be increased, but it is not recommended, because it can cause problems, especially in IE.<br />
+            </li>
+            <li>
+               The <b>GanttBackground</b> is usually defined for whole column, but it can be set also for <b>individual rows</b> to have different background in one or more rows.<br />
+               <i>Setting GanttBackground for individual rows can remarkably slow the grid rendering if the background generates many units. Or even break down the grid especially in IE, because the max limit 10000 is not summed for the rows.</i><br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Foreground</h4> is defined by <h3>GanttMark</h3> attribute. It can be defined different for every row. It can be defined also by another column cells like any other Gantt object like main bar.<br />
+         See documentation for <b><a href="../../Doc/GanttDisplay.htm#Mark">Gantt Mark</a></b>.<br />
+         <ul>
+            <li>
+               The GanttMark is shown above other Gantt objects, this behavior can be changed by <a href="../../Doc/GanttObjects.htm#CGanttOrder">GanttOrder</a> attribute.<br />
+            </li>
+            <li>
+               The Mark can contain individual dates or date ranges to color them in chart.<br />
+            </li>
+            <li>
+               The Mark dates can be rounded by <b>GanttMarkRound</b> attribute.<br />
+            </li>
+            <li>
+               The Mark dates can optionally contain suffix #classindex as optional index for GxGanttMarkX class to use for coloring.<br /> 
+               There are predefined css classes <b>1</b> - <b>5</b> for Mark with full height as by default, it is possible to define next classes like GxGanttMark20.
+            </li>
+            <li>
+               The Mark can be used also as <b>static box</b> or <b>line</b> to mark something in chart. The Mark can be also calculated by Formula, e.g. to sum its children.<br />
+               There are predefined css classes <b>6</b> - <b>8</b> for bottom boxes, <b>9</b> - <b>11</b> for top boxes and <b>12</b> - <b>14</b> for middle lines.<br /> 
+               It is possible to similarly create next custom classes with different box position, color and height.<br />
+            </li>
+            <li>
+               The mark can display also <b>image</b> in the range. It is designed especially to display various <b>curves</b> in Gantt chart. The image is resized / shrunk to fill the whole date range of the mark. To display normal image in Gantt chart use GanttFlags instead.<br />
+               The image is defined by the suffix #classindex as text (not a number). The image gets automatically extension ".png". There are four predefined lines GanttLineA <b>&lt;</b>, GanttLineB <b>></b>, GanttLineC <b>/</b>, GanttLineD <b>\</b>.<br />
+               Default location for the images is the style directory (e.g. Grid/Modern/). The path can be changed by <b>GanttMarkPath</b> attribute. <i>This example sets it to the actual Tutorials/Gantt/ directory</i>.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

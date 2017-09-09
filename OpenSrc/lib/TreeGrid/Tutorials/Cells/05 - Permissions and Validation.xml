@@ -1,0 +1,103 @@
+<Grid>
+   <Cfg id="Permitions" NoVScroll="1" NoHScroll="1" SuppressCfg="1" IdChars="0123456789" NumberId="1"/>
+   <Cfg Validate="All,Focus,Edit" ValidateMessage="There are errors in grid!&lt;br>Data cannot be saved"/>
+   <Panel Copy="1" Move="1"/>
+   <Cols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0" CanFilter="0"/>
+      <C Name="TEXT" Type="Text"/>
+      <C Name="DATE" Type="Date"/>
+      <C Name="DEFAULTS" Type="Text" Button="Defaults" Defaults="|One|Two|Three|Four"/>
+      <C Name="MASK" Type="Text" Width="170"/>
+      <C Name="MASKINFO" Type="Text" CanEdit="0" CanSort="0" CanResize="0"/>
+      <C Name="RESULT" Type="Text" Width="150" CanMove="0" ResultMask=".+"/>
+      <C Name="RESULTINFO" Type="Text" CanEdit="0" CanSort="0" CanResize="0" CanMove="0"/>
+   </Cols>
+   <Head>
+      <Filter id="Filter" idType="Text"/>
+   </Head>
+   <Body>
+      <B>
+         <I id="1"
+            TEXT="Editable" 
+            DATE="1/1/2000"
+            DEFAULTS="Editable"
+            MASK="abcdef" MASKEditMask="^[a-z]*$" MASKINFO="only small letters"
+            RESULT="" RESULTResultMask=".+" RESULTINFO="not empty"
+            />
+         <I id="2" CanEdit="0" CanSelect="0"
+            TEXT="Read only" 
+            DATE="1/1/2000"
+            DEFAULTS="Read only" DEFAULTSButton=""
+            MASK="1234" MASKEditMask="^[0-9]*$" MASKSize="5" MASKINFO="only digits, max 5 characters" MASKCanEdit="1" MASKMaskColor="blue"
+            RESULT="-123.456" RESULTResultMask="^(\-[0-9])?[0-9]*([\.\,][0-9]+)?$" RESULTINFO="decimal number" RESULTCanEdit="1"
+            />
+         <I id="3" CanSelect="0" CanDelete="0" CanDrag="0" CanCopy="0" CanFilter="0"
+            TEXT="Preview" TEXTCanEdit="2"
+            DATE="1/1/2000" DATECanEdit="2"
+            DEFAULTS="Preview" DEFAULTSCanEdit="2" DEFAULTSButton=""
+            MASK="support@coqsoft.com" MASKEditMask="^(?!\.)[\w\.\-]{0,64}@?(?!\.)[\w\.]{0,189}$" MASKINFO="email strict characters"
+            RESULT="support@coqsoft.com" RESULTResultMessage="Invalid email!" RESULTINFO="email strict validation"
+               RESULTResultMask="^(?![0-9\-\.\_])[\w\.\-]*[a-zA-Z0-9]@((?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]\.)*(?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]$"
+            />
+         <I id="4" CanDelete="0" CanCopy="0"
+            TEXT="No focus" TEXTCanFocus="0"
+            DATE="1/1/2000" DATECanFocus="0"
+            DEFAULTS="No focus" DEFAULTSCanFocus="0" DEFAULTSButton=""
+            MASK="sales@coqsoft.com" MASKEditMask="^(?!\.)[\w\.\-\!#\$%&amp;'\*\+\/\=\?^`\{\|\}~]{0,64}@?(?!\.)[\w\.]{0,189}$" MASKINFO="email all RFC characters"
+            RESULT="sales@coqsoft.com" RESULTResultMessage="Invalid email!" RESULTResultMessageTime="1000" RESULTINFO="email RFC validation"
+               RESULTResultMask="^(?!\.)[\w\.\-\!#\$%&amp;'\*\+\/\=\?^`\{\|\}~]*[\w\-\!#\$%&amp;'\*\+\/\=\?^`\{\|\}~]@((?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]\.)*(?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]$"
+            />
+         <I id="5" CanDrag="0"
+            Calculated="1" CalcOrder="DATECanEdit,DATECanFocus,DEFAULTSCanEdit,DEFAULTSCanFocus,DEFAULTSButton"
+            TEXTType="Enum" TEXTEnum="|Editable|ReadOnly|Preview|NoFocus" TEXT="0" TEXTTip="Changes editing permissions for the Date and Defaults cell in this row"
+            DATEEmptyValue="Calculated" DATECanEditFormula="TEXT==0?1:(TEXT==2?2:0)" DATECanFocusFormula="TEXT!=3"
+            DEFAULTS="Calculated" DEFAULTSCanEditFormula="TEXT==0?1:(TEXT==2?2:0)" DEFAULTSCanFocusFormula="TEXT!=3" DEFAULTSButtonFormula="TEXT==0?'Defaults':''"
+            MASKType="Lines" MASK="Name: TreeGrid support&#x0A;Email: support@coqsoft.com" MASKAcceptEnters="1" MASKResultText='Wrong input!'
+               MASKEditMask='^Name\: [a-zA-z\.\- ]*\r?\nEmail\: (?!\.)[\w\.\-]{0,64}@?(?!\.)[\w\.]{0,189}$'
+               MASKResultMask='^Name\:\s[a-zA-z][a-zA-z\.\- ]*\r?\nEmail\: (?![0-9\-\.\_])[\w\.\-]*[a-zA-Z0-9]@((?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]\.)*(?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]$'
+               MASKINFO='Name and email&#x0a;Alt+Enter to accept' MASKINFOType='Lines'
+            RESULT="http://www.treegrid.com" RESULTINFO="full URL address" RESULTTip="Full URL in format: 'scheme://username:password@domain:port/path?query_string#anchor'"
+               RESULTResultMask="^([a-zA-z]+\:\/\/)?([^\:\@]+\:[^\@]*@)?((?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9]\.)*(?![0-9\-])[a-zA-Z0-9\-]*[a-zA-Z0-9](\/[^\/\?#]+)*(\?[^\?\#]*)?(#[^\?\#]*)?$"
+            />
+         
+      </B>
+   </Body>
+   <Header id="id" TEXT="Edit Text" DATE="Edit Date" DEFAULTS="Edit Defaults" MASK="EditMask" MASKINFO="Description" RESULT="ResultMask" RESULTINFO="Description"/>
+
+   <Toolbar Cells="Save,Reload,Add,Cfg,Columns,Validate,EAll,EText,EDate,EDefaults,Rows,Cols,Sorting,Filter,StyleTitle,StyleCombo"
+
+   AddOnClick="AddRowEnd,1" AddTip="Adds new row to end"
+
+   ValidateType="Button" ValidateButton="Button" ValidateOnClick="Validate?Grid.ShowMessageTime('Everything is correct',1000):1" Validate="Validate" ValidateTip="Validates all ResultMasks in grid, usually used before upload"
+
+   EAllType="Button" EAllSwitch="1" EAllButtonText="Read only" EAllButtonTextChecked="Editing" EAll="1" EAllWidth="50" 
+   EAllOnChange="Grid.Editing = Value; Grid.Pasting = Value; Grid.RenderBody()" 
+   EAllTip="Changes Editing state for the whole grid&lt;br>Affects all cells"
+
+   ETextType="Bool" ETextLabelRight="Edit Text" EText="1" ETextCanEdit="1" 
+   ETextOnChange="Grid.SetAttribute(null,'TEXT','CanEdit',Value,1)" 
+   ETextTip="Changes CanEdit for the whole column 'Edit Text'&lt;br>Affects only cells with no CanEdit set!"
+
+   EDateType="Bool" EDateLabelRight="Edit Date" EDate="1" EDateCanEdit="1"
+   EDateOnChange="Grid.SetAttribute(null,'DATE','CanEdit',Value,1)" 
+   EDateTip="Changes CanEdit for the whole column 'Edit Date'&lt;br>Affects only cells with no CanEdit set!"
+
+   EDefaultsType="Bool" EDefaultsLabelRight="Edit Defaults" EDefaults="1" EDefaultsCanEdit="1" 
+   EDefaultsOnChange="Grid.SetAttribute(null,'DEFAULTS','Button',Value?'Defaults':'',0);Grid.SetAttribute(null,'DEFAULTS','CanEdit',Value,1)" 
+   EDefaultsTip="Changes CanEdit for the whole column 'Edit Defaults'&lt;br>Affects only cells with no CanEdit set!"
+
+   RowsType="Button" RowsSwitch="1" RowsButtonText="Static rows" RowsButtonTextChecked="Changing rows" Rows="1" RowsWidth="90" RowsTip="Switches on/off row adding, deleting, moving and pasting"
+   RowsOnChange="Grid.Adding = Value; Grid.Deleting = Value; Grid.Dragging = Value; Grid.Pasting = Value; if(Value) Grid.ShowCol('Panel'); else Grid.HideCol('Panel');"
+
+   ColsType="Button" ColsSwitch="1" ColsButtonText="Static columns" ColsButtonTextChecked="Changing columns" Cols="1" ColsWidth="105" ColsTip="Switches on/off column resizing and moving"
+   ColsOnChange="Grid.ColMoving = Value; Grid.ColResizing = Value; Grid.Toolbar.ColumnsDisabled = !Value; Grid.RefreshCell(Grid.Toolbar,'Columns');"
+
+   SortingType="Button" SortingSwitch="1" SortingButtonText="No sort" SortingButtonTextChecked="Sorting" SortingWidth="40" Sorting="1" SortingTip="Switches on/off rows sorting"
+   SortingOnChange="Grid.Sorting = Value; for(var col in Grid.Cols) Grid.Header[col+'Button'] = Value ? 'Sort' : ''; Grid.RefreshRow(Grid.Header);"
+
+   FilterType="Button" FilterSwitch="1" FilterButtonText="No filter" FilterButtonTextChecked="Filtering" FilterWidth="45" Filter="1" FilterTip="Switches on/off rows filtering"
+   FilterOnChange="if(Value) { Grid.ShowRow(Grid.GetRowById('Filter')); Grid.ActionFilterOn(); } else { Grid.HideRow(Grid.GetRowById('Filter')); Grid.ActionFilterOff(); }"
+
+   Styles = "2"
+   />
+</Grid>

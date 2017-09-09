@@ -1,0 +1,102 @@
+<Grid>
+   <Cfg id="RowTree" IdChars="0123456789" NumberId="1" NoVScroll="1" SuppressCfg="1" UpCounter="Pos"/>
+   <Cfg MainCol="A" FullId="1"/>
+   <LeftCols>
+      <C Name="id" Type="Text" CanEdit="0" Width="50"/>
+   </LeftCols>
+   <Cols>
+      <C Name="A" Width="300" Icon="Check"/>
+      <C Name="B" Width="40"/>
+      <C Name="C" Width="40"/>
+   </Cols>
+   <Toolbar Styles="2"/>
+   <Solid>
+      <Topbar Cells="REV,ROOT,LINES,ICON" CanFocus="0"
+         REVType="Bool" REVLabelRight="Reversed tree (MS Excel)" REVCanEdit="1"
+         REVFormula="Grid.ReversedTree?1:0"
+         REVOnChange="Grid.SetReversedTree(Value);"
+
+         ROOTType="Bool" ROOTLabelRight="Hide root tree" ROOTCanEdit="1"
+         ROOTFormula="Grid.HideRootTree?1:0"
+         ROOTOnChange="Grid.HideRootTree = Value; Grid.RenderBody()"
+
+         LINESType="Bool" LINESLabelRight="Hide tree lines" LINESCanEdit="1"
+         LINESFormula="Grid.NoTreeLines?1:0"
+         LINESOnChange="Grid.Rows[5].TreeIcon2 = Value?'Red.gif':'Expand.gif'; Grid.Rows[5].TreeIcon4 = Value?'Green.gif':'Collapse.gif'; Grid.SetNoTreeLines(Value);"
+         
+         ICONType="Bool" ICONLabelRight="Hide custom checkbox" ICONCanEdit="1"
+         ICONOnChange="Grid.Cols.A.Icon=Value?'':'Check';Grid.RenderBody();"
+         
+         />
+   </Solid>
+   <Header id="id" ALevels="1"/>
+   <Body>
+      <B>
+         <I id="1" A="Expanded" AChecked="2">
+            <I id="1" A="Expanded" AChecked="1">
+               <I id="1" A="Leaf" AChecked="1"/>
+               <I id="2" A="Leaf" AChecked="1"/>
+            </I>
+            <I id="2" A="Leaf"/>
+            <I id="3" Expanded="0" A="Collapsed">
+               <I id="1" A="Collapsed" Expanded="0">
+                  <I id="1" A="Leaf"/>
+               </I>
+               
+               <I id="2" A="Expanded">
+                  <I id="1" A="Leaf"/>
+               </I>
+            </I>
+         </I>
+         <I id="2" A="Always expanded" CanExpand="0">
+            <I id="1" A="Collapsed" Expanded="0">
+               <I id="1" A="Leaf"/>
+            </I>
+            <I id="2" A="Always expanded" CanExpand="0">
+               <I id="1" A="Leaf"/>
+            </I>
+         </I>
+         <I id="3" A="Tree in different column" CanExpand="2" BIcon="Expand" B="L1">
+            <I id="1" A="Tree in different column" CanExpand="2" CButton="Expand" C="L2" Expanded="0">
+               <I id="1" A="Leaf"/>
+               <I id="2" A="Leaf"/>
+            </I>
+            <I id="2" A="L2" Expanded="0">
+               <I id="1" A="Leaf"/>
+            </I>
+            <I id="3" A="Custom icon" Expanded="0" CanExpand="2" 
+               BButton="Red.gif" BOnClickSide="Expand OR Collapse; Row.BButton=Row.Expanded?'Green.gif':'Red.gif'; Grid.RefreshCell(Row,Col); return 1;" BOnDblClickSide="1" B="L2"
+               >
+               <I id="1" A="Leaf"/>
+            </I>
+            <I id="4" A="More buttons for one tree (used API OnExpand)" Expanded="0" BButton="Expand" B="L2" CButton="Expand" C="L2">
+               <I id="1" A="Leaf"/>
+               <I id="2" A="Leaf"/>
+            </I>
+         </I>
+         <I id="4" A="Expand on click to the whole row" ACanEdit="0" OnClick="Focus, Expand OR Collapse" Expanded="0">
+            <I id="1" A="Leaf"/>
+            <I id="2" A="Leaf"/>
+         </I>
+         <I id="5" A="Custom icon" TreeIcon2="Expand.gif" TreeIcon3="Expand.gif" TreeIcon4="Collapse.gif" TreeIcon5="Collapse.gif" Expanded="0">
+            <I id="1" A="Leaf"/>
+            <I id="2" A="Leaf"/>
+         </I>
+         <I id="6" A="Custom icon always expanded" TreeIcon0="NoExpand.gif" TreeIcon1="NoExpand.gif" Expanded="1" CanExpand="0">
+            <I id="1" A="Leaf"/>
+         </I>
+         <I id="7" A="Expand on the same level" AButton="Expand" AExpandRows="8,9"/>
+         <I id="8" A="Leaf" Visible="0"/>
+         <I id="9" A="Expanded" Visible="0">
+            <I id="1" A="Leaf"/>
+         </I>
+         <I id="10" A="Control different rows" BButton="Expand" BExpandRows="1,2" B="1,2" CButton="Expand" CExpandRows="3,4,5,6" C="3-6"/>
+         <I id="11" A="Control its children" Expanded="1" AButton="Expand" AExpandRows="11$1" BButton="Expand" BExpandRows="11$2" B="2" CButton="Expand" CExpandRows="11$3,11$4" C="3,4">
+            <I id="1" A="Shown by parent's A button" Visible="0"/>
+            <I id="2" A="Shown by parent's B button"/>
+            <I id="3" A="Shown by parent's C button" Visible="0"/>
+            <I id="4" A="Shown by parent's C button" Visible="0"/>
+         </I>
+      </B>
+   </Body>
+</Grid>

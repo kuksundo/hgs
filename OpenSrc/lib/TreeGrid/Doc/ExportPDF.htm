@@ -1,0 +1,787 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Export to Excel</title>
+
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Print / export to PDF</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Print and export of grid data
+to PDF document.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The printing to PDF shares
+setting with standard printing, see <b><a href="file:///S:\Doc\Print.htm#Items">Choosing
+items to print</a> </b>and<b> <a href="file:///S:\Doc\Print.htm#Page">Page size</a></b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The printing must be done on
+server side by some third party tool that converts HTML to PDF. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>We provide two sample tools,
+WKHtmlToPdf as GPL command line tool using WebKit for rendering and
+EVOHtmlToPdf Converter as commercial ASP.NET library using IE for rendering.
+There can be use also any other HTML to PDF conversion tool.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>The PDF export works in
+this way:</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) On client side in main
+TreeGrid application a user chooses what and how will be printed (in menu, see <a
+href="#CfgExportPDFCols">ExportPDFCol</a> and <a href="Print.html#page">page
+size printing options</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) The client side TreeGrid
+uploads the chosen setting and other configuration to server (the url is
+defined by <a href="#ExportPDF_Url">ExportPDF_Url</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) The server side script
+creates HTML of the same TreeGrid according to received configuration by <a
+href="#PrintTreeGrid">PrintTreeGrid</a> function. It shows simple page that
+loads TreeGrid script and creates the grid by PrintTreeGrid() instead of
+&lt;bdo&gt; or TreeGrid(). It should use the same data as the client side
+TreeGrid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) The server side script
+converts the HTML to PDF by some automation tool, e.g. WKHtmlToPdf or
+EVOHtmlToPdf</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5) The server side script
+returns the created binary PDF file as response of the client's request
+(received in point 2)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is an extra package
+with examples showing the PDF export in various server scripts (ASP.NET, PHP
+and JSP). It can be downloaded from <a
+href="http://www.treegrid.com/treegrid/Download/TreeGridEvalPDFExport.zip">http://www.treegrid.com/treegrid/Download/TreeGridEvalPDFExport.zip</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Client><b><span style='font-size:20.0pt'>Client side
+settings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><i><span
+style='font-size:10.0pt'>Settings to set up the communication from client side
+to server side</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="ExportPDF_Url"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportPDF_Url</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Destination for page that receives
+the grid configuration and creates and returns the binary PDF data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This server URL should return
+the exported data as PDF file in HTTP content-type=&quot;application/pdf&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This communication is <u>not</u>
+done by AJAX, but always by hidden form, so it can be used even if no ActiveX
+is supported.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Export cannot use Soap or Get
+communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To this URL is uploaded
+actual grid configuration and the server script should create and return the
+exported data by itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="ExportPDF_Data"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportPDF_Data</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>     [“Data”]                                                                                    <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of form input in
+that will be uploaded exported data or configuration to Export_Url</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>string</i>    </span><a
+name="ExportPDF_Type"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportPDF_Type</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>    [“settings”]                                                                               <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which configuration will be
+sent to server for export, case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Settings</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server will be send
+configuration (sorting, grouping, filters) and columns (positions, visibility
+and widths) and print settings in XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server must generate the
+requested report in <b>PDF</b> according to the settings and stored data
+ and return it to client.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Expanded</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends ids of all expanded
+rows in &lt;Cfg <a href="Tree.htm#CfgExpanded">Expanded</a>/&gt; attribute,
+comma separated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Changes</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends modified rows - rows
+with set attribute <b>Added</b>, <b>Deleted</b>, <b>Moved</b> or <b>Changed</b>
+(modified values). The rows are sent in &lt;<a href="#XML">Changes</a>&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, the export does <u>not</u>
+save the changes to server before export, but includes them in the export
+request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute supports
+also all other settings like <b>Cookie</b> or <b>Data</b> defined for _Type,
+see <a href="DataUpload.htm#Upload_Type">Upload_Type</a>. Also <b>ExportPDF_Flags</b>
+are supported if defined, see <a href="DataUpload.htm#Upload_Flags">Upload_Flags</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Print><b><span style='font-size:20.0pt'>Printing options</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><i><span
+style='font-size:10.0pt'>Settings specific to PDF chosen on client side and
+used on server side</span></i></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt;color:red'>Other printing setting are described at</span></b><b><span
+style='font-size:10.0pt'> <a href="Print.htm#Items">Choosing items to print</a>
+<span style='color:red'>and</span> <a href="Print.htm#Page">Page size</a></span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgExportPDFCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportPDFCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>        [2]                                                                               <span
+style='color:red'>new <b>6.7;</b> chg <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and which menu will be
+shown before doing export to PDF.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no menu</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – menu with columns to select which columns will be
+exported. Only columns with CanPrint&gt;=’1’ are listed. <i>(in TG prior 9.0 was
+tested CanExport instead of CanPrint).</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.7)</i> menu with column and also with
+options for export to PDF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPDFFitPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PDFFitPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [0]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’         <span
+style='color:red'>new <b>6.7</b>;chg <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set also in Print
+to PDF menu (when <a href="#CfgExportPDFCols">ExportPDFCols</a> = 2) and is
+sent to server along with the request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The options are defined in
+Text.xml, by default are: <b>0</b> = Real size, <b>1</b> = Width, <b>2</b> = Height
+<i>(since 9.0)</i>, <b>3</b> = Single page.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.0 </span></i><span
+style='font-size:10.0pt'>it is used by TreeGrid to calculate DPI and page size
+and apply page breaks.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPDFText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PDFText</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [1]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’                     <span
+style='color:red'>new <b>6.7</b>;chg <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set also in Print
+to PDF menu (when <a href="#CfgExportPDFCols">ExportPDFCols</a> = 2) and is
+sent to server along with the request. It is <u>not</u> used by TreeGrid.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Since 9.0</span></i></b><b><span
+style='font-size:10.0pt'> it is hidden in menu by default, to show it set
+&lt;Lang&gt;&lt;Text PDFText='the text'/&gt;&lt;/Lang&gt;</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The options are defined in
+Text.xml, by default are: 0 = Image only, 1 = Selectable text, 2 = Selectable
+text with embedded fonts</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int        </i></span><a
+name=CfgPDFPageSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>PDFPageSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>             [8]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’              <span
+style='color:red'>new <b>6.7;deleted 9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a
+href="Print.htm#CfgPrintPageSize">PrintPageSize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>int        </i></span><a
+name=CfgPDFPageOrientation><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>PDFPageOrientation</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>       [0]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’     <span style='color:
+red'>new <b>6.7;deleted 9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a
+href="Print.htm#CfgPrintPageOrientation">PrintPageOrientation</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ClientAPI><b><span style='font-size:20.0pt'>Client side
+API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsExportPDF><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ExportPDF</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>        Attached to event <b>OnClickButtonExportPDF</b>                                        <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates a request for report
+in PDF and sends it to server</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnExportStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnExportStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>bool</i> <b>pdf</b>)                                                    <span
+style='color:red'>new <b>6.0;</b></span><span style='color:#0070C0'> upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the export
+report is generated. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 7.0) </span></i><b><span
+style='font-size:10.0pt'>pdf</span></b><span style='font-size:10.0pt'> is true
+for export to PDF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>data</b>, <i>bool</i> <b>pdf</b>)                                                         <span
+style='color:#0070C0'>upd <b>7.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the export or
+configuration is created and before it is sent to server. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>data</span></b><span
+style='font-size:10.0pt'> is the created export or configuration. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 7.0) </span></i><b><span
+style='font-size:10.0pt'>pdf</span></b><span style='font-size:10.0pt'> is true
+for export to PDF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+export.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or return new or updated data
+to send.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void</i>      </span><a
+name=SendExport><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SendExport</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>string</i>
+<b>data</b>, <i>string</i> <b>url</b>, <i>string</i> <b>name</b>)                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends the data to server as
+export or configuration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calls also OnExport.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ServerAPI></a><a name=API><b><span style='font-size:20.0pt'>Server
+side API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><i><span
+style='font-size:10.0pt'>API to generate the HTML for the HTML to PDF tool.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>TGrid    
+</span></i><a name=PrintTreeGrid><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>PrintTreeGrid</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>object</i>
+<b>Source</b>, <i>string</i> <b>tag</b> = “”, <i>string</i> <b>id</b> = “”)                  <span
+style='color:red'>new <b>6.7</b></span><span style='color:#0070C0'>; upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates and renders new grid
+by API according to settings in <b>Source</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It renders inactive grid for
+printing purposes, especially when printing to PDF. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It prints the grid
+synchronously, without scrollbars, loads also all pages and child pages in
+server paging, so it can be very slow for long grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For long grids and routines
+that use IE for exporting to PDF it can be useful to disable slow script
+message in IE by:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                HKEY_CURRENT_USER\Software\Microsoft\Internet
+Explorer\Styles\MaxScriptStatements = 0xFFFFFFFF</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Its attributes and other
+behavior is similar to <a href="Create.htm#TreeGrid">TreeGrid</a> method.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Source</span></b><span
+style='font-size:10.0pt'> can be:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) string
+with &lt;treegrid&gt; or &lt;bdo&gt; tag with all settings like it is included
+directly to HTML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Example:
+TreeGrid(“&lt;treegrid Data_Url=’Grid2.xml’&gt;&lt;/treegrid&gt;”,”Main”);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                b) string
+with XML to create the grid from. The grid will have only Data_Data source
+defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Example:
+TreeGrid(“&lt;Grid&gt;&lt;Cols&gt;&lt;C
+Name=’A’/&gt;&lt;/Cols&gt;&lt;Body&gt;&lt;B&gt;&lt;I
+A=’xxx’/&gt;&lt;/B&gt;&lt;/Body&gt;&lt;/Grid&gt;”,”Main”);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                c) object
+with parsed &lt;treegrid&gt; / &lt;bdo&gt; tag. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>All multilevel attributes (data sources) containing
+‘_’ must be set as nested objects, split by the ‘_’, </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>for example Data_Param_Test is accessed as
+Source.Data.Param.Test and set as {Data:{Param:{Test:’val’}}}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Eample:
+PrintTreeGrid({Layout:{Url:”Grid2Def.xml”},Data:{Url:”Grid2.xml”}},”Main”);</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>tag</span></b><span
+style='font-size:10.0pt'> is the <b>main div tag</b> to render grid into. The <b>tag</b>
+can be an id of the tag or the HTMLElement itself. The htm tag must exist in
+time of calling the function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the
+parameter is missing, the id of the tag must be set in input XML by attribute
+&lt;Cfg <b>Tag</b>/&gt;. See &lt;<a href="#TagTreeGrid">treegrid</a>&gt; tag
+description.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>id</span></b><span
+style='font-size:10.0pt'> is the unique id of the grid, used to identify it,
+especially in saving configuration to the cookies. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the parameter is missing, the id of the grid can be set in input XML by
+attribute &lt;Cfg <b>id</b>/&gt; </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The function returns created <b><a
+href="#ClassTGrid">TGrid</a></b> object. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It returns null for fatal
+error. It fails if the <b>Source</b> is null or cannot be used as one of the
+three options.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Source</b> is
+accessible by API by grid.<a href="#Source">Source</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It calls all loading events
+like <b>OnLoaded</b> or <b>OnReady</b>. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It calls also <b>OnRenderStart</b> event, when all
+data are loaded, even for server paging and <b>OnRenderFinish</b> when the grid
+is fully rendered (even for paging).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetHtmlValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetHtmlValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get formatted cell
+value to display. <i>val</i> is unformatted cell value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns formatted value. If
+returned value is <u>not</u> <u>null</u>, it is used instead of internal
+formatting by Format or Enum attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return null to use default
+formatting behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Data></a><a name=Server><b><span style='font-size:20.0pt'>Data
+sent from client to server</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To server is sent just actual
+grid configuration – sorting, grouping, filters, search and column width,
+positions and visibility. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In “custom” parameter “<b>ExportFormat</b>”
+is sent “pdf&quot; (to distinguish it from other export formats when sharing
+the export url)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Iin “custom” parameters <b>PrintPageSize</b>,
+<b>PrintPageOrientation</b>, <b>PrintDPI</b>, <b>PrintMarginWidth</b>, <b>PrintMarginHeight</b>,
+<b>PDFFitPage</b> and <b>PDFText</b> are sent chosen PDF options, see them in <a
+href="file:///S:\Doc\Print.htm#Page">Page size</a> and <a href="#Print">Printing
+options</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to upload also
+other data from client like changes, set Export_Type=”Settings,Changes”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The configuration is sent as
+standard TreeGrid XML in <a href="DataCommunication.htm#xxx_Data">Data</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:16.0pt'>XML structure of request for PDF
+export</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>request sent</b>
+to data source <b>ExportPDF</b> to get the exported grid when set <b>server
+side export</b> (<b>ExportPDF_Type</b>=”<b>Settings</b>”).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains session
+identification and grid configuration to sort, group, filter and search
+exported data on server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It contains also columns
+settings – width, position and visibility.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with
+request settings  </i>...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(<a href="DataCommunication.htm#IOSession">Session</a> attribute)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Cfg</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with grid
+settings read from cookies </i> ...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt; </span><span style='font-size:
+10.0pt'>(Sort, Group, ReSort, ReCalc, TimeZone attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (SearchAction,
+SearchExpression, SearchType, SearchMethod, SearchDefs, SearchCols attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (Focused,
+FocusedCol, FocusedPos attributes)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                                                                              (PrintPageBreaks,
+PrintRows, PrintExpanded, PrintFiltered)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span><span style='font-size:10.0pt;color:#FF6600'> </span><span
+style='font-size:10.0pt'>(list of filters)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <i>... row and cell attributes ...</i> </span><span
+style='font-size:16.0pt;color:red'>/&gt;</span><span style='font-size:10.0pt'>
+(<b>id</b> attribute, cell <b>values</b> and cell <b>Filter</b> attributes)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt; if more filters are in
+grid  ...</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;/</span></b><b><span
+style='font-size:16.0pt;color:blue'>Filters</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:16.0pt'>
+</span><b><span style='font-size:10.0pt;color:green'>Name</span></b><span
+style='font-size:10.0pt'>='<i>column name</i>' Width=’...’ Visible=’0/1’</span><span
+style='font-size:16.0pt'> <span style='color:red'>/&gt;</span></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>LeftCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' Width=’...’ Visible=’0/1’
+</span><span style='font-size:16.0pt;color:red'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Cols</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      </span><span style='font-size:16.0pt;color:red'>&lt;</span><b><span
+style='font-size:16.0pt;color:blue'>C</span></b><span style='font-size:10.0pt'>
+<b><span style='color:green'>Name</span></b>='<i>column name</i>' Width=’...’ Visible=’0/1’
+</span><span style='font-size:16.0pt;color:red'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt'>      <i>... more tags &lt;C&gt; for other columns ...</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>RightCols</span></b><span style='font-size:
+16.0pt;color:red'>&gt;</span><span style='font-size:16.0pt'>   </span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:#FF6600'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

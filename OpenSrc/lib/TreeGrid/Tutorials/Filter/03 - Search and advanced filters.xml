@@ -1,0 +1,87 @@
+<Grid>
+   <Cfg id="Search" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1"/>
+   <Cfg SearchExpression='6 OR o OR "-3"' SearchCells="1" SearchFocused="3" SearchNumbers="3" SearchAction="Mark" SearchAlertFound="500" SearchWhiteChars=" "/>
+   <Cols>
+      <C Name="INT" Type="Int" Width="90"/>
+      <C Name="FLOAT" Type="Float" Width="90"/>
+      <C Name="TEXT" Type="Text" Width="80"/>
+      <C Name="ENUM" Type="Enum" Enum="||One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten" Width="80"/>
+      <C Name="DATE" Type="Date" Width="110" DefaultDate="1/1/2000" Format="dddddd MMM"/>
+      <C Name="BOOL" Type="Bool"/>
+      <C Name="ICON" Type="Icon" CaseSensitive="0" Width="55"/>
+      <C Name="HTML" Type="Html" Width="60"/>
+   </Cols>
+   <Header INTTip="Number filter" TEXTTip="Case insinsitive text, ignores also spaces" CASETip="Case sensitive text as is, including spaces"
+      HTMLTip="Filter according to FilterValue attribute"
+      />
+   <Solid>
+      <Search Cells="Expression,Search,Actions,Filter,Select,Mark,Find,Clear,Help" ActionsRange="1" Actions="Filter;Mark;Find" ExpressionAction="Last" ExpressionTip="You can search any string in grid&lt;br>The ICON you can search as 'red', 'green', 'yellow', the HTML as 'yes', 'no', 'warn'"/>
+      <Group Panel="0" Cells="CELLS,MAX,NUM,CASE,WHITE"
+         CELLSType="Select" CELLSDefaults="|Search in rows|Search in cells" CELLS="Search in cells" CELLSLeft="32"
+         CELLSOnChange="Grid.SearchCells = Grid.GetDefaultsIndex(Row,Col,Value); Grid.DoSearch('Refresh');"
+
+         NUMType="Select" NUMLabel="Number search" NUMDefaults="|string|exact|round|floor" NUM="floor" NUMWidth="40"
+         NUMOnChange="Grid.SearchNumbers = Grid.GetDefaultsIndex(Row,Col,Value); Grid.DoSearch('Refresh');"
+
+         CASEType="Bool" CASELabelRight="Case sensitive"
+         CASEOnChange="Grid.SearchCaseSensitive = Value; Grid.DoSearch('Refresh');"
+
+         WHITEType="Bool" WHITELabelRight="Ignore spaces" WHITE="1"
+         WHITEOnChange="Grid.SearchWhiteChars = Value?' ':''; Grid.DoSearch('Refresh');"
+
+         MAXType="Select" MAXDefaults="|1|2|3" MAX="3" MAXLabel="Mark different colors" MAXWidth="20" 
+         MAXOnChange="Grid.SearchMaxMark = Value;"
+
+         /> <!-- Group row used just due style reasons, there is no grouping setting -->
+      <Search Cells="List,COLS"
+         ListLabel="Predefined searches"
+         ListDefaults='|(off)|-|6 OR o OR "-3"|t|One|1|"o n e"|6 one|-|INT > 15|FLOAT > 0 AND FLOAT &lt; 10|BOOL OR ICON contains "red"|HTML = "warn"|DATE > "1/10/2000"'
+         ListExpressions='|||6 OR o OR "-3"|t|One|1|"o n e"|6 one||INT > 15|FLOAT > 0 AND FLOAT &lt; 10|BOOL OR ICON contains red|HTML = "warn"|DATE > "1/10/2000"'
+         ListAction='Last' ListWidth='147'
+
+         COLSType="Select" COLSLabel="Columns" COLSEmptyValue="all" COLSDefaults=",*None,INT,FLOAT,TEXT,ENUM,DATE,BOOL,ICON,HTML" 
+         COLSRange="1" COLSOnChange="Grid.SearchCols = Value; Grid.DoSearch('Refresh');" COLSTip="Which columns will be searched, affects only string search, not search by expression"
+         />
+   </Solid>
+   <Toolbar Styles="2" Formula="Grid.SearchCount==null ? '' : 'Found '+ (Grid.SearchCount===''?Grid.FilterCount:Grid.SearchCount) +' results'"/>
+   <Body>
+      <B>
+         <I/>
+         <I INT="1" FLOAT="1.3" TEXT="One" ENUM="One" DATE="1/1/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="2" FLOAT="6" TEXT="One" ENUM="One" DATE="1/1/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="3" FLOAT="66" TEXT="ONE" ENUM="One" DATE="1/2/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="4" FLOAT="3.6" TEXT="ONE" ENUM="One" DATE="1/2/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="5" FLOAT="-6.5" TEXT="O n e" ENUM="One" DATE="1/3/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="6" FLOAT="12" TEXT="one 66" ENUM="One" DATE="1/6/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="7" FLOAT="16" TEXT="Two" ENUM="Two" DATE="1/6/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="8" FLOAT="2.4" TEXT="two" ENUM="Two" DATE="1/6/2000" HTMLFilterValue="empty"/>
+         <I INT="9" FLOAT="-12.5" TEXT="Two" ENUM="Two" DATE="1/8/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="10" FLOAT="6.65" TEXT="Three" ENUM="Three" DATE="1/8/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="11" FLOAT="2.3" TEXT="THREE" ENUM="Three" DATE="1/8/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="12" FLOAT="-5.5" TEXT="Three" ENUM="Three" DATE="1/9/2000" HTMLFilterValue="empty"/>
+         <I INT="13" FLOAT="11" TEXT="Three" ENUM="Three" DATE="1/11/2000" HTMLFilterValue="empty"/>
+         <I INT="14" FLOAT="11.4" TEXT="Four" ENUM="Four" DATE="1/13/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="15" FLOAT="1.06" TEXT="f o u r" ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="16" FLOAT="0.5" TEXT="Four" ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="17" FLOAT="-0.6" TEXT="S I X" ENUM="Six" DATE="1/14/2000" BOOL="0" HTMLFilterValue="empty"/>
+         <I INT="18" FLOAT="22" TEXT="Six" ENUM="Six" DATE="1/14/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="19" FLOAT="4" TEXT="Seven" ENUM="Seven" DATE="1/16/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="20" FLOAT="5.9" TEXT="seven" ENUM="Seven" DATE="1/17/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="21" FLOAT="6.23" TEXT="seven" ENUM="Seven" DATE="1/18/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="22" FLOAT="16" TEXT="Seven" ENUM="Seven" DATE="1/18/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="23" FLOAT="6.18" TEXT="Seven" ENUM="Seven" DATE="1/20/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="24" FLOAT="5.2" TEXT="Eight" ENUM="Eight" DATE="1/21/2000" BOOL="0" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="25" FLOAT="-6.345" TEXT="Eight" ENUM="Eight" DATE="1/22/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="26" FLOAT="3" TEXT="Nine" ENUM="Nine" DATE="1/25/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="27" FLOAT="-0.02" TEXT="NINE" ENUM="Nine" DATE="1/26/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="28" FLOAT="-22.9" TEXT="N IN E" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="29" FLOAT="-5.9" TEXT="Nine" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="30" FLOAT="6.2" TEXT="Nine" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="31" FLOAT="22" TEXT="Ten" ENUM="Ten" DATE="1/29/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="32" FLOAT="6" TEXT="Ten" ENUM="Ten" DATE="1/30/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="33" FLOAT="-3" TEXT="t e n" ENUM="Ten" DATE="1/31/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="34" FLOAT="-5" TEXT="ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="35" FLOAT="2" TEXT="Ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" HTMLFilterValue="empty"/>
+      </B>
+   </Body>
+</Grid>

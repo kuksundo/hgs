@@ -1,0 +1,99 @@
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />        
+   </head>
+   <body>
+      <h2>Using DLL and sharing data</h2>
+      <p><font size="2">Demonstration of TreeGrid using server DLL and <b>checking for updates</b> feature.<br>
+      This page contains two independent grids as demonstration of two independent applications.
+	      Both these grid show the same XML data file. If you change data (and save changes) in one grid, 
+	      the other grid will get information from server about change and let you to download changes.<br>
+      You can also open this page in new window to get more grid instances <a href="FileSharing.html" target=_blank><b>open new page</b></a>.<br>
+      </font>
+      </p>
+      
+      <input id='Data1_1_Session' type='hidden'>
+      <div style="WIDTH:100%;HEIGHT:300px">
+         <bdo 
+              id='Data1_1'
+              Debug='1'
+              
+              Layout_Url='SharingDef.xml'
+              Layout_Bonus='<Grid><Cfg SaveSession="Data1_1_Session" Style="GO"/></Grid>'
+              
+              Data_Url='FileSharing.jsp'
+              Data_Method='Form'
+	   	     Data_Format='Internal'
+              Data_Param_Function='LoadBody'
+		        Data_Param_Def='SharingDef.xml'
+		        Data_Param_File='FileData.xml'
+		        Data_Data='Cfg'
+
+              Page_Url='FileSharing.jsp'
+		        Page_Format='Internal'
+		        Page_Method='Form'
+		        Page_Param_Function='LoadPage'
+		        Page_Data='Cfg'
+		        
+		        Upload_Url='FileSharing.jsp'
+              Upload_Method='Form'
+	   	     Upload_Format='Internal'
+              Upload_Param_Function='Save'
+		        Upload_Param_File='FileData.xml'
+		        Upload_Data='Changes'
+		        
+		        Check_Url='FileSharing.jsp'
+		        Check_Method='Form'
+	   	     Check_Format='Internal'
+              Check_Param_Function='CheckUpdates'
+		        Check_Param_File='FileData.xml'
+		        Check_Data='Cfg'
+              Check_Interval='2'
+              
+              ></bdo>
+      </div>
+
+      <hr style='margin-top:5px; margin-bottom:5px;'>
+      
+      <input id="Data1_2_Session" type=hidden>
+      <div style="WIDTH:100%;HEIGHT:300px">
+         <bdo 
+              id='Data1_2'
+              Debug='1'
+              
+              Layout_Url='SharingDef.xml'
+              Layout_Bonus='<Grid><Cfg SaveSession="Data1_2_Session" Style="GS"/></Grid>'
+              
+              Data_Url='FileSharing.jsp'
+              Data_Method='Form'
+	   	     Data_Format='Internal'
+              Data_Param_Function='LoadBody'
+		        Data_Param_Def='SharingDef.xml'
+		        Data_Param_File='FileData.xml'
+		        Data_Data='Cfg'
+
+              Page_Url='FileSharing.jsp'
+		        Page_Format='Internal'
+		        Page_Method='Form'
+		        Page_Param_Function='LoadPage'
+		        Page_Data='Cfg'
+		        
+		        Upload_Url='FileSharing.jsp'
+              Upload_Method='Form'
+	   	     Upload_Format='Internal'
+              Upload_Param_Function='Save'
+		        Upload_Param_File='FileData.xml'
+		        Upload_Data='Changes'
+		        
+		        Check_Url='FileSharing.jsp'
+		        Check_Method='Form'
+	   	     Check_Format='Internal'
+              Check_Param_Function='CheckUpdates'
+		        Check_Param_File='FileData.xml'
+		        Check_Data='Cfg'
+              Check_Interval='2'
+              ></bdo>
+      </div>
+   </body>
+</html>

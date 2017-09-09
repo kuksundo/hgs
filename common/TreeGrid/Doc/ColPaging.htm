@@ -1,0 +1,428 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Paging root rows</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Paging columns</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can automatically split
+<u>middle</u> columns to pages and displays them only on demand – when the page
+becomes visible due scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgColPaging><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColPaging</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                      <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Method of column paging used.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>0</span></b><span
+style='font-size:10.0pt'>             <b><i>No paging</i></b></span> </p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All columns are in one page.
+All columns are rendered on start. This means slow start and fast use.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for small grids,
+up to about 30 columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>1</span></b><span
+style='font-size:10.0pt'>             <b><i>Show all</i></b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column pages are
+automatically created, but all are rendered on start. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for medium grids, 30
+– 100 columns, to let users to easy navigate between parts in grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can be used also to
+avoid browser “Slow script” message when rendering too many rows without
+paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>2</span></b><span
+style='font-size:10.0pt;color:blue'> </span><span style='font-size:10.0pt'>            <b>Client
+paging      </b>(auto – fully done by TreeGrid) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column pages are
+automatically created</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column page is rendered
+only when it is visible in window by scrolling.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is good for large grids with
+more than 100 columns. All functions still work offline, include sorting,
+filtering, grouping, searching and calculations.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The client paging does <u>not</u>
+require any server side support.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgColPagingFixed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColPagingFixed</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b> (and set <a
+href="#CfgColPaging">ColPaging</a>&gt;0), it will page only variable body rows,
+not fixed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usable especially for spanned
+header or other fixed rows among column pages.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If the columns are not
+paged in IE8 there is a limit for number of columns <b>500</b> when WidthPad is
+set and up to <b>1000</b> without WidthPad set.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgColPageMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColPageMin</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [10]                                                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of column in the first
+(left) page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This page is rendered always
+on start, so it is displayed immediately with grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set to 0 to not
+render any column on start.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgColPageLength><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColPageLength</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [10]                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of columns per page,
+except the first one and the last one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Exact count of columns in
+page can differ due to adding or deleting columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every page must contain at
+least one column otherwise it is deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPageTime><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageTime</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [200]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How long (in ms) must be page
+visible (by scroll) before it renders.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxColPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxColPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [20]                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum rendered column pages
+in grid, only for <a href="#CfgColPaging">ColPaging</a> = ‘2’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid contains more
+rendered pages, the pages longer not accessed are cleared (only in HTML, pages
+data are <u>not</u> affected).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to <u>not</u> slow down
+the browser when too many HTML tags are displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For large pages you can lower
+this value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The actually displayed pages
+are never cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> to disable
+clearing pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRemoveUnusedPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RemoveUnusedPages</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [2]                                                                               <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it never
+removes unused root pages, child pages/parts and column pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it
+removes unused pages due <a href="Paging.htm#CfgMaxPages">MaxPages</a>, <a
+href="TreePaging.htm#CfgMaxChildParts">MaxChildParts</a> and <a
+href="ColPaging.htm#CfgMaxColPages">MaxColPages</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>3</b>, it
+removes also data of unused root pages or child pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It removes only page or child
+page that does not contain changed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                    <i>Saved
+to cookies, avoid it by <b>&lt;C WidthLap=’1’/&gt;</b></i>                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column width in pixels. It is
+outer width including all side buttons, cell border and padding.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Set it when there are many
+columns in grid to speed up grid loading</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CPrepared><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Prepared</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If all row values in this
+column are prepared and do not need to be updated on start.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Use it when the grid has
+many rows to speed up grid loading.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The preparing values does
+these things:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                - <b>Date</b>
+type cell values set as strings are converted to numbers as count of
+milliseconds since 1/1/1970.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                - <b>Int</b>
+and <b>Float</b> types empty values are converted to zero if set CanEmpty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                - <b>Select</b>
+type is converted to Button=’Defaults’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                - For <b>Calculated</b>
+<b>rows</b> without <b>CalcOrder</b> is the CalcOrder created from all (not
+Prepared) columns with Formula attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set Prepared=’1’ for
+columns that does not contain Date, Int, Float and Select types or the Date are
+set as numbers or the Float and Int are not source of calculations.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRenderColPageStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRenderColPageStart</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>sec</b>)                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before rendering of
+the column page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The sec is the section index
+to <b>ColNames</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnRenderColPageFinish><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnRenderColPageFinish</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>sec</b>)                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called the column page is
+fully rendered and ready.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The sec is the section index
+to <b>ColNames</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=AddColPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AddColPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string[]</i>
+<b>names</b>, <i>string</i> <b>def</b> = “C”)                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds new column page to the
+end of variable columns. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>names</span></b><span
+style='font-size:10.0pt'> is list of the column names to add. It can be also
+number as count of the columns to add.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> is name of default column to use for all the columns
+to fill their attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After the method finishes,
+the columns are not displayed yet, so they can be changed or the row values in
+the columns can be filled directly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowColPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowColPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts loading and rendering
+displayed column pages. Asynchronous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call this method if pages are
+not rendered automatically when you do some unusual changes in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=CreateColPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CreateColPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (
+)                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-creates the column pages,
+re-places the columns to the column pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can call it after adding
+many new not displayed columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You must call <a
+href="Create.htm#Render">Render</a> / <a href="Create.htm#Rerender">Rerender</a>
+method after calling the CreateColPages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example how to add many
+columns to already rendered grid fast:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>for(var
+i=0;i&lt;500;i++) G.AddCol('c'+i,1,null,{Width:50,Type:'Html'}).Visible = 1;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>G.CreateColPages();
+G.Rerender(); </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

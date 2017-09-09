@@ -1,0 +1,129 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// -------------------------------------------------------------------------------------------      
+Grids.OnChangeDef = function(G,row,def){
+if(G.id=='SummaryRun' && def=="R") { row.GANTTGanttStart = null; row.GANTTGanttEnd = null; } 
+// For RUN changing from SUMEDIT to R must clear the computed GanttStart and GanttEnd, otherwise it will still show the bar
+}
+
+// -------------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttMainBar"><b>Gantt Main bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Summary tasks</center>
+   <center style='font:bold italic;'>Read only and editable summary tasks with dependencies</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Summary tasks.xml'>04 - <h2>Summary tasks</h2>.xml</a> <i>Main bar as summary of child main bars, here used the same plan</i></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='04 - Summary tasks.xml'></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Summary tasks - Run.xml'>04 - <h2>Summary tasks - Run</h2>.xml</a> <i>Main bar as summary of child run bars</i></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='04 - Summary tasks - Run.xml'></bdo>
+   </div>
+   <ul>
+      <li>See documentation for <b><a href="../../Doc/GanttSummary.htm">Summary tasks</a></b></li>
+      <li>
+         <h4>Not editable summary tasks</h4><br />
+         The not editable summary task shows summary size and completion of its children.<br />
+         The task is defined just by formulas in source cells. It does not support dependencies.<br />
+         All the settings of summary task (the formulas) are usually set in some default row that is assigned to the summary rows.<br />
+         The summary default can be defined also for grouping, when it has set <b>Group='1'</b> to use for group tasks defined while grouping.<br />
+         <ul>
+            <li>
+               <b>Continuous</b> <h4>Main bar</h4> summary for <h4>Main bar</h4> task.<br />
+               To calculate summary of main bars use functions ganttstart, ganttend, ganttduration, ganttpercent and optionally ganttparts. 
+               The sample summary default is:
+               <div style='margin:5px;'><code>
+               &lt;D Name="SUM" Calculated="1" GANTTGanttEdit="" CanEdit="0"<br />
+               STARTFormula="<b>ganttstart</b>()" ENDFormula="<b>ganttend</b>()" DURFormula="<b>ganttduration</b>()"<br />
+               PARTSFormula="<b>ganttparts</b>()" COMPFormula="<b>ganttpercent</b>()"
+               /></code></div> 
+               where the START is GanttStart, END is GanttEnd, DUR is GanttDuration, PARTS is GanttParts, COMP is GanttComplete and GANTT is the Gantt column.<br />
+               Optionally the summary definition can have defined <b>GanttClass</b> attribute to show the bars in different color than standard main bars 
+               and <b>GanttIcons="1"</b> to show side icons for bar, just for visual effect.
+            </li>
+            <li>
+               <b>Discrete</b> <h4>Main bar</h4> summary for <h4>Main bar</h4> task.<br />
+               If defined <b>GanttParts</b> attribute to support discrete main bars, at least for the summary, you can show  the summary bars discrete, only for time where some child bar is defined.<br />
+               Define it the same as continuous main bar described above and replace ganttparts() function by <b>sumparts</b>().<br />
+               It is possible to set <b>GanttIcons</b> to <b>5</b> or <b>6</b> to mark the inner edges of bars as not ended.
+            </li>
+            <li>
+               <b>Continuous</b> <h4>Main bar</h4> summary for <h4>Run bar</h4> tasks.<br />
+               Retype the Run bars in summary to Main bars and use functions ganttrunminstart, ganttrunmaxend and optionally ganttrumsumduration for calculations. 
+               The sample summary default is:
+               <div style='margin:5px;'><code>
+               &lt;D Name="SUM" Calculated="1" AggChildren="1" GANTTGanttEdit="" CanEdit="0"<br />
+               GANTTGanttStart="START" GANTTGanttEnd="END" GANTTGanttDuration="DUR" GANTTGanttComplete="COMP" GANTTGanttRun=""<br />
+               STARTFormula="<b>ganttrunminstart</b>()" ENDFormula="<b>ganttrunmaxend</b>()"  DURFormula="<b>ganttrunsumduration</b>()" COMPFormula="<b>ganttpercent</b>()"<br />
+               GANTTGanttEdit="" CanEdit="0"
+               /></code></div> 
+               where the START, END, DUR, COMP and GANTT are appropriate column names used in grid.<br />
+               It is also possible to define the <b>GanttClass</b> and <b>GanttIcons</b> attributes.<br />
+               If you nest the summaries, you should set for them <b>AggChildren='1'</b> to sum always the source runs and not the child main bars.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Editable summary tasks</h4><br />
+         The summary tasks (defined above) can be set as editable, so they can be <b>moved</b> and support <b>dependencies</b> and <b>constraints</b>.<br />
+         The editable summary task is defined by <h3>GanttSummary</h3>. The value is set to the children main bar plan ('<b>0</b>' for the first one) or to '<b>-</b>' for the Run bar children.<br />
+         <i>Don't forget to define also the appropriate formulas and other settings similarly to not editable tasks.</i><br />
+         The editable summary has defined the formulas and other options as described in not editable summaries and these settings:<br />
+         <div style='margin:5px;'><code>
+            &lt;D Name="SUM" GANTT<b>GanttSummary</b>="<i>0</i>" STARTCanEdit="1" GANTTGanttEdit="all"/>
+         </code></div> 
+         where the GANTT is Gantt column and START is GanttStart column. The START can be ignored, if the grid does not contain this column (for Run bars).<br />
+         It is possible to use both editable and not editable summaries in one grid, just define the two default rows and assign them to the given summaries.<br />
+         The summary task support these features:
+         <ul>
+            <li>
+            All dependencies attached to the summary task will be assigned also to all its children (as hidden dependencies).
+            </li>
+            <li>
+            Dependencies between the summary and its children will be marked or restricted as circular.
+            </li>
+            <li>
+            The MinStart and MaxEnd date constraints assigned to summary tasks will be used also for all its children if they are more restrictive than the child task constraints, if any.
+            </li>
+            <li>
+            If the tasks is moved by mouse dragging or editing its start date, it moves also all its children. The task cannot be moved, if it would lead to violate any child’s constraints.
+            </li>
+            <li>
+            The task cannot be created, resized or deleted and its GanttComplete value cannot be changed by a user. <i>Except the GanttSummary is set to 2</i>.
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Special editable parent tasks</h4><br />
+         It is possible to define parent task not calculated, but still affecting its children.<br />
+         Set <b>GanttSummary</b> like for editable summary task and <h3>GanttSummaryType</h3><b>='1'</b> and DON'T set the summary calculations by functions like ganttstart.<br />
+         The task will be resizable and its size will NOT be calculated according to its children.<br />
+         But after its move, it will move also its children and also all its dependencies and constraints will affect its children like in standard editable summary tasks, see above.
+      </li>
+      <li>
+         <h4>Dynamic change between summary and normal task</h4><br />
+         You can let users to move rows by dragging (permitted by Cfg attribute <b>Dragging='1'</b>, it is on by default) 
+         or attach actions <h3>Indent</h3> and <h3>Outdent</h3> to some TreeGrid events, e.g. to OnClick to toolbar button.<br />
+         To automatically change between summary and normal task set row attribute <h3>DefEmpty</h3> to normal row default name (often 'R') 
+         and <h3>DefParent</h3> to summary row default name.<br />
+         If something is needed to do when changing the row default, it can be done in <b>OnChangeDef</b> API event. <br />
+         The row default and behavior will be changed whenever the row looses its last child (by move or delete, becomes normal task) or it gets its first child (by move or add, becomes summary task).<br />
+         
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<Grid>
+   <Cfg id="Manipulation" MainCol="N" FullId="1" NumberId="1" IdChars="0123456789" Sorting="0" Undo="1" SaveSelected="1"/>
+   <Cols>
+      <C Name="id" CanEdit="0"/>
+      <C Name="N" Width="300"/>
+   </Cols>
+   <Panel Select="1" Delete="1" Move="1" Copy="1"/>
+   <Header id="id" N="Name"/>
+   <Solid>
+      <Toolbar2 Cells="DEL,SEL,SINGLE" 
+         DELType="Bool" DELLabelRight="Show deleted rows" DEL="1" DELOnChange="Grid.ShowDeleted = Value; for(var r=this.GetFirst();r;r=this.GetNext(r)) if(r.Deleted) { if(Value) Grid.ShowRow(r); else Grid.HideRow(r); }"
+         SELType="Bool" SELLabelRight="Persistent selection" SEL="1" SELOnChange="Grid.Actions.OnClickCell = Value ? 'FocusEdit' : 'ClearSelection,FocusEdit'; Grid.Actions.OnClickOutside = Value ? 'Blur' : 'ClearSelection,Blur'; if(!Value) Grid.ActionClearSelection();"
+         SINGLEType="Bool" SINGLELabelRight="Select only one row" SINGLE="0" SINGLEOnChange="Grid.SelectingSingle = Value; Grid.ActionClearSelection();"
+         />
+   </Solid>
+   <Foot>
+      <I id="98" N="Fixed row normal"/>
+      <I id="99" N="Fixed row deletable" CanSelect="1" CanDelete="1"/>
+   </Foot>
+   <Body>
+      <B>
+         <I id="1" N="Row 1"/>
+         <I id="2" N="Row 2" Selected="1">
+            <I id="1" N="Row 2-1"/>
+            <I id="2" N="Row 2-2" Deleted="1"/>
+            <I id="3" N="Row 2-3">
+               <I id="1" N="Row 2-3-1">
+                  <I id="1" N="Row 2-3-1-1"/>
+                  <I id="2" N="Row 2-3-1-2"/>
+               </I>
+            </I>
+         </I>
+         <I id="3" N="Row 3 cannot be deleted" CanDelete="0" Selected="1"/>
+         <I id="4" N="Row 4 does not accept children" AcceptDef="" CDef=""/>
+         <I id="5" N="Row 5 cannot be selected" CanSelect="0"/>
+         <I id="6" N="Row 6">
+            <I id="1" N="Row 6-1"/>
+            <I id="2" N="Row 6-2" Selected="1"/>
+         </I>
+      </B>
+   </Body>
+</Grid>

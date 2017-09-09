@@ -1,0 +1,801 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Master – detail grids</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Master – detail grids</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports master /
+detail relationship as showing (master) row’s children in different (detail)
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The detail grid can be shown <b>outside</b>
+the master grid, see <a href="#External">External detail grids</a> or inside
+the master grid, in some cell, see <a href="#Nested">Nested detail grids</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>master grid</b>
+contains all data and only master grid can upload changes to server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every master row (with <a
+href="#IDetail">Detail</a>  or <a href="#IDetailCol">DetailCol</a> attribute)
+contains children that will be displayed in detail grid when the master row is
+chosen.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>detail children</b> in
+<b>master</b> grid can be also created automatically by defining them as
+children of default row (&lt;D&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is useful in creating
+master / detail relation for plain tables, where are the source data defined
+only once in the master root rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>detail grid</b>
+contains only layout to define columns and fixed rows, but no variable data
+rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used to show and edit
+children of master row from master grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can define data rows in
+detail grid to be displayed when it is empty - when does not display any master
+row’s children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to have
+completely different layout in detail grid than in master grid, use <a
+href="#CellCopyTo">CopyTo</a> attribute to provide correct relation between
+cells. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For classic master-detail
+relationship without tree you should specify <a href="Tree.htm#CfgMainCol">MainCol</a>=’’
+and all master rows set <a href="Tree.htm#IExpanded">Expanded</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also use <a
+href="#CellCopyTo">CopyTo</a> attribute if you have editable cell in master row
+linked to cell in detail.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=External><b><span style='font-size:20.0pt'>External detail
+grids</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To define master / detail
+relationship, set &lt;Cfg <a href="#CfgDetail">Detail</a>=’1’ <b>id</b>=<i>’DetailGridId’</i>/&gt;
+in detail grid and &lt;I <a href="#IDetail">Detail</a>=<i>’DetailGridId’</i>/&gt;
+in master rows in master grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is also possible to have
+a cascade of more related grids (detail grid can also be a master for another
+grid).  </span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is also possible to have
+one master grid with more detail grids or more master grids with one or more
+detail grids.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>The way of master/detail relationship</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The children (as in tree) of
+master row are displayed after focus/click/double click/expand in detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The children are still part
+of master grid’s data and are downloaded / uploaded by master grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For the detail grid you need
+to specify the layout with empty data or with user row displayed when no data
+is shown in detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The layout of detail grid
+does not need to be the same as of master grid; you can add or hide other
+columns, but remember, uploading is done by master grid and only its columns
+are uploaded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows can be dragged
+between master and detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One master grid can have more
+detail grids and one detail grid can have more master grids, but only one at a
+time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master and also detail
+grid can show data in tree, you can specify by Detail attribute which rows are
+shown as detail.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>For more information see <a
+href="../Tutorials/MasterDetail/03%20-%20Master%20detail%20simple.html">Master
+/ detail tutorial</a>.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string[
+] </i></span><a name=IDetail><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Detail</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                <b>Master</b>
+row attribute                                                                 <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is the main attribute for
+master / detail relationship in external grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>id</b> of detail
+grid where will be displayed the row’s children. This means that every master
+row can be displayed in different detail grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it can contain more ids, comma separated, to display
+the row’s children in more detail grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Detail</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                    [0]        <b>Detail</b>
+grid attribute                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to true for grid used
+as detail grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is just support attribute
+to behave the detail grid slightly different – to not let users to add or drag
+rows into empty detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDetailOn><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailOn</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [1]        <b>Master</b>
+grid attribute                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Master grid attribute. When
+to show data in detail grid. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – disabled, <b>1</b> – on focus to row, <b>2</b> – on
+click to row, <b>3</b> – on double click to row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For more options you can
+attach <a href="#ShowDetail">ShowDetail</a> action to events like OnFocus,
+OnClickCel or OnDblClickCell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDetailExpand><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailExpand</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]        <b>Master</b>
+grid attribute                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What to do when expanding
+master row. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – show children in detail grid only</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – expand the row only - the children will be visible
+only in master grid. The <a href="#CfgDetailOn">DetailOn</a> should be <b>0</b>
+or <b>3</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – show children in detail grid and also expand the
+row – the children will be on two places in two copies and changes will be done
+to both.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsShowDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowDetail</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>      </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Not
+attached to any event, <b>master</b> grid action                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows data in detail grid for
+actual or focused row. It fails, if details grid already shows data for given
+row or the row is not master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This action is not attached
+to any event by default, because showing detail grid is controlled by <a
+href="#CfgDetailOn">DetailOn</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRefreshDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>RefreshDetail</span></u></b></a><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Not
+attached to any event, <b>master</b> grid action                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows or refreshes data in
+detail grid for actual or focused row. It fails, if the row is not master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsClearDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ClearDetail</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Not
+attached to any event, <b>master</b> grid action                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Clears detail grid for actual
+or focused row. It fails, if the row is not master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Nested><b><span style='font-size:20.0pt'>Nested detail
+grids</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to show the
+detail grid inside the master grid, in some cell of master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master row should have
+set attribute <b>DetailCol</b> to the column name where to show the detail
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is usually good to define
+the grid with &lt;Cfg NoVScroll=’1’ NoHScroll=’1’/&gt; to always show the whole
+detail grid and avoid to have too many scrollbars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To speed up the grid, it is
+good to define all columns in &lt;Cols&gt; section, to avoid a need of
+synchronizing row section heights. Define also &lt;C Name=’Panel’/&gt; in the
+&lt;Cols&gt; to place panel here.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To correctly print the nested
+grid set <a href="Print.htm#IPrintHeight">PrintHeight</a> of the detail row to
+the expected height of the nested grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>For more information see <a
+href="../Tutorials/MasterDetail/01%20-%20Nested%20detail%20simple.html">Master
+/ detail tutorial</a>.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IDetailCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                       <b>Master</b>
+row attribute                                                                 <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of column where (cell of
+the master row) to show the detail grid. All other cells in the master row will
+be normal cells with data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This cell is usually spanned
+among other cells (see attribute <a href="CellSpan.htm#ISpanned">Spanned</a>
+and <a href="CellSpan.htm#CellSpan">Span</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IDetailLayout><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailLayout</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               <b>Master</b>
+row attribute                                                                 <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source for downloading
+layout of the detail grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The detail grid data will be
+loaded from the master row children as usual for master / detail relationship.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be XML string, JSON
+string or URL. The URL cannot contain characters '&lt;' and '{'.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The detail grid layout has
+predefined these default settings: &lt;Cfg SuppressMessage='1' AbsoluteCursors='0'
+TabStop='0' NoVScroll='1' NestedGrid='1'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i></span><a
+name=IDetailTreeGrid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailTreeGrid</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <b>Master</b>
+row attribute                                                                 <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid source tag of the
+detail grid. It should contain the  &lt;treegrid&gt; / &lt;bdo&gt; tag
+definition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to add some other
+setting to the detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For examples:
+DetailTreeGrid=&quot;&amp;lt;bdo Export_Url='Export.aspx' Export_Data='TGData'
+Export_Param_File='Test.xls'&gt;&amp;lt;/bdo&gt;&quot; adds export settings to
+the detail grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool</i>      </span><a
+name=NestedGrid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>NestedGrid</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                  read
+only                                                                                 <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every nested detail grid has
+set this variable to 1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshNested><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RefreshNested</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>)                                                                             <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Refreshes nested grid in
+given row. Use if the source data were changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Refreshes only already
+created nested grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Synchronizing><b><span style='font-size:20.0pt'>Synchronizing
+grids</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Especially nested detail
+grids can be synchronized, to share the same configuration and / or size.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CfgSync><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sync</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                  <b>Detail</b>
+grid attribute                                                      <span
+style='color:red'>new <b>8.1</b></span><span style='color:#0070C0'>; upd <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What settings to synchronize
+among selected grids - among all grids with the same <a href="#CfgSyncId">SyncId</a>
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+keywords, case insensitive.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>All</span></b><span
+style='font-size:10.0pt'> (substitution for Sort,Filter,Group,Search,Cols,Style),
+<b>Sort</b>, <b>Filter</b>, <b>Group</b>, <b>Search</b>, <b>Cols</b> (size, visibility
+and position),<b> Sec</b> (<i>new 9.3,</i> width of column section), <b>Horz</b>
+(horizontal scroll), <b>Vert</b> (vertical scroll), <b>Style</b> (<i>new 9.0</i>,
+CSS style), <b>Zoom</b> (<i>new 9.3</i>, Gantt zoom level and width)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All the grids should have the
+same columns to be synchronized successfully. All the grids should have the
+same Sync value to be synchronized in both ways.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if you change
+size of column 'X' in one grid, all the synchronized grids gets their column X
+resized to the same size.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Sync</span></i></b><i><span
+style='font-size:10.0pt'> attribute can be used for <u>not</u> nested grids
+too.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgSyncId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SyncId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                             <b>Detail</b>
+grid attribute                                                                  <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only grids with the same
+SyncId will be synchronized by <a href="#CfgSync">Sync</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also all grids with undefined
+SyncId will be synchronized together.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgCfgId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CfgId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                 <b>Detail</b>
+grid attribute                                                                  <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Under this name will be
+stored configuration to cookies</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to set when more grids
+on page share the same configuration</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it the same for
+Sync='All', to let all the synchronized grids to use only one cookie.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, all the grids
+should have the same layout to share their configuration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Other><b><span style='font-size:20.0pt'>Other settings for
+master / detail grids</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CfgMasterDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MasterDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                     <b>Detail</b>
+grid attribute                                                                  <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+default row names that can be displayed in this detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only rows their Def attribute
+is listed in the MasterDef are displayed in this grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful when displaying one
+master row in more detail grids or displaying master / detail in tree with
+normal children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgDetailRowsVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DetailRowsVisible</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [3]        <b>Detail</b>
+grid attribute                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the rows that are hidden
+in master grid will be shown in detail grid. Does <u>not</u> affect deleted
+rows.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – never</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – only rows hidden by filter</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – all hidden rows</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – all hidden rows and all the rows will get also
+CanFilter=1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=DAddDefChildren><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AddDefChildren</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]        <b>Master</b>
+grid attribute                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When the child rows defined
+in default (the &lt;D&gt; &lt;I/&gt;&lt;I/&gt;... &lt;/D&gt;) will be added to
+all rows using the given default.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – only when adding new rows with the default</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – also on start to all rows without children</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – also on start to all rows. If the row has children,
+the new children will be added <b>before</b> them</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – also on start to all rows. If the row has children,
+the new children will be added <b>after</b> them</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]  </span><a
+name=CopyTo></a><a name=CellCopyTo><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CopyTo</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                           <b>Master</b>
+cell attribute                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of cells where to copy
+this value after it is changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is comma separated list:
+row1,col1,row2,col2,... <b>row</b> is row id, <b>col</b> is column name</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'> can also be these special words: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>Parent</span></b><span
+style='font-size:10.0pt'> – parent row, <b>Next</b> – next sibling, <b>Prev</b>
+– previous sibling, <b>Children</b> – all children</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>Children</b>_X
+– All children with specified default as X</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>Child</span></b><span
+style='font-size:10.0pt'>_X – specific child, if X is number, it means child on
+specified position (from 0),  if X is string it means the first child with
+specified default (Def attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>Sibling</b>_X
+– specific sibling, it is the same as Child_X, but relative to parent row and
+not to this row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used usually in master /
+detail relationship to copy (detail) children cells to master row cells and
+vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cross references are permitted,
+because the copying is applied only if value is changed to different value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnShowDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowDetail</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>master</b>, <i>TGrid</i> <b>detail</b>, <i>TRow</i> <b>row</b>, <i>TRow</i> <b>old</b>)                    <span
+style='color:#0070C0'>upd <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before master row’s
+children are displayed in detail grid, can return true to suppress action.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.1) </span></i><span
+style='font-size:10.0pt'>the <b>old</b> is original master row showed in the
+detail grid, the <b>row</b> is new master row to show in the detail grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnShowDetailFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowDetailFinish</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>master</b>, <i>TGrid</i> <b>detail</b>, <i>TRow</i> <b>row</b>)                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after master row’s
+children are displayed in detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ShowDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ShowDetail</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                  (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>detail_grid_id</b>)                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows the master row’s
+children in the given detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshDetail><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RefreshDetail</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                        (<i>TGrid</i>
+<b>grid</b>, <i>bool</i> <b>clear</b>)                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Refreshes the given detail
+grid according to its actual master row’s children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>grid</b> is null,
+refreshes all detail grids on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Refreshes only actually
+loaded detail grids – grids that have actually attached its master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>clear</b> is true,
+clears the grid and removes the relation to the current master row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow    </i></span><a
+name=GetMasterRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetMasterRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (
+)                                                                                            <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Detail grid method. Returns
+row from master grid that is actually shown in the detail grid or null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

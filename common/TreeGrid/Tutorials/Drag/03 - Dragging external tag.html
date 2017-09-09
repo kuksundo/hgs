@@ -1,0 +1,191 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      
+      .box { border:1px solid black; padding-left:5px; padding-right:5px; white-space:nowrap; margin-right:10px; }
+      
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Drag"><b>Drag</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Dragging external tag</center>
+   <center style='font:bold italic;'>Dragging from and to external sources</center>
+   <div style='margin-bottom:6px;'><a href='03 - Dragging external tag.xml'>03 - <h2>Dragging external tag</h2>.xml</a></div>
+   <div style='width:960px; height:200px;'>
+      <bdo Debug='check' Data_Url='03 - Dragging external tag.xml'></bdo>
+   </div>
+     
+   <!-- Cells from grid -->
+   <div id='Cells' onselectstart='return false;' onmousedown='return false;' style='width:500;border:1px solid red;padding:6px;'>
+      <i id='CellsInfo' style='color:gray;font-size:12px;'>Drag grid cells here</i>
+   </div>
+   <br />
+
+   <!-- Runs from grid -->
+   <div id='Runs' onselectstart='return false;' onmousedown='return false;' style='width:500;border:1px solid red;padding:6px;'>
+      <i id='RunsInfo' style='color:gray;font-size:12px;'>Drag Gantt Run boxes here</i>
+   </div>
+   <br />
+   
+   <!-- Cells into grid -->
+   <div onselectstart='return false;' onmousedown='return false;' style='width:500;border:1px solid blue;padding:6px;'> 
+      <!-- The return false suppresses text selection (onselectstart in IE, onmousedown in other browsers) -->
+      <span onmousedown='DownValue(this,event);'><span class='box'>Value A</span></span>
+      <span onmousedown='DownValue(this,event);'><span class='box'>Value B</span></span>
+      <span onmousedown='DownValue(this,event);'><span class='box'>Value C</span></span>
+      <span onmousedown='DownValue(this,event);'><span class='box'>Value D</span></span>
+      <i style='color:gray;font-size:12px;'>Drag values to cells in grid</i>
+    </div>
+    <br />
+
+    <!-- Rows into grid -->
+    <div onselectstart='return false;' onmousedown='return false;' style='width:500;border:1px solid blue;padding:6px;'>
+      <span onmousedown='DownRow(this,event);'><span class='box'>Row A</span></span>
+      <span onmousedown='DownRow(this,event);'><span class='box'>Row B</span></span>
+      <span onmousedown='DownRow(this,event);'><span class='box'>Row C</span></span>
+      <span onmousedown='DownRow(this,event);'><span class='box'>Row D</span></span>
+      <i style='color:gray;font-size:12px;'>Drag rows as new children to grid</i>
+   </div>
+   <br />
+
+   <!-- Run boxes into grid -->
+    <div onselectstart='return false;' onmousedown='return false;' style='width:500;border:1px solid blue;padding:6px;'>
+      <span onmousedown='DownBox(this,event);'><span class='box'>Box A</span></span>
+      <span onmousedown='DownBox(this,event);'><span class='box'>Box B</span></span>
+      <span onmousedown='DownBox(this,event);'><span class='box'>Box C</span></span>
+      <span onmousedown='DownBox(this,event);'><span class='box'>Box D</span></span>
+      <i style='color:gray;font-size:12px;'>Drag run boxes into Gantt chart</i>
+   </div>
+   <br />
+      
+   <script>
+
+// ---------------------------------------------------------------------------------------------------------
+// --- Called to process dropping cells from grid ---
+Grids.OnStartDragCell = function(G,row,col,html){
+
+}
+
+Grids.OnMoveDragCell = function(G,row,col,TG,torow,tocol,x,y){
+var par = document.getElementById("Cells");
+var tag = document.elementFromPoint(x,y);
+tag.style.cursor = ""; // To be the document cursor refreshed, especially in IE
+while(tag && tag!=par) tag = tag.parentNode;
+document.documentElement.style.cursor = "url(../../Grid/"+(tag?"":"No")+"Drag.cur),default";
+}
+
+Grids.OnEndDragCell = function(G,row,col,TG,torow,tocol,x,y){
+document.documentElement.style.cursor = "";
+var par = document.getElementById("Cells");
+var tag = document.elementFromPoint(x,y);
+while(tag && tag!=par) tag = tag.parentNode;
+if(!tag) return false;
+var val = document.createElement("span");
+val.innerHTML = G.GetString(row,col);
+val.className = "box";
+tag.insertBefore(val,document.getElementById("CellsInfo"));
+
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// --- Called to process dropping run boxes from grid ---
+Grids.OnGanttRunDrop = function(G,row,col,drop,src,idx,prefix,x,y,TG,torow,tocol,cellx,accept){
+if(torow) return; // Does not affect dragging inside grid
+var par = document.getElementById("Runs");
+var tag = document.elementFromPoint(x,y);
+if(tag) tag.style.cursor = ""; // To be the document cursor refreshed, especially in IE
+while(tag && tag!=par) tag = tag.parentNode;
+document.documentElement.style.cursor = drop ? "" : "url(../../Grid/"+(tag?"":"No")+"Drag.cur),default";
+if(!tag) return false;
+if(!drop) return true;
+var val = document.createElement("span");
+val.innerHTML = src[0][2]?src[0][2]:"empty";
+val.className = "box";
+tag.insertBefore(val,document.getElementById("RunsInfo"));
+return true;
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// --- Called to process dragging values to grid ---   
+function DownValue(tag,ev){
+DragByMouse(tag,ev,3,null,function (){ Grids.OnMouseUp = null; document.documentElement.style.cursor = ""; }); // Attaches the the tag content to mouse
+document.documentElement.style.cursor = "url(../../Grid/NoDrag.cur),default";
+
+Grids.OnMouseUp = function(G,row,col,x,y){
+   if(col=="NAME"||col=="VALUE") G.SetString(row,col,tag.firstChild.innerHTML,1); // Sets the value
+   }
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// --- Called to process dragging rows to grid ---
+function DownRow(tag,ev){
+DragByMouse(tag,ev,3,null,function (){ Grids.OnMouseUp = null; document.documentElement.style.cursor = ""; }); // Attaches the the tag content to mouse
+document.documentElement.style.cursor = "url(../../Grid/NoDrag.cur),default";
+
+Grids.OnMouseUp = function(G,row,col,x,y){
+   if(!row || !col) return;
+   var r = G.AddRow(row==G.Header?null:row,null,1); // For headers adds to the grid end
+   if(r) G.SetString(r,"NAME",tag.firstChild.innerHTML,1);
+   DragByMouse(); // To be sure the dragged object is deleted in cases the adding row refreshes grid and mouseup event will not happen (e.g. when showing vertical scrollbar)
+   }
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// --- Called to process dragging run boxes to grid ---   
+function DownBox(tag,ev){
+DragByMouse(tag,ev,3,null,function (){ Grids.OnMouseUp = null; document.documentElement.style.cursor = ""; }); // Attaches the the tag content to mouse
+document.documentElement.style.cursor = "url(../../Grid/NoDrag.cur),default";
+
+Grids.OnMouseUp = function(G,row,col,x,y){
+   if(col!="GANTT") return;
+   var B = { Row:row, Col:col, Text:tag.firstChild.innerHTML, Left:Math.floor(x/18)*18, Width:54 } // Rounds the x to GanttUnits
+   G.AddGanttRunBox(B,"shrink");
+   DragByMouse(); // To be sure the dragged object is deleted in cases the adding box refreshes grid and mouseup event will not happen (e.g. when resizing the chart)
+   }
+}
+// ---------------------------------------------------------------------------------------------------------
+
+   
+   </script>
+   <ul>
+      <li>
+         TreeGrid provides helping API methods for dragging anything to grid and also for dragging grid content outside any grid.
+      </li>
+      <li>
+         <h4>Dragging cell outside grid</h4>
+         <ul>
+            <li>Attach action <h3>DragCell</h3> to the event <h3>OnDragCell</h3> for cell, column, row or for whole grid in &lt;Actions> tag.</li>
+            <li>Define API event <b>OnStartDragCell</b> if you want to conditionally suppress the dragging or change the object shown while dragging.</li>
+            <li>Define API event <b>OnMoveDragCell</b> if you want to conditionally change mouse cursor during dragging.</li>
+            <li>Define API event <h3>OnEndDragCell</h3> to provide the required action on drop the cell.</li>
+            <li>See <a href="../../Doc/RowMove.htm#ActionsDragCell">Row moving and dragging documentation - DragCell</a></li>
+         </ul>
+      </li>
+      <li>
+         <h4>Dragging Gantt Run box outside grid</h4>
+         <ul>
+            <li>Set Gantt cell or column attribute <b>GanttRunMove</b> to Move, Copy or Remove to let move run boxes outside the row. Optionally set it only for dragging with a key like Shift, Ctrl or Alt or by different mouse button.</li>
+            <li>Define API event <h3>OnGanttRunDrop</h3>. It is called both during moving and also on drop. Provide here you custom action especially for drop.</li>
+            <li>See <a href="../../Doc/GanttRun.htm#Moving">Gantt Run moving and resizing documentation</a></li>
+         </ul>
+      </li>
+      <li>
+         <h4>Dragging external tags into grid</h4>
+         <ul>
+            <li>Define <b>onmousedown</b> HTML event of the tag to be dragged. Return false from it to suppress selecting text. For IE define also <b>onselectstart</b> and return false to suppress selecting.</li>
+            <li>In the <b>onmousedown</b> code you can call <h3>DragByMouse</h3> API function to attach some HTML to mouse to simulate the dragging.</li>
+            <li>Define API event <h3>OnMouseUp</h3> to handle the dropping into grid. Here you can provide any action like changing the cell by <b>SetString</b>, adding new row by <b>AddRow</b>, 
+            adding new Run box into Gantt chart by <b>AddGanttRunBox</b>, etc.</li>
+            <li>See <a href="../../Doc/RowMove.htm#DragByMouse">Row moving and dragging documentation - DragByMouse</a>, <a href="../../Doc/Mouse.htm">Mouse API documentation</a> and <a href="../../Doc/GanttRun.htm#API">Gantt Run API documentation</a></li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

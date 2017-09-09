@@ -1,0 +1,1121 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Filtering rows</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Filtering rows</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports filtering
+rows by one or more columns by setting the value to filter and filter operator
+to use.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is similar to MS Excel simple
+filter.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>TreeGrid also supports <b>advanced
+filtering</b> by any formula or<b> special search</b>, see <a href="Search.htm">Search</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Strings can be filtered case
+sensitive or insensitive. Can be also filtered according to actual browser
+language or by special settings. See <a href="#Strings">comparing strings</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filtering can be changed by a
+user in special <a href="#Filter">Filter</a> row by setting cell value or
+filter operator.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filtering can be preset in
+XML in the special <a href="#Filter">Filter</a> row by setting cell value and
+filter operator.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filtering can be changed by
+API by <a href="#ChangeFilter">ChangeFilter</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgFiltering><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Filtering</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be filtered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting it to <b>0</b>
+disables all filtering functions, including <b>Search</b> and <a
+href="#SetFilter">SetFilter</a> filters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgFiltered><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Filtered</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [1]        Saved
+to cookies, to not load it, set <b>FilteredLap</b>=’1’                                         <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If basic filtering is enabled
+by user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can enable / disable filtering
+by click to <a href="#Filter">Filter</a> row left panel.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it affects only filters done by &lt;Filter&gt; rows, <u>not</u>
+the <b>Search</b> and <a href="#SetFilter">SetFilter</a> filters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool      </i></span><a
+name=CfgFilterEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>FilterEmpty</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>     [0]                                                                                                           
+<span style='color:red'>deleted <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Since 7.0 the CanFilter&amp;2
+is tested always, like FilterEmpty = 1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:#BFBFBF'>If set to <b>1</b>
+when filtering, hides all rows with <a href="#ICanFilter"><span
+style='color:#BFBFBF'>CanFilter</span></a>=<b>2</b> (or <b>3</b>) that have all
+children filtered/hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgStandardFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>StandardFilter</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                                      <span
+style='color:#0070C0'>upd <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filter behavior in tree</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             <b>(Hide all not found)</b> The filter is
+applied to parents before children to speed up filtering. The filter is applied
+to children only if the parent fulfills the condition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1             (Hide all
+not found, iterate all)</span></b><span style='font-size:10.0pt'> The filter is
+applied to children before filtering parent. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Use
+it if parent is filtered according to visibility of its children, when uses
+aggregate functions. It can be much slower than 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2             (Show all
+found)</span></b><span style='font-size:10.0pt'> It shows all rows that fulfill
+the filter condition in tree. It shows all parent rows if some their children
+fulfill the condition.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+filter is applied to children before filtering parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             <i>(new 9.0)</i> <b>(Show all found, with
+all children)</b><i> </i>It shows all rows that fulfill the filter condition in
+tree, with all their children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The filter is
+applied to parent before children. The filter is applied to children only if
+the parent does <u>not</u> fulfill the condition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgFilterHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FilterHidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [1]                                                                                                                  <span
+style='color:red'>new <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - it will clear filter for column hidden from columns
+menu by users</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - it will preserve the filter also after the column
+is hidden</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CCanFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows can be filtered by this
+column. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it is
+also tested cell’s <a href="#CellCanFilter">CanFilter</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CellCanFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row can be filtered
+according to this column. Used only when the column has set <a
+href="#CCanFilter">CanFilter</a>=’<b>2</b>’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i></span><a
+name=ICanFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How row can be filtered
+(hidden) by any filter, bit array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&amp;<b>1</b> – if row can be
+hidden by any filter</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&amp;<b>2</b> – if row is
+hidden if all its children are hidden</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellFilterValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FilterValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell value used for <b>filtering</b>
+and <b>searching</b>, useful for special non editable cells like Html, Icon,
+Abs, Gantt, ..., see also <a href="#OnGetFilterValue">OnGetFilterValue</a>
+event.</span></p>
+
+<p class=MsoNormal><i><s><span style='font-size:10.0pt;color:#BFBFBF'> (Deleted
+in 7.0)</span></s></i><s><span style='font-size:10.0pt;color:#BFBFBF'> For
+searching it is <u>not</u> used for Int and Float types and also <u>not</u> for
+<a href="Search.htm#CfgSearchMethod"><span style='color:#BFBFBF'>SearchMethod</span></a>
+= 2.</span></s></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used by <a
+href="#FilterTextRange">FilterTextRange</a> and <a href="#FilterDateRange">FilterDateRange</a>
+methods, but <u>not</u> by <a href="#SetFilter">SetFilter</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnGetFilterValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetFilterValue</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get cell value for <b>filtering</b>
+and <b>searching</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>val</span></b><span
+style='font-size:10.0pt'> is predefined value, returns <b>val</b> or new value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=FilterCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FilterCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of visible variable
+rows after filter is applied.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is null if the filter was
+not run.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSaveFilters><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveFilters</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                                   <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, saves to
+cookies the custom filters set by <a href="#SetFilter">SetFilter</a> method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It does <u>not</u> affect
+the standard or search filters.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Strings><b><span style='font-size:20.0pt'>Comparing
+strings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also specify these
+settings for whole grid in default column &lt;Def&gt;&lt;D
+Name=’C’/&gt;&lt;/Def&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CLocaleCompare><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LocaleCompare</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared
+according to browser’s locale settings. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Filter it affects just
+case sensitivity if set also CaseSensitive=’0’</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CCaseSensitive><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CaseSensitive</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared case
+sensitive. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CWhiteChars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>WhiteChars</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of characters to ignore
+when sorting, filtering or grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set for example to
+“ “ (space) to ignore spaces (it means that for example “a b   c” and “abc”
+strings are the same.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>[*]
+</span><a name=CCharCodes><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CharCodes</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It changes characters in
+comparing strings for sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is first character
+separated array of pair of characters to replace the first character by the
+second when comparing strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “|y|i|Y|I|.|,” –
+replaces ‘y’ by ‘i’, ‘Y’ by ‘I’ and ‘.’ by ‘,’ </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>–
+it means that when comparing strings does not differ between letter ‘y’ and
+‘i’, both cases and also does not differ between comma and point.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first character must be
+one letter, but the second in fact can be any letter or string or even empty
+string, like “|a|xxx|b||c|ff”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use <a href="DLL.htm">TreeGrid
+server</a> DLL/SO, there must be the second character one letter only too.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Filter><b><span style='font-size:20.0pt'>User interface to
+choose filter</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User interface for filtering
+is shown by <b>fixed</b> &lt;<b><span style='color:red'>Filter</span></b>&gt;
+row. The &lt;Filter&gt; can be placed to &lt;<b>Head</b>&gt; or &lt;<b>Foot</b>&gt;
+section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;Filter&gt; row is
+usually only one, but there can be also more filter rows placed to &lt;<b>Head</b>&gt;
+and / or &lt;<b>Foot</b>&gt; tags to provide more filters by one column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The
+&lt;Filter&gt; row is standard data row with cells and can have also all standard
+row and cell attributes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default filter cell
+differs according to the filter cell / column type. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Text</span></b><span
+style='font-size:10.0pt'>, <b>Lines</b>          Left filter menu shows all
+operators including strings. String filter is done</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Int</span></b><span
+style='font-size:10.0pt'>, <b>Float</b>              Left filter menu shows
+only basic comparing operators, not the strings. Number filter is done</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Date</span></b><span
+style='font-size:10.0pt'>                       Left filter menu shows only
+basic comparing operators, not the strings. Number filter is done, the dates
+are compared as numbers. Right side calendar is shown.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Enum</span></b><span
+style='font-size:10.0pt'>                    Left filter menu is hidden. User
+chooses one item from enum list to filter by. The first item in list is <a
+href="#CellFilterOff">FilterOff</a>. It is possible to set <a href="#CellRange">Range</a>
+to choose more values to filter by.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Radio</span></b><span
+style='font-size:10.0pt'>                    Left filter menu is hidden. User
+chooses check one radio button to filter by. The last radio button is <a
+href="#CellFilterOff">FilterOff</a>. It is possible to set <a href="#CellRange">Range</a>
+to choose more values to filter by.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Bool</span></b><span
+style='font-size:10.0pt'>                      Left filter menu is hidden. The
+check box has three states – on, off, filteroff</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Pass</span></b><span
+style='font-size:10.0pt'>                       Filter is disabled</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Panel</span></b><span
+style='font-size:10.0pt'>                     It is shown Filtered On / Off
+checkbox</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Link</span></b><span
+style='font-size:10.0pt'>                      It is shown Text type and filter
+provides string compare with link text or if missing with link url</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Img</span></b><span
+style='font-size:10.0pt'>                        It is shown Text type and
+filter provides string compare with link url or if missing with image url</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Button</span></b><span
+style='font-size:10.0pt'>, <b>Html</b>, <b>Icon</b>, <b>Abs</b>, <b>Gantt</b>, <b>List</b>
+            It is shown Text type cell with left filter menu and the filter provides
+string compare for the cell values.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To not show the filter
+cell and filter menu, set &lt;C CanFilter=’0’/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The predefined
+or actual filter is set in individual cells by the cell </span></i><i><span
+style='font-size:10.0pt;color:blue'>value</span></i><i><span style='font-size:
+10.0pt;color:red'> and attribute </span></i><i><span style='font-size:10.0pt;
+color:blue'><a href="#CellFilter">Filter</a></span></i><i><span
+style='font-size:10.0pt;color:red'>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>type      </i></span><a
+name=Cellvalue></a><a name=FilterCellvalue><b><i><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";color:olive;background:yellow'>value</span></i></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         Saved
+to cookies, to not load it, set &lt;Cfg <b>FilterLap</b>=’1’ /&gt;                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined or actual filter
+value to filter the column by.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used only if <a
+href="#CellFilter">Filter</a> is set to value &gt; 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int</i>        </span><a
+name=FilterCellFilter></a><a name=CellFilter></a><a name=FilterFilter><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Filter</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]        Saved
+to cookies, to not load it, set &lt;Cfg <b>FilterLap</b>=’1’ /&gt;                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined or actual filter
+operator to filter the column by.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be one of predefined
+filters: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Off:<b>                        0</b>
+– Off</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Number filter:      <b>1</b>
+– Equal, <b>2</b> – Not equal, <b>3</b> – Less than, <b>4</b> – Less than or
+equal, <b>5</b> – Greater than, <b>6</b> – Greater than or equal</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String filter:          <b>7</b>
+– Begins with, <b>8</b> – Does not begin with, <b>9</b> – Ends with, <b>10</b>
+– Does not end with, <b>11</b> – Contains, <b>12</b> – Does not contain</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int        </i></span><a
+name=FilterCellDefaultFilter></a><a name=CellDefaultFilter></a><a
+name=FilterDefaultFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DefaultFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [1/11]                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined filter operator,
+it is automatically selected when filter is off and user changes filter cell
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is for <b>Text</b>,
+<b>Lines</b>, <b>Img</b> and <b>Link</b> types <b>11</b> and for other types <b>1</b>.
+See <a href="#FilterFilter">Filter</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, no
+automatic selection is done.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>string</i>    </span><a
+name=FilterCellFilterOff></a><a name=CellFilterOff></a><a name=IFilterOff><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>FilterOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [‘’]                                                                                                                               <span
+style='color:#3366FF'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value entered to cell that
+automatically removes filter from the cell (sets <a href="#CellFilter">Filter</a>
+to 0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is empty string
+for all editable types and new value for empty value for Enum and item Off for
+Radio.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Enum and Radio it can be <u>not</u>
+existing item – it is added to the list, or existing item that switches off the
+filter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>bool</i>      </span><a
+name=FilterCellFilterEnumKeys></a><a name=CellFilterEnumKeys><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>FilterEnumKeys</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Enum type cell. If set to
+<b>0</b> it filters by Enum string. If set to <b>1</b> it filters by Enum
+value, by key or index.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>bool</i>      </span><a
+name=FilterCellEqualFormatted><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>EqualFormatted</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                       <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it equals
+(<a href="#FilterCellFilter">Filter</a> = 1,2,3,4,5,6) numbers as formatted
+strings (according to the Format setting). To avoid problems with rounded
+values due format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>bool      </i></span><a
+name=FilterCellShowMenu></a><a name=CellShowMenu></a><a name=FilterShowMenu><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>ShowMenu</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1/0]                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If filter menu icon is
+visible. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can hide it to use only <a
+href="#FilterDefaultFilter">DefaultFilter</a> and <a
+href="CellEdit.htm#CDefaults">Defaults</a> button to select one value or more
+value to filter the column by.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is <b>0</b> for <b>Bool</b>,
+<b>Enum</b> and <b>Radio</b> types and <b>1</b> for all other types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int</i>
+[]     </span><a name=FilterCellMenuItems></a><a name=CellMenuItems></a><a
+name=FilterMenuItems><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MenuItems</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [...]                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated array of
+operators displayed in FilterMenu, can contain numbers from 0 to 12
+ in any order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For possible values see <a
+href="#FilterFilter">Filter</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value varies
+according to cell type, Bool = “0,1,2”, Int, Float, Date = “0,1,2,3,4,5,6”,
+other = “0,1,2,3,4,5,6,7,8,9,10,11,12”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>string</i>    </span><a
+name=FilterCellFilterMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FilterMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [...]                                                                                                                 <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Full JSON definition of the filter
+menu with operators.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can define only menu
+attributes without Items (e.g. MaxHeight), in this case the Items will be
+created for standard filter operators.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or it can define the menu
+items in Items array. The items named 0 to 12 will be set as standard filter
+operators, other items will be custom.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It supports extended
+capabilities like submenus and collapsible sections.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The menu format is standard <a
+href="Menu.htm">TreeGrid menu</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example this filter menu
+for column &quot;Col1&quot; shows operators in two columns:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Filter
+... Col1FilterMenu=&quot;{ Items:[ { Name:0 }, {
+Columns:2,Items:[1,2,3,4,5,6,7,8,9,10,11,12] } ] }&quot;  ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Filter cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     <i>int        </i></span><a
+name=FilterCellRange></a><a name=CellRange></a><a name=FilterRange><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Range</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                                              <span
+style='color:#0070C0'>upd <b>9.1</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell accepts more
+values or value ranges to be filtered by. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> for cell
+of type <a href="TypeNumber.htm">Int</a>, <a href="TypeNumber.htm">Float</a>
+and <a href="TypeDate.htm">Date</a>, it accepts more values separated by ‘;’
+and range of values separated by ‘~’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used only for
+filter operators 1 (Equal) and 2 (Not equal). Other operators will fail.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It will filter all values
+inside the range(s), including boundaries.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example Equal
+1;3~5;9~12;16 will find cells with values 1,3,4,5,9,10,11,12,16</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> for cell
+of string type like <a href="TypeText.htm">Text</a> or <a href="TypeText.htm">Lines</a>,
+it accepts more values separated by ‘;’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used only for
+filter operators: 1 (Equal), 2 (Not equal), 7 (Begins), 8 (Not begin), 9
+(Ends), 10 (Not end), 11 (Contains), 12 (Not contain)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To filter by empty value, set
+the filter cell value to ‘;’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> <i>(new
+9.1) </i>it compares all values in range cells for operators <b>1</b> (equals
+at least one) and <b>2</b> (equals none) .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> for cell
+of type Enum or Radio, it accepts more value to be selected and to filter by.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To filter by empty value, set
+the filter cell value to ‘;’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> <i>(new
+9.1) </i>it compares all values in range cells for operators <b>1</b> (equals
+at least one) and <b>2</b> (equals none). Only for string enums, not index
+enums.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, calendar
+component for selecting date supports selecting more dates or range of dates by
+mouse drag. The date should <u>not</u> contain time part.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, <a
+href="CellEdit.htm#CDefaults">Defaults</a> dialog supports selecting more
+values for any cell type (not only Int, Float, Date, Text, Lines).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The characters ‘;’ and ‘~’
+can be changed by &lt;Lang&gt;&lt;Format ValueSeparator=’;’
+RangeSeparator=’~’/&gt;&lt;/Lange&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Actions><b><span style='font-size:20.0pt'>Filter actions
+and API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFilterOn></a><a name=FilterOn><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>FilterOn</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Attached
+to event <b>OnClickPanelFiltered</b>                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enables filtering in grid and
+re-filters it according to actual settings. It fails if filtering already
+enabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFilterOff></a><a name=FilterOff><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>FilterOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Attached
+to event <b>OnClickPanelFiltered</b>                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Disables filtering in grid
+and un-filters it. It does not clear actual filter settings. It fails if
+filtering already disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsFilterMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowFilterMenu</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                  Attached to
+event <b>OnClickSideFilter</b>                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows filter operator menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnFilter></a><a name=OnCanFilter><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>OnFilter</span></u></b></a><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>type</b>)                                                                                                    <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when grid will be
+re-filtered. You can provide own filtering and return true. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> when it is called (<b>0</b> on filter change, <b>1</b>
+on start, <b>2</b> <i>(since 7.0)</i> on grouping change)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is called for every filtering in grid
+(&lt;Filter&gt;, &lt;Search&gt;, SetFilter).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnFilterFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnFilterFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+grid, <i>int</i> <b>type</b>)                                                                            <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after grid was
+re-filtered. Called only for filtering on client.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0) </span></i><b><span
+style='font-size:10.0pt'>type</span></b><span style='font-size:10.0pt'> when it
+is called (<b>0</b> on filter change, <b>1</b> on start, <b>2</b> on grouping
+change)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is called for every filtering in grid
+(&lt;Filter&gt;, &lt;Search&gt;, SetFilter).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnRowFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowFilter</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>bool</i> <b>show</b>)                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for custom condition
+while filtering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when filtering the <b>row</b>,
+<b>show</b> is the actual filter result. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Must return if the row will
+be visible or not.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>string</i>
+<b>cols</b>, <i>string</i> <b>values</b>, <i>string</i> <b>operators</b>, <i>bool</i>
+<b>nofilter</b>, <i>bool</i> <b>noclear</b>, <i>TRow</i> <b>filter</b>)      <span
+style='color:blue'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filters grid according to
+given columns.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cols</span></b><span
+style='font-size:10.0pt'>, <b>values</b> and <b>operators</b> are comma
+separated values or JavaScript arrays. All must have the same length.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>cols</span></b><span
+style='font-size:10.0pt'> are column names, <b>values</b> are values for given
+filter cells and <b>operators</b> are filter operator numbers 0 - 12, see cell
+attribute <a href="#CellFilter">Filter</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>nofilter</b> is 1, does
+change the filter cells but does not filter grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>noclear</b> is 1, does <u>not</u>
+clear the other filter cells that are <u>not</u> listed in cols.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(since 7.0) </span></i><b><span
+style='font-size:10.0pt'>filter</span></b><span style='font-size:10.0pt'> can
+be the filter row to change the filter settings here, if the grid contains more
+filter rows. If not set, uses the first filter row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=DoFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DoFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b> = null, <i>string</i> <b>col</b> = null)                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Applies all filters (in <a
+href="#Filter">Filter</a> rows) to the grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>row</b> and <b>col</b>
+updates operator for this cell in Filter row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=FilterTextRange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FilterTextRange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>string</i>
+<b>col</b>, <i>string</i> <b>val</b>, <i>string</i> <b>name</b>, <i>int</i> <b>show</b>
+= 2)                                   <span style='color:blue'>upd <b>6.6</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates new filter and
+applies it to grid. Shows all rows containing any item from range <b>val</b> in
+their range value in column <b>col</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.6)</i>, name of the filter to have more
+different filters, if row violates any filter, it is hidden.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>show</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – set the filter only, but does not
+filter, <b>1</b> – filters by the filter, but does not show the changes, <b>2</b>
+– filter and show the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=FilterDateRange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>FilterDateRange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>string</i>
+<b>col</b>, <i>string</i> <b>val</b>, <i>string</i> <b>name</b>, <i>int</i> <b>show</b>
+= 2)                                   <span style='color:red'>new <b>6.6</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates new filter and
+applies it to grid. Shows all rows containing any item from date range <b>val</b>
+in their range value in column <b>col</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>val</b> can be for
+example “1/1/2010~12/31/2010 23:59:59” to show all dates from the year 2010</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> – name of the filter to have more different filters,
+if row violates any filter, it is hidden.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>show</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – set the filter only, but does not
+filter, <b>1</b> – filters by the filter, but does not show the changes, <b>2</b>
+– filter and show the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SetFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>name</b>, <i>string</i> <b>filter</b>, <i>string</i> <b>col</b>, <i>int</i> <b>show</b>
+= 2)                                             <span style='color:red'>new <b>6.6</b>;</span><span
+style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Creates new filter and
+applies it to grid. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> – name of the filter to have more different filters,
+if row violates any filter, it is hidden.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>filter</span></b><span
+style='font-size:10.0pt'> – filter formula string, similar to cell Formula, it
+can use variables <b>Grid</b> as the grid and <b>Row</b> as the filtered row
+and also column names as values of the filtered row cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>filter</b> code must
+return <b>0</b> to hide the row and <b>1</b> to show the row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>show</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – set the filter only, but does not
+filter, <b>1</b> – filters by the filter, but does not show the changes, <b>2</b>
+– filter and show the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if set <b>col</b>, it tests
+row’s CanFilter attribute and the cell’s CanFilter attribute when the column
+has CanFilter=’2’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To clear the filter pass
+empty <b>filter</b> parameter.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.7)</span></i><span
+style='font-size:10.0pt'> The custom filters can be saved to cookies when set <a
+href="#CfgSaveFilters">SaveFilters</a> = 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>type[][]  </i></span><a
+name=GetFilter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetFilter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> ( <i>bool</i>
+<b>spec</b> = 0)                                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>spec</b> = <b>0</b> returns
+all actual filters in all <a href="#Filter">Filter</a> rows in array [ [col1,value1,operator1],
+[col2,value2,operator2], ... ]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>spec</b> = <b>1</b>
+returns all custom filters set by <a href="#SetFilter">SetFilter</a> method in
+array [ [name1,filter1,col1, [name2,filter2,col2], ... ]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

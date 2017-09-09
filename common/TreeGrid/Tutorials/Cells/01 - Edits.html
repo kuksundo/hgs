@@ -1,0 +1,150 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// --- Shows tip ---
+Grids.OnTip = function(G,row,col,tip){
+function rep(val){ return (val+"").replace(/\&/g,"&amp;").replace(/\</g,"&lt;"); }
+if(!tip && row.Kind=="Data" && col!="Pass"){
+   var val = Get(row,col), frm = G.GetAttribute(row,col,"Format"), efrm = G.GetAttribute(row,col,"EditFormat");
+   if(G.GetType(row,col)=="Date") val = DateToString(val);
+   return "Value='<b>"+(G.GetType(row,col)=="Html"?val:rep(val))+"</b>'" + (frm?"<br>Format='<b>"+rep(frm)+"</b>'":"") + (efrm?"<br>EditFormat='<b>"+rep(efrm)+"</b>'":"");
+   }
+return tip;
+}
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Edits - Inputs and Multiline</center>
+   <center style='font:bold italic;'>Basic editable cells for direct editing in input or textarea</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='740'>
+            <div style='margin-bottom:6px;'><a href='01 - Inputs.xml'>01 - <h2>Inputs</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='01 - Inputs.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='01 - Multiline.xml'>01 - <h2>Multiline</h2>.xml</a></div>
+            <div style='width:350px; height:250px;'>
+               <bdo Debug='check' Data_Url='01 - Multiline.xml'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>
+         <h4>Basic information</h4> - all cell types and attribute groups<br />
+         TreeGrid supports these cell types: 
+         <ul style='margin-top:0px;margin-bottom:6px;'>
+         <li style='padding-bottom:0px;'>Inputs: 
+         <b>Text</b> single line string, <b>Lines</b> multiline string, <b>Int</b> integer number, <b>Float</b> decimal number, <b>Date</b> date and / or time.
+         </li>
+         <li style='padding-bottom:0px;'>Combos: 
+            <b>Select</b> simple combo, <b>Enum</b> extended combo.
+         </li>
+         <li style='padding-bottom:0px;'>Checkboxes:
+            <b>Bool</b> checkbox, <b>Radio</b> radio buttons.   
+         </li>
+         <li style='padding-bottom:0px;'>Buttons:
+            <b>Button</b> action button, tab or combo, <b>Panel</b> more control buttons.
+         </li>
+         <li style='padding-bottom:0px;'>Html:
+            <b>Html</b> any HTML code, <b>Icon</b> simple image, <b>Img</b> extended image, <b>Link</b> extended link, <b>List</b> repeating HTML, <b>Abs</b> absolutely positioned HTML tags in one cell.
+         </li>
+         <li style='padding-bottom:0px;'>Special:
+            <b>Gantt</b> Gantt chart, <b>Chart</b> line chart, <b>DropCols</b> dragged column names.
+         </li>
+         </ul>
+         Every type has various settings, basically done by <b>Format</b> and <b>EditFormat</b> attribute, but many types have their own special attributes to control their functionality.<br />
+         There are also attributes that can be used for most types to extend their functionality:
+         <ul style='margin-top:0px;margin-bottom:6px;'>
+         <li style='padding-bottom:0px;'>
+            All types: <b>Button</b> right side button, <b>Icon</b> left side icon, <b>Link</b> clickable link, <b>Tip</b> text shown on mouse hover, <b>ShowHint</b> cell shows its whole content on mouse hover, <b>Menu</b> right click popup menu. <br />
+         </li>
+         <li style='padding-bottom:0px;'>
+            Editable types: <b>Defaults</b> popup list to choose predefined value for the cell, <b>Suggest</b> popup list of suggested value for given input, <b>EmptyValue</b> HTML shown when the cell value is empty, <b>Range</b> more values in one cell.
+         </li>
+         <li style='padding-bottom:0px;'>            
+            Validation: <b>EditMask</b> validation during editing, <b>ResultMask</b> validation after finish editing.
+          </li>
+          <li style='padding-bottom:0px;'>Span:
+            <b>RowSpan</b> rowspan, <b>Span</b> colspan, <b>Merge</b> more spanned values in one cell.
+          </li>
+          <li style='padding-bottom:0px;'>Style:
+          <b>Class</b> CSS class for the cell, <b>ClassInner</b> added CSS class to the content, <b>Color</b> computed background color, <b>Background</b> exact background color, <b>Cursor</b> mouse cursor, <b>Wrap</b> wrapping to more lines, 
+          <b>Align</b> horizontal alignment, <b>Rotate</b> 90,180,270 degrees, <b>HtmlPrefix</b> HTML before cell content, <b>HtmlPostfix</b> HTML after cell content.
+          </li>
+          </ul>
+         All the cell attributes like Type, Format, EditFormat, Enum, Range, Button, ... can be set to whole column in &lt;C> tag (e.g. &lt;C Name='Cols1' Type='Int'/>) or to individual cell in &lt;I> tag with column prefix (e.g. &lt;I Col1Type='Int'/>).<br />
+         The cell value and any cell attribute except spanning can be dynamically calculated by <b>Formula</b>.<br />
+      </li>
+      <li>
+         <h4>API for cells</h4><br />
+         <ul style='margin-top:0px;'>
+         <li style='padding-bottom:0px;'>
+         The Type, Format and EditFormat values can be changed or generated dynamically by API events <b>OnGetType</b> and <b>OnGetFormat</b>.
+         </li>
+         <li style='padding-bottom:0px;'>
+         The resulted HTML shown in the cell can be changed or generated dynamically by API event <b>OnGetHtmlValue</b>. <br />
+         </li>
+         <li style='padding-bottom:0px;'>
+         The cell value can be read by API methods <b>GetString</b> or <b>GetValue</b> and set by <b>SetString</b> or <b>SetValue</b>.<br />
+         </li>
+         <li style='padding-bottom:0px;'>
+         To catch a change of the cell value can be used API events <b>OnValueChanged</b>, <b>OnAfterValueChanged</b>, <b>OnEndEdit</b> and XML event <b>OnChange</b>.
+         </li>
+         <li style='padding-bottom:0px;'>
+         Any cell attribute can be read by API global function <b>Get</b> or by method <b>GetAttribute</b>. Many cell attributes can be changed by method <b>SetAttribute</b>.<br />
+         </li>
+         <li style='padding-bottom:0px;'>
+         The row or cell content can be updated by <b>RefreshRow</b> or <b>RefreshCell</b> methods. The cell DOM tag can be got by <b>GetCell</b> method, but the DOM content should be used only as read-only.<br />
+         </li>
+         </ul>
+      </li>
+      <li>
+         <h3>Text</h3> type shows <b>plain editable text</b> in one line, without any special input / output rules. 
+         It preserves all white space.
+         It is default cell type.
+         <br />
+         The text display can be formatted by <b>Format</b> - the text can be converted to lower or upper case, can be replaced by given RegExp expression and can append some prefix and postfix.<br />
+         The decimal and group separators can be changed by &lt;Lang>&lt;Format <b>DecimalSeparator='.'</b> <b>GroupSeparator=','</b>/>&lt;/Lang>.<br />
+      </li>
+      <li>
+         <h3>Float</h3> and <h3>Int</h3> types. Show formatted <b>numbers</b>. <b>Int</b> is for integer numbers, <b>Float</b> is for decimal point numbers, but the only difference between them is that Int does not accept decimal separator in editing.<br />
+         The number format for display is set by <b>Format</b> attribute, it specifies required count of digits, required and maximal count of decimal places, displaying group separator, minus sign, exponential notation, percentage.<br />
+      </li>
+      <li>
+         <h3>Date</h3> type shows <b>date</b>, <b>time</b> or <b>date and time</b>. 
+         For date it supports calendar dialog to pick up the date, more dates or date range(s).
+         To hide calendar button for time, set <b>Button</b>="".<br />
+         The date or time format is specified by <b>Format</b> attribute, the format for editing by <b>EditFormat</b>. 
+         If the EditFormat contains time part, calendar dialog will let you edit also time.<br />
+         The Date can show also more dates or times or date ranges (set by <b>Range</b>='1'). 
+         If set, the calendar dialog will let you select more dates or date range.<br />
+         The <b>Format</b> attribute has similar syntax as ASP.NET ToString method, it can contain also HTML code.<br />
+         Date values in input / output XML can be in count of milliseconds since 1/1/1970 or in string in English format (M/d/yyyy or yyyy-MM-dd or d.M.yyyy + HH:mm:ss), for output format see <b>DateStrings</b> attribute.<br />
+      </li>
+      <li>
+         <h3>Pass</h3> type is simple text input as <b>password</b> that does not display the input characters. Remember, the password is sent to server not coded.<br />
+      </li>
+      <li>
+         <h3>Lines</h3> type is <b>multiline text</b>, automatically or manually wrapped by CRLF. To not automatically wrap the text set <b>Wrap</b>='0'.<br />
+         <b>LF</b> (new line) can be put into XML by <b>&amp;#x0a;</b>. By default key enter finishes editing, to let users to insert <b>LF</b> by <b>Enter</b> key, set <b>AcceptEnters</b>='1', the editing will be finished by Ctrl+Enter or Shift+Enter.<br />
+         You can specify maximal row height in pixels by <b>MaxHeight</b> attribute. The higher cells will be overflowed. It affects only multiline cells.<br />
+      </li>
+   </ul>
+</body>
+</html>

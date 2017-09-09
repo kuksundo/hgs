@@ -1,0 +1,51 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttDependencies"><b>Gantt dependencies</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Critical path</center>
+   <center style='font:bold italic;'>Computing task slack and showing critical path in chart</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Critical path.xml'>04 - <h2>Critical path</h2>.xml</a></div>
+   <div style='width:900px; height:250px;'>
+      <bdo Debug='check' Data_Url='04 - Critical path.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttCompute.htm#critical">Critical path</a></b>.
+      </li>
+      <li> 
+         The critical path can be shown if a column is assigned to <h3>GanttSlack</h3>.
+      </li>
+      <li>
+         The <b>Slack</b> value means how much can be the task moved to future (delayed) to not affect project finish date.<br />
+         The tasks that cannot be moved at all are <b>critical</b> and lay on <b>critical path</b>.<br />
+         The critical tasks are colored in different color (orange by default) and it is also possible to filter by them to show only the critical path.<br />
+      </li>
+      <li>
+         Attribute <h3>GanttMinSlack</h3> sets minimal value of the Slack to be the task included in critical path.
+      </li>
+      <li>
+         Task with Slack value less than <h3>GanttErrSlack</h3> are marked as error and colored in different color (red by default).<br />
+         The GanttErrSlack value should be less or equal to GanttMinSlack.
+      </li>
+      <li>
+         The finish date is end date of the most right task or it can be defined by <h3>GanttFinish</h3>.
+      </li>
+      <li>
+         If set <h3>GanttSeparateSlack</h3><b>='1'</b> the Slack value is calculated for every group of tasks separately.<br />
+         The group of tasks are all tasks linked with some dependency.<br />
+         In this case is the global GanttFinish ignored.
+      </li>
+   </ul>
+</body>
+</html>

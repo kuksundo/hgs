@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Gantt database tree</h2>
+         A demonstration of TreeGrid application creating Gantt chart tree from plain table by grouping.<br/>
+         It supports also free adding, moving and deleting tasks in tree levels.<br />
+         The level names are shown in Levels columns. 
+         The Levels and ID columns are shown just for debugging.<br />
+         <br />
+         This example shows how to load Gantt from upload changes to SQL database.<br />
+         <br />
+
+      <div style="WIDTH:100%;HEIGHT:500px;">
+         <bdo Debug="1" DebugTag='debug'
+            Layout_Url="GanttTreeDef.xml" 
+            Data_Url="GanttTreeDBData.jsp" Data_Debug='in,out'
+            Upload_Url="GanttTreeDBUpload.jsp" Upload_Attrs='ToDelete' Upload_Debug='in,out'
+         ></bdo>
+      </div>
+      <div style='font:10px Arial;margin-top:5px;'>IO communication with server and executed SQL commands</div>
+      <div id='debug' style='background:#DDD; height:150px; border:1px solid black; padding-left:5px; overflow:auto;'></div>
+
+      <script>
+
+// ------------------------------------------------------------------------------------------
+// Does updates when moving or adding row to the new parent
+// P is the new parent
+function UpdateAdd(G,row,P){
+if(!P.Def) return; // For page is Def null
+for(var p=P.firstChild;p;p=p.nextSibling) if(p.Visible && !p.Deleted && p!=row) return; // Checks if the parent has some children, ends if it had already some
+
+// --- Updates parent node if it is not Task yet ---
+P.Added = 0;           // Clears flag if set in UpdateRemove
+if(P.id-0) {           // If the id is number, it was probably loaded from database
+   P.ToDelete = 1;     // Must delete this task from database, because it became automatically generated. The ToDelete is custom flag used only by the server script.
+   P.NoUpload = 0;     // Sets it to 0, because by default grouping task has set to 1 to not upload changes
+   P.Changed = 1;      // Sets it to 1 to upload this row as changed, because custom ToDelete flag is used instead of standard Delete flag
+   } 
+}
+
+// ------------------------------------------------------------------------------------------
+// Does updates when moving or deleting row from the old parent
+// P is the old parent
+function UpdateRemove(G,row,P){
+if(!P.Def) return; // For page is Def null
+for(var p=P.firstChild;p;p=p.nextSibling) if(p.Visible && !p.Deleted) return; // Checks if the parent has some children, end if it has still some
+
+// --- When the old parent does not contain any not delete child, it is switched back to data row ---
+if(P.id-0) { 
+   P.ToDelete = null; P.NoUpload = null; // Clears the flags if set by UpdateAdd
+   P.Changed = 0; for(var c in G.Cols) if(P[c+"Changed"]) { P.Changed = 1; break; } // Clears Changed attribute, only if there is no changed cell
+   } 
+else {
+   P.Added = 1; // The parent became data row and needs to be added to dabatabase now, because it does not exist here yet
+   G.SetValue(P,"id",G.GenerateId(),1); // Sets new number id for the parent
+   }
+}
+
+// ------------------------------------------------------------------------------------------
+// API Event definitions
+Grids.OnRowAdd = function(G,row){ UpdateAdd(G,row,row.parentNode); }
+Grids.OnRowMove = function(G,row,par){ UpdateAdd(G,row,row.parentNode); UpdateRemove(G,row,par); }
+Grids.OnRowDelete = function(G,row){ UpdateRemove(G,row,row.parentNode); }
+Grids.OnRowUndelete = function(G,row){ UpdateAdd(G,row,row.parentNode); }
+// ------------------------------------------------------------------------------------------
+
+      </script>
+
+   </body>
+</html>

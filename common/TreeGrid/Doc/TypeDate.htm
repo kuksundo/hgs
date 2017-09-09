@@ -1,0 +1,1578 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Date type</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Date type</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date type shows date and / or
+time in selected format. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It supports direct editing or
+selecting the date(s) from popup calendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“Text”]
+             Type=”Date”                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To define Date type, set
+column or cell attribute Type to “<b>Date</b>”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=Cellvalue><b><i><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+color:olive;background:yellow'>value</span></i></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The date values in input XML
+can be set as string in these formats, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>date:
+yyyy-M-d,  M-d,  M/d/yyyy,  M/d,  dd.MM.yyyy,  dd.MM</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>time:
+HH:mm, HH:mm:ss, hh.mm, hh.mm.ss, including am/pm, AM/PM, a.m./p.m., A.M./P.M.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If set only
+time, it cannot be separated by <b>dot</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The date values in input XML
+can be also set as number of milliseconds from 1/1/1970 00:00:00 </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The date values uploaded to
+server are by default in format “M/d/yyyy HH:mm:ss”, if some part of date is 0,
+it is omitted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If some date in input XML is
+set as number of milliseconds, all uploaded dates are also in number of
+milliseconds. See &lt;Cfg <a href="#CfgDateStrings">DateStrings</a>/&gt;
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The date values in API are
+always integers as number of milliseconds from 1/1/1970 00:00:00</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CCanEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanEmpty</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]
+                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell date value differ
+between 1/1/1970 00:00:00 and “”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It has sense especially for
+time only values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the empty input
+value is always converted to 1/1/1970 00:00:00, internally to 0. So the cell
+never contains (empty) string value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CEmptyValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>EmptyValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [“”]
+                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string displayed when the
+date value is entered as empty string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell can contain empty
+value only if <a href="#CCanEmpty">CanEmpty</a> is 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is shown only for display,
+not for edit.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> escaped, it
+can contain HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt; &lt;C&gt; &lt;cell&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string
+</span></i><a name=CfgDefaultDate><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>DefaultDate</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                              <span
+style='color:red'>new <b>6.3; </b></span><span style='color:blue'>upd<b> 6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default date (and time) shown
+in calendar for empty dates.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.7)</span></i><span
+style='font-size:10.0pt'> Used also when editing date / time in cell, the
+missing in the input are got from the DefaultDate. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example input: “12/12”
+and DefaultDate: “1/1/2000 21:30” will return “12/12/2000 21:30”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Format</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                       <span
+style='color:blue'>upd <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies date and / or time
+string format – how the date and / or time will be displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This format string uses
+almost the same formatting as Microsoft .NET System.DateTime.<b>ToString</b>
+(string format) function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>Empty format</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>Format</b> is not
+set or is empty (default), the default English format is used “M/d/yyyy
+HH:mm:ss”. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If some part of the date is
+0, it is omitted, some examples: “5/9/2000 12:43:56”, “12:00”, “6/5/2000”.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The language settings are
+ignored, the date separator is always ‘/’, the time separator always “:”.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>Standard format</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard format is <u>one</u>
+letter format. This format loads user format from file <a
+href="../Grid/Text.xml">Text.xml</a>, tag &lt;<b>Format</b>&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>d</span></b><span style='font-size:10.0pt'>             Short date             (&quot;M/d/yyyy&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>D</span></b>             Long date             (&quot;d.
+MMMM yyyy&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>t</span></b>              Short time             (&quot;H:mm&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>T</span></b>             Long time             (&quot;H:mm:ss&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>f</span></b>              Long date + short time      (&quot;d.
+MMMM yyyy H:mm&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>F</span></b>             Long date + long time        (&quot;d.
+MMMM yyyy H:mm:ss&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>g</span></b>             Short date + short time      (&quot;M/d/yyyy
+H:mm&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>G</span></b>            Short date + long time       (&quot;M/d/yyyy
+H:mm:ss&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>m</span></b>, <b><span style='color:blue'>M</span></b>      Day
+and month                  (&quot;d. MMMM&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>s</span></b>              Sortable date time              (&quot;yyyy-MM-ddTHH:mm:ss&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>u</span></b>             Universal sortable date time            (&quot;yyyy-MM-dd
+HH:mm:ssZ&quot;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are more standard
+formats with fixed meaning that cannot be changed in Text.xml.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>r</span></b>, <b><span style='color:blue'>R</span></b>         RFC1123                             for
+example: Tue, 13 Jan 2004 18:12:34 GMT</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>y</span></b>, <b><span style='color:blue'>Y</span></b>        Month
+and year                  for example: January 2004. For month name uses the
+attribute <b>LongMonthNames2</b> (from file <a href="../Grid/Text.xml">Text.xml</a>,
+tag &lt;<b>Format</b>&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                                                              LongMonthNames2
+could contain noun’s first case if the language supports it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>U</span></b>             Universal date time            for
+example: 13. January 2004 17:12:34. This date time is converted to <b>GMT</b> !</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>User format</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User format can contain any
+characters but only few have special meaning and other are written into output
+without any change.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>:</span></b><span style='font-size:10.0pt'>              Place for
+time separator, defined in file <a href="../Grid/Text.xml">Text.xml</a>, tag
+&lt;<b>Format</b>&gt;, attribute <b>TimeSeparator</b>. (<i>colon</i> by
+default).                      </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>/</span></b><span style='font-size:10.0pt'>              Place for
+date separator, defined in file <a href="../Grid/Text.xml">Text.xml</a>, tag
+&lt;<b>Format</b>&gt;, attribute <b>DateSeparator</b>. (<i>slash</i> by
+default).                        </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>d</span></b>             Month days 1 – 31 </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>dd</span></b>           Month days 01 – 31 </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ddd</span></b>         Weekdays Sun – Sat</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>dddd</span></b>      Weekdays Sunday – Saturday</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ddddd</span></b>    Weekdays S – S</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>dddddd</span></b>  Month days 1<sup>st</sup> – 31<sup>st</sup>
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ddddddd               </span></b>Year weeks 1 – 52</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>dddddddd             </span></b>Year weeks 01 – 52<i> (new
+9.0)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:#999999'>D</span></b>             <i>not used</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DD</span></b>          The rest of days in week, in count of
+weeks from 1/1/1970 (it is <u>not</u> weekday!) <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DDD</span></b>       Year day 0 – 365 <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DDDD</span></b>    Count of days from 1/1/1970, for duration
+in days <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DDDDD</span></b> Count of weeks from 1/1/1970, for duration
+in weeks, see <b>DD</b> <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DDDDDD</span></b>             Tenths of month days:
+empty,1,2,3 <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>DDDDDDD</span></b>          Month days: 1-9,0-9,0-9,0-1 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>M</span></b>            Month 1 – 12 </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>MM</span></b>        Month 01 – 12</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>MMM</span></b>    Month Jan – Dec</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>MMMM</span></b>               January – December</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>MMMMM</span></b>           Year quarters, I, II, III, IV</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>MMMMMM</span></b>       Year halves, I, II</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>y</span></b>             Year 0 – 99</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>yy</span></b>           Year 00 – 99</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>yyy</span></b>         Count of years from 1/1/1970, for
+duration in days <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>yyyy</span></b>      Year 0000 – 9999               </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>h</span></b>             Hours 1 – 12</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>hh</span></b>           Hours 01 – 12</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>hhh</span></b>         Count of hours from 1/1/1970
+00:00:00, for duration in hours <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>hhhh</span></b>      Tenths of hours empty or 1 <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>hhhhh</span></b>    Hours 1-9, 0-2 <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>H</span></b>            Hours 0 – 23</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>HH</span></b>         Hours 00 – 23</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:#999999'>HHH</span></b>      <i>not used</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>HHHH</span></b>  Tenths of hours empty or 1 <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>HHHHH</span></b>               Hours 0-9, 0-9, 0-3 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>m</span></b>            Minutes 0 – 59</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>mm</span></b>        Minutes 00 – 59</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>mmm</span></b>     Count of minutes from 1/1/1970 00:00:00,
+for duration in minutes <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>mmmm</span></b> Tenths of minutes 0 – 5  <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>mmmmm             </span></b>Minutes 0 – 9  <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>s</span></b>              Seconds 0 – 59</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ss</span></b>            Seconds 00 – 59</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>sss</span></b>           Count of seconds from 1/1/1970
+00:00:00, for duration in seconds <i>(new 6.1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ssss</span></b>         Tenths of seconds 0 – 5  <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>sssss</span></b>       Seconds 0 – 9  <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>f</span></b>              Hundreds of milliseconds, 0 – 9 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ff</span></b>            Tenths of milliseconds 00 – 99 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>fff</span></b>           Milliseconds – 000 - 999 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>ffff</span></b>         Tenths of milliseconds 0 – 9 <i>(new
+6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>fffff</span></b>       Milliseconds – 0 - 9 <i>(new 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>t</span></b>              First letter of AM/PM designator,
+by default A or P. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>tt</span></b><span style='font-size:10.0pt'>             AM/PM
+designator, by default AM or PM. Defined in file <a href="../Grid/Text.xml">Text.xml</a>,
+tag &lt;<b>Format</b>&gt;, attributes <b>AMDesignator</b> and <b>PMDesignator</b>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>z</span></b><span style='font-size:10.0pt'>              Timezone
+hours -12, +0, +13</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>zz</span></b><span style='font-size:10.0pt'>            Timezone
+hours -12, +00, +13</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt;
+color:blue'>zzz</span></b><span style='font-size:10.0pt'>          Timezone
+hours and minutes, -12:00, +0:00, +13:00</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>\</span></b>              Escape character, the next
+character is placed to output without any changes. Use to place format
+characters as d,M,y,... It needs to be doubled ‘\\’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>‘</span></b><i>xxx</i><b><span style='color:blue'>’</span></b>
+or <b><span style='color:blue'>“</span></b><i>xxx</i><b><span style='color:
+blue'>”</span></b>      Characters in quotes or double quotes are placed to
+output without any changes. Use to place format characters as d,M,y,...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b><span
+style='color:blue'>%</span></b>           Place before format when use one
+character user format like ‘d’ (=&gt; ‘%d’) to not be taken as standard format</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:       Format=’dddd,
+MMMM yyyy hh:mm:ss tt’ =&gt; “Sunday, February 2004 13:24:00”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Format=’”date:”
+MM/dd/yyyy“, time:” HH:mm” =&gt; “date: 10/03/2001, time: 12:34”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want add <b>HTML tags</b>
+before and after value, use rather cell attributes <a
+href="CellBasics.htm#CHtmlPrefix">HtmlPrefix</a> and <a
+href="CellBasics.htm#CHtmlPrefix">HtmlPostfix</a> instead of <b>Format</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you really need to place <b>HTML
+tags</b> into output (for example to use HTML tags for one part of date only),
+set &lt;Cfg <a href="#CfgNoFormatEscape">NoFormatEscape</a>=’1’&gt;. The HTML
+tags can be set in <a href="#CFormat">Format</a> only, <b>not</b> in <a
+href="#CEditFormat">EditFormat</a>.</span></p>
+
+<p class=MsoNormal style='margin-left:106.2pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CEditFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>EditFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format string for editing the
+date and / or time. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>Empty format</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If is not set or is <b>empty</b>,
+it accepts all formats like input XML:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>date:
+yyyy-M-d,  M-d,  M/d/yyyy,  M/d,  dd.MM.yyyy,  dd.MM</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>time:
+HH:mm, HH:mm:ss, hh.mm, hh.mm.ss, including am/pm, AM/PM, a.m./p.m., A.M./P.M.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If set only
+time, it cannot be separated by <b>dot</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>Standard or user format</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Its structure is the same as <a
+href="#CFormat">Format</a>, but not all formats are possible for input, only
+number inputs are supported.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format should contains only
+these parts of custom format: d, dd, M, MM, y, yy, yyyy, h, hh, H, HH, m, mm,
+s, ss, t, tt</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set t or tt, as AM/PM
+are accepted only “a”,”p”,”am”,”pm” – it cannot be changed or localized.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The user can use more
+separators set by <b>InputDateSeparators</b> and <b>InputTimeSeparators</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The user can also enter the
+date / time without separators, only as number, in formats like HHmm, HHmmss,
+MMddyy, MMddyyyy, in the order set in the EditFormat.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CExportFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExportFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A date time format to export
+to Excel. Used only for <a href="Export.htm#Export_Type">Export_Type</a> = 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set &lt;Cfg&gt; <a
+href="Export.htm#CfgExportType">ExportType</a>&amp;64 to export dates as
+string, this format is used as standard TreeGrid <a href="#CFormat">Format</a>
+to format the date string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Otherwise it is specific
+Excel date format to export the date as number.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+you don’t know the format for the cell, create xls file with one cell, specify
+its format you want and save it as one file web page (mht file).</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Open
+this mht file and search style property “mso-number-format” and its value set
+to the ExportFormat.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+standard values are &quot;Short Date&quot; for locale M/d/yyyy.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+format string is similar to TreeGrid number format, but with escaped all not
+number and not digit characters by backslash, it can look like &quot;dddd\\\,\\
+mmmm\\ dd\\\,\\ yyyy&quot; or &quot;h\:mm\:ss\\ AM\/PM&quot;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoFormatEscape><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoFormatEscape</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to “”, it means <b>0</b>
+for text and <b>1</b> for number and date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the
+Format is escaped, so the characters &amp; and &lt; are displayed as they are.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, you can
+use HTML tags in columns <a href="#CFormat">Format</a> string, in prefix and
+postfix for text and anywhere for numbers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgDateStrings><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DateStrings</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0/1]                                                                                                                <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, Date
+values are uploaded as numbers (milliseconds from 1/1/1970), see also <a
+href="#FormatGMT">GMT</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, Date
+values are uploaded as strings in English format (M/d/yyyy HH:mm:ss).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, Date
+values are uploaded as strings in JAVA format (yyyy-MM-dd HH:mm:ss).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>string</b>, it
+specifies the full date format for upload</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set to <b>0</b>,
+if some date in input XML is set as number of milliseconds, otherwise is set to
+<b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool      </i></span><a
+name=FormatGMT><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GMT</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                               <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, all <u>number</u>
+dates are in GMT / UTC and are <u>not</u> affected by a user time zone, all
+users will see the same times.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0,</b> all <u>number</u>
+dates are in the local time of user time zone, so they are shown different for
+different time zones.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The number dates are the
+input / output dates set as count of milliseconds from 1/1/1970 00:00:00.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The dates are internally
+stored always as the numbers, so if you access the cell values directly, you
+get / set always the count of milliseconds.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This setting is global for
+all grids on page!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting GMT to <b>0</b> is
+<u>not</u> recommended in Gantt chart, because of shifts due summer / winter
+time.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CGMT><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GMT</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell GMT modification for
+display and edit.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this attribute has
+different value than &lt;Format <a href="#FormatGMT">GMT</a>&gt; value, it
+shows the cell date in local or GMT timezone.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affect only display and
+editing date string, <u>not</u> the value itself, so for upload, API,
+calculations, sort, filter, search and Gantt are still used the original
+values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int</i>        </span><a
+name=FormatHirji></a><a name=LangFormatHirji><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Hirji</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]        <span
+style='color:red'>RTL</span>                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grid uses and shows
+Persian Hirji / Jalali dates and calendar instead of standard Gregorian dates,
+bit array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. bit (&amp;1) – 1 – All
+dates are displayed and entered in Hirji</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2. bit (&amp;2) – 2 – All dates
+in XML are in Hirji.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=DateToString><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DateToString</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>Date</i>
+<b>date</b>, <i>string</i> <b>format</b>)                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Converts date to string
+according to format string like in function ToString() in C#.NET.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> can be string or number, will be converted to date by
+standard Date(string).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If format is missing, uses
+English format “mm/dd/yyyy hh:mm:ss”, for today uses “hh:mm:ss”, for 00:00:00
+uses “mm/dd/yyyy”, seconds are omitted if are 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>Date     </i></span><a
+name=StringToDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>StringToDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>str</b>, <i>string</i> <b>format</b>)                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Converts string to date
+according to format string as in function ToString() in C#.NET. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If format is missing,
+converts str as in standard format for date “d.m.y”, “d.m”, “m/d/y”, “m/d”,
+“y-m-d”,”m-d” and time “hh:mm:ss”, “hh:mm” and for date and time combines these
+formats separated by any other character</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Calendar><b><span style='font-size:20.0pt'>Calendar</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>
+</span><a name=CButton><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Button</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [“</span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Date</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>”]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <u>editable</u> <b>Date</b>
+type is the button set to “Date” by default, except is set &lt;Cfg <a
+href="#CfgAutoCalendar">AutoCalendar</a>=’1’/&gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It shows right side button to
+display popup Calendar dialog on click to choose the date from.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide the calendar button
+set Button=””, it is useful especially for time only values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAutoCalendar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoCalendar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, Calendar
+dialog for Date cells is displayed automatically when user starts editing. In
+this case the calendar reflects changes in the input and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+Button type Date is <u>not</u> displayed for Date type by default. To display
+it, there must be explicitly set by <a href="CellSideButton.htm#CButton">Button</a>=’Date’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CAutoCalendar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoCalendar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, Calendar
+dialog for Date cells is displayed automatically when user starts editing. In
+this case the calendar reflects changes in the input and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+Button type Date is still displayed for Date type by default. To hide it, there
+must be explicitly set by <a href="CellSideButton.htm#CButton">Button</a>=’’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The difference to &lt;Cfg <a
+href="#CfgAutoCalendar">AutoCalendar</a>/&gt; is only in the default visibility
+of the Date button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CCalendarButtons></a><a name=CfgCalendarButtons><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>CalendarButtons</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0/7]                                                                                        <span
+style='color:red'>chg <b>6.0; </b></span><span style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Which calendar buttons will
+be visible. By default for empty value are all buttons displayed for <a
+href="CellBasics.htm#CRange">Range</a> and no button for standard date cells.
+Bit array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1. bit (&amp;1) – Today
+button, 2. bit (&amp;2) – Clear button, 3. bit (&amp;4) – OK button. = 0 no
+button visible, = 7 all buttons visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Since 6.7 there can be 4.bit
+(&amp;8) for Yesterday button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;       </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CCalendar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Calendar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                  <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Full settings of the calendar
+in JSON format. See the <a href="Menu.htm#Calendar">documentation</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CActualDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ActualDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Actual date highlighted in
+calendar. If not used, used today according to the client time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span></b><a
+name=ActionsShowCalendar><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ShowCalendar </span></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> Attached
+to events OnClickSideDate, OnEnter, OnCtrlDown                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays the Calendar dialog
+for selecting date for the actual or focused cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnCanEditDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCanEditDate</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, Date <b>date</b>)                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when displaying Calendar
+dialog for every date in the calendar to permit only some dates to be selected
+by user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetCalendarDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetCalendarDate</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, Date <b>date</b>,
+<i>string</i> <b>text</b>, <i>string[]</i> <b>classes</b>, <i>bool</i> <b>range</b>)      <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when displaying
+Calendar dialog for every date in the calendar to let modify the displayed date
+text and / or class.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is the Date object for given day. <b>text</b> is the
+text that will be displayed for the day. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>classes</span></b><span
+style='font-size:10.0pt'> is an array of four CSS classes that will be used for
+the day: [normal, hover, selected, selected+hover]. The event handler can
+modify theses four strings to use different CSS classes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>range</span></b><span
+style='font-size:10.0pt'> is true if the calendar will permit selecting more
+dates or date ranges. If it is false, the <b>classes</b> use only first two
+strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return the text of date or <b>text</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>global func.     </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'><a
+href="#Calendar">TCalendar</a> </span></i><a name=ShowCalendar><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>ShowCalendar</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     <a
+name="OLE_LINK1">(</a><a href="#Calendar"><i>TCalendar</i></a><i> </i><b>Calendar</b>,
+<a href="#TPosition"><i>TPosition</i></a> <b>Pos</b>, <i>function</i> <b>Func</b>,
+<i>type</i> <b>Date</b>)              <span style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows custom calendar on
+given position. For more information see the <a href="Menu.htm#ShowCalendar">ShowCalendar</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Dates><b><span style='font-size:20.0pt'>Dates dialog for
+date ranges and repeating</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>
+</span><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Button</span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [“</span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Dates</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>”]                                                                                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It shows right side button to
+display popup <b>Dates</b> dialog on click to choose the date ranges.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This dialog is used for <b><span
+style='color:red'>Text</span></b> <b><span style='color:red'>type</span></b> in
+special format “<b>Repeat1<span style='color:red'>#</span>Date1a<span
+style='color:red'>~</span>Date1b<span style='color:red'>#</span>Value1<span
+style='color:red'>;</span>Repeat2<span style='color:red'>#</span>Date2a<span
+style='color:red'>~</span>Date2b<span style='color:red'>#</span>Value2<span
+style='color:red'>;</span></b>...”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This format is used for <b>GanttExclude</b>,
+<b>GanttBackground</b> and Gantt resource <b>Availability</b>. And can be used
+also for any custom reason.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default meaning of the
+format is repeat date range set by <b>DateXa</b>~<b>DateXb</b> every <b>RepeatX</b>
+time unit and optionally assign given <b>ValueX</b> to these ranges.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set only <b>Value</b>
+as for all dates. It is also possible to omit <b>Value</b> to not use it. And
+it is possible to omit <b>Repeat</b> to not repeat the date range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Dates dialog shows new
+popup grid with columns defined by next attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The popup grid has set its id
+to <b>DatesDialog</b>, you can control it in API events as usual, e.g.
+Grids.OnLoaded = function(G){ if(G.id==’DatesDialog’) { ... } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid internal column
+names are <b>Repeat</b>, <b>Start</b>, <b>StartTime</b>, <b>End</b>, <b>EndTime</b>,
+<b>Value</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Due internal
+implementation the Dates dialog is available only in Extended API!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesRepeatXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesRepeatXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>Repeat</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the Repeat
+column is Text by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example set: DatesRepeatType=&quot;Enum&quot;
+DatesRepeatEnum=&quot;||Weekly|Daily&quot;
+DatesRepeatEnumKeys=&quot;||w|d&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide the column set
+DatesRepeatVisible=’0’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesStartXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesStartXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>Start</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the Start
+column is Date by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example set: DatesStartFormat=&quot;dddd,
+dddddd MMMM&quot; DatesStartEditFormat=&quot;M/d/yyyy&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesStartTimeXXX><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>DatesStartTimeXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>StartTime</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the StartTime
+column is Date by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This column is automatically
+hidden, if <b>Start</b> column is not of Type Date</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesEndXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesEndXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>End</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the End
+column is Date by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example set: DatesEndFormat=&quot;dddd,
+dddddd MMMM&quot; DatesEndEditFormat=&quot;M/d/yyyy&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesEndTimeXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesEndTimeXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>EndTime</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the EndTime
+column is Date by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This column is automatically
+hidden, if <b>End</b> column is not of Type Date</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>type      </i>
+</span><a name=CDatesValueXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesValueXXX</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets attribute XXX of column <b>Value</b>
+in the Dates grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute Type of the Value
+column is Float by default.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example set DatesValueType=&quot;Enum&quot;
+DatesValueEnum=&quot;|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide the column set
+DatesValueVisible=’0’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i>
+</span><a name=CDatesXXXCaption><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesXXXCaption</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Caption for the XXX column,
+where XXX can be Repeat, Start, End or Value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i>
+</span><a name=CDatesEndLast><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesEndLast</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1 and end date has
+not set time, it is shown as day before.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example 1/1/2000 is shown
+as 12/31/1999, but 1/1/2000 1:00 is shown as 1/1/2000 1:00.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i>
+</span><a name=CDatesHeight><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DatesHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             []                                                                                                         <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal height of the dialog
+in pixels. Default setting is grid main tag height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For higher grids the popup
+grid shows vertical scrollbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnDatesClose><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDatesClose</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TGrid</i> <b>dates</b>, <i>bool</i> <b>saved</b>)                                                    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the Dates dialog
+is closed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>grid</span></b><span
+style='font-size:10.0pt'> is the source grid that opened the Dates dialog</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>dates</span></b><span
+style='font-size:10.0pt'> is the grid showing dates dialog. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>saved</span></b><span
+style='font-size:10.0pt'> is <b>false</b> if no changes were saved (clicked to
+cancel or clicked to ok without any change in the dialog), <b>true</b> is when
+something changed by the dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Localization><b><span style='font-size:20.0pt'>Localization</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default date format and
+setting are specified in <b>Text.xml</b>, in &lt;<b>Lang</b>&gt;&lt;<b>Format</b>
+/&gt;&lt;/<b>Lang</b>&gt; tag. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default settings is for <b>English</b>
+language, changing the <b>Format</b> tag attributes you can easily localize it
+to another language.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatShortDayNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShortDayNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The week day short names,
+starting Sunday, used for the format “ddd”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is
+&quot;Sun,Mon,Tue,Wed,Thu,Fri,Sat&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatLongDayNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LongDayNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The week day full names,
+starting Sunday, used for the format “dddd”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatDay1CharNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Day1CharNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The week day one character
+names, starting Sunday, used for the format “ddddd”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;S,M,T,W,T,F,S&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatDay2CharNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Day2CharNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The week day calendar names,
+starting Sunday, used in calendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;Su,Mo,Tu,We,Th,Fr,Sa&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatDayNumbers><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DayNumbers</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The month day numbers 1 – 31,
+used for the format “dddddd”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;1st,2nd,3rd,4th,5th,6th,7th,8th,9th,10th,11th,12th,13th,14th,15th,16th,17th,18th,19th,20th,21st,22nd,23rd,24th,25th,26th,27th,28th,29th,30th,31st&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatShortMonthNames><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ShortMonthNames</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The month short names,
+starting January, used for the format “MMM”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatLongMonthNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LongMonthNames</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The month full names,
+starting January, used for the format “MMMM” and also in calendar</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These names are expected for
+month name <u>with</u> day, like 20<sup>th</sup> January 2000.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;January,February,March,April,May,June,July,August,September,October,November,December&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatLongMonthNames2><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>LongMonthNames2</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The month full names,
+starting January, used for the format “MMMMMMM”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These names are expected for
+month name <u>without</u> day, like January 2000.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;January,February,March,April,May,June,July,August,September,October,November,December&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatQuarters><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Quarters</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The year quarter names or
+numbers, used for the format “MMMMM”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;I,II,III,IV&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[]  </span><a
+name=FormatHalves><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Halves</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The year half names or
+numbers, used for the format “MMMMMM”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default is &quot;I,II&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>    </span><a
+name=FormatDateSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DateSeparator</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [/]                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string displayed in place
+of ‘/’ in the format string. It is intended to separate date parts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>char</i>[]    </span><a
+name=FormatInputDateSeparators><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>InputDateSeparators</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [/.-]                                                                                         <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The characters accepted as
+date separator while editing</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>    </span><a
+name=FormatTimeSeparator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TimeSeparator</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [:]                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string displayed in place
+of ‘:’ in the format string. It is intended to separate time parts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>char</i>[]    </span><a
+name=FormatInputTimeSeparators><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>InputTimeSeparators</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [:]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The characters accepted as
+time separator while editing</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>    </span><a
+name=FormatAMDesignator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AMDesignator</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [AM]
+                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string displayed for
+dates before noon. It is used only for display.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>    </span><a
+name=FormatPMDesignator><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PMDesignator</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [PM]
+                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string displayed for
+dates after noon. It is used only for display.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int</i>        </span><a
+name=FormatFirstWeekDay><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FirstWeekDay</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]
+                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The starting day of the week,
+the 0 is Sunday, 1 Monday, ....</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used by Calendar
+dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int</i>        </span><a
+name=FormatFirstWeekYearDay><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>FirstWeekYearDay</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [3]
+                                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first day in week to be
+the week marked as the first week in year.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> for U.S.
+week numberings and to <b>3</b> for ISO/European week numberings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>    </span><a
+name=FormatNaD><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NaD</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [NaN]
+                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String displayed for
+incorrect date – Not a Date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Format&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int</i>        </span><a
+name=FormatHirjiYear><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HirjiYear</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]        <span
+style='color:red'>RTL</span>                                                                                                     <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used when converting input
+hirji dates with year less than 100.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is added 1300
+to the year. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If defined HirjiYear, the
+years less or equal to this number are increased by 1400 instead of 1300.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

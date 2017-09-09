@@ -1,0 +1,150 @@
+This file contains a list of all bugfixes, additions and enhancements to NativeJpg.
+
+Maintained by Nils Haeck (SimDesign BV)
+
+! = bugfix
+* = enhancement
++ = addition
+
+Version 1.33 (06aug2012)
+! Fixed initialisation problem in Tsd8bitHuffmanEncoder.OptimiseHuffmanFromHistogram
+  and lossless transforms now work.
+* Checked demos jkpegtest, simple, tiledemo, viewer and viewer32
+
+Version 1.32 (05jul2011)
+* Separated TsdJpegImage.LoadJpeg and TsdJpegImage.UpdateBitmap
++ events TsdJpegImage.OnBeforeLossless and TsdJpegImage.OnAfterLossless
++ added lossless operations to class TNativeJpg:
+  procedure LosslessRotate90;
+  procedure LosslessRotate180;
+  procedure LosslessRotate270;
++ added demo code specifically for Graphics32: see viewer32 demo  
+
+
+Version 1.31 (07jun2011)
+* Fixed and updated TileDemo
+* Fixed and updated Viewer
+* Fixed and updated JpegTest
+* Fixed TsdJpegImage.SaveBitmapStripByStrip
+* Fixed TsdJpegImage.LoadTileBlock
+
+Version 1.30 (20apr2011)
+* Added D5 compatibility
+! Fixed lossless rotation error
++ Kept platform independence in sdJpegImage.pas, but can use win TBitmap easily
+  in NativeJpg.pas (sdBitmap no longer used, Iterators can use win TBitmap or 
+  Graphics32 TBitmap32 or other future TBitmap methods for future platforms)
++ Reduced and simplified many units, the NativeJpg units are now more logical
+
+Version 1.24 (11feb2011)
+! added sdDebug.pas and sdStreams.pas (accidentally forgotten)
+* viewerMain uses function sdReadMetadata in sdMetadata.pas (general)
+
+Version 1.23 (06feb2011)
++ added sdMetadata units from simdesign's project "abcview":
+  + sdMetadata.pas
+  + sdMetadataCiff.pas
+  + sdMetadataExif.pas
+  + sdMetadataIptc.pas
+  + sdMetadataJpg.pas
+  + sdMetadataTiff.pas
++ added experimental lossless orientation based on EXIF setting
+
+Version 1.22 (25jan2011)
++ Added viewer demo, which uses the simple Delphi TsdJpegGraphic instead of 
+  TsdJpeg format
+! the Lossless operations in TsdJpegGraphic now work
+
+Version 1.21 (27nov2010)
++ Added debug capability and deprecated many exceptions (unit sdDebug.pas)
+* Small fixes in platform-independent bitmap (sdBitmap.pas)
+
+Version 1.20 (07nov2010)
++ Made NativeJpg platform-independent! Unit sdBitmap.pas contains a new 
+  platform-independent Bitmap implementation (no longer dependent on M$ Windows).
+  The unit sdJpegFormat.pas only needs sdBitmap.pas and does not need Delphi Graphics
+  unit, while NativeJpg.pas keeps the functionality as TGraphic descendant.
++ Added Motion-JPEG checks in TsdJpegFormat.LoadFromStream (thanks Dec)
+* Generalised TsdJpegFormat.ReadMarkers (thanks Dec)
+
+Version 1.19 (08sep2010)
+! Replaced char to AnsiChar in several places in sdJpegMarkers (the Magic arrays), to fix 
+  using 1-byte characters
+! fixed TsdJpegGraphic.LoadFromStream bug when Position <> 0
+! TsdJFIFMarker.SaveData PutByte instead of PutWord
+* remove ustring = utf8string and use AnsiString and (2-byte) string where applicable
+! LoadFromStream continues with chopped images (issuing only a warning)
+
+Version 1.18 (02jul2010)
+! Replaced "string" with "ustring" (UTF8String), so lowlevel chars in the units 
+  can work with D2010.
+
+Version 1.17 (02Apr2010)
+! Proper detection of premature stream in exception instead of AV in certain cases 
+  (sdJpegBitStream.pas)
+* Added TsdJpegGraphic.ReadData / WriteData for use of NativeJpg in DFM at design time
+
+Version 1.16 (04Mar2010)
+* Documentation on colorspaces with markers
+* Renames "Colors" to "CS" (ColorSpace)
+
+Version 1.15 (19Feb2010)
+* Changed headers: NativeJpg allowed to use and/or change according to the 
+  LICENSE
+
+Version 1.14 (18Feb2010)
+* Verified source for D2010
++ NativeJpg is now "open-source"
+
+Version 1.12 (16Jun2008)
+! Fixed YCbCr to RGB colour conversion
++ Added optional support for LittleCMS (www.littlecms.com)
+
+Version 1.11 (20Feb2008)
+! Lock canvas when using canvas.draw (NativeJpg.pas)
+
+Version 1.10 (12Feb2008)
+* Load with tilemode when possible in TsdJpegGraphic (saves memory)
+* Exceptions replaced by EInvalidGraphic where it makes sense
+! Fixed bug in coder property HasCoefs
+
+Version 1.09 (18Dec2007)
+* Added trial for D2007
+
+Version 1.08 (01Dec2007)
++ Added feature to save with default Huffman tables
++ Added SaveToStreamStripByStrip(): allows to save a jpeg strip by strip, 
+  to avoid holding the complete bitmap in memory when saving
+* Updated tiledemo to show how to generate an image and save strip-by-strip.
+
+Version 1.07 (30Nov2007)
++ Added loTileMode load option, to allow loading random-access tiles from the jpeg
+  file. This mode only works for baseline jpegs.
++ Added TileDemo as an example on how to use the random-access TileMode load option.
++ Added properties TsdJpegFormat.ImageWidth/ImageHeight: 
+  The dimensions of the original image (unscaled)
++ Added properties TsdJpegFormat.Width/Height:
+  The dimensions of the scaled image (so the size of the bitmap required to fully
+  display the image at its current scale).
+
+Version 1.06 (25Nov2007)
+! Fixed CMYK to RGB conversion (seems Adobe specific)
+
+Version 1.05 (16Nov2007)
+! Fixed YCCK to RGB conversion
+! Fixed problem with some grayscale defining 2x1 subsampling
+
+Version 1.04 (03Nov2007)
++ Added TsdFastMemStream
+* SaveToFile uses fast memory stream type
+
+Version 1.03 (30Oct2007)
+! RGB jpeg files now written/read correctly (invert RGB->BGR)
+
+Version 1.02 (22Oct2007)
+* Added ability to assign bitmap and then use SaveToFile/Stream. This version
+  implements the Forward DCT, building quantization tables, and quantizing the
+  coefficients.
+
+Version 1.00 (17May2007)
+- Initial release

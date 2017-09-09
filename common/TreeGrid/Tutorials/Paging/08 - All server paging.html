@@ -1,0 +1,142 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// -----------------------------------------------------------------------------------------
+Grids.OnDownloadPage = function(G,Row){
+G.Debug(4,"Loading rows for page ",Row.id?Row.id:G.GetPageNum(Row)+1);
+}
+// -----------------------------------------------------------------------------------------
+Grids.OnDataReceive = function(G,Source){
+if(Source.Row && Source.Row.Level>1){ // Sets deep tree collapsed to not get infinite loop by loading sources of expanded rows again and again
+   for(var r=Source.Row.firstChild;r;r=r.nextSibling) r.Expanded = 0;
+   }
+if(Source.Row) G.Debug(4,"Loaded rows for page ",Source.Row.id?Source.Row.id:G.GetPageNum(Source.Row)+1);
+}   
+// -----------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; margin:0px; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; margin:0px; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; margin:0px; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>8. All server paging</center>
+   <center style='font:bold italic;'>Large grid with <b>1,000,000,000</b> root cells and next unlimited child cells</center>
+   <div style='margin-bottom:6px;'>
+   </div>
+   <table>
+      <tr>
+         <td valign='top' width='710'>
+            <div style='margin-bottom:6px;'>
+               <a href='08 - Layout.xml'>08 - <h2>Layout</h2>.xml</a>
+               &nbsp;
+               <a href='08 - Data.xml'>08 - <h2>Data</h2>.xml</a>
+               &nbsp;
+               <a href='08 - Page.xml'>08 - <h2>Page</h2>.xml</a>
+            </div>
+            <div style='width:700px; height:550px;'>
+               <bdo Debug='info' DebugTag='TGDebug'
+                  Layout_Url='08 - Layout.xml' 
+                  Data_Url='08 - Data.xml' Data_Method='Get'
+                  Page_Url='08 - Page.xml' Page_Method='Get'
+                  ></bdo>
+<!-- Here is not used Debug='check' because for the column count is slow, but you can set it, the grid is still usable except in IE6/IE7 -->
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='float:right;'><button onclick='document.getElementById("TGDebug").innerHTML="";'>Clear</button></div>
+            <div style='margin-bottom:6px;height:20px;'>Debug information</div>
+            
+            <div id='TGDebug' style='width:240px; height:550px; overflow:auto; background:#EEE; border:1px solid black; padding-left:3px;'></div>
+         </td>
+      </tr>
+   </table>
+   
+   <ul>
+      <li>
+         This example shows very large grid with million of root rows, thousand of columns and unlimited count of child rows.<br />
+         This example uses dummy page data Page.xml loaded for every page and child page.<br />
+         In real application you need to serve the pages data accordingly to show them in grid.<br /> 
+      </li>
+      <li>
+         As you can see, TreeGrid can display unlimited count of cells, here are displayed <b>billions</b> of cells.<br />
+         <b>But, you</b> must be able to serve such data from server side. Implementing server paging for such huge data is really not easy.<br /> 
+         You must use fast database and especially effective algorithm to fetch data for individual pages according to sort, filter, group and search settings, if you want to provide these features.<br />
+         And also provide the calculations, if you want to show some summary rows in grid.<br />
+      </li>
+      <li>
+         This example sets these attributes for paging, all for Cfg tag:
+         <ul>
+            <li>
+               <h3>Paging</h3><b>='3'</b> for <h4>server root paging</h4><br /> 
+               <ul>
+               <li>
+                  <b>PageLength='100'</b> as expected count of rows at one page, if the page has not set <b>Count</b> attribute.<br />
+               </li>
+               <li>
+                  <b>MaxPages='2'</b> to have only few rendered pages at a time and clear the unused pages soon.<br />
+               </li>
+               <li>
+                  <h3>FastPages</h3><b>='500'</b> to merge unused empty pages to bigger units to not render too many html tags in grid.<br />
+                  Bigger number speeds up grid rendering on start, but slightly slows down the rendering of individual pages.<br />
+               </li>
+               <li>
+               <h3>PageLengthDiv</h3><b>='50'</b> divides the height of the FastPages by this number to decrease height of the grid body, 
+               because the most browsers have limits in tag heights. <br />
+               The usual value is to divide (the whole count of root rows + expanded children) / 50,000.<br />
+               </li>
+               </ul>
+            </li>
+            <li>
+               <h3>ChildPaging</h3><b>='3'</b> for <h4>server child paging</h4><br />
+               <ul>
+               <li>
+               <b>RemoveCollapsed='2'</b> to clear the children when its parent becomes collapsed. It does not clear the data, only html display.
+               </li>
+               </ul>
+            </li>
+            <li>
+               <h3>ChildParts</h3><b>='2'</b> for <h4>client paging of expanded children</h4><br />
+               <i>The client ChildParts with server ChildPaging provides <b>server paging</b> also for the expanded children.</i><br />
+               <ul>
+               <li>
+               <b>ChildPartLength='100'</b> specifies count of children in one child part.<br />
+               In this example it is set to maximum of the immediate children in one parent, so it renders (and also loads due ChildPaging='3') all children at once, but always on demand / scroll.<br />
+               </li>
+               <li>
+               <b>ChildPartMin='0'</b> specifies count of children always rendered on start.<br />
+               Because of server child paging here, the children always need to be loaded first, so they cannot be rendered immediately.<br /> 
+               </li>
+               <li>
+               <b>MaxChildParts='4'</b> to have only few rendered child parts at a time and clear the unused child parts soon.<br />
+               </li>
+               </ul>
+            </li>
+            <li>
+               <h3>ColPaging</h3><b>='2'</b> for <h4>client column paging</h4><br />
+               <i>Columns in TreeGrid can be paged only on client, the downloaded page must always contain data for all columns.</i><br />
+               <ul>
+               <li>
+               <b>ColPageLength='10'</b> specifies how many columns will be in one column page. <br />
+               The size of column page is usually slightly wider than grid area reserved for the variable columns.<br />
+               </li>
+               <li>
+               <b>ColPageMin='0'</b> specifies how many columns will be always shown on the left.<br />
+               In this example no special column is on left, so minimal value is used to speed the grid up.<br />
+               </li>
+               <li>
+               <b>MaxColPages='2'</b> to have only few rendered column pages at a time and clear the unused column pages soon.<br />
+               </li>
+               </ul>
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

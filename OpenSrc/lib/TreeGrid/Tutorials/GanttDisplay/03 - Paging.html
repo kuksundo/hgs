@@ -1,0 +1,150 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// --------------------------------------------------------------------------------------------------------
+// Creates custom GanttUnits 'wh' as working hours, 9:00, 13:00, 14:00, 18:00
+// Replace the 9,13,14,18 numbers in the code below to have different working hours
+
+AddGanttUnits("wh",24*3600000/4,null); // Four units per day, but with different length
+
+Grids.OnRoundDate = function(G,d,t){
+if(t=="wh"){
+   var dw = d%(3600000*24);
+   if(dw>=18*3600000) return d-dw+18*3600000;
+   if(dw>=14*3600000) return d-dw+14*3600000;
+   if(dw>=13*3600000) return d-dw+13*3600000;
+   if(dw>=9*3600000) return d-dw+9*3600000;
+   return d-dw+(18-24)*3600000;
+   }
+}
+
+Grids.OnIncDate = function(G,d,t,c){
+if(t=="wh"){
+   if(c<0) { c = -c; d -= Math.floor((c/4)+1)*24*3600000; c = 4-(c%4); }
+   else if(c>=4) { d += Math.floor(c/4)*24*3600000; c = c%4;  }
+   if(!c) return d;
+   var dm = d%3600000; // Preserves time in minutes. Set it to 0 if the work hours are not whole hours.
+   for(var i=0;i<c;i++) {
+      var dw = d%(3600000*24);
+      if(dw<9*3600000) d += 9*3600000+dm-dw;
+      else if(dw<13*3600000) d += 13*3600000+dm-dw;
+      else if(dw<14*3600000) d += 14*3600000+dm-dw;
+      else if(dw<18*3600000) d += 18*3600000+dm-dw;
+      else  d += (24+9)*3600000+dm-dw;
+      }
+   return d;
+   }
+}
+// --------------------------------------------------------------------------------------------------------
+
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttDisplay"><b>Gantt display</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Paging in Gantt chart</center>
+   <center style='font:bold italic;'>Paging options for Gantt chart</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Paging.xml'>03 - <h2>Paging</h2>.xml</a> Gantt is paged by pagers and next by horizontal scroll.</div>
+   <div style="font-size:11px;">
+      Click to pager page to scroll to the page without zoom change. 
+      Click to active pager page (in <span style="background:#8FF;">blue</span>) or 
+         to pager with <span style="background:#F8F;">pink</span> or <span style="background:#CFC;">green</span> cursor to zoom to the exact page width (except in Pagers Hrs and Mins).</div>
+   <div style="font-size:11px;">
+      In pagers the <span style="background:#8FF;">blue</span> cursor is active page. 
+      <span style="background:#F8F;">Pink</span> is window position in the chart by scroll, if the zoom width is wider than the whole pager range. 
+      <span style="background:#CFC;">Green</span> is pager when the window is wider than the whole pager range.
+   </div>
+   <div style="font-size:11px;">
+      In pagers the <span style="color:green;">green</span> page contains some data, the <span style="color:#888;">gray</span> page does not contain any data, 
+      the standard "black" page does not highlight if it contains data or not. <span style="background:#DDD;">Gray</span> background page contains only excluded dates.
+   </div>
+   <div style='width:1010px; height:520px;'>
+      <bdo Debug='check' Layout_Url='03 - Paging.xml' Data_Url="03 - Data.xml"></bdo>
+   </div>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Paging 2.xml'>03 - <h2>Paging 2</h2>.xml</a> Gantt is paged by pagers only, fits to width without horizontal scrollbar.</!--div>
+   <div style='width:1010px; height:520px;'>
+      <bdo Debug='check' Layout_Url='03 - Paging 2.xml' Data_Url="03 - Data.xml"></bdo>
+   </div>
+   <br />
+   <ul>
+     <li> <h4>Horizontal paging by side pagers</h4><br />
+      Horizontal paging in Gantt chart is always client side, fully managed by TreeGrid.<br />
+      The Gantt side pagers can be displayed also with grid pager (type Pages) for root rows and also with custom side pagers.<br />
+      See documentation for <b><a href="../../Doc/Pager.htm#Gantt">Side pager type Gantt</a></b> and documentation for <a href="../../Doc/Pager.htm">Pager</a>.<br />
+      <ul>
+         <li>
+            Define one or more <h4>side Gantt pagers</h4> by <h3>&lt;Pager Type='Gantt'></h3> in root tag <b>&lt;Pagers> ... &lt;/Pagers></b>. Pager side can be chosen by its attribute <b>Left</b>.<br />
+            Specify &lt;Pager> attributes <h3>PageSize</h3> as <a href="../../Doc/GanttZoom.htm#CGanttUnits">GanttUnits</a> for every page size and <h3>ChartSize</h3> as <a href="../../Doc/GanttZoom.htm#CGanttUnits">GanttUnits</a> for the whole pager size.<br />
+            By &lt;Pager> attributes <b>ChartLeft</b> and <b>ChartRight</b> you can optionally add next pages on beginning and at the end of the pager to extend ChartSize range.<br />
+            By &lt;Pager> attributes <h3>Click</h3> and <h3>DblClick</h3> specify the action done on click or double click to pager page. How the chart will be scrolled or zoomed.<br /> 
+            Optionally define &lt;Pager> attributes <b>FirstZoom</b> and <b>LastZoom</b> to show the pager only on specified zoom levels and hide it in all others.<br />
+            See documentation for <a href="../../Doc/Pager.htm#Gantt">Side pager type Gantt</a> for more options.<br />
+         </li>
+         <li>
+            Optionally define one or more <h4>zoom levels</h4> by <h3>&lt;Z></h3> tags in root tag <b>&lt;Zoom> ... &lt;/Zoom></b>.<br />
+            For every zoom level define <b>Name</b>, <b>GanttUnits</b>, <b>GanttWidth</b>, <b>GanttHeader1</b>(-5) and optionally <b>GanttSize</b> or <b>GanttChartRound</b>, and <b>GanttBackground</b>.<br />
+            Initial zoom and position in Gantt define by &lt;C> attributes <b>GanttZoom</b> and <b>GanttZoomDate</b>.<br />
+            To not show horizontal scrollbars and let the Gantt to fit its width <i>(like in the second grid)</i> set &lt;C> attribute <b>GanttSizeFit='1'</b> and optionally <b>GanttSmoothZoom='0'</b>.<br />
+            See documentation for <a href="../../Doc/GanttZoom.htm#Zoom">Zoom options</a>, <a href="../../Doc/GanttZoom.htm#ZoomList">Zoom selection</a> and <a href="../../Doc/GanttZoom.htm#Size">Chart size limits</a><br />
+         </li>
+         <li> 
+            It is possible to define <h4>custom Gantt units</h4> to be used in PageSize, ChartSize, GanttUnits, GanttHeader, GanttBackground and so on. The custom units cannot be used in GanttExclude.<br />
+            The custom units can have even variable size,<i> e.g. this example defines custom units '<b>wh</b>' as work hours 9:00 - 13:00, 13:00 - 14:00, 14:00 - 18:00, 18:00 - 9:00, see it in top grid in zoom level "All in workhours".</i><br />
+            The custom units are created by global API function <b>AddGanttUnits</b> that should be called before any Gantt chart is created.<br />
+            If the custom units have variable length or don't start on 1/1/1970 00:00:00, they must be calculated in API events <b>OnRoundDate</b> and <b>OnIncDate</b>.<br />
+            See documentation for <a href="../../Doc/GanttZoom.htm#AddGanttUnits">Custom Gantt units</a>.<br />
+         </li>
+      </ul>
+     </li>
+     <li> <h4>Horizontal paging by scroll</h4><br />
+     Renders only visible (due horizontal scroll) part of Gantt chart. 
+     <ul>
+      <li>
+         To switch on the paging by scroll set &lt;C> attribute <h3>GanttPaging</h3><b>='1'</b> of &lt;C> Gantt column.
+      </li>
+      <li>
+         By &lt;C> attribute <b>GanttPagingFixed</b> you can control paging of head rows, foot rows and Gantt background. The part can be displayed for the whole chart or rendered only for actual page.<br />
+         By default is background and foot rows. And Gantt headers can be paged individually by their <b>GanttHeaderPaging1</b>-5 attributes.<br />
+      </li>
+      <li>
+         For Gantt paging is set the default maximal width to 1 193 049 pixels. If the width of the whole displayed Gantt chart becomes wider, it is cut to the maximal width.<br />
+         The maximal Gantt width can be increased by &lt;C> <b>MaxWidth</b> attribute, but it will be shrunk in IE browser to its hard limits. 1 193 049 is limit for IE8 strict, 1 342 177 for IE8 quirks and 1 533 918 for other IE versions.<br />
+      </li>
+      <li>
+         See documentation for <a href="../../Doc/GanttZoom.htm#Paging">Horizontal paging by scroll</a> for more options.<br />
+      </li>
+     </ul>
+     </li>
+          <li> <h4>Vertical paging of rows</h4><br />
+      Grid with Gantt chart can have rows paged vertically like normal grid. Can be also freely combined with horizontal Gantt paging.
+      <ul>
+         <li><b>Render root rows on scroll</b>, see documentation for <a href="../../Doc/Paging.htm">Paging root rows</a> or tutorial <a href="../Paging/01 - Client root paging.html">01 - Client root paging</a>.</li>
+         <li><b>Render children on expand</b>, see documentation for <a href="../../Doc/TreePaging.htm#ChildPaging">ChildPaging</a> or tutorial <a href="../Paging/02 - Client child paging.html">02 - Client child paging</a>.</li>
+         <li><b>Render children on scroll</b>, see documentation for <a href="../../Doc/TreePaging.htm#ChildParts">ChildParts</a> or tutorial <a href="../Paging/02 - Client child paging.html">02 - Client child paging</a>.</li>
+         <li><b>Load root rows on scroll</b>, see documentation for <a href="../../Doc/PagingServer.htm">Server paging root rows</a> or tutorial <a href="../Paging/06 - Server root paging.html">06 - Server root paging</a>.</li>
+         <li><b>Load children on scroll</b>, see documentation for <a href="../../Doc/PagingServer.htm#ChildPaging">Server ChildPaging</a> or tutorial <a href="../Paging/07 - Server child paging.html">07 - Server child paging</a>.</li>
+         <li><b>Gantt chart restrictions in server paging</b> (loading rows on demand)<br /> 
+            <ul>
+               <li>Dependencies cannot be linked between tasks in different pages or child pages.</li>
+               <li>Resource charts cannot be calculated from not yet loaded tasks.</li>
+               <li>Chart size cannot be calculated from not yet loaded tasks (GanttSize should not be "" or "0").</li>
+               <li>GanttBase and GanttFinish cannot be automatically calculated from not yet loaded tasks.</li>
+               <li>All Formula summary Gantt functions, e.g. ganttstart(), cannot be calculated from not yet loaded tasks.</li>
+            </ul>
+         </li>
+      </ul>
+     </li>    
+   </ul>
+</body>
+</html>

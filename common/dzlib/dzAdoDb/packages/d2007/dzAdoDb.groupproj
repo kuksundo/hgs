@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6f88d5b8-e8c0-4844-9991-a44dca91eb50}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="Dcldzadodb.dproj" />
+    <Projects Include="dzadodb.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="dzadodb">
+    <MSBuild Projects="dzadodb.dproj" Targets="" />
+  </Target>
+  <Target Name="dzadodb:Clean">
+    <MSBuild Projects="dzadodb.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="dzadodb:Make">
+    <MSBuild Projects="dzadodb.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Dcldzadodb">
+    <MSBuild Projects="Dcldzadodb.dproj" Targets="" />
+  </Target>
+  <Target Name="Dcldzadodb:Clean">
+    <MSBuild Projects="Dcldzadodb.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="Dcldzadodb:Make">
+    <MSBuild Projects="Dcldzadodb.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="dzadodb;Dcldzadodb" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="dzadodb:Clean;Dcldzadodb:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="dzadodb:Make;Dcldzadodb:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

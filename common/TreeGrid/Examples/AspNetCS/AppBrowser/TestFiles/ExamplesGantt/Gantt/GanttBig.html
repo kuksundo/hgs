@@ -1,0 +1,58 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Large Gantt chart with 1000 rows</h2>
+         A demonstration of TreeGrid application showing interactive Gantt chart with large amount of rows.<br/>
+         This example is similar to <a href='Gantt.html'>Interactive Gantt chart example</a>, but uses client side paging and shows 1000 rows.<br />
+         <br />
+
+      <div style="WIDTH:100%;HEIGHT:520px;">
+         <bdo Debug="info" DebugTag='debug' Layout_Url="GanttBigDef.xml" Data_Url="GanttBigData.xml"></bdo>
+      </div>
+      <div style='font:10px Arial;margin-top:5px;'>Debugging information and times</div>
+      <div id='debug' style='background:#DDD; height:150px; border:1px solid black; padding-left:5px; overflow:auto;'></div>
+      <script>
+
+// --- Updates length of page for tree, for tree is used 1, for plain table 8 ---
+Grids.OnGroup = function(G,Cols){
+G.PageLength = G.Grouped&&Cols&&Cols.length ? 1 : 8;
+}
+Grids.OnClickPanelGrouped = function(G){
+G.PageLength = !G.Grouped&&G.GroupCols&&G.GroupCols.length ? 1 : 8;
+}
+
+// --- Updates length of page for collapsed rows ---
+Grids.OnClickButtonCollapseAll = function(G){
+G.PageLength = 8;
+G.CreatePages();
+for(var b=G.XB.firstChild;b;b=b.nextSibling) for(var r=b.firstChild;r;r=r.nextSibling) r.Expanded = 0;
+G.Render();
+return "";
+}
+
+// --- Updates length of page for expanded rows ---
+Grids.OnClickButtonExpandAll = function(G){
+G.PageLength = 1;
+G.CreatePages();
+for(var b=G.XB.firstChild;b;b=b.nextSibling) for(var r=b.firstChild;r;r=r.nextSibling) r.Expanded = 1;
+G.Render();
+return "";
+}
+
+// --- Shows a date of Gantt part as tooltip ---
+Grids.OnTip = function(G,row,col,tip,cx,cy,x,y){
+if(col!="G") return tip; // Tip only for Gantt column
+var A = G.GetGanttXY(row,col,x,y), t = ""; if(!A) return null;
+if(A.Flag) t = G.GetString(row,"M").split(";")[A.FlagIndex];
+else if(A.Flow) t = G.GetString(row,"F").split(";")[A.FlowIndex].replace('~'," - ");
+else if(A.Main) t = G.GetString(row,"S") + " - " + G.GetString(row,"E");
+return (t?"<div style='color:#00F;'>"+t+"</div>":"") + (tip&&t?"<div style='height:5px;overflow:hidden;'></div>":"") + (tip?tip:"");
+}
+
+      </script>
+
+   </body>
+</html>

@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+import commands
+import os.path
+import string
+import sys
+
+def dirstat (params, dirname, names):
+	basedir=params[0]
+	domain=params[1]
+	langcode=dirname[len(basedir)+1:]
+	if string.find(langcode,"/")==-1 and os.path.exists(dirname+"/"+domain+".po") and langcode!="templates":
+		sys.stdout.write (dirname+"/"+domain+".po ")
+		mergeoutput=commands.getoutput("msgmerge -q -o \""+dirname+"/temp28347.po\" \""+dirname+"/"+domain+".po\" \""+dirname+"/../templates/"+domain+".po\"")
+		if mergeoutput=="":
+			os.rename (dirname+"/temp28347.po", dirname+"/"+domain+".po")
+		sys.stdout.write (mergeoutput+"\n")
+
+
+if len(sys.argv)<=1:
+	sys.stdout.write ("ERROR: You must specify a domain name as parameter.\n")
+else:
+	domain=sys.argv[1]
+	sys.stdout.write ("Updating all translations for domain "+domain+"\n")
+	os.path.walk (os.getcwd(), dirstat, [os.getcwd(), domain])
+

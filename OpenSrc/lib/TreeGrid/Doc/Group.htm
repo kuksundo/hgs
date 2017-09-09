@@ -1,0 +1,1469 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Grouping rows to tree</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Grouping rows to tree</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports grouping
+rows according to the same values in some column(s) to tree like in Pivot
+tables.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also possible group rows
+in existing tree – creating new levels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only variable rows can be
+grouped.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Strings can be grouped case
+sensitive or insensitive. Can be also grouped according to actual browser
+language or by special settings. See <a href="#Strings">comparing strings</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grouping can be changed by a
+user in special <a href="#Group">Group</a> row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grouping can be preset in XML
+by &lt;Cfg <a href="#CfgGroup">Group</a>/&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grouping can be changed by
+API by <a href="#DoGrouping">DoGrouping</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The created group rows can be
+controlled by &lt;D Group=’1’/&gt; <a href="#DGroup1">default rows</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgGrouping><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Grouping</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grouping in grid is
+permitted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting it to <b>0</b>
+disables all grouping functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgGrouped><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Grouped</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [1]        Saved
+to cookies, to not load it, set <b>GroupedLap</b>=’1’                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grouping is enabled by
+user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can enable / disable
+grouping by click to <a href="#Group">Group</a> row left panel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;                 </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CCanGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanGroup</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be grouped by this
+column, its caption can be dragged to drop area for custom sorting in group
+row.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> cannot be grouped, <b>1</b> can be grouped, <b>2</b>
+can be grouped, but column is not hidden when grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]  </span><a
+name=CfgGroup></a><a name=CfgGroupCols><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Group</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                   [“”]        Saved
+to cookies, to not load it, set <b>GroupLap</b>=’1’                       <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined or actual
+grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Array of column names (comma
+separated), according to them are rows grouped, in this order.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgGroupMain><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupMain</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column where to show tree
+when rows are grouped. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only for plain tables;
+for tree is used always <a href="Tree.htm#CfgMainCol">MainCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only if <a
+href="#DGroupMain">GroupMain</a> is not set in chosen default &lt;<a
+href="#DGroup1">D</a>&gt; row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgGroupTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                          
+<span style='color:red'>            new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, it shows the group
+tree in individual grouped columns instead of one main col.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It should be used only in
+plain grids without MainCol, because the MainCol is hidden when grid is
+grouped.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+expand button is shown left side, if set to <b>2</b>, it is shown right side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>3</b> or <b>4</b>,
+the group cell will be editable and its change will change all its children. <b>3</b>
+shows the button left side, <b>4</b> right side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+   </span><a name=CfgGroupTreeCol><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GroupTreeCol</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>            new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, moves grouped columns
+(in <a href="#CfgGroup">Group</a> array) to the specified position. To be the
+tree correctly position.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be column name to move
+the columns right to this column (this column should not be possible to group
+by).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or number of column section
+(0,1,2) to place it as the first column in the section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgGroupSortMain><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupSortMain</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                              
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> when
+grouping, always sorts according to main column ascending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> when
+grouping, always sorts according to main column descending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgGroupRestoreSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupRestoreSort</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                  
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> restores
+sorting state after ungrouping that was before grouping</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxGroupLength><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxGroupLength</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                      <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of immediate
+children in grouped row. If the count is higher, the grouping row is divided to
+more rows with the same value in the main column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it has default value <b>0</b> as disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgGroupChangeMoved><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupChangeMoved</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                  
+<span style='color:red'>            new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes all required cell
+values when row is moved to another group or newly added into group (to be
+correctly grouped).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgGroupMoveFree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupMoveFree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                                              
+<span style='color:red'>            new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, rows cannot be
+moved to group created by another column than source parent group.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, rows can
+be moved or added also as children to other data row and switch the data row to
+group row. In this case <a href="RowDefaults.htm#IDefParent">DefParent</a> and <a
+href="RowDefaults.htm#IDefEmpty">DefEmpty</a> should be set to change default
+to group or data row when it gets or looses children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgGroupIdValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupIdValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                              
+<span style='color:red'>            new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it creates the
+group row ids as <a href="RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a> +
+ascending number</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it creates the
+group row ids as column name + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ grouping value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>2</b> it creates the
+group row ids as column name + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ first child row id</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>3</b> it creates the
+group row ids as row Level + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ grouping value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>4</b> it creates the
+group row ids as row Level + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ first child row id</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;                 </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string    </span></i><a
+name=CGroupDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“”]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A name for default row for
+group row when grouping according to this column. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used instead of default
+“Group” but <u>not</u> instead of chosen default row according to <a
+href="#DGroupCols">GroupCols</a> and / or <a href="#DGroupCol">GroupCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;                 </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>int        </span></i><a
+name=CGroupWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A width of column when it
+shows the tree with grouped rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can specify this width to
+change column width when it becomes main column while grouping – to resize
+column to accommodate the tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid is ungrouped or it
+shows the tree in another column, the column width returns to previous setting.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'>, if set to <b>1</b>, the width of the column will be
+automatically increased by the widths of columns hidden by grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Groups><b><span style='font-size:20.0pt'>Creating groups</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=ICanGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanGroup</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row can be grouped. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0 the row will not
+be moved to grouping row. But if contains children, all its children will be
+grouped inside.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree you can control by
+this attribute the level where will be grouping applied or even for every node
+you can choose different level.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grouping, only the root
+rows are grouped. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to group another
+level in tree, set CanGroup of the root (and next level(s)) rows to <b>0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CGroupEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupEmpty</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                [2]                                                                                             
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there will be created
+grouping for empty and zero values</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Zero and empty values are <u>not</u> grouped</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Only zero values are grouped, empty values are <u>not</u>
+grouped</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Empty and zero are grouped</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool</i>
+     </span><a name=CGroupSole><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GroupSole</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                   [1]                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, does not
+create grouping row with only one child row – if the cell value is unique in
+the column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool</i>
+     </span><a name=CGroupSingle><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GroupSingle</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [1]                                                                                             
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, does not
+create single grouping row - when all rows have the same value in the column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool</i>
+     </span><a name=CGroupDeleted><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GroupDeleted</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> 
+[1]                                                                                                         
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, does not
+group deleted rows. Only when are shown (<a href="RowDelete.htm#CfgShowDeleted">ShowDeleted</a>=’1’),
+otherwise deleted rows are not grouped anyway.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string</i>
+   </span><a name=CGroupChar><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GroupChar</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to create more
+or all grouping levels from one column. Specify GroupChar as separator.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used for example to
+group by directory paths, set GroupChar=’/’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell value is split by
+the GroupChar and is grouped by all the parts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Remember, by default also
+empty values and parts are grouped by, see <a href="#CGroupEmpty">GroupEmpty</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int[]      </i></span><a
+name=CMaxChars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxChars</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                  <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum characters from
+strings to compare. It should be set only for string columns. It can be used to
+group by according to first few characters. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain more values to
+create more group levels according to given parts of the values.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example MaxChars=’1,2,3,4’ creates up to four levels by the first four
+characters</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example MaxChars=’2,6’ creates up to two levels, the first by first two
+characters, the second by next four characters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used <b>MaxChars</b>, it
+is better to not hide the grouped column, by setting it as <a href="#DGroupMain">GroupMain</a>
+or by setting its <a href="#CCanGroup">CanGroup</a>=’2’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellSortValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value used for compare when <b>sorting</b>
+and <b>grouping</b> instead of cell value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful for special non
+editable cells like Html, Icon, List.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetSortValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetSortValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>,
+<i>bool</i> <b>desc</b>, <i>bool</i> <b>group</b>)             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value for <b>sorting</b>
+and <b>grouping</b>, <i>val</i> is predefined value, returns <i>val</i> or new
+value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>desc</span></b><span
+style='font-size:10.0pt'> is true for descending sorting, <b>group</b> is true
+when called while grouping</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Strings><b><span style='font-size:20.0pt'>Comparing
+strings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also specify these
+settings for whole grid in default column &lt;Def&gt;&lt;D
+Name=’C’/&gt;&lt;/Def&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CLocaleCompare><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LocaleCompare</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared
+according to browser’s locale settings. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is done only for first <b>1920</b>
+Unicode characters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For higher Unicode characters
+like Chinese, Korean or Japanese you must define <a href="#CCharCodes">CharCodes</a>
+instead.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CCaseSensitive><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CaseSensitive</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared case
+sensitive. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CWhiteChars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>WhiteChars</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of characters to ignore
+when sorting, filtering or grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set for example to
+“ “ (space) to ignore spaces (it means that for example “a b   c” and “abc”
+strings are the same.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>[*]
+</span><a name=CCharCodes><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CharCodes</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It changes characters in
+comparing strings for sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is first character
+separated array of pair of characters to replace the first character by the
+second when comparing strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “|y|i|Y|I|.|,” –
+replaces ‘y’ by ‘i’, ‘Y’ by ‘I’ and ‘.’ by ‘,’ </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>–
+it means that when comparing strings does not differ between letter ‘y’ and
+‘i’, both cases and also does not differ between comma and point.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first character must be
+one letter, but the second in fact can be any letter or string or even empty
+string, like “|a|xxx|b||c|ff”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use <a href="DLL.htm">TreeGrid
+server</a> DLL/SO, there must be the second character one letter only too.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DGroup1><b><span style='font-size:20.0pt'>Created group
+rows &lt;D Group=’1’/&gt;</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows created as parent
+rows when grouping are preset by default row &lt;D Group=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>From this row are filled all
+attributes in rows created when grouping. It contains also attributes <a
+href="RowDefaults.htm#DName">Name</a> and <a href="RowDefaults.htm#IDef">Def</a>
+and all other attributes in <a href="RowDefaults.htm">&lt;D&gt;</a> tag.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>For other <b>&lt;D&gt;</b>
+attributes see</span></i><i><span style='font-size:10.0pt'> <a
+href="RowDefaults.htm">Default rows</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to define more
+default rows (&lt;D Group=’1’) and use them for different grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default there is only one
+default row defined in Defaults.xml named “Group” that is used for all created
+grouping rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How the appropriate grouping
+default row is chosen? When grouping starts: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) There are searched all
+default rows with <a href="#DGroup">Group</a>=’1’ and tested their <a
+href="#DGroupCols">GroupCols</a> attributes if passes the actual &lt;Cfg <a
+href="#CfgGroup">Group</a>/&gt; are chosen. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) If any of found default
+rows in point 1) have set <a href="#DGroupMain">GroupMain</a>, this value is
+set to <a href="Tree.htm#CfgMainCol">MainCol</a>. If some row have set <a
+href="#ActionOnGroup">OnGroup</a> action, this action is called.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) Grouping is done for every
+column in &lt;Cfg <a href="#CfgGroup">Group</a>/&gt; - e.g. if there are three
+columns, three levels of rows will be created and every level can have
+different default</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                a) For every
+column in &lt;Cfg GroupCols/&gt; (= for every level in grouping tree) are
+searched the defaults found in point 1) and the first one that passes by its <a
+href="#GroupGroupCol">GroupCol</a> is used for the level.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>b)
+If no default row passes the point a), it is used default row set by &lt;C <a
+href="#CGroupDef">GroupDef</a> /&gt;. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>c)
+If no default row is found, it is used &lt;D Name=”Group”/&gt; defined in
+Defaults.xml.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=DGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Group</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, this default row
+will be used for grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Also when ungrouping all rows
+that have its Def set to default with Group=’1’ are deleted and their children
+are ungrouped.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string[*]
+</i> </span><a name=DGroupCols><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GroupCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies, for which grouping
+will be this default row used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This default row will be used
+if &lt;Cfg <a href="#CfgGroup">Group</a>/&gt; attribute contains any string in
+this array. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The string can contain “*” as
+wildcard for any substring.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When GroupCols is not set,
+the default can be used for any grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When GroupCols is empty, the
+default will never be used for grouping automatically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When more than one default
+row pass the actual grouping, one of them will be used by random, but always
+have precedence the defaults with GroupCols set and def named exactly “Group”
+is tested as the last.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “|*B,C|*X*|A” means
+all grouping with the last two columns B,C or any grouping containing column
+‘X’ or grouping by only column A.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string[]</i> 
+</span><a name=DGroupCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies, for which grouping
+column will be this default row used, when GroupCols passed more default rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This default will be used
+only when creating groups according to column in this (comma separated) array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In the array can be listed
+column name or its position in &lt;Cfg <a href="#CfgGroup">Group</a>/&gt;. The
+position can be 0 for first, 1 second, -1 last, -2 last but one and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &lt;D Group=’1’
+GroupCols=’|A,B’ GroupCol=’A’ ... /&gt; &lt;D Group=’1’ GroupCols=’|A,B’
+GroupCol=’B’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                When
+grouping, for first group rows created for column A will be used the first
+&lt;D&gt;, for the second group rows created for column B will be used the
+second &lt;D&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example &lt;D Group=’1’
+GroupCols=’|A*’ GroupCol=’-1’/&gt; ... &lt;Cfg GroupCols=’A,B,C’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                This default
+will be used for groups created for column ‘C’ - the last column in &lt;Cfg
+Group/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=DGroupMain><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupMain</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A column where the grouping
+tree will be displayed. Changes <a href="Tree.htm#CfgMainCol">MainCol</a> when
+this default is used. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When more than one default
+row passed the <a href="#DGroupCols">GroupCols</a> (but <u>not</u> <a
+href="#GroupGroupCol">GroupCol</a>!), the first found <b>GroupMain</b>
+attribute is used for setting <a href="Tree.htm#CfgMainCol">MainCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=DGroupMainCaption><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupMainCaption</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A column caption that will be
+set to the main column when grouping by this default. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When more than one default
+row passed the <a href="#DGroupCols">GroupCols</a> (but <u>not</u> <a
+href="#GroupGroupCol">GroupCol</a>!), the first found <b>GroupMainCaption</b>
+attribute is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetGroupDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetGroupDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>, <i>string</i> <b>def</b>)                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get default row for
+the group when grouping according to column <b>col</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is column name, <b>def</b> is chosen name of default.
+Return new name of default or <i>def</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=DParentCDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ParentCDef</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes <a
+href="RowDefaults.htm#ICDef">CDef</a> of parent node. To change adding new rows
+to parent when it contains group rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=DParentAcceptDef></a><a name=DGroup1ParentAcceptDef><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>ParentAcceptDef</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes <a
+href="RowDefaults.htm#IAcceptDef">AcceptDef</a> of parent node. To change
+dragging rows to parent when it contains group rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string
+[]</i> </span><a name=DEditCols><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>EditCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+columns that will be editable in group row and will change all values in the
+group children.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In this list can be
+present only columns where the actual grouping results all values the same.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can contain special value “<b>Main</b>”
+that means main grouping column that will be mirrored to column according to
+the grouping is done.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=DAggChildren><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AggChildren</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> and row’s
+parent calculates some aggregate functions on its children, </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>this row calculates its
+children instead of itself – behaves like its children was directly in its
+parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>int[]      </i></span><a
+name=DCellMaxChars></a><a name=DGroup1MaxChars><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>MaxChars</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                  <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, it is cell
+attribute!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum characters from
+strings to compare. It should be set only for string columns. It can be used to
+group by according to first few characters. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0) </span></i><span
+style='font-size:10.0pt'>It can contain more values to create more group levels
+according to given parts of the values.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example MaxChars=’1,2,3,4’ creates up to four levels by the first four
+characters</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example MaxChars=’2,6’ creates up to two levels, the first by first two
+characters, the second by next four characters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used <b>MaxChars</b>, it
+is better to not hide the grouped column, by setting it as <a href="#DGroupMain">GroupMain</a>
+or by setting its <a href="#CCanGroup">CanGroup</a>=’2’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;D XML event&gt; </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           </span><a
+name=XMLOnGroup></a><a name=ActionsOnGroup></a><a name=ActionOnGroup><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>OnGroup</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             (<i>TGrid</i>
+<b>Grid</b>,<b> </b><i>TRow</i><b> default</b>)                                                                    <span
+style='color:red'>    renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard default row or
+Actions attribute containing JavaScript code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is run when this default
+is chosen by the <a href="#DGroupCols">GroupCols</a>. The action is run only
+once per whole grouping, before grouping is started.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When more than one default
+row passed the <a href="#DGroupCols">GroupCols</a> (but not GroupCol!), only
+the first not empty Action is run.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;D Group=’1’
+OnGroup=’Grid.Editing=0;’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;        </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            </span><a
+name=ActionsOnUngroup></a><a name=OnUngroup><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>OnUngroup</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>      (<i>TGrid</i>
+<b>Grid</b>)                                                                                            
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Standard Actions attribute
+containing JavaScript code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is run when grid is ungrouped
+- GroupCols are set to empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;Actions
+OnUngroup=’Grid.Editing=1;’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i> </span><a
+name=OnGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGroup</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>, <i>string </i><b>Group</b>)                                                                    <span
+style='color:red'>chg <b>6.0</b></span><span style='color:#0070C0'>; upd <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before grouping grid
+after user action. <b>Group</b> is new value that will be set for <a
+href="#CfgGroup">Group</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called also before ungrouping
+grid with <b>Group</b> = “”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called also after <a
+href="#CfgGrouped">Grouped</a> is changed with <b>Group</b> = null, but before
+the grid is re-grouped. <i>(Before 7.1 was called always with Grouped=1)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> called on
+start even if grid is grouped.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnGroupFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGroupFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after grid was
+re-grouped in data, but before changes are visible in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Group><b><span style='font-size:20.0pt'>User interface to
+choose grouping</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User interface for grouping
+is shown by <b>solid</b> <b>space</b> &lt;<b><span style='color:red'>Group</span></b>&gt;
+row. &lt;Solid&gt;&lt;Group ... /&gt;&lt;/Solid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This row is not divided to
+any section and is never scrolled. It can contain any cells like <a
+href="#Space">Space</a> row, but <b>List</b> cell and <b>Custom</b> area have
+special functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The group row can be also
+done by pure <a href="RowSpace.htm">Space</a> row with the cells <a
+href="TypeEnum.htm">Select</a> and <a href="TypeHtml.htm#TDropCols">DropCols</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be placed in <span
+style='color:red'>&lt;</span><b><span style='color:blue'>Solid</span></b><span
+style='color:red'>&gt;</span> tag. The position in grid is set by its <a
+href="#GroupSpace">Space</a> attribute. </span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Note: when grouping,
+created grouping rows have default row “<a href="#DName">Group</a>”, to change
+this settings see &lt;D <a href="#DGroup1">Group</a>=’1’/&gt;.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string</i>[<b>*</b>]
+</span><a name=GroupList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>List</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of predefined grouping names. It can contain HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user will choose one item
+from the list to select the grouping set by <a href="#GroupCols">Cols</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is empty, no cell with
+predefined grouping will be displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This list has the same format
+as list for Button of type <a href="CellEdit.htm#CDefaults">Defaults</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string    </i></span><a
+name=GroupListCustom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ListCustom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value displayed in <a
+href="#GroupList">List</a> cell for custom grouping not in <a href="#GroupCols">Cols</a>.
+It can contain HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string</i>[
+][<b>*</b>]  </span><a name=GroupCols><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Cols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of comma separated arrays of column names as predefined <a
+href="#CfgGroup">Group</a> for defaults in <a href="#GroupList">List</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:              List=”|Group
+by A|Group by A, B and C|Group by C and D”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               Cols=”|A|A,B,C|C,D”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>bool      </i></span><a
+name=GroupCustom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Custom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0/1]                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the custom grouping is
+permitted – if the drop area for column captions is displayed, cell type <a
+href="TypeHtml.htm#TDropCols">DropCols</a> named Custom.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The text displayed in the
+area “To group by, drag column caption here...” can be changed by
+&lt;Grid&gt;&lt;Lang&gt;&lt;Text GroupCustom=””/&gt;&lt;/Lang&gt;&lt;/Grid&gt;,
+default located in <a href="Files.htm#TextXml">Text.xml</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Custom cell is by default
+displayed if no <a href="#GroupList">List</a> and <a href="#GroupCells">Cells</a>
+are defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>int        </i></span><a
+name=GroupSpace><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Space</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Position of the row in grid, specifies
+horizontal section of the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more solid rows has the
+same Space value, are placed in the order they are in data</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>-1</span></b><span
+style='font-size:10.0pt'> – above grid, <b>0</b> – above header, <b>1 </b>–
+under head rows, <b>2</b> – above foot rows, <b>3</b> – under foot rows, <b>4</b>
+– under vertical scrollbar, <b>5</b> – under grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-1, 0, 4, 5 are spanned for
+whole grid, including vertical scrollbar and pager, 1, 2, 3  are spanned only
+for columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>int        </i></span><a
+name=GroupPanel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Panel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row displays left side
+panel, to show icon for enabling / disabling grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the panel
+is displayed only if the grid left side panel is displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, the panel
+is displayed always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Group&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string</i>
+[]  </span><a name=GroupCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Cells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [“List”
+/ “Custom”]                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of cells
+in the group row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Group row can have two
+special cells, <b><span style='color:blue'>List</span></b> and <b><span
+style='color:blue'>Custom</span></b>. These cells have also all other
+attributes as standard space row cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the Cells attribute is <u>not</u>
+set, it contains <b>List</b> or <b>Custom</b> if <a href="#GroupList">List</a>
+and / or <a href="#GroupCustom">Custom</a> attribute is set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the Cells attribute is
+set, to show the List or Custom, include <b>List</b> and / or <b>Custom</b>
+name to the Cells list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Actions><b><span style='font-size:20.0pt'>Grouping actions
+and API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGroupBy></a><a name=GroupBy><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GroupBy</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Groups by actual or focused
+column as the first column, fails if grid is already grouped by this column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGroupByLast></a><a name=GroupByLast><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>GroupByLast</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>     Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Groups by actual or focused
+column as the last column, fails if grid is already grouped by this column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUngroupBy></a><a name=UngroupBy><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>UngroupBy</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>         Not
+attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removes the actual or focused
+column from grouping, fails if grid is not grouped by this column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGroupOn></a><a name=GroupOn><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GroupOn</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Attached
+to event <b>OnClickPanelGrouped</b>                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enables grouping in grid and
+re-groups it according to actual settings. It fails if groupings already
+enabled.                               </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGroupOff></a><a name=GroupOff><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GroupOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Attached
+to event <b>OnClickPanelGrouped</b>                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Disables grouping in grid and
+un-groups it. It does not clear actual grouping settings. It fails if groupings
+already disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDropColMove></a><a name=DropColMove><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DropColMove</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Attached
+to event <b>OnDragDropCol</b>, can be attached only to <b>OnDrag...</b> actions         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts moving column in
+DropCols (usually in Group row)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i> </span><a
+name=DoGrouping><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DoGrouping</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string
+</i><b>Group</b>)                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-groups grid according
+given settings. If <b>Group</b> is null, it un-groups grid. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Group</span></b><span
+style='font-size:10.0pt'> is new value for <a href="#CfgGroup">Group</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>string    </i> </span><a
+name=GroupCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GroupCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                               <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Variable of created group
+row, it contains column name according to it was the group created.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>int        </i> </span><a
+name=GroupPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GroupPos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                              <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Variable of created group
+row, it contains row position (from 0) when there are created more groups for
+one columns by <a href="#CGroupChar">GroupChar</a> or <a href="#CMaxChars">MaxChars</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnCreateGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCreateGroup</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>group</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                         <span
+style='color:red'>new <b>6.4</b></span><span style='color:#0070C0'>; upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for every created
+group while grouping grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The group is already set and
+placed in grid, but does not have its children yet.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> it can change the <i>group</i> row id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnRemoveGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRemoveGroup</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>group</b>, <i>bool</i> <b>ungroup</b>)                                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the group is
+removed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The group is still placed in
+grid and has its children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be called also while
+grouping when the group is removed due some restriction like <a
+href="#CGroupSole">GroupSole</a>. In this case is <b>ungroup</b> false.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

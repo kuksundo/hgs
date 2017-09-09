@@ -1,0 +1,90 @@
+<Grid>
+   <Cfg id="Grouping" IdChars="0123456789" NumberId="1" SuppressCfg="1" IdNames="N"/>
+   <Cfg GroupSortMain="1" GroupRestoreSort="1"/>
+   <Cfg Group="A,B"/>
+   <LeftCols>
+      <C Name="N" Type="Int" CanEdit="1" Width="60" GroupWidth="1" Align="Left"/>
+   </LeftCols>
+   <Cols>
+      <C Name="A" Width="100" Type="Int"/>
+      <C Name="B" Width="100" CaseSensitive="0" WhiteChars=" "/>
+      <C Name="C" Width="100" CaseSensitive="0" WhiteChars=" " GroupChar="/" />
+      <C Name="D" Width="100" CaseSensitive="0" WhiteChars=" " MaxChars="1,2,3,4"/>
+      <C Name="E" Width="100" Type="Float" CanGroup="0" Format="0.00"/>
+   </Cols>
+   <Def>
+      <D Name="Group" Expanded="1"  GroupMainCaption="id (grouped)" IgnoreIdNames="1"
+         Calculated="1" CalcOrder="NHtmlPrefix,E" EFormula="sum()"
+         NCanEdit="1" NHtmlPrefixFormula="Row.GroupCol + (Row.GroupPos!=null?(Row.GroupPos+1):'') + ' - &lt;b style=&quot;color:' + ['red','blue','green','purple'][Row.Level%4] + '&quot;>'" NHtmlPostfix="&lt;/b>"
+         Spanned="1" ASpan="4" AType="Text"
+         /> <!-- Default row used for all created groups -->
+   </Def>
+   <Solid>
+      <Group Cells="List,Custom" 
+         ListWidth="165" ListCustom="unknown"
+         List="|none|&lt;b>A&lt;/b> (numbers)|&lt;b>B&lt;/b> (strings)|&lt;b>C&lt;/b> (more group levels by separator)|&lt;b>D&lt;/b> (more group levels by length)|A+B|B+A|A+B+C+D"
+         Cols="||A|B|C|D|A,B|B,A|A,B,C,D"
+         />
+      <Search Panel="0" Cells="EMPTY,SOLE,SINGLE,WHITE,CASE,HIDE" EMPTYLeft="5"
+         EMPTYType="Bool" EMPTYLabelRight="Group empty" EMPTY="1" EMPTYOnChange="for(var c in Grid.Cols) Grid.Cols[c].GroupEmpty = Value ? 2 : 0; Grid.DoGrouping(Grid.Group);" EMPTYTip="Groups also rows with empty values"
+         SOLEType="Bool" SOLELabelRight="Single children" SOLE="1" SOLEOnChange="for(var c in Grid.Cols) Grid.Cols[c].GroupSole = Value ? 1 : 0; Grid.DoGrouping(Grid.Group);" SOLETip="Groups also rows with unique value in the column"
+         SINGLEType="Bool" SINGLELabelRight="Single parents" SINGLE="1" SINGLEOnChange="for(var c in Grid.Cols) Grid.Cols[c].GroupSingle = Value ? 1 : 0; Grid.DoGrouping(Grid.Group);" SINGLETip="Groups also rows with unique value in the column"
+         WHITEType="Bool" WHITELabelRight="Ignore whitespace" WHITE="1" WHITEOnChange="for(var c in Grid.Cols) Grid.Cols[c].WhiteChars = Value ? ' ' : ''; Grid.DoGrouping(Grid.Group);" WHITETip="Ignores whitespace in values when comparing, here demonstrated on C column only"
+         CASEType="Bool" CASELabelRight="Case insensitive" CASE="1" CASEOnChange="for(var c in Grid.Cols) Grid.Cols[c].CaseSensitive = Value ? 0 : 1; Grid.DoGrouping(Grid.Group);" CASETip="Case insensitive comparing, here demonstrated on C column only"
+         HIDEType="Bool" HIDELabelRight="Hide columns" HIDE="1" HIDEOnChange="Grid.ActionGroupOff(); Grid.SetWidth('N',Value?-100:100); for(var c in Grid.Cols) if(c!='E') Grid.Cols[c].CanGroup = Value ? 1 : 2; Grid.ActionGroupOn();" HIDETip="Hides the columns the grid is grouped by"
+         /> <!-- The Search row is used just to style the row, there is no search attribute used, the row behaves as normal Space row -->
+   </Solid>
+   <Toolbar Cells="Reload,Print,Add,AddChild,Outdent,Indent,ExpandAll,CollapseAll,Columns,Cfg,StyleTitle,StyleCombo,Empty,TREE"
+      Styles="2"
+      TREEType="Bool" TREELabelRight="&lt;b style='color:black;'>Independent group trees&lt;/b>" TREELeft="5"
+      TREEOnChange="
+         Grid.GroupTree = Value?3:0;
+         Grid.GroupTreeCol = 'Panel'; 
+         Grid.Def.Group.NVisible = !Value;
+         Grid.Def.Group.NCanEdit = !Value;
+         Grid.Def.Group.Spanned = !Value;
+         Grid.DoGrouping(Grid.Group);
+         "
+      />
+   <Header N="id"/>
+   <Body>
+      <B>
+         <I N="1" A="1" B="One" C="1/aaa/1" D="AAA" E="10"/>
+         <I N="2" A="1" B="One" C="1/aaa/1" D="A AA" E="5"/>
+         <I N="3" A="2" B="one" C="1/AAA/1" D="aba" E="2.5"/>
+         <I N="4" A="2" B="One" C="1/a a a/2" D="Abc" E="12"/>
+         <I N="5" A="1" B="ONE" C="1/aaa/2" D="BBB" E="33"/>
+         <I N="6" A="1" B="Two" C="1/aaa" D="BBCD" E="50"/>
+         <I N="7" A="2" B="Two" C="1/bbb/1" D="BABB" E="75.25"/>
+         <I N="8" A="2" B="Two" C="1/Bbb/1" D="ABBB" E="40"/>
+         <I N="9" A="1" B="Three" C="1/bbb/2" D="CABA" E="-10"/>
+         <I N="10" A="1" B="Four" C="1/bbb/3" D="C" E="1.1"/>
+         <I N="11" A="1" B="F o u r" C="1/Ccc/2" D="ABCC" E="12"/>
+         <I N="12" A="1" B="Four" C="1/ccc/2" D="CAA" E="3.4"/>
+         <I N="13" A="1" B="Five" C="1/ccc/3" D="CC" E="6.8"/>
+         <I N="14" A="1" B="Six" C="1/ddd/1/xxx" D="ABCD" E="44"/>
+         <I N="15" A="1" B="Six" C="1/ddd/1/xxx" D="CBCA" E="23"/>
+         <I N="16" A="3" B="Six" C="2/aaa/1" D="BCDA" E="34"/>
+         <I N="17" A="2" B="Seven" C="2/aaa/1" D="CCCC" E="3.4"/>
+         <I N="18" A="2" B="Seven" C="2/aaa/2" D="A" E="3"/>
+         <I N="19" A="4" B="Eight" C="2/aaa/2" D="" E="23"/>
+         <I N="20" A="1" B="Nine" C="2/bbb/1" D="AB" E="16"/>
+         <I N="21" A="2" B="Nine" C="2/bbb/1" D="ABBB" E="22"/>
+         <I N="22" A="1" B="NINE" C="2" D="BABC" E="86"/>
+         <I N="23" A="1" B="Nine" C="2" D="ABB" E="23.3"/>
+         <I N="24" A="2" B="NINE" C="" D="BAB" E="15"/>
+         <I N="25" A="1" B="nine" C="3/aaa/1/xxx" D="CAA" E="26.4"/>
+         <I N="26" A="1" B="Nine" C="3/aaa/1" D="CA" E="34"/>
+         <I N="27" A="3" B="Ten" C="3/aaa/2" D="AC" E="50"/>
+         <I N="28" A="1" B="TEN" C="3/bbb/1" D="AAA" E="32.5"/>
+         <I N="29" A="1" B="TEN" C="3/bbb/2" D="ACC" E="67"/>
+         <I N="30" A="1" B="Ten" C="3/bbb/3" D="BB" E="3.5"/>
+         <I N="31" A="1" B="Ten" C="3/bbb/3" D="BCA" E="23"/>
+         <I N="32" A="1" B="Ten" C="3/bbb/3" D="BAA" E="56"/>
+         <I N="33" A="0" B="Zero" C="3/bbb/3" D="AAA" E="4.5"/>
+         <I N="34" A="0" B="Z e r o" C="3/ccc/1" D="CC" E="75"/>
+         <I N="35" A="1" B="" C="3/ccc/1" D="CC" E="0"/>
+         <I N="36" A="1" B="" C="3/ccc/2" D="CAC" E="-3"/>
+      </B>
+   </Body>
+</Grid>

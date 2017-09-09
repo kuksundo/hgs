@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+#   Examples build script
+#   Syntax: build all | clean
+#
+
+if [ /$1/ = /all/ ]; then
+    find . -mindepth 1 -type d | while read LANGUAGE; do
+        if [ -f "$LANGUAGE"/build ]; then
+            cd "$LANGUAGE"
+            ./build all
+            cd ..
+        fi
+    done
+elif [ /$1/ = /clean/ ]; then
+    find . -mindepth 1 -type d | while read LANGUAGE; do
+        if [ -f "$LANGUAGE"/build ]; then
+            cd "$LANGUAGE"
+            ./build clean
+            cd ..
+        fi
+    done
+else
+    echo "syntax: build all | clean"
+fi

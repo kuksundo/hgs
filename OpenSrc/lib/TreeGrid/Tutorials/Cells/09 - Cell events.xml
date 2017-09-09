@@ -1,0 +1,53 @@
+<Grid>
+   <Cfg id="Events" NoVScroll="1" NoHScroll="1" IdChars="0123456789" NumberId="1"/>
+   <Cols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="MENU"/>
+      <C Name="TIP"/>
+      <C Name="HINT" Width="100"/>
+      <C Name="CUST" WidthPad="40"/>
+   </Cols>
+   <Body>
+      <B>
+         <I id="1"
+            MENU="API OnContextMenu" MENUMenu="|Clear|Edit|Auto"
+            TIP="Standard tip" TIPTip="This is standard static tooltip under mouse&lt;br>The tip can be on more lines"
+            HINT="Hint is shown for overflowed cell value"
+            CUSTType="Date" CUST="12/31/2000" CUSTOnClickSideDate="return ShowCustomCalendar(Grid,Row,Col,Event.AbsX,Event.AbsY)" CUSTTip="Custom calendar dialog"
+            />
+         <I id="2"
+            MENU="Menu OnSave" MENUMenu='{Items:"|Clear|Edit|Auto",OnSave:function(I){
+               var G = this.Grid, row = this.Row, col = this.Col;
+               if(I.Name=="Clear") G.SetValue(row,col,"",1);
+               if(I.Name=="Edit") G.Prompt("Enter new value",G.GetString(row,col),function (val){ if(val!=null) G.SetString(row,col,val,1); } );
+               if(I.Name=="Auto") G.SetValue(row,col,"Menu OnSave",1); 
+               }}'
+            TIP='Position and Class' TIPTip='Tooltip on different position and with different CSS class' TIPTipPosition='{Align:"left above",Y:-10}' TIPTipClass='Red'
+            HINT='Hint is shown also for vertically overflowed cell value' HINTType='Lines' MaxHeight='20'
+            CUST='Custom menu' CUSTButton='Button' CUSTButtonText='Click' CUSTOnClickSideButton='return ShowCustomMenu(Grid,Row,Col,Event.AbsX,Event.AbsY)'
+            />
+         <I id="3"
+            MENU="Menu item OnClick" MENUMenu='{Items:[
+               { Name:"Clear", Text:"Clear value", OnClick:function(){ this.Owner.Grid.SetValue(this.Owner.Row,this.Owner.Col,"",1); } },
+               { Name:"Edit", Text:"Edit value", OnClick:function(){ var G = this.Owner.Grid, row = this.Owner.Row, col = this.Owner.Col; G.Prompt("Enter new value",G.GetString(row,col),function (val){ if(val!=null) G.SetString(row,col,val,1); } ); } },
+               { Name:"Auto", Text:"Set original value", OnClick:function(){ this.Owner.Grid.SetValue(this.Owner.Row,this.Owner.Col,"Menu item OnClick",1); } }
+               ]}'
+            TIP='Tip showing cell value' TIPTip='1'
+            HINT='This cell does not shown hint' HINTShowHint='0'
+            CUST='Custom dialog' CUSTIcon='Defaults' CUSTOnClickSideDefaults='return ShowCustomDialog(Grid,Row,Col,Event.AbsX,Event.AbsY)'
+            />
+         <I id='4'
+            MENU='Custom API OnRightClick'
+            TIP='Dynamic tip'
+            HINT='Dynamic hint by OnHint API event'
+            />
+         <I id='5'
+            TIP='Tip for cell parts' TIPIcon='Green.gif' TIPButton='Red.gif' TIPTip='Tip for the cell text' TIPSideIconTip='Tip for the left icon' TIPSideButtonTip='Tip for the right button'
+            />
+         
+         
+      </B>
+   </Body>
+   <Header id="id" MENU="Right click Menu" TIP="Tip" HINT="Hint" CUST="Custom dialogs"/>
+   <Toolbar Styles="2"/>
+</Grid>

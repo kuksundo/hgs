@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzQueue" invoke="none">
+		<description>
+			create a new type safe queue (FiFo)
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyQueue
+                  </text>
+                  <hint>
+                    Name of the queue class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored in the queue
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes;
+
+{$DEFINE __QUEUE_TEMPLATE__}
+type
+  _QUEUE_ANCESTOR_ = TObject;
+  _QUEUE_CONTAINER_TYPE_ = TList;
+  _LIST_CONTAINER_ITEM_TYPE_ = Pointer;
+  _QUEUE_ITEM_ = |itemtype|;
+{$INCLUDE 't_dzQueueTemplate.tpl'}
+
+type
+  {: Queue for storing |itemtype| items }
+  |listtype| = class(_QUEUE_TEMPLATE_)
+  protected
+    { TODO : Make sure the queue is empty when it is destroyed or
+             write a destructor that frees any items left in the queue }
+  end;
+
+implementation
+
+{$INCLUDE 't_dzQueueTemplate.tpl'}
+
+]]>
+		</code>
+	</template>
+</codetemplate>

@@ -1,0 +1,468 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row deleting</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row deleting</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When a user deletes row, the
+row is <u>not</u> physically removed. The deleted row is marked as <a
+href="#IDeleted">Deleted</a> and is hidden or colored red depending on <a
+href="#CfgShowDeleted">ShowDeleted</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The deleted row can be still
+undeleted, by a user if it is visible or by API. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After the changes are
+uploaded to server and server accepts the changes, the deleted row is
+physically removed from grid and its data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgDeleting><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Deleting</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [1]
+                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows can be deleted from
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, it disables
+Panel <a href="#PanelDelete">Delete</a> button, the deleting actions and <a
+href="#DeleteRow">DeleteRow</a> method. The <a href="#DeleteRowT">DeleteRowT</a>
+and <a href="#DelRow">DelRow</a> are still working.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgShowDeleted><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowDeleted</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [1]        Saved
+to cookies                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If deleted rows are visible
+and colored. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, deleted
+rows are still visible and can be undeleted. When deleting one row, no confirm
+message is displayed. The deleted rows are colored in red, it can be changed in
+Grid.css.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, deleted
+rows are hidden and cannot be undeleted by user. When deleting one row, a
+confirm message is displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting to 1 when <b>AutoUpdate</b>
+is true has no effect – the rows are immediately deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ICanDelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanDelete</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1/0]                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row can be deleted. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default variable rows can
+be deleted and fixed rows cannot. Deleting fixed rows is not good idea, fixed
+rows cannot be added.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>bool      </i></span><a
+name=HeaderCanDelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanDelete</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the Panel <b>DeleteAll</b>
+button is enabled. Header row itself can never be deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=IDeleted><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Deleted</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]        Uploaded
+to server, supports Undo                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set to <b>1</b> when
+the row has been deleted. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row is hidden if <a
+href="#CfgShowDeleted">ShowDeleted</a>=’0’ or visible and colored red (by
+default setting in Grid.css) when <a href="#CfgShowDeleted">ShowDeleted</a>=’1’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row is shown, it can
+be undeleted. Child row of deleted parent cannot be undeleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When user deletes row, all
+its children are automatically deleted to. When user undeletes the parent, all
+its children are undeleted too, except they were deleted directly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In API, deleted children due
+its parent deletion has Deleted=’<b>2</b>’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The deleted row is ignored in
+summary calculations. The deleted row cannot be moved and does not accept
+children by dragging or adding.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After uploading changes to
+server or calling <a href="DataUpload.htm#AcceptChanges">AcceptChanges</a> the
+deleted row is physically removed from grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Panel&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           <i>bool      </i></span><a
+name=PanelDelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Delete</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the default Panel button <b>Delete</b>
+is visible. This button is hidden also if &lt;Cfg <a href="#CfgDeleting">Deleting</a>=”0”/&gt;.
+This button is inactive when the row has <a href="#ICanDelete">CanDelete</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Click to this button deletes
+row or undeletes deleted row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=OnRowDelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowDelete</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>int</i> <b>type</b>)                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the row is
+deleted. Called after the row is marked as <a href="#IDeleted">Deleted</a>, but
+before it is hidden or colored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fires for every row being
+deleted, even for deleted children of deleted parent. First are deleted
+children and after them the parent.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>type</span></i><span
+style='font-size:10.0pt'> = 1 delete row, 2 delete row because its parent is
+deleted. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If row is removed by <a
+href="#DelRow">DelRow</a> ( ), event is not fired!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=OnRowUndelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowUndelete</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>)                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the row is
+undeleted. Called after the row has cleared its <a href="#IDeleted">Deleted</a>
+attribute, but before it is shown or colored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fires for every row being
+undeleted, even for undeleted children of undeleted parent. First are undeleted
+children and after them the parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>int        </span></i><a
+name=OnCanRowDelete><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCanRowDelete</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>int</i> <b>type</b>)                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before row is deleted
+or undeleted. Called to find out if and how can the row be deleted or undeleted.
+It is not called for its children.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – cannot delete, <b>1</b> – user must
+confirm deleting, <b>2</b> - delete, <b>3</b> – undelete. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns new type. Or return
+the <b>type</b> to not change the behavior. No return means <b>0</b>. Returning
+<b>2</b> for deleted row and <b>3</b> for not deleted row has no effect.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If fires, when deleting
+selected rows, type = 1 has no meaning.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>bool      </span></i><a
+name=OnDeleteAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDeleteAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>type</b>)                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before all selected
+rows are deleted or undeleted. Return true to suppress the action.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = <b>0</b> undelete, <b>1</b> delete, <b>2</b>
+remove. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this event can
+be called more times, depending on Actions settings for event ClickHeaderDelete.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=DeleteRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DeleteRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>type</b>)                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes / undeletes row from
+grid. Displays changes. Prepares deleting and calls <a href="#DeleteRowT">DeleteRowT</a>
+( ).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> =  <b>1</b> – delete + confirm dialog, <b>2</b> –
+delete, <b>3</b> – undelete. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes or undeletes row with
+its children. Only marks rows as deleted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=DeleteRowT><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DeleteRowT</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow</i>
+<b>row</b>, <i>int</i> type, bool <b>noshow</b> = false)                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes / undeletes row from
+grid. Displays changes. <b>type</b> =  <b>2</b> – delete, <b>3</b> – undelete.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes or undeletes row with
+its children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=RemoveRow></a><a name=DelRow><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>RemoveRow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                                         <span
+style='color:red'>     renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Physically removes the row
+from grid and data. <i>The row is really deleted, not just marked!</i> For
+marking row as Deleted use <a href="#DeleteRow">DeleteRow</a>().</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deleted rows are not in
+output data, thus server cannot see which rows was deleted (only by comparing
+with original data).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only variable row can be removed.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, removed row
+cannot be used in any API function, especially take care in loops, you cannot
+use GetNext / GetPrev functions with removed row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeleteRow></a><a name=ActionDeleteRow><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DeleteRow </span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Attached
+to <b>OnDel</b> and <b>OnClickPanelDelete</b> events                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes actual or focused row,
+the row is marked as <a href="#IDeleted">Deleted</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUndeleteRow></a><a name=UndeleteRow><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>UndeleteRow </span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to <b>OnDel</b> and <b>OnClickPanelDelete</b> events                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undeletes actual or focused
+row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used only if the
+deleted rows are visible (&lt;Cfg <a href="#CfgShowDeleted">ShowDeleted</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To invert deletion use action
+setting “DeleteRow OR UndeleteRow”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRemoveRow><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>RemoveRow</span></b></a><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>    </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            Not
+attached to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Physically removes the row.
+The row will no longer exist in grid and cannot be updated to server!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDeleteSelected></a><a name=DeleteSelected><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>DeleteSelected</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                     Attached
+to <b>OnCtrlDel</b> and <b>OnClickHeaderDelete</b> events              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Deletes all selected rows. It
+fails if there is no selected row or all selected rows are deleted.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This action can be
+asynchronous!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUndeleteSelected></a><a name=UndeleteSelected><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>UndeleteSelected</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>               Attached
+to <b>OnCtrlDel</b> and <b>OnClickHeaderDelete</b> events              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undeletes all selected rows. It
+fails if there is no selected deleted row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used only if the
+deleted rows are visible (&lt;Cfg <a href="#CfgShowDeleted">ShowDeleted</a>=’1’/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To invert deletion use
+“UndeleteSelected OR DeleteSelected” - <i>remember, here it depends on the
+order!</i></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This action can be
+asynchronous!</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRemoveSelected></a><a name=RemoveSelected><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>RemoveSelected</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Not
+attached to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Physically removes all
+selected rows. The rows will no longer exist in grid and cannot be updated to
+server! </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This action can be
+asynchronous!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

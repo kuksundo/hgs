@@ -1,0 +1,64 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Filter</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Filtering rows in tree</center>
+   <center style='font:bold italic;'>Various ways to filter rows in parent / child relation</center>
+   <div style='margin-bottom:6px;'><a href='02 - Filtering in tree.xml'>02 - <h2>Filtering in tree</h2>.xml</a></div>
+   <div style='width:960px; height:500px;'>
+      <bdo Debug='check' Data_Url='02 - Filtering in tree.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         There are two special attributes for filtering in tree Cfg <h3>StandardFilter</h3> and <b>row</b> <h3>CanFilter</h3>.<br />
+         <i>For all other information about filtering see previous example <a href='01 - Filtering rows.html'>01 - Filtering rows.html</a>.</i><br />
+      </li>
+      <li>
+         <h4>Hide all not found</h4><br />
+         By default is set Cfg attribute <b>StandardFilter='0'</b> and all row attributes <b>CanFilter='1'</b>.<br />
+         It tests parent rows before their children. If the parent row does not fulfill the filter condition, it is hidden and its children are not tested at all.<br />
+         It is the fastest method. It cannot be used with <b>OnRowFilter</b> API event, when this event filters parents according to their children.<br />
+         <i>Use it when some rows, especially leaf rows without children, cannot be hidden by filter (have set <b>CanFilter='0'</b>).</i>
+      </li>
+      <li>
+         <h4>Hide all not found, iterate all</h4><br />
+         When set Cfg attribute <b>StandardFilter='1'</b>, it tests row children before the row itself. <br />
+         It also hides all rows that do not pass the filter like previous option, but there can be used <b>OnRowFilter</b> API event if it filters rows according to their children.<br />
+         <i>Use it with OnRowFilter code based on row children.</i><br />
+      </li>
+      <li>
+         <h4>Show all found</h4><br />
+         It shows all rows that fulfill the filter condition. If any parent contains some visible child, it is shown too.<br />
+         It is set by Cfg attribute <b>StandardFilter='2'</b>.<br />
+         It tests children before parents, so it also supports <b>OnRowFilter</b> in all cases.<br />
+         <i>Use it when all rows can be hidden by filter, to show all the found rows.</i><br />
+      </li>
+      <li>
+         <h4>Show all found, with all children</h4><br />
+         It shows all rows that fulfill the filter condition. It always shows all children of found parents.<br />
+         It is set by Cfg attribute <b>StandardFilter='3'</b>.<br />
+         It tests parent rows before their children. It tests children of parent that does not fulfill the filter condition.<br />
+         <i>Use it when all rows can be hidden by filter, to show all the found rows with children.</i><br />
+      </li>
+
+      <li><h4>Show all found, hide empty parents</h4>
+         It shows all rows that fulfill the filter condition. Parent rows are visible only if they contain some visible children.<br />
+         It is set by Cfg attribute <b>StandardFilter='2'</b> and row <b>CanFilter='2'</b> or <b>'3'</b>.<br />
+         The CanFilter='2' / '3' should not be set to the rows without children, otherwise they will be always hidden.<br />
+         If the row has set CanFilter='2' or '3', it is hidden if it does not have any visible children, regardless it fulfills the filter condition.<br />
+         If set CanFilter='2' the row is not tested for the filter condition and it visible or hidden only by its children.<br />
+         <i>Use it show all found rows, but hide all unused groups.</i><br />
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,139 @@
+Functional description of ABC-View Manager sources
+==================================================
+
+Author:           Nils Haeck M.Sc.
+copyright:        (c) 2005 by SimDesign B.V.
+Document Version: 1.0
+Last update:      17Jun2005
+
+Contents:
+========
+
+1. Introduction
+
+2. Hierarchical list of classes used in ABCVM
+
+3. ABCVM storage model and database
+
+3.1 In-memory database
+3.2 Catalog format
+3.3 Global variables
+3.4 Options
+
+4. Main screen (main form)
+
+4.1 Itemview
+4.2 Browser
+4.3 Show form
+
+5. Actions and events
+
+5.1 Actions
+5.2 Drag and drop
+5.3 Shell notification
+
+6. Processes
+
+7. Lists and filters
+
+8. Graphical file formats
+
+8.1 Default graphical format reading
+8.2 Requests and pre-loading
+8.3 Plugins
+
+9. Metadata in files
+
+10. Tasks
+
+10.1 Duplicate file checking
+10.2 Similar image checking
+
+
+1. Introduction
+===============
+
+This document describes in detail the inner workings of the ABC-View Manager (ABCVM) source code.
+
+
+2. Hierarchical list of classes used in ABCVM
+=============================================
+
+Class                               Description
+-----                               -----------
+TBasic                              Basic class that implements streaming
+  TItem                             Basic item in the database  
+    TFile                           File item in the database 
+    TFolder                         Folder item in the database
+    TGroup                          Group item in the database (to do)
+    TSuries                         Series item in the database (to do)   
+  TProperty                         Basic property class, a property can be added to an item
+    TStoredProperty                 A basic property class for properties that are stored in the database
+      TprDescription                Description of an item
+      TprDimensions                 Dimensions of the graphic of an item
+    TFolderStatsProp                Property with folder statistics
+  TBasicDirect                      
+    TItemMngr                       A managing class that works with lists. The list items are not owned.
+      TVirtualFilter                A filter class that virtually filters a list (does not own items)
+      TItemList                     A class that holds (owns) a list of items  
+        TFilter                     A class that can filter a list of items that it holds (owns)
+          TTypeFilter               A filter that filters on file type
+          TThreadedFilter           A filter that uses a background thread to do the filtering 
+        TRoot                       The root list which contains all items
+    TChainFilter                    A filter that holds a chain of filters and looks just like one filter
+
+TProcess                            A thread that represents a process within ABCVM
+  TFilterThread                     A thread that is called by TThreadedFilter which does the filtering
+  TFileThread                       A thread that calculates lowlevel file item properties
+
+TFileIO                             A class that implements loading/saving of TBasic objects 
+
+
+3. ABCVM storage model and database
+===================================
+
+ABCVM does not use a "classical" database as many other applications use. The main reason for this approach is speed: disk access is slow, and usually databases are disk-based. Instead, ABCVM uses a catalog file that is read in after the user gives the Load Catalog command, kept in memory, and is saved when the user issues Save Catalog. Many users however use ABCVM without catalog, in which case the database of current items is built in memory by scanning for files during the session.
+
+For some things ABCVM uses temporary files to avoid filling up memory, for instance for the thumbnails.
+
+3.1 In-memory database
+
+ABCVM's in-memory database consists of a structural tree of objects. There is one root object (of type TRoot, see "Roots.pas") that contains all items in the database. This root object is instanced in global variable Root ("Roots.pas"). The root contains an owned list of items, of basic type TItem. An item can be a TFile, a TFolder, TGroup or TSuries, and possibly other (future) extensions. 
+
+Additionally, a global filter list (TTypeFilter) exists for "All files" (AllFiles) and "All folders" (AllFolders). These lists are used to quickly work with all files and folders in the listviews.
+
+Each item contains just the minimally required basic information in order to function. This ensures the memory footprint of the item remains small. Additional information in items is usually stored in properties, which an item can either have or not have, thus this information is only taking up space if the property actually exists.
+
+3.2 Catalog format
+
+The items in the Root object are each stored sequentially. Each TItem class is responsible for its own storage. The basic TItem type also stores all storeable properties it contains. This way, the database with the bulk of all data is stored to one single file, with extension *.abc. The TFileIO object ("Filers.pas") also implements usage of a compression/decompression stream, so that the eventual diskfile will be much smaller than the uncompressed total stream size.
+
+The methods used for reading and writing the *.abc stream are TFileIO.LoadFromStream and .SaveToStream. It stores the Root object, which uses TRoot.ReadComponents / WriteComponents to read the list of items.
+
+Items file themselves in the methods TItem.ReadComponents / WriteComponents. This method also files the properties, which in turn file themselves with TProperty.ReadFromStream / WriteFromStream.
+
+Some provisions are made to be backwards compatible, as well as forwards compatible, by use of length fields that indicate how long an item stream or property stream is. This way, the loader can skip over unknown (future) properties and item fields.
+
+Thumbnail storage
+
+Separately, a second file is stored with thumbnails, because these take much more room. This file has extension *.abt. This file is actually kept open and used as a temporary file during program execution, so thumbnails that have not been visible for a while are stored to disk. When they need to be shown, they're read from the temporary *.abt file, and displayed. This is a quicker process than re-creating the thumbnail from the original file.
+
+
+5. Actions and events
+=====================
+
+5.1 Actions
+
+All most important user actions are coordinated from a datamodule descendant (TdmActions in "Actions.pas"). This datamodule contains a TActionList alActions. A good starting place for following user commands is by placing a breakpoint in any of the <action>Execute() methods in TdmActions.
+
+Some components on the main form have their own action list, e.g. alItemView in Itemview1 and 2. You can open unit ItemView and see or break in on the execution code for these actions there.
+
+10. Tasks
+=========
+
+10.1 Duplicate file checking
+
+10.2 Similar image checking
+
+
+

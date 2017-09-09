@@ -1,0 +1,1085 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Upload changes</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Upload changes</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid can upload data to
+remote or local server or include the data to HTML page and submit it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You need to set <a
+href="#Upload_Tag">Upload_Url</a> for background AJAX upload or <a
+href="#Upload_Tag">Upload_Tag</a> for whole page submit.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>prefix</span></i></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   </span><a
+name="Upload_"></a><a name=Upload><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Upload</span></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>_</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data source to <b><i><span
+style='color:#3366FF'>upload changes to server</span></i></b>. It is called
+after click to Save button or for every change when is set <b>AutoUpdate</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can return success
+(&lt;Grid&gt;&lt;IO Result=’0’/&gt;&lt;/Grid&gt;) or error message or XML data
+with changes to apply them in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is set <b>Upload_Method=”Form”</b>
+<b>Upload_Data=”Data” Upload_Type=”1” Upload_Format=”Internal” Upload_Xml=”0”</b>
+   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Supports only AJAX
+or Submit communication (<b><span style='color:#3366FF'>Upload_Url</span></b>
+or <b><span style='color:#3366FF'>Upload_Tag</span></b> attribute). The XML
+changes are sent in <b>Data</b> parameter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    </span><a
+name="Upload_Url"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Url</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to URL address to send
+the changes XML by <b>AJAX</b> or <b>AJAX SOAP</b>. The changes are stored in
+parameter <b>Data</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When used AJAX method, the
+changes XML is upload on background while grid is still accessible. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If server returns success XML
+&lt;Grid&gt;&lt;IO Result=’0’/&gt;&lt;/Grid&gt; all the changes are accepted
+(the deleted rows are deleted, other rows are recolored to loose its flag).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If server returns error XML
+&lt;Grid&gt;&lt;IO Result=’-1’/&gt;&lt;Grid&gt; or the AJAX call failed at all,
+the changes are <u>not</u> accepted and can be sent again.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server can also return
+message to alert it to user to inform him about success or error:
+&lt;Grid&gt;&lt;IO Result=’-1’ Message=’Save failed’/&gt;&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server can also return
+some updates in <b>&lt;Changes&gt;</b> tag to do them in grid, for example mark
+some cell by Error to highlight it to user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to set <b>Upload_Sync</b>=”1”
+to wait for response and disable grid while waiting for response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    </span><a
+name="Upload_Tag"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Tag</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to &lt;input&gt; tag
+name or id where the changes XML will be stored. To use old <b>Submit</b>
+method of uploading.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This &lt;input&gt; tag should
+be placed within some &lt;form&gt;. This form will be automatically submitted
+to its action url.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After form submit, the whole
+page will be reloaded or redirected according to the &lt;form&gt; settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string[]</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><a
+name="Upload_Type"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Type</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [“Changes”]                                                                                         <span
+style='color:blue'>upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What parts of grid will be
+uploaded to server, it is an array of comma separated keywords. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain more keywords
+to send more parts to the server. The keywords are case insensitive. The order
+of filled parts is not specified.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+Upload_Type=“changes,settings,cookie”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Changes</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Modified rows - rows with set
+attribute <b>Added</b>, <b>Deleted</b>, <b>Moved</b> or <b>Changed</b>
+(modified values). The rows are sent in &lt;<a href="#XML">Changes</a>&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this keyword to get only
+changed rows on server to update a database according to the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows have filled only
+attributes required for its state like Parent or id. To fill any other or
+custom attribute set <a href="#Upload_Attrs">Upload_Attrs</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill all column values or
+values from defaults specify Upload_Flags=”Defaults” or “AllCols”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Selected</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selected rows – rows with set
+attribute Selected. The rows are sent in &lt;<a href="#XML">Changes</a>&gt;
+tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this keyword to get the
+selected rows on server to do action on server with these rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows can be selected by a
+user or by search or by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows have filled only id
+attribute. To fill any other or custom attribute set <a href="#Upload_Attrs">Upload_Attrs</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill all column values or
+values from defaults specify Upload_Flags=”Defaults” or “AllCols”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Body</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All variable rows. The rows
+are uploaded as they are in pages and body, in tag
+&lt;Body&gt;&lt;B&gt;&lt;/B&gt;&lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this attribute to get the
+whole body to just store it on server and return it in next body request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill only column values
+specify Upload_Flags=“AllCols”. To fill only some specified attributes set <a
+href="#Upload_Attrs">Upload_Attrs</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+significantly slow data communication for larger grids. Not compatible with
+server paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Data</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All data rows (&lt;I
+Kind=’Data’/&gt;). The data rows are all rows with no special meaning (unlike Header,
+Filter, Group, Search, Pager, Space, User).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows are uploaded as they
+are in pages and body, in tag &lt;Body&gt;&lt;B&gt;&lt;/B&gt;&lt;/Body&gt;,
+&lt;Head&gt;&lt;/Head&gt; and &lt;Foot&gt;&lt;/Foot&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These rows are variable (body)
+and can be also fixed rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this attribute to get all
+the cells that can have values to just store it on server and return it in next
+grid request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill only column values
+specify Upload_Flags=“AllCols”. To fill only some specified attributes set <a
+href="#Upload_Attrs">Upload_Attrs</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+significantly slow data communication for larger grids. Not compatible with
+server paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>All</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows in grid, including
+all functional rows (Data, Header, Filter, Group, Search, Pager, Space).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows are uploaded as they
+are in pages and body, in tag &lt;Body&gt;&lt;B&gt;&lt;/B&gt;&lt;/Body&gt;,
+&lt;Head&gt;&lt;/Head&gt; and &lt;Foot&gt;&lt;/Foot&gt; and
+&lt;Solid&gt;&lt;/Solid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set this attribute to get all
+rows on server to store the complete XML here and return it on next request</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill only column values
+specify Upload_Flags=“AllCols”. To fill only some specified attributes set <a
+href="#Upload_Attrs">Upload_Attrs</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+significantly slow data communication for larger grids. Not compatible with
+server paging.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Span</span></u></b><span
+style='font-size:10.0pt'> <i>(since 7.0)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows with some cells
+spanned (through columns or rows), sends only attributes <b>id</b>, <b>Span</b>
+and <b>RowSpan</b>. The rows are sent in &lt;<b>Spanned</b>&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To send only changes in span,
+set rather Upload_Flags=”Spanned” Upload_Type=”Changes”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Gantt</span></u></b><span
+style='font-size:10.0pt'> <i>(since 6.3)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads actual Gantt settings
+in &lt;Gantt ... /&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads the attributes: <b>GanttBase</b>,
+<b>GanttFinish</b>, <b>GanttExclude</b>, GanttInclude</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.0) </span></i><span
+style='font-size:10.0pt'>When set Cfg DateStrings, the GanttBase and GanttFinish
+are uploaded also as strings in GanttBaseDate and GanttFinishDate attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Calendars</span></u></b><span
+style='font-size:10.0pt'> <i>(since 8.0)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads actual calendars in
+&lt;Calendars&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Resources</span></u></b><span
+style='font-size:10.0pt'> <i>(since 8.0)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads actual resources in
+&lt;Resources&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Settings</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends grid configuration
+similarly to Data and Page request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends sort settings in
+&lt;Cfg&gt;, filter setting in &lt;Filters&gt; and columns’ widths and
+positions in &lt;LeftCols&gt;, &lt;Cols&gt;, &lt;RightCols&gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Expanded</span></u></b><b><span
+style='font-size:10.0pt'> </span></b><i><span style='font-size:10.0pt'>(since
+6.7)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends ids of all expanded
+rows in &lt;Cfg <a href="Tree.htm#CfgExpanded">Expanded</a>/&gt; attribute,
+comma separated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Cookie</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sends the whole configuration
+in &lt;Cfg <a href="Cookie.htm#CfgCookie">Cookie</a>/&gt; attribute like it is
+stored to cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to store the
+configuration on server instead of client’s cookies – based on some user
+identification and not browser.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return this configuration in
+next request for Layout in &lt;Cfg Cookie/&gt; to apply it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Cookie should not be
+modified on server, it should be used as black box.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Cfg</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds &lt;Cfg&gt; tag, sends
+all attributes from this tag, including some runtime internal settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Def</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds
+&lt;Def&gt;,&lt;D&gt;,&lt;Root&gt; tags, sends all defaults with all attributes
+in <b>Internal</b> format only, including some runtime internal attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Cols</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds &lt;LeftCols&gt;, &lt;Cols&gt;,
+&lt;RightCols&gt;, &lt;C&gt; tags, sends all columns’ settings, including some
+runtime internal attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Other</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds &lt;MenuCfg&gt;,
+&lt;Pager&gt;, &lt;Actions&gt; tags, sends all attributes of these tags.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Lang</span></u></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds &lt;Lang&gt; tag, sends
+all texts and format settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string[]</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><a
+name="Upload_Flags"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Flags</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:#1F497D'>upd <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Various flags for extended
+control of uploading, comma separated list of keywords. It is case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+Upload_Flags=”defaults,noio”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Defaults</span></u></b><span
+style='font-size:10.0pt'>                Sends also default values (from
+&lt;D&gt; tag) in rows if the row attribute value is null, for
+Upload_Type=”Changes,Selected,Body,Data,All”</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>AllCols</span></u></b><span
+style='font-size:10.0pt'>                 Sends all column values in rows,
+including calculated cells, for Upload_Type = “Changes,Selected,Body,Data,All”</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Spanned</span></u></b><span
+style='font-size:10.0pt'>               <i>(Since 7.0) </i>Sends also changes
+in colspan (Span) and rowspan (RowSpan) attributes in &lt;Changes&gt; tag, for
+Upload_Type=”Changes”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               It
+must be set on grid start to store required information for the comparing
+changes</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>NewId</span></u></b><span
+style='font-size:10.0pt'>                   <i>(Since 9.1)</i> Sends all
+changes in row <b>id</b> in <b>NewId</b> attribute. For
+Upload_Type=&quot;Changes&quot; and &lt;Cfg FullId or IdNames set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               All
+attributes referring the id like Parent or Next always contain the original id,
+not the NewId. The NewId is set to row id attribute after the changes are
+accepted.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>Accepted</span></u></b><span
+style='font-size:10.0pt'>              Does <u>not</u> send deleted rows and
+does <u>not</u> send state attributes Added, Moved and Changed, for Upload_Type=”Body,Data,All”.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>NoIO</span></u></b><span
+style='font-size:10.0pt'>                     Does <u>not</u> send &lt;IO&gt;
+tag. The IO contains Session attribute.</span></p>
+
+<p class=MsoNormal><b><u><span style='font-size:10.0pt'>NoGrid</span></u></b><span
+style='font-size:10.0pt'>                 Does <u>not</u> include &lt;Grid&gt;
+tag, if you need to append some other tags to XML. <i>The XML is not valid in
+this case!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt; </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>string</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [] </span><a
+name="Upload_Attrs"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Attrs</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of names
+of row attributes that are uploaded. The names must be in <b>Internal</b>
+format (col+name).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Upload_Type=”<b>Changes</b>”
+specifies all <u>custom</u> attributes to upload with the changed rows. It adds
+all these attribute values to all the uploaded rows. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>These attributes must not
+interfere with standard uploaded names like id, Added or Parent.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The Attrs are ignored when
+set <a href="#CfgSaveOrder">SaveOrder</a>=’1’.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Upload_Type=”<b>Selected</b>,<b>Body</b>,<b>Data</b>,<b>All</b>”
+specifies all attributes except <b>id</b> and <b>Def</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If this attribute is omitted,
+fills all rows’ attributes. <i>For large grids it can be significantly slower.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row has always set <b>id</b>
+and <b>Def</b> attributes, do not include them to Attrs list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>   
+</span><a name="Upload_Format"><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Upload_Format</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [“Internal”]                                                                    <span
+style='color:red'>chg <b>6.0</b></span><span style='color:blue'>;upd <b>6.6</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to “DTD”, the uploaded
+XML will be in <b><u>DTD</u></b> format instead of the Internal.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to “JSON”, the
+uploaded data will be JSON string</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used for uploading data or
+for request, input data format is always automatically recognized.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>int</i>       </span><a
+name="Upload_Xml"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Xml</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 [0]                                                                                          <span
+style='color:#0070C0'>upd <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the uploaded data will be
+send as is or will be sent with coded XML entities.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> (default) are
+uploaded data encoded to string (&amp; and &lt;,&gt; are replaced by &amp;amp;
+&amp;lt; &amp;gt;).  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> data are
+uploaded as XML without any change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>2</b> <i>(since 8.1) </i>are
+uploaded data encoded to JSON string (&amp; and &lt;,&gt; are replaced by
+\u0026, \u003C, \u003E). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>bool</i>      </span><a
+name="Upload_Sync"><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Upload_Sync</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets synchronous upload for AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is disabled during
+upload and waits for server response.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSaveOrder><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SaveOrder</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                          <span
+style='color:red'>new <b>6.4</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> and
+uploads all changes in &lt;Changes&gt; tag, it uploads them in the exact order
+they happened.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b> <i>(since
+10.0) </i>it also separates all changes in one row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row is changed more times,
+it can be included more times.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All changes done in one row
+together (without changing another row between changes) are merged together,
+except SaveOrder is <b>2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undeleted deleted row is
+ignored. Deleted added row is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All changes done in row
+immediately deleted after (without changing other row) are ignored, except
+SaveOrder is <b>2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All undone or redone changes
+are taken as new changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgCalculatedChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CalculatedChanges</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                   <span
+style='color:red'>new <b>9.0</b></span><span style='color:#0070C0'>; upd <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it marks
+as changed all changed calculated cells and rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.2)</span></i><span
+style='font-size:10.0pt'> If set to <b>2</b>, it marks as changed also the cell
+calculated for first time if resulted to different value</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1) </span></i><span
+style='font-size:10.0pt'>It can be set to comma separated list of columns to
+affect only these columns. Cannot be set by API to this list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In the first cell calculation
+it stores the calculated value. If some next calculation returns different
+result the stored one, it marks the cell changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the next calculation
+returns the same result as the first stored result, the changed flag is
+cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It will also upload these
+changes to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>type      </i></span><a
+name=CfgDateStrings><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DateStrings</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0/1]                                                                                                    <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, Date
+values are uploaded as numbers (milliseconds from 1/1/1970), see also <a
+href="TypeDate.htm#FormatGMT">GMT</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, Date
+values are uploaded as strings in English format (M/d/yyyy HH:mm:ss).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, Date
+values are uploaded as strings in JAVA format (yyyy-MM-dd HH:mm:ss).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>string</b>, it
+specifies the full date format for upload</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set to <b>0</b>,
+if some date in input XML is set as number of milliseconds, otherwise is set to
+<b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAutoUpdate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoUpdate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]        It
+is saved to and loaded from cookies                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If automatically uploads all
+changes immediately to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, after any
+change in data (edit cell, add, delete, move row) it sends changed data to
+server like a user clicked to Save button on toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=INoUpload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoUpload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0/1]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, ignores
+changes in this row and does not upload them to server. Often set with also <a
+href="CellStyle.htm#INoColorState">NoColorState</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it also
+does <u>not</u> save undo for changed cells except the cell has set <a
+href="Undo.htm#CellUndo">Undo</a>=’1’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is <b>0</b> for
+data rows and <b>1</b> for space rows and group rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filter row has always set <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>API for Upload</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnSave><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSave</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>bool</i> <b>autoupdate</b>)                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before changes are
+uploaded or submitted to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called from <a
+href="#Save">Save</a> method that is called when a user clicks Save button. It
+is called after validation (see &lt;Cfg <a href="CellEdit.htm#CfgValidate">Validate</a>&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also called whenever
+changes are uploaded by <a href="#CfgAutoUpdate">AutoUpdate</a> (with <b>autoupdate</b>
+parameter set to 1)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+saving.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>row</b> is set if only
+one row was changed, this is the row to update, only with <b>autoupdate</b> =
+1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAfterSave><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAfterSave</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>result</b>, bool <b>autoupdate</b>)                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after <a href="#Save">Save</a>
+or <a href="#CfgAutoUpdate">AutoUpdate</a> is done, the server response was
+received and changes accepted (if succeeded). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The result is the &lt;IO
+Result/&gt;, &lt;0 error, &gt;=0 success.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called only for AJAX communication.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnUpload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnUpload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (TGrid
+<b>grid</b>, string <b>xml</b>, TRow <b>row</b>, bool <b>autoupdate</b>)                            <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to modify changes in
+XML data before they are uploaded. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The XML is the XML to upload
+(&lt;Grid&gt; ... &lt;/Grid&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new XML data in string
+for upload or null to not change the data.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=Save><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Save</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>Event</i>
+<b>event</b>)                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads all changes to
+server. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For AJAX it uploads all
+changes to <a href="#Upload_Url">grid.Source.Upload.Url</a>. If server returns
+success, it accepts all changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Submit it fills
+grid.Source.Upload.Tag input with all changes and submits form where the input is
+placed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>event</b> is set if
+the method is called from onsubmit event hander to this event. In this case it
+also validates data. It cancels the event if saving is canceled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=UploadChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UploadChanges</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TRow</i>
+<b>row</b>, <i>function</i> <b>Func</b>)                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads all changes to
+server, only if <a href="#CfgAutoUpdate">AutoUpdate</a> is true. If row is set,
+uploads changes in the row only. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After finish, calls function
+Func: function <b><i>Func</i></b> (<i>int</i> <b>result</b>). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accepts changes only if
+server Result is ok (&gt;=0), if <b>result</b> &lt; 0 does not accept changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=GetChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetChanges</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b> = null)                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all changed rows in XML
+string to upload to server. If <b>row</b> is set, returns changes of this row
+only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format of the data is used
+according to <a href="#Upload_Format">grid.Source.Upload.Format</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=HasChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HasChanges</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( )                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the grid contains some
+changed (Added/Deleted/Moved/Changed) or selected (Selected) rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>&amp;1</b> if grid
+contains some change not yet uploaded to server. Only when <a
+href="CellEdit.htm#CfgSaveValues">SaveValues</a> is not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>&amp;2</b> if grid
+contains some selected rows. Only when <a href="RowSelect.htm#CfgSaveSelected">SaveSelected</a>
+is not set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=AcceptChanges><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>AcceptChanges</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TRow</i>
+<b>row</b> = null)                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accepts all changes in grid –
+clears all flags <b>Changed</b>, <b>Added</b>, <b>Moved</b> and removes rows
+marked as <b>Deleted</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays all updates in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be called after server
+accepts sent data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>row</b> is set, updates
+only this row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i> </span><a
+name=GetXmlData><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetXmlData</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string</i>
+<b>type</b> = Upload_Type+”,”+Upload_Flags, string <b>attrs</b> = Upload_Attrs)   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns grid’s data in XML according
+to <b>type</b> and <b>attrs</b>, see <a href="#Upload_Type">Upload_Type</a> and
+<a href="#Upload_Flags">Upload_Flags</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method is used to upload
+changes to server by <a href="#Save">Save</a> and <a href="#CfgAutoUpdate">AutoUpdate</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSave><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Save</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>                       Attached
+to event <b>OnClickButtonSave</b>                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Uploads all changes to server
+and accepts them. See <a href="#Save">Save</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=XML><b><span style='font-size:20.0pt'>XML structure sent
+to server</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Data sent from grid to
+server. Used when uploading changes to server. This format is generated by
+grid.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Here is described <b>default</b>
+structure used for &lt;treegrid <a href="#Upload_Type">Upload_Type</a>=’Changes’/&gt;.
+For other settings the uploaded XML will contain other requested tags similar
+to Layout and Data XML.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used as <b>request</b> sent
+to data source <b>Upload</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></b><span style='font-size:10.0pt'> <i>(Root
+tag, can accept any count of introduced child tags in any order)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>IO</span></b><b><span style='font-size:
+10.0pt'> </span></b><span style='font-size:10.0pt'>... <i>attributes with client
+request </i>...<span style='color:#FF6600'> </span></span><span
+style='font-size:16.0pt;color:#FF6600'>/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>      </span></b><span
+style='font-size:10.0pt'>   </span><b><span style='font-size:16.0pt;color:#FF6600'>&lt;</span></b><b><span
+style='font-size:16.0pt;color:blue'>Changes</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span><span style='font-size:10.0pt;color:#FF6600'> </span><span
+style='font-size:10.0pt'>(list of changed rows)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><span
+style='font-size:10.0pt;color:red'>      </span><span style='font-size:16.0pt;
+color:red'>&lt;</span><b><span style='font-size:16.0pt;color:blue'>I</span></b><span
+style='font-size:10.0pt'> <b>id</b>=’...’ <i>... row and cell attributes ...</i>
+</span><span style='font-size:16.0pt;color:red'>/&gt;</span><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>            </span></b><i><span
+style='font-size:10.0pt'>      ... More tags &lt;I&gt; ...</span></i><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:#FF6600'>         </span></b><b><span
+style='font-size:16.0pt;color:#FF6600'>&lt;/</span></b><b><span
+style='font-size:16.0pt;color:blue'>Changes</span></b><span style='font-size:
+16.0pt;color:#FF6600'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:16.0pt;color:red'>&lt;/</span><b><span
+style='font-size:16.0pt;color:blue'>Grid</span></b><span style='font-size:16.0pt;
+color:red'>&gt;</span><span style='font-size:16.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>The uploaded rows can have
+set these attributes:</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowId.htm#Iid">id</a></span></b><span
+style='font-size:10.0pt'> – this attribute is always set to identify uploaded
+row. There are many ways to set this attribute, see <b><u><a href="RowId.htm">rows
+identity</a></u></b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowId.htm#INewId">NewId</a></span></b><span
+style='font-size:10.0pt'> - it is set to new id if the row id will be changed
+after save. For IdNames or FullId settings changes. Set only when
+Upload_Flags='NewId'</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="RowDelete.htm#IDeleted">Deleted</a></span></b><span style='font-size:
+10.0pt'> – The row has been deleted by a user. No other attribute is set.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="CellEdit.htm#IChanged">Changed</a></span></b><span style='font-size:10.0pt'>
+– Some cell value of the row has been changed. The row contains values of all
+changed cell. The row can also contain the <b><a href="RowMove.htm#IMoved">Moved</a></b>
+attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="RowMove.htm#IMoved">Moved</a></span></b><span style='font-size:10.0pt'> –
+The row has been moved to new position. The <b><a href="RowMove.htm#Parent">Parent</a></b>
+and <b><a href="RowMove.htm#Next">Next</a></b> attributes specify new position.
+The row can also contain <b><a href="CellEdit.htm#IChanged">Changed</a></b> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowAdd.htm#IAdded">Added</a></span></b><span
+style='font-size:10.0pt'> – The row is new row. The row contains new generated
+id. The <b><a href="RowAdd.htm#IParent">Parent</a></b> and <b><a
+href="RowAdd.htm#INext">Next</a></b> attributes specify new position. The <b><a
+href="RowDefaults.htm#IDef">Def</a></b> attribute specifies default values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The row also
+contains all cell values, that are not the same as default values and are not
+calculated.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a
+href="RowMove.htm#Parent">Parent</a></span></b><span style='font-size:10.0pt'> -
+(set for <b>Added </b>or<b> Moved</b>) - the parent row or page where the row
+has been moved row added. It is string for row id or number for page position.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowMove.htm#Next">Next</a></span></b><span
+style='font-size:10.0pt'> - (set for <b>Added </b>or<b> Moved</b>) – the next
+row before it the row has been added or moved. It is string for row id.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowMove.htm#IPrev">Prev</a>
+</span></b><span style='font-size:10.0pt'>- (set for <b>Added </b>or<b> Moved</b>)
+– the previous row after it the row has been added or moved. It is string for
+row id.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'><a href="RowAdd.htm#ICopy">Copy</a></span></b><span
+style='font-size:10.0pt'> – (set for <b>Added</b>) – set only if the row is
+copy of another row and the source row does not have downloaded its children
+yet (in server child paging).  </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>It
+is string for row id.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When server returns HTTP
+error or &lt;<b>IO <a href="DataCommunication.htm#IOResult">Result</a></b> &lt;
+0, the TreeGrid shows message if provided and does not accept changes. The
+changes can be sent again.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If server return HTTP OK and
+&lt;<b>IO <a href="DataCommunication.htm#IOResult">Result</a></b> is not set or
+is &gt;= 0, the TreeGrid accepts all changes – deleted rows are physically
+deleted and other flags are cleared.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Example of changed data
+sent to server:</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;Changes&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xy’ Changed=’1’ A=’12’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xa’ Moved=’1’ Parent=’aa’ Next=’xc’
+Prev=’xb’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xz’ Added=’1’ Parent=’1’ Next=’’ Prev=’xx’
+A=’3’ B=’7’ C=’5.4’ D=’-3’ E=’twenty six’/&gt;</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>&lt;I id=’xg’ Deleted=’1’/&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;/Changes&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

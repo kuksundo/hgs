@@ -1,0 +1,797 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Cell spanning</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Cell spanning</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells in TreeGrid can be
+spanned horizontally among columns, vertically among rows or in both directions
+together.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since version 7.0</span></i><span
+style='font-size:10.0pt'> it is <u>not</u> possible to cross vertical and
+horizontal span, it is possible only to span rectangular areas.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ColSpan><b><span style='font-size:20.0pt'>Horizontal
+spanning among columns</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells cannot be spanned
+between column sections (Left, Mid, Right).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+column into spanned range, the dropped column will get the span setting from
+the range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+column outside spanned range, the dropped column will loose its col span and
+the cells become displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+column inside the spanned range.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>If you permit
+column moving between spanned columns, you should forbid saving the changes to
+cookies by &lt;Cfg ColsPosLap=’1’/&gt;.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If grid contains any
+spanned cells between columns (&lt;I Spanned=’1’/&gt;), the column moving is
+done by re-rendering whole grid.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ISpanned><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Spanned</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]
+                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>row</b> contains
+any horizontally spanned cells among columns (marked with <a href="#CellSpan">Span</a>
+attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every row that contains some
+spanned or merged cells among columns must have set <b>Spanned</b>=”1”,
+otherwise the cell <a href="#CellSpan">Span</a>, <a href="#CellMerge">Merge</a>
+or <a href="#CellMergeEdit">MergeEdit</a> attributes will be ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>int        </i></span><a
+name=CellSpan><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Span</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                                       <span
+style='color:#3366FF'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The name is <u>not</u> ColSpan,
+but Span only!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For horizontally spanned cell
+among columns, how many cells it covers, at least one. Including hidden
+columns.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The row with
+spanned cell must have set <a href="#ISpanned"><span style='color:red'>Spanned</span></a>=’1’,
+otherwise the attribute is ignored.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In the whole spanned cell is
+shown value of this column. It can be changed by <a href="#CellMerge">Merge</a>
+and <a href="#CellMergeStart">MergeStart</a> attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string[]  </i></span><a
+name=CellMerge><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Merge</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 <span
+style='color:red'>chg <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To show more or other values
+in one cell. A comma separated list of column names to show in the cell.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The row with merged
+cell must have set <a href="#ISpanned"><span style='color:red'>Spanned</span></a>=’1’,
+otherwise the attribute is ignored.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cell will show values
+from all the row cells from the columns listed. The way of showing is specified
+by <a href="#CellMergeType">MergeFormat</a> and <a href="#CellMergeType">MergeType</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The attribute is intended
+to show more values in spanned cell, but can be used also for display other or
+more values in any cell.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute is ignored
+in export to Excel.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                               <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, it specifies full
+HTML for display the merged values. The column names are replaced by the cell
+values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <u>not</u> set, the cell
+values are merged in &lt;table&gt; according to the <b>1.</b> bit of <a
+href="#CellMergeType">MergeType</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “Path/Name.Ext”
+can be used for file path, where Path, Name and Ext are column names.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeFormatXXX><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeFormat<i>XXX</i></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                    <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special MergeFormats used for
+particular Merge columns combination when some of the cells are empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used to better specify
+what will be excluded from format instead of <a href="#CellMergeType">MergeType</a>=’4’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The XXX are column names that
+are not empty for this row in the same order as in <a href="#CellMerge">Merge</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for
+Merge=’Path/Name.Ext’ can be MergeFormatNameExt used when Path is empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeFormatEmpty><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeFormatEmpty</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                               <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>MergeFormat use when all
+merged cells are empty</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeEditFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeEditFormat</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                     <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>MergeFormat used for editing.
+Set it especially when <a href="#CellMergeFormat">MergeFormat</a> contains HTML
+code. If not set, the <a href="#CellMergeFormat">MergeFormat</a> is used
+instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeEditFormatXXX><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>MergeEditFormat<i>XXX</i></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                           <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special MergeEditFormats used
+for particular Merge columns combination when some of the cells are empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used to better specify
+what will be excluded from format instead of <a href="#CellMergeType">MergeType</a>=’4’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The XXX are column names that
+are not empty for this row in the same order as in <a href="#CellMerge">Merge</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for
+Merge=’Path/Name.Ext’ can be MergeEditFormatNameExt used when Path is empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CellMergeEditFormatEmpty><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>MergeEditFormatEmpty</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                     <span
+style='color:red'>new <b>6.4</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>MergeEditFormat use when all
+merged cells are empty</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event         </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>void</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      </span><a
+name=OnMergeChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnMergeChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>,
+<i>string[]</i> <b>result</b>)            <span style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the cell with <a
+href="#CellMergeFormat">MergeFormat</a> is edited. The val is the edited
+string, the result is default parsed val into array of cell values.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The order in result is the
+same as in <a href="#CellMergeEditFormat">MergeEditFormat</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fill the result with new
+values if the value needs special parsing.<i> Remember, the result has already
+filled its items.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example, to parse file
+path in order Path, Name, Ext use such handler:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnMergeChanged
+= function(G,row,col,val,res){</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>var
+idx = val.lastIndexOf(&quot;/&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>if(idx&gt;=0){
+res[0] = val.slice(0,idx); val = val.slice(idx+1); } else res[0] = &quot;&quot;;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>var
+idx = val.lastIndexOf(&quot;.&quot;);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>if(idx&gt;=0)
+{ res[1] = val.slice(0,idx); res[2] = val.slice(idx+1); } else { res[1] = val;
+res[2] = &quot;&quot;; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>string    </i></span><a
+name=CellMergeEdit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeEdit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>chg <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only without <a
+href="#CellMergeFormat">MergeFormat</a> set. Specifies the one cell value that
+can be edited in merged cell. Only one value in merged cell can be edited
+without MergeFormat.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is a column name. This
+column should be listed in <a href="#CellMerge">Merge</a> array.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The row with merged
+cell must have set <a href="#ISpanned"><span style='color:red'>Spanned</span></a>=’1’,
+otherwise the attribute is ignored.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>             <i>int        </i></span><a
+name=CellMergeType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MergeType</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                          <span
+style='color:#3366FF'>upd <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Various flags for merging
+cells, bit array.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1. </span></b><span
+style='font-size:10.0pt'>bit (<b>&amp;1</b>) <b>0</b> – (only without <a
+href="CellMergeFormat">MergeFormat</a>) merged cells are displayed in one line
+(horizontally), <b>1</b> – merged cells are displayed in more lines
+(vertically)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2. </span></b><span
+style='font-size:10.0pt'>bit (<b>&amp;2</b>) <b>0</b> – if column is hidden,
+its cell value is removed too, <b>1</b> – all merged cell values are always
+visible regardless of column visibility.  See <a href="#CfgFastMerge">FastMerge</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>. bit (<b>&amp;4</b>) <b>1</b> – (only for <a
+href="CellMergeFormat">MergeFormat</a>)  remove separated part after empty
+value (for the last column before empty value).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgFastMerge><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FastMerge</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, ignores <a
+href="#CellMergeType">MergeType</a><b>&amp;2</b> (takes it as <b>1</b>) for all
+cells when showing / hiding column. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is faster, because the
+merged cells do not need to be refreshed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=ISortSpan><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortSpan</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls sorting in <a
+href="#ISpanned">Spanned</a> row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default, the grid sorts
+spanned rows always according to value in sorted column, even if this is
+invisible due spanning. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set values in these
+columns for spanned rows to support sorting in the way you want.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or you can set <b>SortSpan</b>
+= ‘1’ and row will be sorted always according to spanned column’s value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=ILeftHtml><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>LeftHtml</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can span the whole left
+column section and show here any HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All cell values in the
+section will be ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=IMidHtml><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>MidHtml</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                            <span
+style='color:red'>new <b>6.0; </b>chg<b> 7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can span the whole variable
+column section and show here any HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All cell values in the
+section will be ignored.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Version 7.0)</span></i><span
+style='font-size:10.0pt'> For cell paging it is shown only on the first column
+page, on the next ones is shown MidHtml2</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=IMidHtml2><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>MidHtml2</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For ColPaging the user
+section is spanned only through the one page, this value is shown on the second
+and next column pages in the middle section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string</i>
+   </span><a name=IRightHtml><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>RightHtml</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can span the whole right
+column section and show here any HTML code.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All cell values in the
+section will be ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgSpannedTree><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SpannedTree</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to <b>1</b> if some <b>MainCol</b>
+cell is spanned between columns (has set <b>Span</b> attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it shows
+tree icons in included &lt;table&gt; tag and slows down rendering.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CBlock></a><a name=CGroup><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Block</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                          
+<span style='color:red'>renamed <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls moving column, it is
+useful especially if there are some cells spanned to or from other columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt; 0, it is the
+block the column belongs to. Create blocks that contain the spanned cells. The
+blocks must be continuous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The columns can be moved only
+inside its block and any other column cannot be moved into the block from
+outside.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first (left) column in
+the block cannot be moved within the block and also must stay the first.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The whole block can be moved
+by dragging the first left column to another location.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It also preserves splitting
+block of columns to more pages when printing and for column paging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2 it was renamed
+from <b>Group</b></span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowSpan><b><span style='font-size:20.0pt'>Vertical
+spanning among rows</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><i><u><span style='font-size:10.0pt;color:red'>IE8 strict</span></u></i></b><b><i><span
+style='font-size:10.0pt;color:red'> mode has problems with rowSpan HTML
+attribute, so when using RowSpan switch IE8 to quirks mode (no !DOCTYPE) or to
+IE7 compatibility mode.</span></i></b></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The functions problematic
+in IE8 strict mode and RowSpan: column with both RowSpan and Span - hide, show
+and move. Row with RowSpan - add, delete, move. Sort, filter and group are <u>without</u>
+problems.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In <b><u>tree</u></b> are all
+rows’ children spanned according to its parent row. The last row’s children are
+or are not included in range, according to the RowSpan is integer or not.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cells are never spanned
+vertically among <b><u>pages</u></b>, the created page is always as high as to
+accommodate all spanned rows. <i>In <b>server paging</b> you must ensure it by
+yourself.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Spanned rows are <b><u>sorted</u></b>
+and <b><u>grouped</u></b> together, their position within spanned range is
+always preserved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+or <b><u>add</u></b> row into spanned range, the dropped row will get the span
+setting from the range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+row outside spanned range, the dropped row will loose its row span and the
+cells become displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>delete</u></b>
+row from range, when deleted the first row (with RowSpan set), the range is
+split and the cells become visible, the row deleting will happen <b><u>after</u></b>
+uploading to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+whole spanned range by dragging the first row in range, when moved to another
+spanned range, the original spanned range is split.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to <b><u>drag</u></b>
+row inside the spanned range, only the first row (with RowSpan set) will stay
+always the first row in the range.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The row spanning was
+updated in version 7.0, in 6.x version it had various limitations and could
+broke layout in various cases.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool</i>      
+</span><a name=CSpanned><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Spanned</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>column</b> contains
+any vertically spanned cells among rows (marked with <a href="#IRowSpan">RowSpan</a>
+attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every column that contains
+some spanned cells among rows must have set <b>Spanned</b>=”1”,
+otherwise the cell <a href="#CellRowSpan">RowSpan</a> attribute will be
+ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> <i>int</i>        </span><a
+name=CellRowSpan><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RowSpan</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                           <span
+style='color:red'>new <b>6.0</b></span><b><span style='color:#0070C0'>; </span></b><span
+style='color:#0070C0'>upd<b> 7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For vertically spanned cell
+among rows, how many cells it covers, at least one. Including hidden rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree it is a count of rows
+on the same level as this row. All their children are spanned automatically.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(New in 7.0)</span></i><span
+style='font-size:10.0pt'> The last row’s children are spanned within range when
+added 0.5 to the RowSpan, e.g. RowSpan=’3.5’ means span for three row and also
+the last row’s children. The 0.5 cannot be used in <a
+href="Tree.htm#CfgReversedTree">ReversedTree</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The column with
+spanned cell must have set <a href="#CSpanned"><span style='color:red'>Spanned</span></a>=’1’,
+otherwise the attribute is ignored.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Dynamic><b><span style='font-size:20.0pt'>Dynamic spanning</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The cells in grid can be
+spanned dynamically by a user. He can select the cells by mouse dragging or
+shift/ctrl + click and click to <b>Join</b> button on toolbar. The spanned
+cells can be similarly split by selecting them and clicking to <b>Split</b>
+button on toolbar. The actions for spanning / splitting can be attached also to
+any other event like right/middle button click or popup menu item action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The changes can be also
+uploaded to server, see Upload_Type=”Span” and Upload_Flags=”Spanned”</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only variable rows can be
+dynamically spanned.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgDynamicSpan><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DynamicSpan</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> to show
+icons for spanning on Toolbar and also prepare grid for spanning when no cell
+in grid is spanned on start.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set to <b>1</b>, it also
+saves changes in span and column moving to Undo.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To permit selecting cells or
+cell ranges set</span><span style='font-size:10.0pt;font-family:"Courier New"'>
+&lt;Cfg <a href="RowSelect.htm#CfgSelectingCells">SelectingCells</a>=’1’/&gt;</span><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default cells can be
+selected by Ctrl + mouse drag. To swap the action with dragging rows, set </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Actions <b>OnDragCell</b>=&quot;SelectCells&quot;
+<b>OnCtrlDragCell</b>=&quot;DragRow&quot;/&gt;</span><span style='font-size:
+10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To clear selection on click
+set </span><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;Actions
+<b>OnClickCell</b>=&quot;ClearSelection,FocusEdit&quot; <b>OnClickOutside</b>=&quot;ClearSelection,Blur&quot;/&gt;</span><span
+style='font-size:10.0pt'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionSpanSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SpanSelected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>             Attached to <b>OnClickButtonJoin</b>
+event                                      <span style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Spans selected cells into one
+cell spanned horizontally and / or vertically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the selected cells are not
+in one rectangle, it creates more rectangles from the selection and spans one
+by one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there were already some
+cells spanned and interfered with the ranges, they are cut and split.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if there is no selected
+cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionSplitSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SplitSelected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>              Attached to <b>OnClickButtonSplit</b>
+event                                      <span style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Splits all spanned cells
+within selected range(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if there is no selected
+cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionSplitCell><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SplitCell</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                 Attached
+to <b>OnClickButtonSplit</b> event                                      <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Splits spanned actual or
+focused cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fails if the cell is not
+spanned</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=SpanRange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SpanRange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TRow</i>
+<b>row1</b>, <i>string</i> <b>col1</b>, <i>TRow</i> <b>row2</b>, <i>string</i> <b>col2</b>)                                  <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Spans the range into one cell
+with value from cell [<b>row1</b>,<b>col1</b>].</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The [<b>row1</b>,<b>col1</b>]
+must be the upper left corner.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><a
+name=SplitSpanned><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SplitSpanned</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>)                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Splits the spanned cell. The <b>row</b>,
+<b>col</b> can be any cell within the rectangle to split.</span></p>
+
+</div>
+
+</body>
+
+</html>

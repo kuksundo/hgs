@@ -1,0 +1,86 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// -----------------------------------------------------------------------------------------
+// Called whenever is the grid scrolled
+Grids.OnScroll = function (G,x,y){
+if(y+10 > G.GetBodyScrollHeight()-G.GetBodyHeight()){ // Adds one new root page when grid is scrolled bottom
+   G.AddPage(null,"<I/><I Count='1' Expanded='0'/><I/><I/><I/><I/><I/><I/><I/><I/>"); // Here are put directly the page data, not <Grid> tag
+   // The Count='1' Expanded='0' is just to demonstrate the adding new child pages
+   }
+if(x+10 > G.GetBodyScrollWidth(1)-G.GetBodyWidth(1)){ // Adds one new column page when grid is scrolled left
+   var names = [], sec = G.ColNames.length-2;
+   for(var i=0;i<5;i++) names[i] = "A"+(i+sec*5);
+   G.AddColPage(names);
+   }
+}
+// -----------------------------------------------------------------------------------------
+// Creates new child page on parent expand
+// The parent row must have set Expanded='0' Count'1' to be marked as row with children for server paging
+Grids.OnDownloadPage = function(G,row,func){
+if(!row.id) return; // Tests if the row is not page, in this example is useless, because it has sense only with server paging (Paging='3')
+G.Source.Page.Row = row; // Here you must set the row to add the children to
+G.AddDataFromServer("<Grid><Body><B><I/><I/><I Count='1' Expanded='0'/><I/><I Count='1' Expanded='0'/><I/><I Count='1' Expanded='0'/><I/><I/><I/></B></Body></Grid>",G.Source.Page); 
+   // Here put the data with <Grid> tag
+func(0);
+G.Calculate(1,1); // Just recalculate the row count in formula on Toolbar
+return true;
+}
+// -----------------------------------------------------------------------------------------
+// Calculates count of variable columns
+function CountColumns(G){
+var cnt = 0;
+for(var c in G.Cols) if(G.Cols[c].MainSec==1 && G.Cols[c].Visible) cnt++;
+return cnt;
+}
+// -----------------------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>5. Adding pages dynamically</center>
+   <center style='font:bold italic;'>Adding new root pages and column pages on demand on client side</center>
+   <div style='margin-bottom:6px;'><a href='05 - Adding pages.xml'>05 - <h2>Adding pages</h2>.xml</a></div>
+   <div style='width:950px; height:550px;'>
+      <bdo Debug='check' Data_Url='05 - Adding pages.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         <h4>Adding root pages </h4> dynamically by API.<br />
+         Must be set <b>Paging='2'</b> or '3'.<br />
+         The new root page can be created and added to the end of grid by <h3>AddPage</h3> method.<br />
+         You need to put the method the row data in XML, like in page response.<br />
+         Remember, individual rows, not pages, can be added by <b>AddRow</b> method.<br />
+      </li>
+      <li>
+         <h4>Adding column pages</h4> dynamically by API.<br />
+         Must be set <b>ColPaging='2'</b>.<br />
+         The new column page can be created and added to the right of variable columns (middle section) in grid by <h3>AddColPage</h3> method.<br />
+         To this method you fill only the column names, not any any data.<br />
+         Remember, individual columns, not pages, can be added by <b>AddCol</b> method.<br />
+      </li>
+      <li>
+         To add the pages on scroll to the bottom or right, use <h3>OnScroll</h3> event.<br />
+         Here you can use API methods like <b>GetBodyWidth</b>, <b>GetBodyScrollWidth</b> and <b>GetBodyHeight</b>, <b>GetBodyScrollHeight</b> to find if the grid is scrolled to the edge.
+      </li>
+      <li>
+         Optionally you can set Cfg attribute <b>EnterMode</b> to specify behavior of Enter key, set it to <b>1</b> to behave like in Excel - enter goes cell down.
+      </li>
+      <li>
+         <h4>Adding child pages</h4> dynamically by API<br />
+         To add new child pages on row expand you need to switch to server child paging by Cfg attribute <h3>ChildPaging='3'</h3><br />
+         And to all rows where you want to add children set attribute <h3>Count</h3><b>='1'</b> and <b>Expanded='0'</b>.<br />
+         The new child page create in API event <h3>OnDownloadPage</h3>, here call <h3>AddDataFromServer</h3> with children data to add them.<br />
+      </li>
+   </ul>
+</body>
+</html>

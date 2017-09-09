@@ -1,0 +1,1786 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Grid size and scroll</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Grid size and scroll</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Describes how to control
+width and height of the whole grid and when and how to scroll its content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Default><b><span
+style='font-size:20.0pt'>Default behavior</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default TreeGrid is
+rendered into its <a href="Create.htm#MainTag">main div tag</a> and does <u>not</u>
+change its size. The main tag should have set its height and width style attributes,
+otherwise grid sets them to 100%.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In strict mode the main tag
+height attribute should be set to fixed height if it can affect body height,
+otherwise grid automatically sets &lt;Cfg <a href="#CfgMaxVScroll">MaxVScroll</a>=’2000’/&gt;.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the grid content is
+smaller than the main tag, there is shown empty space inside the main tag, if the
+grid is bigger than the main tag it shows its scrollbars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <a
+href="Create.htm#MainTag">main tag</a> has automatically set <b>overflow:hidden</b>
+and you must not change it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid cannot show its
+content because it wider or higher than the main tag size, it shows error
+message “<b><i>Too small extents</i></b>”. To not show the message, set
+&lt;Lang&gt;&lt;Text <b>ExtentErr</b>=””/&gt;&lt;/Lang&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid cannot show its
+content horizontally, it first tries to minimize all fixed columns and Pager
+that have <b>CanResize</b>=’1’ to their <b>MinWidth</b>. If it is not enough,
+it hides all fixed columns and Pager that have <b>CanHide</b>=’1’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgExactSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ExactSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                      <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the size of grid is
+computed according to the real main tag size.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it preserves
+also percentage width inside tables and similar layouts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> for large
+tables when grid becomes slow when updating layout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Maximize><b><span
+style='font-size:20.0pt'>Maximize grid width and height</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill the whole main tag by
+grid content set <b>&lt;Cfg <a href="#CfgConstHeight">ConstHeight</a>=’1’ <a
+href="#CfgConstWidth">ConstWidth</a>=’1’/&gt;</b> or use some row with &lt;I <b>RelHeight</b>=’1’/&gt;
+and column with &lt;C <b>RelWidth</b>=’1’/&gt; .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To fill the whole window by
+main tag set <b>&lt;Cfg <a href="#CfgMaxHeight">MaxHeight</a>=’1’ <a
+href="#CfgMaxWidth">MaxWidth</a>=’1’/&gt;</b>, <i><span style='color:red'>ensure
+that your page layout fulfills all requirements for the </span><b><span
+style='color:blue'><a href="#CfgMaxHeight">MaxHeight</a></span></b><span
+style='color:red'> attribute!</span></i> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set minimal size of
+the main tag by <b>&lt;Cfg <a href="#CfgMinTagHeight">MinTagHeight</a>=’...’ <a
+href="#CfgMinTagWidth">MinTagWidth</a>=’...’/&gt;</b>, maximal size of the main
+tag by <b>&lt;Cfg <a href="#CfgMaxTagHeight">MaxTagHeight</a>=’...’ <a
+href="#CfgMaxTagWidth">MaxTagWidth</a>=’...’/&gt;</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgConstHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ConstHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, updates
+height of grid to fill whole <a href="Create.htm#MainTag">main tag</a>. It does
+not modify main tag height, see <a href="#CfgMaxHeight">MaxHeight</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is ignored when set <a
+href="#CfgNoVScroll">NoVScroll</a> = ’1’.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In fact it adds to grid new
+special row &lt;<a href="RowSpace.htm">Space</a> <a
+href="RowHeight.htm#SpaceRelHeight">RelHeight</a>=’1’ Space=’2’
+Kind=’Fill’/&gt;. This row is positioned between body and foot section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To better control this space,
+you can add this &lt;Space&gt; row by yourself instead of using ConstHeight
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grid already contains some
+row with <a href="RowHeight.htm#SpaceRelHeight">RelHeight</a> attribute set,
+the ConstHeight attribute is ignored.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><span
+style='font-size:10.0pt'> <i>If you use ConstHeight, do <u>not</u> set height
+of <a href="Create.htm#MainTag">main tag</a> in percent</i> <b><span
+style='color:red'>!</span></b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgConstWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ConstWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [4]                                                                                                      <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, it adds new white RelWidth
+column to middle or right section to resize grid content to main tag width. It
+does not modify main tag width, see <a href="#CfgMaxWidth">MaxWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It add the column &lt;<a
+href="TreeGridXmlCols.htm#C">C</a> Name=“<b>_ConstWidth</b>” <a
+href="ColWidth.htm#CRelWidth">RelWidth</a>=’1’/&gt; with also disabled all
+standard features like sorting, filtering or dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column uses CSS class
+GxCellEmpty for all cells except header, here uses GxCellHeaderEmpty</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             No column added</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             The column is placed into between middle
+and right section, into right section if there is some column, otherwise to the
+middle section</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             The column is always placed to the right
+end of middle section</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'>             <i>(new 7.0) </i>The column is placed to
+the right end of right section if exists, otherwise to the middle section</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'>             <i>(new 7.0)</i> It resizes the grid
+content to show at least Columns and Cfg buttons on toolbar. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the toolbar is hidden or it does not contain the buttons, it does nothing. Column
+position is the same as <b>3</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5 - 9999</span></b><span
+style='font-size:10.0pt'> <i>(new 7.0) </i>It resizes the grid content
+maximally to this pixel value, if less than main tag width. Column position is
+the same as <b>3</b>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Useful
+to not hide some buttons on toolbar (e.g. Columns visibility menu), when grid
+is too narrow due hidden many columns</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example ConstWidth=”500” ensures the Toolbar will be at least 500px wide, but
+when the grid columns together are wider than 500px, it does <u>not</u> resize
+the grid any more.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is ignored when set <a
+href="#CfgNoHScroll">NoHScroll</a>=’1’.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If you permit users to
+hide all columns you should ensure that the columns menu will be still
+accessible, the simplest way is to set appropriate ConstWidth.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, updates height of <a
+href="Create.htm#MainTag">main tag</a> to fill the whole window. It does <u>not</u>
+modify grid content height, see <a href="#CfgConstHeight">ConstHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It cannot be used when <a
+href="#CfgResizingMain">ResizingMain</a> is set to 1 or 3 (vertical resizing).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Is possible to have more
+grids on page (vertically) with MaxHeight set, in this case their height is
+computed as ratio of their MaxHeight value or as percentage, see <a
+href="#CfgMaxHeightPercent">MaxHeightPercent</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To let grid maximize its
+main tag to window height, on your page there must <u>not</u> be: </span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>a)
+any <u>parent</u> tag (in hierarchy from grid to &lt;body&gt;) with <b>overflow</b>
+set to <b>hidden</b>, <b>auto</b> or <b>scroll</b>.</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>b)
+any <u>parent</u> tag (in hierarchy from grid to &lt;body&gt;) with <b>position:absolute</b>.</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>c)
+any tag (except tags included in tag with not visible overflow or absolute
+position) with <b>height</b> set to <b>percentage</b> (like height:100%).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool</i>      </span><a
+name=CfgMaxHeightPercent><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeightPercent</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                               <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <a href="#CfgMaxHeight">MaxHeight</a>
+attribute is set in percentage or as ratio</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - the <a href="#CfgMaxHeight">MaxHeight</a> is ratio
+of the sum of all these tags in the <a href="#CfgMaxHeightParent">MaxHeightParent</a>
+or body - the tags always fill exactly the whole <a href="#CfgMaxHeightParent">MaxHeightParent</a>
+or body</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                e.g. two rows
+with MaxHeight=’20’ and MaxHeight=’30’ will be high 20/(20+30) = 0.4 and
+30/(20+30) = 0.6</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - the <a href="#CfgMaxHeight">MaxHeight</a> is % of
+100%, the 100% is the <u>remaining</u> height in the <a
+href="#CfgMaxHeightParent">MaxHeightParent</a> or body</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                e.g. two rows
+with MaxHeight=’20’ and MaxHeight=’30’ will be high 20% and 30% and there will
+be empty space with 50% remaining height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int</i>        </span><a
+name=CfgMaxHeightReserved><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeightReserved</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This height will be reserved
+empty in the <a href="#CfgMaxHeightParent">MaxHeightParent</a> or body, in
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This space will be always
+empty when applying <a href="#CfgMaxHeight">MaxHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>    </span><a
+name=CfgMaxHeightParent><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHeightParent</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Offset parent to calculate
+the height according to, when applying <a href="#CfgMaxHeight">MaxHeight</a>.
+The id of the tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it not set, the offset
+parent is document.body or the nearest parent tag with overflow set or absolute
+position. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The parent must have set <u>fixed</u>
+height except the &lt;body&gt;!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgMaxWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, updates
+width of <a href="Create.htm#MainTag">main tag</a> to fill the whole parent tag
+or body. It does <u>not</u> modify grid width, see <span style='color:blue'><a
+href="#CfgConstWidth">ConstWidth</a></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It cannot be used when <span
+style='color:blue'><a href="#CfgResizingMain">ResizingMain</a></span> is set to
+2 or 3 (horizontal resizing).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Now it just sets width of
+main tag to 100%.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The main tag should not
+have set any padding, border or margin, if required, set them to some parent
+tag.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinTagHeight></a><a name=CfgMinHeight><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>MinTagHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal height of <a
+href="Create.htm#MainTag">main tag</a> in pixels. This value is used when main
+tag is shrunk because of resizing by user or when applying <a
+href="#CfgMaxHeight">MaxHeight</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used when main tag
+has set percentage height in style<i>, but in this case it does not restore the
+percentage height when tag can be higher!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinTagWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinTagWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal width of <a
+href="Create.htm#MainTag">main tag</a> in pixels. This value is used when main
+tag is shrunk because of resizing by user or when applying <a
+href="#CfgMaxWidth">MaxWidth</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used when main tag
+has set percentage width in style.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxTagHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxTagHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal height of <a
+href="Create.htm#MainTag">main tag</a> in pixels. This value is used when main
+tag is enlarged because of resizing by user or when applying <a
+href="#CfgMaxHeight">MaxHeight</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used when main tag
+has set percentage height in style<i>, but in this case it does not restore the
+percentage height when tag can be higher!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxTagWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxTagWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal width of <a
+href="Create.htm#MainTag">main tag</a> in pixels. This value is used when main
+tag is enlarged because of resizing by user or when applying <a
+href="#CfgMaxWidth">MaxWidth</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used when main tag
+has set percentage width in style.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=NoScroll><b><span
+style='font-size:20.0pt'>Update size according to the content</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To shrink or enlarge the main
+tag according to grid content. set <b>&lt;Cfg <a href="#CfgNoVScroll">NoVScroll</a>=’1’
+<a href="#CfgNoHScroll">NoHScroll</a>=’1’/&gt;</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To shrink or enlarge the main
+tag up to specific size only, set <b>&lt;Cfg <a href="#CfgMaxVScroll">MaxVScroll</a>=’…’
+<a href="#CfgMaxHScroll">MaxHScroll</a>=’…’/&gt;</b>, when grid content reaches
+this maximum, it shows its scrollbars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To use your own scrolling
+behavior set <b>&lt;Cfg <a href="#CfgNoScroll">NoScroll</a>=’1’/&gt;</b>. There
+will be used scrollbars of parent tag with overflow set or window scrollbars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoVScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoVScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the TreeGrid
+always resizes vertically the <a href="Create.htm#MainTag">main tag</a> to show
+the entire grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, a user cannot
+resize the main tag vertically (<a href="#CfgResizingMain">ResizingMain</a>
+ignores 1 or 3). It disables all <a href="RowHeight.htm#SpaceRelHeight">RelHeight</a>
+rows and <a href="#CfgConstHeight">ConstHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoHScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoHScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the TreeGrid
+always resizes horizontally the <a href="Create.htm#MainTag">main tag</a> to
+show the entire grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, a user cannot
+resize the main tag horizontally (<a href="#CfgResizingMain">ResizingMain</a>
+ignores 2 or 3). It also disables all <a href="ColWidth.htm#CRelWidth">RelWidth</a>
+columns and <a href="#CfgConstWidth">ConstWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxVScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxVScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, resizes vertically
+the <a href="Create.htm#MainTag">main tag</a> tag to show the entire grid, but
+only up to the specified size in pixels. Grid behaves in this way: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid content is higher
+than this maximum, it sets the main tag height to the maximum and shows
+vertical scrollbar. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid content is smaller
+than this maximum, it shrinks the main tag to accommodate the grid only. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, it disables all <a
+href="RowHeight.htm#SpaceRelHeight">RelHeight</a> rows and <a
+href="#CfgConstHeight">ConstHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxHScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxHScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:blue'>            </span><span style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, resizes horizontally
+the <a href="Create.htm#MainTag">main tag</a> to show the entire grid, but only
+up to the specified size in pixels. Grid behaves in this way: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid content is wider
+than this maximum, it sets the main tag width to the maximum and shows
+horizontal scrollbar. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When grid content is smaller
+than this maximum, it shrinks the main tag to accommodate the grid only. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set, it disables all <a
+href="ColWidth.htm#CRelWidth">RelWidth</a> columns and <a href="#CfgConstWidth">ConstWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:aqua'>OnResizeMain</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>)                                                                             <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the event is called also when resizing main tag by
+NoVScroll, NoHScroo, MaxVScroll and MaxHScroll. But <u>not</u> by NoScroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, does not use
+TreeGrid’s scrollbars. The <a href="Create.htm#MainTag">main tag</a> is always
+resized to accommodate exactly the grid content.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case are used
+scrollbars of parent tag with overflow set or browser window.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case the main tag has
+automatically set <b>overflow:visible</b> and it must not be changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Resizing><b><span
+style='font-size:20.0pt'>Let a user to control the grid size</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To let a user to resize main
+tag, set <b>&lt;Cfg <a href="#CfgResizingMain">ResizingMain</a>=’3’/&gt;</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The user will resize the main
+tag, but not the grid content, to update grid content to fill the resized main
+tag set <b>&lt;Cfg <a href="#CfgConstHeight">ConstHeight</a>=’1’ <a
+href="#CfgConstWidth">ConstWidth</a>=’1’/&gt;</b>  or use some row with &lt;I <b>RelHeight</b>=’1’/&gt;
+and column with &lt;C <b>RelWidth</b>=’1’/&gt; . </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set minimal permitted
+size of the main tag by <b>&lt;Cfg <a href="#CfgMinTagHeight">MinTagHeight</a>=’...’
+<a href="#CfgMinTagWidth">MinTagWidth</a>=’...’/&gt;</b> and maximal size by <b>&lt;Cfg
+<a href="#CfgMaxTagHeight">MaxTagHeight</a>=’...’ <a href="#CfgMaxTagWidth">MaxTagWidth</a>=’...’/&gt;</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgResizingMain><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ResizingMain</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            </span><i><span
+style='font-size:8.0pt;background:yellow'>main tag extents are saved to cookies,
+avoid it by <b>&lt;Cfg ResizingMainLap=’1’/&gt;                                   </b></span></i><span
+style='font-size:10.0pt;background:yellow'>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, <a
+href="Create.htm#MainTag">main tag</a> can be resized by user by dragging by
+bottom right edge of toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>= <b>1</b> resizes vertically
+(height), <b>2</b> resizes horizontally (width), <b>3</b> resizes both sides</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Extents of main tag are saved
+to cookies, to suppress it set <b>ResizingMainLap</b>=’<b>1</b>’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resizing height cannot be
+done when set <a href="#CfgMaxHeight">MaxHeight</a>, <a href="#CfgNoVScroll">NoVScroll</a>,
+<a href="#CfgMaxVScroll">MaxVScroll</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resizing width cannot be done
+when set <a href="#CfgMaxWidth">MaxWidth</a>, <a href="#CfgNoHScroll">NoHScroll</a>,
+<a href="#CfgMaxHScroll">MaxHScroll</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If resizing main tag is
+permitted, it is also resized automatically if it cannot accommodate the grid
+(the fixed sections of grid are too high or wide), to preserve displaying “Too
+small extents” message.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGridResize></a><a name=GridResize><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>GridResize</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Attached
+to <b>OnDragResize</b> and <b>OnDragButtonResize</b>, can be attached to <b>OnDrag...</b>
+events only        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts resizing main tag by mouse.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsGridResizeDefault></a><a name=GridResizeDefault><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>GridResizeDefault</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Attached
+to <b>OnDblClickResize</b> and <b>OnDblClickButtonResize</b>         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resizes main tag back to its
+original size after it was resized by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnResizeMain><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnResizeMain</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>grid</b>)                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after main tag is
+resized by a user.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the event is called also when resizing main tag by
+NoVScroll, NoHScroo, MaxVScroll and MaxHScroll. But <u>not</u> by NoScroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Widths><b><span
+style='font-size:20.0pt'>Widths of individual sections</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid supports scrolling
+of all three column sections (left, mid, right).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is scrolled only
+the middle (variable) section. Only if the grid cannot accommodate the other
+section, they are scrolled too.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i>The algorithm to show scrollbars for sections</i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) If there is enough space
+to show all columns in their original widths, no scrollbar is shown. The widths
+of sections cannot be resized by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) If there is no room to
+show all columns, the sections are resized to their Width
+(LeftWidth/MidWidth/RightWidth). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If section
+has not set its width, it is not resized. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The sections
+are resized in the order: Mid, Right, Left. So first is resized the middle
+section to its Width, if there is still no room it continues with right and
+next width the left one.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) If there is still no room,
+the sections <u>without</u> Width are resized to their MinWidth
+(MinLeftWidth/MinMidWidth/MinRightWidth). Still in order Mid, Right, Left.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>4) If there is still no room
+and vertical pager is displayed, the pager is resized to its MinWidth</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>5) If there is still no room,
+the sections <u>with</u> Width are resized to their MinWidth. Still in order
+Mid, Right, Left.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>6) If there is still no room,
+all sections are resized to their border width only (few pixels). Still in
+order Mid, Right, Left.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>7) If there is still no room,
+the “Too small grid size” message is shown and grid is disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgWideHScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>WideHScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                                                      <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             All three column sections can be
+scrolled, depending on their ...Width attributes presets.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If the
+sections are wider than grid, the sections are shrunk and their scrollbars are
+shown. The section order is [middle,right,left].</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             There is only one horizontal scrollbar
+spanned for all three column sections and controls only the middle section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Only the
+middle section can be scrolled. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                It was
+default and only behavior in versions prior to 6.5</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If left and
+right fixed columns are wider than the grid, “Too small grid size” message is
+displayed and grid is disabled. No column resize/hide is done unlike versions
+below 6.5!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool      </i></span><a
+name=CfgShortHScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ShortHScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                                      <span
+style='color:red'>deleted <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Replaced by WideHScroll</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the horizontal
+scrollbar is displayed only below variable columns. It is just visual effect.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgLeftWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LeftWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                      Saved
+to cookies, avoid it by &lt;Cfg <b>SectionWidthLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected maximal width (in
+pixels) of the left columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the section content
+becomes wider, scrollbar is shown</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed when
+resizing section, see <a href="#CfgLeftCanResize">LeftCanResize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMidWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MidWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                      Saved
+to cookies, avoid it by &lt;Cfg <b>SectionWidthLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected maximal width (in
+pixels) of the middle (variable) columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the section content
+becomes wider, scrollbar is shown</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed when
+resizing section, see <a href="#CfgLeftCanResize">LeftCanResize</a> or <a
+href="#CfgRightCanResize">RightCanResize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRightWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RightWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Saved
+to cookies, avoid it by &lt;Cfg <b>SectionWidthLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected maximal width (in
+pixels) of the right columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the section content
+becomes wider, scrollbar is shown</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed when
+resizing section, see <a href="#CfgRightCanResize">RightCanResize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinLeftWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinLeftWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [50]                                                                                                     <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected minimal width (in
+pixels) of the left columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The section is not shrunk
+below this limit, except all other sections reached their minimal width and
+grid horizontal space is still too small.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinMidWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinMidWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [50]                                                                                                     <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected minimal width (in
+pixels) of the middle (variable) columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The section is not shrunk
+below this limit, except all other sections reached their minimal width and
+grid horizontal space is still too small.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMinRightWidth><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinRightWidth</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [50]                                                                                         <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected minimal width (in
+pixels) of the right columns section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The section is not shrunk
+below this limit, except all other sections reached their minimal width and
+grid horizontal space is still too small.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSectionResizing><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SectionResizing</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                           <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how the column
+sections can be resized. Individual section resizing permissions are set by <a
+href="#CfgLeftCanResize">LeftCanResize</a> and <a href="#CfgRightCanResize">RightCanResize</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - No resizing is permitted, regardless on
+LeftCanResize / RightCanResize settings</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Resizing can be done by dragging vertical splitter
+shown between the sections <i>(new 9.2)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Resizing can be done by dragging small vertical
+splitters between horizontal scrollbars <i>(default behavior prior 9.2)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgLeftCanResize><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LeftCanResize</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                               <span
+style='color:red'>new <b>6.5;</b> chg <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When and how the edge between
+left and middle column section can moved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Never</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Only if the <a href="#CfgLeftWidth">LeftWidth</a> is
+set and there is scrollbar in left or middle section.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - <i>(new 9.2) </i>Always when there is scrollbar in
+left or middle section. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - <i>(new 9.2) </i>Always when there is scrollbar in
+any section (left, middle, right). The right section width can be also changed
+if the middle section cannot be resized enough.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resizing changes <a
+href="#CfgLeftWidth">LeftWidth</a> and <a href="#CfgMidWidth">MidWidth</a>,
+(for <b>3</b> also <a href="#CfgRightWidth">RightWidth</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The section can be caught and
+dragged by the place between left and middle scrollbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sections cannot be resized
+below their Min...Width and above sum of their column widths.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgRightCanResize><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RightCanResize</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                                                                               <span
+style='color:red'>new <b>6.5</b>; chg <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When and how the edge between
+right and middle column section can moved.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - Never</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - Only if the <a href="#CfgRightWidth">RightWidth</a>
+or <a href="#CfgMidWidth">MidWidth</a> is set and there is scrollbar in right
+or middle section.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - <i>(new 9.2) </i>Always when there is scrollbar in right
+or middle section. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> - <i>(new 9.2) </i>Always when there is scrollbar in
+any section (left, middle, right). The left section width can be also changed
+if the middle section cannot be resized enough.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resizing changes <a
+href="#CfgRightWidth">RightWidth</a> and <a href="#CfgMidWidth">MidWidth</a>,
+(for <b>3</b> also <a href="#CfgLeftWidth">LeftWidth</a>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The section can be caught and
+dragged by the place between right and middle scrollbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sections cannot be resized
+below their Min...Width and above sum of their column widths.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionsSectionResize></a><a name=ColResize><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SectionResize</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Mouse
+dragging action, only for <b>OnDrag...</b> event                      <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts resizing column
+section by mouse.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the action
+attached to <b>OnDragHScrollLeft</b> (left/middle scrollbar), <b>OnDragHScrollRight</b>
+(middle/right scrollbar).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnSectionResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSectionResize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>section</b>, <i>int</i> <b>widthchange</b>)                                 <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when section (0-left,
+1 middle, 2 – right) is resized by a user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be called more times
+during resizing column by a user, for every change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnAfterSectionResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnAfterSectionResize</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>section</b>)                                     <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after section (0-left,
+1 middle, 2 – right) is resized by a user. It is called only once.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><a name=Other><b><span
+style='font-size:20.0pt'>Other scrolling attributes and API</span></b></a></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgCustomScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CustomScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of scrollbars used in
+grid. It affects only the base vertical and horizontal scrollbars scrolling the
+whole grid section.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – standard browser scrollbar</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – normal style scrollbar, <b>2</b> – big style
+scrollbar, <b>3</b> – small (simple) style scrollbar</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – hidden (no) scrollbars, you can assign action <a
+href="#ActionsScroll">Scroll</a> to some drag event to scroll on drag.
+Scrolling is also possible by mouse wheel or by focus by arrow keys.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Custom scrollbars are <u>not</u>
+suitable for very large grids with many rows or columns, because the custom
+scrollbar step is too big for them.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgTouchScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TouchScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [1]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of scrollbars used in
+grid only on touchpad, e.g. on <b>iPad</b>. It affects only the base vertical
+and horizontal scrollbars scrolling the whole grid section.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It changes value of <a
+href="#CfgCustomScroll">CustomScroll</a> for iPad only.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – standard browser scrollbar</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – normal style scrollbar, <b>2</b> – big style scrollbar,
+<b>3</b> – small (simple) style scrollbar</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – hidden (no) scrollbars, you can assign action <a
+href="#ActionsScroll">Scroll</a> to some drag event to scroll on drag.
+Scrolling is also possible by mouse wheel or by focus by arrow keys.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgScrollAction><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ScrollAction</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [
+]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For tablets only.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefines behavior of
+scrolling action (DragXRow and DragXGrid). When set, users can change this
+setting also via configuration menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is empty to not
+modify the &lt;Actions&gt; settings.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – No scroll action, scrolling can be done only by
+scrollbars</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Scroll by one finger, it replaces default iPad
+screen move</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – Scroll by two fingers, it replaces default iPad
+zooming, it is default grid behavior</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – Scroll by three fingers, it replaces grid row dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgCustomHScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CustomHScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                           <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Presets different value of <a
+href="#CfgCustomScroll">CustomScroll</a> for horizontal scrollbar(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgHideHScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>HideHScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the horizontal
+scrollbar is not visible and it cannot be used by a user to scroll the grid
+horizontally. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All other scrolling ways (by
+focus, by API) are still possible like the scrollbar is visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to hide the
+scrollbar and provide custom way for horizontal scrolling, e.g. some buttons.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it sets <a href="#CfgCustomHScroll">CustomHScroll</a>
+= ‘4’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgShowVScroll></a><a name=CfgShowVScrollbar><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>ShowVScroll</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, the vertical
+scrollbar is still visible even if it is not required. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It automatically sets &lt;Cfg
+<a href="#CfgConstHeight">ConstHeight</a>=’1’/&gt; if not set and no RelHeight
+row exists. Ignored when set <a href="#CfgNoVScroll">NoVScroll</a> or <a
+href="#CfgMaxVScroll">MaxVScroll</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to 1 if there are many
+columns with <a href="ColWidth.htm#CRelWidth">RelWidth</a> and showing / hiding
+vertical scrollbar slows down the grid, especially for tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRoundVScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RoundVScroll</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, to this will be all
+vertical scroll steps rounded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example set it to 18, if
+your rows are 18 pixels high (default in many styles) to scroll always to the
+whole rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgNoScrollAfterExpand><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>NoScrollAfterExpand</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [1]                                                                   <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, TreeGrid
+scrolls down if the children are not shown all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, when expanding
+row, does <u>not</u> scroll into view the row’s children – the icon always
+stays under mouse cursor</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the default value is <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgPositionFixed><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PositionFixed</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> if the
+grid is placed in tag with CSS position:fixed;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionsScroll><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Scroll</span></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:lime'>         Mouse dragging action, only for <b>OnDrag...</b>
+event                                              <span style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts scrolling grid section
+(columns or rows) under mouse cursor. Scrolls in both directions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the action
+attached to <b>OnDrag2Row</b> for scrolling with two fingers on touchpad (e.g.
+on iPad).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See also <a
+href="#CfgCustomScroll">CustomScroll</a> and <a href="#CfgTouchScroll">TouchScroll</a>
+attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionsScrollAuto><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ScrollAuto</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Attached to <b>OnDrag1Row</b>
+and <b>OnDrag1Gantt</b> events, can be attached only for <b>OnDrag...</b> event           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts scrolling grid section
+(columns or rows) under mouse cursor. Scrolls in both directions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the scrolling shift is too
+small, it does nothing and permits default action. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use with NoVScroll or
+NoHScroll to have default scroll in one direction and TreeGrid scroll in the
+other direction.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example on iPad set
+&lt;Cfg NoVScroll='1'/&gt; &lt;Actions OnDrag1Row=&quot;ScrollAuto&quot;/&gt;
+to use default vertical scroll for whole page and horizontal scroll for
+individual column sections (e.g. Gantt chart).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionsScrollTouch><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ScrollTouch</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>    Mouse dragging action,
+only for <b>OnDrag...</b> event                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same action like <a
+href="#ActionScrollAuto">ScrollAuto</a>, but in Gantt it works only if no Gantt
+object is focused. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To avoid unwanted scroll when
+misses the Gantt object while trying to drag it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usually used with <a
+href="RowMove.htm#CfgTouchClearFocused">TouchClearFocused</a> set to some short
+time.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i> </span><a
+name=OnScroll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnScroll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>hpos1</b>, <i>int</i> <b>vpos</b>, <i>int</i> <b>oldhpos1</b>,
+<i>int</i> <b>oldvpos</b>, <i>int</i> <b>hpos0</b>, <i>int</i> <b>oldhpos0</b>,
+<i>int</i> <b>hpos2</b>, <i>int</i> <b>oldhpos2</b>)  <span style='color:blue'>upd
+<b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after body was
+scrolled</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>hpos1</span></i><span
+style='font-size:10.0pt'> is new middle scrollLeft, <i>vpos</i> is new
+scrollTop, <i>oldhpos1</i> is original middle scrollLeft, <i>oldvpos</i> is
+original scrollTop, all in pixels.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.5)</span></i><span
+style='font-size:10.0pt'> hpos0, oldhpos0, hpos2, oldhpos2 are values for left
+and right column section</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=Update></a><a name=SetScrollBars><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:aqua'>Update</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (
+)                                                                                                          
+<span style='color:blue'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Updates grid layout,
+especially scrollbars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it after all changes <u>inside</u>
+or <u>outside</u> the grid that affect grid <u>size</u> and are not recognized
+by the grid automatically or to update layout immediately after the change
+occurs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it if you modify cell
+content directly without API and the cell changes its height. Or when you do
+some action that resizes <b>main tag</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true for success and
+false if grid cannot be shown and the error message “Too small extents” is
+displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void</i>      </span><a
+name=UpdatePos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UpdatePos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>        ( )                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Updates information about
+position and size of the parent tags – the absolute position of grid on page.
+Updates also all absolute cursor positions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it after all changes <u>outside</u>
+the grid that affect grid <u>position</u> and/or <u>size</u> and are not
+recognized by the grid automatically or to update layout immediately after the
+change occurs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it if you modify html
+page layout and grid <b>main tag</b> moves inside page flow to another position.
+Or when parent tag with overflow set (if any) resizes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it especially when grid
+is placed inside tag with overflow set or grid does not show scrollbars
+(&lt;Cfg <a href="#CfgNoScroll">NoScroll</a>=’1’ or <a href="#CfgNoHScroll">NoHScroll</a>=’1’
+or <a href="#CfgNoVScroll">NoVScroll</a>=’1’/&gt;).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ScrollIntoView><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ScrollIntoView</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>pagepos </b>= null)                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Scrolls grid to show the cell
+[row,col].  The grid is scrolled as little as possible to show the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row represents a page set
+pagepos to expected row’s position (index) at this page (when server paging
+used and page is not loaded yet).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you want to scroll to
+exact position, you can use <a href="#SetScrollTop">SetScrollTop</a> and <a
+href="#GetRowTop">GetRowTop</a> methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow[]</i>  </span><a
+name=GetShownRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetShownRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>       ( )                                                                                           <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns an array of all rows
+actually visible by scroll.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow[]</i>  </span><a
+name=GetShownCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetShownCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         ( <i>int</i> <b>sec</b>
+= 1 )                                                               <span
+style='color:red'>new <b>6.0</b>; </span><span style='color:blue'>upd <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns an array of all
+column names actually visible by scroll.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.5)</span></i><span
+style='font-size:10.0pt'> The <b>sec</b> is column section (0 – left, 1 –
+middle, 2 – right)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgScrollLeft><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ScrollLeft</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Can
+be s<i>aved to cookies if set<b>&lt;Cfg ScrollLeftLap=’0’/&gt;</b></i>                        <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial horizontal scroll of middle
+(variable) columns, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgLeftScrollLeft><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LeftScrollLeft</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            Can
+be s<i>aved to cookies if set<b>&lt;Cfg ScrollLeftLap=’0’/&gt;            </b></i>            <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial horizontal scroll of
+left columns, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgRightScrollLeft><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RightScrollLeft</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        Can
+be s<i>aved to cookies if set<b>&lt;Cfg ScrollLeftLap=’0’/&gt;</b></i>            <span
+style='color:red'>new <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial horizontal scroll of
+right columns, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetScrollLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetScrollLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> ( <i>int</i>
+<b>sec</b> = 1 )                                                                           <span
+style='color:red'>new <b>6.0</b>; </span><span style='color:blue'>upd <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns actual horizontal
+scroll of body, in pixels.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.5)</span></i><span
+style='font-size:10.0pt'> The <b>sec</b> is column section (0 – left, 1 –
+middle, 2 – right)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=SetScrollLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetScrollLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>int</i>
+<b>pos</b>, <i>int</i> <b>sec</b> = 1)                                                                <span
+style='color:red'>new <b>6.0</b>; </span><span style='color:blue'>upd <b>6.5</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets new horizontal scroll of
+body, in pixels.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.5)</span></i><span
+style='font-size:10.0pt'> The <b>sec</b> is column section (0 – left, 1 –
+middle, 2 – right)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetColLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetColLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>string</i>
+<b>col</b>)                                                                                          <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns position of column
+within its section, in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The return value can be used
+to <a href="#SetScrollLeft">SetScrollLeft</a> method to scroll exactly to the
+column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetBodyWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetBodyWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (
+<i>int</i> <b>sec</b> = 1 )                                                               <span
+style='color:red'>new <b>6.2</b></span><span style='color:blue'>; upd 6.5</span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns inner width of the
+variable columns area (clientWidth of the body).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used width GetColLeft
+and GetScrollLeft to compute exact visibility and position of some variable
+column.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 6.5)</span></i><span
+style='font-size:10.0pt'> The <b>sec</b> is column section (0 – left, 1 –
+middle, 2 – right)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetBodyScrollWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetBodyScrollWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (
+<i>int</i> <b>sec</b> = 1 )                                                                <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns scroll width of the
+given columns area – sum of all visible columns Width in the given area.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgScrollTop><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ScrollTop</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Can
+be s<i>aved to cookies if set<b>&lt;Cfg ScrollTopLap=’0’/&gt;</b></i>                        <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Initial vertical scroll of
+body, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetScrollTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetScrollTop</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> ( )                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns actual vertical
+scroll of body, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=SetScrollTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetScrollTop</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>pos</b>)                                                                                              <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets new vertical scroll of
+body, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetRowTop><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetRowTop</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow</i>
+<b>row</b>)                                                                                         <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns position of variable
+row or page within body, in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The return value can be used
+to <a href="#SetScrollTop">SetScrollTop</a> method to scroll exactly to the
+row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetBodyHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetBodyHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                           <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns inner height of the
+variable rows area (clientHeight of the body).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used width GetRowTop
+and GetScrollTop to compute exact visibility and position of some variable row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetBodyScrollHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetBodyScrollHeight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (
+)                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns scroll height of the
+body – sum of heights of all pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=Rendering><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Rendering</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If grid is rendering now. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You should <u>not</u> call
+any API function that modifies TreeGrid HTML while it is rendering (or <b>Loading</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set Rendering to
+true, if you plan to show or hide many rows to speed up the action. After
+finish, you need set Rendering to false and call function <a href="#Update">Update</a>
+to update grid layout.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

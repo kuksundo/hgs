@@ -1,0 +1,135 @@
+﻿<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <script src="../../../Grid/GridE.js"> </script>
+  <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+      
+<h2>TreeGrid Photoalbum example</h2>
+<i>This example needs an access to internet, it loads all the photos and thumbnails from site www.treegrid.com.</i><br />
+<br />
+<!-- BodyStart -->
+
+<style>
+/* Custom class for root nodes, it sets the background normally used for TreeGrid header */
+.RootNode {background:white url(../../../Grid/Borders/Backgrounds.gif) repeat-x 0px 4px!important; padding-top:6px!important; color:white; font-size:12px!important; }
+.RootNodeText { padding-left:11px!important; font-size:14px!important; font-weight:bold; }
+
+/* Custom class for top header */
+.Header {background:black!important}    
+.Bold { font-weight:bold; }
+
+/* Slightly modifies the default Borders style for this example */
+.GBMainTable { border-left:1px solid #A39282; border-right:1px solid #A39282; border-collapse:separate; text-align:left; background:white;}
+.GBBodyLeft, .GBBodyMid, .GBBodyRight, .GBHeadLeft, .GBHeadMid, .GBHeadRight, .GBFootLeft, .GBFootMid, .GBFootRight {
+   border:1px solid #A39282; margin:3px; padding:3px; 
+   }
+.GBVScroll { margin:3px; padding:2px; border:1px solid #A39282; } 
+.GBHScrollLeft, .GBHScrollMid, .GBHScrollRight, .GBHScrollWide,.GBHScrollLeftResize,.GBHScrollRightResize { margin:5px; padding:2px; border:1px solid #A39282; cursor:default; }
+.GBHScrollHidden { background:#F4F4F4; }
+.GBXScroll { margin:8px; }
+.GBPageFirst { padding-bottom:3px; border-top:1px solid #E8E4E2; }
+.GBPage { border-top:1px dotted #A39282; padding-top:3px; padding-bottom:3px; }
+.GBPageOne { border-top:1px solid #E8E4E2; }
+</style>
+
+<script>		
+var Prev = 1, Thumb = 1, Lang = "E"; // Initial settings for Preview, Thubnails and Language
+
+// --- Updates the grid size according to window size ---
+function UpdateSize(P,D,w,h){
+var A = GetWindowSize(), W = A[0]-12, H = A[1]-12, ww = W, hh = H, x = 6, y = 6;
+if(w/h > W/H) { hh = h/w*W; y += (H-hh)/2; }
+else { ww = w/h*H; x += (W-ww)/2; }
+P.style.width = ww+"px";
+P.style.height = hh+"px";
+P.style.left = x+"px";
+P.style.top = y+"px";
+D.style.width = W+"px";
+D.style.height = H+"px";
+}
+
+// --- Called on click to any image thumbnail ---
+function Click(I,win){ // win is set when called from bottom preview
+if(Prev&&!win){ // Opens the photo in bottom preview
+   var P = document.getElementById("FPreview");
+   P.innerHTML = "<IMG SRC='"+I.src.replace(/[\\\/][TP][123]_/,"/P"+Prev+"_")+"' ONCLICK='Click(this,true);' STYLE='cursor:pointer;'>"
+   }
+else if(document.getElementById("O2").checked) window.open(I.src.replace(/[\\\/][TP][123]_/,"/O_"),"_blank"); // Opens the photo in new window
+else { // Maximizes the photo to actual page
+   var D = document.createElement("div");
+   D.style.position = "absolute";
+   D.style.left = "6px";
+   D.style.top = "6px";
+   D.style.background = "white";
+   D.style.zIndex = 999;
+   document.body.appendChild(D);
+   var P = document.createElement("img");
+   P.style.position = "absolute";
+   P.style.zIndex = 1000;
+   document.body.appendChild(P);
+   UpdateSize(P,D,I.offsetWidth,I.offsetHeight);
+   P.src = I.src.replace(/[\\\/][TP][123]_/,"/O_");
+   P.onclick = function(){ document.body.removeChild(P); document.body.removeChild(D); window.onresize = null; EnablePage(); } // Closes the image on click
+   D.onclick = function(){ P.onclick(); }
+   window.onresize = function(){ UpdateSize(P,D,I.offsetWidth,I.offsetHeight); }
+   }
+}
+
+// --- Called to change thubnails settings ---
+function ThumbnailsChange(S){
+var G = Grids[0], idx = S.id.slice(1)-0;
+G.Data.Data.Url = "PhotoData"+idx+Lang+".xml";
+var PS = document.getElementById("PS");
+if(idx==4) PreviewChange(P0);
+var exp = new Date(); exp.setFullYear(exp.getFullYear()+1);
+Thumb = idx;
+G.ReloadBody(function(){ Grids.OnRenderFinish(G); });
+}
+
+// --- Called to change preview settings ---
+function PreviewChange(S){
+setTimeout(function(){ 
+   var G = Grids[0], idx = S.id.slice(1)-0;
+   var H = [0,200,350,500];
+   var P = document.getElementById("FPreview");
+   var last = Prev;
+   Prev = idx;
+   if(idx){ 
+      P.style.height = H[idx]+"px";   
+      G.ShowRow(G.GetRowById("Preview"));
+      P.style.height = H[idx]+"px"; 
+      if(P.firstChild && P.firstChild.tagName && P.firstChild.tagName.toLowerCase()=="img") Click(P.firstChild);
+      }
+   else {
+      G.HideRow(G.GetRowById("Preview"));
+      }
+   if(!G.SetScrollBars()){
+      S.selectedIndex = last;
+      PreviewChange(S);
+      return;
+      }
+   },10);
+}
+
+// --- Called on start to apply initial settings ---
+Grids.OnRenderFinish = function(G){
+if(Thumb!=1) document.getElementById("T"+Thumb).checked = true;
+if(Prev!=1){ 
+   var P = document.getElementById("P"+Prev);
+   P.checked = true;
+   if(Thumb==4) document.getElementById("PS").style.visibility="hidden";
+   PreviewChange(P);
+   }
+}
+
+</script>
+
+<div id="Grid" style="width:100%;height:700px;">
+   <script>TreeGrid('<bdo Sync="1" Cache="1" Layout_Url="PhotoDefE.xml" Data_Url="PhotoData1E.xml"></bdo>',"Grid");</script>
+</div>
+<!-- BodyEnd -->
+</body>
+</html>

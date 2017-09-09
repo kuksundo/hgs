@@ -1,0 +1,128 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Tree</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Grouping rows to tree</center>
+   <center style='font:bold italic;'>Grouping rows according to the same values in selected columns</center>
+   <div style='margin-bottom:6px;'><a href='03 - Grouping rows.xml'>03 - <h2>Grouping rows</h2>.xml</a></div>
+   <div style='width:100%; height:450px;'>
+      <bdo Debug='check' Data_Url='03 - Grouping rows.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Actual grouping can be predefined by Cfg attribute <h3>Group</h3> as list of the column names to group the grid by.<br />
+         Grouping does not modify any data rows. It adds new temporary group rows and places the rows as their children. 
+         These rows are automatically removed when the <b>Group</b> setting changes.<br />
+      </li>
+      <li> <h4>User interface</h4><br />
+         The <b>Group</b> setting can be changed by users in Space row with Kind <b>Group</b> defined by <h3>&lt;Group></h3> tag inside &lt;Solid> tag.<br />
+         The Group row provides three special / optional cells: 
+         <ul>
+         <li>
+            <b>List</b> as list of predefined grouping settings to choose one of them. <br />
+            In <b>List</b> attribute array define item names shown in the List combo and in <b>Cols</b> attribute array define the individual groupings as strings set to the <b>Group</b> Cfg attribute.<br />
+         </li>
+         <li>
+            <b>Custom</b> as area to drag columns here for user defined list to group by them. The custom area is shown when set <b>Custom='1'</b>.
+         </li>
+         <li>
+            <b>Panel</b> as checkbox to temporary disable actual grouping without changing it. It is shown when set <b>Panel='1'</b>, it is shown by default. <br />
+            The checkbox changes Cfg attribute <b>Grouped</b>.
+         </li>
+         </ul>
+      </li>
+      <li>
+         <h4>API</h4><br />
+         <ul>
+            <li>
+               The grouping settings can be changed also by API method <b>DoGrouping</b> and switched on / off by actions <b>GroupOn</b> / <b>GroupOff</b>.
+            </li>   
+            <li>
+               Before grouping start there is called event <b>OnGroup</b>. It is not called on grid loading. It is called from method DoGrouping.<br />
+               After grouping is done, but before the changes are shown there is called event <b>OnGroupFinish</b>. It is not called on grid loading.<br />
+            </li>
+         </ul>
+      </li>
+      
+      <li> <h4>Controlling creating groups</h4><br />
+         Here are various attributes to control the group creation, when and how the groups will be created.
+         <ul>
+            <li>
+               Column / cell attribute <h3>GroupEmpty</h3> controls if there will be created group row for empty and / or zero values. Default is both on.
+            </li>
+            <li>
+               Column / cell attribute <h3>GroupSingle</h3> controls if there will be created single group row (in its parent) = when all the data rows has the same value in the grouping column. Default is on.
+            </li>
+            <li>
+               Column / cell attribute <h3>GroupSole</h3> controls if there will be created group row for signle data rows = when the data row has unique value in the grouping column. Default is on.
+            </li>
+            <li>
+               Column / cell attribute <h3>GroupDeleted</h3> controls if there will be created group row also for deleted rows or they remain in root. Default is on.
+            </li>
+            <li>
+               Column attribute <h3>GroupChar</h3> to create more groups for one grouping column. It splits cell value in that column by the given GroupChar and creates new level for every part.
+            </li>
+            <li>
+               Columns attribute <h3>MaxChars</h3> to compare only part of the values. <br />
+               Is also possible to input more values into MaxChars to create more groups by one grouping column, it will split the cell value to parts of length given by MaxChars and creates new level for every part.
+            </li>
+            <li>
+               Column / cell attribute <h3>CaseSensitive</h3> to compare the strings case sensitive. By default is on.
+            </li>
+            <li>
+               Column / cell attribute <h3>LocalCompare</h3> to compare the strings according to browser's locale settings. 
+               It has sense especially for case insensitive comparing. By default is off.
+            </li>
+            <li>
+               Column / cell attribute <h3>WhiteChars</h3> as list of characters to ignored when comparing. The strings are compared after these values are removed from them.
+            </li>
+            <li>
+               Column / cell attribute <h3>CharCodes</h3> as list of character pairs to replace the first character by the second one in all strings before comparing them. Useful for example to compare strings without punctuation in many languages.
+            </li>
+         </ul>
+      </li>
+      <li><h4>Cell value for grouping</h4><br />
+         Every cell can have set special value by <h3>SortValue</h3> to use it for grouping instead of the cell value.<br />
+         The value can be also dynamically created by JavaScript in API event <b>OnGetSortValue</b>.<br />
+      </li>
+      <li>
+         The <h4>grouping tree</h4> is shown in main column set by Cfg attribute <h3>MainCol</h3>.<br />
+         If the grid does not have tree yet (no main column) the tree is shown in column set by Cfg attribute <h3>GroupMain</h3>.<br />
+         The tree column can be also different according to grouped columns, the <b>GroupMain</b> can be set also in Group default row.<br />
+         The group tree can be shown also <b>independently</b> for every grouping column instead of MainCol, set Cfg attribute <h3>GroupTree</h3> to 1 or 2. 1 Shows the tree left side, 2 right side.
+         To move the group columns to some position in grid to be adjacent and the tree correctly positioned set <b>GroupTreeCol</b> Cfg attribute.<br />
+      </li>
+      <li>
+         The <h4>main column width</h4> can be resized when showing tree to size set by column attribute <h3>GroupWidth</h3> or, if it is set to 1, 
+         it resizes by width of all columns hidden by grouping.
+      </li>
+      <li>
+         The main column can be automatically <h4>sorted</h4> by when grouped, if set Cfg attribute <b>GroupSortMain='1'</b>.<br />
+         And the original sorting can be restored when set Cfg attribute <b>GroupRestoreSort='1'</b>
+      </li>
+      <li> <h4>Created group rows and defaults</h4><br />
+         The created group rows are controlled by default row named "Group" it works as standard default.<br />
+         It can be predefined like &lt;Def>&lt;D Name='Group' .... />&lt;/Def> and define various settings for the group row.<br />
+         It can for example change color or style of the main column values, hide or retype the other column or calculate summaries for the other columns.<br />
+         It is also possible to define and assign different defaults for particular grouping (e.g. grouping by A and B can have different default then grouping by B and A) 
+         and also for particular column or grouping level. It is controlled by the default attributes <b>GroupCols</b> and <b>GroupCol</b>. For more information see documentation.
+      </li>
+      <li> <h4>Editing in group</h4><br />
+         By default is main column cell in created group row editable and if it is changed, it changes all the children cells in the source column.<br />
+         Also when moved children from one group to another, it changes its cells to be related to the new grouping.<br />
+         Similarly rows or copied to some group gets filled its cells according to the grouping.<br /> 
+         The dragging groups can be more controlled by Cfg attribute <b>GroupMoveFree</b> and <b>GroupChangeMoved</b>.<br />
+      </li>
+   </ul>
+</body>
+</html>

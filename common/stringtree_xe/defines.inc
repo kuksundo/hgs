@@ -1,0 +1,6 @@
+{$DEFINE CPU32}
+{$DEFINE Windows32}
+{$DEFINE threads}
+{$DEFINE XE}
+{$DEFINE FIFOQUEUE_MPMC}
+

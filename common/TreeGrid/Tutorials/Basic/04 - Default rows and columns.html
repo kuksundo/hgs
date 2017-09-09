@@ -1,0 +1,117 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// Sample custom calculation function
+// Sums the seven days in a week. col is SUMX, where X is the week index
+function MySum(G,row,col){
+var D = ["SU","MO","TU","WE","TH","FR","SA"];
+col = col.slice(3);
+
+for(var i=0,sum=0;i<D.length;i++){
+   var n = Get(row,D[i]+"N"+col), v = Get(row,D[i]+"V"+col);
+   if(v && n) sum += v*n;
+   }
+return sum?sum:"";
+}
+
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+
+      .Red { color:red; }
+      .Green { color:green; }
+      .Blue { color:blue; }
+      .Black { color:black; }
+      .White { color:gray; }
+      .Bold { font-weight:bold; }
+      .Big { font-size:15px; font-weight:bold; }
+      .Sep { border-color:transparent; background:none; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Default rows and columns</center>
+   <center style='font:bold italic;'>Predefined values for more rows and columns</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Columns.xml'>04 - <h2>Default rows and columns</h2>.xml</a></div>
+   <div style='width:950px; height:500px;'>
+      <bdo Debug='check' Data_Url='04 - Default rows and columns.xml'></bdo>
+   </div>
+   <br />
+   <ul>
+      <li><h4>Default rows</h4><br />
+         <ul>
+         <li>See <a href="../../Doc/RowDefaults.htm">Default rows documentation</a>.</li>
+         <li>
+            Default row predefines all row attributes that the row does not explicitly set. Setting attribute to empty string overrides the default value.<br />
+            For example if set &lt;D Name='XXX' A='DefA' B='DefB'/> and &lt;I Def='XXX' A='RA' C='RC'/>, the row will have these three attributes A='RA' B='DefB' C='RC'
+         </li>
+         <li>
+            Every row in grid has set always <b>one</b> default row. The default row is set by the row attribute <h3>Def</h3>. <i>Unlike columns and defaults, the row Def attribute can contain only one item!</i><br />
+            If the row has not set Def attribute, its value is read from parent row <h3>CDef</h3> attribute. The CDef attribute is used also to set Def for all new children added to the parent.<br />
+            Default CDef value for root variable rows can be set by root <b>&lt;Root CDef="..."/></b> tag.<br />
+         </li>
+         <li>
+            If row has set neither Def nor its parent CDef, its default row is set to "<b>R</b>" for variable rows, "<b>Header</b>" for header rows, "<b>Fixed</b>" for other fixed rows and "<b>Solid</b>" for solid rows.<br /> 
+            The "R", "Header", "Fixed" and "Solid" defaults are defined in <a href="../../Grid/Defaults.xml">Grid/Defaults.xml</a>, but is possible to change them in any your XML.<br />
+            There is also one predefined default row <b>"Group"</b> that is used by default for all rows created by grouping, see <a href="../Tree/03 - Grouping rows.html">03 - Grouping rows</a> tutorial.<br />
+            And one default row <b>"CPage"</b> used for child rows created by MaxChildren settings, see <a href="../../Doc/TreePaging.htm#MaxChildren">Paging in tree - MaxChildren documentation</a>.<br />
+            <i>Note that Fixed and Group default rows inherit the "R" default row too (have Def='R'), but the Header, Solid and CPage default rows don't inherit anything (have Def='').</i>
+         </li>
+         <li>
+            The default rows are defined by <h3>&lt;D/></h3> tag in root <h3>&lt;Def> ... &lt;/Def></h3> tag.<br />
+            Every default row &lt;D> must have set its attribute <h3>Name</h3> to identify the default row. This value is used in row's <b>Def</b> and <b>CDef</b> attributes to link this default row.<br />
+            Default row can also define its <b>Def</b> attribute to inherit it from one or more other default rows. More items are comma separated. Default value for Def attribute is <b>"R"</b>, so by default all default rows inherit default row named <b>"R"</b>.
+         </li>
+         <li>
+            The &lt;D> tag can have also <b>child &lt;I></b> tags. When added new row of this default row, it will automatically get new created children as these defined &lt;I> tags.<br />
+            It is possible to have only one level of such &lt;I> children of default row. But the child &lt;I> tags can have set their Def attribute and if this default has also child rows, they are added too. In such way you can create many levels of children for one new row.<br /> 
+         </li>
+         <li>
+            Default row is used also for permissions when moving row to new parent. The row is accepted only if its Def attribute value is listed in the new parent row <b>AcceptDef</b> attribute.<br />
+            For more information see <a href="../Drag/01 - Dragging rows.html">01 - Dragging rows</a> tutorial.<br />
+         </li>
+         <li>
+            By <h4>API</h4> you can access the default row by <b>Grid.Def[<i>name</i>]</b>. It is possible to directly read and write the default row attributes like Grid.Def["R"].Color = "Red";<br />
+            The inheritance between two default rows (by the &lt;D Def/>) is resolved on grid start, so changing one default row attribute by API will <u>not</u> affect any other default row.<br />
+            Read the row attribute including the default value by global <b>Get</b> method or by grid methods <b>GetAttribute</b> or <b>GetValue</b>.<br />
+            You can get the row's default row object by <b>row.Def</b> and its name by <b>row.Def.Name</b>.<br />
+         </li>
+         </ul>
+      </li>
+      <li><h4>Default columns</h4><br />
+         <ul>
+            <li>See <a href="../../Doc/ColBasics.htm">Column basics documentation</a>.</li>
+            <li>
+            Default column predefines all column attributes that the column does not explicitly set. Setting attribute to empty string overrides the default value.<br />
+            For example if set &lt;D Name='XXX' Color='Red' Class='Blue'/> and &lt;C Def='XXX' Class='Green' CanEdit='0'/>, the column will have these three attributes Color='Green' Class='Blue' CanEdit='0'
+            </li>
+            <li>
+            Every column in grid has set one or more default columns. The default columns are set by the column attribute <h3>Def</h3>. More items are comma separated.<br />
+            If column has not set the Def attribute, its default column is <b>"C"</b>, only for Gantt type column it is <b>"Gantt"</b>. The "Gantt" default column inherits also the "C" column. <br /> 
+            The "C" and "Gantt" default columns are defined in <a href="../../Grid/Defaults.xml">Grid/Defaults.xml</a>, but is possible to change them in any your XML.<br />
+            </li>
+            <li>
+            The default columns are defined by <h3>&lt;D/></h3> tag in root <h3>&lt;DefCols> ... &lt;/DefCols></h3> tag.<br />
+            Every default column &lt;D> must have set its attribute <h3>Name</h3> to identify the default column. This value is used in column's <b>Def</b> attribute to link this default column.<br />
+            Default column can also define its <b>Def</b> attribute to inherit it from one ore more other default column. More items are comma separated. Default value for Def attribute is <b>"C"</b>, so by default all default columns inherit default column named <b>"C"</b>.
+            </li>
+            <li>
+            By <h4>API</h4> you <u>cannot</u> access the default columns <i>(unlike default rows)</i>. The default columns are processed on grid start, all columns read their not set attributes from default columns on start.<br />
+            To access column attribute use <b>GetAttribute</b> API method or directly by <b>Grid.Cols[<i>name</i>]</b>.
+            </li>
+            <li>
+            <i>Note, <b>Header</b> rows don't read their cell attributes from columns, only from the header row or its default row.</i><br />
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

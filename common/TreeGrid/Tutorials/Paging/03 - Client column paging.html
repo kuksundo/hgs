@@ -1,0 +1,70 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+  <script>
+
+// -------------------------------------------------------------------------------
+// --- Creates cell content to better see the cells ---
+Grids.OnLoaded = function(G){
+function update(row){
+   for(var r=row.firstChild,i=1;r;r=r.nextSibling,i++) {
+      for(var c in G.Cols) if(c!="Panel" && r[c]==null) { r[c] = r.id+" "+c; }
+      if(r.firstChild) update(r);
+      }
+   }
+update(G.Body.firstChild); // First page   
+}
+// -------------------------------------------------------------------------------
+  </script>
+  <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Paging</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Client column paging</center>
+   <center style='font:bold italic;'>Automatic paging of columns on client side</center>
+   <div style='margin-bottom:6px;'><a href='03 - Client column paging.xml'>03 - <h2>Client column paging</h2>.xml</a></div>
+   <div style='width:100%; height:550px;'>
+      <bdo Debug='problem' Data_Url='03 - Client column paging.xml'></bdo>
+      <!-- Here is not used Debug='check' because for the column count is slow, but you can set it, the grid is still usable except in IE6/IE7 -->
+   </div>
+   <ul>
+      <li>
+         Client column paging distributes <b>variable (middle) columns</b> to pages.<br />
+         The column paging is set by Cfg attribute <h3>ColPaging</h3><b>='2'</b>.<br />
+         The column pages are rendered when the page becomes visible due scroll at least for time specified by Cfg attribute <b>PageTime</b>, default value is 200 ms.<br />
+       </li>
+       <li>
+         The size of column page is set by Cfg attribute <h3>ColPageLength</h3>.<br />
+         It is possible to always render the first few columns on start, their count is set by Cfg attribute <h3>ColPageMin</h3>.<br />
+      </li>
+      <li>
+         It is possible to render all columns on start, but with progress dialog to let users to cancel the rendering and render the rest of pages on demand.<br />
+         For this behavior set <b>ColPaging='1'</b>. It can be switched also by (the second) Toolbar button Repaint, it calls action <b>RenderPages</b>.<br />
+         <i>Remember this grid has 1,000 columns and 150,000 cells, so rendering all pages on start takes some time.</i><br />
+      </li>
+      <li>
+         If grid has rendered too many cells, it becomes slow. It is possible to automatically clear the unused column pages (the oldest, not displayed). <br />
+         The maximal count of the rendered column pages is set by <h3>MaxColPages</h3>.
+      </li>
+      <li>
+         To show all cells in fixed rows, especially in header(s), set <h3>ColPagingFixed</h3><b>='0'</b>. It will page only variable rows.
+      </li>
+      <li>
+         If grid has many columns, it is strongly recommended to set their <b>Width</b> attribute to not slow the grid down by calculating their widths.<br />
+         It is possible to preset the Width (like any other attribute) for all columns in default column: &lt;Def>&lt;D Name='C' Width='xxx'/>&lt;/Def>.<br />
+      </li>
+      <li>
+         If grid contains a lot of cells, it is possible to set attribute <b>Prepared='1'</b> for all columns that do not need updating their cells to speed up the grid start.<br />
+         The grid prepares the Date type cells set by string, the empty Int and Float cells with CanEmpty attribute, Select type and Calculated rows without CalcOrder set.<br />
+         So for all other cases you can set the Prepared attribute to avoid iterating all cells on start and checking their type.
+      </li>
+   </ul>
+</body>
+</html>

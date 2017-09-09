@@ -1,0 +1,1878 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - XML data formats</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>TreeGrid data formats</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid uses <b><span
+style='color:blue'>XML</span></b> structure to describe all input and output
+data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Instead of XML there can be
+used also <b><span style='color:blue'>JSON</span></b> data format, the tag
+names are the same as in the XML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The root XML tag is always
+&lt;<b>Grid</b>&gt;. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Immediate children of
+&lt;Grid&gt; tag are <i>root tags</i> and describe the parts of the grid: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><i><span style='font-size:10.0pt'>Tag Description</span></i></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><i><span style='font-size:10.0pt'>Tag name</span></i></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><i><span style='font-size:10.0pt'>Possible children tags</span></i></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Communication </span></b><span
+  style='font-size:10.0pt'>with<b> </b>server</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>IO</b>&gt; </span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Configuration </span></b><span
+  style='font-size:10.0pt'>of the entire grid </span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Cfg</b>&gt; </span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Default </span></b><span
+  style='font-size:10.0pt'>rows</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Def&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>D</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Default</span></b><span
+  style='font-size:10.0pt'> columns</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;DefCols&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>D</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>First left fixed <b>panel</b>
+  column</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Panel</b>&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Left</span></b><span
+  style='font-size:10.0pt'> fixed<b> columns</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;LeftCols&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>C</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Variable<b> columns</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Cols&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>C</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Right </span></b><span
+  style='font-size:10.0pt'>fixed<b> columns</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;RightCols&gt;
+  </span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>C</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Main<b> Header row</b> with
+  column captions</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Header</b>&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Special <b>solid</b> <b>rows</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Solid&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Space</b>&gt; (or
+  &lt;<b>I</b>&gt;), &lt;<b>Group</b>&gt;, &lt;<b>Search</b>&gt;, &lt;<b>Toolbar</b>&gt;,
+  &lt;<b>Tabber</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Top</span></b><span
+  style='font-size:10.0pt'> fixed<b> rows</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Head&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>I</b>&gt;, &lt;<b>Filter</b>&gt;,
+  &lt;<b>Header</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Variable <b>rows</b> in
+  pages</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Body&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>B</b>&gt; (&lt;B&gt;
+  can contain &lt;I&gt; tags that can contain nested &lt;I&gt; tags and so on,
+  unlimited levels of nesting)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Bottom</span></b><span
+  style='font-size:10.0pt'> fixed <b>rows</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Foot&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>I</b>&gt;, &lt;<b>Filter</b>&gt;,
+  &lt;<b>Header</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Toolbar</span></b></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Toolbar</b>&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Configuration menu</span></b></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>MenuCfg</b>&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>First vertical<b> Pager</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Pager</b>&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Vertical <b>pagers</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Pagers&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>&lt;P&gt;</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Gantt <b>zoom</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Zoom&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>&lt;Z&gt;</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Gantt<b> resources</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Resources&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>R</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Language </span></b><span
+  style='font-size:10.0pt'>settings</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Lang&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>Alert</b>&gt;, &lt;<b>Text</b>&gt;,
+  &lt;<b>Gantt</b>&gt;, &lt;<b>MenuButtons</b>&gt;, &lt;<b>MenuCopy</b>&gt;,
+  &lt;<b>MenuCfg</b>&gt;, &lt;<b>MenuFilter</b>&gt;, &lt;<b>Format</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Short format </span></b><span
+  style='font-size:10.0pt'>setting</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Par&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>P</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Uploading or </span></b><span
+  style='font-size:10.0pt'>downloading<b> changes</b></span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Changes&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>I</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt'>Uploading</span></b><span
+  style='font-size:10.0pt'> <b>spanned</b> cells</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Spanned&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>I</b>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=235 valign=top style='width:176.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>Actual<b> filters</b> in
+  request for data</span></p>
+  </td>
+  <td width=96 valign=top style='width:72.0pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;color:gray'>&lt;Filters&gt;</span></p>
+  </td>
+  <td width=408 valign=top style='width:306.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt'>&lt;<b>I</b>&gt; (instead
+  of &lt;Filter&gt;, for backward compatibility)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The parent tags (Def,
+LeftCols, Cols, RightCols, Solid, Head, Body, Foot, Pagers, Changes, Filters,
+Par) can have <u>no</u> attributes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Order of root tags is
+optional. <u>Not</u> all root tags must be present, most of their attributes
+are pre-defined in <b><i>required</i></b> files <b>Defaults.xml</b> and <b>Text.xml</b>.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If tags are defined in more
+files, their attributes and children are merged. Existing attributes are
+overwritten by new value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defaults (&lt;<b>D</b>&gt;), columns
+(&lt;<b>C</b>&gt;)  and resources (&lt;<b>R</b>&gt;) tags are merged by <b>Name</b>
+attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Fixed and Space rows (&lt;<b>I</b>&gt;)
+are merged by <a href="RowId.htm#Iid">id</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other tags are single and are
+merged by tag name. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pages (&lt;<b>B</b>&gt;) and
+variable rows (&lt;<b>I</b>&gt;) are <b><u>not</u> merged</b>, just added, even
+if they are the same id – this will cause an error. To change existing variable
+rows or add new rows from server use &lt;Changes&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>XML Data are loaded in this
+order: <a href="Files.htm#TextXml">Text.xml</a> + Bonus, <a
+href="Files.htm#DefaultsXml">Defaults.xml</a> + Bonus, <a
+href="DataDownload.htm#Base_">Base</a> + Bonus, <a
+href="DataDownload.htm#Layout_">Layout</a> + Bonus, <a
+href="DataDownload.htm#Data_">Data</a> + Bonus.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 1.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><b><span style='font-size:16.0pt'>Formats</span></b></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid accepts data in <b><span
+style='color:blue'>XML</span></b> format. The XML format can use one of four
+sub-formats: <b><span style='color:blue'><a href="#InternalFormat">Internal</a></span>,
+<span style='color:blue'><a href="#ShortFormat">Short</a></span></b>, <b><span
+style='color:blue'><a href="#ExtraShortFormat">Extra short</a></span></b>,<b><span
+style='color:blue'> <a href="#DTDFormat">DTD</a></span></b>. These formats
+differ in speed of processing, data length and <b><span style='color:blue'>DTD</span></b>
+standard compatibility. The format structure differs in storing cell values and
+cell and row attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The preferred format for
+standard use <b>Internal format</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For large grids you can use <b>Short</b>
+or <b>Extra short</b> format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=InternalFormat><b><span style='font-size:20.0pt'>Internal XML
+format</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='color:#339966'>Preferred format for standard use</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is <b><i>fast</i></b>
+to process and is <b><i>shorter</i></b> <b><i>then <a href="#DTDFormat">DTD</a>
+format</i></b>. It can be generated and processed on server side by standard
+XML parser but <b><i>without </i><span style='color:blue'>DTD</span></b>
+validation and cannot use standard function to locate rows by their ids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You cannot use predefined
+DTD, but you can define you own DTD for your data.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>This format is also
+used in all samples and in TreeGrid server.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>This format uses TreeGrid
+as internal format to store data.</span></b><span style='font-size:10.0pt'> So
+if you use JavaScript API to browse TreeGrid data on client, the data is in
+internal format. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Internal format stores cell
+values as row attributes named as column name. And cell attributes stores in
+row attributes named as column name joined with attribute name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Internal format example</span></b></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>B</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r1'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c1</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='1'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c2</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='xx'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>CanDelete</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='0'&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>  </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r11'</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:red'>c2</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>='xx-aa'</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:red'>c3</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>='10'</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:red'>CanEdit</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>='0'</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:red'>c2CanEdit</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>='1'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New"'>  </span><span lang=PT-BR style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r12'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c2</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='xx-bb'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c3</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='20'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r2'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c1</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='2'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>c2</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='yy'&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>  <span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r21'</span><span
+style='color:fuchsia'> </span><span style='color:red'>c1</span><span
+style='color:blue'>='10'</span><span style='color:fuchsia'> </span><span
+style='color:red'>c2</span><span style='color:blue'>='yy-aa'</span><span
+style='color:fuchsia'> </span><span style='color:red'>Calculated</span><span
+style='color:blue'>='1'</span><span style='color:fuchsia'> </span><span
+style='color:red'>c3Formula</span><span style='color:blue'>='c1*2'</span><span
+style='color:fuchsia'> </span><span style='color:blue'>/&gt;</span> </span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>B</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;/</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>Grid</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ShortFormat><b><span style='font-size:20.0pt'>Short XML format</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='color:#339966'>Use for large grids</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><i>shorter</i></b> <b><i>then
+<a href="#InternalFormat">internal</a> or <a href="#DTDFormat">DTD</a> format</i></b>
+and is <b><i>fast</i></b> to process. It can be generated and processed on
+server side by standard parser <b><i>with </i><span style='color:blue'>DTD</span></b>
+validation and using <b><i>getElementById</i></b> (or similar) method to find
+row by id, same as <b><a href="#DTDFormat">DTD</a></b> format. But cell values
+and attributes are stored as text node and <b><i>needs another parsing</i></b>
+on server side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Short format stores cell
+values and row and cell attributes except <b>id</b> attribute in text node in
+row according to predefined Par tag. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell attribute names in text
+use <b><a href="#InternalFormat">Internal</a></b> format naming (column name + cell
+attribute name).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For short format you need to
+define <b>&lt;P Name</b>=’...’ <b>List</b>=’...’<b>&gt;</b> tag, with list of
+attributes to use in the short format part. <i><span style='color:red'>The
+&lt;P&gt; tag must be defined in XML before it is used!</span></i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to mix short
+format and internal format, even in one node – some attribute define in node
+text (short format) and other in node attributes (internal format).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Text node has this format:               </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>par</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>attr1<span
+style='color:red'>@</span>attr2<span style='color:red'>@</span>...<span
+style='color:red'>@</span>attrN</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>@</span></b><span
+style='font-size:10.0pt'> is chosen character that is not present in any
+attribute value (attr1-attrN). You can choose any character you want, but take
+care to not have it in any attribute value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>par</span></b><span
+style='font-size:10.0pt'> is name of &lt;<b>P</b> <a href="#PName">Name</a>=’’&gt;
+tag. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>attr1</span></b><span
+style='font-size:10.0pt'>, <b>attr2</b>, ..., <b>attrN</b> are separated values
+of attributes in &lt;<b>P</b> <a href="#PList">List</a>=’’&gt;. Count of
+attributes (the N) must be the same as count of attributes in <b>List</b>. If
+any attribute value is missing, just leave the space empty, but separator must
+be present.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Don’t append any
+empty characters to node texts. Always append enclosing tag or first child’s
+tag immediately after the text.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=PName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of parameter. The row points
+to this name by the first item in its text node list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=PList><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>List</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of row
+attribute names listed in text node, in this order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute names always use<span
+style='color:blue'> <a href="TreeGridXmlBasics.htm#InternalFormat">Internal
+format</a></span> (column name + cell attribute name)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;P Name=’PP’
+List=’B,C’/&gt; ... &lt;I A=’a’&gt;</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>PP</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>b</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>c&lt;/I&gt;</span><span style='font-size:
+10.0pt'>  <i>is the same as </i> </span><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;I A=’a’ B=’b’ C=’c’/&gt;</span><span
+style='font-size:10.0pt'>   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Short format example</span></b></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>P</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>Name</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='P1'</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>List</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='CanDelete,c1,c2'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>P</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>Name</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='P2'</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>List</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='Calculated,CanEdit,c1,c2,c2CanEdit,c3,c3Formula'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Body</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>B</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>I</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>id</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='r1'&gt;</span><span style='font-size:
+8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>P1</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx<span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r11'&gt;</span></span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>P2</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>0</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>0</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx-aa</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>10</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New"'>  <span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r12'&gt;</span></span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>P2</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx-bb</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>20</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r2'&gt;</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>P1</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>2</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>yy<span
+style='color:blue'>&lt;</span><span style='color:maroon'>I</span><span
+style='color:fuchsia'> </span><span style='color:red'>id</span><span
+style='color:blue'>='r21'&gt;</span></span><span lang=PT-BR style='font-size:
+8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>P2</span><span lang=PT-BR
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>10</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>yy-aa</span><span
+lang=PT-BR style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@@</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New"'>c1*2<span
+style='color:blue'>&lt;/</span><span style='color:maroon'>I</span><span
+style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>I</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>B</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;/</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>Grid</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ExtraShortFormat><b><span style='font-size:20.0pt'>Extra
+short XML format</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='color:#339966'>Use for very large grids or for long page list in server
+paging</span></i></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is the <b><i>shortest</i></b>
+and is the <b><i>fastest</i></b> to process. It can be generated and processed
+on server side by standard XML parser <b><i>with </i><span style='color:blue'>DTD</span></b>
+validation, but without access rows by their id attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>But cell values, row and cell
+attributes and immediate leaf children row’s attributes and cells are stored as
+text node, therefore it <b><i>needs another parsing</i></b> on the server side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Extra short format stores row
+attributes, cell values and attributes and <b>attributes of all immediate leaf child
+rows</b> (rows without children) in text node. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell attribute names in text
+use <b><a href="#InternalFormat">Internal</a></b> format naming (column name +
+cell attribute name).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The text node has this
+format:        </span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><b><span style='font-size:10.0pt'>par</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>attr1</span><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:red'>@</span><span style='font-size:10.0pt'>attr2</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>...</span><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:red'>@</span><span style='font-size:10.0pt'>attrN</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><b><span
+style='font-size:10.0pt'>parchild</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'>@</span><b><span style='font-size:
+10.0pt'>childcount</span></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><span style='font-size:10.0pt'>attr1-1</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>...</span><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:red'>@</span><span style='font-size:10.0pt'>attr1-N</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>attr2-1</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'>@</span><span style='font-size:
+10.0pt'>...</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><span style='font-size:10.0pt'>attr2-N</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>... ...</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'> @</span><span style='font-size:
+10.0pt'>attrChildCount-1</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><span style='font-size:10.0pt'>...</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>attrChildCount-N</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>@</span></b><span
+style='font-size:10.0pt'> is chosen character that is not present in any
+attribute value (attr1 to attrChildCount-N). You can choose any character you
+want, but take care to not have it in any attribute value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>par</span></b><span
+style='font-size:10.0pt'> is name of &lt;<b>P</b> <a href="#PNameE">Name</a>=’’&gt;
+tag for the parent node attributes</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>attr1</span></b><span
+style='font-size:10.0pt'>, <b>attr2</b>, ..., <b>attrN</b> are separated values
+of attributes in &lt;<b>P</b> <a href="#PListE">List</a>=’’&gt;. Count of
+attributes (the N) must be the same as count of attributes in <b>List</b>. If
+any attribute value is missing, just leave the space empty, but separator must
+be present.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>parchild</span></b><span
+style='font-size:10.0pt'> is name of &lt;<b>P</b> <a href="#PNameE">Name</a>=’’&gt;
+tag for all the children and their attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>childcount</span></b><span
+style='font-size:10.0pt'> is count of children listed here</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>attr1-1</span></b><span
+style='font-size:10.0pt'>, ... <b>attr1-N</b> are attribute values of the first
+child row, their names are listed it &lt;P Name=’parchild’ List=’...’/&gt;.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>attr2-1</span></b><span
+style='font-size:10.0pt'>, ... <b>attrChildCount-N</b> are attribute values for
+next children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the main row has no
+attributes and first part is empty, just let it empty, like “</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@@</span><b><span
+style='font-size:10.0pt'>parchild</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'>@</span><b><span style='font-size:
+10.0pt'>childcount</span></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><span style='font-size:10.0pt'>...” – two starting
+separators.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are too many
+children (&gt;1000), it is possible to use another separator to divide children
+to sections. This speeds up data parsing in IE. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use “</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><b><span
+style='font-size:10.0pt'>par</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'>@</span><span style='font-size:
+10.0pt'>attr1</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><span style='font-size:10.0pt'>attr2</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'>...</span><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:red'>@</span><span style='font-size:10.0pt'>attrN</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><b><span
+style='font-size:10.0pt'>parchild</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:red'>@</span><b><span style='font-size:
+10.0pt'>childcount</span></b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red'>@</span><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:blue'>#</span></b><span style='font-size:10.0pt'>attr1-1</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>...</span><b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:blue'>#</span></b><span style='font-size:10.0pt'>attr1-N</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'># </span></b><span
+style='font-size:10.0pt'>... </span><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>attr100-1</span><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>...</span><b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:blue'>#</span></b><span style='font-size:10.0pt'>attr100-N</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>attr101-1</span><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>...</span><b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:blue'>#</span></b><span style='font-size:10.0pt'>attr101-N</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'> ...</span><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:blue'> #</span></b><span
+style='font-size:10.0pt'>attrChildCount-1</span><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt'>...</span><b><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";color:blue'>#</span></b><span style='font-size:10.0pt'>attrChildCount-N”.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:red'>@</span><span
+style='font-size:10.0pt'> is second separator, it is usually added for every
+100 children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Don’t append any
+empty characters to node texts. Always append enclosing tag or first child’s
+tag immediately after the text.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=PNameE><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of parameter. The row points
+to this name by the first item in its text node list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=PListE><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>List</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of row
+attribute names listed in text node, in this order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Attribute names always use<span
+style='color:blue'> <a href="TreeGridXmlBasics.htm#InternalFormat">Internal
+format</a></span> (column name + cell attribute name)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;P Name=’PP’
+List=’B,C’/&gt; ... &lt;I A=’a’&gt;</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>PP</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>b</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>c&lt;/I&gt;</span><span style='font-size:
+10.0pt'>  <i>is the same as </i> </span><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;I A=’a’ B=’b’ C=’c’/&gt;</span><span
+style='font-size:10.0pt'>   </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Extra short format example</span></b></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>P</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>Name</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='N'</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>List</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='id,CanDelete,c1,c2'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>P</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>Name</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='D'</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>List</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='id,Calculated,CanEdit,c1,c2,c2CanEdit,c3,c3Formula'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Body</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>B</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>I</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>N</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>r1</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>D</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>2</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>r11</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>0</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>0</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx-aa</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>1</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>10</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>r12</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>xx-bb</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>20</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>I</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>N</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>r2</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>1</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>2</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>yy</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>D</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>1</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>r21</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@</span><span style='font-size:
+10.0pt;font-family:"Courier New"'>1</span><span style='font-size:8.0pt;
+font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>10</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>yy-aa</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>c1*2<span style='color:blue'>&lt;/</span><span
+style='color:maroon'>I</span><span style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>B</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;/</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>Grid</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Extra short format example 2</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><i>List of pages when
+server paging used</i></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>P</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>Name</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='B'</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:fuchsia'> </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:red'>List</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>='Name,Csum'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Par</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Body</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>B</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><span
+style='font-size:10.0pt;font-family:"Courier New"'>10000</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P1</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>43</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P2</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>76</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P3</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>45</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'> ... </span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P99</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>65</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P100</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>23</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P101</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>56</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'> ... </span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P199</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>34</span><span
+style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#99CC00'>@</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P200</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>89</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'> ... </span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>P9999</span><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";color:blue'>#</span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>123<span style='color:blue'>&lt;/</span><span
+style='color:maroon'>Body</span><span style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=DTDFormat><b><span style='font-size:20.0pt'>DTD XML format</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='color:#339966'>Use only when needed DTD validation</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b><i>largest</i></b>
+and has <b><i>slowest</i></b> processing. Use it for short data that need to be
+generated and processed on server side by standard XML parser <b><i>with</i></b>
+<b><span style='color:blue'>DTD</span></b> validation and using <b><i>getElementById</i></b>
+(or similar) method to find row by id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DTD format contains each cell
+data and settings in separate tag <span style='color:red'>&lt;</span><b><span
+style='color:blue'>U</span><span style='color:red'>&gt;</span></b>. This tag
+has attribute <b><span style='color:blue'>N</span></b> with column name and can
+have attribute <b><span style='color:blue'>V</span></b>&nbsp;with cell value
+and other attributes named as cell parameters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>DTD format example</span></b></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>Grid</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>B</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r1'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>CanDelete</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='0'&gt;&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>U</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>N</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='c1'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>V</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='1'/&gt;&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>U</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>N</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='c2'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>V</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='xx'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>  <span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r11'</span><span
+style='color:fuchsia'> </span><span style='color:red'>CanEdit</span><span
+style='color:blue'>='0'&gt;&lt;</span><span style='color:maroon'>U</span><span
+style='color:fuchsia'> </span><span style='color:red'>N</span><span
+style='color:blue'>='c2'</span><span style='color:fuchsia'> </span><span
+style='color:red'>V</span><span style='color:blue'>='xx-aa'</span><span
+style='color:fuchsia'> </span><span style='color:red'>CanEdit</span><span
+style='color:blue'>='1'/&gt;&lt;</span><span style='color:maroon'>U</span><span
+style='color:fuchsia'> </span><span style='color:red'>N</span><span
+style='color:blue'>='c3'</span><span style='color:fuchsia'> </span><span
+style='color:red'>V</span><span style='color:blue'>='10'/&gt;&lt;/</span><span
+style='color:maroon'>I</span><span style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>  <span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r12'&gt;&lt;</span><span
+style='color:maroon'>U</span><span style='color:fuchsia'> </span><span
+style='color:red'>N</span><span style='color:blue'>='c2'</span><span
+style='color:fuchsia'> </span><span style='color:red'>V</span><span
+style='color:blue'>='xx-bb'/&gt;&lt;</span><span style='color:maroon'>U</span><span
+style='color:fuchsia'> </span><span style='color:red'>N</span><span
+style='color:blue'>='c3'</span><span style='color:fuchsia'> </span><span
+style='color:red'>V</span><span style='color:blue'>='20'/&gt;&lt;/</span><span
+style='color:maroon'>I</span><span style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;/</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>I</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>id</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='r2'&gt;&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>U</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>N</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='c1'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>V</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='2'/&gt;&lt;</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:maroon'>U</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>N</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='c2'</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:fuchsia'> </span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:red'>V</span><span
+lang=PT-BR style='font-size:10.0pt;font-family:"Courier New";color:blue'>='yy'/&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=PT-BR
+style='font-size:10.0pt;font-family:"Courier New"'>  <span style='color:blue'>&lt;</span><span
+style='color:maroon'>I</span><span style='color:fuchsia'> </span><span
+style='color:red'>id</span><span style='color:blue'>='r21'</span><span
+style='color:fuchsia'> </span><span style='color:red'>Calculated</span><span
+style='color:blue'>='1'&gt;&lt;</span><span style='color:maroon'>U</span><span
+style='color:fuchsia'> </span><span style='color:red'>N</span><span
+style='color:blue'>='c1'</span><span style='color:fuchsia'> </span><span
+style='color:red'>V</span><span style='color:blue'>='10'/&gt;&lt;</span><span
+style='color:maroon'>U</span><span style='color:fuchsia'> </span><span
+style='color:red'>N</span><span style='color:blue'>='c2'</span><span
+style='color:fuchsia'> </span><span style='color:red'>V</span><span
+style='color:blue'>='yy-aa'/&gt;&lt;</span><span style='color:maroon'>U</span><span
+style='color:fuchsia'> </span><span style='color:red'>N</span><span
+style='color:blue'>='c3'</span><span style='color:fuchsia'> </span><span
+style='color:red'>Formula</span><span style='color:blue'>='c1*2'/&gt;&lt;/</span><span
+style='color:maroon'>I</span><span style='color:blue'>&gt;</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>I</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&lt;/</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:maroon'>B</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>&gt;&lt;/</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:maroon'>Body</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;&lt;/</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:maroon'>Grid</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=JSONFormat><b><span style='font-size:20.0pt'>JSON format</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='color:#339966'>Use if you are more familiar with JavaScript than with XML</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <b>shorter</b> than <b>Internal</b>
+format, but <b>longer</b> than <b>Short</b> formats. It can be <b>slower</b>
+than other formats for long data, especially in IE7 and below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> require to
+replace characters &lt; and &amp; by XML entities, it simplifies including HTML
+code into the data. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:red'>In strings must be
+replaced ‘\’ by ‘\\’ and if required ” by \”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>JSON format used standard
+JavaScript Object Notation. The strings must be quoted, the number value need
+not. The bool values must be set as number 0 or 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The root &lt;Grid&gt; tag is
+defined as not named object { }. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Before and after the root object
+can be any characters except &lt; and {, for example  </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>var MyData = { /* grid data
+here */ }</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The definition can contains
+standard JavaScript comments - block /*...*/ and line //</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>simple</b> root tags <b><span
+style='color:blue'>&lt;Cfg&gt;</span></b>, <b><span style='color:blue'>&lt;IO&gt;</span></b>,
+<b><span style='color:blue'>&lt;Panel&gt;</span></b>, <b><span
+style='color:blue'>&lt;Header&gt;</span></b>, <b><span style='color:blue'>&lt;Toolbar&gt;</span></b>,
+<b><span style='color:blue'>&lt;MenuCfg&gt;</span></b>, <b><span
+style='color:blue'>&lt;Pager&gt;</span></b>, <b><span style='color:blue'>&lt;Filter&gt;</span></b>,
+are defined as object named as the tag, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>for
+example </span><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;Cfg
+MainCol=’A’/&gt;</span><span style='font-size:10.0pt'> is defined as </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Cfg:{MainCol:’A’}</span><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>list</b> root tags <b><span
+style='color:blue'>&lt;Cols&gt;</span></b>, <b><span style='color:blue'>&lt;LeftCols&gt;</span></b>,
+<b><span style='color:blue'>&lt;RightCols&gt;</span></b>, <b><span
+style='color:blue'>&lt;Def&gt;</span></b>, <b><span style='color:blue'>&lt;DefCols&gt;</span></b>,
+<b><span style='color:blue'>&lt;Head&gt;</span></b>, <b><span style='color:
+blue'>&lt;Foot&gt;</span></b>, <b><span style='color:blue'>&lt;Body&gt;</span></b>,
+<b><span style='color:blue'>&lt;Solid&gt;</span></b>, <b><span
+style='color:blue'>&lt;Pagers&gt;</span></b>, <b><span style='color:blue'>&lt;Resources&gt;</span></b>,
+<b><span style='color:blue'>&lt;Zoom&gt;</span></b>, <b><span style='color:
+blue'>&lt;Filters&gt;</span></b> and <b><span style='color:blue'>&lt;Changes&gt;</span></b>
+tags are arrays in [], </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>for
+example </span><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;Body&gt;
+... &lt;/Body&gt;</span><span style='font-size:10.0pt'> is defined as  </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Body:<b><span
+style='color:blue'>[</span></b> ... <b><span style='color:blue'>]</span></b></span><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The tags &lt;Cols&gt;,
+&lt;LeftCols&gt;, &lt;RightCols&gt;, &lt;Def&gt; and &lt;DefCols&gt; are arrays
+since version <b>7.0</b>, in previous versions were objects with named
+children.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><span
+style='color:blue'>&lt;D&gt;</span></b> and <b><span style='color:blue'>&lt;C&gt;
+</span></b>tags are defined in array as unnamed objects with id or Name
+attribute and other attributes, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>for
+example: </span><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;Cols&gt;&lt;C
+Name=’<b><span style='color:blue'>A</span></b>’ Type=’Int’/&gt;&lt;/Cols&gt;</span><span
+style='font-size:10.0pt'> is defined as </span><span style='font-size:10.0pt;
+font-family:"Courier New"'>Cols:[{Name:’<b><span style='color:blue'>A</span></b>’,Type:’Int’}</span><span
+style='font-size:10.0pt'> ]</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Nested</span></b><span
+style='font-size:10.0pt'> <b><span style='color:blue'>&lt;I&gt;</span></b> tags
+(in &lt;B&gt;, &lt;I&gt; or &lt;D&gt;) are defined in array named <b><span
+style='color:blue'>Items</span></b>, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>for
+example </span><span style='font-size:10.0pt;font-family:"Courier New"'>&lt;I
+id=’R1’&gt;&lt;I id=’R1-1’/&gt;&lt;/I&gt;</span><span style='font-size:10.0pt'>
+is defined as </span><span style='font-size:10.0pt;font-family:"Courier New"'>{id:’R1’,<b><span
+style='color:blue'>Items:[</span></b>{id:’R1-1’}<b><span style='color:blue'>]</span></b>}</span><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>&lt;B&gt; </span></b><span
+style='font-size:10.0pt'>tag without attributes can be defined as array of row
+objects, with attributes normally with Items tag, for example </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;B&gt;&lt;I/&gt;&lt;I/&gt;&lt;/B&gt;
+</span><span style='font-size:10.0pt'>is defined as </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>[{},{}]</span><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:red'>It is <u>not</u>
+possible to define two objects with the same name!</span><span
+style='font-size:10.0pt'> For example you <b>cannot</b> <b>define</b> </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>{ Cfg:{id:”grid”}, <b><s>Cfg</s></b>:{MainCol:”A”}
+}</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> possible to
+use tag names (except root tags) <b>Header</b>, <b>Filter</b>, <b>Group</b>, <b>Search</b>,
+<b>Toolbar</b> and <b>Tabber</b>, they must be defined by <b><span
+style='color:red'>Kind</span></b> attribute like </span><span style='font-size:
+10.0pt;font-family:"Courier New"'>&lt;Group ... /&gt;</span><span
+style='font-size:10.0pt'> is defined as </span><span style='font-size:10.0pt;
+font-family:"Courier New"'>{ <b><span style='color:blue'>Kind</span></b>:”Group”
+... }</span><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><span
+style='color:blue'>&lt;Lang&gt;</span></b> tag is defined as object with nested
+named objects,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                for example </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>&lt;Lang&gt;&lt;Format
+ValueSeparator=’,’/&gt;&lt;/Lang&gt;</span><span style='font-size:10.0pt'> is
+defined as </span><span style='font-size:10.0pt;font-family:"Courier New"'>Lang:
+{ Format: { ValueSeparator:’:’ } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>JSON format example</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=CS
+style='font-size:9.5pt;font-family:"Courier New";color:red'>var</span></b><span
+lang=CS style='font-size:9.5pt;font-family:"Courier New"'> Test <b><span
+style='color:blue'>=</span></b> {</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Cfg<b><span style='color:blue'>:</span></b> {
+id<b><span style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;Json&quot;</span><b><span
+style='color:blue'>,</span></b> MainCol<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;A&quot;</span><b><span style='color:blue'>, </span></b>Paging<b><span
+style='color:blue'>:</span><span style='color:green'>3</span></b> }<b><span
+style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Cols<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Name<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;A&quot;</span><b><span style='color:blue'> </span></b>}<b><span
+style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Name<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;B&quot;</span><b><span style='color:blue'>, </span></b>Type<b><span
+style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;Int&quot;</span><b><span
+style='color:blue'>, </span></b>Formula<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;1+1&quot;</span> }<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Name<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;C&quot;</span><b><span style='color:blue'>, </span></b>Format<b><span
+style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;d.M.yyyy&quot;</span>
+}</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>RightCols<b><span style='color:blue'>:</span></b>
+[</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Name<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;D&quot;</span><b><span style='color:blue'>, </span></b>Type<b><span
+style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;Date&quot;</span><b><span
+style='color:blue'>,</span></b> Format<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;hh:mm&quot;</span> }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Def<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Name<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R&quot;</span><b><span style='color:blue'>, </span></b>CType<b><span
+style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;Date&quot;</span>
+}</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Header<b><span style='color:blue'>:</span></b>
+{ A<b><span style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;AAA&quot;</span>
+}<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Head<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Kind<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;Header&quot;</span><b><span style='color:blue'>,</span></b>
+A<b><span style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;H1&quot;</span>
+}<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;H2&quot;</span> }<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { Kind<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;Filter&quot;</span><b><span style='color:blue'>, </span></b>B<b><span
+style='color:blue'>:</span><span style='color:green'>3</span><span
+style='color:blue'>, </span></b>BFilter<b><span style='color:blue'>:</span><span
+style='color:green'>3</span></b> }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Foot<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;F1&quot;</span> }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>Body<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R1&quot;</span><b><span style='color:blue'>,</span></b>
+id<b><span style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;R1&quot;</span><b><span
+style='color:blue'>,</span></b> Deleted<b><span style='color:blue'>:</span><span
+style='color:green'>1</span><span style='color:blue'>,</span></b> C<b><span
+style='color:blue'>:</span></b><span style='color:fuchsia'>'1/1/2000'</span> }<b><span
+style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R2&quot;</span><b><span style='color:blue'>,</span></b>
+id<b><span style='color:blue'>:</span></b><span style='color:fuchsia'>&quot;R2&quot;</span><b><span
+style='color:blue'>,</span></b> Added<b><span style='color:blue'>:</span><span
+style='color:green'>1</span><span style='color:blue'>,</span></b> Items<b><span
+style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>      { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R2-1&quot;</span><b><span style='color:blue'>, </span></b>Changed<b><span
+style='color:blue'>:</span><span style='color:green'>1</span><span
+style='color:blue'>, </span></b>AChanged<b><span style='color:blue'>:</span><span
+style='color:green'>1</span></b> }<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>      { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R2-2&quot;</span><b><span style='color:blue'>,</span></b>
+Items<b><span style='color:blue'>:</span></b> [</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>         { A<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>&quot;R2-2-1&quot;</span><b><span style='color:blue'>, </span></b>Selected<b><span
+style='color:blue'>:</span><span style='color:green'>1</span></b> }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>         ]}</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>      ]}</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]<b><span style='color:blue'>,</span></b></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   { id<b><span style='color:blue'>:</span></b><span
+style='color:fuchsia'>'B2'</span><b><span style='color:blue'>,</span></b>Count<b><span
+style='color:blue'>:</span><span style='color:green'>1</span></b> }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>   ]</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=CS style='font-size:
+9.5pt;font-family:"Courier New"'>}</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. HTML, Links, Images and Buttons</center>
+   <center style='font:bold italic;'>Any HTML content, hyperlinks, images, cell action buttons</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - HTML.xml'>03 - <h2>HTML</h2>.xml</a></div>
+   <div style='width:350px; height:350px;'>
+      <bdo Debug='check' Data_Url='03 - HTML.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Showing <h3 style='background:#FAA'>hyperlink</h3> in cell can be done in many ways.<br />
+         <ul>
+            <li>
+               The simplest is <b>attribute</b> <h3>Link</h3> attaching the link for any cell type and value. 
+               You can define target window for the link by <b>LinkTarget</b> attribute.
+               If the cell is editable, the value (but not the link url) can be still edited by clicking in cell outside the link or pressing Enter or F2.
+               The Link attribute does not support catching onclick to the link.
+            </li>   
+            <li>
+               More complex is <h3>Link</h3> Type. Both the link url and link text (and also link target) are defined in cell value, as the first character separated list as '|href|text|target'.
+               For example Col1='|http://www.treegrid.com|TreeGrid web|_blank'
+               To let users to follow the link, set <b>CanEdit</b>='0'. To let users to edit the link text and url set CanEdit='1' and specify what will be edited by <b>EditFormat</b>.
+               You can catch the link click by XML event <b>OnClickLink</b> or by API event <b>OnLinkClick</b>.
+               The Link type supports adding prefixes to text and or to url by <b>Format</b> attribute.
+            </li>
+            <li>
+               The link can be defined also by standard HTML <b>&lt;a></b> tag included in <b>Html</b> type cell or in <b>HtmlPrefix</b> attribute.<br />
+               Or it can be simulated in API or XML event <b>OnClick</b> by JavaScript window.open method.
+            </li>
+         </ul>
+      </li>
+      <li>
+         Showing <h3 style='background:#FAA'>image</h3> in cell can be done in many ways.<br />
+         <ul>
+            <li>
+               The simplest is <h3>Icon</h3> type, it shows in cell only one inactive image defined by the cell value. It produces the smallest HTML code.
+               The icon can be aligned by <b>Align</b> attribute to left, right or center.
+            </li>
+            <li>
+               More complex is <h3>Img</h3> type, it shows in cell one image, supports resizing and cropping the image and also hyperlink.
+               The image source, size and link is defined in cell value, as the first character separated list as '|src|width|height|left|top|link'.
+               For example Col1='|Green.gif|20|20|10|6|http://www.treegrid.com'.
+               If set only width and height, it will be resized to them, if set all four extents, it shows the cut off rectangle from the original image.<br />
+               You can catch the link click by XML event <b>OnClickLink</b> or by API event <b>OnLinkClick</b>.
+               The Img type supports adding prefixes to source, text and to url by <b>Format</b> attribute.
+               The Img type can be also editable and permits editing all the source parts, what is edited is defined by <b>EditFormat</b>.
+            </li>
+            <li>
+               <h3 style='background:#FDD'>Side icons</h3>. In every cell is possible to show side icons along with the cell value, defined by <b>Icon</b> a <b>Button</b> attributes.<br />
+               <ul>
+                  <li>
+                     The <b>attribute</b> <h3>Button</h3> shows right side icon or button or custom HTML code. All buttons in one column have the same width defined by column's <b>WidthPad</b> attribute.<br />
+                     The click to the Button can be caught by API event <b>OnButtonClick</b> or by XML event <b>OnClickSide</b> or <b>OnClickSideButton</b>.
+                  </li>
+                  <li>
+                     The <b>attribute</b> <h3>Icon</h3> shows left or right side icon. So the cell can have maximally two right side icons or one left and one right. <br />
+                     The icon position is defined by <b>IconAlign</b> attribute.
+                     In one column every Icon can have different width set by <b>IconWidth</b> attribute. 
+                     The Icon cannot show any HTML code or &lt;button>.<br />
+                     The click to the Icon can be caught by API event <b>OnIconClick</b> or by XML event <b>OnClickSide</b> or <b>OnClickSideIcon</b>.
+                  </li>
+               </ul>
+            </li>
+            <li>
+               The image can be defined also by standard HTML <b>&lt;img></b> tag or by tag with defined CSS <b>background-image</b>, 
+               included in <b>Html</b> type cell or in <b>HtmlPrefix</b> / <b>HtmlPostfix</b> attribute.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h3>Panel</h3> type shows <b>more clickable icons</b> or buttons in one cell.
+         Every icon or button can have defined its own width, onclick, tooltip and mouse cursor.<br />
+         For TreeGrid standard row icons (Move,Select,Delete,Copy) is shown fast panel, with all icons in one image.<br />
+         For custom icons is shown every icon in separate tag. The custom panel buttons are defined in list in the cell value or column <b>Buttons</b> attribute.<br />
+         For example: Col1='But' Col1But='Green.gif' Col1ButWidth='20' Col1OnClickPanelBut='alert("clicked")' Col1PanelButTip='tooltip for but' Col1PanelButCursor='crosshair'.
+      </li>
+      <li>
+         <h3>Abs</h3> type shows independent, <b>absolutely positioned HTML</b> tags inside one cell.
+         All the tags are defined in the cell value, in the first character separated list as |x|y|width|height|html|cls|reserved|reserved|x|y|width|height|html|cls|reserved|reserved|x|... 
+      </li>
+   </ul>
+</body>
+</html>

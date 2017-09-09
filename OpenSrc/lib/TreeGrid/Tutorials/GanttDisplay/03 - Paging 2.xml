@@ -1,0 +1,67 @@
+<Grid>
+   <Cfg id="GanttPaging2" SuppressCfg="1" ConstWidth="0"/>
+   <Panel Visible="0"/>
+   <Actions OnDblClickGantt="ZoomToBar"/>
+   <LeftCols>
+      <C Name="TASK"/>
+      <C Name="START" Type="Date" Visible="0"/>
+      <C Name="END" Type="Date" Visible="0"/>
+      <C Name="DES" Type="Text" Visible="0"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt" GanttStart="START" GanttEnd="END" GanttDescendants="DES" GanttStrict="0"/>
+      <C Name="GANTT" GanttZoom="Day" GanttSmoothZoom="0" GanttSizeFit="1" GanttZoomDate="6/10/2010"/>
+      <C Name="GANTT" GanttExclude="d#18:00~9:00; d#13:00~14:00#1; w#1/5/2008~1/7/2008#2;"/>
+      <C Name="GANTT" GanttChartMinStart="1/1/2000" GanttChartMaxStart="1/1/2000" GanttChartMinEnd="1/1/2030" GanttChartMaxEnd="1/1/2030"/> <!-- Limits for the Years pager -->
+   </Cols>
+   <Foot>
+      <I TASK="Summary" Calculated="1" STARTFormula="ganttstart()" ENDFormula="ganttend()"/>
+   </Foot>
+   <Zoom>
+      <Z Name="All" GanttSize="0" GanttUnits="y" GanttWidth="18" GanttChartRound="y"
+         GanttHeader1="y#20"
+         GanttHeader2="y#yy"
+         />
+      <Z Name="Year" GanttSize="y" GanttUnits="M" GanttWidth="40"
+         GanttHeader1="y#yyyy"
+         GanttHeader2="M#MMM"
+         />
+      <Z Name="Month" GanttSize="M" GanttUnits="d" GanttWidth="17"
+         GanttHeader1="w#'&lt;span style=&quot;color:yellow;font-size:8px;&quot;>week 'ddddddd'&lt;/span>' MMMM yyyy" 
+         GanttHeader2="d#%d" 
+         GanttHeader3="d#ddddd"
+         />
+      />
+      <Z Name="Week" GanttSize="w" GanttUnits="h6" GanttWidth="16"
+         GanttHeader1="w#week ddddddd - MMMM yyyy"
+         GanttHeader2="d#dddddd"
+         GanttHeader3="d#dddd"
+      />
+      <Z Name="Day" GanttSize="d" GanttUnits="h" GanttWidth="18"
+         GanttHeader1="d#dddddd MMMM yyyy (dddd, week ddddddd)"
+         GanttHeader2="h#HH"
+      />
+      <Z Name="Hour" GanttSize="h" GanttUnits="m" GanttWidth="8"
+         GanttHeader1="h#'Hour &lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>' - dddddd MMMM yyyy (dddd, week ddddddd)"
+         GanttHeader2="m#'&lt;div style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/div>'" GanttHeaderHeight2="20" GanttHeaderPaging2="1"
+      />
+      <Z Name="Minute" GanttSize="m" GanttUnits="s" GanttWidth="8"
+         GanttHeader1="m#'&lt;b style=&quot;color:yellow;&quot;>'HH:mm'&lt;/b>' - dddddd MMMM yyyy (dddd, week ddddddd)"
+         GanttHeader2="s#'&lt;div style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/div>'" GanttHeaderHeight2="20" GanttHeaderPaging2="1"
+      />
+   </Zoom>
+   <Pagers>
+      <Pager Name="Years" Type="Gantt" PageSize="y" Format="yyyy" Width="50" ChartSize="0" Click="0" DblClick="3" ShowUsedPages="1"/>
+      <Pager Name="Months" Type="Gantt" PageSize="M" Format="MMMM" Width="60" ChartSize="y" Click="0" DblClick="3" ShowUsedPages="1"/>
+      <Pager Name="Days" Type="Gantt" PageSize="d" Format="dddddd" Width="35" ChartSize="M" Click="0" DblClick="3" ShowUsedPages="1" ShowExcludedPages="1"/>
+      <Pager Name="Weeks" Type="Gantt" PageSize="w" Format="'&lt;b style=&quot;color:red&quot;>'dddddddd'&lt;/b>' MM/dd - ;MM/dd" Width="110" ChartSize="y" Caption="Weeks in a year" Click="0" DblClick="3" ShowUsedPages="1"/>
+      <Pager Name="Weekdays" Type="Gantt" PageSize="d" Format="dddd" Width="65" ChartSize="w" Caption="Week days" Click="0" DblClick="3" ShowUsedPages="1" ShowExcludedPages="1"/>
+      <Pager Name="Hrs" Type="Gantt" PageSize="h" Format="HH" Width="25" ChartSize="d" Click="0" DblClick="3" ShowExcludedPages="1"/>
+      <Pager Name="Mins" Type="Gantt" PageSize="m" Format="mm" Width="40" ChartSize="h" Click="0" DblClick="3" ShowExcludedPages="1"/>
+   </Pagers>
+   <Toolbar Cells="Zoom,Smooth,Correct,Reload,Repaint,Print,ZoomIn,ZoomOut,Cfg,StyleTitle,StyleCombo" Styles="2"
+      ZoomType='SelectGanttZoom' ZoomWidth='75' ZoomHtmlPrefix='Zoom &lt;b style="color:blue;">' ZoomHtmlPostfix='&lt;/b>' 
+      SmoothType='Bool' SmoothLabelRight='Smooth zoom' SmoothTip='If the Gantt zoom unit width can be calculated to fit the selected zoom range. &lt;br>If set in this example, the grid can show horizontal scrollbar.'
+      SmoothOnChange='Grid.Cols.GANTT.GanttSmoothZoom = Value?1:0; if(!Value) Grid.ChangeZoom();'
+      />
+</Grid>

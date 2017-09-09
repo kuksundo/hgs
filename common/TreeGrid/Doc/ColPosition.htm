@@ -1,0 +1,416 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Column position and moving</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Column position and moving</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are three column
+sections in grid – <b>Left</b> (<b>0</b>), <b>Mid</b> (<b>1</b>) and <b>Right</b>
+(<b>2</b>). In API methods are the sections identified by their indexes
+(0,1,2).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Left</b> (<b>0</b>)
+and <b>Right</b> (<b>2</b>) sections are fixed sections by default and always
+show all its content and no horizontal scrollbars. It is possible to have
+scrollable also the <b>Left</b> and <b>Right</b> section, see <a
+href="GridSize.htm#Widths">Section widths</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Mid</b> (<b>1</b>)
+section is positioned between Left and Right section and its content can be
+scrolled horizontally.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column are placed into its
+section in input XML, in <b>&lt;LeftCols&gt; (Left), &lt;Cols&gt; (Mid),
+&lt;RightCols&gt; (Right).</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column position inside section
+is set by the position of &lt;C&gt; tag inside its XML section
+&lt;LeftCols&gt;, &lt;Cols&gt;, &lt;RightCols&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column position is saved
+to <b>cookies</b>, so the mentioned position is used only first time. To not
+save the position to cookies set <b>&lt;Cfg ColsPosLap=’1’/&gt; or &lt;ColsLap=’1’/&gt;</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The columns can be moved by a
+user by mouse dragging, inside or among sections, controlled by &lt;C <a
+href="#CCanMove">CanMove</a>/&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or can be moved by API method
+<a href="#CMoveCol">MoveCol</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i>
+</span><a name=CCanMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanMove</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [2/0]                                                                                                    <span
+style='color:red'>chg <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how column can be
+moved by a user - dragged by mouse. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – only inside its section (Left, Mid, Right)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – inside and also between sections – user can freeze
+variable columns and vice versa.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For spanned columns see also <a
+href="#CGroup">Group</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is <b>2</b> for
+all columns except Panel that has <b>0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When column has CanMove=’0’,
+s<i>ince 6.3</i> can be moved columns right to this column in left section,
+left to it in right section and both side in variable columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CBlock></a><a name=CGroup><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Block</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                         
+<span style='color:red'>renamed <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls moving column, it is
+useful especially if there are some cells spanned to or from other columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt; 0, it is the block
+the column belongs to. Create blocks that contain the spanned cells. The blocks
+must be continuous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The columns can be moved only
+inside its block and any other column cannot be moved into the block from
+outside.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first (left) column in
+the block cannot be moved within the block and also must stay the first.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The whole block can be moved
+by dragging the first left column to another location.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It also preserves splitting block
+of columns to more pages when printing and for column paging.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.2 it was renamed
+from <b>Group</b></span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgColMoving><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColMoving</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If columns can be moved by a
+user -  dragged by mouse. Use column <a href="#CCanMove">CanMove</a> attribute
+to specify if and how can be individual columns moved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgColsPosLap><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColsPosLap</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Suppresses loading column
+positions from cookies and always use their positions in input XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgColsLap><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ColsLap</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Suppresses loading column
+positions, visibility and widths from cookies and always use the settings in
+input XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgShowDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowDrag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]        Saved
+to cookies, to not load it, set <b>ShowDragLap</b>=’1’                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If shows dragged object under
+mouse cursor. The dragged row(s) or moved column(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed by a user
+in configuration menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgScrollColOnDrag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ScrollColOnDrag</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [100]                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The step (speed) when
+automatically scrolling column section horizontally while dragging column on
+the left or right edge.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgAllCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AllCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                                                   <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set in input data XML, it
+says that the XML contains all columns definition and their position in
+&lt;Cols&gt; tag will change their position in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to set to change
+already defined columns position in later XML</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is cleared before every
+input XML and must be defined before all &lt;LeftCols&gt;,&lt;Cols&gt; and
+&lt;RightCols&gt; definition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsColMove></a><a name=ColMove><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>ColMove</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>             Mouse
+dragging action, only for <b>OnDrag...</b> event                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts moving column by mouse.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the action
+attached to event <b>OnDragHeader</b> (dragging header cell).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnColMove><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColMove</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+grid, <i>string</i> col)                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after column is moved
+to another position by a user (not by API).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=MoveCol><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MoveCol</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>col</b>, <i>string <b>tocol</b></i>, <i>bool</i> <b>right</b>, <i>bool</i> <b>noshow</b>
+= 0) <span style='color:red'>or</span> (<i>string</i> <b>col</b>, <i>int</i> <b>sec</b>,
+<i>bool</i> <b>last</b>, <i>bool</i> <b>noshow</b> = 0)  <span
+style='color:blue'>upd <b>6.0</b>.</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves column to new position.
+If <b>noshow</b> is set, does not display changes and needs to call <b>Render</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>a) Moves column <b>col</b> in
+front of column <b>tocol</b> (or after <b>tocol</b> if <b>right</b> is 1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>b) Moves column <b>col</b> to
+section <b>sec</b> (0 – left, 1 – mid, 2 – right), to beginning (or to the end
+if <b>last</b> is 1). Use when destination section is empty.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, moving column is
+slow process, much slower than moving row, all the column cells must be moved
+one by one.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this function
+can re-render the whole grid in some cases (when it leads to hide or show the
+whole column section)</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeColsPositions><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeColsPositions</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string</i>[]
+<b>leftcols</b>, <i>string</i>[] <b>cols</b>, <i>string</i>[] <b>rightcols</b>)            <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes positions of all
+columns in grid and splits them to sections.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All three arguments are
+Arrays of column names sorted according to their positions in given section.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since <b>7.0</b> it can be
+called only in <b>OnLoaded</b> or <b>OnCfgLoaded</b> to change the column
+positions on grid start.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All column names in grid
+must be given!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It does <u>not</u> save
+changes to cookies.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It does <u>not</u> update
+horizontally spanned cells!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TCol var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>   <i>int</i>        </span><a
+name=CMainSec><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>MainSec</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <span style='color:red'>read
+only</span>                                                                                                        <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column section - 0 Left, 1
+Mid, 2 Right</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TCol var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>   <i>int</i>        </span><a
+name=CSec><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Sec</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <span style='color:red'>read
+only</span>                                                                                                                    <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column section/page - 0 Left,
+1 Mid, 2 Right</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(New 7.0)</span></i><span
+style='font-size:10.0pt'> When set <b>ColPaging</b>, it is number of column page,
+0 Left, 1 – (N-2) Mid, (N-1) Right, where N is the ColNames.length</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TCol var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>   <i>int</i>        </span><a
+name=CPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Pos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <span style='color:red'>read
+only</span>                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column position inside its
+section / page <a href="#CSec">Sec</a>, from 0. All columns including hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+
+   <style>
+      .Red { background:red; color:white; border-color:blue; }
+      .Green { background:#7F7; color:black; }
+      .Blue { background:blue; color:white; border-color:green; }
+   </style>
+   <script>
+   // -------------------------------------------------------------------------------------------------------
+   // Returns another icon shown on mouse over
+   Grids.OnGetGanttFlagIconHover = function(G,row,col,idx,icon){ 
+   return icon.replace(/\./,"Hover.");
+   }
+   // -------------------------------------------------------------------------------------------------------
+   // Returns custom HTML for the flag text. Used only for the row='11'
+   Grids.OnGetGanttFlagText = function(G,row,col,idx,text){ 
+   if(row.id!=11) return text;
+   var flags = (G.GetValue(row,"FLAGS")+"").split(";");
+   return DateToString(flags[idx]-0,"'<div style=\"background:green;color:white;padding:1px;\">'dddddd MMMM'</div><div style=\"background:blue;color:white;padding:1px;\">'dddd'</div>'")
+      + "<div style=\"color:red;padding:2px;text-align:right;\">"+text+"</div>";
+   }
+   // -------------------------------------------------------------------------------------------------------
+   </script>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttIcons"><b>Gantt icons</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Flags</center>
+   <center style='font:bold italic;'>Movable points with defined icon and text or tooltip</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='01 - Flags.xml'>01 - <h2>Flags</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='01 - Flags.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         See documentation for <b><a href="../../Doc/GanttIcons.htm#Flag">Flag</a></b>.
+      </li>
+      <li>
+         The flags represent custom marks on given dates that show their information as text or tooltip.<br />
+         For math charts, to display values from source columns in chart use <b>GanttPoints</b> instead of GanttFlags. See tutorial <a href="08 - Points.html">08 Points</a>.<br />
+         The flag icon is centered to the one GanttUnits right to the flag date.
+      </li>
+      <li>
+         By <h3>GanttFlagsType</h3> specify if the flags in the cell will be shown as icon (<b>1</b>), text (<b>2</b>) or both (<b>3</b>)
+      </li>
+      <li> 
+         Flags are defined by attribute <h3>GanttFlags</h3>.<br />
+         The column should be defined as <b>Type='Date' Range='1' Button=''</b> - it should be type Date, but without calendar,
+         because selecting flag dates in calendar will break down the relation between flags and their texts and icons.
+      </li>
+      <li>
+         The flag information is defined in <h3>GanttFlagTexts</h3>.<br />
+         It is also range cell, the individual texts are separated by semicolon. 
+         The flag text must not contain semicolon. When edited in Gantt, the semicolon is replaced by comma.<br />
+         The flag information can be shown as textbox right to the icon, by single textbox or as tooltip for the icon.
+      </li>
+      <li>
+         The flags can show <h4>custom icons</h4> instead of the default flag icon. And also <h4>custom CSS styles</h4> for the flag text.
+         <ul>
+            <li>
+               The icons for individual flags are defined by <h3>GanttFlagIcons</h3> attribute.<br />
+               It is also range cell, the individual icons are separated by semicolon. 
+               The icons are exact urls to the icon files, paths are relative to the actual page.
+            </li>
+            <li>
+               The actual CSS classes for individual flag texts are defined by <h3>GanttFlagClasses</h3> attribute.<br />
+               It is also range cell, the individual classes are separated by semicolon. 
+               The values are exact CSS class names. These CSS classes can be define in page embedded style or in external style sheet.
+            </li>
+            <li>
+               It is possible to let users to choose the custom icons and CSS classes for the flag and its text.<br /> 
+               The possible icons are defined in <h3>GanttFlagIconList</h3> attribute. It is first character separated array, not range cell. It contains full urls of the icons.
+               Empty item value means default icon, '-' item value means no icon, only text.<br />
+               The possible classes are defined in <h3>GanttFlagClassList</h3> attribute. It is first character separated array, not range cell.<br />
+               Users can choose the icon and class for the flag from gantt popup menu. The menu item texts are defined by <h3>GanttFlagIconNames</h3>. 
+               The item text can contain <b>%1</b> string to be replaced by the icon and <b>%2</b> and <b>%3</b> to be replaced by &lt;span> and &lt;/span> tags with custom CSS style.
+            </li>
+         </ul>
+      </li>
+      <li>
+         Tooltip for the flags can be formatted by <h3>GanttFlagsTip</h3> to show specific information for the flag like its date, index and its information from GanttFlagTexts.
+      </li>
+      <li>
+         The flag content can be generated dynamically by JavaScript API.<br />
+         The text HTML content can be created by <b>OnGetGanttFlagText</b> API event. The icon by <b>OnGetGanttFlagIcon</b>.<br />
+         By API event <b>OnGetGanttFlagIconHover</b> is possible also to define or change icon shown on mouse hover.
+      </li>
+      <li> By default the texts in Gantt chart are shown above the Gantt objects. Set <h3>GanttTextOverlay</h3><b>='1'</b> to suppress the behavior.
+         This setting can slow down the chart, so do it only if you really need it.
+      </li>
+      <li>
+         The Flags can be moved by mouse also to another row if set <h3>GanttFlagsMove</h3><b>='2'</b>.<br />
+         Only Run bars and Flags can be moved between rows. The Run bars can be moved also between grids, but Flags cannot.<br />
+         The Flags dragging can be controlled by API events <b>OnStartDragGantt</b>, <b>OnDragGantt</b> and <b>OnEndDragGantt</b> 
+         and also by events <b>OnGanttFlagMove</b> / <b>OnGanttFlagMoved</b> for moving between rows and <b>OnGanttChange</b> / <b>OnGanttChanged</b> for moving inside row.
+      </li>
+
+   </ul>
+</body>
+</html>

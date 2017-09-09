@@ -1,0 +1,963 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt display objects</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Header><b><span style='font-size:20.0pt'>Gantt column</span></b></a><span
+style='font-size:20.0pt'> <b><span style='color:blue'>Header</span></b></span></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>One or more lines in header displaying dates</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In header you can show one or
+more lines with dates that are displayed in the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can specify how the dates
+will be repeated and the format for the dates.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Up to <b>5</b> different
+header lines can be defined</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttHeader1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeader1</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>, ..., </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeader<span
+style='color:#0070C0'>X</span></span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                    <span
+style='color:red'>chg <b>6.3; </b></span><span style='color:blue'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Header time/number and format
+in the first header line: “repeater<b><span style='color:red'>#</span></b>format<b><span
+style='color:red'>#</span></b>shift”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The possible values of <b>repeater</b>
+are the same as <a href="#CGanttUnits">GanttUnits</a>, e.g. “w”, “d”, “h” or “1”,
+“0.5”, “2”, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>format</b> is standard
+<a href="TypeDate.htm#CFormat">TreeGrid date / time format</a> string for date
+repeaters, or standard <a href="TypeNumber.htm#CFormat">TreeGrid number format</a>
+string for number repeaters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>shift</b> <i>(new 6.4)</i>
+is optional and moves the header by the <b>shift</b> <b>repeater</b> units
+left, it can be floating point number. It is usually 0.5 to center the label
+above the position.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The number repeaters and
+formats are supported since 6.4.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> when <b>shift</b> is not set and <b>repeater</b> is
+number, the negative numbers are shifted for one unit, so zero is printed
+twice. Set <b>shift</b> to 0 if you don’t want this behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For custom headers (e.g.
+fiscal year, more years, etc.) use <a href="#AddGanttUnits">AddGanttUnits</a>
+and <a href="#OnGetGanttHeader">OnGetGanttHeader</a> API methods.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0</span></i><span
+style='font-size:10.0pt'> the count of Gantt headers in unlimited and is set by
+<a href="#CGanttHeaderCount">GanttHeaderCount</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttHeaderCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderCount</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [5]                                                                                <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of available headers in
+the Gantt chart. How many GanttHeader...X attributes can be defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default there are 5
+headers, GanttHeader1, GanttHeader2, GanttHeader 3, GanttHeader 4, GanttHeader
+5.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Note the difference to
+GanttCount, the main bars are indexed from 0, but headers from 1.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string    </i></span><a
+name=CGanttFormat1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttFormat1</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                                    <span
+style='color:red'>deleted <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moved to GanttHeader.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'>Date / time
+format to format items in the first header line, the same as standard <a
+href="TypeDate.htm#CFormat"><span style='color:silver'>TreeGrid date / time
+format</span></a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CGanttHeaderRound1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderRound1</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>, ..., </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeaderRound<span
+style='color:#0070C0'>X</span></span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                               <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rounds header date to
+workdays / work hours, defined by <a href="GanttCompute.htm#CGanttExclude">GanttExclude</a>.
+Only for <a href="GanttCompute.htm#CGanttHideExclude">GanttHideExclude</a>=1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttHeaderId1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderId1</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>, ..., </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeaderId<span
+style='color:#0070C0'>X</span></span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>id</span></b><span
+style='font-size:10.0pt'> of the header row where the header line will be
+displayed. If not set, the header line will be displayed in main header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One header row can show more
+Gantt header lines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttHeaderHeight1><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderHeight1</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>, ..., </span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeaderHeight<span
+style='color:#0070C0'>X</span></span></u></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Height in pixels of the
+header line. Useful when used some special formatting in header or displaying
+it in more lines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttHeaderTrim></a><a name=CGanttHeaderOptions><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttHeaderTrim</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – The incomplete header items are shown, <b>1</b> –
+the incomplete header items are replaced by ‘<b>...</b>’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The trimming ‘...’ is set by
+&lt;Lang&gt;&lt;Format Cont=’...’ ContLeft=’... ‘ ContRight=’
+...’/&gt;&lt;/Lang&gt; attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttHeaderMaxUnits><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttHeaderMaxUnits</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [10000]                                                            <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of cells in all
+Gantt headers together. If headers contain more cells, error is shown. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting this value too high
+can slow down the grid or even throw JS errors in some browsers, especially in
+IE.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetGanttHeader><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetGanttHeader</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>val</b>, <i>int</i> <b>index</b>, <i>int</i> <b>date</b>,
+<i>int</i> <b>nextdate</b>, <i>string</i> <b>units</b>, <i>int</i> <b>width</b>,
+<i>int</i> <b>partial</b>, <i>string</i> <b>col</b>)   <span style='color:red'>new
+<b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for every date in
+every Gantt header line to get the caption displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return the new value or <b>val</b>
+to not change the original caption. <b>index</b> is the header index (from 1)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is the first date in the range. <b>nextdate</b> is
+the first date after the range, <b>units</b> is the range unit width like <a
+href="#CGanttUnits">GanttUnits</a>, <b>width</b> is width of the space for the
+caption in pixels</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>partial</span></b><span
+style='font-size:10.0pt'> is <b>0</b> for full range, <b>1</b> for range
+trimmed from left, <b>2</b> for range trimmed from right, <b>3</b> for range
+trimmed from both sides. The date and nextdate are the trimmed dates in these
+cases.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To highlight some header cell
+by background or another CSS attribute return the val in &lt;div&gt;, e.g. return
+&quot;&lt;div style='background:red;'&gt;&quot;+val+&quot;&lt;/div&gt;&quot;;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Background><b><span style='font-size:20.0pt;color:blue'>Background</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Marks workdays, weekends or any other dates <i>– for
+all rows the same</i></span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defined by <a
+href="#CGanttBackground">GanttBackground</a> (date ranges with repeater).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can color any dates or
+date range that are periodically repeated as workdays, weekends, working hours
+and so on and also exact not repeated dates.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The background is the same
+for whole chart and cannot be set for individual rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:red'>The background is
+just visual setting, to exclude some date from Gantt calculation, use </span><span
+style='font-size:10.0pt'><a href="GanttCompute.htm#CGanttExclude">GanttExclude</a>
+<span style='color:red'>instead</span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttBackground><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttBackground</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                    <span
+style='color:red'>chg <b>6.3</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date ranges displayed as
+background, useful for marking some period repeatedly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Similar to GanttLines, but
+with two differences: the GattBackground can be repeated, but can be changed by
+API only by refreshing the whole Gantt background.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The order of the rendered
+background is GanttExclude, GanttBackground, GanttLines, GanttBase,
+GanttFinish. If overlaid, the latter is visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is: <b>rep</b>1<b><span
+style='color:red'>#</span>date</b>1a<b><span style='color:red'>~</span>date</b>1b<b><span
+style='color:red'>#</span>class</b>1<b><span style='color:red'>;</span>rep</b>2<b><span
+style='color:red'>#</span>date</b>2a<b><span style='color:red'>~</span>date</b>2b<b><span
+style='color:red'>#</span>clas</b>2<b><span style='color:red'>;</span></b>...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The repeater <b>rep</b> can
+be one of <span style='color:blue'><a href="#CGanttUnits">GanttUnits</a></span>.
+If it is missing, the date is not repeated. The date is repeated also before
+it.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The seconds date in range can
+be missing to show single line.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> The <b>class</b> is CSS class defined by
+GxGanttBackXXX, where Gx is the style prefix like &quot;GM&quot; for Modern and
+XXX is the <b>class</b> value. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the <b>class</b> is missing, it set to the item position in the GanttBackground,
+from <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>(Since
+10.0) </i>There are 11 predefined gray classes from <b>0</b> (white) to <b>10</b>
+(black)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>(Since
+10.0) </i>There are 17 predefined color classes, case <u>sensitive</u> - <b>Aqua</b>,
+<b>Black</b>, <b>Blue</b>, <b>Fuchsia</b>, <b>Gray,</b> <b>Green</b>, <b>Lime</b>,
+<b>Maroon</b>, <b>Navy</b>, <b>Olive</b>, <b>Orange</b>, <b>Purple</b>, <b>Red</b>,
+<b>Silver</b>, <b>Teal</b>, <b>White</b>, <b>Yellow</b></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is possible to limit the repeating, when the <b>date</b>
+range is wider than the <b>rep</b>, the range is rounded to the <b>rep</b>
+range and repeated only between the <b>dates</b>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+example ‘w<b><span style='color:red'>#</span></b>1/5/2008<b><span
+style='color:red'>~</span></b>12/29/2008’ marks all weekends, but only in year
+2008.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> It is possible to set the second date before the
+first one, it will be updated to correctly fill the repeat range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                For example
+‘d<b><span style='color:red'>#</span></b>18:00<b><span style='color:red'>~</span></b>8:00’
+marks all times from 18:00 to 8:00.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: GanttBackground
+= ‘<b>d<span style='color:red'>#</span></b>1/5/2008<b><span style='color:red'>~</span></b>1/7/2008<b><span
+style='color:red'>; </span>M<span style='color:red'>#</span></b>1/1/2008’
+colors weekends and separates months by line</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 8.0</span></i><span
+style='font-size:10.0pt'> it can be set and displayed different for every row.<i>
+It can be much slower.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the value is changed by
+API, call <a href="GanttAPI.htm#RefreshGantt">RefreshGantt</a> (<b>5</b>) to
+show the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttAddBackground><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttAddBackground</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [0]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how the column
+GanttBackground is added to the row GanttBackground, if both of them defined.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - no, <b>1</b> - before, <b>2</b> - after</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintGanttBackground><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintGanttBackground</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                        
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>8.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If prints global Gantt
+background, shown for attributes GanttBackground, GanttExclude, GanttBase,
+GanttFinish.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can slow down the
+printing, because it renders the background to every row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttBackgroundMaxUnits><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttBackgroundMaxUnits</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [5000]                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of items in
+Gantt background. If background contain more items, error is shown. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Setting this value too high
+can slow down the grid or even throw JS errors in some browsers, especially in
+IE.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>string    </i></span><a
+name=CGanttBackgroundRepeat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GanttBackgroundRepeat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                        <span
+style='color:red'>deleted <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by repeater in
+GanttBackground.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'><a
+href="#CGanttBackground"><span style='color:silver'>GanttBackground</span></a>
+will be repeated by these units, can be empty to not repeat. Possible values
+are the same as <a href="#CGanttUnits"><span style='color:silver'>GanttUnits</span></a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;color:silver'>If <a
+href="#CGanttBackground"><span style='color:silver'>GanttBackground</span></a>
+contains more date ranges, it should contain more units (one per range), comma
+separated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Line><b><span style='font-size:20.0pt;color:blue'>Line</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Background line, e.g. actual date - </span></b><i><span
+style='font-size:10.0pt'>one or more vertical lines per chart, editable</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttLines><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttLines</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Lines or date ranges
+displayed as background, not repeated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Similar to GanttBackground,
+but with two differences: the GattLines cannot be repeated, but can be easily
+changed by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The order of the rendered
+background is GanttExclude, GanttBackground, GanttLines, GanttBase,
+GanttFinish. If overlaid, the latter is visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is: <b>flags</b>1<b><span
+style='color:red'>#</span>date</b>1a<b><span style='color:red'>~</span>date</b>1b<b><span
+style='color:red'>#</span>class</b>1<b><span style='color:red'>;</span>flags</b>2<b><span
+style='color:red'>#</span>date</b>2a<b><span style='color:red'>~</span>date</b>2b<b><span
+style='color:red'>#</span>class</b>2<b><span style='color:red'>;</span></b>...</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>flags</span></b><span
+style='font-size:10.0pt'> are editing flags, bit array: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&amp;<b>1</b>
+- to let the line move by a user, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&amp;<b>2</b>
+- to permit moving line to excluded dates, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&amp;<b>4</b>
+- the line is moved left from excluded dates instead of right. Only if <u>not</u>
+set &amp;2.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&amp;<b>8</b>
+- <b>date1a</b> is end date instead of start date, only if <b>date1b</b> is
+missing. The line is shown before the date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The seconds <b>date</b> in
+range is usually missing to show single line.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>class</span></b><span
+style='font-size:10.0pt'> is the line CSS class part, the class is defined as
+GxGanttLineXXX, where Gx is style prefix, e.g. GM for Modern style and XXX is <b>class</b>
+value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are 17 basic color
+classes, case <u>sensitive</u> - <b>Aqua</b>, <b>Black</b>, <b>Blue</b>, <b>Fuchsia</b>,
+<b>Gray,</b> <b>Green</b>, <b>Lime</b>, <b>Maroon</b>, <b>Navy</b>, <b>Olive</b>,
+<b>Orange</b>, <b>Purple</b>, <b>Red</b>, <b>Silver</b>, <b>Teal</b>, <b>White</b>,
+<b>Yellow</b>, these lines are one pixel wide.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are two next sets for
+17 basic colors and two and three pixels wide, e.g. <b>Red2</b> is two pixels
+wide and <b>Red3</b> is three pixels wide. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is one special class <b>Hidden</b>
+for not displayed lines - to mark some other line as changeable, e.g. the <a
+href="#ganttprogressline">ganttprogressline</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+&quot;0#4/26/2014#Blue; 1#4/29/2014#Green3; 0#4/8/2014~4/9/2014#Silver&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttLinesXTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttLines<span style='color:#0070C0'>X</span>Tip</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Tip string shown for
+individual lines on mouse hover. The X is line index from 0 in <a
+href="#CGanttLines">GanttLines</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can show also the
+specials: *<b>Start</b>* - start date of the line, *<b>End</b>* - end date of
+the line, if any</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To dynamically generate the
+tip text use <a href="GanttAPI.htm#OnGanttTip">OnGanttTip</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttLinesTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttLinesTip</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Tip string shown for all
+lines on mouse hover in not defined the <a href="#CGanttLinesXTip">GanttLinesXTip</a>
+for the individual line. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can show also the specials:
+*<b>Start</b>* - start date of the line, *<b>End</b>* - end date of the line,
+if any</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To dynamically generate the
+tip text use <a href="GanttAPI.htm#OnGanttTip">OnGanttTip</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttLineTipDateFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttLineTipDateFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Date format for GanttLinesTip,
+GanttLinesXTip, GanttBaseTip, GanttBaseAutoTip, GanttFinishTip and
+GanttFinishAutoTip, values *Start*, *End*</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>type[]    </i></span><a
+name=GetGanttLine><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttLine</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>int
+</i><b>index</b>, <i>string</i> <b>col</b> = null)                                                                   <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns one Gantt line. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is the line position from 0 in <a href="#CGanttLines">GanttLines</a>.
+<b>col</b> is the Gantt column or null for the first one.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> can be also <b>-1</b> to get GanttBase line and <b>-2</b>
+to get GanttFinish line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns array as
+[date1,date2,class,edit], the <b>date1</b> and <b>date2</b> are line dates as
+count of milliseconds since 1/1/1970.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used only when the
+Gantt is rendered, otherwise manually parse the <a href="#CGanttLines">GanttLines</a>,
+accessible as grid.Cols[gantt_col].GanttLines</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=SetGanttLine><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SetGanttLine</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>int
+</i><b>index</b>, <i>string</i> <b>date1</b>, <i>string</i> <b>date2</b>, <i>string</i>
+<b>class</b>, <i>bool</i> <b>edit</b>, <i>bool</i> <b>update</b> = 1, <i>string</i>
+<b>col</b> = null)     <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes one Gantt line.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is the line position from 0 in <a href="#CGanttLines">GanttLines</a>.
+<b>col</b> is the Gantt column or null for the first one.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date1</span></b><span
+style='font-size:10.0pt'>, <b>date2</b>, <b>class</b>, <b>edit</b> are items to
+change. If set to null, it is not changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>update</b>, updates
+also the line in fixed rows and rows with custom background or calendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be used only when the
+Gantt is rendered, otherwise set the <a href="#CGanttLines">GanttLines</a>
+directly as grid.Cols[gantt_col].GanttLines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> possible to
+add new lines, only change existing ones. To add new lines, modify the <a
+href="#CGanttLines">GanttLines</a> directly and call grid.RefreshGantt(5); </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To hide some line, set the <b>date1</b>
+to empty string - the line is not deleted, it can be next shown by setting the
+date1 to some date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to use the
+function to change <b>edit</b> (<u>only</u>) value of GanttBase (<b>index</b> =
+-1) and GanttFinish (<b>index</b> = -2).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true for success.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnGanttLineChange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttLineChange</span></u></b></a><b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>int </i><b>index</b>, <i>int</i> <b>date1</b>, <i>int</i> <b>date2</b>,
+<i>string</i> <b>class</b>, <i>bool</i> <b>edit</b>, <i>int</i> <b>odate1</b>, <i>int</i>
+<b>odate2</b>, <i>string</i> <b>oclass</b>, <i>bool</i> <b>oedit</b>)    <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before change of any
+Gantt line. Called from <a href="#SetGanttLine">SetGanttLine</a> method.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>index</span></b><span
+style='font-size:10.0pt'> is line position from 0 in <a href="#CGanttLines">GanttLines</a>,
+</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date1</span></b><span
+style='font-size:10.0pt'> and <b>date2</b> are line new dates as count of
+milliseconds since 1/1/1970. <b>class</b> and <b>edit</b> are new line values.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>odate1</span></b><span
+style='font-size:10.0pt'>, <b>odate2</b>, <b>oclass</b> and <b>oedit</b> are actual
+values of the line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called also for change
+of <a href="GanttCompute.htm#CGanttBase">GanttBase</a> with <b>index</b> = <b>-1</b>
+and for <a href="GanttCompute.htm#CGanttFinish">GanttFinish</a> with <b>index</b>
+= <b>-2</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>true</b> to
+suppress the change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnGanttLineChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttLineChanged</span></u></b></a><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>int </i><b>index</b>, <i>int</i> <b>date1</b>, <i>int</i> <b>date2</b>,
+<i>string</i> <b>class</b>, <i>bool</i> <b>edit</b>, <i>int</i> <b>odate1</b>, <i>int</i>
+<b>odate2</b>, <i>string</i> <b>oclass</b>, <i>bool</i> <b>oedit</b>)         <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after change of any
+Gantt line. Called from <a href="#SetGanttLine">SetGanttLine</a> method. See
+parameters in <a href="#OnGanttLineChange">OnGanttLineChange</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsMoveGanttLine><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>MoveGanttLine</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Attached to <b>OnDragGantt</b>,
+cannot be attached anywhere else            <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Moves Gantt line under mouse
+cursor by mouse dragging. Used for <a href="#CGanttLines">GanttLines</a>, <a
+href="GanttCompute.htm#CGanttBase">GanttBase</a> and <a
+href="GanttCompute.htm#CGanttFinish">GanttFinish</a> lines.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Mark><b><span style='font-size:20.0pt;color:blue'>Mark</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:10.0pt'>Mark line, e.g. actual date - </span></b><i><span
+style='font-size:10.0pt'>one or more vertical lines per row, not editable</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defined by <a
+href="#CGanttMark">GanttMark</a> (date ranges).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is a mark line showing
+some important date or deadline. It is often the same for whole column, but it
+need not be.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is displayed above the
+other Gantt items, so the line should not be too thick.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It cannot be dynamically
+changed by a user, only by API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttMark><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttMark</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                    Gantt
+source – column name or exact value                              <span
+style='color:#002060'>upd <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other times to mark in chart,
+useful for displaying actual date or vertically divide chart to bigger units or
+mark weekends and so on.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be column name or date
+range string “d1~d2;d3~d4;d5;...” (date string (M/d/yyyy hh:mm:ss) or count of
+milliseconds).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to column, the column
+must be <b>Type='Text'</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>These dates do <u>not</u>
+extend the displayed date range in chart. When the date is outside the actual
+displayed range in chart, it is not shown.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> the dates can have postfix <b>#class</b> to display
+in css class GxGanttMarkXXX with the <b>class</b> index. It cannot be used for
+Mark set as column! For example GanttMark=’1/1/2000#2;1/7/2000#5’.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>There
+are predefined color classes <b>1</b> - <b>5</b> with full height, <b>6</b> - <b>8</b>
+bottom bars, <b>9</b> - <b>11</b> top bars, <b>12</b> - <b>14</b> middle lines</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.1</span></i><span
+style='font-size:10.0pt'> there is shown image instead of class in case the css
+postfix is text (not number). </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>By
+default the image is read from CSS style directory as GanttLineXXX.png, where
+XXX is the value set in GanttMark. It can be changed by <a
+href="#CGanttMarkPath">GanttMarkPath</a>.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>There
+are four predefined images for lines 'A' as line <span style='background:silver'>&lt;</span>,
+'B' as line <span style='background:silver'>&gt;</span>, 'C' as line <span
+style='background:silver'>/</span> and 'D' as line <span style='background:
+silver'>\</span></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The image is
+always resized or shrunk to fill the whole date range defined by the GanttMark.
+To display normal image in Gantt use <a href="#CGanttFlags">GanttFlags</a>
+instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttMarkRound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttMarkRound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [‘m’]                                                                                 
+<span style='color:red'>      </span>            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Mark rounding, to these units
+will be all dates in <span style='color:blue'><a href="#CGanttMark">GanttMark</a></span>
+rounded, possible values are the same as <span style='color:blue'><a
+href="GanttDisplay.htm#CGanttUnits">GanttUnits</a></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To display just thin vertical
+lines, set it to ‘m’, for thicker lines higher the value according to actual <span
+style='color:blue'><a href="GanttDisplay.htm#CGanttUnits">GanttUnits</a></span>
+used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CGanttMarkPath><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttMarkPath</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                 <span
+style='color:red'>            new <b>9.1</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Path to images for GanttMark
+when the third parameter in definition is string that represents image.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the GanttMarkPath is not
+set, the images are read from actual TreeGrid CSS directory in format
+GanttLineXXX.png.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the GanttMarkPath is set
+(even to empty string), the images are read from this path (relative to actual
+HTML page) as PathXXX.png</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=ganttprogressline><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttprogressline</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'> (<i>string</i>
+<b>date</b>, <i>string</i> <b>left</b> = 'A', <i>string</i> <b>right</b> = '0',
+<i>int</i> <b>none</b> = 15, <i>string</i> <b>start</b> = null, <i>string</i> <b>end</b>
+= null, <i>string</i> <b>duration</b> = null, <i>string</i> <b>complete</b> =
+null, <i>string</i> <b>ganttcol</b> = null)  <span style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates progress line as <a
+href="#CGanttMark">GanttMark</a> string for given cell. Use it in formula for
+GanttMark column to show the progress line as GanttMark.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>date</span></b><span
+style='font-size:10.0pt'> is base date of the progress line (as English date
+string or count of milliseconds since 1/1/1970).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>left</span></b><span
+style='font-size:10.0pt'> is name of the left side progress line image (for
+dates before base <b>date</b>), set it to <b>0</b> to never show left side
+progress line or to <b>1</b> for default image 'A'.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>right</span></b><span
+style='font-size:10.0pt'> is name of the right side progress line image (for
+date after base <b>date</b>), set it to <b>0</b> to never show right side
+progress line or to <b>1</b> for default image 'B'.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>none</span></b><span
+style='font-size:10.0pt'> is GanttMask CSS class used for straight progress
+line</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>type</b> = <b>0</b> it
+shows the progress line only left side to <b>date</b>. For <b>type</b> = <b>1</b>
+it show also right side progress line.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>start</span></b><span
+style='font-size:10.0pt'> is tasks start date (string or count of ms). If it is
+null, it is used value GanttStart.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>end</span></b><span
+style='font-size:10.0pt'> is tasks end date (string or count of ms). If it is
+null, it is used value GanttEnd. If GanttEnd is also not set, it uses <b>duration</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>duration</span></b><span
+style='font-size:10.0pt'> is task duration in GanttDataUnits. If it is null, it
+is used value GanttDuration. Used only if <b>end</b> is not defined.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>complete</span></b><span
+style='font-size:10.0pt'> is percent completion (0 - 100). If it is null, it is
+used value GanttComplete. For 100% complete tasks is never shown left progress
+line, for 0% complete tasks is never shown right progress line.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to have more
+progress lines in chart by calling more these functions like
+Formula=&quot;ganttprogressline(parameters1)+';'+ganttprogressline(parameters2)+';'+ganttprogressline(parameters3)+...&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

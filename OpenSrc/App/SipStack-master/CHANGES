@@ -1,0 +1,430 @@
+v0.6 (2008/10/10)
+* The stack now supports "mapped routes": just before messages are
+  sent to the network, the stack asks the OS what local interface is
+  best to use, and whether the default route is going to be used. If
+  the default route's going to be used, the stack inspects its set of
+  mapped routes (in the Core's RoutingTable) to see if the route
+  passes through a NAT. If so, the Contact and Via headers of the
+  request, or the Contact headers of the response, use the NAT's
+  external IP as the host in their URIs. Of course, you still need
+  packet redirection or such on the NATs in your environment.
+* TIdSipStackInterface now USES a thread, but is itself NOT a
+  thread. This greatly facilitates testing of the stack
+  interface. Note in particular that the StackInterface DOES NOT
+  terminate its TimerQueue!
+* StackWindow.pas has finally bitten the dust.
+* tests run MUCH faster - ~20x speedup - because
+  TIdSipHeader.CanonicaliseName now uses a TStringDictionary (with a
+  binary search algorithm) to hold canonical names instead of a
+  TStrings with "key=value" strings (and a sequential search).
+* MockTransports no longer dispatch message to other instances. A nice
+  idea in theory, it completely toasts tests because the stack assumes
+  that sending a message is a single unit of work. With dispatching on
+  though you can send a message, dispatch it to another MockTransport
+  which replies, triggering your reaction to that response before you
+  finish sending the message! This often terminates the action whose
+  code you're currently executing!
+* The stack now uses the underlying OS's routing table for
+  autogenerating Contact headers. You now cannot set the Contact
+  headers for a stack except through REGISTERing to a registrar. The
+  stack will automatically select the best local address/port to use
+  to send a message. The Contact directive no longer has any meaning.
+* For tests, you can use MockRoute directives to set up a routing
+  table any way you like. (Use RoutingTable: MOCK at the same time!)
+* The Route directive replaces the Proxy directive. You can now
+  specify multiple Route directives, which define the route set put
+  into dialog-establishing requests.
+* RTP message receiving occurs within the context of a TimerQueue
+  (instead of in the context of a TIdUdpListenerThread)
+* All methods called "Clone" are now called "Copy".
+* IdSipConsts removed.
+* TIdNotifyWait, TIdEventWait removed: these were pretty dangerous
+  (referring to objects that might not exist when the TIdWait finally
+  triggers)
+* All Wait objects that need to reference objects (as opposed to
+  storing a copy of data) now use IDs pointing to objects in
+  TIdObjectRegistry. Currently, all Waits also have tests verifying
+  they behave well (by doing nothing) if given an invalid ID, or an ID
+  that points to nothing.
+* All "object registries" have been replaced by a single
+  TIdObjectRegistry. All TIdRegisteredObjects (and TIdInterfacedObject
+  is a subclass) register and unregister automatically as they
+  instantiate and are freed.
+* You may now configure different proxies for address spaces, for
+  instance using one proxy (or chain of proxies) to contact one
+  particular domain or subnet, and another proxy to contact
+  another. Further, one can specify a default Route path, for those
+  URIs that do not fall within any address space.
+* Support for TCP media streams, using RFC 4145's setup
+  parameters. (connection parameter NOT yet supported).
+* bugfixes from the unreleased 0.5.4 version:
+** The registrar returns a 400 Bad Request when it receives a wildcard
+   Contact with an Expires header.
+** Requesting a GRUU and receiving none hoses UserAgent.Contact.
+** InstanceID directive value not mapped to registration action.
+* Many MANY bugfixes (some (most?) of which happened during the
+  development of 0.6):
+** TIdSDPMultimediaSession does not preserve non-stream information.
+** The SIP stack needs an abstract logging framework, with LoGGer added in by the application that uses the stack.
+** CM_CALL_OUTBOUND_MODIFY_SUCCESS sent to application when making a call (NOT modifying an existing one).
+** Access violation when TIdSipOutboundInitialInvite terminates.
+** TIdSipConnectionTable.Remove(C) doesn't remove all associations to C.
+** Stack ignores "UseGruu: yes" in configuration.
+** TIdSdpClient doesn't set the binding properties of its TIdSdpTcpReceiveDataWait.
+** TIdSdpTcpServerConnection.GetPeer(Address|Port) fails if the first connection to it is closed.
+** Media TCP connections should use TCP keepalive.
+** Calling through Orthrus, the callee closes its media connection.
+** EListError accessing Address, Port properties of an unconnected TIdSdpTcpServerConnection.
+** TCP media streams don't know format of received data.
+** TIdSdpTcpServerConnection's Get(Address|Port|PeerAddress|PeerPort) don't protect against out-of-bounds access.
+** Adding Transport params to Contacts of responses results in malformed non-INVITE responses.
+** Responses sent to a UA don't obey the PreferredTransportTypeFor configuration.
+** IdSipStackInterface.Authenticate sends messages in the context of the owner thread.
+** ActAsRegistrar needs to allow one to set registration times etc.
+** Unregistering from a registrar during stack shutdown has a race condition.
+** Transport exceptions propogate up the stack during message sending
+** TIdSipOutboundRegistration doesn't remove itself as an ActionListener when its OutboundRegister fails.
+** Race condition: UserAgent Listeners don't always hear about Actions created by the UserAgent just after configuration.
+** If you fail to authenticate, you cannot ever successfully authenticate.
+** Registrar stores bindings for AORs with passwords, but doesn't return the bindings.
+** From/To/Contact headers' Equals uses string equality
+** "To" field in REGISTER request contains loopback address
+** Users of the stack can't give authentication credentials to registrations made through the Register directive.
+** TIdSipAction subclasses use TIdSipAction.ActionListeners to report non-IIdSipActionListener events.
+** Authentication of requests
+** Challenge headers for authentication don't have an authorization scheme.
+** TIdIsSourceOfWait answers "true" when a stack is a UAS for a request.
+** Range check error in GetIpAddress for 192.168.0.0/16 addresses
+** TIdSipTcpMessageReader doesn't set the Transport property of the TIdConnectionBindings it makes.
+** The SIP stack doesn't support multihomed machines.
+** RTP stack architecture doesn't mirror SIP stack's architecture
+** RewriteLocationHeaders doesn't select the right binding with multiple same-subnet ifaces and a lower-metric route exists.
+** Move TIdSipConnectionBindings into own unit.
+** If no response is received to a BYE, the stack sends BYEs ad infinitum.
+** Move TIdMockRoutingTable to IdRoutingTable.
+** Query the stack for the number (and type) of current actions.
+** Route directives for wholly-enclosed addresses spaces is order dependent.
+** ProxyDescriptions doesn't alway "canonicalise" a netmask in an address space.
+** Route settings are ignored when using qualified names instead of IP addresses
+** Stack Reconfigure does not clear previous Route directive settings
+** Out-of-dialog requests are the only requests to need a route set from the Transaction-User core.
+** TIdRoutingTable.BestLocalAddress can give wrong answer when Destination is a local address.
+** TIdSipStackInterface and friends must allow (asynchronous) access to (some) routing table functions.
+** Transport.NotifyOfException() blows up the TransactionDispatcher with a null pointer exception.
+** SDP: refused streams still consume ports
+** If you don't attach a logger to a TimerQueue, and you trigger a Wait that actually logs, then you get an access violation.
+** TIdWait.Schedule(Timer: TIdTimerQueue; Delay: Cardinal) makes no use of the Timer parameter.
+** TIdSipStackConfigurator.CreateLayers assumes you're running on Windows
+** SDP classes don't know enough about transport layer.
+** Implement RFC 4145's setup parameter
+** Transaction layer state changes are not logged.
+** SDP classes ignore port limits.
+** TIdRoutingTable.LocalAddressFor returns non-local addresses for MappedRoutes.
+** When Indy raises an EIdCouldNotBindSocket exception, it gives no indication what address:port couldn't be bound.
+** TIdSipAbstractCore.Create double-instantiates AllowedContentTypeList (which isn't even used).
+** One must be able to specify the Max-Forwards used in requests.
+** Stack should allow for multiple proxies, each to handle disjoint address spaces
+** Memory leak in TIdSipStackConfigurator.AddRouteHeader.
+** StackInterface must support registering multiple Contacts with a registrar.
+** You can add the same event package twice using TIdSipSubscribeModule.AddPackage.
+** Access violation creating a TIdSipOutboundNotify when the UA doesn't support SUBSCRIBE/NOTIFY.
+** Some TWaits keep references to objects. These must instead use "object IDs".
+** Dialogs established by SUBSCRIBE or REFER don't notify via their OnEstablished callbacks.
+** TIdSipSessionRejectWait needs tests
+** Modifying INVITEs that suffer a network failure don't notify their owning Sessions.
+** You can't assign a TIdSipLocation to a TIdSipLocation.
+** When sending messages, the local ip/port isn't set in the IIdSipTransportSendingListener's Binding parameter.
+** On XP, stack instantiates with a TIdMockRoutingTable
+** OptionsModule rejects OPTIONS requests while in Do Not Disturb twice
+** Implement IdSipDns.DomainNameSort, AliasSort
+** TestTIdSipTcpClient doesn't set up its Transport instvar correctly.
+** IIdSipTransportListener.OnRejectedMessage doesn't tell you where a bad message arrived.
+** Adding the "refer" package twice puts "REFER, REFER" in the Accepts header of any request you send.
+** Setting TIdSipWarningHeader.Agent with a malformed value raises an EParserError
+** Refreshing SUBSCRIBEs are always sent too late.
+** TIdSipSession doesn't tell its listeners the binding that receives an in-dialog REFER.
+** TIdSubscriptionRequestData doesn't supply all needful info. Extending it is tedious.
+** IdSipStackInterface needs to allow RedirectCall to indicate either a temporary or permanent move.
+** SDP Parser chokes on unknown values for all headers that use enumerated types
+** Outbound SUBSCRIBE doesn't establish dialog on receiving misordered NOTIFY.
+** Assign()ing a Request to a Response or vice versa raises a typecast exception
+** Transports overwrite the sent-by of the last hop of INVITEs sent via a Mapped Route.
+** Stack breaks on NT4 because NT4 doesn't support IP Helper API's GetBestInterface/GetBestRoute.
+** Exceptions raised during TIdWait.Trigger executions tear down the TimerQueue.
+** Reconfiguration of the stack means that the UA doesn't listen to its new set of transports.
+** TIdSipMessage.RewriteLocationHeaders can put wrong address in Contact URI
+** Once configured to act as a registrar, a UA cannot be reconfigured to no longer act as a registrar.
+** TIdSipInboundInvite continues sending 200 OKs after it's received an ACK
+** GetHostName will raise exception if no Indy components have been created.
+** An InboundSession's Dialog never leaves the Early state
+** Contact URIs can be set to ports that the UA doesn't use.
+** If Timer B fires when a client INVITE transaction is in the Proceeding state, RemoveTransaction's assertion is violated.
+** TIdRouteEntry.Equals(Other) returns when it and Other have the same mask in different representations
+** TStringDictionary loses canonical header names
+** Receiving a retransmission of a request before that server transaction has sent a response causes an exception
+** Stack cannot match responses against RFC 2543 requests
+** TIdIPAddressParser.IsIPv6Address regards "1" as valid.
+** TIdSipStackInterface does not report OnResubscribe notifications
+** If you add SUBSCRIBE support through reconfiguring the stack, the stack doesn't listen to the SUBSCRIBE module.
+** You cannot remove support for an event package from an instantiated stack.
+** Range check error in TIdIPAddressParser.ParseIPv6Address
+** Range check error in BestRouteIsDefaultRoute
+** Reconfiguring the stack results in no listening ports.
+** TIdSipStackInterface.ReconfigureStack doesn't reconfigure the stack
+** Sessions will accept an out-of-dialog BYE targetting their LocalGruus
+** Call transfer uses GRUU "grid"s to locate INVITE usage, not Target-Dialog header.
+** MasqueradeAs
+** TIdSipInboundSession.LocalGruu not set when you just AcceptCall without Ringing first.
+** Transactions that terminate because of timers (B, D, F, H, I, J, K) are not freed.
+** Responses to OPTIONS messages have a Warning header with no IP
+* bugfixes ported from 0.5.3:
+** SDP parser chokes on unknown bandwidth types.
+
+v0.5.3 (2007/01/26)
+* All modules now reside in separate units. (This only affects
+  TIdSipOptionsModule).
+* The Locator classes now allow you to use the OS's name location
+  routines. This allows you to resolve WINS names, for instance.
+* Bugfixes:
+** In-dialog messages with a Request-URI grid that doesn't match
+   LocalGruu's grid don't match dialogs.
+** TIdSdpOriginHeader.Username := 'foo bar' results in a malformed
+   origin header.
+** Long-running TBT raises EIntOverflow in TIdWait.TimeToWait.
+** When an RTP session hasn't sent data for a long time, it removes
+   itself from the session. This causes a division by zero.
+** TIdSipUri.GetUri doesn't encode passwords, and parsing doesn't
+   decode encoded passwords
+** Setting TIdSipUri.Username can make a valid URI report itself as
+   malformed.
+** TIdSipInboundReferralWait.Response := nil. If you set this property
+   the Wait keeps a COPY of the data, as it must and should. Some
+   users of the class though won't set the Response, and some
+   will. You know when the Response is set to something meaningful
+   when HasResponse = true.
+** NOTIFYs don't tell you exactly why transfer failed. Now you have
+   the choice of either using the default reasons as defined in RFC
+   3515, or you can pass in a more meaningful message, like the
+   response to an INVITE that failed.
+** If SDPMultimediaSession's LowestAllowablePort >
+   HighestAllowablePort the local description is malformed.
+** RTCP packets sent with SSRC = 0.
+** Address headers can be given malformed URIs, but still look
+   well-formed.
+** LocalGruu property of TIdSipOutboundTerminatingNotify not set.
+** LocalGruu property of
+   TIdSipInboundSubscription/TIdSipOutboundNotify not set.
+** RTP collisions don't result in rejoining a session.
+** TIdSDPMultimediaSession.LocalSessionDescription uses hard-coded SDP
+   headers.
+** TIdSDPMediaStream's interface is obtuse: You HAVE to call
+   LocalDescription's setter or the RTP servers won't be
+   instantiated. Separated out functions: you call
+   SDPMultimediaSession.StartListening to set the local description,
+   SetRemoteDescription. At this point you now JoinSession, since it's
+   difficult (impossible, with the current interface) to know when you
+   have a complete session description and can thus meaningfully join
+   the RTP sessions you've created.
+** TIdSDPMediaStream: SetRemoteDescription sends network packets.
+** TimerQueue.RemoveEvent has a memory leak.
+** Access violation shutting down a proxy-using stack that registers
+   to a registrar.
+** TIdSipOutboundReferral doesn't reSUBSCRIBE after receiving 423
+   Interval Too Brief.
+** TIdInboundReferral doesn't terminate when receiving a SUBSCRIBE
+   with "Expires: 0".
+** Refreshing SUBSCRIBEs for a REFER call transfer send "Expires: 0".
+** Locator can't process CNAME records, CNAME chains.
+** REGISTER From, To incorrect: for reasons unknown, the REGISTERs
+   sent out by the stack have the stack's CONTACT header in both From
+   & To.
+
+v0.5.2 (2006/07/24)
+* The receipt of messages is now threadsafe. Previously,
+  TIdSipMessageWait objects held references to TIdSipTransports. Now,
+  they hold a copy of the message and a Transport ID (a String), which
+  the TIdSipMessageWait uses to find the appropriate Transport. It
+  does this by consulting a well-known registry -
+  TIdSipTransportRegistry - which now not only tracks what types of
+  transports you may use, but also stores references to all created
+  TIdSipTransports. (The addition and deletion of these references is
+  all accomplished in TIdSipTransport.Create and Destroy.)
+* The Transaction-User and Transaction layers now use asynchronous
+  algorithms to send messages.
+* The stack now supports hairpinned requests.
+* In the test infrastructure, you no longer have to specify A/AAAA
+  records for hosts used in tests. You can if you want, setting the
+  TIdSipMockLocator's ReturnOnlySpecifiedRecords to true.
+* A major reshuffling of Transport classes: all TCP classes are now in
+  IdSipTcpTransport.pas, UDP classes in IdSipUdpTransport.pas, and so
+  on, and common classes remain in IdSipTransport. That means that
+  units like IdSipTcpClient.pas have been deleted.
+* All appropriate call flow classes (those for INVITE, REGISTER,
+  SUBSCRIBE, REFER) now support redirection.
+* Removed TIdSDPPayloadProcessor: use TIdSDPMultimediaSession.
+* Bugfixes:
+** RTP sessions send control data to themselves.
+** RTCP packets sent from RTP port.
+** RTP stack attempts to send media to port 0.
+** Creating a StackInterface without a "Supports:" line causes an
+   Invalid Cast exception.
+** OnNetworkFailure causes access violation/dangling pointer
+** Outbound dialogs incorrectly set remote sequence number to local
+   sequence number.
+** The RTP stack now actually starts up. The SDP classes create a
+   TIdTimerQueue to control the scheduling of events. (Note: the RTP
+   stuff still needs work in thread isolation, a la
+   TIdSipStackInterface.)
+** An RTP session used to enter an infinite loop when trying to remove
+   a member with SSRC of 0 (like when trying to remove a session
+   member who had never sent any RTP/RTCP to us).
+** TIdThreadedTimerQueue will now shut down cleanly should an access
+   violation propogate all the way to the queue's Run method.
+* You can use TIdSipStackInterface.ReconfigureStack to change the
+  configuration of the stack without having to recreate the entire
+  stack.
+
+v0.5.1 (2006/01/31)
+* The stack now supports basic multihoming: having more than one
+  non-local IP on the machine running the UA. This code has not been
+  widely tested, so may fail! However, "single-homed" machines will
+  still run as normal.
+* Missing copyright boilerplate added.
+* TIdSipActionRedirector encapsulates the logic around issuing
+  multiple requests in response to redirection responses. Currently
+  only TIdSipOutboundSession uses the logic, but we hope to have
+  TIdSipOutboundRegistration, TIdSipOutboundSubscription and
+  TIdSipOutboundReferral using the logic too.
+
+v0.5 (2006/01/15)
+* Completed GRUU (draft-ietf-sip-gruu-06) support (except for
+  proxy-related sections).
+* Added the MasqueradeAs directive to the stack configuration,
+  allowing a UA to pretend to be another machine (usually a NATting
+  firewall) by rewriting certain headers.
+* Bugfixes: we now properly handle terminating a session when we've
+  accepted the INVITE but attempted to terminate the session before we
+  received the remote party's ACK: we wait for the ACK and then
+  immediately send a BYE
+
+v0.5pre (2006/01/03)
+* The SIP stack now supports subscriptions (RFC 3265), including the
+  REFER message (RFC 3515). This means that the stack implements call
+  forwarding as per draft-ietf-sipping-cc-transfer-05. Note that some
+  aspects of call transfer are purely UI issues (choosing blind versus
+  attended transfer, for instance). The stack leaves those sorts of
+  questions to the UI. (See RFC 3515 section 2.4.2 for a typical
+  UI-only issue.)
+* The stack now handles authentication challenges in an asynchronous
+  manner. That means that the program that uses the stack now uses
+  Action.Resend() to resend an authorised request.
+* Major reshuffling of code in the Transaction-User layer: most of 
+  IdSipCore now sits in IdSipRegistration and IdSipUserAgent.
+
+v0.4.1 (2005/05/20)
+* Added those files necessary to patch Indy to support the stack.
+
+v0.4 (2005/05/19)
+* Major architectural changes: The SIP stack now executes in the
+  context of one thread, a TIdThreadedTimerQueue: a
+  TIdSipStackInterface. Any actions you request the stack to take
+  result in TIdWait objects being added to the TimerQueue's list, and
+  it will execute those actions when it gets a chance. Communication
+  from the stack to your code happens via Windows' PostMessage. When
+  you instantiate the StackInterface you give it the handle to a
+  window that will handle the requests. You are responsible for
+  destroying any objects you receive from the stack!
+* We now use DNS to locate SIP entities. Since Indy 9 only supports
+  IPv4 addresses, the stack doesn't support handling AAAA records even
+  though it doesn't care how addresses look: all layers treat
+  addresses as strings, and only the transport layer knows or cares
+  that those addresses match a particular format.
+* The stack now passes the 3xx STFT tests.
+* The Spike.pas unit used a hardcoded username/password, which of
+  course made the torture tests fail.
+* Authentication's changed a lot: the Transaction layer (i.e., the
+  TransactionDispatcher) resends challenged requests, but the
+  Transaction-User layer (i.e., the AbstractUserAgent) supplies the
+  authentication credentials. Thus, a Transaction receives a 401
+  response, the TransactionDispatcher notifies its listeners, the
+  UserAgent (which always listens) notifies the user, asking for a
+  username/password for the response. The user specifies if they want
+  to re-issue the request, and if they do, the TransactionDispatcher
+  creates a new client transaction with the credentials. This
+  (currently) completely empties the ActionListener interface.
+* TIdMethod renamed to TIdNotification.
+* The (Abstract) UserAgent now farms out events (things that you
+  schedule in a TimerQueue) to separate objects, rather than using
+  TNotifyEvents. In fact, anything involving its Actions property now
+  works exclusively off blocks/closures sent to the Actions.
+* Lots of niggly race conditions in the tests have been fixed.
+
+v0.3 (2004/12/24)
+
+* Transaction User Actions look like Commands (see the Gang of Four's
+  Design Patterns book).
+* Transaction User objects (i.e., Actions) and Transactions no longer
+  use their own threads for timing events - they use their
+  UserAgentCore or Dispatcher to schedule events.
+* "Message Modules": If you want a Core to handle call messages
+  (INVITE, ACK, BYE, CANCEL), you just call
+  Core.AddModule(TIdSipInviteModule). If you want it to also handle
+  REGISTER messages, just call
+  Core.AddModule(TIdSipRegisterModule). OPTIONS?
+  Core.AddModule(TIdSipOptionsModule). In general, if you want a Core
+  to handle some message (say, INFO or REFER or MESSAGE or whatever),
+  subclass TIdSipMessageModule and create an Outbound and Inbound
+  Action for the Module. Use the InviteModule, RegisterModule and
+  OptionsModule classes as examples. INVITEs behave differently to
+  other messages, so the Register- and OptionsModules will likely help
+  you the most.
+* All threads now subclass TIdBaseThread, which subclasses TThread and
+  not TIdThread.
+* Dispatcher now creates transactions for CANCELs.
+* You can terminate sessions both before you receive a 200 OK and
+  after. In the former case you send a CANCEL & the latter a BYE. We
+  check that the CANCEL did actually cancel and, if not, send a
+  BYE. (This can happen when the far end accepts the call before your
+  CANCEL reaches it.)
+* Sessions can now process redirect messages and try the received
+  alternate Contacts. We could use a better algorithm here!
+* You can now modify sessions. As per RFC 3261 section 14.1, we also
+  handle "glare" situations (simultaneous re-INVITEs by two parties in
+  the session).
+* General system-wide refactorings:
+** Sessions now use InviteActions and no longer know about the details
+   of receiving/sending INVITEs.
+** Actions and Transactions no longer ask their Core/Dispatcher to
+   free them. Instead, they mark themselves as Terminated, and the
+   Core/Dispatcher removes all terminated Actions/Transactions at
+   appropriate times (like after sending/receiving messages).
+
+v0.2 (2004/09/20)
+
+* Parsing SIP messages doesn't raise exceptions. Instead, the messages
+  and headers store the original, unparsed, data and you check their
+  HasValidSyntax property to find out if the message/header contains
+  valid data.
+* The SipMessage and SipHeader objects now parse themselves - the
+  SipParser now provides helper utilities and such.
+* This allows us to simplify the servers drastically - TCP and UDP
+  servers do nothing but parse messages and hand them up to the
+  Transport object.
+* Notification of events now uses the NotificationList. This contains
+  a bunch of Interfaces, and you give it a Method (a reified method
+  call) which the NotificationList then executes on each of its
+  Interfaces. This eliminates a whole bunch of almost-identical
+  code.
+* The Transaction layer now understands how to process CANCELs as well
+  as send them. For Client INVITE transactions only, of course.
+* SDP Payload Processor never really worked nicely. We thus replace it
+  (keeping it around for the nonce for reference purposes) with
+  RTPMediaStreams and company. This implements (most of) RFC 3264, the
+  Offer/Answer model.
+* Encapsulated the essentials of TIdSocketHandle (local and remote
+  addresses and ports) so that high-level objects don't know about
+  TIdSocketHandle. This helps to minimise dependencies on the core
+  Indy classes, hopefully allowing enterprising programmers to port
+  the stack more easily to, say, FreePascal.
+* Some threads now wait for TEvents rather than polling to do their
+  thing. Much neater.

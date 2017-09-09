@@ -1,0 +1,211 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+
+   <style>
+      .AlignMiddle { padding-top:6px!important; }
+   </style>
+   <script>
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// EditNumbers - Custom JavaScript control for editing one string in more inputs accoring to defintion
+// Independent on TreeGrid, it is used just an example of using custom control for editing
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ---------------------------------------------------------------------------------------------------
+// Creates the object for editing telephone numbers
+// val is default starting input value, for example "88812345676"
+// sizes is array with width of individual inputs, for example [3,3,4]
+// finish is callback function for finish editing, finish(O,save), where O is the EditNumbers object and save is 1 for accept and 0 for cancel
+// returns the created control to insert it into cell
+function CreateEditNumbers(val,sizes,finish){
+var O = document.createElement("div"); 
+O.style.background = "white";
+if(!val) val = "";
+val = "0000000000000000000000000000000" + val;
+if(!sizes || !sizes.length) sizes = [val.length];
+var input = "", s = "";
+for(var i=sizes.length-1,p=val.length;i>=0;p-=sizes[i--]){
+   if(s) s = "<span style='color:blue;font:18px Arial;padding-left:3px;padding-right:3px;'>-</span>" + s;
+   s = "<input type='text' style='width:"+(7+sizes[i]*6)+"px;font:11px Arial;' maxlength='"+sizes[i]+"' value='" + val.slice(p-sizes[i],p) + "'>" + s;
+   }
+O.innerHTML = s;
+var n = O.firstChild;
+while(1){
+   n.onkeydown = function(ev){
+      if(!ev) ev = event;
+      var key = ev.keyCode; if(!key) key = ev.charCode;
+      var A = GetSelection(this), v = this.value;
+      this.tmp = v;
+      if(key==39 && A[1]==v.length || key==9&&!ev.shiftKey) { // arrow right, on the end moves to the next input
+         var n = this.nextSibling;
+         if(n) { n = n.nextSibling; n.focus(); n.select(); n.tmp = n.value; }
+         CancelEvent(ev);
+         return false;
+         }
+      if(key==37 && A[0]==0 || key==9&&ev.shiftKey) { // arrow left, on the start moves to the previous input
+         var n = this.previousSibling;
+         if(n) { n = n.previousSibling; n.focus(); n.select(); n.tmp = n.value; }
+         CancelEvent(ev);
+         return false;
+         }
+      if(key==13 || key==27) {  // Not required in this case, just shows end editing by the control
+         finish(O,key==13); 
+         CancelEvent(ev);
+         return false;
+         }
+      if(this.down && A[1]==A[0] && A[1]==this.maxLength && (key>=48&&key<=57 || key>=65&&key<=90 || key==32)){ // When the key is holded and cursor is on the end, moves to the next input
+         var n = this.nextSibling;
+         if(n) { n = n.nextSibling; n.focus(); n.select(); n.tmp = n.value; }
+         }
+      this.down = 1;
+      }
+
+   n.onkeypress = function(ev){
+      if(!ev) ev = event;
+      var key = ev.keyCode; if(!key) key = ev.charCode;
+      if(key==13 || key==27) { CancelEvent(ev); return false; } // Firefox does not cancel onkeypress by cancelling onkeydown, must done again
+      }
+
+   n.onkeyup = function(ev){
+      if(!ev) ev = event;
+      var key = ev.keyCode; if(!key) key = ev.charCode;
+      var A = GetSelection(this), v = this.value; this.down = 0;
+      if(this.tmp!=null && v!=this.tmp && A[1]==this.maxLength){ // input changed, cursor is on the end, moves to the next input
+         var n = this.nextSibling;
+         if(n) { n = n.nextSibling; n.focus(); n.select(); }
+         }
+      }
+   n = n.nextSibling;
+   if(!n) break;
+   n = n.nextSibling;
+   }
+return O;
+}
+// ---------------------------------------------------------------------------------------------------
+// Focuses the first input
+function FocusEditNumbers(O){
+var I = O.getElementsByTagName("input")[0];
+if(I) { I.focus(); I.select(); }
+}
+// ---------------------------------------------------------------------------------------------------
+// Returns edited value from the number edit to save it back
+function GetEditNumbers(O){
+var n = O.firstChild, val = "";
+while(1){
+   var v = n.value;
+   while(v.length<n.maxLength) v = "0"+v;
+   val += v;
+   n = n.nextSibling;
+   if(!n) break;
+   n = n.nextSibling;
+   }
+return val;
+}
+// ---------------------------------------------------------------------------------------------------
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// EditNumbers - End of custom control for editing
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+// ---------------------------------------------------------------------------------------------------
+// Called to create the custom control and start editing
+Grids.OnCustomStartEdit = function(G,row,col,val,cell,width){
+if(col=="E"){
+   var S = Get(row,"S") + "";
+   for(var A=[],p=0;p<S.length;p++) A[p] = parseInt(S.charAt(p),16);  // Creates sizes of the inputs from 'S' cell value
+   var O = CreateEditNumbers(val,A,function(O,save){ Grids[0].EndEdit(save); }); // Creates the control and passes to it ending function
+   O.style.width = width; // resizes the control to the whole cell
+   cell.innerHTML = "";   // clears the content of the cell for editing
+   cell.appendChild(O);   // inserts created control
+   FocusEditNumbers(O);   // focuses the control
+   return O;              // returns the control, to get it in OnCustomEndEvent
+   }
+}
+// ---------------------------------------------------------------------------------------------------   
+// Called to end editing in custom control and return the edited value
+Grids.OnCustomEndEdit = function(G,row,col,save,O){
+if(col=="E"){
+   if(!save || O===true) return; 
+   return GetEditNumbers(O);
+   }
+}
+// ---------------------------------------------------------------------------------------------------   
+// Formats the value in column E according to the source in S
+Grids.OnGetHtmlValue = function(G,row,col,val){
+if(col=="E" && !row.Fixed){
+   var S = Get(row,"S"); if(!S || !val) return "";
+   S += ""; val = "0000000000000000000000000000000" + val;
+   var out = "", pos = val.length;
+   for(var i=S.length-1;i>=0;i--){
+      var v = parseInt(S.charAt(i),16);
+      if(out) out = "<span style='color:red;font:18px Arial;padding-left:6px;padding-right:6px;'>-</span>" + out;
+      out = val.slice(pos-v,pos) + out;
+      pos -= v;
+      }
+   return out;
+   }
+}
+// ---------------------------------------------------------------------------------------------------   
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>8. Custom controls and editing</center>
+   <center style='font:bold italic;'>Defining custom controls in cells, especially for editing</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='08 - Custom controls.xml'>08 - <h2>Custom controls</h2>.xml</a></div>
+   <div style='width:350px; height:220px;'>
+      <bdo Debug='check' Data_Url='08 - Custom controls.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         Use <h3>OnGetHtmlValue</h3> event to <h4>display</h4> the custom control in normal, not editing state. 
+         This event receives cell values and should return the HTML code to be displayed in the cell.<br />
+         Remember, the OnGetHtmlValue event is called whenever the cell is refreshed, it can be many times, so the handler should be fast and also it must not attach to the cell any temporary objects or properties.<br />
+         <ul>
+            <li>
+               Or just use <b>Html</b> type cell and define the HTML code directly in the cell value instead of the event.<br />
+            </li>
+            <li>
+               If the custom control does not require any special HTML for display, use standard TreeGrid cell with formatted value.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         To <h4>edit</h4> the cell value in custom control define <b>OnCustomStartEdit</b> and <b>OnCustomEndEdit</b>.<br />
+         <ul>
+            <li>
+               In <h3>OnCustomStartEdit</h3> create the custom control object, display it in grid, focus it and return it back from the handler.<br />
+               The event receives tag inside that the control should be displayed.
+               The control can be displayed directly in the tag as its child, or above it in absolute position.<br />
+               If the handler returns null, the standard editing action will be done.<br />
+               <ul>
+                  <li>
+                     The control should override and cancel key events that it don't want to propagate to TreeGrid key handlers.<br />
+                     In edit mode TreeGrid handles <b>onkeypress</b> for <b>Enter</b> (13) and <b>onkeydown</b> for <b>Esc</b> (27), arrow <b>Up</b> (38), arrow <b>Down</b> (40), <b>Tab</b> (9) and <b>Shift + Tab</b>.<br />
+                  </li>
+                  <li>
+                     If the control requests to finish editing, it should call Grid.<b>EndEdit(1)</b> to save the changes and <b>Grid.EndEdit</b>(0) to discard the changes.<br />
+                     The EndEdit calls OnCustomEndEdit handler, so the control should never modify the cell value directly when finishing edit.<br />
+                  </li>
+               </ul>
+            </li>
+            <li>
+               In <h3>OnCustomEndEdit</h3> read the edited value from the control, destroy the control and return the value from the handler.<br />
+               This event receives the custom control object returned by OnCustomStartEdit.<br />
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

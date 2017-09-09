@@ -1,0 +1,1540 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Print grid</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:70.9pt 42.55pt 70.9pt 42.55pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Print grid</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User can print grid by
+clicking to Print button on toolbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid opens new window and
+renders here the grid again and calls standard window.<b>print</b> method to
+show printing dialog and print the grid. The printing process itself cannot be
+controlled by JavaScript at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid rendered for
+printing does not show scrollbars, but displays the whole grid. It does not
+show right side pager. All other parts visibility can be controlled by <b>CanPrint</b>
+attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Because TreeGrid uses
+background images, a user must have permitted “<b>Printing background images</b>”
+in his browser to successfully print the grid.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintLocation><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintLocation</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>             [0]                                                                                           <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Where the printable grid will
+be shown</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – new window with PrintWindowProp properties</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – new window with the same properties as the main
+window, ignores PrintWindowProp</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – into the main tag instead of actual grid, like with
+NoVScroll / NoHScroll settings, ignores PrintCSS, PrintHead and PrintWindowProp</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – into the same page, instead of the page content,
+ignores PrintCSS, PrintHead and PrintWindowProp</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To modify other page content
+for printing use <a href="#OnPrintFinish">OnPrintFinish</a> and restore the
+original in <a href="#OnPrintClose">OnPrintClose</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintPrint><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPrint</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                       [1]                                                                                           <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How the grid will be printed</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – nothing will be shown</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – print dialog will be shown</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – alert for manual printing will be shown, remember
+to permit printing icons in the browser by <a href="#CfgPrintLocation">PrintLocation</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3, 4 - reserved</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> – print preview in IE will be shown if permitted the
+ActiveX, otherwise like 1</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>6</span></b><span
+style='font-size:10.0pt'> – print preview in IE will be shown if permitted the
+ActiveX, otherwise like 2</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CfgPrintGrids><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintGrids</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To print more grids at once.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A list of grid ids, comma
+separated, to print them all in one print job, at the same page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set individual PrintPrefix /
+PrintPostfix to separate or structure the grids on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The PrintLocation,
+PrintPrint, PrintCSS, PrintHead and PrintWindowProp are read from the actual
+grid, the other printing properties from the individual grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set PrintLocation = 2, all
+grids are replaced inside their main tags, for other options are printed in the
+listed order.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use <a
+href="#CfgPrintPageHeight">PrintPageHeight</a> to split the grid vertically,
+you should permit it only in the main grid (with PrintGrids attribute) and the
+other grid(s) should have constant height. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case this constant
+height set to the <a href="#CfgPrintPaddingHeightFirst">PrintPaddingHeightFirst</a>
+or <a href="#CfgPrintPaddingHeightLast">PrintPaddingHeightLast</a> attribute of
+the main grid to preserve space for the other grid(s).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintCols</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                        [2]                                                                                            <span
+style='color:red'>new <b>6.0</b></span>; <span style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and which menu will be
+shown before printing.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no menu</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – menu with columns to select which columns will be
+printed. Only columns with <a href="#CCanPrint">CanPrint</a>=’1’ and '2' are
+listed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.7)</i> menu with column and also with
+printing options</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [50]      Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>                   </span><span
+style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For how many rows will be
+displayed and updated progress bar. Displaying progress bar suppresses also message
+about slow script. <b>0</b> never shows progress bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Too small value can slow down
+the printing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is used also as page
+length for <a href="#CfgPrintPageBreaks">PrintPageBreaks</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.7</span></i><span
+style='font-size:10.0pt'> it can be changed via print menu and is saved to
+cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                            
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>7.1</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expected count of rows to
+print to show it in progress dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usable especially when set <a
+href="#CfgPrintLoad">PrintLoad</a> = 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be set dynamically in <a
+href="#OnPrintInit">OnPrintInit</a> API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintPrefix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPrefix</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added in front of
+TreeGrid when printing, only before the first page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintPostfix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPostfix</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added behind
+TreeGrid when printing, only after the last page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintHead><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintHead</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added into the
+print page &lt;head&gt; tag. Useful for adding meta tags to the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only for <a
+href="#CfgPrintLocation">PrintLocation</a> = 0 or 1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintCSS><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintCSS</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Url of CSS style sheet for printing
+used instead of default CSS style sheet </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only for <a
+href="#CfgPrintLocation">PrintLocation</a> = 0 or 1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintAddCSS><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintAddCSS</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Url of CSS style sheet added
+for printing. Used with <a href="#CfgPrintCSS">PrintCSS</a> or with default CSS
+styles. Can be used also to add Gantt style if required.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only for <a
+href="#CfgPrintLocation">PrintLocation</a> = 0 or 1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintWindowProp><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintWindowProp</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Properties of printing window
+(the third attribute to window.open)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only for <a
+href="#CfgPrintLocation">PrintLocation</a> = 0</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Items><b><span style='font-size:20.0pt'>Choosing items to
+print</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Shared for printing and
+printing to PDF.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int</i>
+       </span><a name=ICanPrint><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>CanPrint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [0/1/2]                                                                                      <span
+style='color:red'>new <b>6.0</b></span><span style='color:#0070C0'>; upd <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row will be printed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - never, <b>1</b> – once if visible, <b>2</b> - on
+every page (only for fixed and space rows) if visible, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – <i>(new 7.1)</i> once always, <b>4</b> – <i>(new
+7.1)</i> on every page (only for fixed and space rows) always </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> – <i>(new 9.0) </i>on every col page (only for space
+rows) if visible, <b>6</b> – <i>(new 9.0) </i>on every page and col page (only
+for space rows) if visible,</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>7</span></b><span
+style='font-size:10.0pt'> – <i>(new 9.0) </i>on every col page (only for space
+rows) always, <b>8</b> – <i>(new 9.0) </i>on every page and col page (only for
+space rows) always,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default <b>Toolbar</b> has
+<b>0</b>, <b>Header</b> has <b>2</b> and all other rows have <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int</i>
+       </span><a name=CCanPrint><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>CanPrint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [0/1]                                                                                        <span
+style='color:red'>new <b>6.0</b></span><span style='color:#0070C0'>; upd <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column will be
+printed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - never, <b>1</b> – once if visible, <b>2</b> - <i>(new
+9.0) </i>on every page if visible, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – <i>(new 9.0)</i> once always, <b>4</b> – <i>(new 9.0)</i>
+on every page always </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default <b>Panel</b> has <b>0</b>
+and other columns <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>
+       </span><a name=CellCanPrint><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>CanPrint</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [1]                                                                                                       <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell will be printed.
+Useful especially for Space cells.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - never, <b>1</b> – if visible, <b>2</b> - always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>
+       </span><a name=PrintHPage><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PrintHPage</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                       <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only for Space rows with <a
+href="#ICanPrint">CanPrint</a>&gt;=5.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To which horizontal page will
+be the cell printed. <b>0</b> means every page, <b>1</b> the first page, <b>2</b>
+the second page, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are fewer pages than
+the value, the cell will be printed at the last page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int</i>
+       </span><a name=IPrintHeight><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PrintHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal height of the row
+when printed. In pixels. If not set, actual row height is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful especially variable
+height rows or rows with nested grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintVarHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintVarHeight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - All columns are printed as they are, without
+external height calculation. It can lead to higher pages than expected, if rows
+contain multiline cells.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> - If there is printed at least one column with <a
+href="#CVarHeight">VarHeight</a>&gt;=1, it recalculates height of all rows for
+printing. It can slow down printing and print dialog recalculating, but
+preserves page height.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - Like <b>1</b> and also ignores row <a
+href="RowHeight.htm#IMaxHeight">MaxHeight</a> attribute to print the whole
+content of all multiline cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CVarHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>VarHeight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]
+                                                                                                     <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> (or <b>2</b>)
+to columns containing multiline cells to let their height to calculate
+dynamically to preserve page height. Only with <a href="#CfgPrintVarHeight">PrintVarHeight</a>&gt;=1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The VarHeight attribute also
+controls shrinking cell height when column width is increased, see <a
+href="ColWidth.htm#CVarHeight">VarHeight</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int</i>
+       </span><a name=CPrintWidth><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>PrintWidth</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of the column when
+printed. In pixels. If not set, actual column width is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful especially for
+relative width columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGroup><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Group</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls splitting columns
+among horizontal pages, it is useful especially if there are some cells spanned
+to or from other columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt; 0, it is the
+group the column belongs to. Create groups that contain the spanned cells. The
+groups must be continuous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The group of columns is
+divided to more pages only if it is wider than the page width.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If spanned cell is split
+between printed pages, its content is printed to every page!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute controls also
+dragging columns, see <a href="ColPosition.htm#CGroup">Group</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>This attribute has no
+relation with grouping rows.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintExpanded><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintExpanded</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>          [0]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>renamed
+<b>6.0</b>; </span><span style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If prints all rows expanded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, only actually
+expanded rows prints their children.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.7</span></i><span
+style='font-size:10.0pt'> it can be changed via print menu and is saved to
+cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintFiltered><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintFiltered</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>    [0]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>                   new</span><span
+style='color:blue'> </span><b><span style='color:red'>6.7</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If prints all rows, including
+the hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed via print
+menu and is saved to cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintSelected><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintSelected</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> [0]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>                   new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If prints only selected rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Even if set, it always prints
+all rows that cannot be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintLoad><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintLoad</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>7.1</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to <b>1</b> in server
+paging or child paging to download all rows to be printed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Be careful permitting this
+option, it will download all pages and optionally child pages, when set <a
+href="#CfgPrintExpanded">PrintExpanded</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The count of rows is not
+known, so the progress dialog does not show correct values except set <a
+href="#CfgPrintCount">PrintCount</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgPrintCheckboxes><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintCheckboxes</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                           <span
+style='color:red'>new <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it prints all
+checkboxes and radio buttons as standard HTML checkbox and radio button inputs
+instead of style images.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful when expected printing
+without background images.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintIcons><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintIcons</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                           <span
+style='color:red'>new <b>7.1</b></span><span style='color:#1F497D'>; upd <b>8.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it does not
+print cell side icons Calendar, Enum and Defaults. It still prints Sort,
+Filter, Expand and custom icons.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 8.1) </span></i><span
+style='font-size:10.0pt'>For <b>-1</b> it does not print Calendar, Enum and
+Defaults and custom icons. It still prints Sort, Filter, Expand.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgNoPrintTreeLines><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoPrintTreeLines</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  []                                                                                            <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it does
+not show connecting lines in tree when printing, shows only expand / collapse
+buttons</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If empty, uses value of <a
+href="Tree.htm#CfgNoTreeLines">NoTreeLines</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [0]        Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>                   new</span><span
+style='color:blue'> </span><b><span style='color:red'>8.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Only for Gantt chart.</span></i><span
+style='font-size:10.0pt'> If set, it prints only visible part of the actually
+scrolled / zoomed Gantt chart (horizontally)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be changed via print
+menu and is saved to cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintGanttBackground><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintGanttBackground</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                        
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>8.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If prints global Gantt
+background, shown for attributes GanttBackground, GanttExclude, GanttBase,
+GanttFinish.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It can slow down the
+printing, because it renders the background to every row.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Page><b><span style='font-size:20.0pt'>Page size</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Shared for printing and
+printing to PDF.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to split the
+printed grid horizontally and vertically to more pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The maximal size of page is
+set by PrintPageWidth - PrintPaddingWidth x PrintPageHeight -
+PrintPaddingHeight. If the grid is bigger, it is split to more pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Note, nested grid is never
+split to pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>These settings
+do <u>not</u> affect the paper size, orientation and margins selected by a user
+in his printing dialog! JavaScript cannot control or even read these settings!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>So a user must always select
+the same values twice, in TreeGrid print dialog and browser/system print
+dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If there are printed <b>empty
+pages</b> between normal pages, it often helps increasing <a
+href="#CfgPrintPaddingHeight">PrintPaddingHeight</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPageWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [643]     Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>            new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Width of page for printing,
+in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the printed chart is wider
+than this value, it is split to more pages horizontally.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is always split
+between columns, only Gantt type column can be divided to more parts if set <a
+href="#CfgPrintGanttSplit">PrintGanttSplit</a> = 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every page contains all
+columns with <a href="#CCanPrint">CanPrint</a> = <b>2</b> and next set of
+columns with <a href="#CCanPrint">CanPrint</a> = <b>1</b>. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+the place for the next columns is less than <b>100</b> pixels, the grid is <u>not</u>
+split horizontally.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the
+printed chart is not split to pages horizontally. Also items for page width are
+hidden from print columns menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value 643 corresponds with
+page A4 portrait, 96 DPI and 40mm margin.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this attribute
+cannot control the final printing page chosen by user in printing dialog!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPageHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageHeight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [971]     Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>            new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Height of page for printing,
+in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the printed chart is
+higher than this value, it is split to more pages vertically.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid is always split
+between rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every page contains all rows
+with <a href="#ICanPrint">CanPrint</a> = <b>2</b> and next set of rows with <a
+href="#ICanPrint">CanPrint</a> = <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, the
+printed chart is not split to pages horizontally, except set <a
+href="#CfgPrintPageBreaks">PrintPageBreaks</a>. Also items for page height are
+hidden from print columns menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value 971 corresponds with
+page A4 portrait, 96 DPI and 40mm margin.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPageSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>            [8]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>            new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid
+print dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Selected item in Page sizes
+list, defined by &lt;Lang&gt;&lt;Text PrintPageSizes/&gt;&lt;/Lang&gt;, by
+default in Text.xml</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The PrintPageSizes attribute
+contains first character separated list as
+&quot;|name1|width1|height1|name2|width2|height2|name3|...&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The name is
+page size name shown in the list, width and height is the page size in
+millimeters. <b>pixels = mm / 25.4 x DPI</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When changed by a user in the
+print dialog, it recalculates <a href="#CfgPrintPageWidth">PrintPageWidth</a>
+and <a href="#CfgPrintPageHeight">PrintPageHeight</a> attributes accordingly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                PrintPageWidth
+= (PrintPageSize[width] - PrintMarginWidth) / 25.4 * PrintDPI</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                PrintPageHeight
+= (PrintPageSize[height] - PrintMarginHeight) / 25.4 * PrintDPI</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set PrintPageOrientation
+to <b>1</b> (landscape) it just swaps the width and height in PrintPageSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPageOrientation><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintPageOrientation</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>   new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid
+print dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The print page orientation -
+portrait or landscape.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>
+(landscape), it just swaps width and height in <a href="#CfgPrintPageSize">PrintPageSize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintDPI><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintDPI</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               [96]      Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’   <span style='color:red'>                  new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid
+print dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>DPI (PPI) ratio - pixels per
+inch.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value for most
+browsers is 96. Changing this value zooms the printed page, higher value =
+bigger page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When changed by a user in the
+print dialog, it recalculates <a href="#CfgPrintPageWidth">PrintPageWidth</a>
+and <a href="#CfgPrintPageHeight">PrintPageHeight</a> attributes accordingly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintDefaultDPI><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintDefaultDPI</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [96]                                                                 <span
+style='color:red'>                        new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid PDF print
+dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2 in PDF export).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default PrintDPI value, used
+when PDFFitPage is changed to 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintMinDPI><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintMinDPI</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>     [96]                                                                             <span
+style='color:red'>                        new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid PDF print
+dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2 in PDF export).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal PrintDPI value, used
+when PDFFitPage is changed to &gt;0. If the value is less than 96, it permits
+stretching the grid width to fit the page. It should not be higher than 96.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintMarginWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintMarginWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [40]      Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>            new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid
+print dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Left + right margin of the
+page, in millimeters. (pixels = mm / 25.4 x DPI)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When changed by a user in the
+print dialog, it recalculates <a href="#CfgPrintPageWidth">PrintPageWidth</a>
+attribute accordingly. It is subtracted from page width.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintMarginHeight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintMarginHeight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> [40]      Saved to
+cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>            new</span><span
+style='color:blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Affects only TreeGrid
+print dialog (shown by <a href="#CfgPrintCols">PrintCols</a>=2).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Top + bottom margin of the
+page, in millimeters. (pixels = mm / 25.4 x DPI)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When changed by a user in the
+print dialog, it recalculates <a href="#CfgPrintPageHeight">PrintPageHeight</a>
+attribute accordingly. It is subtracted from page height.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPaddingWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPaddingWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                    
+<span style='color:red'>            new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reserved width on page (in
+pixels), for other content on page, e.g. for <a href="#CfgPrintPagePrefix">PrintPagePrefix</a>
+/ <a href="#CfgPrintPagePostfix">PrintPagePostfix</a> or HTML body margin /
+border / padding</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is subtracted from <a
+href="#CfgPrintPageWidth">PrintPageWidth</a> when printing, not in the print
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPaddingHeight><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintPaddingHeight</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                    
+<span style='color:red'>            new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reserved height on page (in
+pixels), for other content on page, e.g. for <a href="#CfgPrintPagePrefix">PrintPagePrefix</a>
+/ <a href="#CfgPrintPagePostfix">PrintPagePostfix</a> or HTML body margin /
+border / padding</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is subtracted from <a
+href="#CfgPrintPageHeight">PrintPageHeight</a> when printing, not in the print
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPaddingHeightFirst><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintPaddingHeightFirst</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                        
+<span style='color:red'>            new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reserved height on the first
+page, for other content on the first page, e.g. for <a href="#CfgPrintPrefix">PrintPrefix</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is subtracted from <a
+href="#CfgPrintPageHeight">PrintPageHeight</a> when printing, not in the print
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grid split horizontally,
+it is added to every first page (to preserve the horizontal page
+synchronization)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintPaddingHeightLast><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintPaddingHeightLast</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                        
+<span style='color:red'>            new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Reserved height on the last
+page, for other content on last first page, e.g. for <a href="#CfgPrintPostfix">PrintPostfix</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is subtracted from <a
+href="#CfgPrintPageHeight">PrintPageHeight</a> when printing, not in the print
+menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grid split horizontally,
+it is added to every last page (to preserve the horizontal page
+synchronization)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintConstWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintConstWidth</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                    
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, all pages
+will get the same, maximal, width. By adding right empty column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to preserve width of
+space rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintGanttSplit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintGanttSplit</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                    
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If Gantt chart column can be
+split if it is wider than selected page by <a href="#CfgPrintPageWidth">PrintPageWidth</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual Gantt pages
+dates will be rounded to <a href="GanttDisplay.htm#CGanttPrintRound">GanttPrintRound</a>
+or if not set, to <a href="GanttDisplay.htm#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgPrintGanttSplitMin><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>PrintGanttSplitMin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [100]                                                                 
+<span style='color:red'>                      new</span><span style='color:
+blue'> </span><b><span style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal size in pixels of
+printed part of Gantt when split by <a href="#CfgPrintGanttSplit">PrintGanttSplit</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It affects the first and last
+page part of the printed Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool</i>      </span><a
+name=CfgPrintPageBreaks><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageBreaks</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>renamed
+<b>6.0</b>; </span><span style='color:blue'>upd <b>6.7</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Prints page break after every
+<a href="#CfgPrintRows">PrintRows</a> variable rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For every page it prints new
+table with all fixed and space rows that have <a href="#ICanPrint">CanPrint</a>=’<b>2’</b></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 6.7</span></i><span
+style='font-size:10.0pt'> it can be changed via print menu and is saved to
+cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> affect <a
+href="#CfgPrintPageHeight">PrintPageHeight</a>, both these attributes can be
+used separately or together.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=INoPageBreak><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoPageBreak</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [0]                                                                                           <span
+style='color:red'>new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, grid does
+not break page before the row, except it would lead to higher page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgPrintPageRoot><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageRoot</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>          [0]        Saved
+to cookies, to not load it, set <b>PrintLap</b>=’1’  <span style='color:red'>new
+<b>7.1</b>; </span><span style='color:blue'>upd <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it prints page
+break only between root rows (preserves printing children with their parent)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It breaks children only the
+parent children are higher than page height or PrintRows, in this case <i>(since
+9.0)</i> it tries to preserve at least sub children on next tree levels, if
+any.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 9.0</span></i><span
+style='font-size:10.0pt'> it can be changed via print menu and is saved to
+cookies and also never creates higher page than PrintRow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgPrintPageRootMin><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPageRootMin</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> [10]                                                                                         <span
+style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal count of rows on page
+when applied PrintPageRoot, to avoid pages with only few rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintPagePrefix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPagePrefix</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                     <span
+style='color:red'>new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added in front of
+every TreeGrid page when printing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it contains these strings,
+they are replaced by: <b>%1</b> horizontal page index, <b>%2</b> vertical page
+index, <b>%3</b> page index, <b>%4</b> horizontal page count, <b>%5</b>
+vertical page count, <b>%6</b> page count, <b>%7</b> page width in pixels, <b>%8</b>
+page height in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The page counts (%3,%4,%5)
+should not be used with <a href="#CfgPrintLoad">PrintLoad</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgPrintPagePostfix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PrintPagePostfix</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                  <span
+style='color:red'>new</span><span style='color:blue'> </span><b><span
+style='color:red'>9.0</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML code added behind every
+TreeGrid page when printing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it contains these strings,
+they are replaced by: <b>%1</b> horizontal page index, <b>%2</b> vertical page
+index, <b>%3</b> page index, <b>%4</b> horizontal page count, <b>%5</b>
+vertical page count, <b>%6</b> page count, <b>%7</b> page width in pixels, <b>%8</b>
+page height in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The page counts (%3,%4,%5)
+should not be used with <a href="#CfgPrintLoad">PrintLoad</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>Print API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsPrint></a><a name=Print><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>Print</span></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                       Attached
+to event <b>OnClickButtonPrint</b>                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows printable version or
+grid and displays dialog for printing</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnPrintStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrintStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>)                                                                                         <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called before the print
+report is generated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel
+printing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnPrintInit><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrintInit</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>string</i>[id] <b>Cols</b>)                                                                   <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after users selected
+columns to print and before the print report is generated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Cols</b> object
+contains properties as all column names, the columns selected to print are set
+to 1, otherwise to 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to modify this
+array. It is null when set <a href="#CfgPrintCols">PrintCols</a> = 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Other settings like rows per
+page are already read from configuration and can be modified in the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here is possible to modify
+also <a href="#CfgPrintCount">PrintCount</a> attribute when printing in server
+paging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnPrint><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrint</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>Window</i> <b>window</b>, <i>string</i> <b>report</b>)                                                      <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the print report
+has been generated, but before it was written to the print window and printed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel
+printing or own print. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or return new or updated
+report to print.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>window</span></b><span
+style='font-size:10.0pt'> is new window created for printing and should be
+closed when OnPrint returns true.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>report</span></b><span
+style='font-size:10.0pt'> is the generated grid HTML that will be printed.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnPrintFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrintFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>Window</i> <b>window</b>)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after print report is written
+to the window and before the printing dialog is displayed.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>window</span></b><span
+style='font-size:10.0pt'> is browser’s window that contains the report.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also use this event
+to get back changes you done in <a href="#OnPrintStart">OnPrintStart</a> event,
+if any.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+default action. You can call here window.print() in this event and do some
+action after, for example to close the window.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnPrintClose><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnPrintClose</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>             (<i>TGrid</i>
+<b>grid</b>, <i>Window</i> <b>window</b>)                                                   <span
+style='color:red'>new <b>7.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the print window
+is being closed or the print report is to be deleted and the original grid
+restored (depends on <a href="#CfgPrintLocation">PrintLocation</a> settings).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>window</span></b><span
+style='font-size:10.0pt'> is browser’s window that contains the report.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can take back
+changes you done in page in OnPrintFinish, especially for <a
+href="#CfgPrintLocation">PrintLocation</a> &gt;= 2</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetHtmlValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetHtmlValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get formatted cell
+value to display. <i>val</i> is unformatted cell value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns formatted value. If
+returned value is <u>not</u> <u>null</u>, it is used instead of internal
+formatting by Format or Enum attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return null to use default
+formatting behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used also for
+printing, to print different value than cells show, for example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnPrintStart =
+function(G){ Grids.OnGetHtmlValueTmp = Grids.OnGetHtmlValue;
+Grids.OnGetHtmlValue = function(G,row,col,val){ <i>/* here modify and return the
+values for printing */</i>   } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grids.OnPrint = function(G){
+Grids.OnGetHtmlValue = Grids.OnGetHtmlValueTmp; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnShowColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnShowColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TMenu </i><b>Menu</b>)                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to add custom items to
+the print menu.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnShowColumns =
+function(G,M){ var I = M.Items[7].Items; I[I.length] =
+{Name:&quot;XXX&quot;,Bool:1,Value:1}; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+menu action</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnColumnsFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnColumnsFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TMenu </i><b>Menu</b>)                                                        <span
+style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after the print menu
+is closed to process custom menu items added in OnShowColumns API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This event is called for
+every columns menu in grid (columns visibility, print, print pdf, export), you
+have to distinguish the menu according to the Menu items.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: </span><span
+style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnColumnsFinish =
+function(G,M){ var val = M.FindItem(&quot;XXX&quot;).Value; ... }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress the
+menu action</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=GetPrintable><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPrintable</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>function
+</i><b>func</b>)                                                                                     <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Generates print report for
+the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>func</b> is <u>not</u>
+set, it generates the report synchronously without displaying message and
+returns the generated report.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>func</b> is set, it
+generates the report asynchronously, shows and updates progress message and
+after finish calls <b>func</b> (<i>report</i>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

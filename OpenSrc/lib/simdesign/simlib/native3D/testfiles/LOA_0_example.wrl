@@ -1,0 +1,720 @@
+#VRML V2.0 utf8 eMpTyWorlds V3.29.70
+
+PROTO Humanoid [
+ exposedField    SFVec3f    center       0 0 0
+ exposedField    MFNode     humanoidBody          [ ]
+ exposedField    MFString   info         [ ]
+ exposedField    MFNode     joints       [ ]
+ exposedField    SFString   name         ""
+ exposedField    SFRotation rotation     0 0 1 0
+ exposedField    SFVec3f    scale        1 1 1
+ exposedField    SFRotation scaleOrientation      0 0 1 0
+ exposedField    MFNode     segments     [ ]
+ exposedField    MFNode     sites        [ ]
+ exposedField    SFVec3f    translation           0 0 0
+ exposedField    SFString   version      "200x"
+ exposedField    MFNode     viewpoints            [ ]
+ field           SFVec3f    bboxCenter            0 0 0
+ field           SFVec3f    bboxSize     -1 -1 -1
+]
+{
+ Transform {
+  center           IS center
+  rotation         IS rotation
+  scale            IS scale
+  scaleOrientation IS scaleOrientation
+  translation      IS translation
+  children [
+   Group {
+    children IS humanoidBody 
+   }
+   Group {
+    children IS viewpoints
+   }
+  ]
+ }
+}
+
+
+PROTO Joint [
+ exposedField SFVec3f    center    0 0 0
+ exposedField MFNode     children           []
+ exposedField SFRotation limitOrientation   0 0 1 0
+ exposedField MFFloat    llimit    []
+ exposedField SFString   name      ""
+ exposedField SFRotation rotation           0 0 1 0
+ exposedField SFVec3f    scale     1 1 1
+ exposedField SFRotation scaleOrientation   0 0 1 0
+ exposedField MFFloat    stiffness          [1 1 1]
+ exposedField SFVec3f    translation        0 0 0
+ exposedField MFFloat    ulimit    []
+] 
+{ 
+ Group {
+  children [
+   Transform {
+    center IS center 
+    children IS children
+    rotation IS rotation
+    scale IS scale 
+    scaleOrientation IS scaleOrientation
+    translation IS translation
+   }
+   Transform {
+    translation IS center
+    children [
+     Shape { 
+      geometry 
+       IndexedFaceSet {
+        coord Coordinate {
+         point [ 
+          0 0.01 0, -0.01 0 0, 0 0 0.01, 
+          0.01 0 0, 0 0 -0.01, 0 -0.01 0 
+         ]
+        }
+        coordIndex [ 
+         0, 1, 2, -1, 0, 2, 3, -1, 0, 3, 4, -1, 0, 4, 1, -1,
+         5, 2, 1, -1, 5, 3, 2, -1, 5, 4, 3, -1, 5, 1, 4, -1 
+        ]
+        creaseAngle 0.5
+       }
+      appearance 
+       Appearance { 
+        material 
+         Material { diffuseColor 1 1 0 } 
+       } 
+     } 
+    ]
+   }
+  ]
+ }
+}
+
+
+PROTO Segment [
+ eventIn         MFNode      addChildren
+ eventIn         MFNode      removeChildren
+ exposedField    SFVec3f     centerOfMass      0 0 0
+ exposedField    MFNode      children          []
+ exposedField    SFNode      coord    NULL
+ exposedField    MFNode      displacers        []
+ exposedField    SFString    name     ""
+ exposedField    SFFloat     mass     0 
+ exposedField    SFVec3f     momentsOfInertia  1 1 1
+ field           SFVec3f     bboxCenter        0 0 0
+ field           SFVec3f     bboxSize          -1 -1 -1
+] 
+{ 
+ Group {
+  addChildren IS addChildren
+  bboxCenter IS bboxCenter
+  bboxSize IS bboxSize
+  children IS children
+  removeChildren IS removeChildren
+ }
+}
+
+
+PROTO Site [
+ eventIn         MFNode      addChildren
+ eventIn         MFNode      removeChildren
+ exposedField    SFVec3f     center            0 0 0
+ exposedField    MFNode      children          []
+ exposedField    SFString    name     "" 
+ exposedField    SFRotation  rotation          0 0 1 0
+ exposedField    SFVec3f     scale    1 1 1
+ exposedField    SFRotation  scaleOrientation  0 0 1 0
+ exposedField    SFVec3f     translation       0 0 0
+]
+{ 
+ Transform {
+  addChildren IS addChildren
+  removeChildren IS removeChildren
+  center IS center
+  children IS children
+  rotation IS rotation
+  scale IS scale
+  scaleOrientation IS scaleOrientation
+  translation IS translation
+ }
+}
+
+
+DEF humanoid Humanoid {
+ humanoidBody [
+  DEF hanim_HumanoidRoot Joint {
+   name           "HumanoidRoot"
+   center         0.0000 0.8240 0.0277
+   children [
+    DEF hanim_sacrum Segment {
+     name           "sacrum"
+     children [
+      DEF hanim_skull_tip Site {
+       name         "skull_tip"
+       translation    0.0050 1.7504 0.0055
+       children [
+       ]
+      }
+      DEF hanim_sellion Site {     # CAESAR Feature Point #1
+       name         "sellion"
+       translation    0.0058 1.6316 0.0852
+       children [
+       ]
+      }
+      DEF hanim_r_infraorbitale Site {     # CAESAR Feature Point #2
+       name         "r_infraorbitale"
+       translation    -0.0237 1.6171 0.0752
+       children [
+       ]
+      }
+      DEF hanim_l_infraorbitale Site {     # CAESAR Feature Point #3
+       name         "l_infraorbitale"
+       translation    0.0341 1.6171 0.0752
+       children [
+       ]
+      }
+      DEF hanim_supramenton Site {     # CAESAR Feature Point #4
+       name         "supramenton"
+       translation    0.0061 1.5410 0.0805
+       children [
+       ]
+      }
+      DEF hanim_r_tragion Site {     # CAESAR Feature Point #5
+       name         "r_tragion"
+       translation    -0.0646 1.6347 0.0302
+       children [
+       ]
+      }
+      DEF hanim_r_gonion Site {     # CAESAR Feature Point #6
+       name         "r_gonion"
+       translation    -0.0520 1.5529 0.0347
+       children [
+       ]
+      }
+      DEF hanim_l_tragion Site {     # CAESAR Feature Point #7
+       name         "l_tragion"
+       translation    0.0739 1.6348 0.0282
+       children [
+       ]
+      }
+      DEF hanim_l_gonion Site {     # CAESAR Feature Point #8
+       name         "l_gonion"
+       translation    0.0631 1.5530 0.0330
+       children [
+       ]
+      }
+      DEF hanim_nuchale Site {     # CAESAR Feature Point #9
+       name         "nuchale"
+       translation    0.0039 1.5972 -0.0796
+       children [
+       ]
+      }
+      DEF hanim_r_clavicale Site {     # CAESAR Feature Point #10
+       name         "r_clavicale"
+       translation    -0.0115 1.4943 0.0400
+       children [
+       ]
+      }
+      DEF hanim_suprasternale Site {     # CAESAR Feature Point #11
+       name         "suprasternale"
+       translation    0.0084 1.4714 0.0551
+       children [
+       ]
+      }
+      DEF hanim_l_clavicale Site {     # CAESAR Feature Point #12
+       name         "l_clavicale"
+       translation    0.0271 1.4943 0.0394
+       children [
+       ]
+      }
+      DEF hanim_r_thelion Site {     # CAESAR Feature Point #13
+       name         "r_thelion"
+       translation    -0.0736 1.3385 0.1217
+       children [
+       ]
+      }
+      DEF hanim_l_thelion Site {     # CAESAR Feature Point #14
+       name         "l_thelion"
+       translation    0.0918 1.3382 0.1192
+       children [
+       ]
+      }
+      DEF hanim_substernale Site {     # CAESAR Feature Point #15
+       name         "substernale"
+       translation    0.0085 1.2995 0.1147
+       children [
+       ]
+      }
+      DEF hanim_r_rib10 Site {     # CAESAR Feature Point #16
+       name         "r_rib10"
+       translation    -0.0711 1.1941 0.1016
+       children [
+       ]
+      }
+      DEF hanim_r_asis Site {     # CAESAR Feature Point #17
+       name           "r_asis"
+       translation    -0.0887 1.0021 0.1112
+       children [
+       ]
+      }
+      DEF hanim_l_rib10 Site {     # CAESAR Feature Point #18
+       name           "l_rib10"
+       translation    0.0871 1.1925 0.0992
+       children [
+       ]
+      }
+      DEF hanim_l_asis Site {     # CAESAR Feature Point #19
+       name           "l_asis"
+       translation    0.0925 0.9983 0.1052
+       children [
+       ]
+      }
+      DEF hanim_r_iliocristale Site {     # CAESAR Feature Point #20
+       name           "r_iliocristale"
+       translation    -0.1525 1.0628 0.0035
+       children [
+       ]
+      }
+      DEF hanim_r_trochanterion Site {     # CAESAR Feature Point #21
+       name           "r_trochanterion"
+       translation    -0.1689 0.8419 0.0352
+       children [
+       ]
+      }
+      DEF hanim_l_iliocristale Site {     # CAESAR Feature Point #22
+       name           "l_iliocristale"
+       translation    0.1612 1.0537 0.0008
+       children [
+       ]
+      }
+      DEF hanim_l_trochanterion Site {     # CAESAR Feature Point #23
+       name           "l_trochanterion"
+	   translation    0.1677 0.8336 0.0303
+       children [
+       ]
+      }
+      DEF hanim_cervicale Site {     # CAESAR Feature Point #24
+       name         "cervicale"
+       translation    0.0064 1.520 -0.0815
+       children [
+       ]
+      }
+      DEF hanim_rib10_midspine Site {     # CAESAR Feature Point #25
+       name           "rib10_midspine"
+       translation    0.0049 1.1908 -0.1113
+       children [
+       ]
+      }
+      DEF hanim_r_psis Site {     # CAESAR Feature Point #26
+       name           "r_psis"
+       translation    -0.0716 1.0190 -0.1138
+       children [
+       ]
+      }
+      DEF hanim_l_psis Site {     # CAESAR Feature Point #27
+       name           "l_psis"
+       translation    0.0774 1.0190 -0.1151
+       children [
+       ]
+      }
+      DEF hanim_waist_preferred_post Site {     # CAESAR Feature Point #28
+       name           "waist_preferred_post"
+       translation    0.0049 1.0915 -0.1091
+       children [
+       ]
+      }
+      DEF hanim_r_acromion Site {     # CAESAR Feature Point #29
+       name         "r_acromion"
+       translation    -0.1905 1.4791 -0.0431
+       children [
+       ]
+      }
+      DEF hanim_r_axilla_ant Site {     # CAESAR Feature Point #30
+       name         "r_axilla_ant"
+       translation    -0.1626 1.4072 -0.0031
+       children [
+       ]
+      }
+      DEF hanim_r_radial_styloid Site {     # CAESAR Feature Point #31
+       name         "r_radial_styloid"
+       translation    -0.1884 0.8676 -0.0360
+       children [
+       ]
+      }
+      DEF hanim_r_axilla_post Site {     # CAESAR Feature Point #32
+       name         "r_axilla_post"
+       translation    -0.1603 1.4098 -0.0826
+       children [
+       ]
+      }
+      DEF hanim_r_olecranon Site {     # CAESAR Feature Point #33
+       name         "r_olecranon"
+       translation    -0.1907 1.1405 -0.1065
+       children [
+       ]
+      }
+      DEF hanim_r_humeral_lateral_epicn Site {     # CAESAR Feature Point #34
+       name         "r_humeral_lateral_epicn"
+       translation    -0.2224 1.1517 -0.1033
+       children [
+       ]
+      }
+      DEF hanim_r_humeral_medial_epicn Site {     # CAESAR Feature Point #35
+       name         "r_humeral_medial_epicn"
+       translation    -0.1680 1.1298 -0.1062
+       children [
+       ]
+      }
+      DEF hanim_r_radiale Site {     # CAESAR Feature Point #36
+       name         "r_radiale"
+       translation    -0.2130 1.1305 -0.1091
+       children [
+       ]
+      }
+      DEF hanim_r_metacarpal_pha2 Site {     # CAESAR Feature Point #37
+       name         "r_metacarpal_pha2"
+       translation    -0.1977 0.8169 -0.0177
+       children [
+       ]
+      }
+      DEF hanim_r_dactylion Site {     # CAESAR Feature Point #38
+       name         "r_dactylion"
+       translation    -0.1941 0.6772 -0.0423
+       children [
+       ]
+      }
+      DEF hanim_r_ulnar_styloid Site {     # CAESAR Feature Point #39
+       name         "r_ulnar_styloid"
+       translation    -0.2117 0.8562 -0.0584
+       children [
+       ]
+      }
+      DEF hanim_r_metacarpal_pha5 Site {     # CAESAR Feature Point #40
+       name         "r_metacarpal_pha5"
+       translation    -0.1929 0.7890 -0.1064
+       children [
+       ]
+      }
+      DEF hanim_l_acromion Site {     # CAESAR Feature Point #41
+       name         "l_acromion"
+       translation    0.2032 1.4760 -0.0490
+       children [
+       ]
+      }
+      DEF hanim_l_axilla_ant Site {     # CAESAR Feature Point #42
+       name         "l_axilla_ant"
+       translation    0.1777 1.4065 -0.0075
+       children [
+       ]
+      }
+      DEF hanim_l_radial_styloid Site {     # CAESAR Feature Point #43
+       name         "l_radial_styloid"
+       translation    0.1901 0.8645 -0.0415
+       children [
+       ]
+      }
+      DEF hanim_l_axilla_post Site {     # CAESAR Feature Point #44
+       name         "l_axilla_post"
+       translation    0.1706 1.4072 -0.0875
+       children [
+       ]
+      }
+      DEF hanim_l_olecranon Site {     # CAESAR Feature Point #45
+       name         "l_olecranon"
+       translation    0.1962 1.1375 -0.1123
+       children [
+       ]
+      }
+      DEF hanim_l_humeral_lateral_epicn Site {     # CAESAR Feature Point #46
+       name         "l_humeral_lateral_epicn "
+       translation    0.2280 1.1482 -0.1100
+       children [
+       ]
+      }
+      DEF hanim_l_humeral_medial_epicn Site {     # CAESAR Feature Point #47
+       name         "l_humeral_medial_epicn"
+       translation    0.1735 1.1272 -0.1113
+       children [
+       ]
+      }
+      DEF hanim_l_radiale Site {     # CAESAR Feature Point #48
+       name         "l_radiale"
+       translation    0.2182 1.1212 -0.1167
+       children [
+       ]
+      }
+      DEF hanim_l_metacarpal_pha2 Site {     # CAESAR Feature Point #49
+       name         "l_metacarpal_pha2"
+       translation    0.2009 0.8139 -0.0237
+       children [
+       ]
+      }
+      DEF hanim_l_dactylion Site {     # CAESAR Feature Point #50
+       name         "l_dactylion"
+       translation    0.2056 0.6743 -0.0482
+       children [
+       ]
+      }
+      DEF hanim_l_ulnar_styloid Site {     # CAESAR Feature Point #51
+       name         "l_ulnar_styloid"
+       translation    0.2142 0.8529 -0.0648
+       children [
+       ]
+      }
+      DEF hanim_l_metacarpal_pha5 Site {     # CAESAR Feature Point #52
+       name         "l_metacarpal_pha5"
+       translation    0.1929 0.7860 -0.1122
+       children [
+       ]
+      }
+      DEF hanim_r_knee_crease Site {     # CAESAR Feature Point #53
+       name           "r_knee_crease"
+       translation    -0.0825 0.4932 -0.0326
+       children [
+       ]
+      }
+      DEF hanim_r_femoral_lateral_epicn Site {     # CAESAR Feature Point #54
+       name           "r_femoral_lateral_epicn"
+       translation    -0.1421 0.4992 0.0310
+       children [
+       ]
+      } 
+      DEF hanim_r_femoral_medial_epicn Site {     # CAESAR Feature Point #55
+       name           "r_femoral_lateral_epicn"
+       translation    -0.0221 0.5014 0.0289
+       children [
+       ]
+      }
+      DEF hanim_r_metatarsal_pha5 Site {     # CAESAR Feature Point #56
+       name           "r_metatarsal_pha5"
+       translation    -0.1523 0.0166 0.0895
+       children [
+       ]
+      }
+      DEF hanim_r_lateral_malleolus Site {     # CAESAR Feature Point #57
+       name           "r_lateral_malleolus"
+       translation    -0.1006 0.0658 -0.1075
+       children [
+       ]
+      }
+      DEF hanim_r_medial_malleolus Site {     # CAESAR Feature Point #58
+       name           "r_medial_malleolus"
+       translation    -0.0591 0.0760 -0.0928
+       children [
+       ]
+      }
+      DEF hanim_r_sphyrion Site {     # CAESAR Feature Point #59
+       name           "r_sphyrion"
+       translation    -0.0603 0.0610 -0.1002
+       children [
+       ]
+      }
+      DEF hanim_r_metatarsal_pha1 Site {     # CAESAR Feature Point #60
+       name           "r_metatarsal_pha1"
+       translation    -0.0521 0.0260 0.0127
+       children [
+       ]
+      }
+      DEF hanim_r_calcaneous_post Site {     # CAESAR Feature Point #61
+       name           "r_calcaneous_post"
+       translation    -0.0692 0.0297 -0.1221
+       children [
+       ]
+      }
+      DEF hanim_r_digit2 Site {     # CAESAR Feature Point #62
+       name           "r_digit2"
+       translation    -0.0883 0.0134 0.1383
+       children [
+       ]
+      }
+      DEF hanim_l_knee_crease Site {     # CAESAR Feature Point #63
+       name           "l_knee_crease"
+       translation    0.0993 0.4881 -0.0309
+       children [
+       ]
+      }
+      DEF hanim_l_femoral_lateral_epicn Site {     # CAESAR Feature Point #64
+       name           "l_femoral_lateral_epicn"
+       translation    0.1598 0.4967 0.0297
+       children [
+       ]
+      }
+      DEF hanim_l_femoral_medial_epicn Site {     # CAESAR Feature Point #65
+       name           "l_femoral_lateral_epicn"
+       translation    0.0398 0.4946 0.0303
+       children [
+       ]
+      }
+      DEF hanim_l_metatarsal_pha5 Site {     # CAESAR Feature Point #66
+       name           "l_metatarsal_pha5"
+       translation    0.1825 0.0070 0.0928
+       children [
+       ]
+      }
+      DEF hanim_l_lateral_malleolus Site {     # CAESAR Feature Point #67
+       name           "l_lateral_malleolus"
+       translation    0.1308 0.0597 -0.1032
+       children [
+       ]
+      }
+      DEF hanim_l_medial_malleolus Site {     # CAESAR Feature Point #68
+       name           "l_medial_malleolus"
+       translation    0.0890 0.0716 -0.0881
+       children [
+       ]
+      }
+      DEF hanim_l_sphyrion Site {     # CAESAR Feature Point #69
+       name           "l_sphyrion"
+       translation    0.0890 0.0575 -0.0943
+       children [
+       ]
+      }
+      DEF hanim_l_metatarsal_pha1 Site {     # CAESAR Feature Point #70
+       name           "l_metatarsal_pha1"
+       translation    0.0816 0.0232 0.0106
+       children [
+       ]
+      }
+      DEF hanim_l_calcaneous_post Site {     # CAESAR Feature Point #71
+       name           "l_calcaneous_post"
+       translation    0.0974 0.0259 -0.1171
+       children [
+       ]
+      }
+      DEF hanim_l_digit2 Site {     # CAESAR Feature Point #72
+       name           "l_digit2"
+       translation    0.1195 0.0079 0.1433
+       children [
+       ]
+      }
+      DEF hanim_crotch Site {     # CAESAR Feature Point #73
+       name           "crotch"
+       translation    0.0034 0.8266 0.0257
+       children [
+       ]
+      }
+      DEF hanim_r_neck_base Site {     # HANIM addition to CAESAR Feature Point #74
+       name           "r_neck_base"
+       translation    -0.0419 1.5149 -0.0220
+       children [
+       ]
+      }
+      DEF hanim_l_neck_base Site {     # HANIM addition to CAESAR Feature Point #75
+       name           "l_neck_base"
+       translation    0.0646 1.5141 -0.0380
+       children [
+       ]
+      }
+      DEF hanim_navel Site {     # HANIM addition to CAESAR Feature Point #76
+       name           "navel"
+       translation    0.0069 1.0966 0.1017
+       children [
+       ]
+      }
+     ]
+    }     # end hanim_sacrum Segment
+   ]
+  }     # end hanim_HumanoidRoot Joint
+ ]
+ joints [
+  USE hanim_HumanoidRoot
+ ]
+ segments [
+  USE hanim_sacrum
+ ]
+ sites [
+  USE hanim_skull_tip,  
+  USE hanim_sellion, USE hanim_r_infraorbitale, 
+  USE hanim_l_infraorbitale, USE hanim_supramenton, 
+  USE hanim_r_tragion, USE hanim_r_gonion, USE hanim_l_tragion, 
+  USE hanim_l_gonion, USE hanim_nuchale, USE hanim_r_clavicale, 
+  USE hanim_suprasternale, USE hanim_l_clavicale, 
+  USE hanim_r_thelion, USE hanim_l_thelion,
+  USE hanim_substernale, USE hanim_r_rib10, USE hanim_r_asis, 
+  USE hanim_l_rib10, USE hanim_l_asis, USE hanim_r_iliocristale, 
+  USE hanim_r_trochanterion, USE hanim_l_iliocristale, 
+  USE hanim_l_trochanterion, USE hanim_cervicale, 
+  USE hanim_rib10_midspine, USE hanim_r_psis, USE hanim_l_psis, 
+  USE hanim_waist_preferred_post, USE hanim_r_acromion, 
+  USE hanim_r_axilla_ant, USE hanim_r_radial_styloid, 
+  USE hanim_r_axilla_post, USE hanim_r_olecranon, 
+  USE hanim_r_humeral_lateral_epicn, USE hanim_r_humeral_medial_epicn, 
+  USE hanim_r_radiale, USE hanim_r_metacarpal_pha2, 
+  USE hanim_r_dactylion, USE hanim_r_ulnar_styloid, 
+  USE hanim_r_metacarpal_pha5, USE hanim_l_acromion,
+  USE hanim_l_axilla_ant, USE hanim_l_radial_styloid,
+  USE hanim_l_axilla_post, USE hanim_l_olecranon, 
+  USE hanim_l_humeral_lateral_epicn, USE hanim_l_humeral_medial_epicn, 
+  USE hanim_l_radiale, USE hanim_l_metacarpal_pha2, 
+  USE hanim_l_dactylion, USE hanim_l_ulnar_styloid, 
+  USE hanim_l_metacarpal_pha5, USE hanim_r_knee_crease, 
+  USE hanim_r_femoral_lateral_epicn, USE hanim_r_femoral_medial_epicn, 
+  USE hanim_r_metatarsal_pha5, USE hanim_r_lateral_malleolus, 
+  USE hanim_r_medial_malleolus, USE hanim_r_sphyrion, 
+  USE hanim_r_metatarsal_pha1, USE hanim_r_calcaneous_post, 
+  USE hanim_r_digit2, USE hanim_l_knee_crease, 
+  USE hanim_l_femoral_lateral_epicn, USE hanim_l_femoral_medial_epicn, 
+  USE hanim_l_metatarsal_pha5, USE hanim_l_lateral_malleolus, 
+  USE hanim_l_medial_malleolus, USE hanim_l_sphyrion, 
+  USE hanim_l_metatarsal_pha1, USE hanim_l_calcaneous_post, 
+  USE hanim_l_digit2, USE hanim_crotch, USE hanim_r_neck_base,
+  USE hanim_l_neck_base, USE hanim_navel
+ ]
+ version "200x"
+ name "humanoid"
+ info [
+  "authorName=Matthew T. Beitler"
+  "authorEmail=beitler@cis.upenn.edu or beitler@acm.org"
+  "creationDate=05/12/99"
+  "copyright=Copyright 1999-2003, Matthew T. Beitler"
+  "humanoidVersion=JointCenters 200x, LOA0"
+  "usageRestrictions=
+    PERMISSION TO FULLY USE THIS SCENE GRAPH IS GRANTED, PROVIDED
+    THIS COPYRIGHT INFORMATION AND DOCUMENTATION OF THE ORIGINAL
+    AUTHOR IS INCLUDED.  This humanoid scene graph is provided
+    'as-is' and without warranty of any kind, express, implied
+    or otherwise, including without limitation, any warranty of
+    merchantability or fitness for a particular purpose."
+  "modificationDate=08/12/03"
+ ]
+}
+
+DEF JointCenters_WorldInfo Group
+{
+ children [
+  WorldInfo
+  {
+   title "HANIM 200x Default Joint Centers, LOA0"
+   info [ "
+     HANIM 200x Default Joint Centers, Level-Of-Articulation 0
+     ---------------------------------------------------------
+     HANIM 200x (VRML97) Author name:
+       eMpTy (a.k.a. Matthew T. Beitler)
+     HANIM 200x (VRML97) Author email:
+       beitler@cis.upenn.edu or beitler@acm.org
+     HANIM 200x (VRML97) Author homepage:
+       http://www.cis.upenn.edu/~beitler
+     HANIM 200x (VRML97) Compliance Date:
+       August 12, 2003
+     HANIM 200x Compliance Information:
+       http://H-Anim.org/Specifications/H-Anim200x
+     Construction Info (joint centers):
+      The joint centers of this figure are based on the 
+      work of Norman Badler, director of the Center for
+      Human Modeling and Simulation at the University of
+      Pennsylvania.  The original document which these
+      joint centers are based on can be found at:
+        http://www.cis.upenn.edu/~badler/anthro/89-71.ps
+   "]
+  }
+ ]
+}
+
+
+NavigationInfo
+{
+ headlight TRUE
+ speed 1.5
+ type ["EXAMINE", "ANY"]
+}
+

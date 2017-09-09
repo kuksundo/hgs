@@ -1,0 +1,67 @@
+<Grid>
+   <Cfg id="Parts" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1"/>
+   <Cfg DefaultDate="1/1/2010"/>
+   <Actions OnDblClickGantt="SetGanttPercent OR NewGanttMilestone"/>
+   <LeftCols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="START" Type="Date" Format="dddddd"/>
+      <C Name="END" Type="Date" Format="dddddd"/>
+      <C Name="DUR" Type="Float" CanEmpty="1"/>
+      <C Name="COMP" Type="Float"/>
+      <C Name="PARTS" Type="Date" Range="1" Width="100" Format="dddddd"/>
+      <C Name="TIP" Type="Text" Width="200"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt"
+         GanttDataUnits="d" GanttUnits="d" GanttLastUnit="d" GanttWidth="16"
+         GanttStart="START" GanttEnd="END" GanttDuration="DUR" GanttComplete="COMP" GanttParts="PARTS" GanttText="TIP"
+         GanttLeft="1" GanttRight="1"
+         GanttHeader1="d#%d"
+         GanttMainTip="*id*. *TIP*&lt;br>*Start* - *End* (*Duration* days)" GanttMilestoneTip="*id*. *TIP* at *Start*"
+         GanttTask="Main"
+         GanttCount="3"
+         />
+   </Cols>
+   <Header SortIcons="2"/>
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1" PARTS="1/1/2010~1/8/2010" TIP="Continuous task set by Parts" />
+         <I id="2" PARTS="1/3/2010~1/6/2010;1/9/2010~1/12/2010;1/14/2010~1/18/2010" TIP="Discrete task" />
+         <I id="3" PARTS="1/3/2010~1/6/2010;1/9/2010~1/12/2010;1/14/2010~1/18/2010" TIP="Task with text" GANTTGanttHtml="*Index*. part" />
+         <I id="4" PARTS="1/3/2010~1/6/2010;1/9/2010~1/12/2010;1/15/2010~1/18/2010" TIP="Task with side text" 
+            GANTTGanttHtml="*Index*" GANTTGanttHtmlLeft="*Start*" GANTTGanttHtmlLeftEdge="1" GANTTGanttHtmlRight="end"
+            />
+
+         <I id="5" PARTS="1/5/2010~1/6/2010;1/10/2010~1/15/2010;1/17/2010~1/20/2010" COMP="50" TIP="Incomplete discrete task" />
+         <I id="6" PARTS="1/8/2010~1/9/2010;1/11/2010~1/14/2010;1/16/2010~1/17/2010;1/19/2010~1/20/2010"
+            GANTTGanttClass="Red" COMP="70" TIP="Task with custom class" />
+         <I id="7" PARTS="1/2/2010~1/5/2010;1/8/2010~1/10/2010;1/13/2010~1/14/2010;1/17/2010~1/19/2010"
+            COMP="50" TIP="Task with inner icons" GANTTGanttIcons="6" />
+         <I id="8" PARTS="1/2/2010~1/5/2010;1/8/2010~1/13/2010;1/16/2010~1/19/2010"
+            COMP="50" TIP="Task with all icons and group class" GANTTGanttIcons="5" GANTTGanttClass="Group" GANTTGanttHtml="*Index*. - *Duration* days" />
+         <I id="9" PARTS="1/2/2010~1/4/2010;1/9/2010~1/12/2010;1/17/2010~1/19/2010" TIP="Custom icons on all sides"
+            GANTTGanttIcons="7" GANTTGanttIconLeft="Green.gif" GANTTGanttIconRight="Yellow.gif" GANTTGanttIconLeftShift="-20" GANTTGanttIconRightShift="5"
+            />
+         <I id="10" PARTS="1/2/2010~1/5/2010;1/8/2010~1/10/2010;1/13/2010~1/14/2010;1/17/2010~1/19/2010" GANTTGanttDisabled="1"
+                     COMP="50" TIP="Disabled main bar" GANTTGanttIcons="5" />
+         <I id="11" PARTS="~1/18/2010" TIP="Milestone set by Parts end" />
+         <I id="12" PARTS="1/18/2010~" TIP="Milestone set by Parts start" />
+         <I id="13" PARTS="1/18/2010" TIP="One day task" />
+         <I id="14" PARTS="1/3/2010~1/5/2010;1/7/2010;~1/9/2010;1/11/2010~1/14/2010;1/16/2010~;1/19/2010~1/20/2010"
+            COMP="70" TIP="Discrete task with more milestones" GANTTGanttIcons="5" />
+         <I id="15" PARTS="1/3/2010~1/5/2010;1/7/2010;~1/9/2010;1/11/2010~1/14/2010;1/16/2010~;1/19/2010~1/20/2010"
+            COMP="70" TIP="Task with different height and position" 
+            GANTTGanttTop="15" GANTTGanttHeight="5" GANTTGanttClass="Olive" />
+         <I id="16" PARTS="1/3/2010~1/5/2010;1/7/2010;~1/9/2010;1/11/2010~1/14/2010;1/16/2010~;1/19/2010~1/20/2010"
+           COMP="70" TIP="Task with different height and position" GANTTGanttHtml="*Index*."
+           GANTTGanttTop="5" GANTTGanttHeight="20" GANTTGanttClass="Orange" GANTTGanttIcons="5" GANTTGanttMilestoneClass="RedGif"/>
+         <I id="17" PARTS="1/1/2010~1/3/2010;1/4/2010;1/7/2010~1/9/2010;~1/9/2010;1/12/2010~1/13/2010;1/15/2010~;1/15/2010~;1/15/2010~;1/17/2010~1/18/2010;1/19/2010~1/20/2010"
+            PARTSButton="" GANTTGanttJoin="0" COMP="20" TIP="Adjacent bars without joining" />
+         <I id="18" PARTS="1/1/2010~1/5/2010;1/4/2010;1/7/2010~1/12/2010;~1/9/2010;1/12/2010~1/13/2010;1/15/2010~;1/15/2010~;1/17/2010~1/18/2010;1/18/2010~1/20/2010"
+            PARTSButton="" GANTTGanttJoin="-1" COMP="20" TIP="Overlaid bars" />
+         <I id="19" PARTS="1/3/2010~1/6/2010;1/9/2010~1/12/2010;1/14/2010~1/18/2010" GANTTGanttClass="Html" TIP="Task with custom HTML content" Height="36" />
+      </B>
+   </Body>
+   <Header id="id" COMP="%"/>
+</Grid>

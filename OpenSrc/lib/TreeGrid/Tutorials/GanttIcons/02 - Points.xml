@@ -1,0 +1,76 @@
+<Grid>
+   <Cfg id="Points" NoVScroll="1" IdChars="0123456789" NumberId="1"/>
+   <Cfg DefaultDate="1/1/2010"/>
+   <LeftCols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="A" Type="Date"/>
+      <C Name="B" Type="Date"/>
+      <C Name="C" Type="Date"/>
+      <C Name="D" Type="Date"/>
+      <C Name="SRC" Type="Text" CanEdit="0" Width="70"/>
+      <C Name="INFO" Type="Text"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt" 
+         GanttDataUnits="d" GanttUnits="d" GanttWidth="16"
+         GanttLeft="1" GanttRight="1"
+         GanttHeader1="d#%d"
+         GanttPoints="A,B,C,D"
+         GanttPointsTip="*id*. *Start* [*Index*-*Col*]"
+         />
+   </Cols>
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            INFO="Points defined in source columns"
+            />
+         <I id="2"
+            A="1/1/2010" C="1/8/2010"
+            INFO="B and D points missing"
+            />
+         <I id="3"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            GANTTGanttPointsEdit="1,0,1,0" BCanEdit="0" DCanEdit="0"
+            INFO="Only A and C editable"
+            />
+         <I id="4"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            GANTTGanttPointsEdit="2,2,2,1" AResultMask=".+" BResultMask=".+" CResultMask=".+"
+            INFO="Not deletable except D"
+            />
+         <I id="5"
+            A="1/5/2010" B="1/5/2010" C="1/5/2010" D="1/5/2010"
+            INFO="More points on the same date"
+            />
+         <I id="6"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            GANTTGanttPointsIcons="7;4;6;8"
+            INFO="Different icons"
+            />
+         <I id="7"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            GANTTGanttPointsIcons="Red.gif;5;Yellow.gif;Green.gif"
+            INFO="Custom icons"
+            />
+         <I id="8"
+            A="1/1/2010" B="1/5/2010" C="1/8/2010" D="1/10/2010"
+            GANTTGanttPoints="SRC" SRC="A;B;C" SRCRange="1" SRCButton="Defaults" SRCDefaults="|A|B|C|D"
+            INFO="Points defined by editable column list"
+            />
+         <I id="9"
+            GANTTGanttPoints="A"
+            A="1/1/2010;1/3/2010;1/5/2010;1/5/2010;1/7/2010;1/8/2010;1/10/2010"
+            Spanned="1" ASpan="5" ARange="1" AButton=""
+            INFO="Points defined by editable list"
+            />
+         <I id="10"
+            GANTTGanttPoints="1/1/2010;1/3/2010;1/5/2010;1/5/2010;1/7/2010;1/8/2010;1/10/2010"
+            ACanEdit="0" BCanEdit="0" CCanEdit="0" DCanEdit="0" GANTTGanttEdit=""
+            INFO="Points defined by direct not editable list"
+            />
+      </B>
+   </Body>
+   <Header id="id"/>
+</Grid>

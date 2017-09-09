@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+	<head>
+		<script src="../../../Grid/GridE.js"> </script>
+		<link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+	   <h2>Server side paging with DLL on SQL database</h2>
+      <p><font size="2">
+         This example demonstrates using <b>TreeGrid server side DLL/SO</b> library
+            for server side <b>paging</b>, <b>calculations</b>, <b>grouping</b>, <b>sorting</b>, <b>filtering</b>, <b>Excel export</b> and <b>updates</b>.<br>
+         It uses generic ASP.NET <b>OleDbDataReader</b> and <b>OleDbCommand</b> classes for SQL database access.<br>
+         Layout is in <b>DBDef.xml</b>, data in MS Access database, in file <b>Database.mdb</b>, in table <b>TableData</b>. 
+         Server side script serving data is in <b>DBSqlCommand.aspx</b>.<br>
+         This example loads all data from database and fills them to TreeGrid DLL and uses it for generating data, pages and export for client.
+         Uploaded changes are sent to both database and TreeGrid DLL.<br>
+         <br>
+         In table there are fictive developers allocated for specified projects in given week and for given time.<br>
+         The example demonstrates especially SQL database access with using TreeGrid DLL and it does not contain any specific settings or features.<br>
+         You can edit cells, sort, group or filter table, export data, add or delete data rows.<br>
+         </font>
+      </p>
+	   <div style="WIDTH:100%;HEIGHT:500px;">
+			<bdo Debug="1" 
+			   Layout_Url="DBDef.xml" 
+			
+            Data_Url="DBSqlCommand.aspx"
+            Data_Method='Form'
+            Data_Format='Internal'
+            Data_Param_Function='LoadBody'
+            Data_Param_Def='DBDef.xml'
+            Data_Param_Table='TableData'
+            Data_Data='Data'
+
+            Page_Url='DBSqlCommand.aspx' 
+            Page_Format='Internal'
+            Page_Method='Form'
+            Page_Param_Function='LoadPage'
+            Page_Param_Def='DBDef.xml'
+            Page_Param_Table='TableData'
+            Page_Data='Data'
+           
+            Upload_Url='DBSqlCommand.aspx' 
+            Upload_Format='Internal'
+            Upload_Method='Form'
+            Upload_Param_Function='Save'
+            Upload_Param_Def='DBDef.xml'
+            Upload_Param_Table='TableData'
+            Upload_Data='Data'
+
+            Export_Url='DBSqlCommand.aspx' 
+            Export_Format='Internal'
+            Export_Method='Form'
+            Export_Param_Function='Export'
+            Export_Param_Def='DBDef.xml'
+            Export_Param_Table='TableData'
+            Export_Data='Data'
+            Export_Type='1'
+			
+			></bdo>
+		</div>
+	</body>
+</html>

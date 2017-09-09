@@ -1,0 +1,32 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>The first example from TreeGrid homepage</h2>
+      This examples demonstrates the most of TreeGrid features:<br />
+      Tree, sorting, grouping, filtering, searching, calculations, resizing and moving columns, row dragging, row manipulations, selecting rows,
+      fixed rows and columns, many cell types, popup default list, calendar, formatting values and many more.
+      <br>
+      <br>
+      <div style="WIDTH:100%;HEIGHT:90%;">
+         <bdo Layout_Url="FirstDef.xml" Data_Url="FirstData.xml" Layout_Bonus="<Grid><Cfg MaxHeight='1' ResizingMain='2'/></Grid>"></bdo>
+      </div>
+      <script>
+// -----------------------------------------------------------------------------------------
+// Custom event for searching
+// Searches in orders with specified items
+Grids.OnRowSearch = function(G,row,col,found,F,type){
+if(type || G.SearchDefs!="") return found; // Only for "in orders with items" and default call
+if(row.Def.Name=="Data") return -1;        // Only for orders
+for(var r=row.firstChild;r;r=r.nextSibling) { 
+	var found = F(r,col,1);                 // calls F(r,col,type=1)
+	if(!(found<=0)) return found; 
+	}
+return 0;
+}
+// -----------------------------------------------------------------------------------------
+      </script>
+   </body>
+</html>

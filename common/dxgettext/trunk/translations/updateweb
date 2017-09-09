@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# This scripts uploads statistics about translations to the website.
+# If you want to see the website source code, have a look here:
+# http://dybdahl.dk/dxgettext/translations/index.phps
+# http://dybdahl.dk/dxgettext/translations/language.phps
+# http://dybdahl.dk/dxgettext/translations/module.phps
+# http://dybdahl.dk/dxgettext/translations/translationbasics.php
+# http://dybdahl.dk/dxgettext/translations/translationdata.phps
+
+# cvs -q -z9 update -d -P
+./createphpstats >translationdata.php
+scp translationdata.php dybdahl@igang.dk:/usr/www/users/dybdahl/dxgettext/translations/translationdata.php
+rm translationdata.php
+

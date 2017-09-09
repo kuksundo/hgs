@@ -1,0 +1,92 @@
+<Grid>
+   <Cfg id="Dependencies" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1" Sorting="0"/>
+   <Cfg DefaultDate="1/1/2010"/>
+   <LeftCols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="START" Type="Date" Format="dddddd" EditFormat="%d"/>
+      <C Name="END" Type="Date" Format="dddddd" EditFormat="%d"/>
+      <C Name="PARTS1" Type="Date" Range="1" Format="dddddd" EditFormat="%d" Width="90"/>
+      <C Name="RUN" Width="40"/>
+      <C Name="ANC" Type="Html" Range="1" Width="180" CanEdit="1"/>
+      <C Name="DES" Type="Html" Range="1" Width="180" CanEdit="1"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt" GanttStrict="0"
+         GanttDataUnits="d" GanttUnits="d" GanttLastUnit="d" GanttWidth="16"
+         GanttCount="2"
+         GanttAncestors="ANC" GanttDescendants="DES"
+         GanttStart="START" GanttEnd="END" GanttParts1="PARTS1" GanttHtml1="2. main" GanttIcons1="5"
+         GanttRun="RUN" GanttRunAdjust="Error" GanttRunErrorsShift="18" GanttRunHtml="*5*"
+         GanttLeft="2" GanttRight="2"
+         GanttHeader1="d#%d"
+         GanttTask="All,Box"
+         GanttMarkIncorrectDependencies="2"
+         GanttMarkDisabledDependencies="2"
+         GanttCorrectDependencies="0"
+         GanttDragDependenciesBetween="2"
+         GanttAssignDependencies="1"
+         GanttDependencyColor="0"
+         GanttBottom="4"
+         />
+   </Cols>
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1" START="1/1/2010" END="1/4/2010"/>
+         <I id="2" START="1/5/2010" END="1/8/2010" ANC="1"/>
+         <I id="3" END="1/8/2010" ANC="2"/>
+         <I id="4" START="1/1/2010" END="1/5/2010"/>
+         <I id="5" START="1/1/2010" END="1/12/2010" ANC="4ss" DES="6ff+2" GANTTGanttTop="5" GANTTGanttHeight="20"/>
+         <I id="6" START="1/10/2010" END="1/14/2010" GANTTGanttDisabled="1"/>
+         <I id="7" START="1/2/2010" END="1/8/2010" ANC="6sf;4+1"/>
+         <I id="8" START="1/13/2010" ANC="5ff-2"/>
+         <I id="9" START="1/2/2010" END="1/5/2010" PARTS1="1/10/2010~1/13/2010" DES="0,1@9" ANC="0,1@7;Run2,1@10"/>
+         <I id="10" RUN="[{Start:'1/1/2010',Duration:2,Id:'Run1'},{Start:'1/5/2010',Duration:2,Id:'Run2'},{Start:'1/5/2010',Duration:2,Id:'Run3'}]" ANC="Run1,Run2@10+1#25;Run3,Run1@10"/>
+         <I id="11" PARTS1="1/2/2010~1/4/2010;1/6/2010~1/8/2010;1/11/2010~1/14/2010"
+            RUN="[{Start:'1/1/2010',Duration:3,Type:'Fixed',Id:'Run4'},{Start:'1/11/2010',Duration:2,Id:'Run5'}]" GANTTGanttRunTop="15" DES="1,Run4@11ss#12;Run5,1@11ff#37" ANC="Run2,Run5@10"
+            />"</B>
+   </Body>
+   <Header id="id" START="Start" END="End" PARTS1="Parts - 2. main" RUN="Run" ANC="Ancestors" DES="Descendants"/>
+   <Solid>
+      <Topbar1 Cells="Show,Arrows,Assign,Incorrect,Disabled"
+         ShowType="Bool" ShowLabelRight="Show dependencies" Show="1" ShowOnChange = "Grid.SetGanttShowDependencies(Value,1);"
+         ArrowsType="Enum" ArrowsEnum="|none|arrows|stubs|arrows and stubs" Arrows="3" ArrowsLeft="10" ArrowsLabel="Dependency icons" ArrowsWidth="105"
+         ArrowsOnChange="Grid.Cols.GANTT.GanttDependencyIcons=Value;Grid.RefreshGanttDependencies(2);"
+         ArrowsTip="Which dependency icons will be shown"
+         IncorrectType="Enum" IncorrectEnum="|blue|green|orange|black|fuchsia|aqua|lime|yellow|silver|red|thin inset|thin outset|thick inset|thick outset"
+         IncorrectLabel="Mark incorrect dependencies in" Incorrect="9" IncorrectLeft="10" IncorrectWidth="75"
+         IncorrectOnChange="Grid.Cols.GANTT.GanttColorIncorrectDependencies=Value;Grid.RefreshGanttDependencies(2);"
+         IncorrectTip="Color or shape set to incorrect dependencies"
+         DisabledType="Enum" DisabledEnum="|blue|green|orange|black|fuchsia|aqua|lime|yellow|silver|red|thin inset|thin outset|thick inset|thick outset"
+         DisabledLabel="Mark disabled dependencies in" Disabled="8" DisabledLeft="10" DisabledWidth="75"
+         DisabledOnChange="Grid.Cols.GANTT.GanttColorDisabledDependencies=Value;Grid.RefreshGanttDependencies(2);"
+         DisabledTip="Color or shape set to disabled dependencies"
+         />
+      <Topbar2 Cells="Shape,Clr,Assign"
+         ShapeType="Enum" ShapeEnum="|thin inset|thin outset|thick inset|thick outset" ShapeWidth="80" Shape="0" ShapeLabel="Default dependency shape"
+         ShapeOnChange="Grid.Cols.GANTT.GanttDependencyColor = Grid.Cols.GANTT.GanttDependencyColor%10 + Value*10; Grid.Cols.GANTT.GanttBottom=[4,6,6,8][Value];Grid.RefreshGantt(255);"
+         ClrType="Enum" ClrEnum="|blue|green|orange|black|fuchsia|aqua|lime|yellow|silver|red" ClrWidth="55" Clr="0" ClrLabel="Default dependency color"
+         ClrOnChange="Grid.Cols.GANTT.GanttDependencyColor = Math.floor(Grid.Cols.GANTT.GanttDependencyColor/10)*10 + Value; Grid.RefreshGantt(255);" ClrLeft="10"
+         AssignType="Bool" Assign="1" AssignLeft="10"
+         AssignOnChange="Grid.Cols.GANTT.GanttAssignDependencies=Value?3:0; Grid.RefreshGantt(255);" AssignLabelRight="Different dependency colors"
+         AssignTip="Assigns different color to dependencies to the same box edge."
+         />
+      <Toolbar1 Cells="Drag,Always,Type,Between,More"
+         DragType="Bool" Drag="1" DragLabelRight="&lt;b>Drag dependencies&lt;/b>" DragTip="If creating new dependencies by dragging is permitted"
+         DragOnChange="Grid.Cols.GANTT.GanttEdit=Get(Row,'Drag')?(Get(Row,'Type')?'Main,Main1,Run,Dependency':'All'):'Main,Main1,Run';"
+         AlwaysType="Bool" AlwaysLabelRight="Always" AlwaysTip="If set, permits dragging dependency outside box to attach it to the nearest box" AlwaysLeft="10"
+         AlwaysOnChange="Grid.Cols.GANTT.GanttDragDependenciesAlways=Value;"
+         TypeType="Bool" TypeLabelRight="Only FS type" TypeTip="If set, it is not possible to choose dependency type, all dependencies will have FS (finish to start) type" TypeLeft="10"
+         TypeOnChange="Grid.Cols.GANTT.GanttEdit=Get(Row,'Drag')?(Get(Row,'Type')?'Main,Main1,Run,Dependency':'All'):'Main,Main1,Run';"
+         BetweenEnum="|Between only the same main bar plan|Between main bar plans|Between main and run bars" BetweenLeft="10"
+         BetweenType="Enum" BetweenWidth="210" Between="2" BetweenOnChange="Grid.Cols.GANTT.GanttDragDependenciesBetween=Value;"
+         MoreEnum="|Only one dependency between two bars|Only one dependency between two bars or ss + ff|More dependencies with different type between two bars|More dependencies with the same type between two bars"
+         MoreType="Enum" MoreWidth="300" More="0" MoreOnChange="Grid.Cols.GANTT.GanttDragDependenciesMore=Value;" MoreLeft="10"
+         />
+   </Solid>
+   <Toolbar Kind="Toolbar2" Styles="2"
+      Cells="Correct,Save,Reload,Print,Undo,Redo,Add,AddChild,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo,Circular,Empty,Formula,Resize"
+      CircularType="Enum" CircularEnum="|Permit circular dependencies|Restrict circular dependencies|Ask if can create circular dependency|Alert if create circular dependency"
+      CircularOnChange="Grid.Cols.GANTT.GanttCheckDependencies=Value;" CircularFormula="Grid.Cols.GANTT.GanttCheckDependencies" CircularCanEdit="1" CircularWidth="205"
+      />
+</Grid>

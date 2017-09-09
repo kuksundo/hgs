@@ -1,0 +1,94 @@
+<Grid>
+   <Cfg id="Resources" SuppressCfg="1"/> <!-- Base settings, suppresses saving configuration to cookies -->
+   <Cfg GanttResourcesMaster="Gantt"/> <!-- The id of the source grid is 'Gantt' -->
+   <Cfg GanttResourcesName="N"/> <!-- The resource Name is shown in column 'N' -->
+   <Cfg GanttResourcesPrice="U"/> <!-- The resource Price is shown in column 'U' -->
+   <Cfg GanttResourcesAvailability="A"/> <!-- The resource Availability is shown in column 'A' -->
+   <Cfg GanttResourcesType="T"/> <!-- The resource Type is shown in column 'U' -->
+   <Cfg IdNames="N" AppendId="1"/> <!-- Controls creating name of newly added resources -->
+   <Cfg NumberId="1" IdChars="0123456789"/> <!-- Controls generating of indexes appended to the new resource names -->
+   <Cfg Undo="1"/> <!-- Permits undo / redo changes by Ctrl+Z / Ctrl + Y -->
+   <Cfg Style="Standard"/> <!-- Presets Standard CSS style -->
+   <Cfg Dragging="0" Copying="0"/> <!-- These actions are not required in the plain resources chart -->
+   <Actions OnClickButtonAdd="AddRowEnd"/> <!-- Always adds new resources to the end of grid -->
+   <Def>
+      <D Name="R" N="Resource"/> <!-- Default name for newly added resources -->
+      <D Name="R" CalcOrder="P,S,C" Height="60"/> <!-- Order of calculating columns, because their formulas depend on each other -->
+   </Def>
+   <LeftCols>
+      <C Name="N" Width="70" Type="Text"/> <!-- Resource name column -->
+      <C Name="T" Type="Enum" Enum="|wrk|mat" EnumKeys="|1|2"/>
+      <C Name="U" Type="Float" Format="0.00" EditMask="^\d*[\d\.\,]?\d*$"/>
+      <C Name="A" Type="Text" Button="Dates"
+         DatesRepeatType="Enum" DatesRepeatEnum="||Weekly|Daily" DatesRepeatEnumKeys="||w|d"
+         DatesValueType="Enum" DatesValueEnum="|-10|-9|-8|-7|-6|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25" DatesValueCaption="Count" DatesValueWidth="50"/>
+      <C Name="P" Type="Float" Format="0.##" Formula="Row.Deleted ? '' : ganttresourcepeak(N)"/>
+      <C Name="S" Type="Float" Format="0.00" Formula="Row.Deleted ? '' : ganttresourceunits(N)"/>
+      <C Name="C" Type="Float" Format="0.00" Formula="U*S"/>
+   </LeftCols>
+   <Cols>
+      <!-- Gantt chart Resources column -->
+      <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
+      <C Name="G" GanttAvailability="N#3,N#1,N#8" GanttAvailabilityFormat="0.#"/>
+   </Cols>
+   <Toolbar Cells="Use,Avail,Free,Err,Reload,Print,Undo,Redo,Add,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo,Empty,Formula" Styles="2" CanFocus="0"
+   UseType='Bool' UseNoColor='1' UseCanEdit='1' UseLeft='5' UseCanFocus='0'
+         UseLabelRight='Used resources' Use='1'
+         UseOnChange='
+            Grid.Cols.G.GanttAvailability = (Row.Avail?",N#3":"") + (Row.Use?",N#1":"") + (Row.Use&amp;&amp;Row.Avail?",N#8":"") + (Row.Free?",N#5":"") + (Row.Err?",N#6":"");
+            if(!Row.Avail&amp;&amp;!Row.Free&amp;&amp;!Row.Err) { 
+               var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+               for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+               Grid.EndUpdate();
+               }
+            else Grid.RefreshGantt();
+            '
+         AvailType='Bool' AvailNoColor='1' AvailCanEdit='1' AvailLeft='5' AvailCanFocus='0'
+         AvailLabelRight='Available resources' Avail='1'
+         AvailOnChange='
+            Grid.Cols.G.GanttAvailability = (Row.Avail?",N#3":"") + (Row.Use?",N#1":"") + (Row.Use&amp;&amp;Row.Avail?",N#8":"") + (Row.Free?",N#5":"") + (Row.Err?",N#6":"");
+            if(!Row.Use&amp;&amp;!Row.Free&amp;&amp;!Row.Err) { 
+               var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+               for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+               Grid.EndUpdate();
+               }
+            else Grid.RefreshGantt();
+            '
+         FreeType='Bool' FreeNoColor='1' FreeCanEdit='1' FreeLeft='5' FreeCanFocus='0'
+         FreeLabelRight='Free resources' Free='0'
+         FreeOnChange='
+            Grid.Cols.G.GanttAvailability = (Row.Avail?",N#3":"") + (Row.Use?",N#1":"") + (Row.Use&amp;&amp;Row.Avail?",N#8":"") + (Row.Free?",N#5":"") + (Row.Err?",N#6":"");
+            if(!Row.Use&amp;&amp;!Row.Avail&amp;&amp;!Row.Err) { 
+               var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+               for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+               Grid.EndUpdate();
+               }
+            else Grid.RefreshGantt();
+            '
+         ErrType='Bool' ErrNoColor='1' ErrCanEdit='1' ErrCanFocus='0' ErrLeft='5'
+         ErrLabelRight='Resources errors' Err='0'
+         ErrOnChange='
+            Grid.Cols.G.GanttAvailability = (Row.Avail?",N#3":"") + (Row.Use?",N#1":"") + (Row.Use&amp;&amp;Row.Avail?",N#8":"") + (Row.Free?",N#5":"") + (Row.Err?",N#6":"");
+            if(!Row.Use&amp;&amp;!Row.Avail&amp;&amp;!Row.Free) { 
+               var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+               for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+               Grid.EndUpdate();
+               }
+            else Grid.RefreshGantt();
+            '
+
+      FormulaLabel="Total price"
+      Formula="NumberToString(Math.round((sum('C')+ganttresourcesextra())*10)/10,'0.00') + ' USD'"
+      />
+
+   <!-- Side pagers showing Gantt zoom dates -->
+   <Pagers>
+      <P Name="Year" Caption="Year" Type="Gantt" PageSize="y" ChartSize="0" Left="1" Format="yyyy" Width="35" ZoomToPage="5"/>
+      <P Name="Month" Caption="Month" Type="Gantt" PageSize="M" ChartSize="y" Left="1" Format="MMM" Width="50" ZoomToPage="5"/>
+      <P Name="Pager" Caption="Pager" Type="Gantt" Width="70" FirstZoom="halves and hours" ZoomToPage="4" ChartPrev="1" ChartNext="1"/>
+   </Pagers>
+   
+   <!-- Column captions -->
+   <Header id="ID" N="Name" T="Type" U="Unit price" A="Availability" P="Peak" S="Total units" C="Price" GNoColor="0"/>
+   <Header SortIcons="2"/> <!-- Hides unused sort icons -->   
+</Grid>

@@ -1,0 +1,180 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// -------------------------------------------------------------------------------------------------------
+Grids.OnLoaded = function(G){
+Boxes = null;      // Global property to store the actually highlighted boxes
+BoxesText = null;  // Global property to store actually searched text used to remove the highlight on second click
+}
+// -------------------------------------------------------------------------------------------------------
+// Removes previous highlight
+function Clear(G){
+if(Boxes){  
+   for(var i=0;i<Boxes.length;i++){
+      var T = G.GetGanttRunBoxTag(Boxes[i]);
+      if(T) { 
+         if(!G.FastGantt) T = T.firstChild; 
+         T.className = T.className.replace(" mark","");
+         }
+      }
+   }
+Boxes = null;
+}
+// -------------------------------------------------------------------------------------------------------
+// Highlights all boxes containing the text in Group
+function Highlight(G,text){
+Clear(G);
+if(BoxesText==text) { BoxesText = null; return; } // Removes the highlight on second click
+BoxesText = text;
+
+// --- Highlights new boxes ---
+Boxes = G.FindGanttRunBoxes({Group:text},4+8+16,"Group");
+for(var i=0;i<Boxes.length;i++){
+   var T = G.GetGanttRunBoxTag(Boxes[i]);
+   if(T) {
+      if(!G.FastGantt) T = T.firstChild; 
+      T.className += " mark";
+      }
+   }
+}      
+
+// -------------------------------------------------------------------------------------------------------
+// Deletes all boxes containing the text in Group
+function Delete(G,text){
+Clear(G);
+BoxesText = null;
+G.StartUpdate();
+var A = G.FindGanttRunBoxes({Group:text},4+8+16,"Group");
+for(var i=A.length-1;i>=0;i--) G.DelGanttRunBox(A[i]); // The loop must be reversed to not break the box indexes due deleted boxes
+G.EndUpdate();
+}  
+
+// -------------------------------------------------------------------------------------------------------
+// Changes type of all boxes containing the text in Group to type
+function Change(G,text,type){
+G.StartUpdate();
+var A = G.FindGanttRunBoxes({Group:text},4+8+16,"Group");
+for(var i=0;i<A.length;i++) { A[i].Type = type; G.SetGanttRunBox(A[i]); }
+G.EndUpdate();
+}    
+// -------------------------------------------------------------------------------------------------------
+   
+   </script>
+
+   <!--  Style for API, marks the found boxes -->
+   <style>
+      .mark { background:yellow!important; }
+   </style>
+
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttRunBar"><b>Gantt Run bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>5. Run groups and API</center>
+   <center style='font:bold italic;'>Manipulating Run box groups by actions and API</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='05 - Run groups and API.xml'>05 - <h2>Run groups and API</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='05 - Run groups and API.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         It is possible in <b>GanttRun</b> to assign to some or all boxes their identification - <b>Group</b> and <b>Id</b>. <br />
+         <ul>
+            <li>
+               The <h3>Id</h3> should be unique identification at least inside one group.<br />
+            </li>
+            <li>
+               The <h3>Group</h3> identifies more boxes and is possible to manipulate all the boxes in the same group together.
+            </li>
+         </ul>
+      </li>
+      <li>
+         The box ids can be automatically created for new or all unassigned boxes by setting <h3>GanttRunIds</h3>.<br />
+         It is also possible to choose the characters to generate the ids from by <b>GanttRunIdChars</b> and id prefix and suffix by <b>GanttRunIdPrefix</b> and <b>GanttRunIdPostfix</b>.<br />
+         Note that GanttRunIdPrefix has default value "new".<br />
+      </li>
+      <li>
+         If the boxes have set their <b>Id</b> attribute and is set also <h3>GanttRunStates</h3><b>='1'</b>, the grid fills for every changed box its state: Added, Deleted, Moved, Resized, Changed to identify the changed boxes in uploaded data.<br />
+         Also for every box change is called API event <b>OnGanttRunBoxChanged</b>.
+      </li>
+      <li>
+         <h3>GanttRunGroupHover</h3> attribute controls which boxes in the same group as the box under mouse cursor will be highlighted on mouse hover.<br />
+         0 - none, 1 - only in the same row, 2 - all boxes in grid (can be slow for large grids).
+      </li>
+      <li>
+         It is possible to select one or more run boxes. Which boxes can be selected can be set by <h3>GanttRunSelect</h3>.<br />
+
+      </li>
+      <li><h4>Actions</h4> for boxes and groups (<b>except dragging</b>, see previous tutorial <a href="04 - Run drag.html">04 - Run drag</a>)
+         <ul>
+            <li>
+               There are actions to <h4>delete</h4> the box under mouse cursor (<b>DeleteGanttRun</b>), to delete all boxes in the group in the same row (<b>DeleteGanttRunGroup</b>) 
+               and to delete all boxes in group (<b>DeleteGanttRunGroupAll</b>), to delete selected boxes (<b>DeleteGanttRunSelected</b>) .<br />
+               These actions can be attached to TreeGrid events and are accessible also from Gantt right click popup menu.
+            </li>
+            <li>
+               There are actions to <h4>change</h4> box type - to choose the type, class and other properties from list predefined in <h3>GanttRunTypes</h3> list.<br />
+               The actions are for one box (<b>ChooseGanttRunType</b>), for all boxes in group in the same row (<b>ChooseGanttRunGroupType</b>)
+               and for all boxes in group (<b>ChooseGanttRunGroupAllType</b>), for all selected box by (<b>ChooseGanttRunSelectedType</b>).<br />
+               These actions can be attached to TreeGrid events and are accessible also from Gantt right click popup menu.
+            </li>
+            <li>
+               The other actions are only for the one active box, not for groups: <b>EditGanttRun</b> to enter the box text and <b>EditGanttRunTip</b> to enter the box tip.
+            </li>
+            <li>
+               There are actions to <h4>select</h4> boxes: <b>SelectGanttRun</b> inverts selection of one box, by default on double click.<br />
+               <b>SelectGanttRunRect</b> selects all boxes in the rectangle created by dragging, by default by dragging by right mouse button.<br />
+               <b>DeselectGanttRunAll</b> deselects all boxes.<br />
+            </li>
+
+         </ul>
+      </li>
+      <li><h4>API</h4> for boxes
+         <ul>
+            <li>
+               <b>GetGanttRunBox</b> to get one box from run by its index or Id and Group. Returns fully filled run box object.
+            </li>
+            <li>
+               <b>SetGanttRunBox</b> to modify one box in run.
+            </li>
+            <li>
+               <b>AddGanttRunBox</b> to create new box and insert it to run to given position.
+            </li>
+            <li>
+               <b>DelGanttRunBox</b> to delete given box from run.
+            </li>
+            <li>
+               <b>ScrollToGanttRunBox</b> to show the box in chart.
+            </li>
+            <li>
+               <b>GetGanttRunBoxTag</b> to get DOM object of the box to modify its look, but not position or size.
+            </li>
+            <li>
+               <h3>FindGanttRunBoxes</h3> as complex searching function to get one or more boxes according to given parameters.<br />
+               It can search in one or more box attribute, by default in Id, Group, Type, Text, Class, Tip. It can search exact string or just part of it. 
+               Can search case insensitive and has many other options.
+            </li>
+            <li>
+               <b>SelectGanttRunBox</b> to select given box.
+            </li>
+            <li>
+               <b>SelectGanttRunRect</b> to select all boxes in given rectangle.
+            </li>
+            <li>
+               <b>GetGanttRunSelectedBoxes</b> to get all selected boxes in grid.
+            </li>
+         </ul>
+      </li>
+   </ul>
+</body>
+</html>

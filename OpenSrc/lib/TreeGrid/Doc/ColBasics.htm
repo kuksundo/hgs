@@ -1,0 +1,290 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Column basics</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Column basics</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid column is defined by
+tag <b>&lt;C&gt;</b>, placed in &lt;Cols&gt; or &lt;LeftCols&gt; or
+&lt;RightCols&gt; section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The column specifies <b>position</b>,
+<b>size</b>, <b>visibility</b> settings and restrictions of the grid column. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And also specifies default
+type, formatting, editability and other cell setting for all cells in the
+column. The type, formatting and other settings can be overridden for every
+particular cell by its attributes.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Columns do not contain
+cell values</span></i></b><i><span style='font-size:10.0pt'>, the cells are
+defined in rows.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Column <b>captions</b> are
+defined in <b>Header</b> row(s).</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid column can be <b>fixed
+(frozen)</b> or <b>variable (scrollable)</b>. </span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>&nbsp;</span></i></b></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Fixed (frozen) column</span></i></b><span
+style='font-size:10.0pt'> can be positioned on the left or on the right grid
+side. The fixed column cannot be scrolled outside view.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To set fixed column, place
+the <b>&lt;C&gt;</b> tag to <b>&lt;LeftCols&gt;</b> or <b>&lt;RightCols&gt;</b>
+section.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If all fixed columns
+together are too wide, wider then <a href="#MainTag">main tag</a> width,
+TreeGrid can neither scroll them nor display them, so it cannot display its
+content and displays only message “Too small extents”.  </span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Variable (scrollable)
+column</span></i></b><span style='font-size:10.0pt'> is positioned between left
+and right fixed section. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To set variable column, place
+the <b>&lt;C&gt;</b> tag to <b>&lt;Cols&gt;</b> section.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If all variable columns
+are wider then the variable section, they are horizontally scrolled.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can move the column
+between section (freeze / unfreeze) by mouse dragging if the column have set <a
+href="#CCanMove">CanMove</a>=’2’ (it is set by default).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To predefine some attributes
+for more columns define &lt;<b>D</b>&gt; tag with these attributes and place it
+to &lt;<b>DefCols</b>&gt; section. And point the specified columns to it by
+their <a href="#CDef">Def</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To predefine some attributes
+for all columns, set them to <b>&lt;D Name=’C’&gt;</b> tag. This tag is placed also
+to <b>&lt;DefCols&gt;</b> section. By default it is defined in Defaults.xml
+with default settings for all grids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if you define
+&lt;Def&gt;&lt;D Name=’C’ Type=’Int’/&gt;&lt;/Def&gt; all columns will have
+Type Int.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is one special column,
+the row’s <b>left panel</b> with buttons for deleting and selecting row. It is
+positioned as the first left fixed column and can be visible or hidden. It can
+be set by <b>&lt;Panel&gt;</b> attribute placed in root &lt;Grid&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree there is one main column
+where is displayed tree with icons for expanding and collapsing. In grid there
+can be only one main column, its name is set by &lt;Cfg <a
+href="Tree.htm#CfgMainCol">MainCol</a>&gt; attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column caption and other
+header setting are set by <b>&lt;Header&gt;</b> tag placed in root &lt;Grid&gt;
+tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column name. <b>Required</b>.
+Every column must have set this attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Name identifies column
+and row’s cells. Under this name are row’s cells in this column set and
+accessed. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All column names must be
+unique among all column names inside one grid. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Under this name grid saves
+column configuration to the cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In JavaScript API, cell is
+accessed by column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column names are used also in
+formulas.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:red'>!</span></b><b><span
+style='font-size:10.0pt'> Attention <span style='color:red'>!</span></span></b><span
+style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>Column
+names are case sensitive.</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>Column
+names can contain only letters (a-z, A-Z), underscore ‘_’ and digits (0-9), but
+cannot start with digit and should not start with underscore.</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>Column
+names must not interfere with row’s attribute names, like Def, Kind or Deleted
+!</span></i><span style='font-size:10.0pt'> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The best way is to name
+columns as letter ‘A’, ‘B’ or ‘a’, ‘b’. There is no interference and data
+length is short.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For grids with many columns
+and saved configuration to cookies the column names should be less then 4
+characters long, to shorten cookie length.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string</i>    </span><a
+name=HeaderCellvalue><b><i><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+color:maroon;background:yellow'>value</span></i></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Column captions are <u>not</u>
+set in &lt;C&gt; tag, but in <b>&lt;Header&gt;</b> row cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;Header&gt; row is
+fixed (Head or Foot) row with column captions and sorting icons. It cannot be
+editable.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It has the same row and cell
+attributes like normal grid row, but it have usually different look (according
+to style definition).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can especially use Header
+style attribute like <a href="CellStyle.htm#CAlign">Align</a>, <a
+href="CellStyle.htm#CWrap">Wrap</a> or <a href="CellStyle.htm#HeaderNoEscape">NoEscape</a>
+to format the column captions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can have <b>more Header
+rows</b> in grid. You can also span the Header cells to show merged column
+captions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;D&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string    </i></span><a
+name=CDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Def</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [“C”]                                                                                                    <span
+style='color:red'>new <b>6.0</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The name of default column <b>&lt;D&gt;</b>
+used for this column or default column. From this default the column inherits
+all its <u>not set</u> attribute values.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, opposite to
+default rows all the columns read their values from default columns <u>on start</u>!
+So the default columns are <u>not</u> accessible by API.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value for Gantt type
+column is “Gantt”, for other columns “C”.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0.</span></i><span
+style='font-size:10.0pt'> It can contain more default names, comma separated. <i>Remember
+the difference, &lt;I Def/&gt; can contain only one default.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;D&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string</i>    </span><a
+name=DNameC></a><a name=DName><b><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Name</span></b></a><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>                                    </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                       <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of default column.
+Required. This name is referenced by column attribute <a href="#CDef">Def</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The &lt;D&gt; tag as default
+column can be placed only to &lt;<b>DefCols</b>&gt; section.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Any custom name can be used
+for default row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is one predefined name
+“<b><span style='color:blue'>C</span></b>” as default column for all columns in
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

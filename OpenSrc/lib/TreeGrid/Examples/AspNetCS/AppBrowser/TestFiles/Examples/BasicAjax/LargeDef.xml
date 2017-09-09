@@ -1,0 +1,121 @@
+<Grid>
+   <!-- Cfg tag is splitted by attributes just for comments, you should merge them in your standard applications -->
+   <Cfg id="LargeFile" SuppressCfg="1"/> <!-- Grid identification for saving configuration to cookies -->
+   <Cfg Prepared='1'/> <!-- The XML data are prepared, so you can set this attribute to speed up loading -->
+   <Cfg Paging='1' PageLength='100'/> <!-- All pages rendered on start -->
+   <Cfg ShowDeleted='0'/> <!-- This example hides deleted row instead of coloring them red -->
+   <Cfg MaxHeight='1'/> <!-- Grid maximizes height of the main tag on page -->
+   <Cfg MinTagHeight='300'/> <!-- Minimal height of the main tag to not shrink it too much -->
+   <Cfg Sort='P'/> <!-- To sort grid according to partner and Month for first time (when no configuration saved) -->
+   <Cfg MaxGroupLength='0'/> <!-- Suppresses dividing rows to more groups when grouping because it is controlled by MaxChildren of all rows -->
+   <Cfg GroupSortMain='1'/> <!-- When grouping always sorts according to main column ascending -->
+   <Cfg GroupRestoreSort='1' /> <!-- Restores sorting state after grouping that was before grouping -->
+   <Cfg FilterEmpty='1'/> <!-- When filtering, hides group rows that have all children hidden, see the Group row have set CanFilter='2' -->
+   <Cfg Style='GB'/> <!-- Shows the example in 'Borders' style -->
+   <Cfg IndexEnum='1'/> <!-- All the Enum items are set by their index -->
+   <Cfg ChildParts='0'/> <!-- No background paging here -->
+   <Cfg SaveAttrs=',Paging,,ChildParts,,PageLength'/> <!-- Saves paging settings to cookies -->
+   <Actions OnUngroup='Grid.Adding=1;'/> <!-- Permits adding new rows into plain table -->
+   <Def>
+      <D Name='R' AcceptDef='' CalcOrder='g,d,p'/>
+      <!-- Base row settings 
+         AcceptDef='' means that no rows can be added or moved to children of the row
+         MaxChildren set maximum children that row can contain. If the child count exceeds this limit, there are created group of children -->
+			
+      <D Name='Group' CanFilter='2' Calculated='1' CalcOrder='o,i,e,g,d,p,r' oCanEdit='0' iCanEdit='0' eCanEdit='0'
+         oFormula='sum()' iFormula='sum()' eFormula='sum()' gFormula='sum()' dFormula='sum()' pFormula='sum()'
+         OnGroup='Grid.Adding=0;' Expanded='0'
+         RVisible='0' CVisible='0' SVisible='0' xVisible='0' sVisible='0' cVisible='0' rVisible='0'
+         />
+      <!-- Base group setting - for group row created when grouping
+         It also inherits attributes from group row defined in Defaults.xml 
+         CanFilter='2' means that this row will be hidden when it does not have any visible children when filtering, see Cfg FilterEmpty 
+         Action suppresses adding new rows when grid is grouped by another column than Partner
+         -->
+      
+      <D Name='GroupLoc' Def='Group' GroupCol='R,C,S' GroupCols='|R|C|S|R,C|R,S|C,S|R,C,S' GroupMain='P'
+         EditCols='Main' RCopyTo='Children,R' CCopyTo='Children,C' SCopyTo='Children,S'
+         />
+      <!-- Group row created when grouping by Region or Country or State 
+         GroupCols tells that this default row is used only when grid is grouped by Region, Country, State, Partner in that order
+         EditCols and .CopyTo attributes controls editing and bubbling changes to children. -->
+
+   </Def>
+   <LeftCols>
+      <C Name='P' Width='130' GroupWidth='200' Type='Text' ToolTip='1' Group='1'/>
+      <!-- Partner, main column for other groupings, width 130px, when grouped 200px -->
+   </LeftCols>
+   <Cols>
+      <C Name='R' Width='150' Type='Enum' Clear='C,S' Group='1'
+         Enum='|Central &amp; South Asia|East Asia &amp; the Pacific|East Europe|Middle East &amp; North Africa|North &amp; Central America|South America|Sub-Saharan Africa|West Europe'/>
+      <C Name='C' Width='110' Type='Enum' Related='R' Clear='S' Group='1'
+         Enum0="|ARMENIA|AZERBAIJAN|BANGLADESH|INDIA|KAZAKSTAN|PAKISTAN|SRI LANKA"
+         Enum1="|AUSTRALIA|BRUNEI|CHINA|HONG KONG|INDONESIA|JAPAN|KOREA, DPR|MALAYSIA|MONGOLIA|MYANMAR|NEW ZEALAND|PAPUA NEW GUINEA|PHILIPPINES|SINGAPORE|SOUTH KOREA|TAIWAN|THAILAND|VIETNAM"
+         Enum2="|ALBANIA|BELARUS|BULGARIA|CROATIA|CZECH REPUBLIC|ESTONIA|HUNGARY|LATVIA|LITHUANIA|MOLDOVA|POLAND|ROMANIA|RUSSIA|SERBIA-MONTENEGRO|SLOVAK REPUBLIC|SLOVENIA|UKRAINE"
+         Enum3="|ALGERIA|BAHRAIN|EGYPT|IRAN|IRAQ|ISRAEL|JORDAN|KUWAIT|LEBANON|LIBYA|MOROCCO|OMAN|QATAR|SAUDI ARABIA|SYRIA|TUNISIA|UAE|YEMEN"
+         Enum4="|BAHAMAS|CANADA|COSTA RICA|CUBA|DOMINICAN REPUBLIC|EL SALVADOR|GUATEMALA|HAITI|HONDURAS|JAMAICA|MEXICO|NICARAGUA|PANAMA|TRINIDAD &amp; TOBAGO|UNITED STATES"
+         Enum5="|ARGENTINA|BOLIVIA|BRAZIL|CHILE|COLOMBIA|ECUADOR|GUYANA|PARAGUAY|PERU|SURINAME|URUGUAY|VENEZUELA"
+         Enum6="|ANGOLA|BOTSWANA|BURKINA FASO|CAMEROON|CONGO|CONGO DR|COTE D'IVOIRE|ETHIOPIA|GABON|GAMBIA|GHANA|GUINEA|GUINEA-BISSAU|KENYA|LIBERIA|MADAGASCAR|MALAWI|MALI|MOZAMBIQUE|NAMIBIA|NIGER|NIGERIA|SENEGAL|SIERRA LEONE|SOMALIA|SOUTH AFRICA|SUDAN|TANZANIA|TOGO|UGANDA|ZAMBIA|ZIMBABWE"
+         Enum7="|AUSTRIA|BELGIUM|CYPRUS|DENMARK|FINLAND|FRANCE|GERMANY|GREECE|ICELAND|IRELAND|ITALY|LUXEMBOURG|MALTA|NETHERLANDS|NORWAY|PORTUGAL|SPAIN|SWEDEN|SWITZERLAND|TURKEY|UNITED KINGDOM"
+         /> <!-- The 'C' column is related to 'R' column, it contains only countries from selected refion -->
+      <C Name='S' Width='70' Type='Enum' Related='R,C' Group='1' GroupEmpty='0'
+         Enum4_14="|Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming"
+         /> <!-- The 'S' column is related to 'C' column, it contains only states from selected country 
+         If the country is not divided to states, it is empty and read-only 
+         This column has set GroupType=16 - when grouping by State, it does not create groups for empty states -->
+      <C Name='x' Width='85' Type='Bool' Format='||x'/> <!-- Registered -->
+      <C Name='s' Width='90' Type='Date' Format='d'/> <!-- Since -->
+      <C Name='c' Width='70' Type='Enum' Enum='|week|month|quarter|half year|year'/> <!-- Calls per -->
+      <C Name='r' Width='60' Type='Int'/> <!-- Rabat -->
+
+      <C Name='o' Width='60' Type='Int'/> <!-- Orders -->
+      <C Name='i' Width='85' Type='Float' Format=',0.00'/> <!-- Income -->
+      <C Name='e' Width='85' Type='Float' Format=',0.00'/> <!-- Expenses -->
+      <C Name='g' Width='90' Type='Float' Format=',0.00' Formula='i-e'/> <!-- Gross profit -->
+      <C Name='d' Width='70' Type='Float' Format=',0.00' Formula='g>0?r*g/100:0'/> <!-- Discount -->
+   </Cols>
+   <RightCols>
+      <C Name='p' Width='75' Type='Float' Format=',0.00' Formula='g-d'/> <!-- Profit -->
+   </RightCols>
+   <Header
+      R='Region' C='Country' S='State' P='Partner' 
+      x='Registered' s='Since' c='Calls per'  o='Orders' 
+      i='Income' e='Expenses' g='Gross profit' r='Rabat' d='Discount'
+      p='Profit' 
+      /> <!-- Column captions -->
+   <Head>
+      <Group Cells='Paging,List,Custom' Space='0' Panel='0'
+         PagingLabel='Choose&amp;nbsp;paging:'
+         PagingType='Select'
+         PagingHtmlPrefix='&lt;b>' PagingHtmlPostfix='&lt;/b>' PagingWidth='120' 
+         PagingDefaults='|No paging|Client paging'
+         Paging='No paging' PagingFormula='Grid.Paging==2?"Client paging":"No paging"'
+         PagingOnChange='if(Value=="No paging"){Grid.Paging=1;Grid.PageLength=100;Grid.ChildParts=0;}else{Grid.Paging=2;Grid.PageLength=20;Grid.ChildParts=1;}Grid.SaveCfg();Grid.ReloadBody();'
+         ListLeft='10'
+         ListLabel='Choose&amp;nbsp;view:'
+         ListHtmlPrefix='&lt;b>' ListHtmlPostfix='&lt;/b>' ListWidth='120' 
+         List='|Plain table|Group by Location|Group by Calls per'
+         Cols='||R,C,S|c'
+         ListCustom='Custom grouping'
+         /> <!-- Group row - to let user choose or build grouping -->
+      <Filter CanEdit='1' RIcon='Enum' CIcon='Enum' SIcon='Enum' cIcon='Enum' sButton='Date'
+         /> <!-- Filter row - to let user choose filter, changes filtering of area enums by selection only -->
+   </Head>
+   <Foot>
+      <I id='$Results' CanDelete='0' CanEdit='0' Calculated='1' 			
+         P='Total results' PSpan='2'
+         RVisible='0' CVisible='0' SVisible='0'
+         xVisible='0' cVisible='0' 
+         CalcOrder='o,i,e,g,d,p,r'
+         rType='Float' rFormat='0.00"%"' rFormula='g?d/g*100:0'
+         oFormula='sum()' iFormula='sum()' eFormula='sum()' gFormula='sum()' dFormula='sum()' pFormula='sum()'
+         oCanEdit='0' iCanEdit='0' eCanEdit='0'
+         /> <!-- Bottom row with the summary results -->
+   </Foot>
+   <Pager Width='130'/> <!-- Right side pager -->
+   <Lang>
+      <Alert ErrAdd='Cannot add new partner here!'/> <!-- Changes text of adding error message -->
+   </Lang>
+   <Toolbar Formula='"Displayed rows: "+countrows(4)'/>
+   <Actions OnClickButtonAdd='AddRowF||AddRowEnd'/>
+</Grid>

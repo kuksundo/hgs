@@ -1,0 +1,219 @@
+**************************************
+*  karsten slide show - what's new?  *
+**************************************
+
+last modified: $Date: 2010-12-30 15:16:43 +0100 (Do, 30 Dez 2010) $
+
+
+new in version 3.5.3
+********************
+
+bugfix: EOleSysError exception on program start under windows vista and 7. please use the new installer to properly register all program components.
+
+
+new in version 3.5.2
+********************
+
+new feature: the autoupdate command line option can be used to automatically reload files that are changed manually or another program.
+
+
+new in version 3.5.1
+********************
+
+language: italian translation, courtesy of paolor@users.sourceforge.net
+enhanced: on multi-monitor systems, the screen saver launches a separate slide show on each monitor.
+bugfix: zoom mode of folder is ignored when loading from file (bug 2299770).
+
+
+new in version 3.5.0
+********************
+
+each slide of the collection has now a sequence number. the sequence number allows for custom sort order in the collection window. in a future version, slides can optionally be played in the order given by the sequence number.
+
+sequence number, display frequency, or display time can be changed via drag & drop in the collection window while the respective sort key is selected.
+
+multi-monitor support: the new slide show -> monitor menu item selects the monitor on which the slide show is displayed. the monitor can also selected on the command line, using the -monitor token followed by the monitor number (1, 2, 3, ...). like the file parameters, the monitor parameter can be given multiple times, and will affect the files listed after it. the following example will open two slide shows on two monitors:
+
+karsten.exe -monitor 1 -maximize demo1.kbs -monitor 2 -maximize demo2.kbs
+
+bugfix: wrong sort order for frequency and time parameters
+
+workaround (bug 1623388): karsten uses 100% CPU in full-screen slide show mode (while remaining fully responsive). the reason for this issue eludes me. as a workaround, some menu and toolbar items are not updated while the collection window is not active. click on the slide show window or any window of another application while watching the slide show if you care about minimizing CPU load. (programmers: see comment to TCollectionForm.AViewStyleUpdate in sammelfen.pas).
+
+
+new in version 3.4.1
+********************
+
+consistent system font which supports anti-aliasing
+improved recognition of directX media files
+bugfix: some thumbnails appear blank (bug 1640561)
+bugfix: access violation when deleting multiple items (bug 1620983)
+bugfix: access violation when closing the collection window
+bugfix: german translation files not properly installed (bug 1620979)
+
+
+new in version 3.4.0
+********************
+
+new icons (nuvola theme)
+
+repair dialog allows to search in directory tree
+
+thumbnails are loaded on demand only
+
+clipboard format is now also xml
+
+faster file loading for large files (> 500 items)
+
+bugfix: run-time error with "new window" command
+bugfix: collection and slide show windows minimize to task bar (bug 1518133)
+bugfix: display correct icon for folder items
+bugfix: "insert files from folder" copies folder properties to the new items
+bugfix: folders now show hidden files in slide show and preview
+bugfix: select correct background color in properties dialog
+bugfix: "file save" now displays a dialog box if the backup copy fails
+bugfix: access violation when opening the slide show popup menu for an invalid slide
+bugfix: closing and reopening the slide show window works now
+bugfix: check mark of "allow duplicates" menu item
+
+
+new in version 3.3.6
+********************
+
+due to a number of bug fixes the thumbnail view has become pretty useful.
+
+saving a karsten file now keeps a backup of the previous version.
+
+the screen saver mode has been restored. there are some remaining issues
+with the windows desktop properties dialog.
+
+menus are in xp style.
+
+the localization mechanism has been switched to GNU gettext, which allows for easier translation.
+
+detailed list of bugfixes:
+
+bugfix: the screen saver mode has been accidentally disabled since version 3.3.0.
+bugfix: exceptions in the screen saver configuration dialog
+bugfix: recent files menus messed up (1570415)
+bugfix: saving a changed collection refused for old file format (1570414)
+bugfix: update thumbnail after path change (1570412)
+bugfix: duplicate entries after link resolution
+bugfix: link resolution overrides manual changes
+bugfix: preview pane flickers while extracting thumbnails
+bugfix: thumbnails may be extracted several times
+
+
+new in version 3.3.5
+********************
+
+bugfix: the "image list mismatch" bug has been fixed.
+
+
+new in version 3.3.3
+********************
+
+the "large icons" view displays thumbnails of image files.
+
+the preview window can be docked on all 4 sides of the main window.
+
+the repair dialog provides a "remove broken items" option.
+
+performance when loading or closing files has been improved.
+
+base language is now english. a german translation is provided as a resource dll, which should load automatically on german operating systems. the online help is still german only.
+
+note: due to limited testing this version is considered "unstable". while it works for me, the significant internal refactoring involved in its inception may have introduced some bugs that i'm not aware of yet.
+
+
+new in version 3.3.2
+********************
+
+new translation: english is now available as an alternate language. it is selected automatically based on the windows locale. the online help is still german only.
+
+
+new in version 3.3.1
+********************
+
+bugfix: the wallpaper option was broken in some earlier version (caused access violations). that has been fixed now.
+
+
+new in version 3.3.0
+********************
+
+karsten is now open source and is hosted by sourceforge.net: http://karsten.sf.net
+the only available language is still german, an english translation is planned.
+
+
+neu in version 3.2.12
+*********************
+
+bugfix: dateien werden jetzt schneller geladen. das vorhandensein der bilddateien wird im hintergrund ueberprueft.
+
+bugfix: die mediensteuerung fuer directx funktioniert jetzt (vor- und zurueckspulen, lautstaerkeeinstellung, steuerung immer im vordergrund, shortcuts zur steuerung der bilderschau, automatisches weiterschalten bei fehlern).
+
+die sammlungsdateien (*.kbs) sind jetzt im xml-format und koennen mit einem texteditor angeschaut werden. dateien vom alten format koennen selbstverstaendlich weiterhin geladen werden. sie werden beim speichern ins neue format uebersetzt. das bearbeiten der dateien ausserhalb karsten ist moeglich.
+
+
+neu in version 3.2.10
+*********************
+
+verwendet den windows-verknüpfungsmechanismus, um beim öffnen einer sammlungsdatei verschobene oder umbenannte bilddateien zu finden und die pfadangaben zu aktualisieren.
+windows 2000, xp und neuer führen auf NTFS-laufwerken buch ueber verschobene und umbenannte dateien, die suche ist in diesem fall sehr effizient. in anderen windows-versionen und auf FAT/FAT32-laufwerken wird nur eine heuristische suche anhand von datum und grösse der datei ausgeführt. die erfolgschancen hängen davon ab, wie weit die datei von ihrem ursprünglichen ort entfernt wurde.
+
+verwendet die moderne directx-technologie, um multimedia-dateien abzuspielen. dadurch können alle medienformate, die der windows-mediaplayer abspielen kann, abgespielt werden. für einige neuere formate werden nur noch directx-codecs angeboten, die karsten bisher nicht abspielen konnte.
+für die medienwiedergabe muss eine einigermassen aktuelle directx-version installiert sein (gratis erhältlich von der microsoft-website), empfohlen wird mindestens version 8.1, möglicherweise funktioniert karsten aber auch mit einigen früheren versionen.
+
+
+neu in version 3.2.9
+********************
+
+neue kommandozeilenparameter zum starten der bilderschau von der shell aus:
+
+(dateipfad)
+-normal (dateipfad)
+-maximize (dateipfad)
+-noframe (dateipfad)
+-wpcont (dateipfad)
+-wponce (dateipfad)
+
+mehrere fehler beim bildschirmschoner (konfiguration, vorschau, desktop-eigenschaften) behoben.
+
+streckmodus "ganzzahliger faktor"
+
+beschleunigte bildschaltung in umfangreichen sammlungen.
+
+
+neu in version 3.2.7
+********************
+
+interne umstrukturierung (verwendung der COM-technologie) erlaubt mehrere offene sammlungsfenster und bilderschauen und vermeidet konflikte mit dem bildschirmschoner.
+
+verbesserung der stabilität unter windows NT.
+
+
+neu in versionen 3.2.0 - 3.2.6
+******************************
+
+funktion "hintergrundfarbe aufnehmen" im schaufenster
+
+verbesserter anzeigemodus "rahmenloses fenster"
+
+relative bild-dateipfade
+
+fester bild-vergrösserungsfaktor
+
+ansichts-menü und sortierung der bilderliste
+
+
+neu in version 3.2.0
+********************
+
+bilderschau als bildschirmschoner
+
+
+neu in version 3.1.0
+********************
+
+unterstützung von multimedia-dateien des mci-systems (multimedia control interface)
+

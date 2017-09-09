@@ -1,0 +1,135 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+// --------------------------------------------------------------------------
+// Simulated save, shows the data to be sent to server in "Output" tag
+Grids.OnSave = function(G){
+GetElem("Output").value = G.GetXmlData().replace(/\</g,"\n<");
+}
+// --------------------------------------------------------------------------
+Grids.OnLoaded = function(G){ GetElem("Output").value = ""; } // Clears the Output on start
+// --------------------------------------------------------------------------
+// Special control for 6. row "Item 6 cannot be moved". Other rows are not affected.
+Grids.OnStartDrag = function(G,row,col,more,copy){
+if(row.id==6 && !copy) return true;
+}
+// --------------------------------------------------------------------------
+   </script>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Drag"><b>Drag</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Dragging and copying rows</center>
+   <center style='font:bold italic;'>Moving and copying rows by dragging and by panel button inside one grid</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='01 - Dragging rows.xml'>01 - <h2>Dragging rows</h2>.xml</a></div>
+            <div style='width:500px; height:370px;'>
+               <bdo Debug='check' Data_Url='01 - Dragging rows.xml' Upload_Xml="1" Upload_Flags="NewId" Upload_Data="&lt;Grid>&lt;IO Result='0' HtmlMessage='Simulated save to server, see the moved row ids changed' HtmlMessageTime='1000'/>&lt;/Grid>"></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'>Changes to be sent to server</div>
+            <textarea id='Output' style="width:400px;height:350px;"></textarea>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>See <a href="../../Doc/RowMove.htm">Row moving and dragging documentation</a>, <a href="../../Doc/RowDefaults.htm">Default rows documentation</a> and <a href="../../Doc/RowAdd.htm#Ways">Five ways of adding rows to grid documentation</a>.</li>
+
+      <li><h4>Example description</h4><br />
+      <i><b>Move</b> row with children by dragging by <b>left</b> mouse button, <b>copy</b> row by dragging by <b>right</b> mouse button and <b>copy</b> row with <b>children</b> by dragging by <b>ctrl+right</b> mouse button.<br />
+      
+      <i>You can <b>copy</b> row with or without its children or <b>add</b> new row above the row by clicking to button <span style="background:url(../../Grid/Modern/Panel.gif) -350px -2px;padding-left:16px;"></span> on row panel 
+      or <span style="background:url(../../Grid/Modern/Toolbar.png) -150px -2px;padding-left:26px;"></span> on toolbar. 
+      You can <b>add</b> new <b>child</b> to focused row by clicking button <span style="background:url(../../Grid/Modern/Toolbar.png) -200px -2px;padding-left:26px;"></span> on toolbar.</i><br />
+      <i>You can <b>outdent</b> or <b>indent</b> focused row by clicking buttons <span style="background:url(../../Grid/Modern/Toolbar.png) -2150px -2px;padding-left:26px;"></span> 
+      <span style="background:url(../../Grid/Modern/Toolbar.png) -2200px -2px;padding-left:26px;"></span> on toolbar. It works the same as dragging the row to given position.</i><br />
+      <i>You can <b>copy</b> focused row or selected rows to <b>clipboard</b> by <b>ctrl+c</b>. You can <b>paste</b> the row(s) in <b>clipoard</b> to selected rows or, if no row is selected, to new row(s) before focused row by <b>ctrl+v</b>.</i><br />
+      <b>Select</b> more rows (by panel <span style="background:url(../../Grid/Modern/Panel.gif) -100px -2px;padding-left:16px;"></span> button) or by space key or by dragging by ctrl+left mouse button and drag or copy them together.</i><br />
+      </li>
+      
+      <li><h4>Dragging permissions</h4><br />
+      By default all rows can be dragged. Set &lt;I <h3>CanDrag</h3><b>='0'</b>/> to suppress row dragging (it suppresses both moving and copying by dragging).<br /> 
+      By default all rows can be copied. Set &lt;I <b>CanCopy='0'</b>/> to suppress row copying (by dragging and by panel/toolbar buttons).<br />
+      For whole grid suppress dragging all rows by &lt;Cfg <b>Dragging='0'</b> />, suppress copying all rows by &lt;Cfg <b>Copying='0'</b>/><br />
+      Dragging permissions can be also controlled dynamically and more preciselly by API event <h3>OnStartDrag</h3>, e.g. to suppress only particular row moving and not copying.<br />
+      </li>
+
+      <li>
+      <h4>Dropping permissions</h4> are controlled by attributes <b>Def</b> and <b>AcceptDef</b>.<br />
+      <h3>Def</h3> is default row. It has more features, from the default row are read all attributes and values not set directly in the row. Every row can have only one default row, but default row can have also its default row to inherit its values from it.<br />
+      <h3>AcceptDef</h3> specifies which rows can be dropped or copied to this row as children. Only row its Def attribute value is listed in the target row AcceptDef can be dropped or copied to row.<br />
+      There is also related attribute <b>CDef</b> for adding new child rows. When added new child to the row, it will have its Def attribute set to parent CDef value. Setting CDef to empty restricts adding new children to the row.<br />
+      Dropping permissions can be also controlled dynamically by API event <h3>OnCanDrop</h3>.<br />
+      For whole grid suppress dropping all rows by &lt;Cfg <b>Dropping='0'</b> /> - it has sense for coping from another grid.
+      </li>
+
+      <li><h4>Changing Def</h4><br />
+      <b>Def</b> attribute of the target row can be automatically changed in case the row without children gets its first child (Def is set to <b>DefParent</b> value) and when the row with children loses its last child (Def is set to <b>DefEmpty</b> value).<br />
+      Def attribute can be changed also dynamically by API method <b>ChangeDef</b> in <b>OnEndDrag</b> API event.<br />
+      When the Def is changed, there is called <b>OnChangeDef</b> API event. Here you can do any custom action, e.g. change the def or mark the row changed to upload the changed Def to server.
+      </li>
+
+      <li><h4>Dragging actions</h4><br />
+      There are various dragging action to differ if row will be moved, copied or copied with its children. And if the row will be moved/copied single or all selected rows will be processed.<br />
+      The actions are <b>DragRow</b>, <b>DragCopy</b>, <b>DragCopyChildren</b>, <b>DragSelected</b>, <b>DragSelectedCopy</b>, <b>DragSelectedCopyChildren</b>.<br />
+      These actions can be attached to mouse dragging events differ by mouse button and key prefix, like <b>OnDragRow</b>, <b>OnRightDragRow</b>, <b>OnCtrlDragRow</b>, <b>OnCtrlRightDragRow</b> and so on.<br />
+      Moving row(s) is possible also by dragging Move button to row panel. The button can be shown by <b>&lt;Panel Move='1'/></b>. These events can be similarly to set to the dragging actions, e.g. <b>OnDragPanelMove</b> or <b>OnRightDragPanelMove</b>.<br />
+      There are also special actions to increase and decrease the row level <b>Indent</b> and <b>Outdent</b>. They work the same as the row is dragged.<br />
+      The actions are assigned to events in &lt;Actions/> tag. Default actions are assigned in file <b><a href="../../Grid/Defaults.xml">Grid/Defaults.xml</a></b>.
+      </li>
+
+      <li><h4>Copying actions</h4><br />
+      <ul>
+      <li>For copy row(s) by dragging see previous paragraph.</li>
+      <li>
+         There are many actions for copying actual, focused or selected rows, see their list in documentaion <a href="../../Doc/RowAdd.htm#Copying">Copying existing rows</a>. <br />
+         The <b>Add...</b> and <b>Copy...</b> actions are attached to the Add <span style="background:url(../../Grid/Modern/Toolbar.png) -150px -2px;padding-left:26px;"></span> and AddChild <span style="background:url(../../Grid/Modern/Toolbar.png) -200px -2px;padding-left:26px;"></span> toolbar buttons.<br />
+         And also to Panel Copy <span style="background:url(../../Grid/Modern/Panel.gif) -350px 0px;padding-left:16px;"></span> button that can be shown by <b>&lt;Panel Copy='1'/></b>.<br />
+      </li>
+      <li>
+         Rows can be also copied and pasted via clipboard, see documentation for <a href="../../Doc/CopyPaste.htm">Copy &amp; paste via clipboard</a>.
+      </li>
+      </ul>
+
+      <li><h4>API</h4><br />
+      There are various API events called for dragging. In <b>OnEndDrag</b> do custom action on drop. In <b>OnRowMove</b> do the custom action after the row is moved.<br />
+      Rows can be moved also by API method <b>MoveRow</b>. Other API methods and events are listed in documentation <a href="../../Doc/RowMove.htm">Row moving and dragging</a>.<br />
+      </li>
+
+      <li><h4>Save changes to server</h4><br />
+      <ul>
+         <li>
+            Moved rows are marked by <h3>Moved</h3> attribute, <b>Moved='1'</b> means moved inside its parent and <b>Moved='2'</b> moved to new parent. 
+            Moved='1' is used only when sorting is disabled (Sorting='0').<br />
+            Copied and added rows are marked by <h3>Added</h3> attribute. The copied row contains <u>no</u> information about the source row. Only in server child paging, copied row with not yet loaded children gets attribute <b>Copy</b> as id of the source row.<br />
+            The Moved and Added attributes are set in upload data, in the &lt;Changes> tag. It is set also to the row and can be read by API. It is cleared after sucessful save.<br />
+            See <a href="../../Doc/DataUpload.htm#XML">XML structure sent to server documentation</a>
+         </li>
+         <li>
+            Moved row in upload data has set also attributes <b>Parent</b>, <b>Next</b> and <b>Prev</b> as ids of these rows to identify the new position of the row. 
+            Parent is empty for root row.
+         </li>
+         <li>
+            If set <b>&lt;Cfg FullId='1'/></b>, the row id contains also parent row id to identify the row position in tree by the id. <br />
+            When the row is moved to another parent, the id is updated after the change is successfuly saved to server. <br />
+            You can set &lt;bdo Upload_Flags='NewId'> to upload the new id to server in <b>NewId</b> attribute.<br />
+            See <a href="../../Doc/RowId.htm#RowIdTree">Row id in tree</a>
+         </li>
+      </ul>
+
+      </li>
+   </ul>
+</body>
+</html>

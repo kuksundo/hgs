@@ -1,0 +1,75 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+  <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Space Buttons and Tabs</center>
+   <center style='font:bold italic;'>Space action buttons, radios, tabs, combos, popups</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='04 - Space Buttons.xml'>04 - <h2>Space Buttons</h2>.xml</a></div>
+   <div style='width:350px; height:220px;'>
+      <bdo Debug='check' Data_Url='04 - Space Buttons.xml'></bdo>
+   </div>
+   <ul>
+      <li>   
+         <h3>Button</h3> type shows <b>action button</b> with many features, used mostly in <b>Space</b> rows.<br />
+         <ul>
+            <li>
+               <h4>Clickable button</h4>	- after click there is called predefined action.<br />
+               The button can be HTML text, &lt;button> tag, icon or HTML text with icon. 
+               The button type set by <b>Button</b> attribute, the icon file by <b>Icon</b> attribute.
+               The button text (if any) set in cell value.<br />
+               After click to button is called XML event <b>OnClick</b>.
+               The button can be (temporary) disabled by <b>Disabled</b> attribute and hidden by <b>Visible</b> attribute.
+            </li>
+            <li>
+               <h4>Switch button</h4> - button with two states on / off - after click it switches to the other state and is called predefined action.<br />
+               The Switch button is set by <b>Switch</b>='1'.
+               The button value is button state 0 or 1. 
+               The button texts are defined by <b>ButtonText</b> and <b>ButtonTextChecked</b> attributes. 
+               The button icons are defined by <b>Icon</b> and <b>IconChecked</b> attributes.<br />
+               After check are called XML events <b>OnCheck</b> and <b>OnChange</b>, after uncheck are called <b>OnUncheck</b> and <b>OnSave</b>.
+            </li>
+            <li>
+               <h4>Radio / tab button</h4> - group of switch buttons – after click to one button in group the other buttons are automatically switched off.<br />
+               The Radio button is set by <b>Switch</b>='1' and <b>Radio</b>='<i>group</i>', where the <i>group</i> is number of group the button belongs to.<br />
+               Set <b>Uncheck</b>='1' to let the button uncheck by clicking it - to permit all buttons in group unchecked.<br />
+               The Radio button can be displayed as Tab when set <b>Button</b>='Tab', it is just visual effect, behavior is the same.<br />
+               All other attributes are the same as for Switch button.
+            </li>
+            <li>
+               <h4>Menu button</h4> - after click to button is displayed popup menu and user selects one action from the list.<br />
+               The menu is defined by <b>List</b> attribute, the first character separated array of the item names. 
+               Icons for the items can be defined in <b>Icons</b> attribute.
+               After click is called action for clicked item from <b>Actions</b> attribute.<br />
+               The <b>List</b> attribute can also contain complete TreeGrid menu definition, with collapsible levels, submenus, OnClick handlers and so on.<br />
+               It is also possible to reload the grid with new source xml attached to the clicked item from attribute <b>ReloadData</b>.
+            </li>
+            <li>
+               <h4>Combo switch button</h4> - a user selects button state from its popup menu, for the selected state is called assigned action. <br />
+               The Combo switch button is defined <b>Switch</b>='1' and <b>List</b>. It behaves similarly to other combo types like Select or Enum, it has mainly different look.
+               After change is called XML event <b>OnChange</b>.
+            </li>
+            <li>
+               <h4>Combo radio / tab button</h4> - a group of combo switch buttons, after change some button state, the other buttons are reset to its predefined empty value.<br />
+               Combined the Radio with Combo, when defined <b>Switch</b>, <b>Radio</b> and <b>List</b>. In one group can be combined both standard Radio and Radio combos.<br />
+               The off value is defined by <b>EmptyValue</b> attribute, the off icon by <b>EmptyIcon</b> attribute. The off value is selected whenever user selects another Radio or Combo in the group.
+            </li>
+         </ul>
+      </li>
+      <li>
+         In <b>Space</b> row is possible to use also any other cell types and attributes like in standard data row. 
+         You often need to specify <b>Width</b> of the cell, because many types don't calculate the width automatically.
+      </li>
+   </ul>
+</body>
+</html>

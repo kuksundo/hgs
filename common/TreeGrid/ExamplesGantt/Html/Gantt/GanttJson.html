@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <!-- BodyStart --> 
+      <style>
+         .Info { padding-top:1px!important; line-height:9px; font-size:9px; } /* Style for top right Info tag on tabber */
+      </style>
+      <script>
+
+// ------------------------------------------------------------------------------------------------------------
+// Called on grid loaded, used to switch the starting view
+Grids.OnUpdated = function(G){
+SwitchView(0,1);
+if(Grids.Tablet) { 
+   G.NoVScroll = 1;                                     // No vertical scroll on iPad
+   G.GetRowById("Tablet").Visible = 1; UpdateActions(); // Shows the actions control row on iPad and sets actual actions
+   }
+}
+// ------------------------------------------------------------------------------------------------------------
+Grids.OnRenderStart = function(G){
+if(Grids.Tablet && (G.Style=="GM"||G.Style=="GB")){ 
+   // Updates widths of buttons on toolbars in iPad, because iPad has buttons with padding
+   var r = G.GetRowById("Group");
+   r.FitWidth = 55; r.FitButtonText='<span style="margin-left:-10px;"><b>Zoom</b> <b style="color:blue;">fit</b></span>'
+   r.MaxWidth = 85; r.MaxButtonText='<span style="margin-left:-10px;"><b>Zoom</b> <b style="color:blue;">fit max</b></span>'
+   var r = G.GetRowById("Project");
+   r.CfgWidth = 100; r.CfgButtonText='<span style="margin-left:-10px;">Change <b>settings</b></span>'
+   }
+}
+// ------------------------------------------------------------------------------------------------------------
+// Switches view with informational message, now only for tablets
+function SwitchViewMessage(view){
+if(!Grids.Tablet) return SwitchView(view);
+var G = Grids.Gantt;
+if(!G.Def.Diagram.Group==!view) return;
+G.ShowMessage("Changing view to "+["Gantt chart","Network diagram"][view]);
+setTimeout(function(){ SwitchView(view); G.HideMessage(); },10);
+}
+// ------------------------------------------------------------------------------------------------------------
+// Switches view between Gantt chart (view = 0) and Network diagram (view = 1)
+function SwitchView(view,noshow){
+var G = Grids.Gantt;
+if(!noshow && !G.Def.Diagram.Group==!view) return;
+G.GanttUpdate = 1;                                          // Temporary disables the Gantt to not be refreshed during grouping
+var group = G.Group; if(view && (!group||group=="COMPLETE,TASK")) group = "TASK";     // For the Network diagram in this example the grid must be grouped and only in one level
+var F = Grids.OnGroup; Grids.OnGroup = null;                // Temporary disables the event handler OnGroup
+if(!noshow) G.DoGrouping("");                               // Ungroups grid
+G.Def.Diagram.Group = view; G.Def.DiagramTask.Group = view; // Sets 1 for Network diagram
+G.Def.Sum.Group = !view; G.Def.SumTask.Group = !view;       // Sets 1 for Gantt chart
+G.Cols.GANTT.GanttBottom = view ? 6 : 2;                    // Sets the space under bars
+var b1 = view ? "" : "Box", b2 = view ? "Box" : "";         // Replaces From/FromBox and To/ToBox in dependency tip, because Network diagram uses Box id na Gantt chart row id
+G.Cols.GANTT.GanttDependencyTip = G.Cols.GANTT.GanttDependencyTip.replace("*From"+b1+"*","*From"+b2+"*").replace("*To"+b1+"*","*To"+b2+"*");
+var r = G.GetRowById("Summary"); if(noshow) r.Visible = !view; else if(view) G.HideRow(r); else G.ShowRow(r); // Hides bottom summary for Network diagram
+if(!noshow) G.DoGrouping(group);                            // Regroups grid 
+G.GanttUpdate = 0;                                          // Enables the disabled Gantt, refresh is needed    
+if(!noshow) G.RefreshGantt();                               // Refreshes Gantt, especially for dependencies
+var r = G.GetRowById("Tabber");
+r.Gantt = view==0; r.Diagram = view==1;                     // Changes the selected tab. It does it here, because standard ButtonClick action is not called
+if(!noshow) { G.RefreshCell(r,"Gantt"); G.RefreshCell(r,"Diagram"); }
+var Info = ["Mouse <b>in chart:</b> <span style='font-weight:bold;'>left button drag</span> = move, resize or create, "
+            +"<span style='font-weight:bold;'>right button drag</span> = dependency, <span style='font-weight:bold;'>double click</span> = resources or new milestone or flag, "
+            +"<span style='font-weight:bold;'>right click</span> = menu, <span style='font-weight:bold;'>ctrl + left click</span> = delete<br>"
+            +"<b style='padding-left:23px;'>in header:</b> <span style='font-weight:bold;'>left button drag</span> = zoom to date range, "
+            +"<span style='font-weight:bold;'>left click</span> = zoom to date, <span style='font-weight:bold;'>right click</span> = zoom back or zoom out, ",
+
+            "Mouse <b>in chart:</b> <span style='font-weight:bold;'>left button drag</span> = move, resize or create, "
+            +"<span style='font-weight:bold;'>right button drag</span> = dependency, <span style='font-weight:bold;'>shift + left button drag</span> = select range, "
+            +"<span style='font-weight:bold;'>double click</span> = select, <span style='font-weight:bold;'>right click</span> = menu, "
+            +"<span style='font-weight:bold;'>ctrl + left click</span> = delete<br>"
+            +"<b style='padding-left:23px;'>in header:</b> <span style='font-weight:bold;'>left button drag</span> = zoom to date range, "
+            +"<span style='font-weight:bold;'>left click</span> = zoom to date, <span style='font-weight:bold;'>right click</span> = zoom back or zoom out, ",
+
+            "Controls: <span style='font-weight:bold;'>drag</span> = scroll grid, <span style='font-weight:bold;'>tap</span> = focus object, "
+            + "<span style='font-weight:bold;'>drag focused</span> = move, resize or create dependency, <span style='font-weight:bold;'>drag empty</span> = create new, "
+            +"<span style='font-weight:bold;'>tap focused</span> = menu<br>"
+            +"<span style='padding-left:46px;font-weight:bold;'>tap header</span> = zoom menu, <span style='font-weight:bold;'>drag header</span> = zoom date range, "
+            +"<i style='padding-left:20px;'>for more precise control choose <span style='font-weight:bold;'>object</span> and <span style='font-weight:bold;'>action</span> on middle toolbar</i>",
+
+            ""
+
+            ][Grids.Tablet ? view+2 : view];
+r.Info = Info; if(!noshow) G.RefreshCell(r,"Info");         // Changes the Mouse controls cell in Tabber according to the view
+r["InfoTip"] = Info.replace(/<span/g,"<br><span");
+Grids.OnGroup = F;                                          // Restores the OnGroup event handler
+return true;                                                // Suppresses default ButtonClick action for the cell
+}
+// ------------------------------------------------------------------------------------------------------------
+// Updates edit permissions according to the Tablet row
+function UpdateActions(){
+var G = Grids.Gantt, r = G.GetRowById("Tablet"), C = G.Cols.GANTT;
+if(r.Visible){
+   var cells = r.Cells; if(typeof(cells)=="string") cells = cells.split(","); // On start are the Cells string, later is parsed to array
+   for(var o=null,a=null,i=0;i<cells.length;i++){ // Iterates all cells in Tablet row and searches the two actually chosen cells
+      var n = cells[i];
+      if(r[n] && r[n+"Radio"]==1) o = n;      // object
+      else if(r[n] && r[n+"Radio"]==2) a = n; // action
+      }
+   if(o==null||a==null) return; // Function was called between changes
+   }
+else { o = "All"; a = ""; }
+if(a=="Every") a = ""; // For Every does not specify the action suffix
+if((o=="Flags"||o=="Constraints") && a=="Resize") { o = ""; a = ""; } // Flags and Constraints cannot be resized
+if(o=="None") { o = ""; a = ""; }
+
+// --- Vertical lines ---
+var bounds = (o=="Bounds"||o=="All") && (!a||a=="Move") ? 1 : 0;
+C.GanttBaseCanEdit = bounds; C.GanttFinishCanEdit = bounds;
+C.GanttLines = C.GanttLines.replace(/(^|\;)(0|1)#/g,"$1"+bounds+"#");
+for(var i=-2;i<2;i++) G.SetGanttLine(i,null,null,null,bounds);
+
+// --- Other objects ---
+if(o=="All"){ // All objects
+   var def = ",MainComplete,MainText,MainState,Main1Complete,Main1Text,Main1State,RunComplete,RunText,RunState,Resources";
+   if(!a) C.GanttEdit = "All"; // All is shortcut for all actions permitted
+   else if(a=="Move") C.GanttEdit = "MainMove,Main1Move,RunMove,FlagsMove,ConstraintsMove,DependencyCorrect"+def;
+   else if(a=="Resize") C.GanttEdit = "MainResize,Main1Resize,RunResize"+def;
+   else if(a=="New") C.GanttEdit = "MainNew,Main1New,RunNew,FlagsNew,ConstraintsNew,DependencyNew,DependencyTypes,DependencyLags"+def;
+   var ed = !a||a=="Move" ? "MainMove,Main1Move" : "";
+   G.Def.Sum.GANTTGanttEdit = ed; G.Def.SumTask.GANTTGanttEdit = ed;
+   var ed = "Run"+a+(!a||a=="New" ? ",DependencyNew,DependencyLags,DependencyTypes" : "");
+   G.Def.Diagram.GANTTGanttEdit = ed; G.Def.DiagramTask.GANTTGanttEdit = ed;
+   }
+else { // Particular object
+   if(o=="Bounds"){ o = "DependencyCorrect"; a = ""; } // Bounds permits correcting dependencies, especially for move GanttBase
+   if(o=="Dependency") {
+      if(!a||a=="New") a = ",DependencyLags,DependencyTypes"; // This example permits dependency lags and types
+      else { o = ""; a = ""; } // Dependencies cannot be resized or moved
+      }
+   C.GanttEdit = o + a; // Sets base edit permissions for all data rows
+   if(o=="Main"||o=="Main1"||o=="Run") C.GanttEdit += ","+o+"Complete,"+o+"Text,"+o+"State,"+o+"Correct,Resources"; // Other actions for main bar are enabled always
+   else if(o=="Flags") C.GanttEdit += ","+o+"Text";                                // Other actions for flags are enabled always
+   var ed = (o=="Main"||o=="Main1")&&(!a||a=="Move") ? o+"Move" : "";              // In Gantt chart summary row permits only moving main tasks
+   G.Def.Sum.GANTTGanttEdit = ed; G.Def.SumTask.GANTTGanttEdit = ed;
+   var ed = o=="Main" ? "Run"+a : o=="Dependency" ? o+"New,DependencyLags,DependencyTypes" : ""; // In Network diagram summary permits only actions for runs and dependencies
+   G.Def.Diagram.GANTTGanttEdit = ed; G.Def.DiagramTask.GANTTGanttEdit = ed;
+   }
+}
+// ------------------------------------------------------------------------------------------------------------
+// Generates the run box text for Network diagram
+Grids.OnGetGanttRunText = function(G,row,col,run,idx,text,width,left,maxw){
+var B = G.GetGanttRunBox(row,col,idx); // Gets the run box
+var src = G.GetRowById(B.Id.slice(1)); // Gets the source row for the box
+if(!src) return "";                    // src is empty during creating new run box by dragging
+var s = "<div style='font-size:11px;line-height:11px;'>"
+   + "<div style='background:blue;color:white;padding:1px;'>"+B.id+". "+(Get(row,"SECTION")+" - "+Get(src,"SECTION"))+"</div>"
+   + "<div>"+DateToString(B.Start,"M/dd/yyyy HH:mm")+"</div>"
+   + "<div>"+DateToString(B.End,"M/dd/yyyy HH:mm")+"</div>"
+   + "<div>"+(B.Duration ? DateToString(B.Duration,"hhh 'hours'") : "<span style='color:blue;font-size:10px;'>Milestone</span>")+"<span style='padding-left:6px;color:blue;'>$"+NumberToString(G.GetGanttPrice(row,col,B.id),",0")+"</span></div>"
+   + "<div style='font-size:10px;line-height:10px;background:brown;color:white;padding:1px;padding-bottom:2px;'>"
+      +"<span style='color:"+(B.Complete==100?"lime":(B.Complete==0?"#FF8":"aqua"))+";'>"+B.Complete+"%</span> "
+      +(B.Resources?B.Resources.replace(/\#/g,"; ").replace("Support","Sup").replace("Sales","Sal").replace("Management","Mgm").replace("Development","Dev").replace("Material","Mat"):"")
+   +"</div>"
+   + "</div>";
+var bw = G.GetBodyWidth(2)-100; // Width of the right section
+if(!bw) bw = 400;               // bw is null before the grid is rendered
+if(width<bw) return "<div style='padding:1px;'>"+s+"</div>"; // OK, the box is visible whole
+
+// --- Repeats the content more times for too wide boxes ---
+var q = "";
+if(left<0)  { q += "<td style='width:"+(-left)+"px;'>&nbsp;</td>"; width += left; } // Subtracts the left invisible part
+if(width>maxw) width = maxw;                                                        // Subtracts the right invisible part
+for(;width>0;width-=bw) q += "<td style='width:"+bw+"px;'>"+s+"</td>";              
+return "<div style='padding:1px;'><table cellspacing='0' cellpadding='0'><tr>"+q+"</tr></table></div>";
+}
+// ------------------------------------------------------------------------------------------------------------
+// Modifies dependency thickness for Network diagram
+Grids.OnGetDependency = function(G,row,col,dep,start,end,dur){
+dep[6] = row.Def.Name=="Diagram" || row.Def.Name=="DiagramTask" ? 20 : 0;
+}
+// ------------------------------------------------------------------------------------------------------------
+// Restricts ungrouping and grouping by two columns in Network diagram
+Grids.OnGroup = function(G,group){
+if(G.Rows.Tabber.Diagram && (!group||group=="COMPLETE,TASK")) {
+   alert("This example requires for the Network diagram the grid to be grouped by one level");
+   return true;
+   }
+}
+// ------------------------------------------------------------------------------------------------------------
+// To specify grouping by Complete, differs only 100%, 0% and others
+Grids.OnGetSortValue = function(G,row,col,val,desc,group){
+if(group && col=="COMPLETE") {
+   if(val=="100%") return 100;
+   if(val=="0%") return 0;
+   return "50";
+   }
+return val;
+}
+// ------------------------------------------------------------------------------------------------------------
+// Corrects all dependencies for Run boxes after some change
+// It is done by API event, because in this example the Run boxes themselves are not corrected, therefore not checked for correcting
+var TM = null;
+Grids.OnGanttRunBoxChanged = function(G,B,O,chg){
+if(!(chg&30)) return; // Ignores only changes in box attributes
+if(TM) clearTimeout(TM);
+TM = setTimeout(function(){
+   TM = null;
+   if(G.Cols.GANTT.GanttCorrectDependencies==2) G.ShowMessageTime("Do you want to correct dependencies?",0,function(result){  // result = -2 esc, -1 enter, 1 yes, 2 no, 3 always, 4 never
+      if(result==3||result==4) { G.Cols.GANTT.GanttCorrectDependencies = result==3?1:0; G.RecalculateRows([G.GetRowById('Project')],1); }
+      if(result==3||result==1||result==-1) G.ActionCorrectAllDependencies(); 
+      },["Yes","No","Always","Never"]);
+   else if(G.Cols.GANTT.GanttCorrectDependencies==1) G.ActionCorrectAllDependencies();
+   },100);
+}
+// ------------------------------------------------------------------------------------------------------------
+// Called after moved visual progress line, to change the progress calculation
+Grids.OnGanttLineChanged = function(G,idx,d1,d2,cls,edit,od1,od2,ocls,oedit){
+if(idx==1 && d1) G.SetValue(G.GetRowById("Project"),"Progress",d1,1);
+}
+// ------------------------------------------------------------------------------------------------------------
+// Used to show tip on Gantt header row
+// For Gantt chart rows and objects use rather OnGanttTip instead
+Grids.OnTip = function(G,row,col,tip,clientx,clienty,x,y){
+if(col=="GANTT" && row.id=="ID") { // Gantt header row
+   var A = G.GetGanttHeaderXY(row,col,x,y);
+   if(!A) return;
+   tip = "<b>"+G.Lang.GanttUnits[A.Units]+"</b><br>" 
+       + DateToString(A.Start,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + " - " + DateToString(A.End,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + "<br><br>"
+       + "<i>Click to zoom to this date</i><br><i>Right click to zoom back to previous zoom level</i><br><i>Drag by mouse to zoom to selected range</i>";
+
+   }
+return tip;
+}
+// ------------------------------------------------------------------------------------------------------------
+
+      </script>
+      <h2>Interactive Gantt chart and Network diagram (JSON)</h2>
+      A demonstration of TreeGrid application showing interactive <b>Gantt chart</b> - timetable of tasks and their completion, resources, dependencies in project management and also interactive <b>Network diagram</b> of the same taks with their desriptions and dependencies.<br/>
+      This example uses JSON / JSONP format for data, so it can be loaded even locally from filesystem in all browsers.<br />
+
+      <div id="Gantt" style="WIDTH:100%;HEIGHT:700px;">
+         <script>
+
+         // Standard usage of JSON format - can be loaded / uploaded normally like the XML
+
+         // TreeGrid('<bdo Sync="1" Debug="Check" DebugCheckIgnore="Res" Layout_Url="GanttJsonDef.js" Data_Url="GanttJsonData.js"></bdo>',"Gantt");
+
+
+         // Special usage of JSONP, can be used for cross domain communication and also for loading local files (on file:// protocol). Cannot be used for upload.
+         // Does not use Sync to work also on local files / cross domain. Because Sync='1' uses AJAX for loading Style
+
+         TreeGrid('<bdo Sync="0" Debug="Check" DebugCheckIgnore="Res" Defaults_Jsonp="Defaults.js" Defaults_Static="DefaultsJson" Text_Jsonp="Text.js" Text_Static="TextJson" Layout_Jsonp="GanttJsonDef.js" Data_Jsonp="GanttJsonData.js"></bdo>',"Gantt");
+
+         </script>
+      </div>
+      <!-- BodyEnd -->
+      <script>
+      if(location.hostname.search(/coqsoft\.|treegrid\./i)>=0) setTimeout('location.replace("../../../www/#..*Examples*Html*Gantt*Gantt.html"+location.hash.replace("#","\'"));',500);
+      </script>
+   </body>
+</html>

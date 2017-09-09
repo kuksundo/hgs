@@ -1,0 +1,1336 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt API</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To control Gantt chart you
+can use all standard <b>Extended API</b> methods and events for TreeGrid
+controlling, like <a href="RowAdd.htm#AddRow">AddRow</a>, <a
+href="RowDelete.htm#DeleteRow">DeleteRow</a>, <a href="CellEdit.htm#SetValue">SetValue</a>
+and so on.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can change the data
+source values by API <b><a href="CellEdit.htm#SetValue">SetValue</a></b> method
+and the Gantt chart will be automatically recalculated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Many changes in Gantt chart
+are mirrored to other columns (e.g. Ancestors/Descendants), call <a
+href="#CheckGantt">CheckGantt</a> before SetValue to check if the change is
+possible and also to update other Gantt columns accordingly.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnGanttStart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttStart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Event</span></b><span
+style='font-size:10.0pt'> called when Gantt chart is created for first time.
+Returns true to not create the Gantt chart (useful when it is already called <a
+href="#RefreshGantt">RefreshGantt</a>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnGanttChange><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttChange</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>      (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>item</b>,
+<i>type</i> <b>new</b>, <i>type</i> <b>new2</b>, <i>type</i> <b>old</b>, <i>type</i>
+<b>old2</b>, <i>string</i> <b>action</b>)           <span style='color:red'>new
+<b>9.2</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Event</span></b><span
+style='font-size:10.0pt'> called <b>before</b> any item in Gantt chart has been
+changed by a user interaction in the Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel the
+change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For the parameters see the <a
+href="#OnGanttChanged">OnGanttChanged</a> event below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void</i>      </span><a
+name=OnGanttChanged><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttChanged</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>item</b>,
+<i>type</i> <b>new</b>, <i>type</i> <b>new2</b>, <i>type</i> <b>old</b>, <i>type</i>
+<b>old2</b>, <i>string</i> <b>action</b>)           <span style='color:red'>new
+<b>6.0</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Event</span></b><span
+style='font-size:10.0pt'> called <b>after</b> any item in Gantt chart has been
+changed by a user interaction in the Gantt.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is <u>not</u> called when
+the source cells are changed by edit – use here <a
+href="CellEdit.htm#OnAfterValueChanged">OnAfterValueChanged</a> event instead. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also <u>not</u> called
+when resources are assigned from popup dialog.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called after the change
+is applied.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'>, <b>col</b> is the Gantt chart cell.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>item</span></b><span
+style='font-size:10.0pt'> is the changed part, can be: <b>Main<i><span
+style='color:#00B0F0'>X</span></i></b> (X is plan as empty or 1,2,3,...), <b>Complete<i><span
+style='color:#00B0F0'>X</span></i></b>, <b>Text<i><span style='color:#00B0F0'>X</span></i></b>,
+<b>Flow</b>, <b>FlowText</b>, <b>Run</b>, <b>Constraint</b>, <b>Flags</b>, <b>FlagTexts</b>,
+<b>FlagIcons</b>, <b>Resources</b>, <b>Dependency</b>, <b>Lag</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Main</b> bar:      <b>new</b>
+= new Start date, <b>new2</b> = new End date or new Duration, <b>old</b> = old
+Start date, <b>old2</b> = old End date or duration, <b>action</b> = Move,
+Resize, Delete, DeleteAll, New, Correct</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                               <i>since
+9.2</i>, the new2/old2 is duration if no GanttEnd column is defined, otherwise
+it is the end date</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                               To
+better control the main bar change use <a href="GanttMain.htm#OnGanttMainChange">OnGanttMainChange</a>
+/ <a href="GanttMain.htm#OnGanttMainChanged">OnGanttMainChanged</a> API events
+instead of OnGanttChange / OnGanttChanged.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Complete</b>:     <b>new</b>
+= new Complete status, <b>old</b> = old Complete status, <b>action</b> = Change,
+DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Text</b>:              <b>new</b>
+= new Main bar Text, <b>old</b> = old Main bar Text, <b>action</b> = Change,
+DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Resources</b>:    <b>new</b>
+= new Resources text, <b>old</b> = old Resources text, <b>action</b> = Change <i>(<u>not</u>
+called for choosing resources from popup menu)</i>, DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>For <b>Flow</b>:              <b>new</b>
+= new Flow range, <b>old</b> = old Flow range, <b>action</b> = New, Delete,
+DeleteAll, Move, Resize</span></s><span style='font-size:10.0pt'> <i>removed 10.0</i></span></p>
+
+<p class=MsoNormal><s><span style='font-size:10.0pt'>For <b>FlowText</b>:     <b>new</b>
+= new FlowText, <b>old</b> = old FlowText, <b>action</b> = Change, DeleteAll</span></s><span
+style='font-size:10.0pt'> <i>removed 10.0</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Run</b> bar:        <b>new</b>
+= new Run value, <b>new2</b> = new RunStart, <b>old</b> = old Run value, <b>old2</b>
+= old RunStart value, <b>action</b> = Slide, Resize, Delete, DeleteAll, New, Move,
+MoveSource, Copy, Remove, RemoveSource</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               It
+is possible to parse the <b>new</b> and <b>old</b> run values by <a
+href="GanttRun.htm#GetGanttRun">GetGanttRun</a> method.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>                               To
+better control changes in individual Run boxes use <a
+href="GanttRun.htm#OnGanttRunBoxChanged">OnGanttRunBoxChanged</a> and <a
+href="GanttRun.htm#OnGanttRunBoxNew">OnGanttRunBoxNew</a> events.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>RunComplete</b>:             <b>new</b>
+= new RunComplete status, <b>old</b> = old RunComplete status, <b>action</b> =
+Change, DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Flags</b>:             <b>new</b>
+= new Flags, <b>old</b> = old Flags, <b>action</b> = Move, Delete, DeleteAll,
+New</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>FlagTexts</b>:    <b>new</b>
+= new FlagTexts, <b>old</b> = old FlagTexts, <b>action</b> = Delete, DeleteAll,
+New, Change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>FlagIcons</b>:    <b>new</b>
+= new FlagIcons, <b>old</b> = old FlagIcons, <b>action</b> = Delete, DeleteAll,
+Change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Points</b>:           <b>new</b>
+= new Point or Point, <b>old</b> = old Points or Point, <b>action</b> = Move,
+Delete, DeleteAll, New</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Dependency:</b> <b>new</b>
+= new dependency row ids, <b>new2</b> = new dependency types, <b>old</b> = old
+dependency row ids, <b>old2</b> = old dependency types, <b>action</b> = New, Edit,
+Delete, DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Lag</b>:               <b>new</b>
+= new DependencyLag value, <b>old</b> = old DependencyLag value, <b>action</b>
+= Change, Delete, DeleteAll</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Constraint</b>:   <b>new</b>
+= new Constraint value, <b>new2</b> = (new) ConstraintType, <b>old</b> = old
+Constraint value, <b>old2</b> = old ConstraintType for Change, <b>action</b> =
+New, Delete, Move, Change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string</i>    </span><a
+name=OnGanttTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGanttTip</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>tip</b>,
+<i>object</i> <b>XY</b>, <i>string</i> <b>name</b>)            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get a tip text for
+Gantt object to display it on mouse hover.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>tip</span></b><span
+style='font-size:10.0pt'> is the default tip text, return it or new tip.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>XY</span></b><span
+style='font-size:10.0pt'> are Gantt objects under mouse cursor returned by <a
+href="GetGanttXY">GetGanttXY</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is the Gantt object name, can be: <b>Main</b>, <b>Milestone</b>,
+<b>Flow</b>, <b>Run</b>, <b>Flags</b>, <b>Points</b>, <b>Constraints,
+Dependency</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnStartDragGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnStartDragGantt</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>name</b>,
+<i>int</i> <b>start</b>, <i>int</i> <b>end</b>, <i>int</i> <b>dir</b>, <i>object</i>
+<b>XY</b>, <i>string</i> <b>keyprefix</b>, <i>int</i> <b>clientX</b>, <i>int</i>
+<b>clientY</b>) <span style='color:red'>new <b>9.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on start dragging any
+object in Gantt chart except Run. For Run use <a href="GanttRun.htm#OnDragGantt">OnDragGanttRun</a>
+or <a href="GanttRun.htm#OnGanttRunDrop">OnGanttRunDrop</a> instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to suppress
+dragging.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For parameters description
+see OnDragGantt event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnEndDragGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnEndDragGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>name</b>,
+<i>int</i> <b>start</b>, <i>int</i> <b>end</b>, <i>int</i> <b>oldstart</b>, <i>int</i>
+<b>oldend</b>, <i>int</i> <b>dir</b>, <i>object</i> <b>XY</b>, <i>string</i> <b>keyprefix</b>,
+<i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>, <i>TRow</i> <b>ToRow</b>)  <span
+style='color:red'>new <b>9.1</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on end dragging any
+object in Gantt chart except Run. For Run use <a href="GanttRun.htm#OnDragGantt">OnDragGanttRun</a>
+or <a href="GanttRun.htm#OnGanttRunDrop">OnGanttRunDrop</a> instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to cancel the
+change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For parameters description
+see OnDragGantt event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int</i>        </span><a
+name=OnDragGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnDragGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>name</b>,
+<i>int</i> <b>start</b>, <i>int</i> <b>end</b>, <i>int</i> <b>oldstart</b>, <i>int</i>
+<b>oldend</b>, <i>int</i> <b>dir</b>, <i>object</i> <b>XY</b>, <i>string</i> <b>keyprefix</b>,
+<i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>, <i>TRow</i> <b>ToRow</b>)   <span
+style='color:red'>new <b>9.1</b></span><b><span style='color:#0070C0'>; upd 9.3</span></b>..</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called during dragging any object
+in Gantt chart except Run. For Run use <a href="GanttRun.htm#OnDragGantt">OnDragGanttRun</a>
+or <a href="GanttRun.htm#OnGanttRunDrop">OnGanttRunDrop</a> instead.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'>, <b>col</b> is the Gantt cell. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is the dragged Gantt object name, can be: <b>Main</b>,
+<b>Milestone</b>, <b>Flow</b>, <b>Run</b>, <b>Flags</b>, <b>Points</b>, <b>Constraints</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>start</span></b><span
+style='font-size:10.0pt'>, <b>end</b> are new start and end dates of the Gantt
+object, as count of milliseconds since 1/1/1970. For milestone, flag, point and
+constraint is end the same as start.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>oldstart</span></b><span
+style='font-size:10.0pt'>, <b>oldend</b> are original start and end dates of
+the Gantt object.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>dir</span></b><span
+style='font-size:10.0pt'> is dragging direction, 1 left edge (resize), 2 right
+edge (resize), 3 both edges (move)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>step</span></b><span
+style='font-size:10.0pt'> is count of calling the OnDragGantt since dragging
+started. It is 0 for the first call.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>XY</span></b><span
+style='font-size:10.0pt'> is the dragged Gantt object returned by <a
+href="GetGanttXY">GetGanttXY</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>keyprefix</span></b><span
+style='font-size:10.0pt'> is prefix of shift keys: “Ctrl”, “Alt”, “Shift” and
+also mouse button “Right” or “Middle”. The key is before the mouse, e.g.
+keyprefix=’CtrlRight’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>clientX</span></b><span
+style='font-size:10.0pt'>, <b>clientY</b> is mouse position on page.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ToRow</span></b><span
+style='font-size:10.0pt'> <i>(since 9.3)</i> is the row under mouse cursor. Now
+only for flags can differ from the <b>row</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>null</b> for normal
+behavior</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>0</b> to suppress
+the last change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>false</b> to cancel
+dragging and restore original state</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>true</b> to finish
+dragging and save this last change</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type</i>      </span><a
+name=OnStartDragGanttDependency><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnStartDragGanttDependency</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>object</i> <b>XY</b>,
+<i>int</i> <b>color</b>, <i>bool</i> <b>start</b>, <i>string</i> <b>keyprefix</b>,
+<i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>) <span style='color:red'>new
+<b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on start dragging
+dependency.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'>, <b>col</b> is actual Gantt cell where the dragging
+starts, <b>XY</b> is the Gantt object returned by <a href="GetGanttXY">GetGanttXY</a>
+the dependency is being dragged from.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>color</span></b><span
+style='font-size:10.0pt'> is dependency color and shape (0-39) that will be
+assigned to the dependency during dragging. It can be different from final
+color according to the <a href="GanttCompute.htm#CGanttDependencyAssign">GanttDependencyAssign</a>
+value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>start</span></b><span
+style='font-size:10.0pt'> is 1 if the dependency starts from the box start, 0
+if dependency starts from the box finish.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>keyprefix</span></b><span
+style='font-size:10.0pt'> is prefix of shift keys: “Ctrl”, “Alt”, “Shift” and
+also mouse button “Right” or “Middle”. The key is before the mouse, e.g.
+keyprefix=’CtrlRight’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>clientX</span></b><span
+style='font-size:10.0pt'>, <b>clientY</b> is mouse position on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>true</b> to
+suppress dragging. Return JavaScript array as [<b>color</b>, <b>start</b>] to
+change these values for the new dependency.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type</i>      </span><a
+name=OnDragGanttDependency><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnDragGanttDependency</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>object</i> <b>XYSrc</b>,
+<i>TRow</i> <b>torow</b>, <i>object</i> <b>XYDest</b>, <i>bool</i> <b>end</b>, <i>string</i>
+<b>keyprefix</b>, <i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>) <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called during dragging
+dependency.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>row</span></b><span
+style='font-size:10.0pt'>, <b>col</b> is source cell where dragging started. <b>XYSrc</b>
+is the Gantt object returned by <a href="GetGanttXY">GetGanttXY</a> where
+dragging started.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>torow</span></b><span
+style='font-size:10.0pt'> is destination row (under mouse cursor), <b>XYDest</b>
+is the Gantt object returned by <a href="GetGanttXY">GetGanttXY</a> under mouse
+cursor, can be null if there is no bar under mouse that accept dependencies.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>end</span></b><span
+style='font-size:10.0pt'> is 1 if the dependency points to the destination box
+start, 0 if dependency points to the destination box finish.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>keyprefix</span></b><span
+style='font-size:10.0pt'> is prefix of shift keys: “Ctrl”, “Alt”, “Shift” and
+also mouse button “Right” or “Middle”. The key is before the mouse, e.g.
+keyprefix=’CtrlRight’</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>clientX</span></b><span
+style='font-size:10.0pt'>, <b>clientY</b> is mouse position on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>null</b> for normal
+behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>-1</b> to not
+permit the dependency to attach to the destination bar. Ignored if there is no
+destination bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>0</b> to attach
+dependency to the destination bar finish. Ignored if there is no destination
+bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>1</b> to attach
+dependency to the destination bar start. Ignored if there is no destination
+bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>false</b> to cancel
+dragging and restore original state</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>true</b> to finish
+dragging and attach the dependency. Ignored if there is no destination bar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool</i>      </span><a
+name=OnEndDragGanttDependency><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnEndDragGanttDependency</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TGrid</i>
+<b>grid</b>, <i>object</i>[] <b>New</b>, <i>object</i>[] <b>Old</b>)            <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after finish
+dependency dragging.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>New</span></b><span
+style='font-size:10.0pt'> is an array of new dependencies that will be added,
+in format like <a href="GanttCompute.htm#GetDependencies">GetDependencies</a>.
+Now the array contains only one dependency.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Old</span></b><span
+style='font-size:10.0pt'> is an array of old dependencies that will be deleted,
+in format like <a href="file:///S:\Doc\GanttCompute.htm#GetDependencies">GetDependencies</a>.
+In case the new dependency replaces other dependencies between the same bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to modify
+parameters in <b>New</b> array to add dependency with different parameters
+(e.g. lag or type).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to remove some
+item from <b>Old</b> to not remove these dependencies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>true</b> to
+suppress adding the dependencies (and deleting the old). Return true also in
+case you added the dependencies in this event handler.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>false</b> for
+default behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RefreshGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>show</b> = 255, <i>string</i> <b>col</b> = null)                                                         <span
+style='color:red'>chg <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates Gantt chart(s).
+Also shrinks chart to show only used date range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>show is binary mask of items
+to refresh <i>(since 9.0, prior to 9.0 it was always 1 as 255 or 0 as 254)</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;1</b>
+- if the changes will be displayed in chart. For 0 the grid needs to be
+rerendered</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;2</b>
+- if the width of Gantt will be recalculated. If the width of Gantt is changed,
+it also refreshes header and background</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;4</b>
+- if the GanttHeader and GanttBackground will be recalculated</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;8</b>
+- if the dependency settings will be recalculated for all tasks. If some of
+them changed, it refreshes all dependency lines in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;16</b>
+- if all dependency lines in grid will be refreshed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;32</b>
+- if recalculates GanttSlack</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;64</b>
+- if recalculates Gantt charts in all variable rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <b>&amp;128</b>
+- if recalculates Gantt charts in all fixed rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example RefreshGantt(179)
+means (1+2+16+32+128), so it recalculates Gantt width, all dependency lines,
+slack and fixed rows and shows changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When <i>col</i> set,
+recalculates only chart in this column, otherwise recalculates all charts in
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Should be called after any
+Gantt option changes by API, e.g. for <b>zooming</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=GanttUpdate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GanttUpdate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   [0]                                                                                                      <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, temporary
+disables creating the Gantt. Requires call of <a href="#RefreshGantt">RefreshGantt</a>
+( ).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use to speed up some action,
+like: Grid.GanttUpdate = 1; /* do here some long updating action */;
+Grid.GanttUpdate = 0; Grid.RefreshGantt ( );</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=RefreshGanttDependencies><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>RefreshGanttDependencies</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>int</i>
+<b>show</b> = 1, <i>string</i> <b>col</b> = null)              <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates and redraws
+Gantt chart dependencies, useful when some rows show / hide.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> For <b>show</b> = 2 recalculates also all cell
+dependency inputs, use when some global dependency setting changes (e.g.
+GanttIncorrectDependencies)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=Recalculate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Recalculate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>show</b> = 0)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-calculates grid after
+given cell changes, according to cell’s or row’s parameter <a href="#IRecalc">Recalc</a>.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Always recalculates fixed
+calculated rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It recalculates also Gantt
+chart in that row, if any</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>void      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=RecalculateRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RecalculateRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow[]</i>
+<b>rows</b>, <i>bool</i> <b>show</b> = 0)                                                   <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates given rows in
+given order. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Recalculates also Gantt chart
+in these rows. If the recalculation changes Gantt size, it refreshes whole
+Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u>
+recalculate any other row (except the Gantt, see above), so if the calculation
+affects some other rows, they should be recalculated manually too.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, this function
+breaks CalcOrder in tree, as stated above</span></i><i><span lang=CS
+style='font-size:10.0pt'>!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To display the changes in
+grid call the function with the second parameter (<b>show</b>) as <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>rows</b> can be: a)
+array of TRow object, b) one TRow object, c) array of row ids (strings), d) one
+row id (string)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object   </i></span><a
+name=GetGanttXY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttXY</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>x</b>, <i>int</i> <b>y</b>)
+or (<i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>)                 <span
+style='color:red'>chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns Gantt objects on
+given position. <i>x</i>, <i>y</i> is the position inside the cell. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to provide some custom
+action on click or on drag or on hover</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <i>object</i> has set
+these properties when given tag is on the given position:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>Type</b>          Type of the top most (hovered) object, can be: &quot;<b>main</b>&quot;,
+&quot;<b>run</b>&quot;, &quot;<b>flags</b>&quot;, &quot;<b>points</b>&quot;,
+&quot;<b>constraints</b>&quot;, &quot;<b>dependency</b>&quot; </span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt;text-indent:35.4pt'><i><span
+style='font-size:10.0pt'>Since 10.0</span></i><span style='font-size:10.0pt'>
+it can be also &quot;<b>line</b>&quot; for GanttLines, GanttBase and
+GanttFinish.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>HTMLElement</i>
+<b>Main</b> – the <b>main bar</b> tag</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                </span><i><span
+lang=CS style='font-size:10.0pt'>int</span></i><span lang=CS style='font-size:
+10.0pt'> <b>MainPlan</b> - <i>(new </i></span><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> index (from 0) of the <b><i>Main</i></b> bar plan, see <a
+href="GanttObjects.htm#CGanttCount">GanttCount</a>. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>MainIndex</b> – index (from 0) of the <b><i>Main</i></b>
+box when the bar is not continuous and more boxes exist in the cell</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>MainType</b> - <i>(changed 10.0)</i> type of the <i>M<b>ain</b></i>
+tag, can be <b>null</b> (complete is null), <b>0</b> (not started part), <b>50</b>
+(incomplete part), <b>100</b> (complete part), <b>Milestone</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>MainX</b>
+– the X position inside the <b><i>Main</i></b> tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>HTMLElement</span></s></i><s><span style='font-size:10.0pt'> <b>Main2</b>
+– the second <b>main bar</b> tag for incomplete tasks – the other part that is
+not on the given position.</span></s><i><span style='font-size:10.0pt'>
+(removed 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i><s>int</s></i><s>
+<b>MainPos</b> – position of the <i>M<b>ain</b></i> tag – 0 alone, 1 left side,
+2 – right side </s><i>(removed 10.0)</i></span></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>                </span><i><s><span
+style='font-size:10.0pt'>HTMLElement</span></s></i><s><span style='font-size:
+10.0pt'> <b>Flow</b> – the real flow tag on given position</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>                </span><i><s><span
+style='font-size:10.0pt'>HTMLElement</span></s></i><s><span style='font-size:
+10.0pt'> <b>Flow2</b> – <i>(new 6.4)</i> the second real flow tag for
+incomplete tasks that is <u>not</u> on given position</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal><span lang=CS style='font-size:10.0pt'>                </span><i><s><span
+style='font-size:10.0pt'>int</span></s></i><s><span style='font-size:10.0pt'> <b>FlowPos</b>
+– <i>(new 6.4)</i> position of the incomplete <b><i>Flow</i></b> tag – 0 alone,
+1 left side, 2 – right side</span></s><i><span style='font-size:10.0pt'> (removed
+10.0)</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>int</span></s></i><s><span style='font-size:10.0pt'> <b>FlowIndex</b> –
+index (from 0) of the <b><i>Flow</i></b> tag when the flow is not continuous
+and more flow tags exists in the cell</span></s><i><span style='font-size:10.0pt'>
+(removed 10.0)</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>int</span></s></i><b><s><span style='font-size:10.0pt'> FlowX</span></s></b><s><span
+style='font-size:10.0pt'> – the X position inside the <b><i>Flow</i></b> tag</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>HTMLElement</span></i><span
+style='font-size:10.0pt'> <b>Run</b> – the continuous run tag on given position</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>RunIndex</b> - index (from 0) of the <b><i>Run</i></b>
+box inside its cell</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>RunX</b> - the X position inside the <b><i>Run</i></b>
+tag</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>RunType</b> – type of the Run box</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>string</span></i><span
+style='font-size:10.0pt'> <b>RunClass</b> – <i>(new 10.0) </i>class of the Run
+box</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>string</span></i><span
+style='font-size:10.0pt'> <b>RunId</b> -<i> (new 10.0) </i>id of the <b><i>Run</i></b>
+box, if set</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>string</span></i><span
+style='font-size:10.0pt'> <b>RunGroup</b> -<i> (new 10.0)</i> group of the <b><i>Run</i></b>
+box, if set</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>int</span></i><span
+style='font-size:10.0pt'> <b>RunState</b> -<i> (new 10.0)</i> state of the <b><i>Run</i></b>
+box, bit array:  1 - disabled, 2 locked, 4 selected, 8 added, 16 deleted, 32
+moved, 64 resized, 128 changed.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>HTMLElement</i>
+<b>Flag</b> – the flag tag on given position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>HTMLElement</i>
+<b>FlagText</b> – <i>(new 10.0)</i> the flag text tag on given position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>FlagIndex</b>
+– index (from 0) of the <b><i>Flag</i></b> tag when the cell contains more
+flags</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>FlagX</b>
+– the X position inside the <b><i>Flag</i></b> tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>HTMLElement</i>
+<b>Point</b> – <i>(new 6.4)</i> the point tag on given position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>PointIndex</b>
+– <i>(new 6.4)</i> index (from 0) of the <b><i>Point</i></b> tag when the cell
+contains more points</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>Point
+X</b> – <i>(new 6.4)</i> the X position inside the <b><i>Point</i></b> tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>HTMLElement</i>
+<b>Constraint</b> – the constraint tag on given position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>ConstraintX</b>
+– the X position inside the <b><i>Constraint</i></b> tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>ConstraintType</b> – can be “<b>MinStart</b>”, “<b>MaxStart</b>”, ”<b>MinEnd</b>”,
+“<b>MaxEnd</b>”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>Line</b>                                                <i>(new
+10.0)</i> Index of the line in GanttLines or -1 for GanttBase or -2 for
+GanttFinish</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>LineLeft</b>                                        <i>(new
+10.0)</i> Left position in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>LineWidth</b>                                     <i>(new
+10.0)</i> Width in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>LineStart</b>                                       <i>(new
+10.0)</i> Line start date in milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>LineEnd</b>                                         <i>(new
+10.0)</i> Line end date if any, in milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                string <b>LineClass</b>                                 <i>(new
+10.0)</i> Line CSS class part</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>LineFlags</b>                                       <i>(new
+10.0)</i> Flags of the line. &amp;<b>1</b> -if the line is editable, &amp;<b>2</b>
+- if the line can be placed on excluded dates, &amp;<b>4</b> if the LineStart
+is end date</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>DependencyFrom</b>                  </span><i><span lang=CS
+style='font-size:10.0pt'>(new </span></i><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> </span><span style='font-size:10.0pt'>row id the dependency comes from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>DependencyFromBox</b>          </span><i><span lang=CS style='font-size:
+10.0pt'>(new </span></i><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> main bar </span><span style='font-size:10.0pt'>plan number or run box
+id the dependency comes from</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>DependencyTo</b>                       </span><i><span lang=CS
+style='font-size:10.0pt'>(new </span></i><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> </span><span style='font-size:10.0pt'>row id the dependency goes to</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>DependencyToBox</b>               </span><i><span lang=CS style='font-size:
+10.0pt'>(new </span></i><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> main bar </span><span style='font-size:10.0pt'>plan number or run box
+id the dependency goes to</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>string</i>
+<b>DependencyType</b>                   </span><i><span lang=CS
+style='font-size:10.0pt'>(new </span></i><i><span style='font-size:10.0pt'>10.0</span></i><i><span
+lang=CS style='font-size:10.0pt'>)</span></i><span lang=CS style='font-size:
+10.0pt'> </span><span style='font-size:10.0pt'>type of the dependency like fs,
+ss, sf, fs. Can be empty for fs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>DependencyStart</b>                         </span><i><span
+lang=CS style='font-size:10.0pt'>(new </span></i><i><span style='font-size:
+10.0pt'>10.0</span></i><i><span lang=CS style='font-size:10.0pt'>)</span></i><span
+lang=CS style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>Start
+date of the dependency, in milliseconds since 1/1/1970. It does not contain the
+lag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>DependencyEnd</b>                          </span><i><span
+lang=CS style='font-size:10.0pt'>(new </span></i><i><span style='font-size:
+10.0pt'>10.0</span></i><i><span lang=CS style='font-size:10.0pt'>)</span></i><span
+lang=CS style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>End
+date of the dependency, in milliseconds since 1/1/1970</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>DependencyLag</b>                          </span><i><span
+lang=CS style='font-size:10.0pt'>(new </span></i><i><span style='font-size:
+10.0pt'>10.0</span></i><i><span lang=CS style='font-size:10.0pt'>)</span></i><span
+lang=CS style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>Lag of
+the dependency start in milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>DependencySpan</b>                         </span><i><span
+lang=CS style='font-size:10.0pt'>(new </span></i><i><span style='font-size:
+10.0pt'>10.0</span></i><i><span lang=CS style='font-size:10.0pt'>)</span></i><span
+lang=CS style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>Maximal
+span of the dependency in milliseconds</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i>int</i> <b>DependencyColor</b>                       </span><i><span
+lang=CS style='font-size:10.0pt'>(new </span></i><i><span style='font-size:
+10.0pt'>10.0</span></i><i><span lang=CS style='font-size:10.0pt'>)</span></i><span
+lang=CS style='font-size:10.0pt'> </span><span style='font-size:10.0pt'>Number
+of color / shape of the dependency, 0 - 40 or null</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                <i><s>string</s></i><s>
+<b>DependencyStartLeft</b> – list of ids of all rows that are connected from
+this left side. The ids are separated by Lang.ValueSeparator (‘<b>;</b>’ by
+default)</s><i> (removed 10.0)</i></span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>string</span></s></i><s><span style='font-size:10.0pt'> <b>DependencyStartRight</b>
+- list of ids of all rows that are connected from this right side.</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>string</span></s></i><s><span style='font-size:10.0pt'> <b>DependencyEndLeft</b>
+- list of ids of all rows that are connected to this left side.</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><s><span style='font-size:
+10.0pt'>string</span></s></i><s><span style='font-size:10.0pt'> <b>DependencyEndRight</b>
+- list of ids of all rows that are connected to this right side.</span></s><i><span
+style='font-size:10.0pt'> (removed 10.0)</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object   </i></span><a
+name=GetGanttHeaderXY><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttHeaderXY</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>   </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>x</b>, <i>int</i> <b>y</b>)
+or (<i>int</i> <b>clientX</b>, <i>int</i> <b>clientY</b>)            <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns object for specific
+cell of Gantt header.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to provide some custom
+action on click or on drag or on hover, for example to show special tip for
+header cell in OnTip event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <i>object</i> has set
+these properties:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>Header</b>
+– index of the GanttHeader attribute, 1 – 5</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>Start</b>
+– start date shown in the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>End</b>
+– start date of the next cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                string <b>Units</b>
+– GanttUnits used in the cell, e.g. “d” or “w”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>X</b>,
+<b>Y</b> – click position relative to the cell in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                int <b>Width</b>,
+<b>Height</b> – size of the header cell in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>type      </i></span><a
+name=CheckGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CheckGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                                              <span
+style='color:red'>new <b>6.3</b>; chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Checks if given cell can get
+value <b>val</b>, if it is correct for Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the cell cannot be changed
+to val, it returns <b>false</b> and does <u>not</u> do any change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the value is correct, it
+returns the <b>val</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In some cases <i>(since 7.0)</i>
+it can change the val (e.g. because of exclude settings), it returns the new
+value.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If it does <u>not</u>
+return false, it has already done changes in grid, so the value must put into
+the cell.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It updates Gantt chart when
+the source column value changes to val (e.g. mirroring Ancestors / Descendants
+or End / Duration).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it before the cell change
+to know if it can be done and to provide required changes in Gantt chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This method is called
+automatically when the cell is changed by editing or from Gantt chart by a
+user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It check circular
+dependencies, percentage complete, negative duration, End&gt;Start.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The checking depends on <a
+href="GanttCompute.htm#CGanttCheck">GanttCheck</a> settings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To set value to Gantt source
+cell by API use:  </span><span style='font-size:10.0pt;font-family:"Courier New"'>val
+= grid.CheckGantt(row,col,val); if(val!==false) grid.<a
+href="CellEdit.htm#SetValue">SetValue</a>(row,col,val,1);</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnCheckGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnCheckGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>TRow </i><b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>newval</b>)                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to check new Gantt
+value after editing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called for every cell,
+even for all not Gantt cells. Called only when Gantt chart defined and GanttCheck
+is not 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return false to suppress the
+change and continue editing</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return true to permit the
+change without further default checking</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return null to default
+behavior</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return changed value to be
+used instead newval. The default checking will be still done for this changed
+value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>newval</span></b><span
+style='font-size:10.0pt'> is new value for the cell, <b>col</b> is cell column,
+not Gantt column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=HasGantt><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HasGantt</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (
+)                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if in the grid
+exists Gantt column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=HasDependencies><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>HasDependencies</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (
+)                                                                                 <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true if the Gantt
+chart has defined some dependencies</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetGanttDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>pos</b>, <i>string</i> <b>col</b> = null)                                                                     <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns exact date (as count
+of milliseconds) on the given position in chart, in pixels</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GetGanttPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttPos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>              (<i>int</i>
+<b>date</b>, <i>string</i> <b>col</b> = null)                                                         <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns position in chart, in
+pixels of the date (as count of milliseconds)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=GanttUnitsDuration><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GanttUnitsDuration</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                     (<i>string</i>
+<b>units</b> = null, <i>string</i> <b>col</b> = null)                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns duration of given <b>units</b>
+as <a href="GanttDisplay.htm#CGanttUnits">GanttUnits</a> in milliseconds, e.g.
+for &quot;m&quot; returns 60000.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>units</b> = null,
+returns duration for <a href="GanttCompute.htm#CGanttDataUnits">GanttDataUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>units</b> = 0, returns
+duration for <a href="file:///S:\Doc\GanttDisplay.htm#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For special variable duration
+units like 'M', 'M3', 'M6' and 'y' returns average duration.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=RoundGanttDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RoundGanttDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>int</i>
+<b>date</b>, <i>int</i> <b>round</b>, <i>int</i> <b>base</b> = null, <i>string</i>
+<b>col</b> = null,<i> string</i> <b>units</b> = null, <i>TRow</i> <b>row</b> =
+null) <span style='color:red'>new <b>6.3</b></span><span style='color:#0070C0'>;
+upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rounds and returns the given
+Gantt <b>date</b> (as count of milliseconds) according to the <b>round</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>round</span></b><span
+style='font-size:10.0pt'> is bit array = </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – round to beginning of the unit, <b>2</b> – round to
+end of the unit, </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – round to last work time before, <b>8</b> – round to
+first work time after</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>16</span></b><span
+style='font-size:10.0pt'> – like <b>1</b>, but after rounding to worktime, <b>32</b>
+– like <b>2</b>, but after rounding to worktime</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>48</span></b><span
+style='font-size:10.0pt'> – move back to original unit if it was moved to
+another because it had no work time</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>64</span></b><span
+style='font-size:10.0pt'> – input (date and base) is position in pixels instead
+of date, <b>128</b> – returns position in pixels instead of date</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example round =
+1+4+32+128 rounds to beginning, next to workday before, next to end and returns
+position in pixels</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>base</span></b><span
+style='font-size:10.0pt'> is base date (count of milliseconds), if set, to the
+resulted date is added difference between base and base rounded to units.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>units</span></b><span
+style='font-size:10.0pt'> can be set to any Gantt units like ‘d’ or ‘h’ or null
+for GanttUnits attribute.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>row</span></b><span style='font-size:10.0pt'> is row
+object used to calculate worktime when the row has set custom GanttCalendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=DiffGanttDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DiffGanttDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>start</b>, <i>int</i> <b>end</b>, <i>string</i> <b>units</b> = null, <i>string</i>
+<b>last</b> = null, <i>string</i> <b>col</b> = null, <i>TRow</i> <b>row</b> =
+null)          <span style='color:red'>new <b>6.4</b></span><span
+style='color:#0070C0'>; upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns count of <b>units</b>
+between dates, in workdays.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>start</span></b><span
+style='font-size:10.0pt'> and <b>end</b> can be set set as count of millisecond
+or by English date string.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>units</span></b><span
+style='font-size:10.0pt'> are standard GanttDataUnits like ‘d’ or ‘h’. If not
+set, GanttDataUnits are used.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>last</span></b><span
+style='font-size:10.0pt'> can be set to standard GanttDataUnits like ‘d’ or ‘h’
+to add this unit to the end date. If set to <b>1</b>, one GanttDataUnits is
+added.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> – gantt column to use, if not set, the first gantt
+column in grid will be used</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set holidays
+(GanttExclude) and the <b>units</b> are bigger than exclude units, it returns
+count of units that contain at least one work time unit.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>row</span></b><span style='font-size:10.0pt'> is row
+object used to calculate worktime when the row has set custom GanttCalendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=IncGanttDate><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>IncGanttDate</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>int</i>
+<b>start</b>, <i>int</i> <b>dur</b>, <i>string</i> <b>units</b> = null, <i>bool</i>
+<b>beg</b> = false, <i>string</i> <b>col</b> = null, <i>TRow</i> <b>row</b> =
+null)          <span style='color:red'>new <b>6.7</b></span><span
+style='color:#0070C0'>; upd <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <b>start</b> date
+increased for <b>dur </b>count of <b>units</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>start</span></b><span
+style='font-size:10.0pt'> can be set as count of millisecond or by English date
+string.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>dur</span></b><span
+style='font-size:10.0pt'> is count of <b>units</b> in workdays, without
+excluded dates. Can be negative to decrease the date.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>units</span></b><span
+style='font-size:10.0pt'> are standard GanttDataUnits like ‘d’ or ‘h’. If not
+set, GanttDataUnits are used.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>beg</span></b><span
+style='font-size:10.0pt'> – if the resulted date is in holidays, for <b>0</b>
+it returns last work date before and for <b>1</b> first work date after</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> – gantt column to use, if not set, the first gantt
+column in grid will be used</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(new 8.0) </span></i><b><span
+style='font-size:10.0pt'>row</span></b><span style='font-size:10.0pt'> is row
+object used to calculate worktime when the row has set custom GanttCalendar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+; ------------------------------------------------------------------------------
+; This Source Code Form is subject to the terms of the Mozilla Public License,
+; v. 2.0. If a copy of the MPL was not distributed with this file, You can
+; obtain one at http://mozilla.org/MPL/2.0/
+;
+; Copyright (C) 2013-2014, Peter Johnson (www.delphidabbler.com).
+;
+; $Rev: 1748 $
+; $Date: 2014-01-30 13:45:45 +0000 (Thu, 30 Jan 2014) $
+;
+; Change Log for Environment Variables Unit
+; ------------------------------------------------------------------------------
+
+Release v3.0 of 30 January 2014
++ Major rewrite of Environment Variables Unit:
+  - New TPJEnvironmentVars static class, along with some subsidiary types, that provides methods to interrogate, enumerate and manipulate environment variables. This class supersedes the TPJEnvVar component and the various public routines: it replicates and extends their functionality while also fixing several bugs found in them.
+  - Both the TPJEnvVars component and the public routines are now deprecated and have been flagged as such.
+  - All public routines re-implemented as simple wrappers around calls to TPJEvironmentVas methods.
+  - TPJEnvVars component refactored and heavily revised to call into TPJEnvironmentVars. Some minor bugs fixed.
+  - On compilers that support it, anonymous methods can now be used as callbacks passed to enumerator methods.
+  - Unit names in uses clauses are now qualified with their namespace when compiled with Delphi XE2 and later.
+  - Registration code for the TPJEnvVars component has been removed into a new PJEnvVarsDsgn unit. This new unit is now required only if the deprecated component is to be registered with the Delphi IDE.
+  - Fixed problem with compiler directives that was causing compilation to fail on Delphi XE5.
++ Added two public domain demo projects, with a VCL and FireMonkey 2 version of each, along with a read-me file that explains how to compile and use them.
++ WinHelp help file removed from project.
++ Source code license changed to Mozilla Public License v2.0.
++ Updated documentation:
+  - The unit is now extensively documented in XMLDoc format.
+  - The project read-me file has been completely overhauled re the changes.
+  - The main documentation files are now licensed under the Mozilla Public License v2.0.
+  - The documentation internet short-cut's URL has been changed to reference new online documentation. The short-cut has also been renamed.
+  - The MPL text file's contents have been changed from the Mozilla Public License v1.1 to v2.0 and the file has been renamed accordingly.
+  - HTML file containing demo code has been removed.
+
+Release v2.0 of 23 October 2010
++ Added an enumerator for the environment variables component that supports the Delphi for..in construct (issue #10: http://code.google.com/p/ddab-lib/issues/detail?id=10).
++ Added new EnvBlockSize and two overloaded GetAllEnvVarNames routines.
++ Renamed some conditional compilation symbols.
++ Abandoned Delphi 3 support.
++ Updated help file re changes. Added links to Wiki in place of detailed information.
++ Added demo code for new enumerator and routines to demo read-me file.
++ Updated read-me file.
+
+Release v1.3.2 of 22 October 2010
++ Fixed bug in ExpandEnvVars routine (issue #11: http://code.google.com/p/ddab-lib/issues/detail?id=11).
++ Made minor changes to read-me file.
+
+Release v1.3.1 of 20 February 2010
++ Fixed bug in GetAllEnvVars routine (issue #3: http://code.google.com/p/ddab-lib/issues/detail?id=3).
++ Fixed bug in ExpandEnvironmentStrings (issue #4: http://code.google.com/p/ddab-lib/issues/detail?id=4).
++ Updated help file and example code document for compatibility when Unicode Delphis. Example code stripped from help file.
++ Updated documentation.
+
+Release v1.3 of 17 August 2008
++ Fixed bugs in component:
+  - Compilers later than Delphi 7 used deprecated Win32Error instead of EOSError.
+  - Passing nil as owner to component's constructor caused an access violation.
++ Added assertion to enforce passing non-nil callback function to TPJEnvVars.EnumNames.
++ Switched off UNSAFE_TYPE warnings in Delphi 7 and later.
++ Expanded and corrected help file content and updated copyright date.
++ Changed to Mozilla Public License.
+
+Release v1.2 of 10 August 2003
++ Fixed bug causing error when attempting to access an environment variable that does not exist.
+
+Unreleased v1.1 of 31 July 2003
++ Updated component palette from "PJ Stuff" to "DelphiDabbler".
++ Changed references to EWin32Error exception to EOSError in components compiled with Delphi 6 and later.
++ Updated copyright date and owner in help file.
+
+Release v1.0 of 02 September 2001
++ Original version.

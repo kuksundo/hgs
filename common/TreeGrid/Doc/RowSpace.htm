@@ -1,0 +1,316 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Space rows</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Space rows</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt;color:red'>Space rows
+have all row and cell attributes as normal grid rows.</span></i></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Solid space rows are
+especially used for toolbars, tabbers, functional rows like Group or Search or
+any custom control rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space row is <u>not</u>
+divided to column sections, is still visible and never scrolled. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space row <u>cannot</u> be
+sorted, filtered, selected, deleted, added or dragged, <u>cannot</u> have child
+rows, <u>cannot</u> be exported to Excel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By space rows are done
+special rows <b>Group</b>, <b>Search,</b> <b>Toolbar </b>and<b> Tabber</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space row can be placed in <span
+style='color:red'>&lt;</span><b><span style='color:blue'>Solid</span></b><span
+style='color:red'>&gt; </span>tag as the <span style='color:red'>&lt;</span><b><span
+style='color:blue'>I</span></b><span style='color:red'>&gt;</span> or <span
+style='color:red'>&lt;</span><b><span style='color:blue'>Space</span></b><span
+style='color:red'>&gt;</span> tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is placed into table
+between other rows sections (Head / Body / Foot) or above or below table, the position
+is set by <a href="#SpaceSpace">Space</a> attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be placed also outside
+grid by <a href="#SpaceTag">Tag</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every space row can have its
+own named cells defined by <a href="#SpaceCells">Cells</a> array. The names of
+cells can, but don’t need to be the same as column names.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>The space cells are <u>not</u>
+related to grid columns</span></b><span style='font-size:10.0pt'>, every cell
+have its width set by its <a href="ColWidth.htm#SpaceCellWidth">Width</a>
+attribute. The cells cannot be spanned. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The space cell attributes never
+read its value from grid column, even if they are named same. The space cells
+are not affected by any grid column resize or move.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Space row can be hidden and
+displayed by <a href="RowBasics.htm#IVisible">Visible</a> attribute or by <a
+href="RowBasics.htm#ShowRow">ShowRow</a> / <a href="RowBasics.htm#HideRow">HideRow</a>
+API methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Can be calculated, the <a
+href="CellFormula.htm#CellFormula">Formula</a> must be set for individual
+cells. Can run after cell change or button type cell click. Cells can be
+focused and/or edited.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string</i>[]  </span><a
+name=SpaceCells><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Cells</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of cells
+in the row. The names of cells can, but don’t need to be the same as column
+names.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>These cells are <u>not</u>
+related to grid columns</span></b><span style='font-size:10.0pt'>, even if they
+have the same names. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every cell have its width set
+by its <a href="ColWidth.htm#SpaceCellWidth">Width</a> attribute, so the cells
+are <u>not</u> aligned with grid columns. The cells cannot be spanned. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>int        </i></span><a
+name=SpaceSpace><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Space</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [2]                                                                                                                              <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Position of the row inside
+grid, specifies horizontal section of the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more solid rows has the
+same Space value, they are placed in the order they are in XML.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;color:blue'>-1</span></b><span
+style='font-size:10.0pt'> – above table, <b><span style='color:blue'>0</span></b>
+– above Head, <b><span style='color:blue'>1</span> </b>– between Head and Body,
+<b><span style='color:blue'>2</span></b> – between Body and Foot, <b><span
+style='color:blue'>3</span></b> – between Foot and vertical scrollbar, <b><span
+style='color:blue'>4</span></b> – under vertical scrollbar, <b><span
+style='color:blue'>5</span></b> – under table</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>-1</span></b><span
+style='font-size:10.0pt'>, <b>0</b>, <b>4</b>, <b>5</b> are spanned for whole
+grid, including vertical scrollbar and pager, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>, <b>2</b>, <b>3</b>  are spanned only for columns –
+the vertical scrollbar and pager are placed right side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string    </i></span><a
+name=SpaceTag><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Tag</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To place Space row <b>outside</b>
+the grid to any HTML tag on page. If set, the <a href="#SpaceSpace">Space</a>
+attribute is ignored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is the <b>id</b> of HTML
+tag where to render the row. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The width of the external
+space row is still preserved to be the same as the actual main table width.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>In trial version this
+attribute is ignored.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>string    </i></span><a
+name=SpaceKind><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Kind</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             <span
+style='color:blue'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Kind of the space row, can be
+set also by tag name, e.g &lt;Space Kind=’Test’ ... /&gt; is the same as
+&lt;Test ... /&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are special kinds of
+space rows: <b>Group</b>, <b>Search</b>, <b>Toolbar</b>, <b>Toolbar1</b>, <b>Toolbar2</b>,
+<b>Topbar</b>, <b>Topbar1</b>, <b>Topbar2</b>, <b>Tabber</b>, <b>Tabber2</b> <i>(since
+10.0)</i>, <b>Fill</b> (empty row created for ConstHeight) with special
+features.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By the custom Kind settings
+you can set CSS class for the whole row, the CSS class name will be Gx + kind +
+Row, e.g. GMTestRow.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>          <i>int        </i></span><a
+name=SpacePanel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Panel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row displays
+(disabled) left panel, just for the same look as other rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 2, it displays the
+panel even if the whole panel column is hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=SpaceCellLabel></a><a name=SearchLabel><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Label</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                          <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML label displayed in front
+of the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Inserts new cell Type=’Html’
+CanFocus=’0’ Width=’-1’ in front of the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=SpaceCellLabelRight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LabelRight</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML label displayed after
+the cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Inserts new cell Type=’Html’
+CanFocus=’0’ Width=’-1’ after the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>int        </i></span><a
+name=SpaceCellLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Left</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                               <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Left indent of any cell, in
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Inserts new cell Type=’Html’
+CanFocus=’0’ Width=’Label width’ in front of the cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>bool      </i></span><a
+name=SpaceCellRelWidth></a><a name=CellRelWidth><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>RelWidth</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to 1 to resize the
+cell to whole rest of the space row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or to have previous cells
+aligned to left edge and next cells aligned to right edge of the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

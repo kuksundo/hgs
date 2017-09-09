@@ -1,0 +1,993 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Sorting rows</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Sorting rows</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Rows in TreeGrid can be
+sorted by one or more columns. Up to three columns are supported by defaults.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only variable body rows can
+be sorted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The values can be sorted as
+numbers or as strings, see <a href="#CNumberSort">NumberSort</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Strings can be sorted case
+sensitive or insensitive. Can be also sorted according to actual browser
+language or by special settings. See <a href="#Strings">comparing strings</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorting can be changed by a
+user by click to header, see also <a href="#CfgSortIcons">SortIcons</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorting can be preset by
+&lt;Cfg <a href="#CfgSortCols">Sort</a> /&gt; attributes. This attribute is
+saved to cookies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorting can be changed by API
+method <a href="#ChangeSort">ChangeSort</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSorting><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sorting</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [1]
+                                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If rows in grid can be sorted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>,
+ a user cannot sort grid, also the sort icons in header are hidden. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSorted><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sorted</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [1]                    Saved
+to cookies, to not load it, set <b>SortedLap</b>=’1’                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If sorting is enabled by a
+user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can enable / disable
+sorting by click to sort icon on toolbar (Button named Sort).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CCanSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If a user can sort rows
+according to this column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the column can
+be still set to <a href="#CfgSort">Sort</a> by API, but its sorting icon is not
+visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+[] </span><a name=CfgSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Sort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [“”]                    Saved
+to cookies, to not load it, set <b>SortLap</b>=’1’                                  <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined or actual sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Array of column names (comma
+separated), according to them are rows sorted, in this order.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default are column sorted
+ascending, <span style='color:red'>to sort by column <b>descending</b></span>,
+list its name with <b><span style='color:red'>minus</span></b> sign, e.g. <b>Sort</b>=’Col1,–Col2,Col3’
+– the second column is sorted descending.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the first column(s) in
+this array have set <a href="ColVisibility.htm#CVisible">Visible</a>=0 and <a
+href="ColVisibility.htm#CCanHide">CanHide</a>=0, a user cannot change sorting
+for these columns and they will stay the first forever – use this case to
+predefine some sorting behavior.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgDefaultSort></a><a name=CfgDefaultSortCol><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:yellow'>DefaultSort</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A column according to that is
+grid sorted when no other sorting is set or as the last sort column to pre-set
+row positions to some default state.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This column can be hidden
+(Visible=’0’ CanHide=’0’). When it is visible, only two columns (see <a
+href="#CfgMaxSort">MaxSort</a>) for sorting are available, this default column
+is always as the third.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgMaxSort></a><a name=CfgMaxSortCols></a><a name=CfgMaxSortColumns><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>MaxSort</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [<b>3</b>]                                                                                                                      
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of columns
+according to grid can be sorted. The more columns the slower sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Different icons are only for
+first three sorting columns, next columns have the same icon as the third
+column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this count are <u>not</u>
+included invisible columns (Visible=0 and CanHide=0).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSortIcons><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortIcons</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]        Saved
+to cookies, to not load it, set<b> SortIconsLap</b>=’1’                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How a user can set sorting and
+icons are displayed in all headers</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – hides icons and sorts ascent by click to cell,
+descent by double click, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – shows icons and sorts ascent by click to cell,
+descent by double click, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – sorts by click to icon only, bottom icon ascent,
+upper icon descent, </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – sorts by click to cell, bottom part ascent, upper
+part descent,</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change direction meaning
+set <a href="#CfgReversedSortIcons">ReversedSortIcons</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Header&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int        </i></span><a
+name=HeaderSortIcons><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortIcons</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and which sort icons will
+be shown on the header. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             the sort icons are hidden and the caption
+is inactive, columns cannot be sorted by clicking</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             all sorting icons are shown and captions
+are active</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'>             shows only icons for sorted columns, but
+all captions are active</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i>
+</span><a name=CfgReversedSortIcons><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>ReversedSortIcons</span></u></b></a><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   .</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the sort
+icons for ascending and descending sorting are swapped</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgAutoSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                        Saved
+to cookies, to not load it, set <b>AutoSortLap</b>=’1’                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to1, row is
+automatically sorted (moved) after value is changed by user’s edit.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Row can be moved only
+inside its page.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgReSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ReSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                             Server
+paging, output attribute only                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute is filled in <a
+href="PagingServer.htm#DataRequest">Request XML</a> as request for re-sorting
+grid after sorting has been permitted by user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Position><b><span style='font-size:20.0pt'>Controlling
+sort position</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt; &lt;Root&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      <i>bool      </i></span><a
+name=ICanSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row’s immediate <b><u>children</u></b>
+can be sorted (to suppress sorting for root rows, you can set this parameter in
+&lt;<b>Root</b>&gt; tag).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>int        </i></span><a
+name=ISortPos><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortPos</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, suppresses sorting of
+this row and places it always to specified position independently on sorting
+state.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Positive number places the
+row from beginning, negative number places the row from end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Therefore rows with SortPos
+will be placed in this way: 1,2,3, ... ,all sorted rows without SortPos, ... ,
+-3, -2, -1</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more rows have the same
+SortPos, they will be sorted inside the group only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CNumberSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NumberSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [null]                                                                                                                <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>0</b> to always
+sort root rows or row’s children according to the column values as strings</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> to always
+sort root rows or row’s children according to the column values as numbers </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the number sort
+is chosen for columns of types Int, Float and Date and for all the others is
+used string sort.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> for Bool
+type if you want to distinguish between 0 and “”, when CanEmpty is set to
+support three states Bool.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CRawSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>RawSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]                                                                                                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default for <b>0</b> it
+sorts values formatted according to its Type and Format.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> to sort
+directly by the unformatted cell value. For Enum with and set by EnumKeys it
+sorts by the key name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>2</b> for Enum
+type to sort it by position in Enum / EnumKeys array. It is slower than setting
+Enum values by index and sorting them as numbers (with <a href="#CNumberSort">NumberSort</a>=’1’).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellSortValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value used for compare when <b>sorting</b>
+and <b>grouping</b> instead of cell value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful for special non
+editable cells like Html, Icon, List.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellSortDescValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SortDescValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Value used for compare when
+done <b>descending</b> <b>sorting</b> instead of cell value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Useful to set if you want to
+preserve row position when sorting by the column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetSortValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetSortValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>,
+<i>bool</i> <b>desc</b>, <i>bool</i> <b>group</b>)              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value for <b>sorting</b>
+and <b>grouping</b>, <i>val</i> is predefined value, returns <i>val</i> or new
+value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>desc</span></b><span
+style='font-size:10.0pt'> is true for descending sorting, <b>group</b> is true
+when called while grouping</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Strings><b><span style='font-size:20.0pt'>Comparing
+strings</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can also specify these
+settings for whole grid in default column &lt;Def&gt;&lt;D
+Name=’C’/&gt;&lt;/Def&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CLocaleCompare><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LocaleCompare</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared
+according to browser’s locale settings. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is done only for first <b>1920</b>
+Unicode characters.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For higher Unicode characters
+like Chinese, Korean or Japanese you must define <a href="#CCharCodes">CharCodes</a>
+instead.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>bool      </i></span><a
+name=CCaseSensitive><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CaseSensitive</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                                       <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared case
+sensitive. For sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string    </i></span><a
+name=CWhiteChars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>WhiteChars</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of characters to ignore
+when sorting, filtering or grouping. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set for example to
+“ “ (space) to ignore spaces (it means that for example “a b   c” and “abc”
+strings are the same.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>string</i>[*]
+</span><a name=CCharCodes><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CharCodes</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:blue'>upd <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It changes characters in
+comparing strings for sorting, filtering and grouping.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is first character
+separated array of pair of characters to replace the first character by the
+second when comparing strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “|y|i|Y|I|.|,” –
+replaces ‘y’ by ‘i’, ‘Y’ by ‘I’ and ‘.’ by ‘,’ </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>–
+it means that when comparing strings does not differ between letter ‘y’ and
+‘i’, both cases and also does not differ between comma and point.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first character must be
+one letter, but the second in fact can be any letter or string or even empty
+string, like “|a|xxx|b||c|ff”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If you use <a href="DLL.htm">TreeGrid
+server</a> DLL/SO, there must be the second character one letter only too.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Setting this attribute can
+slow down sorting, grouping and filtering.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to row cell, it
+affects row’s children for sorting and grouping. For filter it can be set only
+to Filter cell and affects also all values in the column.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Actions><b><span style='font-size:20.0pt'>Sorting actions</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>By default</span></b><span
+style='font-size:10.0pt'> TreeGrid sorts according to the last clicked column
+as the first, the default settings are:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Actions OnClickSort=&quot;<b>SortAsc</b> OR <b>SortDesc</b>&quot;
+OnClickSortUp=&quot;<b>SortAsc</b>&quot; OnClickSortDown=&quot;<b>SortDesc</b>&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>To reverse the sorting
+order</span></b><span style='font-size:10.0pt'> to have the first clicked
+column as the first sorting column set </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When there are more than two
+seconds between clicks, the sorting is cleared and starts with clicked column</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Actions OnClickSort=&quot;<b>SortAscAdd</b> OR <b>SortDescAdd</b>&quot;
+OnClickSortUp=&quot;<b>SortAscAdd</b>&quot; OnClickSortDown=&quot;<b>SortDescAdd</b>&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To have the same sorting
+behavior as <b>MS Outlook or Excel</b>, set</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On click sorts only by one
+column, on shift click adds the column to the end of sorting</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Actions OnClickSort=&quot;<b>SortAscOne</b> OR <b>SortDescOne</b>&quot;
+OnClickSortUp=&quot;<b>SortAscOne</b>&quot; OnClickSortDown=&quot;<b>SortDescOne</b>&quot;/&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>&lt;Actions OnShiftClickSort=&quot;<b>SortAscAppend</b>
+OR <b>SortDescAppend</b>&quot; OnShiftClickSortUp=&quot;<b>SortAscAppend</b>&quot;
+OnShiftClickSortDown=&quot;<b>SortDescAppend</b>&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortAsc></a><a name=SortAsc><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SortAsc</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                              Attached
+to events <b>OnClickSort</b> and <b>OnClickSortUp</b>                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts according to actual or
+focused column ascending – adds the column as the first to sorting. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if the column
+is already the first column and is sorted ascending otherwise sorts it
+ascending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortDesc></a><a name=SortDesc><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SortDesc</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                           Attached
+to events <b>OnClickSort</b> and <b>OnClickSortDown</b>                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts according to actual or
+focused column descending – adds the column as the first to sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if the column
+is already the first column and is sorted descending otherwise sorts it
+descending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortAscOne><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SortAscOne</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Not
+attached to any event                                                        <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts according to actual or
+focused column only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if the column
+is already the first column and is sorted ascending otherwise sorts it
+ascending.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortDescOne><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SortDescOne</span></u></b></a><b><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Not
+attached to any event                                                        <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts according to actual or
+focused column only.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns false if the column
+is already the first column and is sorted descending otherwise sorts it
+descending.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortAscAdd></a><a name=SortAscAdd><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>SortAscAdd</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                   Attached
+to events <b>OnCtrlClickSort</b>, <b>OnCtrlClickSortUp</b>                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds the actual or focused
+column to sorting to the end and sorts it ascending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column is already
+sorted, returns false if it is sorted ascending otherwise sorts it ascending,
+but does not change its position in sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are already three
+columns sorted, it returns false.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When between clicks are more
+than two seconds or a user clicks also outside header, it clears sorting and
+starts from first column again.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortDescAdd></a><a name=SortDescAdd><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>SortDescAdd</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                Attached
+to events <b>OnCtrlClickSort</b>, <b>OnCtrlClickSortDown</b>              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds the actual or focused
+column to sorting to the end and sorts it descending, see the <b>SortAscAdd</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortAscAppend><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>SortAscAppend</span></u></b></a><b><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          Not
+attached to any event                                                        <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds the actual or focused
+column to sorting to the end and sorts it ascending</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the column is already
+sorted, returns false if it is sorted ascending otherwise sorts it ascending,
+but does not change its position in sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are already three
+columns sorted, it returns false.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The same as SortAscAdd,
+but without the two second limit.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortDescAppend><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>SortDescAppend</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       Not
+attached to any event                                                        <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds the actual or focused
+column to sorting to the end and sorts it descending, see the <b>SortAscAppend</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The same as SortDescAdd,
+but without the two second limit.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsNoSort></a><a name=NoSort><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>NoSort</span></u></b></a><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'> </span></b><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>...F</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                 Not
+attached to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removes the actual or focused
+column from sorting and re-sorts grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsDefaultSort></a><a name=DefaultSort><b><u><span style='font-size:
+16.0pt;font-family:"Arial","sans-serif";background:lime'>DefaultSort</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                               Not
+attached to any event                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Restores the sorting settings
+set in input XML data.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>If
+no <a href="CfgSortCols">Sort</a> attribute was set in input XML, it does <u>not</u>
+do anything.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortOn></a><a name=SortOn><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SortOn</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                         Attached
+to event <b>OnClickButtonSort</b>                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enables sorting in grid and
+re-sorts grid. It fails if sorting is already enabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSortOff></a><a name=SortOff><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SortOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                                         Attached
+to event <b>OnClickButtonSort</b>                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Disables sorting in grid. It
+fails if sorting is already disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=API><b><span style='font-size:20.0pt'>Sorting API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int</i>         </span><a
+name=OnSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>col</b>, <i>string</i> <b>sort</b>)                                                                          
+            <span style='color:blue'>upd 6.1</span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when user clicks to
+header for sort, before grid is sorted by the column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>-1</b> to suppress the
+action completely.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return <b>1</b> to suppress
+sorting, provide your own sorting and let change sort icon.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is clicked column that will be added to sorting, can
+be null if it was called from control panel (from <a href="#SortOn">SortOn</a>
+action). </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>sort</span></b><span
+style='font-size:10.0pt'> is the resulted <a href="#CfgSort">Sort</a> after the
+<b>col</b> will be added to the actual <i>(added in 6.1)</i>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here you can call <a
+href="#ChangeSort">ChangeSort</a> to modify sorting (in this case you have to
+return <b>-1</b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example this code always
+sorts according to column named ‘B’ as second column:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnSort
+= function (G,col){ if(col!='B') {
+G.ChangeSort((G.Sort.indexOf(col)==0?&quot;-&quot;:&quot;&quot;)+col+&quot;,B&quot;);
+return -1; } }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnSortFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSortFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>             (<i>TGrid</i>
+<b>grid</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after grid was
+re-sorted, all changes are already displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called only for sorting on
+client, not for server paging. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ChangeSort><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ChangeSort</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>    (<i>string</i>
+<b>sortcols</b>)                                                                                               <span
+style='color:red'>chg <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts grid according to given
+columns. <b>sortcols</b> is new value for <a href="#CfgSortCols">Sort</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If it is called from <a
+href="#OnSort">OnSort</a> event, the event handler must return -1 for proper
+sort.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SortClick><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SortClick</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>string</i>
+<b>col</b>, bool <b>desc</b> = null)                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Simulates click to sort icon
+in the given column.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>desc</span></b><span
+style='font-size:10.0pt'> can be 0 for ascending and 1 for descending sorting.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SortRow><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SortRow</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col </b>= null, <i>bool</i> <b>show</b> = false)                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts (and moves) one row by actual
+sort settings. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>col</b> is set, test
+only this sorting column for changes.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>It is ignored when <a
+href="#CfgAutoSort">AutoSort</a> is 0.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SortRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SortRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (
+)                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sorts all rows, according to
+sort settings and paging type, asynchronous.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows all changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+  <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>5. Permissions and input validation</center>
+   <center style='font:bold italic;'>Editing and other permissions and validation during editing, before save and before upload</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='05 - Permissions and Validation.xml'>05 - <h2>Permissions and Validation</h2>.xml</a></div>
+   <div style='width:350px; height:220px;'>
+      <bdo Debug='check,ioerror' Data_Url='05 - Permissions and Validation.xml' Upload_Url='05 - Simulated save response.xml' Upload_Method='Get'></bdo>
+   </div>
+   <ul>
+      <li>
+         <h4>Permissions</h4><br />
+         <i>All capabilities are permitted by default if they don't collide with other settings.</i><br />
+         Permission settings are processed in this order: 
+         <b><i>grid</i></b>, <b><i>cell</i></b>, <b><i>cell of default row</i></b>, <b><i>row</i></b>, <b><i>default row</i></b>, <b><i>column</i></b>, <b><i>default column</i></b>. 
+         If any of the attribute has not empty value, processing ends and the value is used.
+      <ul>
+      <li>
+         For whole grid you can prohibit capability in 
+         &lt;<a href='../../Doc/Index.html#Global' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Cfg</a>&gt; tag: 
+         <i>all cells</i>
+         <a href='../../Doc/CellEdit.htm#CfgEditing' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Editing</a>, 
+         <i>all cells or rows</i>
+         <a href='../../Doc/CopyPaste.htm#CfgPasting' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Pasting</a>, 
+         <i>all rows</i>
+         <a href='../../Doc/RowDelete.htm#CfgDeleting' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Deleting</a>, 
+         <a href='../../Doc/RowSelect.htm#CfgSelecting' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Selecting</a>, 
+         <a href='../../Doc/RowSelect.htm#CfgAdding' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Adding</a>, 
+         <a href='../../Doc/Sort.htm#CfgSorting' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Sorting</a>, 
+         <a href='../../Doc/RowMove.htm#CfgDragging' target='TGHelp' onclick='window.open("","TGHelp").focus()'>Dragging</a>, 
+         <i>all columns</i>
+         <a href='../../Doc/ColPosition.htm#CfgColMoving' target='TGHelp' onclick='window.open("","TGHelp").focus()'>ColMoving</a>, 
+         <a href='../../Doc/ColWidth.htm#CfgColResizing' target='TGHelp' onclick='window.open("","TGHelp").focus()'>ColResizing</a>.
+      </li>
+      <li>
+         For <a href='../../Doc/CellBasics.htm' target='TGHelp' onclick='window.open("","TGHelp").focus()'>cell</a> you can use: 
+         <i>the cell</i>
+         <a href='../../Doc/CellEdit.htm#CCanEdit' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanEdit</a>, 
+         <a href='../../Doc/Focus.htm#CCanFocus' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanFocus</a>,
+         <a href='../../Doc/CopyPaste.htm#CellCanPaste' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanPaste</a>.
+         Not focused cell cannot be edited.
+      </li>
+      <li>
+         For <a href='../../Doc/RowBasics.htm' target='TGHelp' onclick='window.open("","TGHelp").focus()'>row</a> you can use: 
+         <i>all cells</i>
+         <a href='../../Doc/CellEdit.htm#CCanEdit' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanEdit</a>, 
+         <a href='../../Doc/Focus.htm#CCanFocus' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanFocus</a>, 
+         <a href='../../Doc/CopyPaste.htm#ICanCopyPaste' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanCopyPaste</a>,
+         <i>the row</i>
+         <a href='../../Doc/RowDelete.htm#ICanDelete' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanDelete</a>, 
+         <a href='../../Doc/RowSelect.htm#ICanSelect' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanSelect</a>, 
+         <a href='../../Doc/RowMove.htm#ICanDrag' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanDrag</a>, 
+         <a href='../../Doc/Filter.htm#ICanFilter' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanFilter</a>.
+         
+      </li>
+      <li>
+         For <a href='../../Doc/ColBasics.htm' target='TGHelp' onclick='window.open("","TGHelp").focus()'>column</a> you can use: 
+         <i>all cells</i>
+         <a href='../../Doc/CellEdit.htm#CCanEdit' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanEdit</a>, 
+         <a href='../../Doc/Focus.htm#CCanFocus' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanFocus</a>, 
+         <a href='../../Doc/CopyPaste.htm#CCanCopyPaste' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanCopyPaste</a>,
+         <i>the column</i>
+         <a href='../../Doc/ColWidth.htm#CCanResize' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanResize</a>, 
+         <a href='../../Doc/ColPosition.htm#CCanMove' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanMove</a>, 
+         <a href='../../Doc/Filter.htm#CCanFilter' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanFilter</a>, 
+         <a href='../../Doc/Sort.htm#CCanSort' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanSort</a>, 
+         <a href='../../Doc/ColVisibility.htm#CCanHide' target='TGHelp' onclick='window.open("","TGHelp").focus()'>CanHide</a>.
+      </li>
+      </ul>
+      The <b>CanEdit</b> permission does <b>not</b> affect cell side <b>Button</b> and <b>Icon</b>, 
+      to hide cell side Button or Icon, you must clear it explicitly by ...Button="" or ...Icon="".<br />
+      The <b>Editing</b> permission does <b>not</b> affect <b>Space</b> and <b>Filter</b> rows, 
+      editing permissions in Space and Filter row must be controlled individually by <b>CanEdit</b> attribute.<br />
+      <br />
+      The individual actions for many capabilities are defined in &lt;<b>Actions</b>> tag, predefined in Defaults.xml. 
+      And the behavior can be changed by assigning different action to the event. <br />
+      For example there is set &lt;Action OnDel="DeleteRowF OR UndeleteRowF,1"/> to delete row by pressing Del key. 
+      You can set &lt;Actions OnDel=""/> to disable this behavior or assign to OnDel different action(s).<br />
+      </li>
+      <li>
+         <h4>Calculated permissions</h4><br />
+         All <b>row</b> and <b>cell</b> permissions can be calculated according to some condition, for example cell (checkbox) value.<br />
+         Just set such formula (e.g. CanEditFormula), set the row as <b>Calculated</b> and add the attribute name to <b>CalcOrder</b>.<br />
+         For example &lt;I CanDeleteFormula='Col3' Col1CanEditFormula='Col2>10' Calculated='1' CalcOrder='Col1CanEdit,CanDelete' />.
+      </li>
+      <li>
+         Changing <h4>permissions</h4> by <h4>API</h4><br />
+         All the permissions, like many other attributes, can be changed by API. <br />
+         Change the &lt;<b>Cfg</b>/> attributes by direct assignment to TGrid object, like Grid.Editing=0.
+         <i>Remember, to bool or integer attributes always set numbers like Grid.Deleting=0 and <u>never strings</u> like Grid.Deleting="0"</i>.
+         After changing the global attribute, it is often needed to repaint the grid or body by <b>RefreshBody</b> or <b>Refresh</b>.<br />
+         For setting <b>row</b>, <b>column</b> or <b>cell</b> attribute use <b>SetAttribute</b> method, to show the changes, set its <i>refresh</i> parameter.<br />
+         You can also calculate some permissions dynamically by JavaScript API events 
+         <a href='../../Doc/CellEdit.htm#OnCanEdit' target='TGHelp' onclick='window.open("","TGHelp").focus()'>OnCanEdit</a>, 
+         <a href='../../Doc/RowAdd.htm#OnCanRowAdd' target='TGHelp' onclick='window.open("","TGHelp").focus()'>OnCanRowAdd</a>, 
+         <a href='../../Doc/RowDelete.htm#OnCanRowDelete' target='TGHelp' onclick='window.open("","TGHelp").focus()'>OnCanRowDelete</a>, 
+         <a href='../../Doc/RowMove.htm#OnCanDrop' target='TGHelp' onclick='window.open("","TGHelp").focus()'>OnCanDrop</a>.
+      </li>
+      <li>
+         <h3>Size</h3> attribute is the simplest mask, it limits input to the specified count of characters.<br />
+      </li>
+      <li>
+         Cell <h3>Type</h3> can be set to <b>Int</b>, <b>Float</b> or <b>Date</b>. 
+         These types permit to input only characters acceptable for given type or its format.
+         The input character mask of the Type can be overridden by <b>EditMask</b> attribute, see below.
+      </li>
+      <li>
+         <h3>EditMask</h3> checks and validates input during editing.<br />
+         The EditMask is RegExp expression that is applied after every key press while editing the cell. When it fails, the key is ignored.<br />
+         The EditMask can be used to specify the permitted characters or to specify base structure of the requested input data. 
+         It should not be too restrictive to not bother users while editing.<br />
+         When the EditMask fails and refuses the key, it shortly blinks the cell by background color set by <b>MaskColor</b>.
+      </li>
+      <li>
+         <h3>ResultMask</h3> checks and validates input before saving to the cell value.<br />
+         The ResultMask is RegExp expression that is applied after a user presses Enter or accepts the input by any other method.<br />
+         If the ResultMask fails, it does not accept the input and continues editing. The editing can be always ended by canceling it by Esc key.<br />
+         If the ResultMask fails and <b>ResultText</b> is set, it alerts this message and continues editing. 
+         It also calls <b>OnResultMask</b> to provide custom handler for the error.<br />
+         The edited value can be also checked, validated and modified by API in events <b>OnEndEdit</b> (to continue editing on error), <b>OnValueChanged</b> (to modify the value), <b>OnAfterValueChanged</b> (to do something after change).<br />
+      </li>
+      <li>
+         <h3>Validate</h3> attribute controls data validation before uploading changes to server.<br />
+         If the Validate is set and changes are going to be uploaded to server, it iterates all <b>ResultsMask</b> in grid and checks if all data are correct.<br />
+         The Validate can be set to iterate all rows (for example to ensure that no required cell is empty) or only added rows.<br />
+         When Validate finds errors, it can mark them as Error with red background and / or focus and start editing the first error cell. 
+         It can also show alert message or confirm message to let a user to upload the incorrect data anyway.
+         It also calls API event <b>OnValidateError</b> for custom handling.<br />
+         The validation can be run also by Action <b>Validate</b>.<br />
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,787 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row id – identification on server</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row id – identification on server</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows must be somehow
+identified on server for <b>uploading changes</b> to server and for <b>server
+paging</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows in TreeGrid are identified
+by <a href="#IId">id</a> attribute, this attribute is always sent to server in
+every request.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To be sure what <b>id</b>
+the rows have, you can define new id column &lt;C Name=’id’/&gt;.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowId><b><span style='font-size:20.0pt'>Setting row id
+attribute</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This is the basic option. Set
+<a href="#IId">id</a> attribute of every row to unique string. By default this
+string can contain only letters and '_'.  It can be changed by <a
+href="#CfgIdChars">IdChars</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New row will get new id
+generated from the same characters. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The new generated id is
+always the highest id in the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row has neither set its id
+nor generated according to IdNames, it automatically set to “R”+number from 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>string    </i>
+</span><a name=Iid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>id</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                              <i>Both
+letters lowercase!</i>                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique ID of the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it in input XML for every
+row. It can contain only characters defined in &lt;Cfg <a href="#CfgIdChars">IdChars</a>
+/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For new rows it will be
+automatically generated from the characters defined in &lt;Cfg <a
+href="#CfgIdChars">IdChars</a> /&gt;.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>id</b> attribute
+must <u>not</u> be changed by API.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i>
+</span><a name=CfgIdChars><b><u><span style='font-size:16.0pt;background:yellow'>I</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>dChars</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [&quot;_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;]           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Accepted characters when
+generating new id. In this order.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example for the default
+setting: if the last id was “ab” the next id is “ac”, for “az” is “b_” for
+“zzz” is “____”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>int        </i></span><a
+name=CfgNumberId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Number</span></u></b></a><b><u><span style='font-size:16.0pt;
+background:yellow'>I</span></u></b><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> for
+generating number ids. And set <a href="#CfgIdChars">IdChars</a> =
+’0123456789’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute says, that the
+id cannot start with 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In fact, this attribute says,
+that id cannot start with count of NumberId characters from start of <a
+href="#CfgIdChars">IdChars</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The start from some higher
+number than 0 set <a href="#CfgLastId">LastId</a> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgIdPrefix><b><u><span style='font-size:16.0pt;background:yellow'>I</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>dPrefix</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>                       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This string is inserted
+before generated new id (before the last part).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case all ids in XML
+must contain this prefix.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgIdPostfix><b><u><span style='font-size:16.0pt;background:yellow'>I</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>dPostfix</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This string is appended at
+the end of generated new id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case all ids in XML
+must contain this postfix.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgLastId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Last</span></u></b></a><b><u><span style='font-size:16.0pt;
+background:yellow'>I</span></u></b><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Last (maximal) id when used <a
+href="PagingServer.htm">server paging</a> or server child paging, to not
+generate duplicated ids on client </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Can be used only when <a
+href="#CfgIdNames">IdNames</a> contains only one item</span></i><span
+style='font-size:10.0pt'>!</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New generated id (of new
+added row) will get next id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <a href="#CfgIdPrefix">IdPrefix</a>
+and / or <a href="#CfgIdPostfix">IdPostfix</a> are used, the LastId attribute can,
+but need not contain them. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=INewId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>New</span></u></b></a><b><u><span style='font-size:16.0pt;
+background:yellow'>I</span></u></b><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:#0070C0'>upd <b>9.1</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New row id returned from
+server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change row id attribute
+from server you cannot set it directly, because the row will not be found, you
+need to set it to <b>NewId</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The server should return the
+new row id in save response in &lt;Changes&gt; tag like: &lt;Grid&gt;&lt;Changes&gt;&lt;I
+id='orig id' Changed='1' NewId='new id'/&gt;&lt;/Changes&gt;&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1)</span></i><span
+style='font-size:10.0pt'> It is set also in uploaded data if the row id will be
+changed due IdNames or FullId settings. Only when set Upload_Flags='NewId'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgAutoIdPrefix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>AutoIdPrefix</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [“AR”]                                                                                      <span
+style='color:red'>new <b>7.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>                       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This string is inserted
+before every automatically generated id</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For every row without id is
+created unique number id from 1 with this prefix: AR1, AR2, AR3 ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The number is increased for
+every row and is never restarted, except reloading whole grid by Reload method
+(but <u>not</u> ReloadBody)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgGroupIdPrefix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupIdPrefix</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [“GR”]                                                                                      <span
+style='color:red'>new <b>7.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>                       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This string is inserted
+before automatically generated id for group rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For every group row is
+created unique number id from 1 with this prefix: GR1, GR2, GR3 ... It is
+independent on AutoId for normal rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The id number is set back to
+1 on every grouping change.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int</i>        </span><a
+name=CfgGroupIdValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GroupIdValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                  
+<span style='color:red'>            new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it creates the
+group row ids as <a href="RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a> +
+ascending number</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it creates the
+group row ids as column name + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ grouping value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>2</b> it creates the
+group row ids as column name + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ first child row id</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>3</b> it creates the
+group row ids as row Level + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ grouping value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>4</b> it creates the
+group row ids as row Level + <a href="file:///S:\Doc\RowId.htm#CfgGroupIdPrefix">GroupIdPrefix</a>
++ first child row id</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><a
+name=CfgChildIdPrefix><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChildIdPrefix</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [“CR”]                                                                                      <span
+style='color:red'>new <b>7.0</b></span>.</span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif"'>                       </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This string is inserted
+before automatically generated id for child page rows (created by <a
+href="TreePaging.htm#IMaxChildren">MaxChildren</a> attribute).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For every child page is
+created unique number id from 1 with this prefix: CR1, CR2, CR3 ... It is
+independent on AutoId for normal rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The number is increased for
+every child page and is never restarted, except reloading whole grid by Reload
+method (but <u>not</u> ReloadBody)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowIdTree><b><span style='font-size:20.0pt'>Row id in tree</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In tree you can identify rows
+according to their parents by setting <a href="#CfgFullId">FullId</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgFullId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Full</span></u></b></a><b><u><span style='font-size:16.0pt;
+background:yellow'>I</span></u></b><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, row <a
+href="#Iid">id</a> contains all its parent ids as id prefix, separated by ‘$’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In input XML the ids can be
+full or only parts. If the id is only part, it is updated on load and for API
+it is always full.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If parent id is “R1” the
+input row id can be “R2” or “R1$R2”, for upload and in API is the id always
+“R1$R2”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example: &lt;I id=’1’&gt;
+&lt;I id=’1-1’/&gt; &lt;I id=’1-2’&gt;&lt;I id=’1-2-1’/&gt;&lt;/I&gt;&lt;/I&gt;
+will be replaced as full ids: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&lt;I
+id=’1’&gt; &lt;I id=’1$1-1’/&gt; &lt;I id=’1$1-2’&gt;&lt;I
+id=’1$1-2$1-2-1’/&gt;&lt;/I&gt;&lt;/I&gt;. Or you can set it straight in the input
+XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row is moved, the <b>id</b>
+attribute is <u>not</u> changed immediately, it is updated after server accept
+the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>New</span></u></b><b><u><span
+style='font-size:16.0pt;background:yellow'>I</span></u></b><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:#0070C0'>upd <b>9.1</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New row id returned from
+server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change row id attribute
+from server you cannot set it directly, because the row will not be found, you
+need to set it to <b>NewId</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1)</span></i><span
+style='font-size:10.0pt'> It is set also in uploaded data if the row id will be
+changed due IdNames or FullId settings. Only when set Upload_Flags='NewId'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowIdColumn><b><span style='font-size:20.0pt'>Using one or
+more (editable) columns as row identity</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>As row identity (like
+database primary key) you can use any row attributes or column names set to <a
+href="#CfgIdNames">IdNames</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If used editable columns as
+id source, the last attribute in IdNames is automatically updated to be the
+primary key always unique.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row id attribute is
+generated from these attributes, so on upload and in API you can use this id
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>All the primary keys set
+in input XML must be unique!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The values in the last
+attribute from <a href="#CfgIdNames">IdNames</a> must contain only characters
+from <a href="#CfgIdChars">IdChars</a> or must be set <a href="#CfgAppendId">AppendId</a>=’1’.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The row attribute <b>id</b>
+is changed only after server accepts changes, never on source attribute value
+change!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string</i>[]  </span><a
+name=CfgIdNames><b><u><span style='font-size:16.0pt;background:yellow'>I</span></u></b></a><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>dNames</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>            [“id”]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+attributes fully identifies the row, these attributes are like <b><i>unique
+primary key</i></b> in database table.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The list can contain column
+names, attributes like <a href="RowBasics.htm#IDef">Def</a> or any user defined
+row attribute, but must <u>not</u> contain the <b>id</b> attribute itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row <a href="#Iid">id</a>
+attribute is automatically created from the attribute values from the list,
+separated by ‘$’. If any value contains ‘$’, it is replaced by ‘_’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>last attribute</b> in
+list is specific, because its value is generated automatically for new rows
+from <a href="#CfgIdChars">IdChars</a>, <a href="#CfgIdPrefix">IdPrefix</a> and
+<a href="#CfgIdPostfix">IdPostfix</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the list item is <b>editable
+column</b> and its value is changed, there is possibility that the <b>id</b>
+will <u>not</u> be unique.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this case the <b>last
+attribute</b> value is re-generated (before changes are sent to server).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>After changes are sent to
+server, the row <b>id</b> is updated according to changed attribute (column)
+values.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, after a user
+changes the source of id, the <b>id</b> attribute itself is <u>not</u> changed,
+it is changed after server accepts the changes.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When <b>new row</b> is added,
+the last attribute value is generated to ensure the id to be unique.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=CfgAppendId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Append</span></u></b></a><b><u><span style='font-size:16.0pt;
+background:yellow'>I</span></u></b><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When a user changes some
+editable cell as source id part and the id becomes <u>not</u> unique:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>if
+set to <b>0</b>, the last attribute in <a href="#CfgIdNames">IdNames</a> is
+automatically re-generated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                if set to <b>1</b>,
+the generated id is appended to the existing value in the last attribute in <a
+href="#CfgIdNames">IdNames</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When new row is added, the
+cells get default values and if the row id becomes <u>not</u> unique: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>if
+set to <b>0</b>, the last attribute in <a href="#CfgIdNames">IdNames</a> is set
+to new generated id.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>if
+set to <b>1</b>, the generated id is appended to the default value in the last
+attribute in <a href="#CfgIdNames">IdNames</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool</i>      </span><a
+name=CfgCaseSensitiveId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CaseSensitive</span></u></b></a><b><u><span
+style='font-size:16.0pt;background:yellow'>I</span></u></b><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                  
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How to compare ids if they
+are unique. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If used case insensitive ids,
+all the ids are always lower case.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=IIgnoreIdNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>IgnoreIdNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                           <span
+style='color:red'>new <b>9.3</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, this row does
+not set its id by IdNames. Use for auto generated rows like group rows with
+auto set ids</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;   </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Full</span></u></b><b><u><span
+style='font-size:16.0pt;background:yellow'>I</span></u></b><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 1, to row <a
+href="#Iid">id</a> there are added all its parent ids as id prefix, separated
+by ‘$’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It means that the row primary
+key must be unique only within its parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If row is moved, the <b>id</b>
+attribute is <u>not</u> changed immediately, it is updated after server accept
+the changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;       </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>New</span></u></b><b><u><span
+style='font-size:16.0pt;background:yellow'>I</span></u></b><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>d</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                             <span
+style='color:#0070C0'>upd <b>9.1</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>New row id returned from
+server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To change row id attribute
+from server you cannot set it directly, because the row will not be found, you
+need to set it to <b>NewId</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.1)</span></i><span
+style='font-size:10.0pt'> It is set also in uploaded data if the row id will be
+changed due IdNames or FullId settings. Only when set Upload_Flags='NewId'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RowIdAPI><b><span style='font-size:20.0pt'>API for row ids</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnSetRowId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSetRowId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>newid</b>)                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when new <a href="#Iid">id</a>
+attribute is generated for the row. Returns new id. The row has still old id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>newid</b> and returned
+id is value for row <a href="#Iid">id</a> attribute. It is full id, includes
+all parts and optionally parent id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called when new row is
+added or row is copied or server returns NewId for the row or the id is changed
+by accepting changes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnChangeId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnChangeId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>oldvalue</b>)                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when the id column
+(the last column in <a href="#CfgIdNames">IdNames</a>) value has been
+automatically changed to be the id unique.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after a user changed
+some cell from <a href="#CfgIdNames">IdNames</a> and row id became non unique
+and has been automatically corrected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called also after row move
+when set <a href="#CfgFullId">FullId</a> and the id became non unique due the
+move to another parent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is called after the change,
+the row contains new value in the column, the <b>oldvalue</b> is original value.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGenerateId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGenerateId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>newid</b>)                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when new unique part
+of id is generated or updated for the row. Returns new id value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>newid</b> and returned
+id is the generated part of id, this is the value for the last attribute from <a
+href="#CfgIdNames">IdNames</a> list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string    </i></span><a
+name=GenerateId><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GenerateId</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>       (<i>TRow</i>
+<b>row</b>)                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Generates new row’s id and
+saves it to <a href="#CfgLastId">LastId</a>. Returns it. The id is only the
+last part for multi ids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It does <u>not</u> change the
+row id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i> [] </span><a
+name=Rows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Rows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                 <span
+style='color:red'>read only</span> JavaScript named array of row objects by
+their <b>id</b>            <span style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows in grid by their <a
+href="#IId">id</a>. Including fixed and Space rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row has set its id
+neither in XML nor by IdNames, the id is automatically generated as “AR”+number
+from 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetRowById><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetRowById</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string
+<b>id</b></i>, <i>string</i> <b>attr</b>, <i>bool</i> <b>nofixed</b>)                                                        <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Searches for the row by its
+id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row exists in <a
+href="#Rows">Rows</a>, it returns the row from <a href="#Rows">Rows</a>,
+otherwise it iterates all rows in grid to find the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The advantage to <a
+href="#Rows">Rows</a> is that it can be used also before the Rows array is
+filled during grid creating.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The disadvantage is that it
+will be slow when the <a href="#Rows">Rows</a> does <u>not</u> contain given <b>id</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> If set <b>attr</b>, it searches the row according to
+this attribute value instead of id, in this case it always iterates all the
+rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> If set <b>nofixed</b>, it does <u>not</u> search in
+fixed and space rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

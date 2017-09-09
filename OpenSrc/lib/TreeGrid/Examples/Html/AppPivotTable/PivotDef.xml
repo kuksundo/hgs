@@ -1,0 +1,96 @@
+<!-- Structure definition for the pivot table, its data are created automatically from the Cars table according to the pivot settings -->
+<Grid>
+   <Cfg id="Pivot" PivotMaster="Cars" SuppressCfg="0"/> <!-- Base definition, saves configuration to cookies -->
+   <Cfg ConstWidth="800" MaxHeight="1" MinTagHeight="400"/> <!-- Size settings just for the example. Maximizes the grid height. -->
+   <Cfg PivotCols="YEAR,MONTH" PivotRows="BRAND,TYPE,NAME,MODEL" PivotData="PRICE,COUNT"/> <!-- Initial pivot settings, let them empty to start with master grid instead of pivot -->
+   <Cfg PivotControlMaster="1"/> <!-- Hides the master grid when the pivot grid has data and vice versa -->
+   <Cfg PivotShowParent="1"/> <!-- Shows summary columns by default -->
+   <Cfg MenuColumnsCount="3"/> <!-- Shows columns menu and print menu in three columns, because there can be many column in grid -->
+   <Cfg PivotFilter="0"/> <!-- If the pivot will use rows hidden by filter, 0 = no -->
+   <Cfg PivotExpanded="2,5"/> <!-- Sets expanded level for columns and rows -->
+   <Cfg PivotMaxCols="500"/> <!-- For more columns (large tables) the columns will be collapsed by default and expanable only one per group -->
+   <Cfg ColPaging="2"/> <!-- Column paging to speed up the grid rendering -->
+   <Def>
+      <!-- Defines Type formula for SUM column in all rows; See the CalcOrder in all other Defs contains the SUMType -->
+      <D Name="R" SUMTypeFormula="Grid.PivotData.search(/BRAND|TYPE|NAME|MODEL|COLOR|TRANS|YEAR|QUARTER|MONTH|DAY|WEEK|WEEKDAY/)>=0?'Text':'Float'"/>
+      
+      <!-- Defines the rows with data. It defines the formulas for summary columns and cell colors -->
+      <D Name="PivotRow" Calculated="1" 
+         PivotLastFormula="Grid.PivotData.indexOf('TOTAL')>=0?maxc():(Grid.PivotData=='COUNT,PRICE'||Grid.PivotData=='PRICE,COUNT'?productc():sumjoinc())" 
+         PivotGroupFormula="sumjoinc()" CalcOrder="PivotLast,PivotGroup,SUM,PivotType,SUMType" 
+         PivotTypeFormula="Grid.PivotData.search(/BRAND|TYPE|NAME|MODEL|COLOR|TRANS|YEAR|QUARTER|MONTH|DAY|WEEK|WEEKDAY/)>=0?'Text':'Float'" PivotFormat=",0;;"
+         PivotDataClass="Blue" Color="255,230,255" PivotDataColor="245,255,255"
+         />
+      <!-- Defines the summary rows. It defines the formulas for summary columns and cell colors -->
+      <D Name="PivotGroupRow" Calculated="1" CalcOrder="PivotData,PivotLast,PivotGroup,SUM,PivotType,SUMType"
+         PivotDataFormula="sumjoin()" PivotLastFormula="sumjoin()" PivotGroupFormula="sumjoin()" PivotDataColor="255,230,255"
+         PivotTypeFormula="Grid.PivotData.search(/BRAND|TYPE|NAME|MODEL|COLOR|TRANS|YEAR|QUARTER|MONTH|DAY|WEEK|WEEKDAY/)>=0?'Text':'Float'" PivotFormat=",0;;"
+         />
+      
+      <!-- Defines the fixed bottom row. It defines it as default to use column definition as "Pivot" (PivotFormula), because they are processed only for default rows -->
+      <D Name="SUMMARY" MainCol="SUM" Calculated="1" CalcOrder="Pivot,SUM,PivotType,SUMType"
+         PivotFormula="sumjoin()" SUMFormula="sumjoin()"
+         PivotTypeFormula="Grid.PivotData.search(/BRAND|TYPE|NAME|MODEL|COLOR|TRANS|YEAR|QUARTER|MONTH|DAY|WEEK|WEEKDAY/)>=0?'Text':'Float'" PivotFormat=",0;;" 
+         />
+   </Def>
+   <DefCols>
+      <!-- Defines maximal width for all the automatically generated columns -->
+      <D Name="Pivot" Width="100" NumberSort="1"/>
+   </DefCols>
+   <LeftCols>
+      <!-- Defines position and maximal width for the tree column -->
+      <!-- The Block='1' merges the column with the first block of columns to be printed with them -->
+      <C Name="MainCol" MaxWidth="200" Block="1"/>
+   </LeftCols>
+   <RightCols>
+      <!-- Custom column showing summaries -->
+      <C Name="SUM" Formula="sumjoinc('')" MaxWidth="100" Format=",0;;" NumberSort="1"/>
+   </RightCols>
+   <Foot>
+      <!-- Custom fixed row showing summaries -->
+      <I Def="SUMMARY" />
+   </Foot>
+
+   <!-- Redefines actions for toolbar buttons ExpandAll and CollapseAll to control also the columns -->
+   <Actions OnClickButtonExpandAll="ExpandAll,ExpandAllCells" OnClickButtonCollapseAll="CollapseAll,CollapseAllCells"/>
+
+   <!-- Hides useless toolbar buttons -->
+   <Toolbar Indent="0" Outdent="0" Sort="0" Calc="0"/>
+   
+   <Solid>
+      <!-- Top control row with a list of possible columns for creating pivot table -->
+      <I Kind="Topbar2" Panel="0" Space="0" Cells="COLS1,COLS2,COLS3"
+         COLS1Type="DropCols" COLS1="BRAND,TYPE,NAME,MODEL,TRANS,COLOR"
+         COLS1RelWidth="6" COLS1MaxWidth="70" COLS1AutoWidth="7" COLS1MinTextWidth="0" COLS1Text="" COLS1CanAdd="0" COLS1CanDelete="0" COLS1CanMove="0" COLS1CanCopy="2" COLS1ShowHint="0"
+         COLS2Type="DropCols" COLS2="YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY"
+         COLS2RelWidth="6" COLS2MaxWidth="70" COLS2AutoWidth="7" COLS2MinTextWidth="0" COLS2Text="" COLS2CanAdd="0" COLS2CanDelete="0" COLS2CanMove="0" COLS2CanCopy="2" COLS2ShowHint="0"
+         COLS3Type="DropCols" COLS3="PRICE,COUNT,TOTAL"
+         COLS3RelWidth="3" COLS3MaxWidth="70" COLS3AutoWidth="7" COLS3MinTextWidth="0" COLS3Text="" COLS3CanAdd="0" COLS3CanDelete="0" COLS3CanMove="0" COLS3CanCopy="2" COLS3ShowHint="0"
+         />
+
+      <!-- Second control row with pivot settings -->
+      <I id="PIVOT" Kind="Topbar1" Space="0" Cells="RCAP,ROWS,CCAP,COLS,DCAP,DATA"
+         RCAPType="Html" RCAP="Pivot Rows:" RCAPWrap="0"
+         ROWSType="DropCols" ROWSRelWidth="1" ROWSText="Drag column caption here" ROWSFormula="Grids.Pivot.PivotRows?Grids.Pivot.PivotRows:''" ROWSOnChange="Grids.Pivot.PivotRows = Value"
+         ROWSAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY" ROWSDuplicates="0" ROWSSingle=",COLS,,DATA" ROWSSingleType="1" ROWSAutoWidth="7" ROWSMaxWidth="70"
+         CCAPType="Html" CCAP="Columns:" CCAPLeft="10"
+         COLSType="DropCols" COLSRelWidth="1" COLSText="Drag column caption here" COLSFormula="Grids.Pivot.PivotCols?Grids.Pivot.PivotCols:''" COLSOnChange="Grids.Pivot.PivotCols = Value"
+         COLSAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY" COLSDuplicates="0" COLSSingle=",ROWS,,DATA" COLSSingleType="1" COLSAutoWidth="7" COLSMaxWidth="70"
+         DCAPType="Html" DCAP="Data:" DCAPLeft="10"
+         DATAType="DropCols" DATARelWidth="1" DATAText="Drag column caption here" DATAFormula="Grids.Pivot.PivotData?Grids.Pivot.PivotData:''" DATAOnChange="Grids.Pivot.PivotData = Value"
+         DATAAccept="BRAND,TYPE,NAME,MODEL,TRANS,COLOR,YEAR,QUARTER,MONTH,DAY,WEEK,WEEKDAY,PRICE,COUNT,TOTAL" DATADuplicates="0" DATASingle=",ROWS,,COLS" DATASingleType="1"  DATAAutoWidth="7" DATAMaxWidth="70"
+         />
+
+      <!-- Third control row with control buttons and a list with predefined pivot settings -->
+      <I id="CONTROL" Kind="Topbar2" Space="0" Cells="PIVOT,SWITCH,ALL,CLEAR,SUM,DEF"
+         PIVOTType="Button" PIVOTButton="Button" PIVOT="Create pivot" PIVOTOnClick="if(!Grids.Pivot.CreatePivot()) alert('Incorrect or incomplete input settings');"
+         SWITCHType="Button" SWITCHButton="Button" SWITCH="Show master" SWITCHOnClick="Grids.Pivot.SwitchPivotGrid(0);"
+         ALLType="Button" ALLButton="Button" ALL="Show both" ALLOnClick="Grids.Cars.MainTag.style.display='';Grids.Pivot.SaveCfg();"
+         CLEARType="Button" CLEARButton="Button" CLEAR="Clear pivot" CLEAROnClick="Grids.Pivot.PivotRows=''; Grids.Pivot.PivotCols=''; Grids.Pivot.PivotData=''; Grids.Pivot.CreatePivot(); Grids.Cars.SetAttribute(Grids.Cars.Rows.CONTROL,'SWITCH','Visible',0,1);"
+         SUMType="Bool" SUMLabel="Show summary columns" SUMLeft="10" SUMFormula="Grids.Pivot.PivotShowParent?1:0" SUMCanEdit="1"
+         SUMOnChange="Grids.Pivot.PivotShowParent = Value; Grids.Pivot.CreatePivot(); " SUMTip="If the summary columns are hidden, their data are shown when the column is collapsed."
+         DEFType="SelectPivot" DEFLeft="10" DEFLabel="Predefined pivots:" DEFRelWidth="1" DEFCanEdit="1"
+         DEFDefaults="|BRAND,TYPE,NAME,MODEL : YEAR,MONTH,WEEK,WEEKDAY : TOTAL|YEAR,MONTH,WEEK,WEEKDAY : BRAND,TYPE,NAME,MODEL : TOTAL|BRAND,TYPE,NAME,MODEL : YEAR,MONTH : PRICE,COUNT|TYPE,BRAND : YEAR,MONTH : NAME|NAME : WEEKDAY : COUNT|NAME : TRANS : COLOR|WEEKDAY : BRAND,NAME : COLOR|YEAR,QUARTER,MONTH : BRAND,NAME : TOTAL|YEAR,MONTH,DAY : BRAND,TYPE,NAME : TRANS,COLOR|MONTH,DAY : NAME : PRICE,COUNT|BRAND : YEAR : TOTAL"
+         />
+   </Solid>
+</Grid>

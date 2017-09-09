@@ -1,0 +1,69 @@
+#!/usr/bin/env python2.3
+
+import commands
+import os
+import os.path
+import sys
+import string
+import urllib
+
+def postat (basedir, langcode, filepath, filename, counter):
+	tmpfilename="/tmp/deleteme-"+str(counter)+".po"
+	textdomain=os.path.splitext(os.path.split(filename)[1])[0]
+	mergeoutput=commands.getoutput("LANG=C && msgmerge -o "+tmpfilename+" \""+filepath+"/"+filename+"\" \""+filepath+"/../templates/"+filename+"\"")
+	filename=filepath+"/"+filename
+	stats=commands.getoutput("LANG=C && msgfmt --statistics -o "+tmpfilename+" "+tmpfilename)
+	if string.find(string.digits,stats[0])==-1:
+		sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"errormessage\"]=\""+urllib.quote(stats)+"\";\n")
+	else:
+		fuzzy="0"
+		translated="0"
+		untranslated="0"
+		translator=""
+		headers=commands.getoutput("../dxgettext-packages/dxgettext-linux/dxgettext/toolkit/msgshowheader "+tmpfilename)
+		headers=string.split(headers,"\n")
+		for line in headers:
+			lineparts=string.split(line,":")
+			if string.lower(lineparts[0])=="last-translator":
+				translator=line[len(lineparts[0])+2:]
+				translator=string.strip(string.split(translator,"<")[0])
+			sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"header\"][\""+string.lower(lineparts[0])+"\"]=\""+line[len(lineparts[0])+2:]+"\";\n")
+		lines=string.split(stats,",")
+		for line in lines:
+			line=string.strip(line)
+			lineparts=string.split(line)
+			if lineparts[1]=="translated":
+				translated=lineparts[0]
+			if lineparts[1]=="untranslated":
+				untranslated=lineparts[0]
+			if lineparts[1]=="fuzzy":
+				fuzzy=lineparts[0]
+		if translator!="":
+			sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"translator\"]=\""+translator+"\";\n")
+		if translated!="0":
+			sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"translated\"]="+translated+";\n")
+		if untranslated!="0":
+			sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"untranslated\"]="+untranslated+";\n")
+		if fuzzy!="0":
+			sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"fuzzy\"]="+fuzzy+";\n")
+		sys.stdout.write ("$arr[\""+langcode+"\"][\""+textdomain+"\"][\"total\"]="+str(int(fuzzy)+int(untranslated)+int(translated))+";\n")
+	os.remove (tmpfilename)
+
+def dirstat (basedir, dirname, names):
+	langcode=dirname[len(basedir)+1:]
+	counter=0
+	if string.find(langcode,"/")==-1:
+		for filename in names:
+			if os.path.splitext(filename)[1]==".po":
+				postat (basedir, langcode, dirname, filename, counter)
+				counter=counter+1
+
+
+sys.stdout.write ("<?php\n")
+sys.stdout.write ("function gettranslationdata() {\n")
+os.path.walk (os.getcwd(), dirstat, os.getcwd())
+sys.stdout.write ("return $arr;\n")
+sys.stdout.write ("}\n")
+sys.stdout.write ("?>\n")
+
+## EOF ##

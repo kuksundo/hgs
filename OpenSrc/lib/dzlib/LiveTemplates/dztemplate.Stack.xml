@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzStack" invoke="none">
+		<description>
+			create a new type safe stack
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="stacktype">
+                  <text>
+                    TMyStack
+                  </text>
+                  <hint>
+                    Name of the stack class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored on the stack
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  SysUtils,
+  Classes;
+
+{$DEFINE __STACK_TEMPLATE__}
+type
+  _STACK_CONTAINER_TYPE_ = TList; // or TInterfaceList
+  _STACK_ANCESTOR_ = TObject; // or TInterfacedObject
+  _LIST_CONTAINER_ITEM_TYPE_ = pointer; // or IInterface
+  _STACK_ITEM_ = |itemtype|;
+{$INCLUDE 't_dzStackTemplate.tpl'}
+
+type
+  {: Stack to store |itemtype| items }
+  |stacktype| = class(_STACK_TEMPLATE_)
+    { TODO : Make sure the stack is empty on destruction or write a destructor
+             that frees its content }
+  end;
+
+implementation
+
+{$INCLUDE 't_dzStackTemplate.tpl'}
+
+]]>
+		</code>
+	</template>
+</codetemplate>

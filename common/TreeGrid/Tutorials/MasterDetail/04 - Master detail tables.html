@@ -1,0 +1,107 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Master / Detail</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>4. Master detail tables</center>
+   <center style='font:bold italic;'>Master detail relation in plain tables</center>
+   <br />
+   <table>
+      <tr>
+         <td valign='top' width='420'>
+            <div style='margin-bottom:6px;'><a href='04 - Master.xml'>04 - <h2>Master</h2>.xml</a></div>
+            <div style='width:400px; height:250px;'>
+               <bdo Debug='check' Data_Url='04 - Master.xml'></bdo>
+            </div>
+         </td>
+         <td valign='top'>
+            <div style='margin-bottom:6px;'><a href='04 - Detail.xml'>04 - <h2>Detail</h2>.xml</a></div>
+            <div style='width:400px; height:250px;'>
+               <bdo Debug='check' Data_Url='04 - Detail.xml'></bdo>
+            </div>
+         </td>
+      </tr>
+   </table>
+   <ul>
+      <li>
+         Plain master detail relation is used to show the same data in two or more grids in different layout.<br />
+         <b>Master</b> grid shows the data in rows and <b>detail</b> grid shows the one master row data in different structure, often vertically in column.<br />
+      </li>
+      <li>
+         The data are defined only in master grid, only master grid stores the changes and can upload them back to server.<br />
+         Detail grid defines only layout, the columns and fixed (summary) rows and optionally variable rows shown only when the detail grid is empty (does not show any master row).<br />
+      </li>
+      <li>
+         The master relation is defined usually in <b>master default row &lt;D></b> definition.<br />
+         This default row defines attributes for all the master root rows and also their hidden children to be displayed in detail grid.<br />
+      </li>
+      <li>
+         The default row name should not be 'R', because it will be used for the children by default.<br /> 
+         The default row name can be set to &lt;Root CDef/> attribute value to be used for all existing and new root rows in master grid.<br />
+      </li>
+      <li>
+         The &lt;D> has set its attribute <h3>Detail</h3> as id of the detail grid where the row's children will be shown. The Detail marks the row as master row.<br />
+         It should have set also <b>Expanded='0' CanExpand='0'</b> to never show its chilren in master grid.<br />
+      </li>
+      <li>
+         The &lt;D> cell attributes <h3>CopyTo</h3> will define which master cells will be copied to which detail row(s) and cells.<br />
+         Usual value of the master CopyTo attribute is "Child_X,Y", where X is child row position from 0 and Y is column name.<br />
+         For example NAMECopyTo='Child_2,VALUE' means that master row's NAME cell will be copied to the third child row, to the cell name VALUE.<br />
+      </li>
+      <li>
+         The &lt;D> defines children that will be shown in detail grid. Defines them as nested &lt;I> tags.<br />
+         These child rows will be shown in detail grid, so they define cells in detail grid columns, not in master's.<br />
+         These &lt;I> tags can have any standard row or cell attribute, also Def attribute to specify row default.<br />
+      </li>
+      <li>
+         The child row cell attributes <h3>CopyTo</h3> will define which detail cells will be copied to which master cells.<br />
+         Usual value of the child CopyTo attribute is "Parent,Y", where Y is the master cell name.<br />
+         For example VALUECopyTo='Parent,NAME' means that child row's VALUE cell will be copied to the master row's cell NAME.<br />
+      </li>
+      <li>
+         <h4>How it works</h4><br />
+         <ul>
+            <li>
+               On master grid load there will be created hidden children for every row according to the &lt;D> definition.<br />
+               To these children attributes will be copied values from the root rows, according to the &lt;D> <b>CopyTo</b> attributes.<br />
+            </li>
+            <li>
+               When some row in master grid is chosen to show it in detail grid (e.g. focused), all the row's children are copied from master grid to detail grid and here are shown.<br />
+               In this time are all the child rows at two placed (in master grid and in detail grid) and all changes are synchronized and mirrored to both.<br />
+            </li>
+            <li>
+               When a user changes some value in master grid, in root row, the change is automatically copied to its hidden children and also mirrored to detail grid.<br />
+               It is done by <b>CopyTo</b> attribute in &lt;D> tag, similarly to the grid loading.<br />
+            </li>
+            <li>
+               When a user changes some value in detail grid, the change is mirrored to hidden child in master grid and also copied to the parent row.<br />
+               It is done by <b>CopyTo</b> attribute in &lt;D> child &lt;I> tag.<br />
+            </li>
+            <li>
+               When a user chooses another row in master grid to show it in detail grid, all actual detail grid variable rows are cleared and filled by the new content.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         The behavior of choosing master row to show in detail row can be controlled by assigning <b>ShowDetail</b> action to appropriate event.<br />
+         Or simply by Cfg attribute <b>DetailOn</b> - 0 – disabled, 1 – on focus to row, 2 – on click to row, 3 – on double click to row.<br />
+      </li>
+      <li>
+         <h4>API</h4><br />
+         On showing the master row in detail grid is called API event <b>OnShowDetail</b>.<br />
+         After the row is shown is called <b>OnShowDetailFinish</b>.<br />
+         To manually show some master row in detail grid call API method <b>ShowDetail</b>.<br />
+         To refresh or clear detail grid call <b>RefreshDetail</b>.<br />
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Submit example</h2>
+      Using standard &lt;FORM> submit communication method instead of AJAX.<br> 
+      Including input and output data into &lt;input> tag and input layout directly to &lt;treegrid> tag.<br />
+      <br />
+      <div align="center">
+         <div style="WIDTH:100%;HEIGHT:98%">
+            <bdo Layout_Data="
+<?xml version=&quot;1.0&quot;?>
+<Grid>
+   <Cfg id='Calc' Tag='GRID' MaxHeight='1' MainCol='A' ShowDeleted='0' SuppressCfg='0' AutoSort='0' DateStrings='1'/>
+   <Def>
+      <D Name='C' CanMove='2'/>
+      <D Name='Data' 
+         CalcOrder='F,B'
+         XType='Text' XCanEdit='0' XCanFilter='0'
+         A='Item'
+         G='0'
+         H='0'
+         I=''
+         CDef=''
+         />
+      <D Name='Fixed'
+         XType='Text' XCanEdit='0'
+         CalcOrder='D,B'
+         EType='Text'
+         FType='Text'
+         HType='Text'
+         IType='Text'
+         />
+      <D Name='Node'
+         CDef='Data'
+         Expanded='1'
+         Calculated='1'
+         CalcOrder='D,F,B'
+         X='1'
+         A='Order'
+         BFormula='F-F*G/100+H'
+         CCanEdit='1'
+         DFormula='count()' DFormat='0 &quot;items&quot;'
+         EFormat=' ' ECanEdit='0'
+         FFormula='sum(&quot;B&quot;)'
+         G='0'
+         H='0'
+         ICanEdit='1'
+         />
+   </Def>
+   <Panel Move='1' Copy='7'/>
+   <LeftCols>
+      <C Name='X' Width='35' Type='Bool' CanFilter='2' CanSort='0'/>
+      <C Name='A' Width='250' Type='Text' ToolTip='1'/>
+   </LeftCols>
+   <Cols>
+      <C Name='C' Width='100' Type='Text' CanEdit='0'/>
+      <C Name='I' Width='90' Type='Date' Format='d' CanEdit='0'/>
+      <C Name='D' Width='80' Type='Int'/>
+      <C Name='E' Width='80' Type='Float' Format='0.00'/>
+      <C Name='F' Width='80' Type='Float' Format='0.00' Formula='D*E'/>
+      <C Name='G' Width='80' Type='Int' Format='0\%'/>
+      <C Name='H' Width='80' Type='Float' Format='0.00'/>
+   </Cols>
+   <RightCols>
+      <C Name='B' Width='80' Type='Float' Format='0.00' Formula='F-F*G/100+H'/>
+   </RightCols>   
+   <Header 
+      CDef = 'Node'
+      X='Used'
+      A='Product / Order name'
+      B='Price'
+      C='Customer'
+      D='Amount'
+      E='Unit price'
+      F='List Price'
+      G='Discount'
+      H='Shipping'
+      I='Date'
+      />
+   <Foot>
+      <I id='Fix1' CanDelete='0' CanEdit='0' Calculated='1'
+         A='Total income'
+         BFormula='sum(&quot;X==1&quot;)'
+         DFormula='count(&quot;X==1&quot;)' DFormat='0 &quot;orders&quot;' DType='Int'
+         GVisible='0' 
+         />
+      <I id='Fix2' CanDelete='0' CanEdit='0' Calculated='1' 
+         A='Taxes'
+         BFormula='Get(Fix1,&quot;B&quot;)*G/100'
+         CVisible='0'
+         DVisible='0'
+         G='22' GCanEdit='1'
+         />
+      <I id='Fix3' CanDelete='0' CanEdit='0' Calculated='1'
+         A='Profit'
+         BFormula='Get(Fix1,&quot;B&quot;)-Get(Fix2,&quot;B&quot;)'
+         CVisible='0'
+         DVisible='0'
+         GVisible='0'
+         />
+   </Foot>
+   <Toolbar Styles='1'/>
+</Grid>"	
+
+
+
+
+            Data_Tag="Data" Upload_Tag="Data"></bdo>
+         </div></div>
+      <form>
+         <input id="Data" type="hidden" value='
+&lt;?xml version="1.0"?>
+&lt;Grid>
+   &lt;Body>
+      &lt;B>
+         &lt;I id="a" Def="Node" A="Order 001" C="Martin Shaw" H="20" I="6/21/2005">
+            &lt;I id="a1" A="Case ATX MiddleTower 4x5&amp;quot; 450W" D="1" E="24">&lt;/I>
+            &lt;I id="a2" A="CPU AMD ATHLON XP 3000+ 333 ScA" D="1" E="145">&lt;/I>
+            &lt;I id="a3" A="HDD SeaGate 7200rpm/8MB 120GB/SATA" D="1" E="117">&lt;/I>
+            &lt;I id="a4" A="MB K7 GIGABYTE 7VT600-RZ- KT600/8237/DDR400/SB/L SkA" D="1" E="55">&lt;/I>
+            &lt;I id="a5" A="SVGA GEFORCE2 MX-400/166 AGP 64MB" D="1" E="33.5">&lt;/I>
+            &lt;I id="a6" A="RAM DDR 400 Brand 512 MB" D="1" E="44">&lt;/I>
+         &lt;/I>
+         &lt;I id="b" Def="Node" A="Order 002" C="Peter Orwell" I="6/21/2005">
+            &lt;I id="b1" A="MS Windows XP Pro OEM" D="1" E="192">&lt;/I>
+            &lt;I id="b2" A="MS OFFICE 2003 Pro English OEM" D="1" E="420">&lt;/I>
+         &lt;/I>
+         &lt;I id="c" Def="Node" A="Order 003" C="PLS Ltd." I="6/22/2005">
+            &lt;I id="c1" A="Color ink for IP4000, 5000, 8500" D="3" E="6" G="3">&lt;/I>
+            &lt;I id="c2" A="Black ink for IP4000, 5000, 8500" D="2" E="10">&lt;/I>
+            &lt;I id="c3" A="Printer Canon IP4000 A4 Par./USB" D="1" E="160" G="10">&lt;/I>
+            &lt;I id="c4" A="Copy paper CANON 500l. A4 80g" D="1" E="4">&lt;/I>
+         &lt;/I>
+         &lt;I id="d" Def="Node" A="Order 004" C="PLS Ltd." I="6/23/2005">
+            &lt;I id="d1" A="Monitor LG 1730S LCD 17&amp;quot;" D="1" E="303" G="10" H="30">&lt;/I>
+         &lt;/I>
+         &lt;I id="e" Def="Node" A="Order 005" C="Janet Scheel" I="6/29/2005">
+            &lt;I id="e1" A="Case ATX MiddleTower 4x5&amp;quot; 350W silver" D="1" E="29">&lt;/I>
+            &lt;I id="e2" A="CD-ROM 52x Sony IDE" D="1" E="15.5" G="5">&lt;/I>
+            &lt;I id="e3" A="CPU Intel Celeron 2400" D="1" E="79">&lt;/I>
+            &lt;I id="e4" A="FAN Pentium 686" D="1" E="3">&lt;/I>
+            &lt;I id="e5" A="HDD WD 7200rpm 40GB ATA100 2MBCache" D="1" E="59.5">&lt;/I>
+            &lt;I id="e6" A="MB P4 MSI-P4MAM-V, P4M266A, 533,DDR,Vga,Lan" D="1" E="39">&lt;/I>
+            &lt;I id="e7" A="Mouse Wheel, 3but, PS2" D="1" E="2.5">&lt;/I>
+            &lt;I id="e8" A="Monitor KTC 17&amp;quot; K-7002D" D="1" E="95">&lt;/I>
+            &lt;I id="e9" A="Keyboard WIN&apos;95 104 keys" D="1" E="4">&lt;/I>
+            &lt;I id="e10" A="FDD 3.5&amp;quot; 1.44MB" D="1" E="7">&lt;/I>
+            &lt;I id="e11" A="RAM DDR 400 Brand 256 MB" D="1" E="22.5">&lt;/I>
+            &lt;I id="e12" A="SVGA GEFORCE2 MX-400/166 AGP 64MB" D="1" E="3.5">&lt;/I>
+         &lt;/I>
+         &lt;I id="f" Def="Node" A="Order 006" C="Glass Ltd." G="7" I="7/03/2005">
+            &lt;I id="f1" A="Mouse Logitech R95 Cordless Optical Wheel,PS2&amp;amp;USB" D="20" E="21" G="5">&lt;/I>
+            &lt;I id="f2" A="Mouse Pad Photos" D="20" E="1" G="5">&lt;/I>
+         &lt;/I>
+         &lt;I id="g" Def="Node" A="Order 007" C="Nick Anastasi" I="7/08/2005">
+            &lt;I id="g1" A="Case ATX Server Case 400W" D="3" E="42">&lt;/I>
+            &lt;I id="g2" A="DVD+/-R/RW Sony DL 4x/16x/12x/4x/48x/24x/16x/48x" D="1" E="63">&lt;/I>
+            &lt;I id="g3" A="DVD-ROM SONY 16X40 IDE" D="2" E="26">&lt;/I>
+            &lt;I id="g4" A="LAN card 3COM 3C905 10/100 Mbs" D="3" E="26.5">&lt;/I>
+            &lt;I id="g5" A="CPU Intel P4 3.0/800" D="3" E="198">&lt;/I>
+            &lt;I id="g6" A="FAN Pentium 4 s478 BB 2.66MHz" D="3" E="13">&lt;/I>
+            &lt;I id="g7" A="HDD Maxtor 7200rpm 200GB SATA150 8MBCache" D="6" E="126">&lt;/I>
+            &lt;I id="g8" A="MB P4 AsusP4P800SE/GD 865PE/800/DDR/SB/SA/ L/RAID" D="3" E="100.5">&lt;/I>
+            &lt;I id="g9" A="Mouse Keymouse,Wheel Optical PS/2" D="3" E="6">&lt;/I>
+            &lt;I id="g10" A="Monitor Philips 107T60 17&amp;quot; Flat" D="3" E="147">&lt;/I>
+            &lt;I id="g11" A="FDD 3.5&amp;quot; 1.44MB" D="3" E="7">&lt;/I>
+            &lt;I id="g12" A="KeyBoard WIN&apos;95 104 keys PS/2" D="3" E="4">&lt;/I>
+            &lt;I id="g13" A="Printer HP LJ2420 28ppm 1200x1200; 32MB;PCL 6, 5e, HP PS 3 Par/USB" D="1" E="671">&lt;/I>
+            &lt;I id="g14" A="RAM DDR 400 Brand 512 MB" D="6" E="44.5">&lt;/I>
+            &lt;I id="g15" A="SVGA GEFORCE2 MX-400/166 AGP 64MB" D="3" E="33.5">&lt;/I>
+            &lt;I id="g16" A="Scanner Microtek ScanMaker 4850 A4, 2400x 4800pi, 48 Bit, USB" D="1" E="104" G="5">&lt;/I>
+         &lt;/I>
+         &lt;I id="h" Def="Node" A="Order 008" C="Kathy Buckovinsky" H="20" I="7/09/2005">
+            &lt;I id="h1" A="Scanner ScanMaker 6100, A4,3200x6400dpi,48 Bit, 3.2D, USB 2.0. transparency unit" D="1" E="179">&lt;/I>
+         &lt;/I>
+         &lt;I id="i" Def="Node" A="Order 009" C="Bea Sauer" I="7/09/2005">
+            &lt;I id="i1" A="StereoTV Tuner +FM+Capture Play TV Pro" D="1" E="47">&lt;/I>
+            &lt;I id="i2" A="Video camera Logitech QuickCam Zoom USB" D="1" E="77">&lt;/I>
+         &lt;/I>
+         &lt;I id="j" Def="Node" A="Order 010" C="PLS Ltd." G="3" I="7/11/2005">
+            &lt;I id="j1" A="UPS APC Smart SU3000inet 3000VA" D="1" E="1565">&lt;/I>
+            &lt;I id="j2" A="UPS APC Smart 700 VA" D="3" E="318" G="5">&lt;/I>
+            &lt;I id="j3" A="UPS APC Smart 1000 VA" D="2" E="432">&lt;/I>
+         &lt;/I>
+         &lt;I id="k" Def="Node" A="Order 011" C="Glass Ltd." G="7" I="7/03/2005">
+            &lt;I id="k1" A="HDD Maxtor 7200rpm 200GB SATA150 8MBCache" D="8" E="126">&lt;/I>
+            &lt;I id="k2" A="FAN HDD Ball Bearing" D="8" E="8">&lt;/I>
+         &lt;/I>
+      &lt;/B>
+   &lt;/Body>
+&lt;/Grid>			
+            '>
+      </form>
+   </body>
+</html>

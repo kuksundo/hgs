@@ -1,0 +1,75 @@
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body onload="SpecStart();" onresize="SpecResize();">
+      <!-- BodyStart -->
+
+      <script src="EAPI.js"> </script>
+      <script src="EAPISup.js"> </script>
+      <table id="MAIN" width="99%" height="99%">
+      <tr><td><h2>Extended JavaScript API example</h2></td></tr>
+      <tr>
+         
+      <!-- Main Tag for the grid -->
+         <td valign="top"><div id="GRID" style=""></div></td>
+
+         <td width="200px" valign="top">
+		
+         <!-- Right panel with controls -->
+         <div style="width:200px;" id=RIGHT>
+		
+            <!-- Change example combo -->
+            <div style='border:1px solid #eee;padding:3px;font-size:12px;'>
+               Load data: <select style='font-size:10px;width:115px;' id='SData' onchange='LoadData();'>
+               <option>First example</option> <option>Ajax</option> <option>Table</option> <option>Books</option> <option>Paging</option>
+               <option>Main Gantt</option> <option>Big Gantt</option> <option>Simple Gantt</option> <option>Run chart</option>
+               <option>Error to test</option>  
+            </select>
+            </div>
+			
+            <!-- Focus cell combos -->
+            <div style='border:1px solid #eee;padding:3px;'>
+               <span onclick='Focus();' style='cursor:pointer;font-size:12px;'>Focus cell</span>:&nbsp;
+               <select style='font-size:10px;' id='SIds' size=1 style='width:50px;' onchange='Focus();'></select>
+               <select style='font-size:10px;' id="SCols" size=1 style='width:40px;' onchange='Focus();'></select>
+            </div>
+		
+            <!-- Find (color,filter,selece) cells buttons -->
+            <div style='border:1px solid #eee;padding:3px;'>
+               <span style='font-size:12px;'>Cells with value: </span><input id='IColor' type=text style='width:80px;font-size:10px;' onkeydown='if(event.keyCode==13 || event.charCode==13) Color();' NAME="IColor"><br>
+               <button style='width:80px;padding:0px;margin:0px;font-size:10px;' onclick='Color(0);'>Original</button>&nbsp; 
+               <button style='width:80px;padding:0px;margin:0px;font-size:10px;' onclick='Color(1);'>Color cells</button>
+               <button style='width:80px;padding:0px;margin:0px;font-size:10px;' onclick='Color(2);'>Filter rows</button>&nbsp;  
+               <button style='width:80px;padding:0px;margin:0px;font-size:10px;' onclick='Color(3);'>Select rows</button>
+            </div>
+		
+            <!-- Inputs with values of focused row, genereated by FillIds() function -->
+            <div id='DRow' style='border:1px solid #eee;padding:5px;font-size:12px;margin-bottom:5px;'></div>
+		
+            <!-- End of right panel -->
+         </div>
+         </td>
+      </tr>
+
+      <tr>
+         <!-- Bottom log -->
+         <td colspan=2>
+            <div style='border: 1px solid #ddd;font-size:12px;'>
+               Event log: &nbsp;&nbsp;&nbsp; <button style='font-size:12px;' onclick='DLog.innerHTML="";'>Clear</button>
+               <input type=checkbox id='IDisable'>Disable
+               <input type=checkbox id="IStyle">Show style events (very slow) 
+               <input type=checkbox id="IFunc">Show function (filter,...) events (slow) 
+               <div style='border-top:1px solid #eee;overflow:auto;width:100%;height:200px;' id='LOG'></div>
+            </div>
+         </td>
+      </tr>
+      </table>
+
+      <!-- BodyEnd -->
+      <script>
+      if(location.hostname.search(/coqsoft\.|treegrid\./i)>=0) setTimeout('location.replace("../../../www/#..*Examples*Html*EAPI*EAPI.html"+location.hash.replace("#","\'"));',500);
+      </script>
+   </body>
+</html>

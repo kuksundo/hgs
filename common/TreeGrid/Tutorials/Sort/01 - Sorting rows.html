@@ -1,0 +1,171 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Sort</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>1. Sorting rows</center>
+   <center style='font:bold italic;'>Sorting rows according to one ore more columns</center>
+   <div style='margin-bottom:6px;'><a href='01 - Sorting rows.xml'>01 - <h2>Sorting rows</h2>.xml</a></div>
+   <div style='width:960px; height:450px;'>
+      <bdo Debug='check' Data_Url='01 - Sorting rows.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         TreeGrid supports sorting rows by one or more columns ascending or descending.
+      </li>
+      <li>
+         <h4>Sort definition</h4><br />
+         The predefined sort is set by Cfg attribute <h3>Sort</h3> as comma separated list of column names. <br />
+         If the column is sorted descending, it is listed with minus prefix, like "-col1".<br />
+         There can be set also default column to sort by when there is no predefined sorting or more rows have the same values in all sorting column, it is set Cfg attribute <b>DefaultsSort</b>. It cannot be changed by users.<br />
+      </li>
+      <li><h4>Sort permitions</h4><br />
+         <ul>
+            <li>
+            Cfg attribute <h3>Sorting</h3><b>='0'</b> disables sorting in grid by users. It can be still changed by API.<br />   
+            </li>
+            <li>
+            Cfg attribute <h3>Sorted</h3><b>='0'</b> temporary disables sorting in grid, but permits users to change the sort columns without resorting the grid.<br />
+            The Sorted value can be changed by actions <b>SortOff</b> and <b>SortOn</b>.
+            </li>
+            <li>
+            <b>Column</b> can have set its attribute <h3>CanSort</h3><b>='0'</b> to not let users to sort by this column. It is still possible to do it by API.<br />
+            </li>
+            <li>
+            <b>Row</b> can have set its attribute <h3>CanSort</h3><b>='0'</b> to not sort its <b>children</b>.<br />
+            To not sort the root rows set this attribute to <b>Root</b> tag.<br />
+            It affects every sorting, including API.
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Sort options</h4><br />
+         <ul>
+            <li>
+               Row can be fixed on beginning or end of its parent or root by its <h3>SortPos</h3> attribute. Set it to positive value to fix the row on beginning and negative value to fix it to the end.<br />
+               There can be more fixed rows on both sides, they are sorted according to their SortPos value.
+            </li>
+            <li>
+               For <b>numbers</b> there are two basic sorting types, number and string sort. The number sort is used by default for column types Int, Float and Date. <br />
+               You can explicitly choose the number or string sort by column or parent cell attribute <h3>NumberSort</h3>.
+            </li>
+            <li>
+               By default are strings sorted formatted according to its Type and Format. To sort them by the direct cell value set column or parent cell attribute <h3>RawSort</h3><b>='1'</b>. It will speed up the sorting.
+            </li>
+            <li>
+               <b>Enum</b> values are sorted by default by the visible string. <br />
+               To sort them by key value (EnumKeys) set column or parent cell attribute  <b>RawSort='1'</b>.<br />
+               To sort them by position inside the Enum/EnumKeys set <b>RawSort='2'</b>.<br />
+               To sort them by index set <b>NumberSort='1'</b>. The Enum values must be set by the index in this case.<br />
+            </li>
+            <li>
+               Column / parent cell attribute <h3>CaseSensitive</h3> to compare the strings case sensitive. By default is on.
+            </li>
+            <li>
+               Column / parent cell attribute <h3>LocalCompare</h3> to compare the strings according to browser's locale settings. By default is off. <br />
+               It is done only for first 1920 Unicode characters. For higher Unicode characters like Chinese, Korean or Japanese you must define CharCodes instead.
+            </li>
+            <li>
+               Column / parent cell attribute <h3>WhiteChars</h3> as list of characters to ignored when comparing. The strings are compared after these values are removed from them.
+            </li>
+            <li>
+               Column / parent cell attribute <h3>CharCodes</h3> as list of character pairs to replace the first character by the second one in all strings before comparing them. Useful for example to compare strings without punctuation in many languages.
+            </li>
+         </ul>
+      </li>
+      <li><h4>Cell value for sorting</h4><br />
+         Every cell can have set special value by <h3>SortValue</h3> to use it for sorting instead of the cell value.<br />
+         It can have also different value for descending sorting set by <b>SortDescValue</b>, useful to preserve row position when sorting by the column.<br />
+         The value can be also dynamically created by JavaScript in API event <b>OnGetSortValue</b>.<br />
+      </li>
+      <li>
+         <h4>User interface (&lt;Header>)</h4><br />
+         Users can change sort settings by clicking to &lt;Header> cell. There can be more headers in grid, the sorting can be individually permitted for them.<br />
+         <ul>
+            <li>
+            The header shows sorting icons according to the actual sorting state. The icons can be changed for all columns (if set Header attribute <b>SortIcons='1'</b>) 
+            or only for active sorting columns (<b>SortIcons='2'</b>).<br />
+            </li>
+            <li>
+            The header can have disabled sorting actions and icons by its <b>SortIcons='0'</b>.<br />
+            </li>
+            <li>
+            All the sorting icons can be reversed (up / down) by Cfg attribute <b>ReversedIcons='1'</b>.<br />
+            </li>
+            <li>
+            There are four possible behaviors for clicking to header cell and sorting icons controlled by Cfg attribute <h3>SortIcons</h3>.<br />
+            0 - Simple, no icon - Icons are not visible, first click to header sorts ascending, next descending.<br />
+            1 - Simple - Icons are visible, first click to header sorts ascending, next descending.<br>
+            2 - Directional, icons only - Only icons can be clicked, top half to sort ascending, bottom half descending.<br/>
+            3 - Directional - The whole header can be clicked, top half to sort ascending, bottom half descending.<br />
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Sorting actions</h4><br />
+         It is possible to control how the sorting column will be chosen by users. It can be done by assigning sorting actions to header sort events in Actions tag, for example &lt;Actions OnClickSort='SortAsc OR SortDesc'.<br />
+         
+         <ul>
+         <li>
+            <h4>Events</h4><br />
+            There is basic event <h3>OnClickSort</h3> called when set Cfg SortIcons to 0 or 1, called for both directions.<br />
+            Or two events <h3>OnClickSortUp</h3> and <h3>OnClickSortDown</h3> called when set Cfg SortIcons to 2 or 3, called for the individual direction.<br />
+            There are the actions with key or button prefixes or their combinations, <b>Right</b> and <b>Middle</b> for mouse buttons and <b>Shift</b>, <b>Alt</b> and <b>Ctrl</b> for control keys.
+            For example OnShiftRightClickSort or OnCtrlClickSort.<br />
+         </li>
+         <li>
+            <h4>Actions</h4><br />
+            <ul>
+            <li>
+            <h3>SortAsc</h3>, <h3>SortDesc</h3> add the clicked column as the first column in sorting. The old columns are shifted to next positions.<br />
+            If the column is already the first in sorting, it changes its direction if it has different.<br />
+            If the sorting count reaches <b>MaxSort</b>, the last column is removed.<br />
+            </li>
+            <li>
+            <h3>SortAscOne</h3>, <h3>SortDescOne</h3> sort only by this column, all old sorting is removed.
+            </li>
+            <li>
+            <h3>SortAscAppend</h3>, <h3>SortDescAppend</h3> add the column to the end of the sorting.<br />
+            If the sorting count reaches <b>MaxSort</b>, they do nothing.<br />
+            If the column is already present in the sorting and has different direction, they changes it.<br />
+            </li>
+            <li>
+            <h3>SortAscAdd</h3>, <h3>SortDescAdd</h3> add the column to the end of the sorting if there was another click to some column header within last two seconds.<br />
+            If the sorting count reaches <b>MaxSort</b>, they do nothing.<br />
+            If the column is already present in the sorting and has different direction, they changes it.<br />
+            If there was no click to column header within two seconds, it sorts by this column and all old sorting is removed.<br />
+            </li>
+            <li>
+            <h3>NoSort</h3> removes the clicked column from sorting.<br />
+            </li>
+            <li>
+            <h3>DefaultSort</h3> clears the sorting and restores Sort attribute that was set when the grid was loaded.<br />
+            </li>
+            </ul>
+         </li>
+         </ul>
+      </li>
+      <li>
+      <h4>Auto sort</h4><br />
+      Row can be automatically sorted to right place when user changes the row value in some sorting column. For this behavior set Cfg attribute <b>AutoSort='1'</b>.<br />
+      </li>
+      <li>
+         <h4>API</h4><br />
+         Before sorting start it is called <b>OnSort</b> API event. It can return true to provide own sorting and not the default one.<br />
+         After sorting finishes, it is called <b>OnSortFinish</b> API event.<br />
+         The grid can be re-sorted after some external change by <b>SortRows</b> method.<br />
+         The individual row can be re-sorted after external change by <b>SortRow</b> method, only if AutoUpdate='1'.<br />
+         The sorting can be changed by <b>ChangeSort</b> method.<br />
+      </li>
+   </ul>
+</body>
+</html>

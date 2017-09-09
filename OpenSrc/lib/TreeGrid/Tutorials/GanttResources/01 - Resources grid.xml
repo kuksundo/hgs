@@ -1,0 +1,83 @@
+<Grid>
+   <Cfg id="ResourcesGrid" NoVScroll="1" Undo="1" IdNames="NAME" AppendId="1" IdChars="0123456789" NumberId="1" />
+   <LeftCols>
+      <C Name="id" CanEdit="0" Width="40"/>
+      <C Name="NAME" Type="Text" Width="55" ResultMask="[a-zA-z_]" ResultText="Resource name cannot be number, because of GanttResourcesExtra value in main grid"/>
+      <C Name="TYPE" Type="Enum" Enum="|wrk|mat" EnumKeys="|1|2"/>
+      <C Name="MAX" Type="Text" Width="70" Button="Dates" 
+         DatesRepeatType="Enum" DatesRepeatEnum="||Weekly|Daily" DatesRepeatEnumKeys="||w|d" 
+         DatesValueType="Enum" DatesValueEnum="|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15" DatesValueCaption="Count"
+         />
+      <C Name="UNIT" Type="Float" Format="0.00" EditMask="^\d*[\d\.\,]?\d*$"/>
+      <C Name="PEAK" Type="Float" Format="0.00" Formula="ganttresourcepeak(NAME)"/>
+      <C Name="TOTAL" Type="Float" Format="0.00" Formula="ganttresourceunits(NAME)"/>
+      <C Name="PRICE" Type="Float" Format="0.00" Formula="TOTAL*UNIT" Width="47"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTTRES" Type="Gantt" 
+         GanttLeft="0" GanttRight="0"
+         GanttHeader1="d#%d"
+         GanttAvailability="NAME#3,NAME#1,NAME#8" GanttAvailabilityFormat="0.#"
+         />
+   </Cols>
+   <Cfg
+      GanttResourcesMaster="Resources"
+      GanttResourcesName="NAME" GanttResourcesType="TYPE" GanttResourcesPrice="UNIT" GanttResourcesAvailability="MAX"
+      GanttResourcesGantt="GANTT" GanttResourcesChart="GANTTRES"
+      />
+   <Def>
+      <D Name='R' CalcOrder="TOTAL,UNIT,PRICE,PEAK" NAME="New" Height="25"/>
+   </Def>
+   <Header id="id" SortIcons='0' CanPrint='1'
+      NAME='Resource' TYPE='Type' PRICE='Total&#x0a;price' TOTAL='Total&#x0a;count' UNIT='Unit&#x0a;price' 
+      MAX='Availability' PEAK='Peak'
+      />
+   <Toolbar Cells="USE,AVAIL,FREE,ERR,Reload,Print,Undo,Redo,Add,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo,Empty,Formula" Styles="2" CanFocus="0"
+      USEType='Bool' USENoColor='1' USECanEdit='1' USELeft='5' USECanFocus='0'
+      USELabelRight='Used res.' USE='1'
+      USEOnChange='
+         Grid.Cols.GANTTRES.GanttAvailability = (Row.AVAIL?",NAME#3":"") + (Row.USE?",NAME#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",NAME#8":"") + (Row.FREE?",NAME#5":"") + (Row.ERR?",NAME#6":"");
+         if(!Row.AVAIL&amp;&amp;!Row.FREE&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      AVAILType='Bool' AVAILNoColor='1' AVAILCanEdit='1' AVAILLeft='5' AVAILCanFocus='0'
+      AVAILLabelRight='Available res.' AVAIL='1'
+      AVAILOnChange='
+         Grid.Cols.GANTTRES.GanttAvailability = (Row.AVAIL?",NAME#3":"") + (Row.USE?",NAME#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",NAME#8":"") + (Row.FREE?",NAME#5":"") + (Row.ERR?",NAME#6":"");
+         if(!Row.USE&amp;&amp;!Row.FREE&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      FREEType='Bool' FREENoColor='1' FREECanEdit='1' FREELeft='5' FREECanFocus='0'
+      FREELabelRight='Free res.' FREE='0'
+      FREEOnChange='
+         Grid.Cols.GANTTRES.GanttAvailability = (Row.AVAIL?",NAME#3":"") + (Row.USE?",NAME#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",NAME#8":"") + (Row.FREE?",NAME#5":"") + (Row.ERR?",NAME#6":"");
+         if(!Row.USE&amp;&amp;!Row.AVAIL&amp;&amp;!Row.ERR) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      ERRType='Bool' ERRNoColor='1' ERRCanEdit='1' ERRCanFocus='0' ERRLeft='5'
+      ERRLabelRight='Res. errors' ERR='0'
+      ERROnChange='
+         Grid.Cols.GANTTRES.GanttAvailability = (Row.AVAIL?",NAME#3":"") + (Row.USE?",NAME#1":"") + (Row.USE&amp;&amp;Row.AVAIL?",NAME#8":"") + (Row.FREE?",NAME#5":"") + (Row.ERR?",NAME#6":"");
+         if(!Row.USE&amp;&amp;!Row.AVAIL&amp;&amp;!Row.FREE) { 
+            var F = Grid.GetRows(Grid.Foot); Grid.StartUpdate();
+            for(var i=0;i&lt;F.length;i++) if(Value) Grid.ShowRow(F[i]); else Grid.HideRow(F[i]); 
+            Grid.EndUpdate();
+            }
+         else Grid.RefreshGantt();
+         '
+      FormulaLabel="Total price" 
+      Formula="Math.round((sum('PRICE')+ganttresourcesextra())*10)/10 + ' USD'"
+      />
+</Grid>

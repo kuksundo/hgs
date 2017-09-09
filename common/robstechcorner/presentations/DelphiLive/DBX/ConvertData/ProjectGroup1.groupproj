@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{8E3AFBF9-08F1-4D1F-8533-95AE65556B7B}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="BDEtoDBXDataPump.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="C:\Documents and Settings\All Users\Documents\RAD Studio\6.0\Demos\database\projects\dbxdatapump\native32\DBXDataPump.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="BDEtoDBXDataPump">
+			<MSBuild Projects="BDEtoDBXDataPump.dproj"/>
+		</Target>
+		<Target Name="BDEtoDBXDataPump:Clean">
+			<MSBuild Targets="Clean" Projects="BDEtoDBXDataPump.dproj"/>
+		</Target>
+		<Target Name="BDEtoDBXDataPump:Make">
+			<MSBuild Targets="Make" Projects="BDEtoDBXDataPump.dproj"/>
+		</Target>
+		<Target Name="DBXDataPump">
+			<MSBuild Projects="C:\Documents and Settings\All Users\Documents\RAD Studio\6.0\Demos\database\projects\dbxdatapump\native32\DBXDataPump.dproj"/>
+		</Target>
+		<Target Name="DBXDataPump:Clean">
+			<MSBuild Targets="Clean" Projects="C:\Documents and Settings\All Users\Documents\RAD Studio\6.0\Demos\database\projects\dbxdatapump\native32\DBXDataPump.dproj"/>
+		</Target>
+		<Target Name="DBXDataPump:Make">
+			<MSBuild Targets="Make" Projects="C:\Documents and Settings\All Users\Documents\RAD Studio\6.0\Demos\database\projects\dbxdatapump\native32\DBXDataPump.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="BDEtoDBXDataPump;DBXDataPump"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="BDEtoDBXDataPump:Clean;DBXDataPump:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="BDEtoDBXDataPump:Make;DBXDataPump:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>

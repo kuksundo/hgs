@@ -1,0 +1,179 @@
+<Grid>
+   <Cfg id="LineCharts" SuppressCfg="1"/> <!-- Basic grid identification, does not store grid configuation in cookies -->
+   <Cfg Sort="X"/> <!-- By default sorts by X column -->
+   <Cfg MaxHeight="1" MinTagHeight="500"/> <!-- Extends the grid to fill the whole page, it will be minimally 500px high -->
+   <Panel CanPrint="1"/> <!-- Just does not hide panel when printing -->
+   <Cols>
+      <C Name="X" Type="Int" Width="30"/> <!-- Row informational number, it is not used in charts -->
+      <C Name="A" Type="Float" CanEmpty="1" Width="50" HtmlPrefix="&lt;div style='color:red;'>" HtmlPostfix="&lt;/div>"/> <!-- Y1 sources-->
+      <C Name="B" Type="Float" CanEmpty="1" Width="50" HtmlPrefix="&lt;div style='color:blue;'>" HtmlPostfix="&lt;/div>"/> <!-- Y2 sources -->
+      <C Name="C" Type="Float" CanEmpty="1" Width="50" Formula="A*B"/> <!-- Y1*Y2 sources -->
+      <C Name="D" Type="Float" CanEmpty="1" Width="50" Formula="A-B" HtmlPrefix="&lt;div style='color:gray;'>" HtmlPostfix="&lt;/div>"/> <!-- Y1-Y2 sources -->
+      <C Name="G" Type="Gantt" /> <!-- The right side Gantt column with movable points -->
+
+      <C Name="G" GanttUnits="0.25"/> <!-- The size of unit will be 1/4 -->
+      <C Name="G" GanttWidth="13"/> <!-- Width of unit (the 1/4) will be 13 pixels -->
+      <C Name="G" GanttDataUnits="0.25" />
+      <C Name="G" GanttChartMinStart="-5.25" GanttChartMaxStart="-5.25"/> <!-- The chart will always start on -5.25 -->
+      <C Name="G" GanttChartMinEnd="5.25" GanttChartMaxEnd="5.25"/> <!-- The chart will always end on 5.25 -->
+      <C Name="G" GanttLeft="1" GanttRight="1"/> <!-- The points cannot be moved to the last unit (5.25/-5.25) -->
+      <C Name="G" GanttHeader1="0.5#0.0#0.5"/> <!-- The header will repeat by 0.5, in format '0.0' and all the labels will be shifted left by 0.5 -->
+      <C Name="G" GanttBackground="0.25#0;0"/> <!-- The first background show lines repeated by 0.25, the seconf higlights the 0 -->
+      <C Name="G" GanttPoints="C,D,A,B"/> <!-- Defined point sources, the points are displayed in this order if they overlap -->
+      <C Name="G" GanttPointsIcons="1,8,2,3"/> <!-- Specifies icon colors for the GanttPoints, black, gray, red, blue -->
+      <C Name="G" GanttPointsEdit="0,0,1,1"/> <!-- Only the A,B icons can be changed in the chart -->
+      <C Name="G" GanttPointsTip="*Col* = *Start"/> <!-- The tip will display column name and its value -->
+   </Cols>
+   <Head>
+      <Filter/> <!-- Shows filter row on top -->
+   </Head>
+   <Header A="Y1" B="Y2" C="Y1*Y2" D="Y1-Y2"/> <!-- Column captions -->
+   <Header SortIcons="2"/> <!-- Shows sorting icons only for actually sorted columns -->   
+   <Body>
+      <B> <!-- Data for individual rows -->
+         <I X="0" A="0" B="0"/>
+         <I X="1" A="0.25" B="2"/>
+         <I X="2" A="0.5" B="3"/>
+         <I X="3" A="0.75" B="3.5"/>
+         <I X="4" A="1" B="3"/>
+         <I X="5" A="1" B="2"/>
+         <I X="6" A="0.75" B="0"/>
+         <I X="7" A="0.5" B="-2"/>
+         <I X="8" A="0.25" B="-3"/>
+         <I X="9" A="0" B="-3.5"/>
+         <I X="10" A="-0.25" B="-3"/>
+         <I X="11" A="-0.5" B="-2"/>
+         <I X="12" A="-0.75" B="0"/>
+         <I X="13" A="-1" B="2"/>
+         <I X="14" A="-1" B="3"/>
+         <I X="15" A="-0.75" B="3.5"/>
+         <I X="16" A="-0.5" B="3"/>
+         <I X="17" A="-0.25" B="2"/>
+         <I X="18" A="0" B="0"/>
+      </B>
+   </Body>
+   <Solid>
+      <!-- Defines the middle toolbar checkboxes and combos 
+      S1,S2,S3 are the same as in the charts row to place the buttons above the chart
+      A1,A2 - Shows / hides axis and labels
+      P1,P2 - Shows / hides all points in all charts
+      W1,W2 - Selects pixel width of all lines
+      I1,I2 - Selects interpolation of all lines
+      W1,W2 - Chooses which charts will be displayed
+      -->
+      <Toolbar Cells="S1,A1,P1,W1,I1,L1,S2,T2,P2,W2,I2,L2,S3" Space="4"
+         S1RelWidth="1" S2RelWidth="1" S1Type="Html" S2Type="Html" S3Type="Html" S3RelWidth="1"
+         A1Type="Bool" A1LabelRight="Show axis" A1="1" 
+         A1OnChange="
+            var C = Grid.GetChart(0);
+            if(Value) { C.AxisX=5; C.AxisY=5; C.LabelX=5; C.LabelY=5; C.Left=20; C.Bottom=20; }
+            else { C.AxisX=0; C.AxisY=0; C.LabelX=0; C.LabelY=0; C.Left=5; C.Bottom=5; }
+            Grid.RefreshChart(0);
+            "
+         P1Type="Bool" P1LabelRight="Show points" P1="0"
+         P1OnChange="
+            var C = Grid.GetChart(0), pts = [2,3,1,8];
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].PointType = Value?pts[i]:0;
+            Grid.RefreshChart(0);
+            "
+
+         I1Type="Select" I1Defaults="|none|linear|cosine|hermite|cubic" I1="hermite" I1Width="40" I1Tip="Interpolation function"
+         I1OnChange="
+            var C = Grid.GetChart(0), idx = Grid.GetDefaultsIndex(Row,Col);
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Interpolation = idx;
+            Grid.RefreshChart(0);
+            "
+         W1Type="Enum" W1Width="10" W1Icon="0" W1Enum="|0|1|2|3|4|5|6|7|8|9" W1="3" W1Tip="Line width in pixels"
+         W1OnChange="
+            var C = Grid.GetChart(0);
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Width = Value-0;
+            Grid.RefreshChart(0);
+            "
+         L1Type="Select" L1Range="1" L1Defaults="|Y1|Y2|Y1*Y2|Y1-Y2" L1="Y1;Y2;Y1*Y2;Y1-Y2" L1Tip="Select charts to show"
+         L1OnChange="
+            var C = Grid.GetChart(0), v = Value?Value.split(';'):[], r = {'Y1':0,'Y2':1,'Y1*Y2':2,'Y1-Y2':3};
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Visible = 0;
+            for(var i=0;i&lt;v.length;i++) C.Lines[r[v[i]]].Visible = 1;
+            Grid.RefreshChart(0);
+            "
+               
+         T2Type="Select" T2Defaults="|XY points|X line chart|Y line chart" T2="X line chart" T2Width="60" T2Tip="How will be sorted the XY sources"
+         T2OnChange="
+            var C = Grid.GetChart(1), idx = Grid.GetDefaultsIndex(Row,Col), ip = Grid.GetDefaultsIndex(Row,'I2');
+            for(var i=0;i&lt;C.Lines.length;i++) {
+               C.Lines[i].Interpolation = idx==1?ip:1;
+               C.Lines[i].Sort = idx;
+               }
+            Grid.RefreshChart(1);
+            "
+         P2Type="Bool" P2LabelRight="Show points" P2="1"
+         P2OnChange="
+            var C = Grid.GetChart(1), pts = [6,1];
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].PointType = Value?pts[i]:0;
+            Grid.RefreshChart(1);
+            "
+         I2Type="Select" I2Defaults="|none|linear|cosine|hermite|cubic" I2="hermite" I2Width="40" I2Tip="Interpolation function"
+         I2OnChange="
+            var C = Grid.GetChart(1), idx = Grid.GetDefaultsIndex(Row,Col);
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Interpolation = idx;
+            Grid.RefreshChart(1);
+            "
+         W2Type="Enum" W2Width="10" W2Icon="0" W2Enum="|0|1|2|3|4|5|6|7|8|9" W2="2" W2Tip="Line width in pixels"
+         W2OnChange="
+            var C = Grid.GetChart(1);
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Width = Value-0;
+            Grid.RefreshChart(1);
+            "
+         L2Type="Select" L2Range="1" L2Defaults="|Y1*Y2|Y1-Y2" L2="Y1*Y2;Y1-Y2" L2Tip="Select charts to show"
+         L2OnChange="
+            var C = Grid.GetChart(1), v = Value?Value.split(';'):[], r = {'Y1*Y2':0,'Y1-Y2':1};
+            for(var i=0;i&lt;C.Lines.length;i++) C.Lines[i].Visible = 0;
+            for(var i=0;i&lt;v.length;i++) C.Lines[r[v[i]]].Visible = 1;
+            Grid.RefreshChart(1);
+            "
+         />
+      
+      <!-- The two charts are displayed here 
+      S1,S2,S3 are hidden relative width cell just to center the charts
+      O - the left chart shows four line charts with sources Y1,Y2,Y1*Y2,Y1-Y2
+          it has not specified X sources, so any change in sorting will affect the chart
+          if you set OSourcesX='X,X,X,X' the charts will not be affected by sorting
+      P - the right chart shows two XY charts, the first with sources x=Y1*Y2, y = Y1-Y2, the second chart has the sources swop
+          it is affected by sorting only if chosen XY Points as no sort
+      -->
+      <I Cells="S1,O,S2,P,S3" Space="4" Height="200" OWidth="350" PWidth="350"
+         S1RelWidth="1" S2RelWidth="1" S1Type="Html" S2Type="Html" S3Type="Html" S3RelWidth="1"
+         OType="Chart" OSourcesY="A,B,C,D" OParent="" ORefresh="A,B" 
+         OChart="
+            {
+            id:0,
+            Top:5, Right:5,
+            AxisX:5, LabelX:5, Bottom:20,
+            AxisY:5, LabelY:5, Left:20,
+            ChartRoundY:5, ChartAddY:0.5,
+            Lines:[
+               { Width:3, PointType:0, Color:'red' },
+               { Width:3, PointType:0, Color:'blue' },
+               { Width:3, PointType:0, Color:'black' },
+               { Width:3, PointType:0, Color:'#DDD' }
+               ]
+            }
+            "
+         
+         PType="Chart" PSourcesY="C,D" PSourcesX="D,C" PRefresh="A,B" PParent=""
+         PChart="
+            {
+            id:1,
+            Caption:'&lt;span style=&quot;color:#880;padding-left:30px;padding-right:50px;&quot;>x = Y1*Y2, y = Y1-Y2&lt;/span> x = Y1-Y2, y = Y1*Y2', Top:20,
+            Right:5,
+            AxisX:10, Bottom:5,
+            AxisY:10, Left:5, 
+            Lines:[
+               { Width:2, Color:'#880', PointType:6 },
+               { Width:2, Color:'#000', PointType:1 }
+               ]
+            }
+            "
+         />
+   </Solid>
+</Grid>

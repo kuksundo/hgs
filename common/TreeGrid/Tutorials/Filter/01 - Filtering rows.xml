@@ -1,0 +1,96 @@
+<Grid>
+   <Cfg id="Filter" NoHScroll="1" IdChars="0123456789" NumberId="1" SuppressCfg="1" UpCounter="UPC" UpCounterType="32"/>
+   <Cfg SearchExpression='6 OR 22 OR "-3"' SearchCells="1" SearchFocused="3" SearchNumbers="3" SearchAction="Filter,Mark,Find"/>
+   <Cols>
+      <C Name="INT" Type="Int" Width="90"/>
+      <C Name="FLOAT" Type="Float" Width="90"/>
+      <C Name="TEXT" Type="Text" Width="80" CaseSensitive="0" WhiteChars=" "/>
+      <C Name="CASE" Type="Text" Width="80" CaseSensitive="1" WhiteChars=""/>
+      <C Name="ENUM" Type="Enum" Enum="||One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten" Width="80"/>
+      <C Name="DATE" Type="Date" Width="110" DefaultDate="1/1/2000" Format="dddddd MMM"/>
+      <C Name="BOOL" Type="Bool"/>
+      <C Name="ICON" Type="Icon" CaseSensitive="0" Width="55"/>
+      <C Name="HTML" Type="Html" Width="60"/>
+   </Cols>
+   <Header INTTip="Number filter" TEXTTip="Case insinsitive text, ignores also spaces" CASETip="Case sensitive text as is, including spaces"
+      HTMLTip="Filter according to FilterValue attribute"
+      />
+   <Head>
+      <Filter id="Filter1" Height="22" ENUMFilterOff="(All)" ICONTip="Input 'red', 'green' or 'yellow'" HTMLTip="Input 'yes', 'no', 'warn' or 'empty'"/>
+      <Filter id="Filter2" Height="22"
+         INTRange="1" INTShowMenu="0" INT="0~9;15~40" INTFilter="1" INTTip="Range for numbers&lt;br>Input ranges as XX&lt;b>~&lt;/b>YY, separate ranges by &lt;b>;&lt;/b>"
+         TEXTRange="1" TEXTShowMenu="0" TEXTButton="Defaults" TEXTDefaults="|*FilterOff|*RowsAll" TEXTTip="Range for strings with predefined options in Defaults menu"
+         CASERange="1" CASEShowMenu="0" CASEButton="Defaults" CASEDefaults="|*FilterOff|*RowsAll" CASETip="Range for strings with predefined options in Defaults menu"
+         ENUMRange="1" ENUMFilterOff="(All)" ENUMTip="Range for enum"
+         DATERange="1" DATEShowMenu="0" DATETip="Range for dates&lt;br>Select more dates in calendar, even by mouse dragging"
+         BOOLShowMenu="1" BOOLTip="Bool with filter menu"
+         ICONButton="Defaults" ICONDefaults="|*FilterOff||Red|Green|Blue" ICONShowMenu="0"
+         HTMLButton="Defaults" HTMLDefaults="|*FilterOff|yes|no|warn|empty" HTMLShowMenu="0"
+         />
+      <Filter id="Filter3" Height="22"
+         INTType="Text" INTAlign="Right" INTTip="Search for individual digits as text"
+         TEXTMenuItems="0,1,2,11,12" TEXTTip="Only selected items in filter menu"
+         CASEMenuItems="0,1,2,11,12" CASETip="Only selected items in filter menu"
+         ENUMShowMenu="1" ENUMFilterOff="(All)" ENUMMenuItems="0,1,2,3,4,5,6" ENUMTip="Enum with filter menu shown"
+         DATECanEdit="0" DATETip="Disabled filter cell"
+         BOOLCanEmpty="1" BOOLTip="Bool with three states and filter menu&lt;br>It distinguishes between empty and 0 bool, although they are visible in data, because here is not set CanEmpty"
+         ICONButton="Defaults" ICONCanEdit="0" ICONDefaults="|*FilterOff|*RowsAll" ICONType="Icon" ICONRange="1"
+         HTMLType="Enum" HTMLEnum="|&lt;img src='Green.gif' height='17'>|&lt;img src='Red.gif' height='17'>|&lt;img src='Yellow.gif' height='17'>|" HTMLFilterOff="(All)" HTMLEnumKeys="|yes|no|warn|empty" HTMLFilterEnumKeys="1" HTMLRange="1"
+         />
+   </Head>
+   <Solid>
+      <Search Cells="Expression,Search,Clear" ExpressionAction="Filter,Mark,Find" Actions="Filter,Mark,Find" ExpressionTip="You can search any string in grid&lt;br>The ICON you can search as 'red', 'green', 'yellow', the HTML as 'yes', 'no', 'warn'"/>
+      <Tabber
+         Cells="D0,D1,D2,D3,S1,N0,N1,N2"
+         D0ButtonText="All dates" D0OnCheck="Grid.SetFilter('datefilter');" D0="1"
+         D1ButtonText="1st - 10th" D1OnCheck="Grid.FilterDateRange('DATE','1/1/2000~1/10/2000','datefilter');"
+         D2ButtonText="11th - 20th" D2OnCheck="Grid.FilterDateRange('DATE','1/11/2000~1/20/2000','datefilter');"
+         D3ButtonText="21st - 31st" D3OnCheck="Grid.FilterDateRange('DATE','1/21/2000~1/31/2000','datefilter');"
+         S1Button="TabSep"
+         N0ButtonText="All numbers" N0OnCheck="Grid.SetFilter('numberfilter');" N0Radio="2" N0="1"
+         N1ButtonText="1 - 20" N1OnCheck="Grid.SetFilter('numberfilter','INT>=1&amp;&amp;INT&lt;=20');" N1Radio="2"
+         N2ButtonText="21 - 40" N2OnCheck="Grid.SetFilter('numberfilter','INT>=21&amp;&amp;INT&lt;=40');" N2Radio="2"
+         />
+   </Solid>
+   <Toolbar Styles="2" Formula="'Found &lt;b>'+Grid.FilterCount+'&lt;/b> results'"/>
+   <Body>
+      <B>
+         <I/>
+         <I INT="1" FLOAT="1.3" TEXT="One" CASE="One" ENUM="One" DATE="1/1/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="2" FLOAT="6" TEXT="One" CASE="One" ENUM="One" DATE="1/1/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="3" FLOAT="66" TEXT="ONE" CASE="ONE" ENUM="One" DATE="1/2/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="4" FLOAT="3.6" TEXT="ONE" CASE="ONE" ENUM="One" DATE="1/2/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="5" FLOAT="-6.5" TEXT="O n e" CASE="O n e" ENUM="One" DATE="1/3/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="6" FLOAT="12" TEXT="one" CASE="one" ENUM="One" DATE="1/6/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="7" FLOAT="16" TEXT="Two" CASE="Two" ENUM="Two" DATE="1/6/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="8" FLOAT="2.4" TEXT="two" CASE="two" ENUM="Two" DATE="1/6/2000" HTMLFilterValue="empty"/>
+         <I INT="9" FLOAT="-12.5" TEXT="Two" CASE="Two" ENUM="Two" DATE="1/8/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="10" FLOAT="6.65" TEXT="Three" CASE="Three" ENUM="Three" DATE="1/8/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="11" FLOAT="2.3" TEXT="THREE" CASE="THREE" ENUM="Three" DATE="1/8/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="12" FLOAT="-5.5" TEXT="Three" CASE="Three" ENUM="Three" DATE="1/9/2000" HTMLFilterValue="empty"/>
+         <I INT="13" FLOAT="11" TEXT="Three" CASE="Three" ENUM="Three" DATE="1/11/2000" HTMLFilterValue="empty"/>
+         <I INT="14" FLOAT="11.4" TEXT="Four" CASE="Four" ENUM="Four" DATE="1/13/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="15" FLOAT="1.06" TEXT="f o u r" CASE="f o u r" ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="16" FLOAT="0.5" TEXT="Four" CASE="Four" ENUM="Four" DATE="1/13/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="17" FLOAT="-0.6" TEXT="S I X" CASE="S I X" ENUM="Six" DATE="1/14/2000" BOOL="0" HTMLFilterValue="empty"/>
+         <I INT="18" FLOAT="22" TEXT="Six" CASE="Six" ENUM="Six" DATE="1/14/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="19" FLOAT="4" TEXT="Seven" CASE="Seven" ENUM="Seven" DATE="1/16/2000" BOOL="1" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="20" FLOAT="5.9" TEXT="seven" CASE="seven" ENUM="Seven" DATE="1/17/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="21" FLOAT="6.23" TEXT="seven" CASE="seven" ENUM="Seven" DATE="1/18/2000" BOOL="1" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="22" FLOAT="16" TEXT="Seven" CASE="Seven" ENUM="Seven" DATE="1/18/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="23" FLOAT="6.18" TEXT="Seven" CASE="Seven" ENUM="Seven" DATE="1/20/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="24" FLOAT="5.2" TEXT="Eight" CASE="Eight" ENUM="Eight" DATE="1/21/2000" BOOL="0" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="25" FLOAT="-6.345" TEXT="Eight" CASE="Eight" ENUM="Eight" DATE="1/22/2000" BOOL="0" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="26" FLOAT="3" TEXT="Nine" CASE="Nine" ENUM="Nine" DATE="1/25/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="27" FLOAT="-0.02" TEXT="NINE" CASE="NINE" ENUM="Nine" DATE="1/26/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="28" FLOAT="-22.9" TEXT="N IN E" CASE="N IN E" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="29" FLOAT="-5.9" TEXT="Nine" CASE="Nine" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="30" FLOAT="6.2" TEXT="Nine" CASE="Nine" ENUM="Nine" DATE="1/27/2000" BOOL="1" HTMLFilterValue="empty"/>
+         <I INT="31" FLOAT="22" TEXT="Ten" CASE="Ten" ENUM="Ten" DATE="1/29/2000" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="32" FLOAT="6" TEXT="Ten" CASE="Ten" ENUM="Ten" DATE="1/30/2000" ICON="Yellow.gif" HTML="&lt;img src='Yellow.gif' height='17'>" HTMLFilterValue="warn"/>
+         <I INT="33" FLOAT="-3" TEXT="t e n" CASE="t e n" ENUM="Ten" DATE="1/31/2000" ICON="Green.gif" HTML="&lt;img src='Green.gif' height='17'>" HTMLFilterValue="yes"/>
+         <I INT="34" FLOAT="-5" TEXT="ten" CASE="ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" ICON="Red.gif" HTML="&lt;img src='Red.gif' height='17'>" HTMLFilterValue="no"/>
+         <I INT="35" FLOAT="2" TEXT="Ten" CASE="Ten" ENUM="Ten" DATE="1/31/2000" BOOL="0" HTMLFilterValue="empty"/>
+      </B>
+   </Body>
+</Grid>

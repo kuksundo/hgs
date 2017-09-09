@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzList" invoke="none">
+		<description>
+			create a new type safe list
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyList
+                  </text>
+                  <hint>
+                    Name of the list class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored in the list
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes;
+
+{$DEFINE __DZ_LIST_TEMPLATE__}
+type
+  _LIST_ANCESTOR_ = TObject;
+  _LIST_CONTAINER_ = TList;
+  _LIST_CONTAINER_ITEM_TYPE_ = pointer; 
+  _ITEM_TYPE_ = |itemtype|;
+{$INCLUDE 't_dzListTemplate.tpl'}
+
+type
+  {: List for storing |itemtype| items }
+  |listtype| = class(_DZ_LIST_TEMPLATE_)
+  protected
+    {: Frees a |itemtype| }
+    procedure FreeItem(_Item: |itemtype|); override;
+  end;
+
+implementation
+
+{$INCLUDE 't_dzListTemplate.tpl'}
+
+procedure |listtype|.FreeItem(_Item: |itemtype|);
+begin
+  { TODO : Free a |itemtype| }
+  |end|
+end;
+
+]]>
+		</code>
+	</template>
+</codetemplate>

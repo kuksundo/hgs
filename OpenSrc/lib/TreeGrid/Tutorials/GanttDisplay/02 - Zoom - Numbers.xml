@@ -1,0 +1,111 @@
+<Grid>
+   <Cfg id="ZoomNumbers" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1"/>
+   <Cfg ScrollLeftLap="0"/>
+   <Actions OnDblClickGantt="ZoomToBar"/>
+   <LeftCols>
+      <C Name="id" Type="Int" CanEdit="0" CanSort="0"/>
+      <C Name="START" Type="Float" CanEmpty="1"/>
+      <C Name="END" Type="Float" CanEmpty="1"/>
+      <C Name="DUR" Type="Text" CanSort="0"/>
+      <C Name="ES" Type="Date" Visible="0"/>
+      <C Name="LS" Type="Date" Visible="0"/>
+      <C Name="EF" Type="Date" Visible="0"/>
+      <C Name="LF" Type="Date" Visible="0"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt"
+         GanttDataUnits="1"
+         GanttDataModifiers="h:100,d:7"
+         GanttStart="START" GanttEnd="END" GanttDuration="DUR"
+         GanttMinStart="ES" GanttMaxStart="LS" GanttMinEnd="EF" GanttMaxEnd="LF"
+         GanttLeft="0" GanttRight="0"
+         GanttZoom="tens"
+         GanttSmoothZoom="1"
+         GanttHideExclude="0" GanttCheckExclude="1"
+         GanttExclude="10#4~7;100#70~80#3"
+         />
+   </Cols>
+   <Zoom>
+      <Z Name="tens" 
+         GanttUnits="10" GanttChartRound="100"
+         GanttWidth="16" GanttWidthEx="25.4"
+         GanttHeader1="100#0"
+         GanttHeader2="10#800;800" 
+         GanttBackground="100#0#4;#0#5"
+         />
+      <Z Name="ones" 
+         GanttUnits="1" GanttChartRound="10" 
+         GanttWidth="16" GanttWidthEx="22.9"
+         GanttHeader1="10#0" 
+         GanttHeader2="1#80;80" 
+         GanttBackground="10#0#4;#0#5"
+         />
+      <Z Name="decimal" 
+         GanttUnits="0.1" GanttChartRound="1"
+         GanttWidth="16" GanttWidthEx="16"
+         GanttHeader1="1#0.0"
+         GanttHeader2="0.1#8.0;8.0"
+         GanttBackground="1#0#4;#0#5"
+         />
+   </Zoom>
+   <Body>
+      <B>
+         <I id="0"/>
+         <I id="1" 
+            START="-153" END="154"
+            ES="-183" LS="-133"
+            EF="114" LF="164"
+            />
+         <I id="2" 
+            START="0" DUR="1"
+            />
+         <I id="3" 
+            START="100" DUR="6d"
+            />
+         <I id="4" 
+            START="-2"
+            />
+         <I id="5" 
+            END="4"
+            />
+         <I id="6" 
+            Spanned="1" GANTTGanttStart="" GANTTGanttParts="START" STARTSpan="3" STARTRange="1" STARTCanEdit="0"
+            START="-153~-86;~4;37;57~58;87~94"
+            />
+         <I id="7" 
+            Spanned="1" GANTTGanttStart="" GANTTGanttParts="START" STARTSpan="3" STARTRange="1" STARTCanEdit="0"
+            START="-153~-86;-2~;37;57~58;87~94"
+            />
+         <I id="8" 
+            Spanned="1" GANTTGanttStart="" GANTTGanttFlags="START" STARTSpan="3" STARTRange="1" STARTCanEdit="0"
+            START="-133;-50;0;63;97"
+            />
+         <I id="9"
+            Spanned="1" GANTTGanttStart="" GANTTGanttPoints="START" STARTSpan="3" STARTRange="1" STARTCanEdit="0"
+            START="-133;-50;0;63;97"
+            />
+         <I id="10"
+            Spanned="1" GANTTGanttStart="" GANTTGanttRun="START" STARTSpan="3" STARTType="Text" STARTCanEdit="0" STARTFormat=""
+            START=";,-153,28;-93,7;-13,4;2;-7,27;67,28;137,14"
+            />
+      </B>
+   </Body>
+   <Header id="id"/>
+   <Toolbar Cells="Zoom,Smooth,Exclude,Reload,Print,Undo,Redo,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,StyleTitle,StyleCombo" Styles="2"
+      ZoomType='SelectGanttZoom'
+      ZoomHtmlPrefix='&lt;b>Zoom to &lt;span style="color:blue;">' ZoomHtmlPostfix='&lt;/span>&lt;/b>'
+      ZoomWidth='90'
+
+      SmoothType='Bool' SmoothCanEdit='1'
+      SmoothLabelRight='Smooth zoom'
+      SmoothFormula='Grid.Cols.GANTT.GanttSmoothZoom'
+      SmoothOnChange='Grid.Cols.GANTT.GanttSmoothZoom = Value'
+      SmoothTip='For 1 the unit width defined for zoom level can be increased to show exactly the zoomed range'
+
+      ExcludeType='Bool'
+      ExcludeLabelRight='Hide excluded dates'
+      ExcludeFormula='Grid.Cols.GANTT.GanttHideExclude'
+      ExcludeOnChange='Grid.SetHideExclude(Value)'
+      ExcludeCanEditFormula='gantthasexclude()!=0'
+   />
+</Grid>

@@ -1,0 +1,63 @@
+<Grid>
+   <Cfg id="Dynamic Span" Style="Borders" SuppressCfg="1" NoVScroll="1" NoHScroll="1"/>
+   <Cfg MainCol="X" ShowDeleted="0" ResizingMain="1"/>
+   <Cfg SelectingCells="1"/> <!-- Individual cells or cell ranges can be selected -->
+   <Cfg DynamicSpan="1"/> <!-- Prepares grid for dynamic span, shows buttons Join and Split on Toolbar and permit Undo for spanning -->
+   <Cfg Undo="1"/>  <!-- Permits Undo / Redo, here also for the span -->
+   <Cfg StandardFilter="2"/> <!-- When filtering, shows parent if its children pass the condition -->
+   <Actions OnDragCell="SelectCells"/> <!-- Dragging by left mouse button will select cells -->
+   <Actions OnRightDropCell="SpanSelected AND ClearSelection"/> <!-- When dragging by right mouse button, spans selected cells immediatelly -->
+   <Actions OnCtrlDragCell="DragRow"/> <!-- Dragging and moving rows is done with Ctrl -->
+   <Actions OnClickCell="ClearSelection,FocusEdit" OnClickOutside="ClearSelection,Blur"/> <!-- Clears selection after any click or focus change -->
+   <Actions OnRightClick="SpanSelected AND ClearSelection"/> <!-- Spans selected cells by right click -->
+   <Actions OnMiddleMouseDown="SplitSelected OR SplitCell"/> <!-- Splits clicked cell by mouse middle button -->
+   <Actions OnClickButtonSave="alert('This XML would be uploaded to server: \n'+Grid.GetXmlData())"/> <!-- Shows how the uploaded XML will look -->
+   <Def>
+      <D Name="C" Width="50" Spanned="1" CanFilter="0" CanSort="0"/>
+      <D Name="Group" Expanded="1"/>
+   </Def>
+   <LeftCols>
+      <C Name="X" Width="140" CanFilter="1" CanSort="1"/>
+      <C Name="Y" Width="40" CanFilter="1" CanSort="1"/>
+   </LeftCols>
+   <Cols>
+      <C Name="A"/> <C Name="B"/> <C Name="C"/> <C Name="D"/> <C Name="E"/> <C Name="F"/> <C Name="G"/> 
+      <C Name="H"/> <C Name="I"/> <C Name="J"/> <C Name="K"/> <C Name="L"/> <C Name="M"/> <C Name="N"/>
+   </Cols>
+   <RightCols>
+      <C Name="O"/> <C Name="P"/> <C Name="R"/>
+   </RightCols>
+   <Head>
+      <Filter XRange="1" XButton="Defaults" XDefaults="|*FilterOff|*Rows" YRange="1" YType="Select" YDefaults="|*FilterOff|*Rows" YShowMenu="0"/>
+   </Head>
+   <Toolbar Cells="Group,Correct,Save,Reload,Repaint,Print,ExportPDF,Export,Undo,Redo,Add,AddChild,Join,Split,Sort,Calc,ExpandAll,CollapseAll,ZoomIn,ZoomOut,ZoomFit,Columns,Cfg,Help,Debug,StyleTitle,StyleCombo,StyleStandard,StyleLight,StyleOffice,StyleModern,StyleBorders,StyleQuery,StyleExtJS,StyleRobust,StylePlain,StyleColors,Empty,Formula,Resize"
+      SaveVisibleFormula="1"
+      GroupType="Bool"
+      GroupLabelRight="&lt;b style='color:red'>Group by Y&lt;/b>"
+      GroupCanEdit="1"
+      GroupOnChange="Grid.GroupRows(Value?['Y']:null)"
+      GroupTip="Groups rows according to the values in column Y"
+      />
+   <Body>
+      <B>
+         <I/><I/>
+         <I>
+            <I/>
+            <I>
+               <I>
+                  <I></I>
+               </I>
+               <I/>
+            </I>
+            <I/>
+            <I/>
+         </I>
+         <I Expanded="0">
+            <I/><I/><I><I/></I>
+         </I>
+         <I/><I/><I/><I/><I/><I/><I/><I/><I/><I/>
+         <I/><I/><I/><I/><I/><I/>
+         
+      </B>
+   </Body>
+</Grid>

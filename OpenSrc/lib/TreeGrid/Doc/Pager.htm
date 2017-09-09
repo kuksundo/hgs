@@ -1,0 +1,1246 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Paging root rows</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+pre
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Pagers</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=SidePager></a><a name=RightPager><b><span
+style='font-size:20.0pt'>Side pager</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The side pager is defined by
+&lt;<b>P</b>&gt; tag placed to &lt;<b>Pagers</b>&gt; tag, e.g.
+&lt;Grid&gt;&lt;Pagers&gt;&lt;P Type='Pages'/&gt;&lt;P ...
+/&gt;&lt;/Pagers&gt;&lt;/Grid&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There can be more side pagers
+in grid, placed on right (default) or left side.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The side pagers are
+defined since 9.0, prior this version there was only one pager defined by
+&lt;Pager&gt; tag.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If used root paging (&lt;Cfg
+Paging='1' or '2' or '3'/&gt;), there is defined default pager by
+&lt;Grid&gt;&lt;Pager Name='Pager' Type='Pages'&gt;&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To not use the default
+pager for paging set <b>&lt;Pager Type=&quot;&quot;/&gt;</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        []
+                                                                                                                   <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the pager. by this
+name is the pager accessible by API in Pagers. Also redefining &lt;P&gt; tag with
+the existing Name will update already existing pager.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          []
+                                                                                                                   <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of pager. It controls,
+what will be displayed in the pager, it can be:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Pages</span></b><span
+style='font-size:10.0pt'>                    Pager for root pages, defined by
+&lt;Cfg Paging/&gt;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Columns</span></i></b><i><span
+style='font-size:10.0pt'>               Pager for columns, defined by &lt;Cfg
+ColPaging/&gt; (not yet implemented)</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Gantt</span></b><span
+style='font-size:10.0pt'>                     Pager for Gantt zoom, defined by
+&lt;C Type='Gantt' GanttPageSize/&gt;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Custom</span></b><span
+style='font-size:10.0pt'>                 Custom pager, it is filled and
+controlled by custom API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=PLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Left</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             [0]
+                                                                                                                 <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it shows the pager
+on the right grid side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it shows the
+pager on the left grid side.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If there are more pagers
+defined on the same side, they are shown in the order they are defined in
+&lt;Pagers&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;      </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>            <i>bool      </i></span><a
+name=PagerVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Visible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>      [1]        Saved to
+cookies, to avoid it, set &lt;P <b>VisibleLap</b>=’1’/&gt;                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If pager is visible. Pager
+can be visible only if Cfg.<a href="#CfgPaging">Paging</a> &gt; 0 and Cfg.<a
+href="#CfgNoPager">NoPager</a> = 0. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can select pager
+visibility from configuration menu (except if set <a href="#PagerCanHide">CanHide</a>=’0’).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=PagerCanHide><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanHide</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [0]
+                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If pager is displayed in
+columns menu and can be hidden or displayed by a user from this menu. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the pager
+can be also hidden automatically if there is no room for it, to preserve
+displaying “Too small extents” message.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This attribute does not
+affect displaying and hiding pager from configuration menu (you can control it
+by &lt;MenuCfg ShowPager/&gt; instead)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PagerCaption><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Caption</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pager header caption.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PagerWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Width</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>         [100]     Saved to
+cookies, to avoid it, set &lt;P <b>WidthLap</b>=’1’/&gt;                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pager width in pixels. A user
+can resize the pager by dragging its right side, unless it has <a
+href="#PagerCanResize">CanResize</a>=’0’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PagerMinWidth><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MinWidth</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [20]                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal width of pager in
+pixels. This restriction is applied when a user resizes the pager or the pager
+is resized automatically when main tag width is too small.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=PagerCanResize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanResize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If pager can be resized by a user.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, pager can
+also be resized if there is no room for it, to preserver displaying “Too small
+extents” message.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=PagerHover><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Hover</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If page will be highlighted
+under mouse cursor</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>bool      </i></span><a
+name=CfgNoPager><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>NoPager</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> [0]                                                                                                           
+<span style='color:red'>deleted <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, grid does
+not render any pager, regardless of settings in &lt;Pagers&gt; or &lt;Pager&gt;
+tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnClickPagerPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnClickPagerPage</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>TGrid</i>
+<b>Grid</b>, <i>object</i> <b>Pager</b>, <i>type</i> <b>Page</b>, <i>type</i> <b>Page2</b>,
+<i>bool</i> <b>Active</b>)             <span style='color:red'>new <b>9.0</b></span><span
+style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called on click to pager
+page. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Pager</span></b><span
+style='font-size:10.0pt'> is the API object for &lt;P&gt; tag.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Page</span></b><span
+style='font-size:10.0pt'> is the object for the page related to the Pager <a
+href="#PType">Type</a>. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+&quot;<b>Pages</b>&quot; is the TRow object as the page. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+&quot;<b>Gantt</b>&quot; is the first date in the zoom.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>For
+&quot;<b>Custom</b>&quot; is the page index from 0.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Page2</span></b><span
+style='font-size:10.0pt'> <i>(since 10.0) </i>is the last date in the <b>&quot;Gantt&quot;</b>
+page.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Active</span></b><span
+style='font-size:10.0pt'> <i>(since 10.0) </i>is true if the &quot;Gantt&quot;
+page is already selected in the chart. False means <a href="#PClick">Click</a>,
+true means <a href="#PDblClick">DblClick</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetPageName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPageName</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>Grid</b>, <i>object</i> <b>Pager</b>, <i>type</i> <b>Page</b>, <i>string</i>
+<b>Name</b> )                  <span style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when generating the
+HTML for individual pager pages.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Name</span></b><span
+style='font-size:10.0pt'> is the default name to show.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new HTML name or <b>Name</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a
+href="#OnClickPagerPage">OnClickPagerPage</a> for other attributes description.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetPageTip><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPageTip</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>Grid</b>, <i>object</i> <b>Pager</b>, <i>type</i> <b>Page</b>, <i>string</i>
+<b>Tip</b>, <i>string</i> <b>Drag</b> )            <span style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when showing tip for
+pager page under mouse cursor.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Tip</span></b><span
+style='font-size:10.0pt'> is default tip to show.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Drag</span></b><span
+style='font-size:10.0pt'> is drag action name when dragging is active,
+otherwise null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new tip or <b>Tip</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>See <a
+href="#OnClickPagerPage">OnClickPagerPage</a> for other attributes description.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=UpdatePager><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>UpdatePager</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  ( )                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Re-renders all pagers,
+including horizontal (space) pagers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt; </span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                   </span><a
+name=ActionScrollPager><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ScrollPager</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>      Mouse dragging action,
+only for <b>OnDragPager</b> event                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts scrolling side pager
+under mouse cursor. Only for touchpads (e.g. on iPad).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is the action
+attached to <b>OnDrag2Pager</b> for scrolling with two fingers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object[] </i> </span><a
+name=Pagers><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Pagers</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>An array of side pager
+objects. It has length property as count of the pagers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The pagers can be accessible
+by the index or by the pager.Name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The pager object has properties
+like all the &lt;P&gt; attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Pages><b><span style='font-size:20.0pt'>Side pager type <span
+style='color:#002060'>Pages</span></span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>Pager for root pages (&lt;Cfg Paging&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> =
+&quot;<b>Pages</b>&quot;                                                                                                                 <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pager for root pages, defined
+by &lt;Cfg Paging/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PagerMaxColumns><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>MaxColumns</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [3]                                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximum of sorting columns to
+be listed in page names, can be set to 0 – 3.  </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to 0, the pages are
+always named “Page” + index.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cell&gt;</span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              string    </span></i><a
+name=CellPageNameValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageNameValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell value used for creating
+page names in side pager, see also <a href="#OnGetPageNameValue">OnGetPageNameValue</a>
+event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetPageNameValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPageNameValue</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>val</b>)                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get value used for
+creating page names in side pager<i> </i><b>val</b> is predefined value, return
+<b>val</b> or new value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnSetPageName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSetPageName</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>page</b>)                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when are being
+(re)generated page names for side pager after sorting or grouping.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>page</span></b><span
+style='font-size:10.0pt'> is given page, read and set its properties <b>page</b>.<b>Name</b>
+(HTML, page name displayed in pager) and <b>page</b>.<b>Title</b> (text,
+tooltip for page item on pager).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API variable</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>     object   </span><a
+name=Pager><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>Pager</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                                                                                                                        
+<span style='color:red'>deleted <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pager settings, from XML node
+&lt;<a href="#RightPager">Pager</a>&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Gantt><b><span style='font-size:20.0pt'>Side pager type <span
+style='color:#002060'>Gantt</span></span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>Pager for Gantt zooms (&lt;C GanttPageSize&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> =
+&quot;<b>Gantt</b>&quot;                                                                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Pager for Gantt zoom, defined
+by &lt;C Type='Gantt' GanttPageSize/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PPageSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>PageSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                      <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets size of the page in
+pager. If not set, the page size is set by column <a href="#CGanttSize">GanttSize</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set neither &lt;P
+PagerSize/&gt; nor &lt;C GanttSize/&gt; nor &lt;C xxxPageSize/&gt;, the pager
+does not show any page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The values are the same as <a
+href="GanttDisplay.htm#GanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CxxxPageSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxPageSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                             <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'><a href="#PPageSize">PageSize</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestPageSize='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PChartSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChartSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sets size of the whole pager.
+The ChartSize unit should be bigger than PageSize / GanttSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The pager shows pages only
+from this date range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The values are the same as <a
+href="GanttDisplay.htm#GanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>For example when set
+PageSize='d' ChartSize='M', the pager shows all days from actual month in Gantt
+chart. Changing month in chart will regenerate the pager.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>ChartSize</b> is
+not set, the pager shows all dates from actual Gantt chart. The size of actual
+Gantt chart is calculated to show all items in the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Also <a
+href="GanttCompute.htm#CGanttChartMaxStart">GanttChartMaxStart</a> and other
+chart size constraints affect the chart size.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>ChartSize</b> is
+set to <b>0</b>, the chart size is in range <a
+href="file:///S:\Doc\GanttCompute.htm#CGanttChartMinStart">GanttChartMinStart</a>
+- <a href="file:///S:\Doc\GanttCompute.htm#CGanttChartMaxEnd">GanttChartMaxEnd</a>,
+if set, otherwise it acts like the ChartSize=&quot;&quot; </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxChartSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxChartSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                            <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'><a href="#PChartSize">ChartSize</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestChartSize='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PChartPrev><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChartPrev</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds given number of pages in
+front of pages (from previous ChartSize period)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxChartPrev><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxChartPrev</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'><a href="#PChartPrev">ChartPrev</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestChartPrev='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PChartNext><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ChartNext</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds given number of pages
+after pages (from next ChartSize period)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxChartNext><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxChartNext</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'><a href="#PChartNext">ChartNext</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestChartPrev='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Format</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formats the displayed page
+name. Formats starting date of the page. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the format is set
+by column <a href="#CxxxFormat">xxxFormat</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is standard <a
+href="TypeDate.htm#CFormat">TreeGrid date / time format</a> string for date
+PageSize, or standard <a href="TypeNumber.htm#CFormat">TreeGrid number format</a>
+string for number PageSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain two formats
+separated by semicolon. In this case it prints two formatted date, the second
+format formats ending date of the page (= starting date of the next page minus
+1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                  <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Page <a href="#PFormat">Format</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestFormat='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PTipFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>TipFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formats the displayed page
+tip (TITLE). Formats starting date of the page. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the format is set
+by column <a href="#CxxxTipFormat">xxxTipFormat</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is standard <a
+href="TypeDate.htm#CFormat">TreeGrid date / time format</a> string for date
+PageSize, or standard <a href="TypeNumber.htm#CFormat">TreeGrid number format</a>
+string for number PageSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain two formats
+separated by semicolon. In this case it shows two formatted date, the second
+format formats ending date of the page (= starting date of the next page minus
+1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxTipFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxTipFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Page <a href="#PTipFormat">TipFormat</a>
+can be set also in Gantt column instead of the pager &lt;P&gt; tag. The
+advantage is that it can be set different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestTipFormat='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PCaptionFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CaptionFormat</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                        <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Formats the displayed pager
+caption. Formats starting date of the pager (the first date of <a
+href="#PChartSize">ChartSize</a> or if not set, the first date in chart)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the format is set
+by column <a href="#CxxxCaptionFormat">xxxCaptionFormat</a>. If not set either
+it, it shows static <a href="#PCaption">Caption</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The format is standard <a
+href="TypeDate.htm#CFormat">TreeGrid date / time format</a> string for date
+PageSize, or standard <a href="TypeNumber.htm#CFormat">TreeGrid number format</a>
+string for number PageSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can contain two formats
+separated by semicolon. In this case it prints two formatted date, the second
+format formats ending date of the page (= starting date of the next page minus
+1).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CxxxCaptionFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>xxxCaptionFormat</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                              <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Pager <a
+href="#PCaptionFormat">CaptionFormat</a> can be set also in Gantt column
+instead of the pager &lt;P&gt; tag. The advantage is that it can be set
+different for every zoom level.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <b>xxx</b> is the
+pager <a href="#PName">Name</a> attribute, e.g. for &lt;P Name='Test'/&gt; it
+will be &lt;C TestCaptionFormat='...'/&gt;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PFirstZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FirstZoom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                   <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the first zoom level
+to show the pager for.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the actual zoom level will
+be lower (defined prior this zoom level in &lt;Zoom&gt; array), the pager will
+be hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the pager is
+shown for all zoom levels from start.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=PLastZoom><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>LastZoom</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                    <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of the last zoom level
+to show the pager for.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the actual zoom level will
+be higher (defined after this zoom level in &lt;Zoom&gt; array), the pager will
+be hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the pager is
+shown for all zoom levels to end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PClick><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Click</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>           [0]                                                                                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What to do on the page click,
+replaces the <b>ZoomToPage</b>. For special actions use <a
+href="#OnClickPagerPage">OnClickPagerPage</a> API event instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it scrolls to
+the page date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it sets
+GanttSize to the PageSize and scrolls to the page date.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>2</b> it changes zoom
+level to show exactly the page range in the chart, but does not change the GanttSize.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>3</b> it sets
+GanttSize to the PageSize and changes zoom level to show exactly the page range
+in the chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>4</b> <i>(new 10.0) </i>it
+chooses the (first) zoom level with the same GanttSize as the pager PageSize.
+It scrolls to previously displayed date if the GanttSize increased.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PDblClick><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>DblClick</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What to do on the page double
+click, replaces the <b>ZoomToPage</b>. For special actions use <a
+href="#OnClickPagerPage">OnClickPagerPage</a> API event instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The double click means a click
+to already active page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The options are the same as
+for <a href="#PClick">Click</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>int        </i></span><a
+name=PZoomToPage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ZoomToPage</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> [0]                                                                                   
+<span style='color:red'>new <b>9.0</b>; deleted <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by <a href="#PClick">Click</a>
+and <a href="#PDblClick">DblClick</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PShowUsedPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowUsedPages</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, highlights
+all pages in the pager that contain some Gantt object (Main bar, Flow, Run,
+Flag, Point, Constraint). Constraints used only if set GanttShowConstraints='2'.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, works
+like 1, except it counts only edges of Main, Flow and Run bars. The Flag, Point
+and Constraints are counted the same as 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only if the pager size
+is equal or wider than actual zoom level (ChartSize&gt;=GanttSize).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Can slow down the chart if
+there are a lot of rows with many objects, especially Run boxes!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=PShowExcludedPages><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ShowExcludedPages</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>,
+highlights all pages that contain only excluded dates. Used only for page sizes
+equal or less than days (PageSize&lt;='d').</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only if the pager size
+is equal or wider than actual zoom level (ChartSize&gt;=GanttSize).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string    </i></span><a
+name=CGanttSize><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSize</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Limits the size of the chart
+to this unit. The values are the same as the <a href="#CGanttUnits">GanttUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example GanttSize='M'
+shows always Gantt chart for one month.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This value can be used to
+show only part of the chart or for paging in Gantt chart using <b>side pager</b>
+<a href="Pager.htm#Gantt">Type='Gantt'</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>empty string</b>,
+it tries to show the whole chart. Also moving Gantt object outside the visible
+range will resize the visible range. <i>It is default behavior in grid prior 9.0.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it tries
+to show the whole chart, moving Gantt object outside the visible range never
+resizes the visible range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In API, the
+Grid.Cols[gantt_col].GanttSize contains actually selected page size in the
+grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttSizeLeft><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSizeLeft</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                           <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of GanttUnits added
+before <a href="#CGanttSize">GanttSize</a> range, to show it from previous
+range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>int        </i></span><a
+name=CGanttSizeRight><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSizeRight</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                       <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of GanttUnits added
+after <a href="#CGanttSize">GanttSize</a> range, to show it from next range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Custom><b><span style='font-size:20.0pt'>Side pager type <span
+style='color:#002060'>Custom</span></span></b></a></p>
+
+</div>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'>Custom pager controlled by API events</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;P&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> =
+&quot;<b>Custom</b>&quot;                                                                                                              <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Custom pager controlled by
+API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use the pager API events to
+control the individual pages: <a href="#OnGetPageName">OnGetPageName</a>, <a
+href="#OnGetPageTip">OnGetPageTip</a>, <a href="#OnClickPagerPage">OnClickPagerPage</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnGetPagesCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPagesCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TGrid</i>
+<b>Grid</b>, <i>object</i> <b>Pager</b>)                                             <span
+style='color:red'>new <b>9.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get count of items
+to show on custom pager.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=SimplePager><b><span style='font-size:20.0pt'>Pager cell with
+navigation buttons and edit</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> =
+“</span><a name=TypePager><b><span style='font-size:16.0pt;color:blue;
+background:yellow'>Pager</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                                                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays control buttons <b>PagerFirst</b>,<b>
+PagerPrevious</b>,<b> PagerNext</b>,<b> PagerLast</b> and editable cell with
+page number and number of pages named <b>PagerEdit</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This cell is replaced by the
+mentioned buttons and the editable cell and no longer exists for API.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set also attributes
+of the new cells, for example PagerEditWidth=’100’ or PagerNextOnClick=’MyActionNext()’</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Due its internal
+implementation, the Pager Type cell is available only in <b>Extended API</b>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=ListPager><b><span style='font-size:20.0pt'>Pager cell as
+list of page indexes</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>Type</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> =
+“</span><a name=TypePages><b><span style='font-size:16.0pt;color:blue;
+background:yellow'>Pages</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>”                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Displays all page numbers as
+links to the pages. Displays horizontal scrollbar if required.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set cell attribute <b>RelWidth=’1’</b>
+to show the cell on the whole row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set also cell attribute
+<b>Wrap=’1’</b> to not show the horizontal scrollbar.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>int        </i></span><a
+name=CellCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Count</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [0]
+                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal count of page links
+displayed in <b>Pages</b> type cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Pages type cell displays
+actual page + up to Count/2-1 links before actual page + up to Count/2 links
+after actual page + first page + last page + links for <a href="#CellStep">Step</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>int[]      </i></span><a
+name=CellStep><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Step</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Pages</b> type cell. It
+contains one or more comma separated values to display only some page links
+outside the <a href="#CellCount">Count</a> range. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for Step=’10’ it
+displays pages 10, 20, 30, ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example for page 254
+Count=’10’ Step=’10,100’ it displays pages 1, 100,200,210,220,230,240,
+250,251,252,253,<b>254</b>,255,256,257,258,259,260,
+270,280,290,300,400,500,600,...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>When set cell attribute <b>Wrap</b>=’<b>2</b>’
+the steps are displayed on own lines, the pager will be displayed on three
+lines. Otherwise the step links are separated by space.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, when used Step
+the count of links often changes when changes active page and the pager height
+can change too. You should set row <b>Height</b> attribute to maximal expected
+height of the pager to avoid grid flickering.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string    </i></span><a
+name=OnGetPageNumber><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetPageNumber</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>int</i> <b>number</b>)                                               <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for <b>Pages</b> type
+for every page number to get the html displayed in the link for the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>number</b> is
+displayed for the page. It starts from 1, so it is bigger by 1 than the related
+page index.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To get page object call</span><span
+style='font-size:10.0pt;font-family:"Courier New"'> grid.<a href="#GetPage">GetPage</a>(number-1)</span><span
+style='font-size:10.0pt'>;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

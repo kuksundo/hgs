@@ -1,0 +1,1725 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt resources</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resource list is defined
+globally for whole chart in &lt;Resources&gt; root tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The individual resources can
+be assigned to tasks to compute their price.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tasks can filtered
+according to the assigned resources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid provides various
+calculations for resources and prices.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=List><b><span style='font-size:20.0pt'>Resources list</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resources are defined
+globally for the whole project in root tag <b>&lt;Resources&gt;</b>, individual
+resources are defined in nested <b>&lt;R&gt;</b> tags.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example simple definition
+can be: </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                ...</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;Resources&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               &lt;R
+Name=’Resource1’ Price=’100’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               &lt;R
+Name=’Resource2’ Price=’200’/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                &lt;/Resources&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Resources&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   <i>            </i></span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>&lt;<a
+name=ResourcesR><u>R</u></a>&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                    <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>One resource definition. It
+can be placed only in root &lt;Resources&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=RName><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Name</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Unique name of the resource.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=RText><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Text</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Text displayed for the
+resource in the popup menu for assigning resources to the task.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the <a
+href="#RName">Name</a> is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=Rtype><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Type</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                                                                                                                  <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of the resource.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – <b>Work</b>, <u>not</u> consumed resource. The <a
+href="RAvailability">Availability</a> is the maximal count per time unit.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <b>Material</b>, consumed resource. The <a
+href="RAvailability">Availability</a> is calculated from start and consumed per
+every used time unit.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>float      </i></span><a
+name=RPrice><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Price</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Price per one resource unit. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resource units are set by
+<a href="GanttCompute.htm#CGanttDataUnits">GanttDataUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=RAvailability><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Availability</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                 <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resource <b>availability</b>.
+Maximal summary count of resource units assigned to all tasks at one time unit
+(<a href="#RType">Type</a>=1) or for whole project (<a href="#RType">Type</a>=2).</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it can contain more values for given date ranges, in
+format: <b>repeater</b>1<b><span style='color:red'>#</span>date</b>1a<b><span
+style='color:red'>~</span>date</b>1b<b><span style='color:red'>#</span>count</b>1<b><span
+style='color:red'>;</span>repeater</b>2<b><span style='color:red'>#</span>date</b>2a<b><span
+style='color:red'>~</span>date</b>2b<b><span style='color:red'>#</span>count</b>2<b><span
+style='color:red'>;</span></b>....</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The possible values of <b>repeater</b>
+are the same as <a href="#CGanttUnits">GanttUnits</a>, e.g. “w”, “d”, “h” or “1”,
+“0.5”, “2”, ... If the <b>repeater</b> is not present, the date range is not
+repeated</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>date</b> range is
+range where the <b>count</b> of resources is available. The date range can be
+periodically repeated by the <b>repeater</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Material</b> <a
+href="#RType">Type</a> resources is used only the first date from <b>date</b>
+range as date when the <b>count</b> of resources arrives.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If some date ranges are
+overlapped, the <b>count</b> values are summed. The <b>count</b> can be also
+negative to reduce the count for some range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “3<b><span
+style='color:red'>;</span></b>w<b><span style='color:red'>#</span></b>1/3/2011<b><span
+style='color:red'>~</span></b>1/4/2011<b><span style='color:red'>#</span></b>-1”
+– The resource count is 3 except Mondays when is 2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to limit the
+repeating - when the <b>date</b> range is wider than the <b>repeater</b>, the
+range is rounded to the <b>repeater</b> range and repeated only between the <b>dates</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example ‘w<b><span
+style='color:red'>#</span></b>1/5/2008<b><span style='color:red'>~</span></b>12/29/2008#1’
+marks all weekends, but only in year 2008.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The availability can be
+easily edited by users in dialog for <a href="TypeDate.htm#Dates">Dates</a>
+type Button.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;R&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>                 <i>float      </i></span><a
+name=RMaxCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>MaxCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                                                 <span
+style='color:red'>new <b>6.4; </b>deleted<b> 7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Renamed to Availability</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>object[] </i></span><a
+name=Resources><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Resources</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The array of all resources in
+grid, accessible by its name. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resource objects contain
+all the XML attributes like Price or Availability.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example:
+Grid.Resources.Worker.Price = 150;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Assign><b><span style='font-size:20.0pt'>Resources assign</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every task can have assigned
+one or more resources from global &lt;Resources&gt; list. It can have also
+specified how many resource units it uses.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttResources><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttResources<span style='color:#00B0F0'>X</span></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>             Gantt
+source – column name or exact value                  <span style='color:red'>chg
+<b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resources assigned to the
+main bar task. It can be column name or string.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>It is used only for Gantt
+tasks listed in <a href="GanttObjects.htm#CGanttTask">GanttTask</a></span></b><span
+style='font-size:10.0pt'> (by default it is only the first main bar plan)</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 10.0 </span></i><span
+style='font-size:10.0pt'>it is <u>not</u> used for run, for run bar use <a
+href="#CGanttRunResources">GanttRunResources</a>, for run box use <a
+href="GanttRun.htm#RunResources">Resources</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><i>X</i></b> is main
+bar plan, for the first main plan is empty (GanttResources, GanttResources1,
+GanttResources2, ...). See <a href="GanttMain.htm#CGanttCount">GanttCount</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is in format:   </span><b><span
+style='font-size:10.0pt;font-family:"Courier New"'>name1<span style='color:
+red'>*</span>amount1<span style='color:red'>+</span>extra1<span
+style='color:red'>;</span>name2<span style='color:red'>*</span>amount2<span
+style='color:red'>+</span>extra2<span style='color:red'>;</span>... </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resources are separated by
+semicolon (defined by &lt;Format ValueSeparator/&gt;) <i>(note, in Run box <a
+href="GanttRun.htm#RunResources">Resources</a> is used '#' instead of the
+semicolon)</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>name</b> and <b>amount</b>
+are separated by asterisk (defined by &lt;Format CountSeparator/&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>extra</b> is separated
+by plus (defined by &lt;Format AddSeparator/&gt;)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>name</b> is resource <a
+href="#RName">Name</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>amount</b> is amount
+of resource units per task data unit. The <b>amount</b> can be omitted if it is
+<b>1</b> and <b>extra</b> is not defined. Or is <b>0</b> and <b>extra</b> is
+defined.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>extra</b> is extra amount
+of resource units independent on the task duration. The <b>extra</b> can be
+omitted if it is <b>0</b>. <i>This item changed its meaning in 7.0!</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the <b>name</b> and <b>amount</b>
+are both omitted, the <b>extra</b> is extra price for the task independent on
+resources and task duration. There should be only one such extra price per
+task.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The GanttResources can be also
+just plain text to display it next to task, without filtering and pricing
+functionality.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttRunResources><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttRunResources</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                  Gantt
+source – column name or exact value            <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Resources assigned to run bar
+task, only if set <b>Run</b> in <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For resources added to run
+box use box <a href="file:///S:\Doc\GanttRun.htm#RunResources">Resources</a>
+instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format is the same as <a
+href="#CGanttResources">GanttResources</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttResourcesAssign><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesAssign</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           [4]                                                                   <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How the resources can be
+assigned to the task, affects the menu for assigning resources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The behavior can be more
+modified also by <a href="#CGanttResourcesMenu">GanttResourcesMenu</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – Only one resource can be assigned to the task, the
+menu is clickable. The Extra prices are <u>not</u> shown.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – The resources can be assigned only as 0/1, the
+checkboxes are shown - set Default: { Bool:1 }</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – The resources can be assigned as 0 – 10, the enums
+are shown – set Default: { Enum:1, Width:22, Items:[&quot;&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;]
+}</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – The resources can be assigned as integers, the
+edits are shown – set Default: { Edit:1, Width:40, Type:”Int”, Size:5 }</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – The resources can be assigned as floats, the edits
+are shown – </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>set
+Default: { Edit:1, Width:60, Type:”Float”, Format:&quot;0.##;;&quot;,
+DisplayFormat:&quot;0.00;;&quot;, EditMask:&quot;^\\d{0,5}(\\.\\d{0,2})?$&quot;}</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> – Only extra price and resource units permitted by <a
+href="#CGanttResourcesExtra">GanttResourcesExtra</a> are shown.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttResourcesExtra><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttResourcesExtra</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>               [0]                                                       <span
+style='color:red'>new <b>6.4</b>; chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If and how will be possible
+to add extra prices and resource units to tasks when editing resources from
+menu.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – no extra price possible.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – one extra price per whole task</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – extra resource units per task</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – both extra price and extra units</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>If set to 1 or 3, the
+resource names should <u>not</u> be numbers.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttResourcesMenu><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttResourcesMenu</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Optional menu to assign the
+resources to the task. Here is possible to specify which resources and how can
+be assigned to the individual task.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is standard <a
+href="Menu.htm">TreeGrid menu</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The items must be named (Name
+attribute) as resource names to be correctly assigned.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Name of the extra task price
+item must be “Extra”, the names of extra resource units must be name+”Extra”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsEditGanttResource><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:lime'>EditGanttResource</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           Attached
+to <b>OnDblClickGantt</b> event                                         .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Lets a user to assign
+resources for the task in popup menu</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Filter><b><span style='font-size:20.0pt'>Resources filter</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The tasks can be easily
+filtered according to assigned resources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User interface for filtering
+by resources can be added to grid by cell Type=’SelectGanttResources’</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Space cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    <i>string    </i></span><a
+name=CTypeSelectGanttResources><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Type</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          Type=”</span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>SelectGanttResources</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>”                                                  <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Special combo box to choose
+resources to display in grid. It hides all rows that do not contain any
+selected resources</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It presets these cell
+attribute: Type=”Html” Button=”Defaults” Defaults=</span> <span
+style='font-size:10.0pt'>&quot;|*None|-|*RowsVariableCol&quot;+<i>resource col</i>+&quot;*&quot;
+</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>OnChange=</span>
+<span style='font-size:10.0pt'>&quot;Grid.FilterTextRange('&quot;+<i> resource
+col</i> +&quot;',Value);&quot; Range=”1”</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Requires <a
+href="#CGanttResources">GanttResources</a> to be defined in &lt;C&gt; tag.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CGanttResourcesFilter><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesFilter</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    Saved
+to cookies, to avoid it set &lt;<b>Cfg</b> <b>GanttLap</b>=’1’/&gt;            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Predefined filter for the
+resources, contains the resource names separated by semicolon.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The grid will show only tasks
+containing these resources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Calculations><b><span style='font-size:20.0pt'>Resources calculations</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>float      </i></span><a
+name=GetGanttPrice><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetGanttPrice</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>plan</b> = null)                                       <span
+style='color:red'>new <b>6.4</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns price of the bar
+according to its duration and assigned resources.</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>plan</span></i></b><i><span
+style='font-size:10.0pt'> meaning changed in 10.0.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> is main bar plan or run box id or '-' for run bar. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>plan</b> is null,
+calculates sum of all prices of all main bar plans and run boxes/bar in <a
+href="GanttObjects.htm#CGanttTask">GanttTask</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>plan</b> is '-'
+calculates the whole run bar if <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a>
+is 'Run', or calculates sum of all prices of all run boxes if <a
+href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a> is 'Box'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In Formula it can be called
+as Grid.GetGanttPrice(Row,”XXX”) where XXX is Gantt column name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>float </i></span><a
+name=GetGanttResourceCount><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>GetGanttResourceCount</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>string</i>
+<b>res</b>, <i>int</i> <b>start</b>, <i>int</i> <b>end</b>, <i>int</i> <b>type</b>,
+<i>string</i> <b>col</b>, <i>string</i> <b>def</b>)      <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns information about the
+resource <b>res</b> usage between dates <b>start</b> and <b>end</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>start</b> and <b>end</b>
+can be Date object, number of milliseconds or date string in English.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> – name of default row (Def attribute). Only variable
+rows with this default will be iterated. If not set, all variable rows are
+iterated.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> – gantt column to use, if not set, the first gantt
+column in grid will be used</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = <b>0</b> – returns <b>Peak</b> – Maximum count of
+the resource in the range at the same time.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = <b>1</b> – returns <b>Total</b> – Sum of all
+resource units used in the range</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> = <b>2 </b>– returns <b>Average</b> – Average usage
+of the resource in the range</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>type[][] </i></span><a
+name=GetResourceErrors><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetResourceErrors</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>string</i>
+<b>name</b>, <i>int</i> <b>type</b> = 6)                                             <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all errors or usage in
+grid for the resource <b>name</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns two dimensional array
+[[Start1,End1,Count1], [Start2,End2,Count2], [Start3,End3,Count3],...]</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In date range Start-End there
+is resource available Count. Negative Count means resource error.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> =    <b>1</b> – resources usage (only usage)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – resource availability (only availability)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> – free resources (availability – usage), </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt'><b><span style='font-size:10.0pt'>6</span></b><span
+style='font-size:10.0pt'> – only resource errors (availability – usage, only
+negative Count), </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><i><span style='font-size:10.0pt'>Other
+values reserved.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string </i></span><a
+name=GetResourceUsage><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetResourceUsage</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>string</i>
+<b>name</b>, <i>int</i> <b>type</b>, <i>TRow</i> <b>row</b>, <i>int</i> <b>opt</b>,
+<i>string</i> <b>def</b>, <i>string</i> <b>col</b>)         <span
+style='color:red'>new <b>8.0</b>; chg <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns <a
+href="#CGanttAvailability">Availability</a> string as usage of given resource
+in chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it in formulas for own
+calculation and showing Availability chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The returned string can
+differ from standard availability format, but it is supported in availability
+chart and in negav.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>name</span></b><span
+style='font-size:10.0pt'> is the name of the resource. It does <u>not</u> need
+to be defined by &lt;R&gt; tag, it just checks the GanttResource attribute
+values of given tasks.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>type</span></b><span
+style='font-size:10.0pt'> is type of the resource, <b>1</b> – work, <b>2</b> –
+material.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>opt</span></b><span
+style='font-size:10.0pt'> specifies which rows will be iterated: <b>0</b> –
+only the <b>row</b>, or the bit array:</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>1.bit
+(<b>&amp;1</b>) – children of the <b>row</b>, 2.bit (<b>&amp;2</b>) – deep (all
+nested children in tree), 3.bit (<b>&amp;4</b>) – all siblings of the <b>row</b>,
+4.bit (<b>&amp;8</b>) – the row itself</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>5.bit
+(&amp;16) - <i>(since 9.2)</i> including hidden rows<i> (prior 9.2 the hidden
+rows were calculated by default)</i></span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> if set, only rows with Def attribute named <b>def</b>
+will be iterated</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> the Gantt column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnGetResourceUsageRow><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnGetResourceUsageRow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>bool</i> <b>use</b>, <i>string</i> <b>def</b>)            <span
+style='color:red'>new <b>9.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called for every source row
+if its data will be added to the resource usage chart. It is called for every
+iterated rows (hidden, deleted, with different default).</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>use</span></b><span
+style='font-size:10.0pt'> is true if the row would be added to the resource
+usage chart if this event would not be defined.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> is expected row def name, set in resource usage chart
+definition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>return true to use this row,
+false to ignore it or another row to be used instead.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>string </i></span><a
+name=GetGanttRunResourcesString><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>GetGanttRunResourcesString</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>string</i> <b>col</b> = null)                 <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns semicolon separated
+all resources used in the GanttRun in the <b>row</b> when GanttTask contains
+Box. <b>col</b> is Gantt column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Usable to filter the row by
+this string in resources filter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>float[][] </i></span><a
+name=GetGanttResourcesUsage><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GetGanttResourcesUsage</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    (<i>string</i>
+<b>def</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>string</i> <b>units</b>,
+<i>int</i> <b>bar</b>, <i>bool</i> <b>notmp</b>)      <span style='color:red'>new
+<b>6.4; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removed, replaced by <a
+href="#GetResourceErrors">GetResourceErrors</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>     <i>float[] </i></span><a
+name=GetGanttResourceAvailability><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:silver'>GetGanttResourceAvailability</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>         (<i>string</i>
+<b>resource</b>, <i>string</i> <b>col</b>)                   <span
+style='color:red'>new <b>7.0; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Removed, replaced by <a
+href="#GetResourceErrors">GetResourceErrors</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttresourcepeak><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttresourcepeak</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>resource</b>, <i>string</i> <b>def</b>)                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns maximal count of the
+resource used in grid at one time</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>resource is <a href="#RName">Name</a>
+of the resource.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> is name of default row (Def attribute). Only variable
+rows with this default will be iterated. If not set, all variable rows are
+iterated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttresourceunits><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttresourceunits</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>resource</b>, <i>string</i> <b>def</b>)                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns count of all
+allocated units for given resource in the whole grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the value is multiplied by
+resource price, you will get the summary cost of the resource in the project</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> is name of default row (Def attribute). Only variable
+rows with this default will be iterated. If not set, all variable rows are
+iterated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttresourcesextra><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttresourcesextra</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>       (<i>string</i>
+<b>def</b>)                                                       <span
+style='color:red'>            new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns summary of extra
+prices assigned to all tasks</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>def</span></b><span
+style='font-size:10.0pt'> is name of default row (Def attribute). Only variable
+rows with this default will be iterated. If not set, all variable rows are
+iterated.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>            <i>float      </i></span><a
+name=ganttresourceextra><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ganttresourceextra</span></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>          (<i>string</i>
+<b>resource</b>, <i>string</i> <b>def</b>)                                     
+<span style='color:red'>deleted <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Since 7.0 version there are
+no extra prices per resource, only per task.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Availability><b><span style='font-size:20.0pt'>Availability
+chart</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Universal chart to show
+availability or usage of normal or custom/not defined resource.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttAvailability><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttAvailability</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                    <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Defines the Availability
+chart sources.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated column (or
+row attribute) names, every value represents one chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+GanttAvailability=’A,B,C’ shows three availability charts according to cell
+values in A, B and C column.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Availability format (in
+the individual sources, e.g. in the cells A, B and C):</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>repeater</span></b><span
+style='font-size:10.0pt'>1<b><span style='color:red'>#</span>date</b>1a<b><span
+style='color:red'>~</span>date</b>1b<b><span style='color:red'>#</span>count</b>1<b><span
+style='color:red'>;</span>repeater</b>2<b><span style='color:red'>#</span>date</b>2a<b><span
+style='color:red'>~</span>date</b>2b<b><span style='color:red'>#</span>count</b>2<b><span
+style='color:red'>;</span></b>....</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The possible values of <b>repeater</b>
+are the same as <a href="#CGanttUnits">GanttUnits</a>, e.g. “w”, “d”, “h” or “1”,
+“0.5”, “2”, ... If the <b>repeater</b> is not present, the date range is not
+repeated</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>date</b> range is
+range where the <b>count</b> of resources is available. The date range can be
+periodically repeated by the <b>repeater</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>Material</b> type
+resources is used only the first date from <b>date</b> range as date when the <b>count</b>
+of resources arrives.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If some date ranges are
+overlapped, the <b>count</b> values are summed. The <b>count</b> can be also
+negative to reduce the count for some range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The availability can be also
+one number to be present for whole range, or arrives on start for Material
+resource.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “3<b><span
+style='color:red'>;</span></b>w<b><span style='color:red'>#</span></b>1/3/2011<b><span
+style='color:red'>~</span></b>1/4/2011<b><span style='color:red'>#</span></b>-1”
+– The resource count is 3 except Mondays when is 2.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to limit the
+repeating - when the <b>date</b> range is wider than the <b>repeater</b>, the
+range is rounded to the <b>repeater</b> range and repeated only between the <b>dates</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example ‘w<b><span
+style='color:red'>#</span></b>1/5/2008<b><span style='color:red'>~</span></b>12/29/2008#1’
+marks all weekends, but only in year 2008.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>date</b> can be also
+one date as range starting on this date and ending on the Gantt chart end.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are special settings to
+display global resource (defined in &lt;<a href="#ResourcesR">R</a>&gt; tags)
+usage and availability charts. The resources are assigned to the Gantt tasks
+defined by <a href="file:///S:\Doc\GanttObjects.htm#CGanttTask">GanttTask</a> (main
+bar by default).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Instead of the column name
+use: <b>resource_name<span style='color:red'>#</span>chart_type<span
+style='color:red'>#</span>def_name</b>. It is possible to mix the resource and
+standard availability charts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+“R1#3,CellR2#1,A,B” it shows four charts, two for the resources R1 and R2 and
+two for the availability definition in cells A and B</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>resource_name</b> can
+be direct resource name or column name where the resource name is stored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>chart_type</b> is: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – resource usage by the tasks in chart. Uses Green
+class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – resource usage, for Work is the same as 1, for
+Material shows constant usage, not incremental. Uses Green class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – availability chart, shows chart for the resource <a
+href="#RAvailability">Availability</a> value. Uses Yellow Class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – actual availability at given times, for Work it is
+the same as 3, for Material is similar to 5, but shifted by one GanttDataUnit.
+Uses Yellow Class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>5</span></b><span
+style='font-size:10.0pt'> – free resources chart (availability minus usage).
+Uses default (blue/red) class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>6</span></b><span
+style='font-size:10.0pt'> – resource errors (availability minus usage, only
+negative values). Uses Red class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>7</span></b><span
+style='font-size:10.0pt'> – resource errors, positive (availability minus
+usage, only negative values as positive values). Uses Red class by default.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>8</span></b><span
+style='font-size:10.0pt'> – resource errors, full (availability minus usage,
+only negative values as full usage at given time). Uses Red class by default.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>def_name</b> is
+optional and if set, the resource usage chart iterates only rows with given Def
+name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resource usage for fixed
+row it counts all tasks in chart, for variable row it counts only children.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttAvailabilityType><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityType</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [1]                                                                                <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Type of the resource.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – <b>Work</b>, <u>not</u> consumed resource. Work
+resource is available only in defined range. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – <b>Material</b>, consumed resource. Material
+resource arrives on defined date and is available forever.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be: a) one number as
+type for all Availability charts, b) comma separated numbers (the same count as
+the Availability definition), one number per availability chart</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>c)
+column or attribute name. This cell or attribute contains the one or more
+numbers as type definition</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttAvailabilityClass><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityClass</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  []                                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of custom CSS class to
+be used for the availability chart(s). To this name is added prefix <b>G<span
+style='color:gray'>x</span>GanttAvailability</b>, where Gx is grid style
+prefix, e.g. GM</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are predefined color
+classes: <b>Aqua</b>, <b>Black</b>, <b>Blue</b>, <b>Fuchsia</b>, <b>Gray,</b> <b>Green</b>,
+<b>Lime</b>, <b>Maroon</b>, <b>Navy</b>, <b>Olive</b>, <b>Orange</b>, <b>Purple</b>,
+<b>Red</b>, <b>Silver</b>, <b>Teal</b>, <b>White</b>, <b>Yellow</b></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If no Class is defined, the
+chart is blue for positive numbers and red for negative number. These color
+classes provide the same color for both positive and negative numbers.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be: a) one string as
+class for all Availability charts, b) comma separated strings (the same count
+as the Availability definition), one class name per availability chart</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>c)
+column or attribute name. This cell or attribute contains the one or more
+strings as class name</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>string</i>    </span><a
+name=OnGetAvailabilityClass><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>OnGetAvailabilityClass</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>int</i> <b>value</b>,
+<i>string</i> <b>src</b>, <i>string</i> <b>cls</b>)     <span style='color:
+red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to compute
+Availability CSS class dynamically according to the value.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>value</span></b><span
+style='font-size:10.0pt'> is the value to be shown in the chart, <b>cls</b> is
+predefined class. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>src</span></b><span
+style='font-size:10.0pt'> is source column, one part from <a
+href="#CGanttAvailability">GanttAvailability</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Return new CSS class to be
+used , as full class name including all prefixes, e.g. “GMGanttAvailabilityRed”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttAvailabilityExclude><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityExclude</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                    <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How the GanttExclude in the
+target row will be applied to the chart.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – Ignore, the charts will be shown as defined, the
+chart boxes can start or end on excluded dates</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Apply only to bounds, the chart boxes will <u>not</u>
+start and end on excluded dates, but can contain exclude dates.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – Apply everywhere, the chart boxes will be shown
+only on <u>not</u> excluded dates, they will be split to these ranges.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be: a) one number as
+value for all Availability charts, b) comma separated numbers (the same count
+as the Availability definition), one value per availability chart.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Ignored for Material
+resources.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttAvailabilityFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          []                                                                      <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format of the numbers shown
+in the availability chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="TypeNumber.htm#CFormat">TreeGrid number format</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be: a) one number as
+value for all Availability charts, b) comma separated numbers (the same count
+as the Availability definition), one value per availability chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>string    </i></span><a
+name=CGanttAvailabilityTextWidth><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GanttAvailabilityTextWidth</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [15]                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Approximate width of one text
+label in the chart, in pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Controls how many text values
+(the numbers), will be show in chart, the bigger value, the less texts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be: a) one number as
+value for all Availability charts, b) comma separated numbers (the same count
+as the Availability definition), one value per availability chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttAvailabilityShift><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityShift</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     []                                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Vertical position of the
+whole Availability chart (all charts), in pixels. Similar to <b>GanttTop</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=CGanttAvailabilityZero><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityZero</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the zero
+values will be shown in chart too, as small positive boxes</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>bool      </i></span><a
+name=CGanttAvailabilityJoin><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityJoin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1]                                                                                <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, it can
+display adjacent ranges with the same value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the
+adjacent ranges with the same value will be joined to longer range.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttAvailabilitySplit><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilitySplit</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, all the
+ranges will be split to <a href="#CGanttAvailabilityUnits">GanttAvailabilityUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it works
+like <b>1</b> and also the adjacent ranges inside one <a
+href="#CGanttAvailabilityUnits">GanttAvailabilityUnits</a> unit will be joined.
+The resulted value will be summary or maximum according to the <a
+href="#CGanttAvailabilitySum">GanttAvailabilitySum</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>type      </i></span><a
+name=CGanttAvailabilitySum><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilitySum</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                    <span
+style='color:red'>new <b>9.3</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1,</b> all the values
+shown on the chart will be multiplied by the length of the range in units set
+by <a href="#CGanttAvailabilityUnits">GanttAvailabilityUnits</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <a
+href="GanttDisplay.htm#CGanttUnits">GanttUnits</a> value, all the values shown on
+the chart will be multiplied by the length of the range in these units.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CGanttAvailabilityUnits><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityUnits</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [&quot;&quot;]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Units (like <a
+href="file:///S:\Doc\GanttDisplay.htm#CGanttUnits">GanttUnits</a>) used for <a
+href="#CGanttAvailabilitySplit">GanttAvailabilitySplit</a> and <a
+href="#CGanttAvailabilitySum">GanttAvailabilitySum</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttAvailabilityTransparent><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GanttAvailabilityTransparent</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                        <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the second and next level
+bars will be transparent to show also the bars under.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Showing many tags with
+opacity in Firefox can remarkably slow down the page.</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> - no, <b>1</b> - in all browsers except Firefox, <b>2</b>
+- in all browser</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>int        </i></span><a
+name=CGanttAvailabilityShow><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityShow</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [3]                                                                                <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What will be shown in the
+chart: <b>0</b> - nothing, <b>1</b> - only bars, <b>2</b> - only texts, <b>3</b>
+- both bars and texts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttAvailabilityMin><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityMin</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       []                                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Minimal value in the chart,
+specifies height of the chart, lower limit. Lower values will be displayed as
+high as this limit, their size label will be unchanged.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the lower limit
+will be calculated as the smallest value in all the Availability charts in the
+row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        <i>int        </i></span><a
+name=CGanttAvailabilityMax><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttAvailabilityMax</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      []                                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Maximal value in the chart,
+specifies height of the chart, upper limit. Higher values will be displayed as
+high as this limit, their size label will be unchanged.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If not set, the upper limit
+will be calculated as the biggest value in all the Availability charts in the
+row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=negav><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>negav</span></b></a><span style='font-size:10.0pt;font-family:
+"Arial","sans-serif";background:lime'> </span><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>       (<i>string</i> <b>availability</b>)                                                                               <span
+style='color:red'>            new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Negates the Availability
+definition, just changes sign of all counts in the definition.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it in formulas to
+subtract Availability values.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Don’t forget to add the
+‘;’ when summing or subtracting the Availability values!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example Formula = ” Col1 +
+’;’ + Col2 + ”;” + negav(Col3) ”, all three columns contain the Availability
+definitions</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Usage><b><span style='font-size:20.0pt'>Resource usage
+chart</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Replaced by <a
+href="#CGanttAvailability">GanttAvailability</a> with special resource format
+string.</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The usage of individual
+resource in grid can be shown in row in gantt <b>Chart</b> object of type
+“Resources”. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set attribute
+GanttChart=”Resources”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resources usage chart can
+be combined also with other Gantt objects.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>string    </i></span><a
+name=CGanttChart><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttChart</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                   GanttChart
+= “<b>Resources</b>”                                       <span
+style='color:red'>new <b>6.4; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Shows the resource usage
+chart in the Gantt cell</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>string    </i></span><a
+name=CGanttChartResource><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>GanttChartResource</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                                       <span
+style='color:red'>new <b>6.4; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'><a href="#RName">Name</a> of
+the resource to show in the resource usage chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>int        </i></span><a
+name=CGanttChartResourceType><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GanttChartResourceType</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>      [3]                                                
+<span style='color:red'>new <b>7.0; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>What chart will be shown. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – resource usage, <b>2</b> – resource availability, <b>3</b>
+– both resource usage and availability</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – resource errors, <b>6</b> – both resource errors
+and availability </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The values 5 and 7 are also
+possible, but it has not sense to show both resource errors and usage charts.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>string    </i></span><a
+name=CGanttChartResourceDef><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GanttChartResourceDef</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                              <span
+style='color:red'>new <b>6.4; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, only rows with the
+given default name (Def attribute) are iterated for the resource usage.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;C&gt;&lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>        <i>string    </i></span><a
+name=CGanttChartResourceFormat><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GanttChartResourceFormat</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>                                                     <span
+style='color:red'>new <b>6.4; </b>deleted <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format of the number shown in
+the resource chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The same as <a
+href="TypeNumber.htm#CFormat">TreeGrid number format</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Auto><b><span style='font-size:20.0pt'>Automatically
+generated resource usage chart</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resource usage chart can
+be automatically generated from another (even invisible) grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resources list can be
+modified, the resources can be added, deleted, changed or renamed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There are must be two grids
+on page, <b>master</b> and <b>detail</b>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Detail</span></b><span
+style='font-size:10.0pt'> grid is the grid displaying the resources usage
+chart. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It should have defined only
+layout XML source. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The body rows are
+automatically generated from master’s &lt;Resources&gt; list. This way is
+defined by detail’s attributes &lt;Cfg GanttResources... /&gt; attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The detail grid can contain
+Gantt column to show the resources usage from the master grid. Use the
+attributes for <a href="#Usage">Resources usage chart</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The detail’s Gantt column
+reads these attributes from master’s Gantt column: </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>DataUnits,LastUnit,Exclude,Include,MaxExclude,HeaderTrim,Background,Zoom,SmoothZoom,ZoomList,Width,Units
+and the &lt;Zoom&gt; tag</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Changes in the resources list
+should be uploaded from <b>detail</b> grid as normal changes in data rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Master</span></b><span
+style='font-size:10.0pt'> grid is the source grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master grid must contain
+standard Gantt chart with tasks with assigned resources and global resources
+list in &lt;Resources&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master’s
+&lt;Resources&gt; list is automatically updated after any change (add, deleted,
+modify, rename) in the detail grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The master grid be displayed
+and recalculated according to the changes in resources. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The resources assigned to
+tasks are not automatically changed after resource is renamed or deleted and
+should be done manually in some API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Or the master grid can be
+hidden (&lt;treegrid Hidden=’1’) and used only as resources list source </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesMaster><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesMaster</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Base attribute in
+automatically generated resource usage chart.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Specifies id of the master
+grid from where this detail grid’s resource chart will be calculated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesName><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesName</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>              [“Name”]                                                           <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of column in detail grid
+where the resource <b>Name</b> will be displayed and edited</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesType><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesType</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [“Type”]                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of column in detail grid
+where the resource <b>Type</b> will be displayed and edited</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesPrice><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesPrice</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [“Price”]                                                            <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of column in detail grid
+where the resource <b>Price</b> will be displayed and edited</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesAvailability><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>GanttResourcesAvailability</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [“Availability”]                                                   <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of column in detail grid
+where the resource <b>Availability</b> will be displayed and edited</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>              <i>string    </i></span><a
+name=CfgGanttResourcesMaxCount><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:silver'>GanttResourcesMaxCount</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>   [“MaxCount”]                
+                 <span style='color:red'>new <b>6.4</b>; deleted <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Renamed to
+GanttResourcesAvailability</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesGantt><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesGantt</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [first
+Gantt column in master grid]                                 <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Gantt column in master
+grid where to read the resources usage (this attribute is still set in detail
+grid).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgGanttResourcesChart><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttResourcesChart</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [first
+Gantt column in detail grid]                                   <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Gantt column in detail
+grid where to display the resources chart</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;treegrid,bdo&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>bool     </i></span><a
+name=treegridHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Hidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [0]                                                                                                                  <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b> the grid
+is never rendered and can be used as invisible data source for other grids or
+other page components.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The hidden grid has <u>not</u>
+set <a href="#MainTag">MainTag</a> and cannot be shown at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set in <b>master</b>
+grid to use it just as data source.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

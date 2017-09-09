@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+	<head>
+		<script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+	   <h2>Server side paging with DLL on XML file</h2>
+      <p><font size="2">
+         This example demonstrates using <b>TreeGrid server side DLL/SO</b> library
+            for server side <b>paging</b>, <b>calculations</b>, <b>grouping</b>, <b>sorting</b>, <b>filtering</b>, <b>Excel export</b> and <b>updates</b>.
+         It demonstrates especially complex <b>grouping</b> feature and cell editing in various groups.<br>
+         Layout is in <b>FileDef.xml</b>, data in <b>FileData.xml</b>. 
+         Server side script serving data is in <b>File.aspx</b>. 
+            This is file is universal and works on parameters sent from client and set in &lt;bdo> tag in this html file.<br>
+         <i>This example does not use any custom JavaScript or server script code, 
+            all features are set via XML data definitions and provided by TreeGrid!</i><br>
+         <br>
+         In table there are fictive resellers around the world with their results from the first two months in year 2004.<br>
+         In columns <b>Registered</b>, <b>Since</b>, <b>Calls per</b> and <b>Rabat</b> are data related to partner 
+            and can be edited only when rows are grouped by <b>Partner</b> (or by Location and Partner).<br>
+         In columns <b>Orders</b>, <b>Income</b> and <b>Expenses</b> are results from every partner's month and can be edited in any grouping.<br>
+         Column <b>Gross profit</b> is calculated (Income - Expenses), 
+            <b>Discount</b> is calculated (Gross profit x Rabat) and
+            <b>Profit</b> is calculated (Gross profit - Discount).<br>
+         In bottom <b>Total results</b> row is summary of the results for whole table, 
+            in individual group rows when the grid is grouped is summary for given group.<br>
+         When are rows grouped by <b>Location and Partner</b> you can drag and drop partners to another location, 
+            add new partner to the location or delete the partner. You can also change the whole location by choosing another.<br>
+         </font>
+      </p>
+	   <div style="WIDTH:100%;HEIGHT:500px;">
+			<bdo Debug="1" 
+			   Layout_Url="FileDef.xml" 
+			
+            Data_Url="File.aspx"
+            Data_Method='Form'
+            Data_Format='Internal'
+            Data_Param_Function='LoadBody'
+            Data_Param_Def='FileDef.xml'
+            Data_Param_File='FileData.xml'
+            Data_Data='Data'
+
+            Page_Url='File.aspx' 
+            Page_Format='Internal'
+            Page_Method='Form'
+            Page_Param_Function='LoadPage'
+            Page_Param_Def='FileDef.xml'
+            Page_Param_File='FileData.xml'
+            Page_Data='Data'
+           
+            Upload_Url='File.aspx' 
+            Upload_Format='Internal'
+            Upload_Method='Form'
+            Upload_Param_Function='Save'
+            Upload_Param_Def='FileDef.xml'
+            Upload_Param_File='FileData.xml'
+            Upload_Data='Data'
+
+            Export_Url='File.aspx' 
+            Export_Format='Internal'
+            Export_Method='Form'
+            Export_Param_Function='Export'
+            Export_Param_Def='FileDef.xml'
+            Export_Param_File='FileData.xml'
+            Export_Data='Data'
+            Export_Type='1'
+			
+			></bdo>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,34 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of server side paging width grouping feature
+Shows also server child paging
+Uses MS Access database Database.mdb and table "TableData" as data and XML file Grouping_Layout.xml as TreeGrid layout
+Uses support file Grouping_Data.aspx as data generating script
+Uses support file GroupingChild_Page.aspx as source for individual pages
+! Check if ASP.NET application has write access to Database.mdb file
+-->
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Server side paging with grouping and server side child paging</h2>
+      <div style="WIDTH:100%;HEIGHT:99%">
+         <bdo Debug='1'
+         
+              Layout_Url="Grouping_Layout.xml"
+              Layout_Bonus="<Grid><Cfg ChildPaging='3'/></Grid>"
+              
+              Data_Url="Grouping_Data.aspx"
+              Data_Format="Internal"
+              Data_Data="TGData"
+              Data_Method="Form"
+              
+              Page_Url="GroupingChild_Page.aspx"
+              Page_Format="Internal"
+              Page_Data="TGData"
+              ></bdo>
+      </div>
+   </body>
+</html>

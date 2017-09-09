@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <script src="../../../Grid/GridE.js"> </script>
+    <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h2>A list of books</h2>
+    Demonstration of TreeGrid with variable row height, multiline editing, mask editing, image and link types.<br/>
+    The example has two modes switched by radio buttons on the first row.<br/> 
+    In the read-only mode you can preview texts by focusing them or activate and move to links and images by clicking them.<br/>
+    In the write mode you can change texts, editing changes in multiline texts can be accepted by Alt+Enter. 
+    You can also edit image and link sources by special masks, so you can change only few parts of edited string.
+    When editing multiline texts, you can see automatic height changing, but only to predefined maximal value.<br/>
+    <br/>
+    <div align="center">
+    <div style="width:100%;height:500px;">
+      <bdo Layout_Url="BooksDef.xml" Data_Url="BooksData.xml"></bdo>
+    </div>
+    </div>
+    <script><!--
+
+function EditChange(edit){
+Grids[0].Editing = edit ? 1 : 2;
+Grids[0].SaveCfg(); // Saves change to cookies, it is saved by SaveAttrs
+}
+
+Grids.OnValueChanged = function(G,row,col,val){
+if(row.id=='B' && col=='B') EditChange(val); // Changes editing state after radio change
+return val;
+}
+
+Grids.OnGetColor = function(G,row,col,r,g,b){
+if(!Get(row,"Spanned")) b-=20;     // colors main rows
+return "rgb("+r+","+g+","+b+")";
+}
+
+Grids.OnCanEdit = function(G,row,col,can){
+if(row.id=='B' && col=='B') return 1; // It is editable independently on Editing value
+return can;
+}
+
+Grids.OnRenderPageFinish = function(G){
+var edit = G.Editing;
+G.SetValue(G.GetRowById("B"),"B",edit==2 ? 0 : 1,1); // Updates radio according to Editing value loaded from cookies
+}
+
+    --></script>
+  </body>
+</html>

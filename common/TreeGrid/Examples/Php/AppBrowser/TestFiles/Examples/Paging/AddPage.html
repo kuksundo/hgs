@@ -1,0 +1,41 @@
+<html>
+   <head>
+      <script src="../../../../../../Grid/GridE.js"> </script>
+      <link href="../../../../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+     <h2>Adding pages dynamically</h2>
+     <p>
+      Demonstration of adding pages to grid dynamically by Extended API script.
+      You can add pages with or without data. <br>
+      Page is added when user reaches the last page.
+      The grid starts with 8 pages. The pages 9 and 10 are added without data and their data are loaded from files. 
+      The next pages are added with data.<br>
+      See script inside.
+      </p>
+      <div align="center">
+         <div style="WIDTH:100%;HEIGHT:99%;">
+            <bdo Layout_Url="AddPageDef.xml" Data_Url="AddPageData.xml" Data_Method="Get" Page_Url="AddPagePage*Pos.xml" Page_Method="Get"> </bdo>
+         </div>
+      </div>
+      <script>
+		
+// --- Example of adding not loaded page without data ---
+// --- Data for page will be loaded from file ---
+Grids.OnDownloadPage = function(G,page){
+if(G.Body.lastChild == page && page.Pos<9){ 
+   G.AddPage();
+   }
+}
+
+// --- Example of adding page with data ---
+// --- Data for page are added by function ---
+Grids.OnRenderPageStart = function(G,page){
+if(G.Body.lastChild == page && page.Pos>=9){
+   G.AddPage("Generated "+(page.Pos+2),"<I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/><I A='0'/>");
+   }
+}
+// ---
+      </script>
+   </body>
+</html>

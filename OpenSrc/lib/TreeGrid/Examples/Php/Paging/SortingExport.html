@@ -1,0 +1,28 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of server side paging width sorting, uploading and export features
+Uses textual database ../Database/TableData.txt as data and XML file DBDef.xml as TreeGrid layout
+Uses support file SortingExport_Data.php as data generating script
+Uses support file SortingExport_Upload.php as script saving changes to database
+Uses support file SortingExport_Page.php as source for individual pages
+Uses support file SortingExport_Export.php as script for generating export
+! Check if PHP application has write access to ../Database/TableData.txt file 
+-->
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Server side paging with uploading changes, sorting and export</h2>
+      <div style="WIDTH:100%;HEIGHT:99%">
+         <bdo Debug='1'
+              Layout_Url="SortingExport_Layout.xml" Layout_Bonus="<Grid><Cfg Paging='3'/></Grid>"
+              Data_Url="SortingExport_Data.php"
+              Upload_Url="SortingExport_Upload.php" Upload_Format="Internal" Upload_Data="TGData"
+              Page_Url="SortingExport_Page.php" Page_Format="Internal" Page_Data="TGData"
+              Export_Url="SortingExport_Export.php" Export_Data="TGData" Export_Param_File="Table.xls" Export_Type="1"
+              ></bdo>
+      </div>
+   </body>
+</html>

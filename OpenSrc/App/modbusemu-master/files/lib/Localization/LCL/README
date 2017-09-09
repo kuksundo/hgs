@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------
+  Steps to create a translated application
+  ------------------------------------------------------------------------------
+
+- In Project Options, activate i18n and specify a folder for translations
+  Make sure that this folder can be found at run-time. If you use a relative
+  filename it must be relative to the location of the exe.
+  Select the option to automatically update the po file.
+
+- Add DefaultTranslator or LCLTranslator to uses clause of main form
+  (DefaultTranslator determines the default language automatically,
+  LCLTranslator does not).
+
+- If the project contains several forms that need translation:
+  - Copy LocalizedForms.* (to be found in this project) to the folder of
+    the new project
+  - Inherit all forms to be translated from LocalizedForm
+    (defined in LocalizedForms.pas)
+  - For this purpose modify the class declaration of the forms to
+      "class(TLocalizedForm)" instead of "class(TForm)"
+    Open the lfm file ("view source (.lfm)") and change the first word to
+    "inherited". See main.lfm and unit2.lfm for examples.
+  - Create an empty unit to collect all resourcestrings of the project
+    (this simplifies cross-form usage of strings).
+
+- Declare each string that needs to be translated as a resourcestring. This
+  is not absolutely necessary for component properties "Caption", "Text" or
+  "Hint" which are transparently handled by Default/LCLTranslator.
+  Explicitly declared resource strings are required for stringlist items,
+  such as those of comboboxes, radiogroups etc.
+
+- To create resource strings from existing code: create a resourcestring section
+  at the end of the interface section of each unit, then <right click> on each
+  string and select "Refactoring" | "Make Resource String..." This will create
+  the resource strings and place the string into the declaration. Then copy all
+  resource strings to the resource strings unit and delete the resourcestring
+  sections. Or, enter the resource strings into the resource strings unit
+  directly.
+
+- Using poedit (or a similar translation program) translate the strings in the
+  project's po file (to be found in the languages folder) to the languages that
+  you support. When saving insert language code before ".po", i.e.
+  "Project1.de.po" for German translation file of "Project1.po".)
+
+- See "SelectLanguage()" for required procedures when changing language at
+  run-time.

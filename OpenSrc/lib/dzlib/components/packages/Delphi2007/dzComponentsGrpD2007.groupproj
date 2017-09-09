@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{77f310ef-fb77-4114-9313-752ee7bbd9f4}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="dzComponentsD.dproj" />
+    <Projects Include="dzComponentsR.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject xmlns=""><Default.Personality></Default.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="dzComponentsR">
+    <MSBuild Projects="dzComponentsR.dproj" Targets="" />
+  </Target>
+  <Target Name="dzComponentsR:Clean">
+    <MSBuild Projects="dzComponentsR.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="dzComponentsR:Make">
+    <MSBuild Projects="dzComponentsR.dproj" Targets="Make" />
+  </Target>
+  <Target Name="dzComponentsD">
+    <MSBuild Projects="dzComponentsD.dproj" Targets="" />
+  </Target>
+  <Target Name="dzComponentsD:Clean">
+    <MSBuild Projects="dzComponentsD.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="dzComponentsD:Make">
+    <MSBuild Projects="dzComponentsD.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="dzComponentsR;dzComponentsD" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="dzComponentsR:Clean;dzComponentsD:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="dzComponentsR:Make;dzComponentsD:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

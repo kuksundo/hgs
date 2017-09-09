@@ -1,0 +1,75 @@
+<Grid>
+   <Cfg id='MasterTree2' AutoIdPrefix='BR' DetailOn='1' DetailExpand='1' SuppressCfg='1' MainCol='SURNAME' StandardFilter='2' Undo='1'/>
+   <Cols>
+      <C Name='id' CanEdit='0' CanFilter='0' Width='40'/>
+      <C Name='SURNAME' Type='Text' GroupWidth='1' Width='150'/>
+      <C Name='NAME' Type='Text'/>
+      <C Name='AGE' Type='Int' Width='40'/>
+      <C Name='MARRIED' Type='Bool'/>
+   </Cols>
+   <Panel Copy='1'/>
+   <Def>
+      <D Name='R' DefParent='NODE'/>
+      <D Name='NODE' Detail='DetailTree1,DetailTree2' DefEmpty='R' Expanded='1' CanExpand='1'/>
+      <D Name='Group' AggChildren='1' Expanded='1' CanFilter='2'/>
+   </Def>
+   <Header NAME='First name' id='id' SortIcons='2'/>
+   <Head>
+      <Filter
+         NAMECanEdit='0' NAMEShowMenu='0' NAMEButton='Defaults' NAMEDefaults='|*FilterOff|*Rows' NAMERange='1'
+         SURNAMECanEdit='0' SURNAMEShowMenu='0' SURNAMEButton='Defaults' SURNAMEDefaults='|*FilterOff|*Rows' SURNAMERange='1'
+         />
+   </Head>
+   <Foot>
+      <I Calculated='1'
+         NAME='Summary' NAMECanEdit='0'
+         SURNAMECanEdit='0'
+         AGEFormula='min(4)+" - "+max(4)' AGEType='Text' AGEAlign='Right'
+         MARRIEDFormula='count("MARRIED","MARRIED",4)+" / "+count(4)' MARRIEDType='Text' MARRIEDAlign='center'
+         />
+   </Foot>
+   <Solid>
+      <Toolbar1 Cells='DETAIL,SHOW,GROUP'
+         SHOWType='Select' SHOWLabel='Show detail on' SHOWWidth='60'
+         SHOWDefaults='|Focus|Click|Double click' SHOW='Focus'
+         SHOWOnChange='Grid.DetailOn = Grid.GetDefaultsIndex(Row,Col,Value) + 1'
+
+         GROUPType='Bool' GROUPLabelRight='Group rows' GROUPLeft='10'
+         GROUPOnChange='Grid.DoGrouping(Value?"SURNAME":"")'
+
+         DETAILType='Radio' DETAILEnum='|1|2' DETAILRange='1' DETAILLabel='Show detail in' DETAILWidth='65' DETAILCanFocus='0' DETAILNoColor='1' DETAIL='1;2'
+         DETAILOnChange='
+            Grid.RefreshDetail(null,1); 
+            Grid.Def.NODE.Detail = (Value+"").replace("1","DetailTree1").replace("2","DetailTree2").replace(";",","); 
+            for(var r=Grid.GetFirst();r;r=Grid.GetNext(r)) Grid.ColorRow(r);
+            '
+         />
+   </Solid>
+   <Actions OnClickButtonAdd='AddRowEnd'/>
+   <Toolbar Sort='0' Calc='0' Help='0' Debug='0' Styles='2' Kind='Toolbar2'/>
+   <Body>
+      <B>
+         <I Def='NODE' NAME='Nancy' SURNAME='Newton' AGE='65' MARRIED='1'>
+            <I Def='NODE' NAME='John' SURNAME='Newton' AGE='42' MARRIED='1'>
+               <I Def='NODE' NAME='John' SURNAME='Newton' AGE='22' MARRIED='0'>
+                  <I NAME='John' SURNAME='Newton' AGE='1' MARRIED='0'/>
+                  <I Def='R' NAME='???' SURNAME='Newton' AGE='0' MARRIED='0'/>
+               </I>
+               <I Def='NODE' NAME='Maria' SURNAME='Bennett' AGE='22' MARRIED='1'>
+                  <I NAME='Nancy' SURNAME='Bennett' AGE='3' MARRIED='0'/>
+                  <I NAME='Herbert' SURNAME='Bennett' AGE='3' MARRIED='0'/>
+               </I>
+            </I>
+            <I NAME='Maria' SURNAME='Newton' AGE='45' MARRIED='0'/>
+         </I>
+         <I NAME='James' SURNAME='Thompson' AGE='24' MARRIED='0'/>
+         <I Def='NODE' NAME='Benjamin' SURNAME='Thompson' AGE='33' MARRIED='1'>
+            <I NAME='Oscar' SURNAME='Thompson' AGE='10' MARRIED='0'/>
+         </I>
+         <I Def='NODE' NAME='Daniel' SURNAME='Moore' AGE='38' MARRIED='1'>
+            <I NAME='Lisa' SURNAME='Moore' AGE='12' MARRIED='0'/>
+            <I NAME='Peter' SURNAME='Moore' AGE='10' MARRIED='0'/>
+         </I>
+      </B>
+   </Body>
+</Grid>

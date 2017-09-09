@@ -1,0 +1,92 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <script>
+
+// -------------------------------------------------------------------------------
+// --- Creates cell content to better see the spanned cells ---
+Grids.OnLoaded = function(G){
+function update(row){
+   for(var r=row.firstChild,i=1;r;r=r.nextSibling,i++) {
+      r.id = (i<10?"0":"")+i;
+      if(r.parentNode.id) r.id = r.parentNode.id+"-"+r.id;
+      for(var c in G.Cols) if(c!="Panel") { r[c] = c=="X" ? r.id : r.id+" "+c; }
+      r.Y = a++; if(a>8) a = 1;
+      if(r.firstChild) update(r);
+      }
+   }
+a = 1;
+update(G.Body.firstChild); // First page   
+}
+// -------------------------------------------------------------------------------
+   </script>
+
+  <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal;  }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal;  }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <b>Cells</b> Tutorial</center>
+   <center style='font:bold 30px Arial'>11. Dynamic column and row spanning</center>
+   <center style='font:bold italic;'>Let users to span and split cells by mouse dragging</center>
+   <br />
+   Select cell ranges by <b>mouse dragging</b> and <b>right click</b> to <b style='color:Red;'>span</b> the range. 
+Press mouse <b>middle button</b> to <b style='color:Red;'>split</b> the cell under mouse.
+You can select and <b style='color:Red;'>span</b> cells directly by dragging by <b>right mouse</b> button.
+You can <b style='color:Red;'>span</b> and <b style='color:Red;'>split</b> selected cells also by clicking to toolbar buttons Split and Join.
+<br />
+<i>You can <b>span</b> rows also on different tree levels. When spanned parent row through its children, the children are always spanned all.</i><br />
+You can test here <b>deleting spanned rows</b>, <b>adding rows</b> to spanned range, <b>moving rows</b> between, into and out the spanned ranges (by mouse dragging with Ctrl key held).
+<b>Hiding</b>, <b>showing</b> and <b>moving columns</b> with spanned cells.
+Also <b>sorting</b>, <b>filtering</b> and <b>grouping</b> the spanned rows.
+And finally <b>editing</b> in the spanned cells.      
+   <br />
+   <br />
+   <div style='margin-bottom:6px;'><a href='11 - Dynamic Span.xml'>11 - <h2>Dynamic Span</h2>.xml</a></div>
+   <div style='width:100%; height:550px;'>
+      <bdo Debug='check' Data_Url='11 - Dynamic Span.xml' Upload_Flags='Spanned'></bdo>
+   </div>
+   <ul>
+      <li>
+         Set &lt;Cfg <h3>DynamicSpan</h3><b>='1'</b> to prepare TreeGrid for dynamic cell spanning.
+         It shows the Split and Join buttons on Toolbar and saves changes in span to Undo if permitted.
+      </li>
+      <li>
+         Set &lt;Cfg <h3>SelectingCells</h3><b>='1'</b> to permit selection of individual cells and cell ranges.
+      </li>
+      <li>
+         Set &lt;Actions <b>OnDragCell="SelectCells"</b> to select cells by mouse dragging.<br />
+         If you want to still support dragging and moving rows, you can permit it for example with Ctrl key held, by &lt;Actions OnCtrlDragCell="DragRow"/>.
+      </li>
+      <li>
+         Attach actions <b>SpanSelected</b>, <b>SplitSelected</b> and <b>SplitCell</b> to appropriate events like <b>OnDropCell</b>, <b>OnClickCell</b>, <b>OnMouseDown</b>, <b>OnRightClick</b> and so on to previde given behavior.
+      </li>
+      <li>
+         To clear selection after some action, add <b>ClearSelection</b> action, 
+         for example &lt;Actions OnClickCell="ClearSelection,FocusEdit" OnClickOutside="ClearSelection,Blur"/> clears the selection after any focus change.
+      </li>
+      <li>
+         <h4>API</h4> &nbsp;You can dynamically span and split the cells by API methods <b>SpanRange</b> and <b>SplitSpanned</b>.
+      </li>
+      <li>
+         <h4>Upload span changes</h4> 
+         <ul>
+            <li>
+               By &lt;bdo <b>Upload_Type</b> with <b>Span</b> keyword you can upload only spanned rows, with appropriate RowSpan and Span attributes, in special &lt;Spanned> tag.
+            </li>
+            <li>
+               By &lt;bdo <b>Upload_Flags</b> with <b>Spanned</b> keyword and <b>Upload_Type</b> with <b>Changes</b> keyword will upload the changes in span along with other changes in grid, in &lt;Changes> tag.
+            </li>
+         </ul>
+      </li>
+      <li>
+         <i>IE8 strict mode has problems with rowSpan HTML attribute, so when using RowSpan switch IE8 to quirks mode (no !DOCTYPE) or to IE7 compatibility mode.</i>
+      </li>
+   </ul>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<Grid>
+   <Cfg id="GanttPaging" SuppressCfg="1"/>
+   <Panel Visible="0"/>
+   <Actions OnDblClickGantt="ZoomToBar"/>
+   <LeftCols>
+      <C Name="TASK" Type="Text" Width="100"/>
+      <C Name="START" Type="Date" Visible="0"/>
+      <C Name="END" Type="Date" Visible="0"/>
+      <C Name="DES" Type="Text" Visible="0"/>
+   </LeftCols>
+   <Cols>
+      <C Name="GANTT" Type="Gantt" GanttStart="START" GanttEnd="END" GanttDescendants="DES" GanttStrict="0"/>
+      <C Name="GANTT" GanttPaging="1" GanttPagingFixed="6"/>
+      <C Name="GANTT" GanttZoom="Month in 5 minutes" GanttSmoothZoom="2" GanttZoomDate="6/10/2010 13:00"/>
+      <!--C Name="GANTT" GanttExclude="d#18:00~9:00; d#13:00~14:00#1; w#1/5/2008~1/7/2008#2;"/-->
+      <C Name="GANTT" GanttChartMinStart="1/1/2000" GanttChartMaxStart="1/1/2000" GanttChartMinEnd="1/1/2030" GanttChartMaxEnd="1/1/2030"/> <!-- Limits for the Years pager -->
+   </Cols>
+   <Foot>
+      <I TASK="Summary" Calculated="1" STARTFormula="ganttstart()" ENDFormula="ganttend()"/>
+   </Foot>
+   <Zoom>
+      <Z Name="All in days" GanttSize="0" GanttUnits="d" GanttWidth="18" GanttChartRound="y"
+         GanttHeader1="w#'&lt;span style=&quot;color:yellow;font-size:8px;&quot;>week 'ddddddd'&lt;/span>' MMMM yyyy"
+         GanttHeader2="d#%d" GanttHeaderPaging2="1"
+         GanttHeader3="d#ddddd" GanttHeaderPaging3="1"
+         />
+      <Z Name="All in workhours" GanttSize="0" GanttUnits="wh" GanttWidth="22" GanttChartRound="y"
+         GanttHeader1="w#'&lt;span style=&quot;color:yellow;font-size:8px;&quot;>week 'ddddddd'&lt;/span>' MMMM yyyy"
+         GanttHeader2="d#dd dddd" GanttHeaderPaging2="1"
+         GanttHeader3="wh#HH" GanttHeaderPaging3="1"
+         /> <!-- Uses custom units 'wh' defined in the html file -->
+      <Z Name="Year in hours" GanttSize="y" GanttUnits="h" GanttWidth="18" GanttChartRound="y"
+         GanttHeader1="d#dddd, '&lt;b style=&quot;color:yellow;&quot;>'dddddd MMMM'&lt;/b>' yyyy"
+         GanttHeader2="h#H" GanttHeaderPaging2="1"
+      />
+      <Z Name="Month in 5 minutes" GanttSize="M" GanttUnits="m5" GanttWidth="18" GanttChartRound="M"
+         GanttHeader1="h#'&lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>':... - '&lt;b style=&quot;color:rgb(128,255,128);&quot;>'dddd'&lt;/b>', dddddd MMMM yyyy"
+         GanttHeader2="m5#mm" GanttHeaderPaging2="1"
+      />
+      <Z Name="Week in minutes" GanttSize="w" GanttUnits="m" GanttWidth="8" GanttChartRound="w"
+         GanttHeader1="h#'&lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>':... - '&lt;b style=&quot;color:rgb(128,255,128);&quot;>'dddd'&lt;/b>', dddddd MMMM yyyy"
+         GanttHeader2="m#'&lt;div style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/div>'" GanttHeaderHeight2="20" GanttHeaderPaging2="1"
+      />
+      <Z Name="Day in minutes" GanttSize="d" GanttUnits="m" GanttWidth="23" GanttChartRound="d"
+         GanttHeader1="m10#'&lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>':... - dddd, dddddd MMMM yyyy"
+         GanttHeader2="m#mm" GanttHeaderPaging2="1"
+      />
+      <Z Name="Day in 5 seconds" GanttSize="d" GanttUnits="s5" GanttWidth="18" GanttChartRound="d"
+         GanttHeader1="m#'&lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>':'&lt;b style=&quot;color:rgb(128,255,128);&quot;>'mm'&lt;/b>':... - dddd, dddddd MMMM yyyy"
+         GanttHeader2="s5#ss" GanttHeaderPaging2="1"
+      />
+      <Z Name="Day in seconds" GanttSize="d" GanttUnits="s" GanttWidth="8" GanttChartRound="d"
+         GanttHeader1="m#'&lt;b style=&quot;color:yellow;&quot;>'HH'&lt;/b>':'&lt;b style=&quot;color:rgb(128,255,128);&quot;>'mm'&lt;/b>':... - dddd, dddddd MMMM yyyy"
+         GanttHeader2="s#'&lt;div style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/div>'" GanttHeaderHeight2="20" GanttHeaderPaging2="1"
+      />
+   </Zoom>
+   <Pagers>
+      <Pager Name="Years" Type="Gantt" PageSize="y" Format="yyyy" Width="40" ChartSize="0" Click="0" DblClick="4" ShowUsedPages="1"/>
+      <Pager Name="Months" Type="Gantt" PageSize="M" Format="MMMM" Width="62" ChartSize="y" Click="0" DblClick="4" ShowUsedPages="1"/>
+      <Pager Name="Days" Type="Gantt" PageSize="d" Format="dddddd" Width="35" ChartSize="M" Click="0" DblClick="4" ShowUsedPages="1" ShowExcludedPages="1"/>
+      <Pager Name="Weeks" Type="Gantt" PageSize="w" Format="'&lt;b style=&quot;color:red&quot;>'dddddddd'&lt;/b>' MM/dd - ;MM/dd" Width="110" ChartSize="y" Caption="Weeks in a year" Click="0" DblClick="4" ShowUsedPages="1"/>
+      <Pager Name="Weekdays" Type="Gantt" PageSize="d" Format="dddd" Width="65" ChartSize="w" Caption="Week days" Click="0" DblClick="4" ShowUsedPages="1" ShowExcludedPages="1"/>
+      <Pager Name="Hrs" Type="Gantt" PageSize="h" Format="HH" Width="25" ChartSize="d" Click="0" ShowExcludedPages="1"/>
+      <Pager Name="Mins" Type="Gantt" PageSize="m" Format="mm" Width="40" ChartSize="h" Click="0" ShowExcludedPages="1"/>
+   </Pagers>
+   <Toolbar Cells="Zoom,Smooth,Correct,Reload,Repaint,Print,ZoomIn,ZoomOut,Cfg,StyleTitle,StyleCombo" Styles="2"
+      ZoomType='SelectGanttZoom' ZoomWidth='140' ZoomHtmlPrefix='Zoom &lt;b style="color:blue;">' ZoomHtmlPostfix='&lt;/b>'
+      SmoothType='Bool' SmoothLabelRight='Smooth zoom' Smooth='1' SmoothTip='If the Gantt zoom unit width can be calculated to fit the selected zoom range'
+      SmoothOnChange='Grid.Cols.GANTT.GanttSmoothZoom = Value?1:0; if(!Value) Grid.ChangeZoom();'
+      />
+</Grid>

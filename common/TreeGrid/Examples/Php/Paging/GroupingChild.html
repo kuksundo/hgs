@@ -1,0 +1,34 @@
+<!--
+Example of TreeGrid using asynchronous (AJAX) communication with server
+Example of server side paging and server side child paging width grouping feature
+Uses textual database ../Database/TableData.txt as data and XML file DBDef.xml as TreeGrid layout
+Uses support file Grouping_Data.php as data generating script
+Uses support file GroupingChild_Page.php as source for individual pages
+! Check if PHP application has write access to ../Database/TableData.txt file
+-->
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Server side grouping with server side child paging</h2>
+      <div style="WIDTH:100%;HEIGHT:99%">
+         <bdo Debug='1'
+         
+              Layout_Url="Grouping_Layout.xml"
+              Layout_Bonus="<Grid><Cfg ChildPaging='3'/></Grid>"
+              
+              Data_Url="Grouping_Data.php"
+              Data_Format="Internal"
+              Data_Data="TGData"
+              Data_Method="Form"
+              
+              Page_Url="GroupingChild_Page.php"
+              Page_Format="Internal"
+              Page_Data="TGData"
+             
+              ></bdo>
+      </div>
+   </body>
+</html>

@@ -1,0 +1,450 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Undo &amp; Redo</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=PT-BR
+style='font-size:36.0pt'>Undo &amp; Redo</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html"><span lang=PT-BR>TreeGrid
+documentation index</span></a></span></p>
+
+<p class=MsoNormal><span lang=PT-BR style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;              </span></b><i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>bool      </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><a
+name=CfgUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Undo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [0]                                                                                                                  <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, TreeGrid
+supports <b>Undo</b>/<b>UndoAll</b> and <b>Redo</b>/<b>RedoAll</b> actions, by
+default for CtrlZ and CtrlY events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>TreeGrid buffers all
+modifications since last save or reload. For server paging the buffer is
+cleared by any action reloading body like sort or filter.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undo undoes the last unsaved
+modification. Modifications are <b>change cell value</b>, <b>delete row</b>, <b>add
+row</b>, <b>move row</b>, <b>copy row</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> Next modifications are change Def by <b>ChangeDef</b>,
+change attribute by <b>SetAttribute</b>. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> If set &lt;Cfg DynamicSpan=’1’, also <b>span cell</b>,
+<b>split cell</b> and <b>move column</b> can be undone.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undo does <u>not</u> affect
+changes in <b>Filter</b> row and rows with <a href="DataUpload.htm#INoUpload">NoUpload</a>=’1’
+(by default <b>Group</b>, <b>Search</b>, <b>Tabber</b>, <b>Toolbar</b>)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undo is not compatible with
+AutoUpdate.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;I&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                   <i>bool      </i></span><a
+name=INoUpload><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>NoUpload</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0/1]                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, ignores
+changes in this row and does not upload them to server.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it also
+does <u>not</u> save undo for changed cells except the cell has set <a
+href="#CellUndo">Undo</a>=’1’.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is <b>0</b> for
+data rows and <b>1</b> for space rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filter row has always set <b>1</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CellUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Undo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0/1]                                                                                                                <span
+style='color:red'>new <b>6.4</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the change in cell will be
+saved to undo list and can be undone.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default it is set <b>1</b>
+for data rows and <b>0</b> for space rows. Exactly default value is set to <b><span
+style='color:red'>!</span></b><a href="#INoUpload">NoUpload</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Filter row cells have always
+set <b>0</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Undo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>          Attached to event <b>OnCtrlZ</b>
+and <b>OnClickButtonUndo</b>                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undoes the last grid
+modification (cell change, add row, delete row(s), move row(s), copy row(s)). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsUndoAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>UndoAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>   Not attached to any event                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Undoes all modifications done
+since last save or accepting changes or reloading body or grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRedo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>Redo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>          Attached to event <b>OnCtrlY</b>
+and <b>OnClickButtonRedo</b>                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Does again the last undone
+action. It can be done only when between Undo and Redo was <u>not</u> done any
+other modification.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsRedoAll><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>RedoAll</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>    Not attached to any event                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Does again all undone
+actions. It can be done only when between Undo and Redo was not done any other
+modification.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsClearUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ClearUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>         Not attached to any event                                                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Clears undo buffer.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the undo buffer
+is cleared automatically on save or reload or reload body.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=CanUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (
+)                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true, if there is
+something to undo</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>bool      </i></span><a
+name=CanRedo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CanRedo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (
+)                                                                                                       <span
+style='color:red'>new <b>6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns true, if there is
+something to redo</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=StartUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>StartUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (
+)                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Starts new undo block.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it before doing more
+changes in grid to be undone all at once</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The undo blocks can be nested.
+But the count of calling StartUndo must be the same as count of calling
+EndUndo.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=EndUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>EndUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>           (
+)                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Ends new undo block.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Call it after doing more
+changes in grid to be undone all at once</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=ClearUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>ClearUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>bool</i>
+<b>recalc</b>)                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Clears undo buffer.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the undo buffer
+is cleared automatically on save or reload or reload body.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>recalc</b>, it
+recalculates the space rows to refresh toolbar buttons.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=CustomUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>CustomUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> (<i>object</i>
+<b>Object</b>, <i>function</i> <b>Undo</b>, <i>function</i> <b>Redo</b>)                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Adds into undo queue custom
+undo action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Object</b> should
+contain all information you require to do both undo and redo actions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>On undo is called <b>Undo</b>(<b>Object</b>),
+on redo is called <b>Redo</b>(<b>Object</b>). Or is possible also to use OnUndo
+/ OnRedo API events.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=OnUndo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnUndo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>action</b>, ....  )                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after given action is
+undone by clicking Undo button or Ctrl + Z. action:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Start”                   OnUndo
+(TGrid grid, string action)  Called before block of undo actions starts, but
+undo is already disabled</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“End”                    OnUndo
+(TGrid grid, string action)  Called after block of undo actions finishes, but
+before undo is enabled</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Change”             OnUndo
+(TGrid grid, string action, TRow row, string col, type value)     After cell
+changed to original value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Add”                    OnUndo
+(TGrid grid, string action, TRow row, TRow src)                                        After
+added or copied row is deleted, but before it is removed</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Delete” OnUndo (TGrid grid,
+string action, TRow row)                                                           After
+deleted row is undeleted or undeleted row is deleted</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Move”                 OnUndo
+(TGrid grid, string action, TRow row, TRow parent, TRow next)            After
+moved row is moved to original position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Span”                  OnUndo
+(TGrid grid, TRow row1, string col1, TRow row2, string col2)  After spanned
+cell is split back</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Split”                   OnUndo
+(TGrid grid, TRow row1, string col1, TRow row2, string col2)  After split cell
+is spanned back</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“MoveCol”          OnUndo
+(TGrid grid, string col, string tocol, string rightcol)                       After
+moved column is moved back to original position (if set DynamicSpan=’1’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“ChangeDef”       OnUndo
+(TGrid grid, string action, TRow row, string def)                                         After
+row Def attribute is changed back to original value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“SetAttribute”      OnUndo
+(TGrid grid, string action, TRow row, string col, string attr, type value) After
+the attribute set by SetAttribute method changed to original value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Custom”             OnUndo
+(TGrid grid, string action, object Object)                                                      After
+undo of custom undo set by <a href="#CustomUndo">CustomUndo</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=OnRedo><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRedo</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>action</b>, ....  )                                                            <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after given action is
+undone by clicking Undo button or Ctrl + Z. action:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Start”                   OnRedo
+(TGrid grid, string action)  Called before block of undo actions starts, but
+undo is already disabled</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“End”                    OnRedo
+(TGrid grid, string action)  Called after block of undo actions finishes, but
+before undo is enabled</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Change”             OnRedo (TGrid
+grid, string action, TRow row, string col, type value)     After cell changed
+to new value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Add”                    OnRedo
+(TGrid grid, string action, TRow row, TRow src)                                        After
+the row is added or copied</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Delete” OnRedo (TGrid grid,
+string action, TRow row)                                                            After
+the row is deleted or undeleted</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Move”                 OnRedo
+(TGrid grid, string action, TRow row, TRow parent, TRow next)            After the
+row is moved to new position</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Span”                  OnRedo
+(TGrid grid, TRow row1, string col1, TRow row2, string col2)  After cells are
+spanned</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Split”                   OnRedo
+(TGrid grid, TRow row1, string col1, TRow row2, string col2)  After cells are split</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“MoveCol”          OnRedo (TGrid
+grid, string col, string tocol, string rightcol)                                       After
+column is moved to new position (if set DynamicSpan=’1’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“ChangeDef”       OnRedo (TGrid
+grid, string action, TRow row, string def)                                         After
+row Def attribute is changed to new value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“SetAttribute”      OnRedo (TGrid
+grid, string action, TRow row, string col, string attr, type value)  After the
+attribute set by SetAttribute method changed to new value</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Custom”             OnUndo
+(TGrid grid, string action, object Object)                                                      After
+redo of custom undo set by <a href="#CustomUndo">CustomUndo</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

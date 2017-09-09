@@ -1,0 +1,3 @@
+document.write("<center><TABLE WIDTH=300 HEIGHT=15 BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR=#6C8DBE background=\"\"><TR><TD><TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0><TR><TD BGCOLOR=#6C8DBE><a href=\"http://top.addfreestats.com/web/main.cgi\" ><CENTER><FONT SIZE='1' FACE=\"Verdana, Arial, helvetica\"><FONT COLOR=#FFFFFF><b><I>&nbsp;In<FONT COLOR=#FFEE00>Live<FONT COLOR=#FFFFFF>!&nbsp&nbsp</I></B></A></FONT></CENTER></TD><TD BGCOLOR=#FFFFFF><a href=\"http://top.addfreestats.com/web/main.cgi\" ><CENTER><FONT FACE=\"Verdana, Arial, helvetica\" size='1'><FONT COLOR=#000000><b>&nbsp;4 visitors on the site.&nbsp</b></A></CENTER></FONT></TD></TR></TABLE></TD></TR></TABLE></center>");
+
+

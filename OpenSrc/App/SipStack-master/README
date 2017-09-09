@@ -1,0 +1,102 @@
+RNID SIP STACK
+==============
+
+This library of code consists of three main parts:
+* a SIP stack (RFC 3261),
+* an RTP stack (RFC 3550), and
+* SDP (RFC 2327) parsing and utilities.
+
+The code currently implements most of SIP, RTP. The stack can make and
+receive calls from/to X-Lite, linphonec. It also connects correctly
+with ser, the Sip Express Router.
+
+The stack supports/implements the following RFCs:
+* RFC 2327 (SDP: Session Description Protocol)
+* RFC 2782 (DNS SRV Resource Record)
+* RFC 3261 (SIP: Session Initiation Protocol)
+* RFC 3263 (Locating SIP Servers)
+* RFC 3264 (An Offer/Answer Model with SDP)
+* RFC 3265 (SIP-Specific Event Notification)
+* RFC 3266 (Support for IPv6 in SDP)
+* RFC 3351 (User Requirements for SIP in support of Deaf, Hard of
+            Hearing and Speech-impaired Individuals)
+* RFC 3403 (DNS NAPTR Resource Record)
+* RFC 3420 (Internet Media Type message/sipfrag)
+* RFC 3515 (Refer Method)
+* RFC 3550 (RTP: A Transport Protocol for Real-Time Applications)
+* RFC 3551 (RTP Profile for Audio and Video Conferences)
+* RFC 3581 (Symmetric Response Routing)
+* RFC 4102 (text/red MIME Sub-Type)
+* RFC 4103 (RTP Payload for Text Conversation)
+* RFC 4145 (TCP-Based Media Transport in SIP) (Note: the connection
+            parameter IS NOT yet supported.)
+* draft-ietf-sip-gruu-06 (Globally Routable User Agent URIs)
+
+Present, but not completely implemented, are:
+* RFC 3891 ("Replaces" Header)
+* draft-ietf-sip-target-dialog-01 (Request Authorization through
+  Dialog Identification in SIP)
+
+The stack uses Indy 9.0.14 (but 9.0.18 should work fine). Find this
+excellent library either in your Delphi\Sources\Indy directory or at
+http://www.indyproject.org/
+
+Note that Indy doesn't support some functionality that a SIP stack
+requires, such as SRV and NAPTR DNS records. In the indy-patches
+directory you'll find all patches to the Indy project. You'll have to
+merge these changes into your Indy setup.
+
+All test code relies on the DUnit test framework. See
+http://dunit.sourceforge.net/ for details.
+
+Of the stuff not implemented, the most important missing bits include:
+ * S/MIME;
+ * proxy classes
+
+The main interface to the stack - the interface you want to use to USE
+the stack, as opposed to extend the stack - is in
+src\IdSipStackInterface.
+
+If you're interested in hacking the stack, take a look at the
+SingleCoreSpike class in tests\SingleCoreSpike.pas. It illustrates, in
+a basic way, how to use the SIP stack.
+
+Todo:
+* We need to implement client-side authentication for certain classes
+  of message. In particular, we need to make sure that NOTIFYs,
+  INVITEs with a Replaces header, and probably SUBSCRIBE messages need
+  authentication. These issues can be summed up as: we need a
+  user-defined set of authentication profiles.
+
+Known bugs:
+* TLS tests fail because of something to do with the certificates.
+
+Frank Shearar, 2008/10/10
+
+Copyright (C) 2003 Royal National Institute for Deaf People (RNID).
+
+You may redistribute or use the source or binary code with or without
+modification providing you abide by the following restrictions:-
+
+1.  You MUST distribute this agreement with any source or binary
+    distribution.  This license will also apply to any third party who
+    receives the software from you.
+
+2.  You MUST acknowledge the use of RNID code in any advertising material
+    used to advertise ANY product or service that is derived from or
+    makes use of the code.
+
+3.  You MUST acknowledge the use of RNID code on splash screens, in
+    "about" boxes and any other location where there is a copyright
+    notice.
+
+4.  You may NOT use the name of the RNID in any other way, in relation
+    to a product or service that is derived from or makes use of the
+    code except with permission, in writing from the RNID.
+
+5.  You must NOT use this software or parts thereof to build products
+    or services that do not provide deaf, hard of hearing and speech
+    impaired people with equivalent service to hearing people.  In
+    particular you may not use this software to build voice-only systems.
+
+THIS SOFTWARE IS OFFERED FREELY AND ENTIRELY WITHOUT WARRANTY.

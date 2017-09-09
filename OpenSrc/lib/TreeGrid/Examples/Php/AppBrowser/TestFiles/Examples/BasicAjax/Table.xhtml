@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2>Advanced table</h2>
+         Demonstration of&#160;various TreeGrid functions.<br/>
+         You can see header with more rows, with HTML code. Rows use color stripes instead of boundary lines. On bottom is filter row, by the filter you choose what rows to display.
+         In cells you can see many anomalies - spanning cells, changed formtatting, colors, alignment and values.
+         Right button in the cell shows user defined dialog for given cell by API call. HTML type cell with button or link. User defined row without any predefined formatting. And so on.<br/>
+      <br/>
+      <div align="center">
+      <div style="width:100%;height:500px;">
+         <bdo Layout_Url="TableDef.xml" Data_Url="TableData.xml"></bdo>
+      </div>
+      </div>
+      <script>
+
+// Shows user dialog on button click
+Grids.OnButtonClick = function(G,row,col){
+G.ShowDialog(row,col,"<DIV style='background:#ffffaa;border:2px inset #ddaadd; padding:10px;'> User dialog on<br/>row '"+row.B+"'<br/>column '"+G.GetCaption(col)+"'<br/>"
++"<BR/><DIV align='center'><BUTTON style='width:60;' onclick='Grids[0].CloseDialog();'>OK</BUTTON></DIV></DIV>");
+}
+      </script>
+   </body>
+</html>

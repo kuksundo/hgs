@@ -1,0 +1,67 @@
+<Grid>
+   <Cfg id="RunGroup" NoVScroll="1" IdChars="0123456789" NumberId="1" Undo="1"/>
+   <Cfg Group="TASK" GroupMain="TEXT"/>
+   <Cfg DefaultDate="1/1/2010"/>
+   <Actions OnGroup="Grid.Root.CDef='Group'"/>
+   <LeftCols>
+      <C Name="id" Type="Text" CanEdit="0" CanSort="0" Width="30"/>
+      <C Name="TASK" Type="Text"/>
+      <C Name="TEXT" Type="Text" Width="100"/>
+      <C Name="START" Type="Date"/>
+      <C Name="END" Type="Date"/>
+      <C Name="DUR" Type="Float" CanEmpty="1"/>
+      <C Name="COMP" Type="Float" Format="0"/>
+      <C Name="TIP" Type="Text"/>
+      <C Name="STATE" Type="Enum" Enum="||disabled|locked" EnumKeys="|0|1|2" Width="65"/>
+      <C Name="CLASS" Type="Select" Defaults="||Aqua|Black|Blue|Fuchsia|Gray|Green|Lime|Maroon|Navy|Olive|Orange|Purple|Red|Silver|Teal|White|Yellow"/>
+      <C Name="TYPE" Type="Select" Defaults="||Box|Solid|Left|Right|Fixed"/>
+      <C Name="RUN" Type="Text" Visible="0"/>
+   </LeftCols>
+   <Def>
+      <D Name="Group" Expanded="1"/>
+      <D Name="Group" Calculated="1" CalcOrder="RUN,START,END,DUR,COMP"/>
+      <D Name="Group" RUNFormula="ganttrunsum()"/>
+      <D Name="Group" GANTTGanttSummary="2" GANTTGanttSummaryCols=",,,TYPE,TEXT,CLASS,TIP,,,STATE,,,,COMP" GANTTGanttSummarySeparators="&lt;>"/>
+      <D Name="Group" GANTTGanttStart="" GANTTGanttEnd="" GANTTGanttDuration="" />
+      <D Name="Group" GANTTGanttRun="RUN" GANTTGanttRunStart="START" GANTTGanttRunEnd="END" GANTTGanttRunDuration="DUR"/>
+      <D Name="Group" GANTTGanttEdit="Run"/>
+      <D Name="Group" STARTFormula="ganttrunstart()" STARTCanEdit="1"/>
+      <D Name="Group" ENDFormula="ganttrunend()" ENDCanEdit="1"/>
+      <D Name="Group" DURFormula="ganttrunduration()" DURCanEdit="1"/>
+      <D Name="Group" COMPVisible="0"/>
+      <D Name="Group" GANTTGanttRunMoveRight="Move"/>
+      <D Name="Group" TEXTCanEdit="1" TEXTUndo="1"/>
+      <D Name="Group" CLASSVisible="-1" TYPEVisible="-1"/>
+   </Def>
+   
+   <Cols>
+      <C Name="GANTT" Type="Gantt"
+         GanttDataUnits="d" GanttUnits="d" GanttLastUnit="d" GanttWidth="16"
+         GanttStart="START" GanttEnd="END" GanttDuration="DUR" GanttComplete="COMP" GanttText="TEXT" GanttDisabled="STATE"
+         GanttRunTypes="Box,Box;Box 1,Box,,Fuchsia;Box 2,Box,,Aqua;Box 3,Box,,Lime;Box 4,Box,,Orange;Solid box,Solid,, ;Solid box 1,Solid,,Gray;Solid box 2,Solid,,Black;Fixed left box,Left,, ;Fixed right box,Right,, ;Fixed box,Fixed,, "
+         GanttRunStates="0"
+         GanttLeft="1" GanttRight="1"
+         GanttHeader1="d#%d"
+         GanttTask="Main,Box"
+         />
+   </Cols>
+   <Body>
+      <B>
+         <I id="1" TASK="Task 1" START="1/1/2010" END="1/3/2010" TEXT="Box 1" COMP="100" TIP="Tip 1" TYPE="Solid"/>
+         <I id="2" TASK="Task 1" START="1/4/2010" END="1/5/2010" TEXT="Box 2" COMP="50" TIP="Tip 2" CLASS="Red"/>
+         <I id="3" TASK="Task 1" START="1/6/2010" END="1/9/2010" TEXT="Box 3" COMP="30" TIP="Tip 3"/>
+         <I id="4" TASK="Task 1" START="1/10/2010" END="1/12/2010" TEXT="Box 4" TIP="Tip 4"/>
+         <I id="5" TASK="Task 2" START="1/2/2010" END="1/3/2010" TEXT="Box 1" COMP="100" CLASS="Gray"/>
+         <I id="6" TASK="Task 2" START="1/4/2010" END="1/5/2010" TEXT="Box 2" COMP="100" TYPE="Fixed"/>
+         <I id="7" TASK="Task 2" START="1/7/2010" TEXT="Milestone"/>
+         <I id="8" TASK="Task 2" START="1/8/2010" END="1/9/2010" TEXT="Box 3" STATE="1"/>
+         <I id="9" TASK="Task 2" START="1/11/2010" END="1/12/2010" TEXT="Box 4" TIP="Tip 8" CLASS="Yellow"/>
+         <I id="10" TASK="Task 3" START="1/1/2010" END="1/12/2010" TEXT="Box ;., X" COMP="50" TIP="Tip 9"/>
+
+      </B>
+   </Body>
+   <Header id="id" COMP="%"/>
+   <Toolbar Cells="Save,Reload,Print,Undo,Redo,Add,ExpandAll,CollapseAll,ZoomFit,Columns,Cfg,Hide,StyleTitle,StyleCombo" Styles="2"
+      HideType="Bool" HideLabelRight="Hide source tasks" HideOnChange="if(Value) Grid.CollapseAll(); else Grid.ExpandAll(); Grid.ChangeMainCol(Value?'':'TEXT');" HideCanFocus="0"
+   />
+</Grid>

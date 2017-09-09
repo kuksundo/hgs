@@ -1,0 +1,44 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = IPConClt.exe IPConSvc.exe IPScan.exe MibIIMon.exe NetView.exe \
+  RWakeUp.exe SessSpy.exe SnmpEye.exe WNetStat.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+IPConClt.exe: IPConSvc\IPConClt.dpr
+  $(DCC)
+
+IPConSvc.exe: IPConSvc\IPConSvc.dpr
+  $(DCC)
+
+IPScan.exe: IPScan\IPScan.dpr
+  $(DCC)
+
+MibIIMon.exe: MibIIMon\MibIIMon.dpr
+  $(DCC)
+
+NetView.exe: NetView\NetView.dpr
+  $(DCC)
+
+RWakeUp.exe: RWakeUp\RWakeUp.dpr
+  $(DCC)
+
+SessSpy.exe: SessSpy\SessSpy.dpr
+  $(DCC)
+
+SnmpEye.exe: SnmpEye\SnmpEye.dpr
+  $(DCC)
+
+WNetStat.exe: WNetStat\WNetStat.dpr
+  $(DCC)
+

@@ -1,0 +1,68 @@
+<Grid>
+   <Cfg id='MasterTable' DetailOn='1' SuppressCfg='1' Dragging='0'/>
+   <Cols>
+      <C Name='NAME' Type='Text' GroupWidth='1'/>
+      <C Name='SURNAME' Type='Text'/>
+      <C Name='AGE' Type='Int'/>
+      <C Name='MARRIED' Type='Bool'/>
+      <C Name='ADDRESS' Type='Lines' Visible='0'/>
+      <C Name='NOTE' Type='Lines' Visible='0'/>
+   </Cols>
+   <Panel Copy='1'/>
+   <Def>
+      <!-- The default row for all master rows automatically defines also all detail children and copies the values from master rows -->
+      <D Name='MAIN' Detail='DetailTable' Expanded='0' CanExpand='0'
+         NAMECopyTo='Child_0,V'
+         SURNAMECopyTo='Child_1,V'
+         AGECopyTo='Child_2,V'
+         MARRIEDCopyTo='Child_3,V'
+         ADDRESSCopyTo='Child_4,V'
+         NOTECopyTo='Child_5,V'
+         >
+         <I I='1' N='FirstName' V='' VCopyTo='Parent,NAME'/>
+         <I I='2' N='Surname' V='' VCopyTo='Parent,SURNAME'/>
+         <I I='3' N='Age' V='' VType='Int' VAlign='Left' VCopyTo='Parent,AGE'/>
+         <I I='4' N='Married' V='' VType='Bool' VAlign='Left' VCopyTo='Parent,MARRIED'/>
+         <I I='5' N='Address' V='' VType='Lines' VCopyTo='Parent,ADDRESS'/>
+         <I I='6' N='Note' V='' VType='Lines' VCopyTo='Parent,NOTE'/>
+      </D> 
+      
+      <D Name='Group' AggChildren='1' Expanded='1' CanFilter='2'/>
+   </Def>
+   <Root CDef='MAIN'/>
+   <Header NAME='First name'/>
+   <Head>
+      <Filter
+         NAMECanEdit='0' NAMEShowMenu='0' NAMEButton='Defaults' NAMEDefaults='|*FilterOff|*RowsDefMAIN' NAMERange='1'
+         SURNAMECanEdit='0' SURNAMEShowMenu='0' SURNAMEButton='Defaults' SURNAMEDefaults='|*FilterOff|*RowsSibling' SURNAMERange='1'
+         />
+   </Head>
+   <Foot>
+      <I Calculated='1'
+         NAME='Summary' NAMECanEdit='0'
+         SURNAMECanEdit='0'
+         AGEFormula='min()+" - "+max()' AGEType='Text' AGEAlign='Right'
+         MARRIEDFormula='count("MARRIED","MARRIED")+" / "+count()' MARRIEDType='Text' MARRIEDAlign='center'
+         />
+   </Foot>
+   <Solid>
+      <Toolbar1 Cells='SHOW,GROUP'
+         SHOWType='Select' SHOWLabel='Show detail on' SHOWWidth='80'
+         SHOWDefaults='|Focus|Click|Double click' SHOW='Focus'
+         SHOWOnChange='Grid.DetailOn = Grid.GetDefaultsIndex(Row,Col,Value) + 1'
+
+         GROUPType='Bool' GROUPLabelRight='Group rows by Surname' 
+         GROUPOnChange='Grid.DoGrouping(Value?"SURNAME":"")'        
+         />
+   </Solid>
+   <Actions OnClickButtonAdd='AddRowEnd' OnClickPanelCopy='CopyRow'/>
+   <Toolbar Styles='2' Kind='Toolbar2'/>
+   <Body>
+      <B>
+         <I NAME='James' SURNAME='Jackson' AGE='24' MARRIED='0' ADDRESS='3703 Tenth Ave, New York, NY 10034'/>
+         <I NAME='Daniel' SURNAME='Moore' AGE='38' MARRIED='1' ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703'/>
+         <I NAME='Lisa' SURNAME='Moore' AGE='12' MARRIED='0' ADDRESS='11525 Del Amo Blvd., Cerritos, CA 90703' NOTE='Daniel&apos;s daughter'/>
+         <I NAME='Nancy' SURNAME='Allen' AGE='65' MARRIED='1' ADDRESS='701 Howard Road SE, Washington, DC 20020'/>
+      </B>
+   </Body>
+</Grid>

@@ -1,0 +1,283 @@
+<Grid>
+   <Cfg id="Gantt" SuppressCfg="1"/> <!-- Base settings, suppresses saving configuration to cookies -->
+   <Cfg NumberId="1" IdChars="0123456789"/> <!-- Controls generation of new row ids -->
+   <Cfg NoFormatEscape="1"/> <!-- You can use HTML code in formatting, set here because ValueSeparator and RangeSeparator contain HTML code -->
+   <Cfg Sort="id"/> <!-- Default sort is by ID -->
+   <Cfg Group="N1"/> <!-- The grid is grouped by Task by default -->
+   <Cfg GroupRestoreSort="1"/> <!-- Restores original sorting after ungroup -->
+   <Cfg Undo="1"/> <!-- Permits undo / redo changes by Ctrl+Z / Ctrl + Y -->
+   <Cfg FilterEmpty="1"/> <!-- Does not show groups with all tasks hidden -->
+   <Cfg ChildParts="0"/> <!-- Switches off child parts, here is not needed -->
+   <Cfg ScrollLeftLap="0"/> <!-- Permits saving left scroll to cookies -->
+   <Cfg DefaultDate="5/1/2008"/> <!-- Default date in calendar for empty date -->
+   <Cfg MenuColumnsCount="2"/> <!-- Displays column names in menu in two columns -->
+   <Cfg Style="Standard"/> <!-- Presets Standard CSS style -->
+   <Def>
+      <D Name="R" CDef=""/> <!-- The standard rows cannot have children -->
+      <D Name="Group" Calculated="1" CalcOrder="S,E,U,C,F,G,P"/> <!-- Grouping row is calculated to show summary for its children -->
+      <D Name="Group" Expanded="1" /> <!-- Grouping row shows its children by default -->
+      <D Name="Group" EditCols="Main"/> <!-- When user changes value in main column (N1 - Task), the value is copied also to the children -->
+      <D Name="Group" SFormula="minimum(min('S'),min('E'))"/> <!-- Gets the first start date from its children, including milestones -->
+      <D Name="Group" EFormula="maximum(max('S'),max('E'))"/> <!-- Gets the last end date from its children, including milestones -->
+      <D Name="Group" UFormula="ganttduration('G')"/> <!-- Gets the last end date from its children, including milestones -->
+      <D Name="Group" CFormula="ganttpercent('G')"/> <!-- Calculates average task completion from its children -->
+      <D Name="Group" FFormula="sumrange()" FCanEdit="0"/> <!-- Merges all date ranges from its children -->
+      <D Name="Group" PFormula="sum()"/> <!-- Sums prices -->
+      <D Name="Group" CDef="R"/> <!-- Grouping rows can contain standard rows as children -->
+      <D Name="Group" DButton="" RButton=""/> <!-- No dependencies and resources can be changed in group row -->
+      <D Name="Group" GGanttClass="GanttG" GGanttIcons="1" GGanttEdit="0"/> <!-- Gantt setting specific for Group rows, changes colors and restrict changes by a user -->
+      <D Name="Group" GroupMain="N1"/> <!-- Tree will be shown in Task column -->
+      <D Name="Group" CMaxChars="100"/> <!-- Ensures setting returned value when grouped by Complete column -->
+      <D Name="Group" ParentCDef="Group"/> <!-- When grouped by any column, new rows added to root will be these groups -->
+      <D Name="Group" CanFilter="2"/> <!-- Hides the group when all its tasks are hidden by filter -->
+      <D Name="Group" idVisible="0"/> <!-- Hides the automatically generated id -->
+      <D Name="Group" CanSelect="0"/> <!-- Hides the panel Select icon -->
+      <D Name="Group" AggChildren="1"/> <!-- Aggregates children of task instead of itself, used when calculating the summary fixed row -->
+      <D Name="GroupTask" GroupCols="|N1|C,N1" Group="1" Def="Group" GroupMain="N2"/> <!-- When grouping by Task, shows tree in Section column -->
+      <D Name="GroupTask" ParentCDef="GroupTask"/> <!-- When grouped by task, new rows added to root will be of these groups -->
+      
+   </Def>
+   <LeftCols>
+      <C Name="id" Type="Int" Width="20" WidthPad="17"/> <!-- id / row number column -->
+      <C Name="N1" Width="70" Type="Text"/> <!-- Task column -->
+      <C Name="N2" Width="70" Type="Text"/> <!-- Section column -->
+      <C Name="S" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Start date column -->
+      <C Name="E" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH" CanEmpty="1"/> <!-- End date column -->
+      <C Name="U" Width="31" Type="Text" Align="Right" MenuName="Duration"/> <!-- Duration column -->
+      <C Name="C" Width="35" Type="Float" EditMask="^\d*[\d\.\,]?\d*$" Format="##.##\%;;0\%" MenuName="Complete"/> <!-- Complete column -->
+   </LeftCols>
+   <Cols>
+      <C Name="D" Visible="1" Width="50" Type="Text" Range="1" MenuName="Descendants"/><!-- Descendants, ids of next tasks -->
+      <C Name="A" Visible="1" Width="50" Type="Text" Range="1" MenuName="Ancestors"/><!-- Ancestors, ids of previous tasks -->
+      <C Name="S1" Visible="0" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Min Start date column -->
+      <C Name="S2" Visible="0" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Max Start date column -->
+      <C Name="E1" Visible="0" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Min End date column -->
+      <C Name="E2" Visible="0" Width="80" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Max End date column -->
+      <C Name="NI" Visible="0" Width="120"/> <!-- Main task info column -->
+      <C Name="F" Visible="0" Width="120" Type="Date" Button="" Range="1" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Real flow column -->
+      <C Name="FI" Visible="0" Width="120"/> <!-- Real flow info column -->
+      <C Name="R" Visible="0" Width="110" Type="Text"/> <!-- Resources column -->
+      <C Name="P" Visible="0" Width="55" Type="Float" Format=",0.00" Formula="Grid.GetGanttPrice(Row,'G')"/> <!-- Task price column -->
+      <C Name="M" Visible="0" Width="75" Type="Date" Range="1" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Flag column -->
+      <C Name="I" Visible="0" Width="60" Type="Text" Range="1"/> <!-- Flag info column -->
+      
+      <!-- Gantt chart column -->
+      <!-- Defines all Gantt chart setting -->
+      <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
+      <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttResources="R" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
+      <C Name="G" GanttMinStart="S1" GanttMaxStart="S2" GanttMinEnd="E1" GanttMaxEnd="E2"/> <!-- Start and end date constraints -->
+      <C Name="G" GanttFlow="F" GanttFlowText="FI"/> <!-- Defined source columns for Flow -->
+      <C Name="G" GanttFlags="M" GanttFlagTexts="I"/> <!-- Defined source columns for Flags -->
+      <C Name="G" GanttDescendants="D" GanttAncestors="A"/> <!-- Defines source columns for Dependencies -->
+      <C Name="G" GanttLeft="2" GanttRight="2"/> <!-- At least two units will be let empty on both sides (no Exclude applied here) -->
+      <C Name="G" GanttMin="1/1/1990" GanttMax="1/1/2040"/> <!-- Limit dates for input and display -->
+      <C Name="G" MinWidth="450"/> <!-- Minimal width of the column will be 450 pixels -->
+      <C Name="G" GanttDataUnits="h" /> <!-- All lengths in input data XML (like Dependency lags) are in hours -->
+      <C Name="G" GanttDataModifiers="m:1/60,h:1,d:8,w:40"/> <!-- Modifiers that can be used in Dependency lag values to multiply the value to get hour count -->
+      <C Name="G" GanttEndLast="0"/> <!-- All the end dates are set exactly and not as the last unit -->
+      <C Name="G" GanttStrict="1"/> <!-- Forces first tasks to start on base date and all other to start immediately when possible -->
+      <C Name="G" GanttCorrectDependencies="2" /> <!-- Ask to correct dependencies after main task move or resize or dependency change -->
+      <C Name="G" GanttCorrectDependenciesFixed="0"/> <!-- Can move also the changed task when automatically correcting dependencies -->
+      <C Name="G" GanttCheckExclude="2" /> <!-- Ask to move task if it starts on holiday after resize or move -->
+      <C Name="G" GanttBase="5/14/2008 9:00"/> <!-- Base project date, all the project should start after this date -->
+      <C Name="G" GanttBaseProof="1"/> <!-- The tasks cannot be moved or created before GanttBase -->
+      <C Name="G" GanttBackground="w#1/5/2008~1/7/2008; M#1/1/2008"/>
+         <!-- Highlights these dates in chart (weekends and month ends), some zoom levels change this setting -->
+      <C Name="G" GanttResourcesAssign="4"/> <!-- Shows resources menu with float number inputs -->
+      <C Name="G" GanttFormat="$&lt;span style='color:#77F'>*P*&lt;/span> *R*"/> <!-- Formats the text next to main task -->
+      <C Name="G" GanttMainTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(main bar)&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*Duration* hours, *C* completed&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for main bar only-->
+      <C Name="G" GanttMilestoneTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(milestone)&lt;/span>&lt;div style='padding-top:5px;font-weight:bold;'>*Start*&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for milestone only-->
+      <C Name="G" GanttFlowTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(*Index*. flow bar)&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*Duration* hours&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for flow bar only-->
+      <C Name="G" GanttFlagsTip="*Start* - *Text*"/> <!-- Specifies tooltip shown for flag only-->
+
+      <C Name="G" GanttExclude = "w#1/5/2008~1/7/2008; d#00:00~9:00; d#13:00~14:00; d#18:00~24:00"/>
+         <!-- Defines excluded dates from Gantt chart, defines as excluded weekends and hours outside 9:00 - 13:00, 14:00 - 18:00 -->
+         <!-- The excluded dates are not used for Gantt calculations and behaves like they don't exist at all -->
+         <!-- The low zoom levels disable the Exclude, because of too many units (hours) in the zoomed chart, 
+                  in this case the correcting dependency should be disabled too, because dependencies become incorrect -->
+      <C Name="G" GanttHideExclude="0"/> <!-- By default are the Excluded dates shown in chart, it can be changed by a user -->
+      
+      <C Name="G" GanttZoom="weeks and days"/> <!-- Predefine zoom level name -->
+   </Cols>
+   
+   <!-- Gantt Zoom defines zoom levels definition -->
+   <!-- The individual levels predefine various Gantt zoom settings -->
+   <!-- GanttUnits and GanttWidth specify the zooming size, to GanttUnits are all the dates rounded for display and drag -->
+   <!-- GanttChartRound specifies rounding of first and last date in the chart -->
+   <!-- Some zoom levels changes GanttBackground to mark different units -->
+   <!-- GanttHeader1,GanttFormat1 specify the dates shown in the first line in Gantt header -->
+   <!-- GanttHeader2,GanttFormat2 and possibly also 3,4,5 specify next lines in Gantt header -->
+   <!-- The ...Ex values are chosen when Exclude is hidden, they are appropriate only for the actual Exclude dates (days and hours) -->
+   <Zoom>
+      <Z Name="years and halves" GanttUnits="M6" GanttChartRound="y" GanttWidth="18" GanttWidthEx="76" GanttBackground=";y#1/1/2008" 
+         GanttHeader1="y#yyyy" GanttHeader2="M6#MMMMMM"/>
+      <Z Name="years and quarters" GanttUnits="M3" GanttChartRound="y" GanttWidth="24" GanttWidthEx="101" GanttBackground=";y#1/1/2008" 
+         GanttHeader1="y#yyyy" GanttHeader2="M3#MMMMM"/>
+      <Z Name="halves and months" GanttUnits="M" GanttChartRound="y" GanttWidth="18" GanttWidthEx="76" GanttBackground=";M6#1/1/2008" 
+         GanttHeader1="M6#MMMMMM. yyyy" GanttHeader2="M#MM"/>
+      <Z Name="quarters and months" GanttUnits="M" GanttChartRound="M6" GanttWidth="28" GanttWidthEx="118" GanttBackground=";M3#1/1/2008" 
+         GanttHeader1="M3#MMMMM. yyyy" GanttHeader2="M#MMM"/>
+      <Z Name="months and weeks" GanttUnits="d" GanttChartRound="M" GanttWidth="3" GanttWidthEx="12.6" GanttBackground=";M#1/1/2008" 
+         GanttHeader1="M#MMM yyyy" GanttHeader2="w#d."/>
+      <Z Name="months and days" GanttUnits="d" GanttChartRound="M" GanttWidth="8" GanttWidthEx="33.6"
+         GanttHeader1="M#MMMM yyyy" GanttHeader2="d#'&lt;span style=&quot;font:8px Arial;&quot;>'DDDDDD'&lt;br/>'DDDDDDD'&lt;/span>'"/>
+      <Z Name="weeks and days" GanttUnits="d" GanttChartRound="w" GanttWidth="18" GanttWidthEx="76"
+         GanttHeader1="w#'&lt;span style=&quot;color:red;font-size:8px;&quot;>week 'ddddddd'&lt;/span>' MMMM yyyy" GanttHeader2="d#%d" GanttHeader3="d#ddddd"/>
+      <Z Name="days and quarters" GanttUnits="h" GanttChartRound="w" GanttWidth="3" GanttWidthEx="9"
+         GanttHeader1="d#dd MMM yyyy" GanttHeader2="d#dddd" GanttHeader3="h6#HH" GanttHeaderRound3="1"/>
+      <Z Name="days and hours" GanttUnits="h" GanttChartRound="d" GanttWidth="8" GanttWidthEx="24"
+         GanttHeader1="d#dddd dddddd MMMM yyyy" GanttHeader2="h#'&lt;span style=&quot;font:8px Arial;&quot;>'HHHH'&lt;br/>'HHHHH'&lt;/span>'" GanttHeader2Ex="h#HH"/>
+      <Z Name="halves and hours" GanttUnits="h" GanttChartRound="d" GanttWidth="19" GanttWidthEx="25"
+         GanttHeader1="h12#dddd dddddd MMMM yyyy tt" GanttHeader1Ex="d#dddd dddddd MMMM yyyy" GanttHeader2="h#HH"/>
+      <Z Name="hours and quarters" GanttUnits="h" GanttChartRound="d" GanttWidth="60" GanttBackground="w#1/5/2008~1/7/2008; h#00:00" 
+         GanttHeader1="h3#dddd dddddd MMMM yyyy" GanttHeader2="h#HH 'hour'" GanttHeader3="m15#mm"/>
+      <Z Name="hours and 5 minutes" GanttUnits="m5" GanttChartRound="h" GanttWidth="18" GanttBackground="w#1/5/2008~1/7/2008; h#00:00" 
+         GanttHeader1="h#dddd dddddd MMMM yyyy" GanttHeader2="h#HH 'hour'" GanttHeader3="m5#mm"/>
+      <Z Name="hours and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="8" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="h#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH 'hour&lt;/span>'"
+         GanttHeader2="m#'&lt;span style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/span>'"/>
+      <Z Name="halves and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="12" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="m30#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm '&lt;/span>'"
+         GanttHeader2="m#'&lt;span style=&quot;font:8px Arial;&quot;>'mmmm'&lt;br/>'mmmmm'&lt;/span>'"/>
+      <Z Name="quarters and minutes" GanttUnits="m" GanttChartRound="h" GanttWidth="18" GanttBackground="m15#00:00; h#00:00"
+         GanttHeader1="m15#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm '&lt;/span>'" GanttHeader2='m#mm'/>
+      <Z Name="5 minutes and minutes" GanttUnits="m" GanttChartRound="m15" GanttWidth="36" GanttBackground="m5#00:00; h#00:00"
+         GanttHeader1="m5#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm'&lt;/span>'" GanttHeader2="m#mm"/>
+      <Z Name="minutes and 15 seconds" GanttUnits="s15" GanttChartRound="m15" GanttWidth="18" GanttBackground="m#00:00; h#00:00"
+         GanttHeader1="m2#dddd d MMM yyyy" GanttHeader2="m#HH:mm" GanttHeader3="s15#ss" />
+      <Z Name="minutes and 5 seconds" GanttUnits="s5" GanttChartRound="m15" GanttWidth="18" GanttBackground="m#00:00; h#00:00"
+         GanttHeader1="m#dddd dddddd MMMM yyyy" GanttHeader2="m#HH:mm" GanttHeader3="s5#ss"/>
+      <Z Name="minutes and seconds" GanttUnits="s" GanttChartRound="m5" GanttWidth="8" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="m#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm 'minute&lt;/span>'"
+         GanttHeader2="s#'&lt;span style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/span>'"/>
+      <Z Name="halves and seconds" GanttUnits="s" GanttChartRound="m5" GanttWidth="12" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="s30#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm 'minute&lt;/span>'"
+         GanttHeader2="s#'&lt;span style=&quot;font:8px Arial;&quot;>'ssss'&lt;br/>'sssss'&lt;/span>'"/>
+      <Z Name="quarters and seconds" GanttUnits="s" GanttChartRound="m" GanttWidth="18" GanttBackground="s15#00:00; m#00:00"
+         GanttHeader1="s15#dddd dddddd MMMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm:ss'&lt;/span>'" GanttHeader2="s#ss"/>
+      <Z Name="5 seconds and seconds" GanttUnits="s" GanttChartRound="s15" GanttWidth="36" GanttBackground="s5#00:00; m#00:00"
+         GanttHeader1="s5#dddd d MMM yyyy, '&lt;span style=&quot;color:red;&quot;>'HH:mm'&lt;/span>'" GanttHeader2="s#ss"/>
+      <Z Name="seconds and 100 ms" GanttUnits="ms100" GanttChartRound="s2" GanttWidth="9" GanttBackground="s#00:00; m#00:00"
+         GanttHeader1="s2#dddd dddddd MMMM yyyy" GanttHeader2="s#HH:mm:ss" GanttHeader3="ms100#%f"/>
+      <Z Name="seconds and 100 ms 2" GanttUnits="ms100" GanttChartRound="s" GanttWidth="60" GanttBackground="s#00:00; m#00:00"
+         GanttHeader1="s#dddd dddddd MMMM yyyy" GanttHeader2="ms100#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'f'&lt;/span>'" />
+      <Z Name="100 ms and 10 ms" GanttUnits="ms10" GanttChartRound="ms100" GanttWidth="10" GanttBackground="ms100#00:00; s#00:00"
+         GanttHeader1="ms100#ddd d MMM yyyy" GanttHeader2="ms100#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'f'&lt;/span>'" GanttHeader3="ms10#ffff"/>
+      <Z Name="100 ms and 10 ms 2" GanttUnits="ms10" GanttChartRound="ms100" GanttWidth="65" GanttBackground="ms100#00:00; s#00:00"
+         GanttHeader1="ms100#dddd dddddd MMMM yyyy"  GanttHeader2="ms10#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'ff'&lt;/span>'"/>
+      <Z Name="10 ms and ms" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="11" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1="ms10#ddd d MMM yyyy" GanttHeader2="ms10#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'ff'&lt;/span>'" GanttHeader3="ms#fffff"/>
+      <Z Name="10 ms and ms 2" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="70" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1='ms10#dddd dddddd MMMM yyyy' GanttHeader2="ms#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'fff'&lt;/span>'"/>
+      <Z Name="10 ms and ms 3" GanttUnits="ms" GanttChartRound="ms10" GanttWidth="180" GanttBackground="ms10#00:00; ms100#00:00"
+         GanttHeader1='ms#dddd dddddd MMMM yyyy' GanttHeader2="ms#HH:mm:ss.'&lt;span style=&quot;color:red;&quot;>'fff'&lt;/span>'"/>
+   </Zoom>
+
+   <!-- Column captions -->
+   <Header id="ID" N1="Task" N2="Section" S="Start" E="End" C="Com&lt;br>plete" U="Dura&lt;br>tion" NI="Information" P="Price"
+          S1="Min start" S2="Max start" E1="Min end" E2="Max end"
+          F="Real flow" FI="Real flow information" D="Descen&lt;br>dants" A="Ances&lt;br>tors"
+          M="Flags" I="Flag Info" R="Resources" G="Gantt" GNoColor="0" NoEscape="1"/>
+   <Header SortIcons="2"/> <!-- Hides unused sort icons -->   
+   <Solid>
+
+      <!-- Defines the control row with combos to choose grouping, zoom and filter by resources -->
+      <Group id="Group" Space="0" Cells="List,Zoom,Resources,Exclude,Dep,Base,HidRes"
+             
+         Panel="0"
+         ListLeft="5"
+         ListHtmlPrefix='&lt;b>Group by &lt;span style="color:blue;">' ListHtmlPostfix='&lt;/span>&lt;/b>'
+  			List='|none|Task|Complete Task|Complete|Start|End'
+         Cols='||N1|C,N1|C|S|E'
+			ListWidth='108'
+			
+         ZoomType='SelectGanttZoom'
+         ZoomHtmlPrefix='&lt;b>Zoom to &lt;span style="color:blue;">' ZoomHtmlPostfix='&lt;/span>&lt;/b>'
+         ZoomLeft='5'
+         ZoomWidth='170'
+			
+         ResourcesType='SelectGanttResources'
+         ResourcesHtmlPrefix='&lt;b>Show &lt;span style="color:blue;">' ResourcesHtmlPostfix='&lt;/span>&lt;/b>'
+         ResourcesEmptyValue='all resources'
+         ResourcesLeft='5'
+         ResourcesWidth='120'
+         
+         ExcludeType='Bool' ExcludeNoColor='1'
+         ExcludeLabelRight='Hide holidays'
+         ExcludeFormula='Grid.Cols.G.GanttHideExclude'
+         ExcludeOnChange='Grid.SetHideExclude(Value)'
+         ExcludeCanEditFormula='gantthasexclude()!=0'
+
+         DepType='Select'
+         DepDefaults='|Ignore problems|Auto correct problems|Alert and confirm problems'
+         DepFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.G.GanttCorrectDependencies)'
+         DepOnChange='var v=Grid.GetDefaultsIndex(Row,Col,Value);Grid.Cols.G.GanttCorrectDependencies=v;Grid.Cols.G.GanttCheckExclude=v;Grid.SaveCfg();'
+         DepTip='If the dependent tasks will be updated after some task move or resize'
+         DepWidth='130'
+         DepLeft='5'
+             
+         BaseType='Date' BaseCanEdit='1' BaseWidth='100' BaseUndo='1'
+         BaseLabel='Baseline'
+         BaseFormat="ddd M/d/yyyy, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"
+         BaseEditFormat='M/d/yyyy HH'
+         BaseFormula='Grid.Cols.G.GanttBase'
+         BaseOnChange='Grid.SetGanttBase(Value,2);'
+
+         HidResType='Bool' HidResNoColor='1' HidResCanEdit='1'
+         HidResLabelRight='Hide resources usage'
+         HidResFormula='!Grid.Rows[-2].Visible'
+         HidResOnChange='for(var i=-2;Grid.Rows[i];i--) if(Value) Grid.HideRow(Grid.Rows[i]); else Grid.ShowRow(Grid.Rows[i]);'
+         />
+   </Solid>
+   
+   <!-- Summary row for all tasks -->
+   <Foot>
+      <I id='-1' Def='Group' N1='Summary' N2='Summary'/> 
+   </Foot>
+   
+   <!-- Resources definition -->
+   <Resources>
+      <R Name="Sales" Price="20" Consumed="0" MaxCount="3"/>
+      <R Name="Support" Price="30" Consumed="0" MaxCount="5"/>
+      <R Name="Management" Price="37" Consumed="0" MaxCount="1"/>
+      <R Name="Development" Price="40" Consumed="0" MaxCount="20"/>
+   </Resources>
+   
+   <!-- Resources usage sub table -->
+   <Def>
+      <!-- Default row for resources -->
+      <D Name='Resource' idVisible='0' CanEdit='0' CanDelete="" CanSelect="0" Calculated="1"
+         GGanttChart="Resources" GGanttChartResourceFormat="0.#" GGanttStart="" GGanttEnd="" GGanttEdit=""
+         N1="Resource"
+         N2Formula="Row.Res"
+         SType="Float" SFormat="0.00" SEditMask="^\d*[\d\.\,]?\d*$" SEditFormat="" SFormula="Grid.Resources[Row.Res].Price" SCanEdit="1" SOnChange="Grid.Resources[Row.Res].Price=Value;Grid.Calculate(1)"
+         EType="Float" EFormat="0.00" EEditMask="^\d*[\d\.\,]?\d*$" EEditFormat="" EFormula="Grid.Resources[Row.Res].MaxCount" ECanEdit="1" EOnChange="Grid.Resources[Row.Res].MaxCount=Value;"
+         UType="Float" UFormat="0.##" UFormula="ganttresourcepeak(Row.Res)"
+         DType="Float" DFormat="0.00" DFormula="ganttresourceunits(Row.Res)"
+         AType="Float" AFormat="0.00" AFormula="D*S"
+         CType="Float" CFormat="0.##" CFormula="U>E?U-E:''"
+         /> 
+   </Def>
+   <Foot>
+      <Header id='-2' idVisible='0' SortIcons='0' 
+              N1='Type' N2='Resource' G='Resources usage' GOnClick='ZoomIn' GNoColor='0'
+              S='Unit price' E='Max count' U='Peak' C='Error' D='Total' A='Price'
+              /> <!-- Header of sub table with column captions -->
+      <I id="-3" Def="Resource" Res="Support" GGanttChartResource="Support"/>
+      <I id="-4" Def="Resource" Res="Sales" GGanttChartResource="Sales"/>
+      <I id="-5" Def="Resource" Res="Management" GGanttChartResource="Management"/>
+      <I id="-6" Def="Resource" Res="Development" GGanttChartResource="Development"/>
+   </Foot>
+   <!-- End of resources usage sub table -->
+ 
+   <Lang>
+      <!-- Colors the separators to be better visible, there must be also set Cfg NoFormatEscape for it -->
+      <Format
+         ValueSeparatorHtml="&lt;b style='color:red;'>; &lt;/b>"
+         RangeSeparatorHtml="&lt;b style='color:red;'> ~ &lt;/b>"
+         />
+   </Lang>
+
+   <!-- Shows count of incorrect dependencies and on click corrects them -->
+   <Toolbar Formula="ganttdependencyerrors(null,1)" FormulaOnClick="CorrectAllDependencies" FormulaTip="Click to correct the dependencies"/>
+</Grid>

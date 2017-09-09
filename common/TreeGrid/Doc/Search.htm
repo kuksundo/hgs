@@ -1,0 +1,1386 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Search and advanced filter</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Search and advanced filter</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search provides advanced
+searching and filtering in grid cells and rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can provide <b>Search like
+Google</b> or <b>Search by JavaScript expression</b>, see &lt;Cfg <a
+href="#CfgSearchMethod">SearchMethod</a>&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The found results can be
+filtered, selected, colored or focused, see &lt;Cfg <a href="#CfgSearchAction">SearchAction</a>/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The search can be case
+sensitive or insensitive, see &lt;Cfg <a href="#CfgSearchCaseSensitive">SearchCaseSenstive</a>/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The search can be run
+according to individual cells or whole rows, see &lt;Cfg <a
+href="#CfgSearchCells">SearchCells</a>/&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search criteria can be
+changed by a user in special <a href="#Search">Search</a> row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search criteria can be preset
+in XML by &lt;Cfg <a href="#CfgSearchExpression">SearchExpression</a> <a
+href="#CfgSearchAction">SearchAction</a>/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search can be run by API
+method <a href="SearchRows">SearchRows</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearching><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Searching</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If searching in grid is
+permitted.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearched><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Searched</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [1]                    Saved
+to cookies, to not load it, set <b>SearchedLap</b>=’1’                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If searching is enabled by
+user.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A user can enable / disable
+searching by click to <a href="#Search">Search</a> row left panel.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgSearchExpression><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchExpression</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>           Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’                  <span
+style='color:blue'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Expression to search or
+advanced filter expression.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The expression syntax depends
+on <a name="OLE_LINK2"></a><a name="OLE_LINK1"></a><a href="#CfgSearchMethod">SearchMethod</a>
+used. By default is the method chosen automatically according to expression
+syntax, see <a href="#CfgSearchMethod">SearchMethod</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>- <b><i>Search like Google</i></b> – expression has
+similar syntax to searching at <a href="http://www.google.com/">www.google.com</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>word word                                                           words
+separated by space - finds all cells or rows containing all the words</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“Phrase with spaces in double
+quotes”          quoted words are searched together as whole phrase.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-word                                                                    word
+or phrase with hyphen prefix - finds all cells or rows <b>without</b> this word
+or sentence</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>word OR word                                                    words
+or phrases joined by OR (uppercase only) - finds all cells or rows containing
+at least one of them</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>#                                                                            finds
+all empty cells</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: London Paris
+OR Nice “above sea level”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> - <b><i>Search by expression</i></b> – expression has
+similar syntax to TreeGrid formulas and JavaScript code, but it is <u>not</u>
+in TCalc content, so it cannot use TreeGrid calculation functions like sum().</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The expression has the
+JavaScript syntax, operators (==, !=, &lt;, &lt;=, &gt;, &gt;=, &amp;&amp;,||,
+!, parenthesis, function calls), if fact it can contain nearly every JavaScript
+code.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0) Due security
+reasons it is <u>not</u> possible to do function calls except methods of Math
+object and functions parseInt, parseFloat, escape, unescape, isFinite, isNaN. </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell values from the row are
+referenced by column <b>captions</b> (<i>not names!</i>); </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>these
+names can be predefined by column <a href="#CSearchNames">SearchNames</a>
+attribute, especially if the column caption contains spaces.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The column
+captions are referenced case insensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>String constants can be in
+double or single quotes or can be without quotes at all. </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>Not
+quoted strings must not interfere with column captions and other reserved words</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To input dates in special
+format set it in <a href="#SearchDateFormat">SearchDateFormat</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For comparing equality can be
+used both ‘==’ and ‘=’ operators. For comparing inequality can be used both
+operators “!=” and “&lt;&gt;”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For operators “&amp;&amp;”,
+“||” and “!” can be used word (case insensitive) equivalents, defined in <a
+href="Files.htm#TextXml">Text.xml</a>, in &lt;Lang&gt;&lt;Text And=’’ Or=’’
+Not=’’/&gt;&lt;/Lang&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>By
+default can be used instead of “&amp;&amp;” =&gt; “<b>and</b>”, “||” =&gt; “<b>or</b>”, 
+“!” =&gt; “<b>not</b>”</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Remember, the operator
+&amp;&amp; / <b>and</b> have higher priority then || / <b>or</b></span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Here can be used special
+string operators to check if one string contains another string, starts with
+the string, ends with the string.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+operator names are defined in <a href="Files.htm#TextXml">Text.xml</a>, in
+&lt;Lang&gt;&lt;Text Starts=’’ Ends=’’ Contains=’’/&gt;&lt;/Lang&gt;</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>By
+default is Contains=&quot;contains,has&quot; Starts=&quot;starts,starts
+with,starts by,begins,begins with,begins by&quot;  Ends=&quot;ends,ends by,
+ends with&quot;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: (Name starts James
+or Name = John) and Age &gt;20 and Age &lt;40</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – <b><i>Exact string search</i></b> – <i>(new 6.3) </i>expression
+has no special syntax, the string is searched for as is without any parsing.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The search is done also in
+number types as string search.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>
+</span><a name=CfgSearchAction><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>SearchAction</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                           Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’                  <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of search action predefined
+or currently applied in grid, can be one of <b><i>Filter</i></b>, <b><i>Select</i></b>,
+<b><i>Mark</i></b>, <b><i>Find</i></b> or empty</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0) </span></i><span
+style='font-size:10.0pt'>It can contain also more actions separated by comma or
+semicolon to do all these action in this order, e.g. “Filter,Mark” to show only
+found rows and mark the found cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Filter</span></i></b><span
+style='font-size:10.0pt'>     Hides all rows that <u>don’t</u> match the <a
+href="#CfgSearchExpression">SearchExpression</a> in method and other search
+options set.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>The
+filter works in the same way as filter by &lt;<a href="Filter.htm#Filter">Filter</a>&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                You can
+control the filter also by filter attribute like &lt;Cfg <a
+href="Filter.htm#CfgStandardFilter">StandardFilter</a> /&gt; and &lt;I <a
+href="Filter.htm#ICanFilter">CanFilter</a> /&gt;.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If row cannot
+be searched through or filtered by its settings, it is <u>not</u> hidden.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Select</span></i></b><span
+style='font-size:10.0pt'>     Selects all rows that match the <a
+href="#CfgSearchExpression">SearchExpression</a> in method and other search
+options set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Selects only
+whole rows, cannot select only cells.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If row cannot
+be searched through it is <u>not</u> selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Mark</span></i></b><span
+style='font-size:10.0pt'>     Colors all rows or cells (see <a
+href="#CfgSearchCells">SearchCells</a>) that match the <a
+href="#CfgSearchExpression">SearchExpression</a> in method and other search
+options set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The rows or
+cells are colored by the CSS <b>Found</b> colors.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                After change
+some search setting like SearchExpression and do Mark action again, new color
+for coloring is used (Found1-&gt;Found2-&gt;...)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The color is
+restored to Found1 after any other search action is done
+(Filter,Select,Find,Clear)</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>If
+row or cell cannot be searched through it is not colored.</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><i><span style='font-size:10.0pt'>Find</span></i></b><span
+style='font-size:10.0pt'>       Focuses the first row or cell that matches the <a
+href="#CfgSearchExpression">SearchExpression</a> in method and other search
+options set.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                By default
+searches from the next / cell from actually focused (like Find next), for other
+possibilities see <a href="#CfgSearchFocused">SearchFocused</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                If row or
+cell cannot be searched through it is not focused.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchMethod><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchMethod</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [0]        Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’                  <span
+style='color:blue'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Method of the search</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – Automatic method selection – automatically chooses <b>1</b>
+or <b>2</b> method according to used expression</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> (expression search) is chosen if the expression
+contains one of these characters ( ) = ! &lt; &gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                or if the
+expression contains at least two column names or one column name and one
+keyword of these: contains, ends, starts</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                otherwise is
+chosen <b>1</b> (Search like Google)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Search like Google       </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – Search by expression (<i>since 7.0</i> it removes
+all function calls to be safe)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – Exact string search <i>(new 6.3).</i> It is not
+automatically chosen by Method=0.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>4</span></b><span
+style='font-size:10.0pt'> – Search by expression unsafe <i>(new 7.0)</i>. Like
+2, but does not remove function calls and doesn’t add quotes for strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearchCells><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchCells</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                [0]        Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’          <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only for <a
+href="#CfgSearchMethod">SearchMethod</a> = <b>1</b> (<b><i>Search like Google</i></b>)
+and <b>3</b> (<b><i>Exact search</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'>             searches in rows, thus all the cells in
+one row together must fulfill the <a href="#CfgSearchExpression">SearchExpression</a>.
+</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if you search
+“London 1000” at least one cell in row must contain “London” and other (or the
+same) the “1000”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Filter</i></b> or <b><i>Select</i></b>
+action the row is filtered (visible) or selected if it fulfills the <a
+href="#CfgSearchExpression">SearchExpression</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Mark</i></b> action
+the whole row is colored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Find</i></b> action
+the whole found row is focused (does not change focused column), for next match
+it continues in next row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'>             searches in cells, thus every cell to
+find must fulfill the <a href="#CfgSearchExpression">SearchExpression</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example if you search
+“London 1000” the found cell must contain both “London” and “1000”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Filter</i></b> or <b><i>Select</i></b>
+action the row is filtered (visible) or selected if at least one cell is found.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Mark</i></b> action
+only the found cell is colored.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b><i>Find</i></b> action
+focuses the first cell found, for next match continues in the same row in next
+cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearchCaseSensitive><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>SearchCaseSensitive</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]   
+Saved to cookies, to not load it, set <b>SearchLap</b>=’1’   <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If strings are compared case
+sensitive.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string    </i></span><a
+name=CfgSearchWhiteChars><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchWhiteChars</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                         <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>List of characters to ignore
+when searching. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be set for example to
+“ “ (space) to ignore spaces (it means that for example “a b   c” and “abc”
+strings are the same.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>               <i>string</i>[*]
+</span><a name=CfgSearchCharCodes><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>SearchCharCodes</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It changes characters in
+comparing strings for searching.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is first character
+separated array of pair of characters to replace the first character by the
+second when comparing strings.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example “|y|i|Y|I|.|,” –
+replaces ‘y’ by ‘i’, ‘Y’ by ‘I’ and ‘.’ by ‘,’ </span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt'>–
+it means that when comparing strings does not differ between letter ‘y’ and
+‘i’, both cases and also does not differ between comma and point.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first character must be
+one letter, but the second in fact can be any letter or string or even empty
+string, like “|a|xxx|b||c|ff”</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchNumbers><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchNumbers</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [1/0]                                                                                        <span
+style='color:red'>            new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How numbers are compared
+(cell types <b>Int</b> and <b>Float</b>). Used only for <a
+href="#CfgSearchMethod">SearchMethod</a> = <b>1</b> (<b><i>Search like Google</i></b>)
+and <b>3</b> (<b><i>Exact search</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is <b>1</b> for
+SearchMethod = 1 and <b>0</b> for SearchMethod = 3.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – as strings, e.g. -1.7 is found by -1.7 or 1.7 or -1
+or 1or 7 and so on, similar to SearchMethod=3</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – exactly, e.g. -1.7 is found only by -1.7</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – rounded, e.g. -1.7 is found by -1.7 or -2</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – floor, e.g. -1.7 is found by -1.7 or -1 or 1 (but
+1.7 is <u>not</u> found by -1 or 1.6)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]  </span><a
+name=CfgSearchDefs></a><a name=CfgSearchDef><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>SearchDefs</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                             Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma or semicolon separated
+list of <a href="RowDefaults.htm#DName">default row names</a>. Only row with
+the <a href="RowDefaults.htm#IDef">Def</a> attribute that is listed will be
+searched through.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The row with not listed <a
+href="RowDefaults.htm#IDef">Def</a> will be: a) for Filter action never hidden,
+b) for other actions never found / colored / selected</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If SearchDefs is empty, all
+rows will be searched through.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string</i>[]  </span><a
+name=CfgSearchGoogleCols></a><a name=CfgSearchCols><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>SearchCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                             Saved
+to cookies, to not load it, set <b>SearchLap</b>=’1’                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Columns names (<i>not
+captions!</i>), comma or semicolon separated. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only cells in given columns
+will be searched through. Used only for <a href="#CfgSearchMethod">SearchMethod</a>
+= <b>1</b> (<b><i>Search like Google</i></b>) and <b>3</b> (<b><i>Exact search</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If SearchCols is empty, all
+cells will be searched through. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Result depends also on <a
+href="#CfgSearchHidden">SearchHidden</a>. If column has <a href="#CCanSearch">CanSearch</a>=’0’,
+it cannot be searched through at all.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearchHidden><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchHidden</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [0]                                                                                              
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> and any action
+it searches also in hidden columns. Used only for <a href="#CfgSearchMethod">SearchMethod</a>
+= <b>1</b> (<b><i>Search like Google</i></b>) and <b>3</b> (<b><i>Exact search</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearchExpand><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchExpand</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [1]                                                                                             
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> and action <b><i>Select</i></b>
+or <b><i>Mark</i></b> it expands parents of the found row to be visible in
+tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchFocused><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchFocused</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [3]                                                                                             
+<span style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Only for <b><i>Find</i></b> action</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>0</span></b><span
+style='font-size:10.0pt'> – Searches from beginning</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>1</span></b><span
+style='font-size:10.0pt'> – Searches from focused cell, when reaches end, ends</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>2</span></b><span
+style='font-size:10.0pt'> – Searches from focused cell, when reaches end,
+continues from beginning </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>3</span></b><span
+style='font-size:10.0pt'> – Searches from focused cell, when reaches end, it
+asks user to continue from beginning</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchNotFound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchNotFound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>   [500]                                                                              
+<span style='color:red'>renamed <b>6.0</b></span><span style='color:#0070C0'>;
+upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set and action is <b><i>Find</i></b>,
+alerts message “Not found” if no result is found.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it alerts
+the message by standard alert.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it alerts
+the message by HTML dialog with ok button</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt;=<b>10</b>, it
+alerts the message by HTML dialog for given count of milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchAlertFound><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchAlertFound</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                          <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set and action is <b><i>Filter</i></b>,
+<b><i>Select</i></b> or <b><i>Mark</i></b>, alerts message with count of row /
+cells found.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, it alerts
+the message by standard alert.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, it alerts
+the message by HTML dialog with ok button</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to &gt;=<b>10</b>, it
+alerts the message by HTML dialog for given count of milliseconds.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can use also <a
+href="#SearchCount">SearchCount</a> variable to display the found count in some
+cell formula.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>bool      </i></span><a
+name=CfgSearchClass><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchClass</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [0]                                                                                                                  <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, found
+cells (<b>Mark</b> action) can be highlighted also by CSS class attributes like
+color or font, defined in <b>GxColorFoundX</b> CSS class in Grid.css.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>0</b>, found
+cells are highlighted only by background color.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The value <b>1</b> can
+slow down selecting cells. </span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CfgSearchMaxMark><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchMaxMark</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [3]                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How many different <b>Mark</b>
+colors are permitted in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to <b>1</b> to clear
+mark for every new search.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Cfg&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CfgSearchDateFormat><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchDateFormat</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Format to convert strings to
+date when used in advanced filtering (<a href="#CfgSearchMethod">SearchMethod</a>=2).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>string</i>[]  </span><a
+name=CSearchNames><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchNames</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                 .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated strings as
+possible names of the column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used in <a
+href="#CfgSearchExpression">SearchExpression</a> to reference this column
+instead of its caption, one column can have more names to be referenced by.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only for <a
+href="#CfgSearchMethod">SearchMethod</a> = <b>2</b> (<b><i>Search by expression</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CCanSearch><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>CanSearch</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If values are searched within
+this column. Used only for <a href="#CfgSearchMethod">SearchMethod</a> = <b>1</b>
+(<b><i>Search like Google</i></b>) and <b>3</b> (<b><i>Exact search</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The columns can be also
+restricted by <a href="#CfgSearchCols">SearchCols</a> and <a
+href="#CfgSearchHidden">SearchHidden</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=CS style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span lang=CS
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                 <i>bool      </i></span><a
+name=CSearchText><b><u><span lang=CS style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>SearchText</span></u></b></a><span lang=CS style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>      [0]                                                                                                                  <span
+style='color:red'>new <b>8.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used only for <a
+href="#CfgSearchMethod">SearchMethod</a> = <b>2</b> (<b><i>Search by Expression</i></b>).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> compares the
+cell raw value, for <b>1</b> compares the cell formatted string (for Enum
+compares with values from Enum array).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellFilterValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>FilterValue</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                                                                                                                              <span
+style='color:red'>chg <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Cell value used for <b>filtering</b>
+and <b>searching</b>, useful for special non editable cells like Html, Icon,
+Abs, Gantt, ..., see also <a href="#OnGetFilterValue">OnGetFilterValue</a>
+event.</span></p>
+
+<p class=MsoNormal><i><s><span style='font-size:10.0pt;color:#BFBFBF'> (Deleted
+in 7.0)</span></s></i><s><span style='font-size:10.0pt;color:#BFBFBF'> For
+searching it is <u>not</u> used for Int and Float types and also <u>not</u> for
+<a href="Search.htm#CfgSearchMethod"><span style='color:#BFBFBF'>SearchMethod</span></a>
+= 2.</span></s></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is also used by <a
+href="#FilterTextRange">FilterTextRange</a> and <a href="#FilterDateRange">FilterDateRange</a>
+methods, but <u>not</u> by <a href="#SetFilter">SetFilter</a> method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>type      </i></span><a
+name=OnGetFilterValue><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnGetFilterValue</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>type</i> <b>val</b>)                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called to get cell value for <b>filtering</b>
+and <b>searching</b>. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>val</span></b><span
+style='font-size:10.0pt'> is predefined value, returns <b>val</b> or new value.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=SearchCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SearchCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                                                                                                                       <span
+style='color:red'>new <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of found rows for
+action <b><i>Select</i></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of marked cells or rows
+for action <b><i>Mark</i></b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For action <b><i>Filter</i></b>
+it is empty string, to get the result use <b>FilterCount</b> variable.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For no action or action <b><i>Find</i></b>
+it is null.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Search></a><a name=Group><b><span style='font-size:20.0pt'>User
+interface to choose search</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>User interface for search is
+shown by <b>solid</b> <b>space</b> &lt;<b><span style='color:red'>Search</span></b>&gt;
+row. &lt;Solid&gt;&lt;Search ... /&gt;&lt;/Solid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This row is not divided to
+any section and is never scrolled. It can contain any cells like <a
+href="RowSpace.htm">Space</a> row, but the cells named as listed below have
+special functions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>To more customize searching
+and advanced filters in grid you can define all the user interface by <a
+href="RowSpace.htm">Space</a> row cells instead of Search. See <a
+href="../Tutorials/Expert%20tutorial.html#9">this tutorial</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be placed in <span
+style='color:red'>&lt;</span><b><span style='color:blue'>Solid</span></b><span
+style='color:red'>&gt;</span> tag. The position in grid is set by its <a
+href="#SearchSpace">Space</a> attribute. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>
+[] </span><a name=SearchCells><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>Cells</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“Expression”]                                                                                                             <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Search row can have these
+predefined cells, the cells can have standard cell and space row cell
+attributes, like Width or Tip. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;color:blue'>Expression</span></b><span
+style='font-size:10.0pt'>  The expression to search for or advanced filter
+formula, standard input cell type Text. Its <a href="#SearchExpressionAction">Action</a>
+attribute can have special values.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;color:blue'>Filter</span></b>,
+<b><span style='font-size:14.0pt;color:blue'>Select</span></b>, <b><span
+style='font-size:14.0pt;color:blue'>Mark</span></b>, <b><span style='font-size:
+14.0pt;color:blue'>Find</span></b>, <b><span style='font-size:14.0pt;
+color:blue'>Clear</span></b>, <b><span style='font-size:14.0pt'>Help</span></b><span
+style='font-size:10.0pt'>          Buttons to do standard <a
+href="#CfgSearchAction">search action</a>. <b>Clear</b> restores original
+state, <b>Help</b> shows help message.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Actions</span></b><span
+style='font-size:10.0pt'>           Select box with standard search actions to
+select one that will be run by <b>Search</b> button or after <b>Expression</b>
+changes and its action is set to Actions.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                                Its
+<a href="#SearchExpressionAction">Action</a> attribute can have special value
+“Refresh” to repeat search in grid after another value is selected.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Search</span></b><span
+style='font-size:10.0pt'>             Button to do <a href="#CfgSearchAction">search
+action</a> selected by <b>Actions</b> combo, if not defined the cell <b>Actions</b>,
+just by <b>Actions</b> attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                               <i>Since
+7.0</i> it can be used also to define more actions for Actions at once, like
+Actions=”Filter,Mark” to filter the rows and mark the found cells.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;color:blue'>List</span></b><span
+style='font-size:10.0pt'>                     Select box with predefined values
+for <a href="#SearchExpresssion">SearchExpression</a>. To let user just select
+predefined filter or search instead of building his own. </span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>You have to set the cell <b>Expressions</b> and <b>Defaults</b>
+attributes.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Cols</span></b><span
+style='font-size:10.0pt'>                   Select box to select which columns
+will be searched through. If not present, all columns are searched.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>You have to set <a href="#SearchColsCols">Cols</a> and
+<a href="#SearchColsDefaults">Defaults</a> attributes and optionally <a
+href="#SearchCellLabel">Label</a> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Defs</span></b><span
+style='font-size:10.0pt'>                   Select box to select which rows
+(according to their <b>Def</b> attribute) will be searched through. If not
+present, all rows are searched.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>You have to set <a href="#SearchDefsDefs">Defs</a> and
+<a href="#SearchDefsDefaults">Defaults</a> attributes and optionally <a
+href="#SearchCellLabel">Label</a> attribute.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Case</span></b><span
+style='font-size:10.0pt'>                  Check box to choose case sensitive
+(1) or case insensitive (0) search. Sets <a href="#CfgSearchCaseSensitive">SearchCaseSensitive</a>.
+Has optional attribute <a href="#SearchCellLabel">Label</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt'>Type</span></b><span
+style='font-size:10.0pt'>                 Check box to choose to search in rows
+(0) or in individual cells. Sets <a href="#CfgSearchCells">SearchCells</a>. Has
+optional attribute <a href="#SearchCellLabel">Label</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string    </i></span><a
+name=SearchExpressionAction><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ExpressionAction</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> [“Filter”/...]                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search action done after the
+Expression cell value changed, can be <b>Filter</b>, <b>Select</b>, <b>Mark</b>,
+<b>Find</b>, <b>Actions</b>, <b>Refresh</b> or <b>Last</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <b>Actions</b> value if
+cell <b>Actions</b> is included in <a href="#SearchCells">Cells</a>. Use <b>Last</b>
+to run the last action previously done. Use <b>Refresh</b> to redo the actual
+action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use empty string to not do
+any action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Default value is Filter if no
+button and Actions cell is defined or Actions or the first button’s action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string    </i></span><a
+name=SearchActionsAction><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ActionsAction</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [“Refresh”
+/ “&quot;]                                                                                                  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search action done after the
+Actions select box is changed, can be <b>Refresh</b> or empty string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <b>Refresh</b> – repeats
+search with the selected action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The default value is <b>Refresh</b>
+if no <b>Search</b> cell is defined, otherwise empty string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[*]
+</span><a name=SearchListDefaults><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>ListDefaults</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of item names to display in <b>List</b> cell. The same as button type <b>Defaults</b>
+list.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[*]
+</span><a name=SearchListExpressions><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>ListExpressions</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of predefined expressions that will be assigned to <a
+href="#SearchExpresssion">SearchExpression</a> after specific item in <a
+href="#SearchListDefaults">ListDefaults</a> will be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string    </i></span><a
+name=SearchListAction><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>ListAction</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Search action done after the
+list item is chosen, can be <b>Filter</b>, <b>Select</b>, <b>Mark</b>, <b>Find</b>,
+<b>Actions</b>, <b>Refresh</b> or <b>Last</b>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use <b>Actions</b> value if
+cell <b>Actions</b> is included in <a href="#SearchCells">Cells</a>. Use <b>Last</b>
+to run the last action previously done. Use <b>Refresh</b> to redo the actual
+action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use empty string to not do
+any action.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[*]
+</span><a name=SearchColsDefaults><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>ColsDefaults</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                     .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of item names to display in <b>Cols</b> cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[<b>*</b>]
+</span><a name=SearchColsCols><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>ColsCols</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of column names that will be assigned to <a href="#CfgSearchCols">SearchCols</a>
+after specific item in <a href="#SearchColsDefaults">ColsDefaults</a> will be
+selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It should contain actual <a
+href="#CfgSearchCols">SearchCols</a> value to provide correct formula.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[*]
+</span><a name=SearchDefsDefaults><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>DefsDefaults</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of item names to display in <b>Defs</b> cell.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>string</i>[*]
+</span><a name=SearchDefsDefs><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>DefsDefs</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First character separated
+array of <a href="RowDefaults.htm#DName">default</a> row names that will be
+assigned to <a href="#CfgSearchDefs">SearchDefs</a> after specific item in <a
+href="#CfgDefsDefaults">DefsDefaults</a> will be selected.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int        </i></span><a
+name=SearchSpace><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Space</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Position of the row in grid,
+specifies horizontal section of the grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If more solid rows has the
+same Space value, are placed in the order they are in data</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>-1</span></b><span
+style='font-size:10.0pt'> – above grid, <b>0</b> – above header, <b>1 </b>–
+under head rows, <b>2</b> – above foot rows, <b>3</b> – under foot rows, <b>4</b>
+– under vertical scrollbar, <b>5</b> – under grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>-1, 0, 4, 5 are spanned for
+whole grid, including vertical scrollbar and pager, 1, 2, 3  are spanned only
+for columns.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         <i>int        </i></span><a
+name=SearchPanel><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>Panel</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>        [1]                                                                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row displays left side
+panel, to show icon for enabling / disabling searching. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>1</b>, the panel
+is displayed only if the grid left side panel is displayed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set to <b>2</b>, the panel
+is displayed always.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>string    </i></span><a
+name=SearchCellLabel></a><a name=SearchLabel><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Label</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>HTML label displayed in front
+of the cell. For example ColsLabel=’Select columns:’ adds the label in front of
+the cell Cols.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;Search cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  <i>int        </i></span><a
+name=SearchCellLeft></a><a name=SearchLeft><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:yellow'>Left</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                                                                                           .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Left indent of any cell, in
+pixels.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Actions><b><span style='font-size:20.0pt'>Search actions
+and API</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSearchOn></a><a name=SearchOn><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SearchOn</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Attached
+to event <b>OnClickPanelSearched</b>                                                       .</span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif"'>           </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Enables searching in grid and
+re-searches it according to actual settings. It fails if searching already
+enabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>&lt;Actions&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:lime'>                    </span><a
+name=ActionsSearchOff></a><a name=SearchOff><b><u><span style='font-size:16.0pt;
+font-family:"Arial","sans-serif";background:lime'>SearchOff</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>                      Attached
+to event <b>OnClickPanelSearched</b>                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Disables searching in grid
+and clear search. It does not clear actual search settings. It fails if searching
+already disabled.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>bool      </i></span><a
+name=OnSearch><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSearch</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TGrid</i>
+<b>grid</b>, <i>string </i><b>Action</b>, <i>bool</i> <b>Show</b>)                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when searching in grid
+starts after user action. Return true to suppress default searching. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Action can be Filter, Select,
+Mark, Find, Clear, Help, Refresh.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>void      </i></span><a
+name=OnSearchFinish><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnSearchFinish</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>     (<i>TGrid</i>
+<b>grid</b>, <i>string</i> <b>Action</b>, <i>bool</i> <b>Show</b>)                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called after search in grid
+finished, all changes are already visible.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API event</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>         <i>int        </i></span><a
+name=OnRowSearch><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>OnRowSearch</span></u></b></a><b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span></b><b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          </span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>(<i>TGrid</i>
+<b>grid</b>, <i>TRow</i> <b>row</b>, <i>string</i> <b>col</b>, <i>bool</i> <b>found</b>,
+<i>function</i> <b>func</b>, <i>type</i> <b>userdata</b>)  .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Called when searching in <b>row</b>.
+</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>col</span></b><span
+style='font-size:10.0pt'> is column cell when is searching if set searching in
+cells – <a href="#CfgSearchCells">SearchCells</a> = <b>1</b>, otherwise it is
+null</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>found</span></b><span
+style='font-size:10.0pt'> is the search result. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It must return new <b>found</b>
+value. <b>1</b> – found, <b>0</b> – not found, <b>-1</b> not applicable (it
+will not be selected but also not be hidden by filter)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <b>col</b> (searching
+in cells), the OnRowSearch can also return column name as the cell found.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>func</span></b><span
+style='font-size:10.0pt'> is caller function for searching row that resulted <b>found</b>.
+it has prototype func (<i>TRow</i> row, string col,  <i>type</i> userdata)</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>func</span></b><span
+style='font-size:10.0pt'> returns <b>-1</b> if cannot search, <b>0</b> if not
+found or <b>1</b> if found when searching in row or <i>column name</i> if found
+when searching in cells</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>func</b> and <b>userdata</b>
+parameters can be used for searching in other rows than the actual. Remember
+from the <b>func</b> is called the OnRowSearch event</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>userdata</span></b><span
+style='font-size:10.0pt'> is null in default call, use it to mark custom
+calling to avoid recursion cycle. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example using <b>func</b> and
+<b>userdata</b>:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New"'>Grids.OnRowSearch
+= function (G,row,col,found,F,type){</span><span style='font-size:10.0pt'>             //
+This function searches in children to mark/unmark parent row</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>if(type) return found;                               </span><span
+style='font-size:10.0pt'>// to avoid recursion cycle</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>if(!row.firstChild) return -1</span><span
+style='font-size:10.0pt'>;                                                              //
+not applicable for children</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>for (var r=row.firstChild;r;r=r.nextSibling)
+if(F(r,col,1)&gt;0) return 1;</span></p>
+
+<p class=MsoNormal style='margin-left:247.8pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>// Searches in children, if at least one found, parent
+is marked as found</span></p>
+
+<p class=MsoNormal style='text-indent:35.4pt'><span style='font-size:10.0pt;
+font-family:"Courier New"'>return 0; }</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=SearchRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>SearchRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>string</i>
+<b>action</b>, <i>bool</i> <b>noshow</b>)                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calls <a href="#DoSearch">DoSearch</a>
+asynchronously, for server paging it reloads grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>void      </i></span><a
+name=DoSearch><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>DoSearch</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>          (<i>string</i>
+<b>action</b>, <i>bool</i> <b>noshow</b>)                                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Runs specified searching
+action in grid. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>action</span></b><span
+style='font-size:10.0pt'> can be standard search action “<b>Filter</b>”, “<b>Select</b>”,
+“<b>Mark</b>”, “<b>Find</b>” or can be </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>“<b>Refresh</b>” – runs
+actual action (<a href="#CfgSearchAction">SearchAction</a>) again. ”<b>Clear</b>”
+– clears actual action and restores original state. “<b>Help</b>” – shows help</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

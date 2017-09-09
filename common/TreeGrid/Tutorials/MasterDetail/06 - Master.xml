@@ -1,0 +1,83 @@
+<Grid>
+   <Cfg id='MasterTree' DetailOn='1' DetailExpand='1' SuppressCfg='1' MainCol='SURNAME' StandardFilter='2'/>
+   <Cols>
+      <C Name='SURNAME' Type='Text' GroupWidth='1' Width='150'/>
+      <C Name='NAME' Type='Text'/>
+      <C Name='AGE' Type='Int'/>
+      <C Name='MARRIED' Type='Bool'/>
+   </Cols>
+   <Panel Copy='1'/>
+   <Def>
+      <!-- The default row for all master rows automatically defines also all detail children and copies the values from master rows -->
+      <D Name='MAIN' Detail='DetailTree' Expanded='1' CanExpand='1' AddDefChildren='2'
+         NAMECopyTo='Child_0,V1'
+         SURNAMECopyTo='Child_0,V2'
+         AGECopyTo='Child_1,V'
+         MARRIEDCopyTo='Child_2,V'
+         CDef='MAIN'
+         >
+         <I Def='DetailName' N='Name' V1CopyTo='Parent,NAME,Child_0,V' V2CopyTo='Parent,SURNAME,Child_1,V' Calculated='1' CalcOrder='V' VFormula='Row.V1+" "+Row.V2'/>
+         <I Def='Detail' N='Age' VType='Int' VAlign='Left' VCopyTo='Parent,AGE'/>
+         <I Def='Detail' N='Married' VType='Bool' VAlign='Left' VCopyTo='Parent,MARRIED'/>
+      </D>
+      <D Name='Detail' Visible='0' CanFilter='0'/>
+      <D Name='DetailName' Visible='0' CanFilter='0'>
+         <I Def='Detail' N='FirstName' VCopyTo='Parent,V1'/>
+         <I Def='Detail' N='Surname' VCopyTo='Parent,V2'/>
+      </D>
+      <D Name='Group' AggChildren='1' Expanded='1' CanFilter='2'/>
+   </Def>
+   <Root CDef='MAIN'/>
+   <Header NAME='First name'/>
+   <Head>
+      <Filter
+         NAMECanEdit='0' NAMEShowMenu='0' NAMEButton='Defaults' NAMEDefaults='|*FilterOff|*RowsDefMAIN' NAMERange='1'
+         SURNAMECanEdit='0' SURNAMEShowMenu='0' SURNAMEButton='Defaults' SURNAMEDefaults='|*FilterOff|*RowsDefMAIN' SURNAMERange='1'
+         />
+   </Head>
+   <Foot>
+      <I Calculated='1'
+         NAME='Summary' NAMECanEdit='0'
+         SURNAMECanEdit='0'
+         AGEFormula='min()+" - "+max()' AGEType='Text' AGEAlign='Right'
+         MARRIEDFormula='count("MARRIED","MARRIED")+" / "+count()' MARRIEDType='Text' MARRIEDAlign='center'
+         />
+   </Foot>
+   <Solid>
+      <Toolbar1 Cells='SHOW,GROUP'
+         SHOWType='Select' SHOWLabel='Show detail on' SHOWWidth='80'
+         SHOWDefaults='|Focus|Click|Double click' SHOW='Focus'
+         SHOWOnChange='Grid.DetailOn = Grid.GetDefaultsIndex(Row,Col,Value) + 1'
+
+         GROUPType='Bool' GROUPLabelRight='Group rows by Surname' 
+         GROUPOnChange='Grid.DoGrouping(Value?"SURNAME":"")'        
+         />
+   </Solid>
+   <Actions OnClickButtonAdd='AddRowEnd'/>
+   <Toolbar Sort='0' Calc='0' Help='0' Debug='0' Styles='2' Kind='Toolbar2'/>
+   <Body>
+      <B>
+         <I NAME='James' SURNAME='Jackson' AGE='24' MARRIED='0'/>
+         <I NAME='Daniel' SURNAME='Moore' AGE='38' MARRIED='1'>
+            <I NAME='Lisa' SURNAME='Moore' AGE='12' MARRIED='0'/>
+            <I NAME='Peter' SURNAME='Moore' AGE='10' MARRIED='0'/>
+         </I>
+         <I NAME='Nancy' SURNAME='Allen' AGE='65' MARRIED='1'>
+            <I NAME='John' SURNAME='Allen' AGE='42' MARRIED='1'>
+               <I NAME='John' SURNAME='Allen' AGE='22' MARRIED='0'>
+                  <I NAME='John' SURNAME='Allen' AGE='1' MARRIED='0'/>
+                  <I Def='R' NAME='???' SURNAME='Allen' AGE='0' MARRIED='0'/>
+               </I>
+               <I NAME='Maria' SURNAME='Robbins' AGE='22' MARRIED='1'>
+                  <I NAME='Nancy' SURNAME='Robbins' AGE='3' MARRIED='0'/>
+                  <I NAME='Herbert' SURNAME='Robbins' AGE='3' MARRIED='0'/>
+               </I>
+            </I>
+            <I NAME='Maria' SURNAME='Allen' AGE='45' MARRIED='0'/>
+         </I>
+         <I NAME='Benjamin' SURNAME='Jackson' AGE='33' MARRIED='1'>
+            <I NAME='Oscar' SURNAME='Jackson' AGE='10' MARRIED='0'/>
+         </I>
+      </B>
+   </Body>
+</Grid>

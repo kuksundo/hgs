@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<codetemplate	xmlns="http://schemas.borland.com/Delphi/2005/codetemplates"
+				version="1.0.0">
+	<template name="dzSortedObjList" invoke="none">
+		<description>
+			create a new sorted object list
+		</description>
+		<author>
+			twm
+		</author>
+                <point name="listtype">
+                  <text>
+                    TMyList
+                  </text>
+                  <hint>
+                    Name of the list class itself
+                  </hint>
+                </point>
+                <point name="itemtype">
+                  <text>
+                    TMyObject
+                  </text>
+                  <hint>
+                    The item type to be stored in the list (descendant of TObject)
+                  </hint>
+                </point>
+                <point name="keytype">
+                  <text>
+                    Integer
+                  </text>
+                  <hint>
+                    The type of the sorting key for the items
+                  </hint>
+                </point>
+		<code language="Delphi" delimiter="|">
+                <![CDATA[
+uses
+  Classes,
+  u_dzQuicksort;
+
+{$DEFINE __DZ_SORTED_OBJECT_LIST_TEMPLATE__}
+type
+  _LIST_ANCESTOR_ = TObject;
+  _ITEM_TYPE_ = |itemtype|;
+  _KEY_TYPE_ = |keytype|;
+{$INCLUDE 't_dzSortedObjectListTemplate.tpl'}
+
+type
+  {: List for storing |itemtype| items sorted by |keytype| }
+  |listtype| = class(_DZ_SORTED_OBJECT_LIST_TEMPLATE_)
+  protected
+    {: return the key of an item for comparison }
+    function KeyOf(const _Item: |itemtype|): |keytype|; override;
+    {: compare the keys of two items, must return a value
+       < 0 if Key1 < Key2, = 0 if Key1 = Key2 and > 0 if Key1 > Key2 }
+    function Compare(const _Key1, _Key2: |keytype|): integer; override;
+  end;
+
+implementation
+
+{$INCLUDE 't_dzSortedObjectListTemplate.tpl'}
+
+function |listtype|.KeyOf(const _Item: |itemtype|): |keytype|;
+begin
+  { TODO : return the key of an item for comparison }
+  Result := _Item.|end|
+end;
+
+function |listtype|.Compare(const _Key1, _Key2: |keytype|): integer;
+begin
+  { TODO : compare the keys of two items, must return a value
+           < 0 if Key1 < Key2, = 0 if Key1 = Key2 and > 0 if Key1 > Key2 }
+
+end;
+
+]]>
+		</code>
+	</template>
+</codetemplate>

@@ -1,0 +1,152 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+
+      /* Custom icon for MilestoneClass "RedGif" */
+      .GMGanttRedGifMilestone { background:url(Red.gif) no-repeat; }
+      .GMGanttRedGifMilestoneHover { background:url(RedHover.gif) no-repeat; }
+   </style>
+   <script>
+   var BIE5 = navigator.appName.search("Microsoft")>=0 && document.compatMode!="CSS1Compat" && document.documentMode<10; // IE5 quirks mode
+   // ------------------------------------------------------------------------------------
+   // Returns custom Main bar content, only for row 19
+   Grids.OnGetGanttHtml = function(G,row,col,width,comp,crit,plan,idx,txt){
+   if(row.id==19) {
+      var main = G.GetGanttMain(row,col);
+      return "<div style='background:#FAA; float:left; font-size:20px;line-height:20px;'>"+(idx+1)+"</div><div style='height:22px;'>"
+         + "<div style=\"background:green;color:white;padding:1px;"+(BIE5?"overflow:hidden;width:100%;":"")+"\">&nbsp;"+DateToString(main[idx][0]-0,"dddddd")+" - "+DateToString(main[idx][1]-0,"dddddd")+"</div>"
+         + "<div style=\"background:blue;color:white;padding:1px;"+(BIE5?"overflow:hidden;width:100%;":"")+"\">&nbsp;"+G.DiffGanttDate(main[idx][1],main[idx][0],'d')+" days </div>"
+         + "</div>";
+      }
+   return txt; // All other rows
+   }
+   // ------------------------------------------------------------------------------------
+   </script>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#GanttMainBar"><b>Gantt Main bar</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>2. Main bar parts</center>
+   <center style='font:bold italic;'>Discrete main bar with more milestones</center>
+   <div style='margin-bottom:6px;'><a href='02 - Main bar parts.xml'>02 - <h2>Main bar parts</h2>.xml</a></div>
+   <div style='width:960px; height:250px;'>
+      <bdo Debug='check' Data_Url='02 - Main bar parts.xml'></bdo>
+   </div>
+   <ul>
+      <li>
+         There are five tutorials for Gantt task types and features:
+         <ul>
+            <li><a href='01 - Main bar.html'>1. Simple Main bar and Milestone</a> - Continuous bar or one milestone</li>
+            <li>2. Main bar parts - Discrete main bar with more milestones</li>
+            <li><a href='03 - Main bar plans.html'>3. Main bar plans</a> - More independent main bars or milestones in one row</li>
+            <li><a href='../GanttRunBar/06 - Run bar as task.html'>6. Run bar as task</a> - Complex and extended Gantt task from individual parts</li>
+            <li><a href='../GanttRunBar/07 - Run box as task.html'>7. Run box as task</a> - Every Run box as independent Gantt task</li>
+         </ul>
+      </li>
+      <li>See documentation for <b><a href="../../Doc/GanttMain.htm">Main bar</a></b></li>
+      <li>
+         The discrete main bar is defined by <h3>GanttParts</h3> attribute, as one or more date ranges like "1/1/2010~1/3/2010;1/8/2010~1/12/2010".<br />
+         It is also possible to define the attributes <b>GanttStart</b>, <b>GanttEnd</b> and <b>GanttDuration</b>, their values will be calculated from the <b>GanttParts</b>.<br />
+      </li>
+      <li>
+         If set <b>GanttLastUnit</b>, the set end date is increased by this one unit (usually 'd' as day), the second date in every range in GanttParts and the GanttEnd means the last unit in this case.<br />
+      </li>
+      <li>
+         The individual parts of the discrete main bar cannot be individually identified, after move or resize they are automatically joined and sorted. 
+         To have individually identified parts use <b>GanttRun</b> instead, see <a href='04 - Main bar by Run.html'>4. Main bar by Run</a>.<br />
+         When moving one main bar part on another, they are automatically <h4>joined</h4>. To not join them set <b>GanttJoin</b> attribute to 0 or -1.<br />
+         If you want to overlay the boxes with some text on them, you can set <b>GanttTextOverlay='1'</b> to show only one text at one place.
+      </li>
+      <li>
+         To support dependencies, resources, manual start, percentage completion and disabled / locked state there must be set <h3>GanttTask</h3> to the main bar plan like "<b>Main</b>", "<b>Main1</b>", "<b>Main2</b>", ... or for all plans as "<b>All</b>". 
+         Default setting is GanttTask="Main" = only the first main bar plan supports the task features.<br />
+         <b><i>Dependencies are always attached to the whole task - only to start of the first part and / or to end of the last part.</i></b><i> To attach dependencies or resources to individual boxes, use <b>GanttRun</b> instead.</i>
+      </li>
+      <li>
+         <h4>Milestone</h4> is created as a range with only start or end defined, like "1/10/2010~" as start milestone or "~1/1/2010" as end milestone.<br />
+         Don't confuse with range defined only by one date like "1/10/2010" - it means one day bar.<br />
+         There is difference between start milestone and end milestone. The end milestone is affected by GanttLastUnit
+         and also if the milestone is set within excluded range, the end milestone is shown before the range and start milestone after the range.<br />
+         The milestone has only two states: complete (GanttComplete=100) and incomplete.<br />
+         There can be more milestones or bars and milestones together in one main bar, but for the Gantt calculation it has no effect.<br />
+      </li>
+      <li>
+         Main bar <h4>content</h4> is defined by <h3>GanttHtml</h3> attribute. Main bar can show any text or html code. Milestone cannot show any content.<br />
+         The content is for all the parts the same, but it can show the part specific index or start date, end date or duration.
+         The discrete main bar usually does <b>not</b> show user text defined by <b>GanttText</b> attribute, because it would be shown in every part.<br />
+         The main bar content can be generated also dynamically for every part different by <b>OnGetGanttHtml</b> API event.<br />
+      </li>
+      <li>
+         Main bar <h4>side text</h4>. Main bar can show two side texts or any HTML content. The side texts are defined by <h3>GanttHtmlLeft</h3> and <h3>GanttHtmlRight</h3>.<br />
+         The texts horizontal position is controlled by <b>GanttHtmlLeftEdge</b> and <b>GanttHtmlRightEdge</b>, the available positions are before, inside left, centered, inside right and after.<br />
+         Vertical position is set by <b>GanttHtmlShift</b>. It is also possible to generate the side texts by API event <b>OnGetGanttSideHtml</b> to achieve any count and positions of the main bar side content.<br />
+         By the API event create especially different content for individual parts.<br />
+      </li>
+      <li>
+         Main bar <h4>tooltip</h4> is defined by <h3>GanttTip</h3>. Milestone tooltip is defined by <b>GanttMilestoneTip</b>. The tip can show any text or html code.<br />
+         The tip is for all the parts the same, but it can show the part specific index or start date, end date or duration.
+         By default the main bar tooltip shows user text defined by <h3>GanttText</h3> attribute.<br />
+         The main bar and milestone tooltip can be generated also dynamically for every part different by <b>OnGanttTip</b> API event.<br />
+      </li>
+      <li>
+         Task <h4>percentage completion</h4> is set by <h3>GanttComplete</h3> attribute in range 0 - 100.<br /> 
+         The task completion is set and calculated for the whole task, not for the individual parts.<br />
+         The completion state is shown only if the main bar plan is included in <b>GanttTask</b>, see above.<br />
+         If used calendar / excluded dates, the percentage completion can be shown preciselly for the excluded dates if set <b>GanttExcludeComplete</b>.<br />
+         To round the percentage completion to some units (GanttUnits or GanttDataUnits) when is set by click to bar use <b>GanttRoundComplete</b>.
+      </li>
+      <li>
+         Task can be <h4>disabled</h4> or <h4>locked</h4>. The state is set by <h3>GanttDisabled</h3> attribute or column.<br />
+         Only the whole task can be disabled or locked, not the individual parts.
+         The disabled / locked state is used only if the main bar plan is included in <b>GanttTask</b>, see above.<br />
+         Disabled task cannot be changed and is also ignore in all calculations. Locked tasks cannot be changed.<br />
+         It is possible to permit changing the disabled/locked tasks manually by a user by <b>GanttEditDisabled</b>='1'.<br />
+         To have not editable task, remove the main bar plan from <b>GanttEdit</b> and also set <b>CanEdit='0'</b> to all the source cells.<br />
+      </li>
+      <li>
+         <h4>Dependencies</h4> are attached always for the whole main bar not to individual parts. Normally by <h3>GanttDescendants</h3> or by <h3>GanttAncestors</h3>.<br />
+         To the first part are attached start dependencies, to the last part are attached finish dependencies.<br />
+         If the GanttTask contains only one main bar plan and also no run/box, the main bar need not be identified for dependency and the row id is enough, e.g. GanttDescendants = "R1" or "R2#11;R3"<br />
+         If the are more flags in GanttTask, the main bar is identified by its plan number, 0 for the first one, e.g. GanttDescendants="0@R1" or "1,1@R2#11;0,1@R3"<br />
+         See documentation for <a href="../../Doc/GanttCompute.htm#Dependencies">Defining dependencies</a>.
+      </li>
+      <li>
+         <h4>Manual start</h4> for correcting dependencies is set by <h3>GanttManual</h3>. <br />
+         It is permitted / controlled by attributes <b>GanttManualChange</b> and <b>GanttManualSide</b>.<br />
+      </li>
+      <li>
+         <h4>Resources</h4> are attached by <b>GanttResources</b>.<br />
+         See documentation for <a href="../../Doc/GanttResources.htm#Assign">Resources assign</a>.
+      </li>
+      <li>
+         Main bar <h4>style</h4> can be controlled by <h3>GanttClass</h3> attribute. For side texts by <b>GanttHtmlLeftClass</b> and <b>GanttHtmlRightClass</b>.<br />
+         For milestones can be set special class by <b>GanttMilestoneClass</b>. The milestone class specifies predefined or custom icon for milestone.<br />
+         There are predefined 17 standards colored bars and 10 colored milestones.
+      </li>
+      <li>
+         The main bar can show <h4>side icons</h4> on one or both its sides just for visual effect, set by <b>GanttIcons</b>. <br />
+         The icons can be default icons for summary tasks or any custom icons defined by <b>GanttIconLeft</b> and / or <b>GanttIconRight</b>.
+         There are also special interrupt icons that can be shown between the main bar parts.<br />
+      </li>
+      <li>
+         Main bar <h4>position and height</h4>.
+         Main bar can be shifted vertically by <b>GanttTop</b> attribute.<br />
+         The height of the main bar can be set by <b>GanttHeight</b> attribute.<br />
+         All parts in one main bar have the same height and vertical position. Except the part height is updated according to the part content.
+      </li>
+      <li>
+         When <h4>moving</h4> the first part of the discrente main bar by dragging, all parts are moved. When dragging other parts, only the one part is moved. This behavior can be changed by assigning different actions to the drag events.<br />
+         When moving discrete main bar for correcting dependencies, always the whole bar moved, all the spaces between parts are preserved.<br />
+      </li>
+      <li>
+         Main bar can be controlled also from JavaScript by <h4>API</h4>, especially by methods <b>GetGanttMain</b> and <b>SetGanttMain</b> and events <b>OnGanttMainChange</b> and <b>OnGanttMainChanged</b>.
+      </li>
+   </ul>
+</body>
+</html>

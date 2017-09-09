@@ -1,0 +1,63 @@
+<html>
+   <head>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <h2 id="ExampleTitle">The first example from TreeGrid homepage</h2>
+      <div id="ExampleDescription" style="margin-bottom:5px;">
+      This examples demonstrates the most of TreeGrid features:<br />
+      Tree, sorting, grouping, filtering, searching, calculations, resizing and moving columns, row dragging, row manipulations, selecting rows,
+      fixed rows and columns, many cell types, popup default list, calendar, formatting values and many more.
+      </div>
+      <div style="WIDTH:100%;HEIGHT:650px;">
+         <bdo Layout_Url="FirstDef.xml" Data_Url="FirstData.xml"></bdo>
+      </div>
+      <script>
+// -----------------------------------------------------------------------------------------
+// Shows the year 2005 only
+Grids.OnUpdated = function(G){ G.FilterDateRange('I','1/1/2005~12/31/2005','Year',0); }
+
+// -----------------------------------------------------------------------------------------
+// Custom event for searching
+// Searches in orders with specified items
+Grids.OnRowSearch = function(G,row,col,found,F,type){
+if(type || G.SearchDefs!="") return found; // Only for "in orders with items" and default call
+if(row.Def.Name=="Data") return -1;        // Only for orders
+for(var r=row.firstChild;r;r=r.nextSibling) { 
+	var found = F(r,col,1);                 // calls F(r,col,type=1)
+	if(!(found<=0)) return found; 
+	}
+return 0;
+}
+// -----------------------------------------------------------------------------------------
+// Creates popup right click menu to manipulate the row
+Grids.OnGetMenu = function(G,row,col){
+var I = [], M = {Items:I}; 
+I[I.length] = {Name:"Del",Text:row.Deleted?"Undelete row":"Delete row"};
+I[I.length] = {Name:"Sel",Text:row.Selected?"Deselect row":"Select row"};
+I[I.length] = {Name:"Copy",Text:"Copy row"};
+if(row.firstChild) I[I.length] = {Name:"CopyTree",Text:"Copy row tree"};
+I[I.length] = {Name:"Add",Text:"Add new row"};
+if(row.firstChild) I[I.length] = {Name:"Expand",Text:row.Expanded?"Collapse children":"Expand children"};
+if(row.firstChild) I[I.length] = {Name:"Check",Text:Get(row,'X')?"Uncheck Used":"Check Used"};
+return M;
+}
+// -----------------------------------------------------------------------------------------
+// Called after selecting item in the popup right click menu
+Grids.OnContextMenu = function(G,row,col,N){
+switch(N){
+   case "Del" : G.DeleteRow(row); break;
+   case "Sel" : G.SelectRow(row); break;
+   case "Copy" : G.CopyRow(row,null,row); break;
+   case "CopyTree" : G.CopyRows([row],null,row,1); break;
+   case "Add" : G.AddRow(null,row,1); break;
+   case "Expand" : if(row.Expanded) G.Collapse(row); else G.Expand(row); break;
+   case "Check" : G.SetValue(row,"X",!Get(row,'X'),1); break;
+   }
+}
+// -----------------------------------------------------------------------------------------
+
+      </script>
+   </body>
+</html>

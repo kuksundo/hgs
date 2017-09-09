@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BA299805-AC3C-464F-95F0-168DEAA1A2D0}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\..\..\temp\ipcclient test\IPCConsumer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\temp\ipcclient test\IPCProducer.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IPCConsumer">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCConsumer.dproj"/>
+    </Target>
+    <Target Name="IPCConsumer:Clean">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCConsumer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IPCConsumer:Make">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCConsumer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IPCProducer">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCProducer.dproj"/>
+    </Target>
+    <Target Name="IPCProducer:Clean">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCProducer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IPCProducer:Make">
+        <MSBuild Projects="..\..\..\temp\ipcclient test\IPCProducer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IPCConsumer;IPCProducer"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IPCConsumer:Clean;IPCProducer:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IPCConsumer:Make;IPCProducer:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

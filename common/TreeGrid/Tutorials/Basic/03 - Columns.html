@@ -1,0 +1,98 @@
+<html>
+<head>
+   <script src="../../Grid/GridE.js"> </script>
+</head>
+<body>
+   <style>
+      b { color:Red; }
+      li { padding-bottom:8px; }
+      ul { margin-left:20px; margin-top:6px; margin-bottom:0px; font: 13px Arial; }
+      h2 { display:inline; font:bold 20px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+      h3 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:yellow; color:black; margin:0px; font-style:normal; }
+      h4 { display:inline; font:bold 15px Arial; padding-left:6px; padding-right:6px; background:#FAA; color:black; margin:0px; font-style:normal; }
+   </style>
+   <center style='font:bold 20px Arial;color:Blue;'>TreeGrid <a href="../Index.html#Basic"><b>Basic</b></a> Tutorial</center>
+   <center style='font:bold 30px Arial'>3. Columns and sections</center>
+   <center style='font:bold italic;'>Columns in three horizontal sections</center>
+   <br />
+   <div style='margin-bottom:6px;'><a href='03 - Columns.xml'>03 - <h2>Columns</h2>.xml</a></div>
+   <div style='width:950px; height:200px;'>
+      <bdo Debug='check' Data_Url='03 - Columns.xml'></bdo>
+   </div>
+   <br />
+   <ul>
+      <li>See <a href="../../Doc/ColBasics.htm">Column basics documentation</a>.</li>
+      <li><h4>Description</h4><br />
+         The column defines the name, size and position of all the cells in it. Optionally it defines the cell attributes like Type or Format for all cells in it, these attributes can be redefined in individual cells.<br />
+         The column does not define data, data are defined only in row cells.
+         The columns control only cells in Variable and Fixed rows, not in Solid rows.<br />
+         For cell types, formats and other attributes see <b><a href='../Index.html#Cells'>Cells tutorials</a></b>.
+      </li>      
+      <li>
+         There are three column sections in TreeGrid, left, middle (variable) and right.   
+      </li>
+      <li><h4>Definition</h4><br />
+         The column is defined by <h3>&lt;C></h3> tag.
+         <b>Left</b> columns are defined in <h3>&lt;LeftCols> ... &lt;/LeftCols</h3> tag, 
+         <b>Middle</b> (variable) columns are defined in <h3>&lt;Cols> ... &lt;/Cols</h3> tag,
+         <b>Right</b> columns are defined in <h3>&lt;RightCols> ... &lt;/RightCols</h3> tag,
+      </li>
+      <li><h4>Width and scroll of column sections</h4><br />
+         By default only the middle section is horizontally scrollable, the left and right sections are fixed and always visible, except there is no room for them.<br />
+         Set the sections default and minimal sizes to be all three sections scrollable and resizable (<b>&lt;Cfg LeftWidth MidWidth RightWidth/></b> and &lt;Cfg MinLeftWidth MinMidWidth MinRightWidth/>).<br />
+         See <a href="../../Doc/GridSize.htm#Widths">Widths of individual sections documentation</a>.
+      </li>   
+      <li><h4>Visibility</h4><br />
+         By default are all the defined columns visible. Set <b>&lt;C Visible='0'/></b> to not show the column.<br />
+         Columns can be shown / hidden by users in columns menu (shown by click to icon on default toolbar). Set <b>&lt;C CanHide='0'/></b> to not show the column in the menu.<br />
+         See <a href="../../Doc/ColVisibility.htm">Column visibility documentation</a>.
+      </li>
+      <li><h4>Moving</h4><br />
+         The column can be moved (dragged by mouse) inside or outside its section by dragging its caption in Header. Set <b>&lt;C CanMove/></b> to permit if and where the column can be moved.<br />
+         To move some columns together set their <b>&lt;C Group/></b> attribute to the same value. Useful especially for spanned cells.<br />
+         See <a href="../../Doc/ColPosition.htm">Column position and moving documentation</a>.
+      </li>
+      <li><h4>Width</h4><br />
+         The column width is set by <b>&lt;C Width/></b> attribute. If the Width attribute is missing, the column width is calculated to fully show the first 100 cells in the columns. The calculation can be slow if the grid has many columns.<br />
+         The column can fill the rest of the main div tag width if set <b>&lt;C RelWidth/></b> attribute.<br />
+         The column sections can be resized by dragging the section edge. Set <b>&lt;Cfg LeftCanResize RightCanResize/></b> to control if and when the sections can be resized.<br />
+         See <a href="../../Doc/GridSize.htm#Widths">Widths of individual sections documentation</a>.
+      </li>
+      <li><h4>Resizing</h4><br />
+         Column can be resized by mouse dragging the column caption edge in Header. Set <b>&lt;C CanResize='0'/></b> to restrict it.<br />
+         If the header has spanned cells, dragging the spanned cell edge resizes always the last column in the spanned range.<br />
+         See <a href="../../Doc/ColWidth.htm">Column width documentation</a>.
+      </li>
+      <li><h4>Configuration in cookies</h4><br />
+         Columns visibility, position and sizes are saved to <b>cookies</b> by default. To avoid it, set <b>&lt;Cfg SuppressCfg='1'/></b> to not save the whole grid configuration, <br />
+         or set <b>&lt;Cfg ColsLap='1'/></b> to not save any column attribute or <b>&lt;Cfg ColsPosLap='1'/></b> to not save positions or <b>&lt;C WidthLap='1'/></b> or <b>&lt;C VisibleLap='1'/></b> to not save particular column width or visibility.<br />
+         The column sections widths will not be saved if set <b>&lt;Cfg SectionWidthLap='1'/></b>.<br />
+         Only the scroll position is not saved by default, permit it by <b>&lt;Cfg ScrollLeft='0'/></b> (and/or &lt;Cfg ScrollTop='0'/>).<br />
+         See <a href="../../Doc/Cookie.htm">Configuration in cookies documentation</a>.
+      </li>
+      <li><h4>Panel</h4><br />
+         There is one predefined column named <b>Panel</b> defined by &lt;Panel> tag directly inside &lt;Grid> tag  as <b>row left panel</b> containing control buttons for individual rows.<br />
+         See <a href="../../Doc/TypePanel.htm">Panel Type documentation</a>.
+      </li>
+      <li><h4>Pager</h4><br />
+         There is special object <b>Pager</b> that can be placed on left or right grid side (chosen by <b>Left</b> attribute). It is not a column. It shows a clickable list of items. <br />
+         The pagers are defined by <h3>&lt;Pager/></h3> tag in <h3>&lt;Pagers> ... &lt;/Pagers></h3> tag. There can be more pagers in one grid.<br /> 
+         The pager can show a list of root pages in grid (<b>Type='Pages'</b>). Or date ranges for paging in Gantt (<b>Type='Gantt'</b>). Or any custom list of items defined by API (<b>Type='Custom'</b>).<br />
+         See <a href="../../Doc/Pager.htm">Pager documentation</a>.
+      </li>
+      <li><h4>API</h4><br />
+         <ul>
+            <li> <b>Access</b> (read and write) the column attributes by <b>Grid.Cols[name].attr</b> (e.g. G.Cols.Col1.CanEdit = 0;). Or use <b>GetAttribute</b> / <b>SetAttribute</b> API method. </li>
+            <li> To <b>iterate</b> all column names in grid use such loop: <b>for(var col in Grid.Cols)</b>. 
+            Or call <b>GetCols</b> API method to get the column names sorted by their position. 
+            Or use <b>GetFirstCol</b> / <b>GetNextCol</b> API methods in a loop.
+            </li>
+            <li> To <b>manipulate</b> columns use API methods like <b>AddCol</b>, <b>DelCol</b>, <b>ShowCol</b>, <b>HideCol</b>, <b>MoveCol</b>, <b>SetWidth</b> (resize). </li>
+            <li> See <a href="../../Doc/ColAPI.htm">Column API documentation</a>.</li>
+         </ul>
+
+
+      </li>
+   </ul>
+</body>
+</html>

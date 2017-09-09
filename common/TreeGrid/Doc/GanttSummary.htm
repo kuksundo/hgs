@@ -1,0 +1,994 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Gantt chart</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.apple-style-span
+	{mso-style-name:apple-style-span;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Gantt summary tasks</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=MainMain><b><span style='font-size:20.0pt'>Main bar as summary
+of child Main bars</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Summary tasks are group of
+tasks and their start, end and duration is summary of its children. Summary bar
+can be continuous or discrete, see <a href="#ganttparts">ganttparts</a> and <a
+href="#sumparts">sumparts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define the summary task as
+default row <a href="RowDefaults.htm">&lt;D&gt;</a> tag with attributes set for
+the summary task and assign this default by Def attribute, base summary definition
+can be:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;D <b>Name</b>=&quot;<i>Summary</i>&quot;
+<b>Calculated</b>=&quot;1&quot; <b><i>Start</i>Formula</b>=&quot;ganttstart()&quot;
+<b><i>End</i>Formula</b>=&quot;ganttend()&quot; <b><i>Duration</i>Formula</b>=&quot;ganttduration()&quot;
+<b><i>Parts</i>Formula</b>=&quot;ganttparts()&quot; <b><i>Complete</i>Formula</b>=&quot;ganttpercent()&quot;
+/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>where <i>Start</i>, <i>End,</i>
+<i>Duration, Parts</i> and <i>Complete</i> are names of the five Gantt source columns.
+If some of the columns is not defined, the Formula should be omitted. <i>Summary</i>
+is custom name of this default row.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;Cfg
+MainCol=&quot;S&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;Cols&gt;  &lt;C
+Name=&quot;S&quot; Type=&quot;Date&quot;/&gt; &lt;C Name=&quot;E&quot;
+Type=&quot;Date&quot;/&gt;  &lt;C Name=&quot;D&quot; Type=&quot;Int&quot;/&gt;  &lt;C
+Name=&quot;P&quot; Type=&quot;Date&quot; Range=&quot;1&quot;/&gt;  &lt;C
+Name=&quot;C&quot; Type=&quot;Float&quot;/&gt;  &lt;/Cols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;RightCols&gt;  &lt;C
+Name=&quot;G&quot; Type=&quot;Gantt&quot; GanttStart=&quot;S&quot;
+GanttEnd=&quot;E&quot; GanttDuration=&quot;D&quot; GanttParts=&quot;P&quot;
+GanttComplete=&quot;C&quot;/&gt; &lt;/RightCols&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;Def&gt;  &lt;D
+Name=&quot;Sum&quot; Calculated=&quot;1&quot; SFormula=&quot;ganttstart()&quot;
+EFormula=&quot;ganttend()&quot; DFormula=&quot;ganttduration()&quot;
+PFormula=&quot;ganttparts()&quot; CFormula=&quot;ganttpercent()&quot; /&gt; &lt;/Def&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>   &lt;Body&gt;  &lt;B&gt;  &lt;I
+Def=&quot;Sum&quot;&gt; &lt;I S=&quot;1/1/2000&quot; E=&quot;1/10/2000&quot;
+C=&quot;100&quot;/&gt;  &lt;I S=&quot;1/11/2000&quot; D=&quot;5&quot;
+C=&quot;30&quot;/&gt;  &lt;I
+P=&quot;1/16/2000~1/18/2000;1/20/2000~1/25/2000&quot; C=&quot;0&quot;/&gt;  &lt;/I&gt;
+ &lt;/B&gt;  &lt;/Body&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;/Grid&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can set different class
+for the summary bars by <b>GanttClass</b> attribute, for example &lt;D ... <b><i>xxx</i>GanttClass</b>=”Group”
+<b><i>xxx</i>GanttIcons</b>=”1”/&gt;, the <b>Group</b> is CSS class designed
+for the summary tasks, <b>xxx</b> is actual Gantt column name in the grid. The <b>GanttIcons</b>
+show the side icons designed for summary tasks.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The summary tasks are usually
+expected to be not editable and not movable, for this behavior set &lt;D ... <b><i>xxx</i>GanttEdit</b>=””
+<b>CanEdit</b>=”0”/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttpercent><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttpercent</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>ganttcol</b>, <i>string</i> <b>weightcol</b>, <i>int</i> <b>round</b>, <i>int</i>
+<b>plan</b> = null)       <span style='color:red'>chg <b>6.3</b>; </span><span
+style='color:#002060'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary percent of
+all child rows for its date ranges</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>weightcol</span></b><span
+style='font-size:10.0pt'> – column with exact weight factors for the tasks, if
+not set, the weight is computed from the task duration.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>round</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.3) </i>to how many decimal places will be
+the result rounded, by default it is <u>not</u> rounded at all</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>main bar plan, 0 is the first
+plan (GanttStart), 1 the second plan (GanttStart1) and so on. If <b>plan</b> is
+null, it is calculated from the cell where the formula is used, if it is not
+possible it is used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;I Calculated=’1’
+CalcOrder=”Complete” CompleteFormula=”ganttpercent()”/&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it can be used also to calculate percentage of
+summary of <b>Run</b> tasks with GanttRunComplete set.<i> It calculates <b>Run</b>
+only if child row does <u>not</u> define GanttComplete.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=ganttstart><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttstart</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>ganttcol</b>, <i>int</i> <b>plan</b> = null)                                                <span
+style='color:red'>new <b>7.0</b>; </span><span style='color:#002060'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary (minimal)
+start of main bars in all child rows. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>main bar plan, 0 is the first
+plan (GanttStart), 1 the second plan (GanttStart1) and so on. If <b>plan</b> is
+null, it is calculated from the cell where the formula is used, if it is not
+possible it is used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=ganttend><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttend</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            (<i>string</i>
+<b>ganttcol</b>, <i>int</i> <b>plan</b> = null)                                                <span
+style='color:red'>new <b>7.0</b>; </span><span style='color:#002060'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary (maximal)
+end of main bars in all child rows. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>main bar plan, 0 is the first
+plan (GanttStart), 1 the second plan (GanttStart1) and so on. If <b>plan</b> is
+null, it is calculated from the cell where the formula is used, if it is not
+possible it is used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttduration><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttduration</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>            (<i>string</i>
+<b>ganttcol</b>, <i>int</i> <b>plan</b> = null)                                    <span
+style='color:red'>chg <b>6.3</b>; </span><span style='color:#002060'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary duration
+of main bars in all child rows. It simply returns ganttend() - ganttstart() in <a
+href="file:///S:\Doc\GanttCompute.htm#CGanttDataUnits">GanttDataUnits</a>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>main bar plan, 0 is the first
+plan (GanttStart), 1 the second plan (GanttStart1) and so on. If <b>plan</b> is
+null, it is calculated from the cell where the formula is used, if it is not
+possible it is used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><a
+name=ganttparts><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttparts</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>        (<i>string</i>
+<b>ganttcol</b>, <i>int</i> <b>plan</b> = null)                                                            <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculated summary GanttParts
+of main bars in all child rows. It simply returns ganttstart() +&quot;~&quot;+
+ganttendt().</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - main bar plan, 0 is the first plan (GanttStart), 1
+the second plan (GanttStart1) and so on. If <b>plan</b> is null, it is
+calculated from the cell where the formula is used, if it is not possible it is
+used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it to calculate value of
+GanttParts for <b><i>continuous</i></b> summary tasks. For discrete summary
+tasks use <a href="#sumparts">sumparts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=sumparts><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>sumparts</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>          (<i>string</i>
+<b>col</b> = null, <i>string</i> <b>condition</b> = null, <i>int</i> <b>type</b>
+= 0, <i>string</i> <b>server</b> = null)      <span style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all dates in column with
+Range=1 Type=”Date”. It just creates new range from all intervals and updates
+it to not contain duplicate value cross intervals.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The only difference to <a
+href="file:///S:\Doc\CellFormula.htm#sumrange">sumrange</a> is that ganttparts
+is affected by <a href="file:///S:\Doc\GanttCompute.htm#CGanttLastUnit">GanttLastUnit</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For its parameters see <a
+href="CellFormula.htm#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is no plan parameter,
+the function just sums values in the <b>col</b>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it to calculate value of
+GanttParts for <b><i>discrete</i></b> summary tasks. For continuous summary
+tasks use <a href="#ganttparts">ganttparts</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:silver'>            <i>int        </i></span><a
+name=ganttpercentduration><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:silver'>ganttpercentduration</span></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>    (<i>string</i>
+<b>durationcol</b>, <i>string</i> <b>percentcol</b>=’’,<i> int</i> <b>round</b>=0)            <span
+style='color:red'>deleted<b> 6.3</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Replaced by ganttpercent.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=MainRun><b><span style='font-size:20.0pt'>Main bar as
+summary of child Run bars</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Main bar can be used also to
+show summary for its child Run bars. It can show only <b><i>continuous</i></b>
+summary.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use such formulas to show the
+summary:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&lt;I Calculated=&quot;1&quot;
+GGanttStartFormula=&quot;ganttrunminstart('G')&quot;
+GGanttEndFormula=&quot;ganttrunmaxend('G')&quot; GGanttDurationFormula=&quot;ganttrunsumduration('G')&quot;
+GGanttCompleteFormula=&quot;ganttpercent('G')&quot;/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=ganttrunminstart><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrunminstart</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    (<i>string</i>
+<b>ganttcol</b>)                                                                       <span
+style='color:red'>new <b>6.2</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates minimal start date
+(in milliseconds) of all child Runs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to get Run range of
+child Runs and show it as Main Bar.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – column showing the Gantt chart, it should contain
+the <a href="#Run">Run</a> bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=ganttrunmaxend><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrunmaxend</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    (<i>string</i>
+<b>ganttcol</b>)                                                                       <span
+style='color:red'>new <b>6.1</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates maximal end date
+(in milliseconds) of all child Runs.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to get Run range of
+child Runs and show it as Main Bar.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – column showing the Gantt chart, it should contain
+the <a href="#Run">Run</a> bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>int        </i></span><a
+name=ganttrunsumduration><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrunsumduration</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    (<i>string</i>
+<b>ganttcol</b>)                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary duration
+(in GanttDataUnits) of all child Runs. Simply returns ganttrunmaxend()-ganttrunminstart
+in workdays and GanttDataUnits.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Used to get Run range of
+child Runs and show it as Main Bar.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – column showing the Gantt chart, it should contain
+the <a href="#Run">Run</a> bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>float      </i></span><b><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:lime'>ganttpercent</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>   (<i>string</i>
+<b>ganttcol</b>, <i>string</i> <b>weightcol</b>, <i>int</i> <b>round</b>, <i>int</i>
+<b>plan</b> = null)       <span style='color:red'>chg <b>6.3</b>; </span><span
+style='color:#002060'>upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculates summary percent of
+all child rows for its date ranges</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> – gantt column, if it is null, uses the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>weightcol</span></b><span
+style='font-size:10.0pt'> – column with exact weight factors for the tasks, if
+not set, the weight is computed from the task duration.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>round</span></b><span
+style='font-size:10.0pt'> – <i>(new 6.3) </i>to how many decimal places will be
+the result rounded, by default it is <u>not</u> rounded at all</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>plan</span></b><span
+style='font-size:10.0pt'> - <i>(new 10.0) </i>main bar plan, 0 is the first
+plan (GanttStart), 1 the second plan (GanttStart1) and so on. If <b>plan</b> is
+null, it is calculated from the cell where the formula is used, if it is not
+possible it is used as 0.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Example: &lt;I Calculated=’1’
+CalcOrder=”Complete” CompleteFormula=”ganttpercent()”/&gt;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Since 7.0</span></i><span
+style='font-size:10.0pt'> it can be used also to calculate percentage of
+summary of <b>Run</b> tasks with GanttRunComplete set.<i> It calculates <b>Run</b>
+only if child row does <u>not</u> define GanttComplete.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=EditMain><b><span style='font-size:20.0pt'>Editable Main
+bar as summary of child Main or Run bars</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to have also
+editable summary tasks, including date constraints and dependencies.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All the dependencies and
+constraints attached to summary tasks are automatically assigned to all child
+tasks.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>How to set the editable
+summary task:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>1) Define main bar as summary
+of main bars or run bars by Formulas described above.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>2) Set the summary task
+editable, define &lt;D <b><i>xxx</i>GanttEdit</b>=’all’ <b><i>start</i>CanEdit</b>=’1’
+/&gt; where the <i>start</i> is name of the Gantt source column, the <i>xxx</i>
+is name of the Gantt column itself.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>3) To correctly calculate
+dependencies and date constraints set &lt;D <b><i><a href="#CellGanttSummary">xxx<span
+style='font-style:normal'>GanttSummary</span></a>X</i></b>=’Y’/&gt;, see its
+description below.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CellGanttSummary><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSummary<span style='color:#00B0F0'>X</span></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>     [&quot;&quot;]                                                                              <span
+style='color:red'>new <b>6.7</b>; chg <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to main bar plan
+number in children for <b>editable summary task</b>. Set it to <b>0</b> for the
+first plan. Set it to '-' (minus) for Run bars. Set it to <b><i>empty</i></b>
+string to no summary.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b><i>X</i></b> is main
+bar plan in this parent, for the first main plan is empty (GanttSummary,
+GanttSummary1, GanttSummary2, ...). See <a href="GanttMain.htm#CGanttCount">GanttCount</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example:       GanttSummary
+= '0'           means the main bar plan 0 in this parent row is marked as
+editable summary for the same plan 0 in child rows.</span></p>
+
+<p class=MsoNormal style='margin-left:35.4pt;text-indent:35.4pt'><span
+style='font-size:10.0pt'>GanttSummary1 = '-'         means the main bar plan 1
+in this parent row is marked as editable summary for the run bars in child
+rows.</span></p>
+
+<p class=MsoNormal style='margin-left:70.8pt'><span style='font-size:10.0pt'>GanttSummary3
+= '2'        means the main bar plan 3 in this parent row is marked as editable
+summary for main bar plan 2 in child rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It will cause:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- all dependencies attached
+to the summary task will be assigned also to all its children (as hidden
+dependencies)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- dependencies between the
+summary and its children will be marked or restricted as circular</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- the MinStart and MaxEnd
+date constraints assigned to summary tasks will be used also for all its
+children if they are more restrictive than the child task constraints, if any.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- if the tasks is moved by mouse
+dragging or editing its start date, it moves also all its children. The task
+cannot be moved, if it would lead to violate any child’s constraints.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>- the task cannot be created,
+resized or deleted and its GanttComplete value cannot be changed by a user.<i>
+Except the GanttSummaryType is set to <b>1</b>.</i></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Since 10.0 the
+value is 0 for the first main plan!</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>&nbsp;</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>The method
+implemented causes <u>not</u> good behavior for dependencies incoming to the finish
+of the summary task and dependencies outgoing from start of the summary task.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt;color:red'>Also zero
+float/span or GanttIncorrectDependencies='2' is <u>not</u> supported for
+dependencies in summary tasks.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt; &lt;cell&gt;</span></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>       <i>int        </i></span><a
+name=CGanttSummaryType><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSummaryType<span style='color:#00B0F0'>X</span></span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>    [0]                                                                               <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>0</b> it restricts
+creating, resizing and deleting the summary task. The task is expected to be
+calculated from its children by formulas.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For <b>1</b> it permits these
+actions. The task should <u>not</u> be calculated from its children by
+formulas.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Before 10.0 it was set as
+GanttSummary='2'</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=RunMain></a><a name=Summary><b><span style='font-size:
+20.0pt'>Editable Run bar as summary of child Main bars</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to group child
+main bars to one parent Run bar, containing all the main bars at one row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Run can be editable, so
+all the changes done in the Run is mirrored to the source main bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is possible to collapse
+the Run and let a user to manipulate only by the Run bars instead of the main
+bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It can be used to group main
+bars according to various attributes to the Run.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it up by:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define new (hidden) column
+(name it e.g. &quot;RUN&quot;). Assign this column as GanttRun (e.g. &lt;C ...
+GanttRun='RUN'/&gt;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set to the row xxx<b>GanttRunSummary</b>='<b>X</b>',
+where X is the main bar plan, e.g. '0'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Calculate the RUN from the
+children by RUNFormula=<b>'ganttrunsum</b>()'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Optionally:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define other Run columns like
+GanttRunStart, GanttRunEnd, GanttRunDuration, GanttRunComplete</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>And calculate them by
+formulas: ganttrunstart, ganttrunend, ganttrunduration, ganttpercent()</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Define right <b>CalcOrder</b>
+for the rows to be first calculated the Run by ganttrunsum</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Behavior:</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Run will reflect every
+change - moving, resizing, deleting and creating the main bar. Also deleting
+row and creating new child.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                The moving
+and resizing source main bar ignores other boxes, it behaves always like if the
+run has set <a href="GanttRun.htm#CGanttRunAdjust">GanttRunAdjust</a>='Error'</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The children will reflect the
+Run changes - moving and resizing the Run box. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Creating new
+Run box will create new child with the same main bar. It is called OnRowAdded
+API event, but not OnRowAdd</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Deleting Run
+box will delete appropriate row. It is called OnRowDelete API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>                Moving Run
+box to another row will move the appropriate child row to this parent. It is
+called OnRowMove API event.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The Run boxes have the same
+ids as the child rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=ganttrunsum><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrunsum</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>  (<i>string</i>
+<b>ganttcol</b> = &quot;&quot;, <i>string</i> <b>condition</b> = &quot;&quot;, <i>int</i>
+<b>type</b> = &quot;&quot;, <i>int</i> <b>plan</b> = 0)            <span
+style='color:red'>new <b>9.1</b></span><span style='color:#0070C0'>; upd <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all child main bars and
+returns result Run with all the bars. The Run bars have set their ids as the
+main bar row ids.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a
+href="#CellGanttRunSummary">GanttRunSumarry</a> it permits changing the summary
+boxes and do the changes in children</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> = gantt column, can be empty for the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 9.3)</span></i><b><span
+style='font-size:10.0pt'> </span></b><span style='font-size:10.0pt'>The <b>type</b>
+and <b>condition</b> specify which rows to iterate, for more information see
+the <a href="CellFormula.htm#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 10.0) </span></i><span
+style='font-size:10.0pt'>The <b>plan</b> is main bar plan to calculate summary
+for (if <u>not</u> set Start,End,Duration by <a href="#CGanttSummaryCols">GanttSummaryCols</a>).
+<b>0</b> means the first main bar plan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <a
+href="GanttMain.htm#CGanttParts">GanttParts</a> must <u>not</u> be defined for
+used main bar plan!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=ganttrundescendants><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrundescendants</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>    (<i>string</i>
+<b>ganttcol</b> = &quot;&quot;, <i>string</i> <b>condition</b> = &quot;&quot;, <i>int</i>
+<b>type</b> = &quot;&quot;, <i>int</i> <b>plan</b> = 0)      <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all dependencies from
+child main bars, use for GanttDescendants. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a
+href="#CellGanttRunSumarryDependencies">GanttRunSumarryDependencies</a> it
+permits changing the summary dependencies and do the changes in children.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> = gantt column, can be empty for the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>type</b> and <b>condition</b>
+specify which rows to iterate, for more information see the <a
+href="CellFormula.htm#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The function sums always all
+the child dependencies, but if set the <b>plan</b>, only dependencies for this
+plan are converted to the run boxes. <b>0</b> means the first main bar plan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>There must be set
+&quot;box&quot; in <a href="GanttObject.htm#CGanttTask">GanttTask</a>.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To use box scheduling,
+remove the source main bar plan from <a href="GanttObjects.htm#CGanttTask">GanttTask</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:lime'>formula</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'>            <i>string    </i></span><a
+name=ganttrunancestors><b><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:lime'>ganttrunancestors</span></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:lime'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:lime'>           (<i>string</i>
+<b>ganttcol</b> = &quot;&quot;, <i>string</i> <b>condition</b> = &quot;&quot;, <i>int</i>
+<b>type</b> = &quot;&quot;, <i>int</i> <b>plan</b> = 0)      <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Sums all dependencies from
+child main bars, use for GanttAncestors. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set <a
+href="#CellGanttRunSumarryDependencies">GanttRunSumarryDependencies</a> it
+permits changing the summary dependencies and do the changes in children.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>ganttcol</span></b><span
+style='font-size:10.0pt'> = gantt column, can be empty for the first Gantt
+column in grid</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>type</b> and <b>condition</b>
+specify which rows to iterate, for more information see the <a
+href="CellFormula.htm#sum">sum</a> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The function sums always all
+the child dependencies, but if set the <b>plan</b>, only dependencies for this
+plan are converted to the run boxes. <b>0</b> means the first main bar plan.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>There must be set
+&quot;box&quot; in <a href="GanttObject.htm#CGanttTask">GanttTask</a>.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>To use box scheduling,
+remove the source main bar plan from <a href="GanttObjects.htm#CGanttTask">GanttTask</a>.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CellGanttRunSummary></a><a name=CGanttRunSummary><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttRunSummary</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>          [&quot;&quot;]                                                                              <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Links the main bars with the
+summary Run bars calculated by <a href="#ganttrunsum">ganttrunsum</a>. Mirrors
+the changes between them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to main bar plan
+number in children. Set to the same plan number the <a href="#ganttrunsum">ganttrunsum</a>was
+called.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Set it to <span
+style='color:red'>0</span> for the first main bar plan.</span></b><span
+style='font-size:10.0pt'> Set it to <b><i>empty</i></b> string to no link.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>int        </i></span><a
+name=CGanttRunSummaryDependencies></a><a name=CellGanttRunSummaryDependencies><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:yellow'>GanttRunSummaryDependencies</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>         [&quot;&quot;]                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Links the main bar
+dependencies with the summary Run bar dependencies calculated by <a
+href="#ganttrundescendants">ganttrundescendants</a> and / or <a
+href="#ganttrunancestors">ganttrunancestors</a>. Mirrors the changes between
+them.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Set it to main bar plan
+number in children. Set to the same plan number the <a
+href="#ganttrundescendants">ganttrundescendants</a> and / or <a
+href="#ganttrunancestors">ganttrunancestors</a> were called.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>Set it to <span
+style='color:red'>0</span> for the first main bar plan.</span></b><span
+style='font-size:10.0pt'> Set it to <b><i>empty</i></b> string to no link.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:silver'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:silver'>              <i>int        </i></span><b><u><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>GanttSummary</span></u></b><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:silver'>         </span><span
+style='font-size:16.0pt;font-family:"Arial","sans-serif";background:silver'>=
+&quot;<b>2</b>&quot;</span><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+background:silver'>                                                                
+<span style='color:red'>new <b>9.1; deleted 10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For Editable Run summary it
+is renamed to <a href="#CGanttRunSummary">GanttRunSummary</a>. The value
+changed from 2 to main bar plan.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CellGanttSummaryCols><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSummaryCols</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                                            <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Note, there is <u>no</u> <b>Run</b>
+keyword in the attribute name, due backward compatibility</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Comma separated list of
+linked columns in child rows to Run attributes, when created the run summary by
+<a href="#ganttrunsum">ganttrunsum</a> formula. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this order:
+&quot;Start,End,Duration,Type,Text,Class,Tip,Id,Group,State,Top,Height,Manual,Complete,Resources,HtmlLeft,HtmlRight&quot;.
+The order the same as in <a href="GanttRun.htm#CGanttRun">GanttRun</a>
+attribute.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <u>not</u> set, the <b>Start</b>
+is set to GanttStart column, <b>End</b> to GanttEnd column and <b>Duration</b>
+to GanttDuration column, of given plan in <a href="#ganttrunsum">ganttrunsum</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <u>not</u> set <b>State</b>,
+the Disabled state is read from GanttDisabled and Selected state from
+row.Selected. Note, next selecting the child row does <u>not</u> update the run
+selected state automatically.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>The <a
+href="GanttMain.htm#CGanttParts">GanttParts</a> must <u>not</u> be defined for
+used main bar plan!</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The <b>Id</b> is now always
+set to row id attribute and cannot be changed.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For example
+GanttSummaryCols=&quot;,,,B,,C&quot; means that the Run Type attribute will be
+read from child rows from 'B' column and Class attribute from 'C' column</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string[]  </i></span><a
+name=CellGanttSummarySeparators><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttSummarySeparators</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>                                                                           <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Note, there is <u>no</u> <b>Run</b>
+keyword in the attribute name, due backward compatibility</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Custom Run separators to be
+used instead of &quot;;,&quot; by <a href="#ganttrunsum">ganttrunsum</a>
+formula. Use when some Text or Tip can contain the default separators (comma
+and semicolon)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;cell&gt;</span></b><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>              <i>string    </i></span><a
+name=CellGanttSummaryCDef><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:yellow'>GanttSummaryCDef</span></u></b></a><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:yellow'>         ['']                                                                               <span
+style='color:red'>new <b>9.3</b></span>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Note, there is <u>no</u> <b>Run</b>
+keyword in the attribute name, due backward compatibility</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Name of default row assigned
+to new child rows created for new Run bars. If not set, standard CDef attribute
+value is used.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If set, <a href="#ganttrunsum">ganttrunsum</a>
+iterates only rows with this default row name.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:yellow'>&lt;C&gt;</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:yellow'>                  <i>string    </i></span><a
+name=CGanttRunSummaryIdPrefix><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:yellow'>GanttRunSummaryIdPrefix</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:yellow'>  [&quot;&quot;
+/ &quot;R&quot;]                                                           <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>A string added to run box id
+before the child row id when creating run boxes from child main bars.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>By default is &quot;R&quot;
+if GanttTask contains &quot;Box&quot; and also some main flag. Otherwise it is
+empty.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Use it especially if you have
+number id rows and you want to use also dependencies in the summary run boxes
+by <a href="#ganttrundescentants">ganttrundescentants</a> / <a
+href="#ganttrunancestors">ganttrunancestors</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

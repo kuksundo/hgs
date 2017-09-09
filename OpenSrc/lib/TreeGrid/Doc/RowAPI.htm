@@ -1,0 +1,718 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>TreeGrid - Row API</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+@page WordSection1
+	{size:841.9pt 595.3pt;
+	margin:42.55pt 70.9pt 42.55pt 70.9pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt;color:#0070C0'>EJS TreeGrid documentation</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:36.0pt'>Row API</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt'><a href="Index.html">TreeGrid documentation index</a></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt'>TRow</span></b><span
+style='font-size:10.0pt'> is row JavaScript object. <b>col</b> is column name
+as string.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In TreeGrid rows are stored
+in the same way as in the input XML, the variable rows are placed inside pages
+(if the grid is not paged, to only one page) and the pages root is <a
+href="#Body">Body</a>. &lt;Head&gt;, &lt;Foot&gt; and &lt;Solid&gt; rows are
+placed in the separated tags accessible by <a href="#Head">Head</a>, <a
+href="#Foot">Foot</a> and <a href="#Space">Space</a> variables.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Every row is represented by
+JavaScript object similar to HTMLElement. The rows can be iterated by <a
+href="#firstChild">firstChild</a> / <a href="#nextSibling">nextSibling</a>
+variables or <a href="#GetFirst">GetFirst</a>/<a href="#GetNext">GetNext</a>
+methods.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In this documentation, the
+row object is named as <b><a href="#TRow">TRow</a></b>, but this object name in
+fact does not exist. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All rows are accessible by
+their ids from <a href="#Rows">Rows</a> array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All attributes loaded from
+XML data are in rows represented as properties with the same name. For example
+you can access row.Selected or row.Added or row.Col1CanEdit or row.Col1 as cell
+value. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>There is not predefined type
+for attributes, it can be string or number, depending on many factors.
+Therefore if you expect boolean value, you cannot test it as if(row.Selected)
+but if(row.Selected-0). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For many attributes is better
+to read them by predefined methods as <a href="#CanEdit">CanEdit</a>, <a
+href="#CanFocus">CanFocus</a> and so on. Most of row’s attributes are expected
+to be read only, thus don’t change their values directly. </span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Generally, use predefined
+functions (if any) to read or change row’s attribute values instead of
+accessing them directly.</span></i></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>Also use these properties
+as read only if possible. To get row’s attribute use global function <b><a
+href="#Get">Get</a></b> rather then direct access to attribute.</span></i></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>All other XML data (defaults,
+columns, panel, toolbar, pager, configuration menu, language texts) are
+represented as JavaScript object (or arrays of these objects accessed by name)
+with properties of same name as XML attributes. These properties has converted
+type, therefore numbers are always numbers not strings. But it depends on
+property value not on expected type (the conversion is universal).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Grid configuration (tag &lt;<b>Cfg</b>&gt;)
+is filled to properties of basic TGrid object. <b><a href="#ClassTGrid">TGrid</a></b>
+object has all properties named as &lt;<b>Cfg</b>&gt; tag attributes. Values
+are also converted by their value types.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In all functions columns are
+identified by its name (given in XML, &lt;C <a href="ColBasics.htm#CName">Name</a>=””&gt;).
+By this name column object can be got from TGrid.<a href="#Cols">Cols</a>
+array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>In HTML table is every row
+represented by one &lt;tr&gt; tag for every section (left columns, variable
+columns, right columns). You can access cell DOM by <b><a
+href="CellBasics.htm#GetCell">GetCell</a></b> function.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Any grid on page can be
+accessed from global JavaScript array <b><u><a href="Create.htm#Grids">Grids</a></u></b>.
+By its <a href="Create.htm#Index">Index</a> or by its <a href="Create.htm#id">id</a>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i> [] </span><a
+name=Rows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Rows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                 <span
+style='color:red'>read only</span> JavaScript named array of row objects by
+their <b>id</b>            <span style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal style='text-align:justify'><span style='font-size:10.0pt'>All
+rows in grid by their <a href="RowId.htm#Iid">id</a>. Including fixed and Space
+rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row has set its id
+neither in XML nor by IdNames, the id is automatically generated as “R”+number
+from 1.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormalCxSpMiddle><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetRowById><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetRowById</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>string
+<b>id</b></i>, <i>string</i> <b>attr</b>, <i>bool</i> <b>nofixed</b>)                                                        <span
+style='color:#0070C0'>upd <b>7.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Searches for the row by its
+id.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If the row exists in <a
+href="#Rows">Rows</a>, it returns the row from <a href="#Rows">Rows</a>,
+otherwise it iterates all rows in grid to find the row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The advantage to <a
+href="#Rows">Rows</a> is that it can be used also before the Rows array is
+filled during grid creating.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The disadvantage is that it
+will be slow when the <a href="#Rows">Rows</a> does <u>not</u> contain given <b>id</b>.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> If set <b>attr</b>, it searches the row according to
+this attribute value instead of id, in this case it always iterates all the
+rows.</span></p>
+
+<p class=MsoNormal><i><span style='font-size:10.0pt'>(Since 7.0)</span></i><span
+style='font-size:10.0pt'> If set <b>nofixed</b>, it does <u>not</u> search in
+fixed and space rows</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Body><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Body</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                   <span
+style='color:red'>read only</span>                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent of all pages in
+grid. The XML &lt;Body&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can iterate the pages by
+firstChild / nextSibling attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can iterate the rows in
+page also firstChild / nextSibling attributes or by GetFirst / GetNext method.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Head><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Head</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                   <span
+style='color:red'>read only</span>                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent of all fixed rows
+in Head section. The XML &lt;Head&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can iterate them by
+firstChild / nextSibling attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Foot><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Foot</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                         <span
+style='color:red'>read only</span>                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent of all fixed rows
+in Foot section. The XML &lt;Foot&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can iterate them by
+firstChild / nextSibling attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Solid><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Solid</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                   <span
+style='color:red'>read only</span>                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The parent of all Space rows.
+The XML &lt;Solid&gt; tag.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>You can iterate them by
+firstChild / nextSibling attributes.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The rows are not positioned
+by its Space attribute, but by its position in XML.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Header><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Header</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                              <span
+style='color:red'>read only</span>                                                                         <span
+style='color:red'>renamed <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The main Header row in grid.
+(the header with id=’Header’).</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Toolbar><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Toolbar</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                            <span
+style='color:red'>read only</span>                                                                                             .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The main Toolbar row in grid.
+(the toolbar with id=’Toolbar’)</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i>    </span><a
+name=Filter><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Filter</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                   <span
+style='color:red'>read only</span>                                                                                 <span
+style='color:red'>new <b>6.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>The first filter row in grid.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>TRow</i> []  </span><a
+name=GetFixedRows><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetFixedRows</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (
+)                                                                                                       .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns all fixed rows (head
+and foot) as JavaScript array.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=RowCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>RowCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>                    <span
+style='color:red'>read only</span>                                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of actually <b>rendered
+variable</b> rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This variable is set after
+page was rendered and is updated for every next page or child page or child
+part is rendered.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For non-paged grids, you can
+access this variable first in <a href="Create.htm#OnRenderPageFinish">OnRenderPageFinish</a>
+event handler.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API variable</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>     <i>int        </i></span><a
+name=LoadedCount><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>LoadedCount</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>            <span
+style='color:red'>read only</span>                                                                                 <span
+style='color:red'>new <b>7.0</b></span> .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Count of actually <b>loaded
+variable</b> rows. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>This variable is set after
+page was loaded and is updated for every next page or child page is loaded.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For non-paged grids, you can
+access this variable first in <a href="DataDownload.htm#OnUpdated">OnUpdated</a>
+event handler.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>string</i>     </span><a
+name=Fixed><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>Fixed</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                                <span
+style='color:red'>read only          </span>                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>It is set for fixed and space
+rows only. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>For head rows is “<b>Head</b>”,
+for foot rows is “<b>Foot</b>”, for Space rows is “<b>Solid</b>”.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<div style='border:none;border-top:solid windowtext 3.0pt;padding:1.0pt 0cm 0cm 0cm'>
+
+<p class=MsoNormal align=center style='text-align:center;border:none;
+padding:0cm'><a name=Iteration></a><a name=Paging><b><span style='font-size:
+20.0pt'>Row iterating</span></b></a></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=nextSibling><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>nextSibling</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                   <span
+style='color:red'>read only</span> <i>The first letter is lower case    </i>                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Next row below this row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=previousSibling><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>previousSibling</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>       <span
+style='color:red'>read only</span> <i>The first letter is lower case    </i>                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Previous row above this row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=firstChild><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>firstChild</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                         <span
+style='color:red'>read only</span> <i>The first letter is lower case    </i>                                                .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>First child of the row in
+tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=lastChild><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>lastChild</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                         <span
+style='color:red'>read only</span> <i>The first letter is lower case    </i>                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Last child of the row in
+tree.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API TRow var.</span></b><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>  <i>TRow</i>    </span><a
+name=parentNode><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>parentNode</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'>                  <span
+style='color:red'>read only</span> <i>The first letter is lower case    </i>                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Parent row in tree. For root
+row it returns page or Head / Foot / Solid section for fixed row</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetFirst><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetFirst</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>              (<i>TRow</i>
+<b>parent</b>, <i>int</i> <b>type</b>)                                                                                    .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns first existing row in
+given page <b>parent</b> or children of the <b>parent</b> row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>parent</b> is null
+returns the first variable row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>4</b>)
+- including head and foot rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetLast><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetLast</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>parent</b>, <i>int</i> <b>type</b>)                                                                                               .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns last existing row in
+given page <b>parent</b> or children of the <b>parent</b> row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>parent</b> is null
+returns the last variable row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>4</b>) - including
+head and foot rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetNext><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetNext</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>type</b>)                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns next existing row below
+the given row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>2</b>) - only from
+actual root page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetPrev><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPrev</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>type</b>)                                                                                                   .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns previous existing row
+above the given row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>2</b>) - only from
+actual root page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><a
+name=GetFirstVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetFirstVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TRow</i>
+<b>parent</b>, <i>int</i> <b>type</b>)                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns first visible row
+(has Visible=’1’) in given page <b>parent</b> or children of the <b>parent</b>
+row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>parent</b> is null
+returns the first visible variable row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>4</b>)
+- including head and foot rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetLastVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetLastVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>parent</b>, <i>int</i> <b>type</b>)                                                                        .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns last visible (has
+Visible=’1’) row in given page <b>parent</b> or children of the <b>parent</b>
+row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>If <b>parent</b> is null
+returns the last visible variable row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>4</b>) - including
+head and foot rows.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetNextVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetNextVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>type</b>)                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns next visible (has
+Visible=’1’) row below the given row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>2</b>) - only from
+actual root page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetPrevVisible><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPrevVisible</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>         (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>type</b>)                                                                            .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns previous visible (has
+Visible=’1’) row above the given row.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>if (<b>type</b>&amp;<b>1</b>)
+- ignores rows in collapsed parents, if (<b>type</b>&amp;<b>2</b>) - only from
+actual root page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>object</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>[] </span><a
+name=GetPrevShift><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPrevShift</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>pagepos</b>, <i>int</i> <b>cnt</b>)                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns [<i>TRow</i> <b>row</b>,
+<i>int</i> <b>pagepos</b>] . </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns previous visible row
+shifted by cnt rows above. <b>row</b> can be root page, in this case <b>pagepos</b>
+is used as row position in the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>object</span></i><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>[] </span><a
+name=GetNextShift><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetNextShift</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>  (<i>TRow</i>
+<b>row</b>, <i>int</i> <b>pagepos</b>, <i>int</i> <b>cnt</b>)                                                                      .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns [<i>TRow</i> <b>row</b>,
+<i>int</i> <b>pagepos</b>] . </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns next visible row
+shifted by cnt rows below.<b> row</b> can be root page, in this case <b>pagepos</b>
+is used as row position in the page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetNextSibling><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetNextSibling</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TRow</i>
+<b>row</b>)                                                                                          .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns next sibling for root
+row – iterates through pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetNextSiblingVisible><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>GetNextSiblingVisible</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                              .</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns next visible sibling
+for root row on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetPrevSibling><b><u><span style='font-size:16.0pt;font-family:"Arial","sans-serif";
+background:aqua'>GetPrevSibling</span></u></b></a><span style='font-size:10.0pt;
+font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>        (<i>TRow</i>
+<b>row</b>)                                                                             <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns previous sibling for
+root row – iterates through pages.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Arial","sans-serif";
+color:red;background:aqua'>API method     </span></b><i><span style='font-size:
+10.0pt;font-family:"Arial","sans-serif";background:aqua'>TRow    </span></i><a
+name=GetPrevSiblingVisible><b><u><span style='font-size:16.0pt;font-family:
+"Arial","sans-serif";background:aqua'>GetPrevSiblingVisible</span></u></b></a><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'> </span><span
+style='font-size:10.0pt;font-family:"Arial","sans-serif";background:aqua'>   (<i>TRow</i>
+<b>row</b>)                                                                  <span
+style='color:red'>new <b>10.0</b></span>.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>Returns previous visible
+sibling for root row on page.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

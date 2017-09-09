@@ -1,0 +1,55 @@
+<html>
+   <head>
+      <script>GridEStart = new Date(); // To find out the time of GridE.js loading </script>
+      <script src="../../../Grid/GridE.js"> </script>
+      <link href="../../../Styles/Examples.css" rel="stylesheet" type="text/css" />
+   </head>
+   <body>
+      <!-- BodyStart --> 
+
+      <h2 id="ExampleTitle">Large Gantt chart with 1000 rows</h2>
+      <div id="ExampleDescription" style='margin-bottom:5px;'>
+         A demonstration of TreeGrid application showing interactive Gantt chart with large amount of rows.
+         This example is simplified version of <a href='Gantt.html'>Interactive Gantt chart example</a>, but uses client side paging and shows 1000 rows.<br />
+      </div>
+
+      <div style="WIDTH:100%;HEIGHT:520px;">
+         <bdo Debug="info" DebugTag='debug' Layout_Url="GanttBigDef.xml" Data_Url="GanttBigData.xml"></bdo>
+      </div>
+      <div style='font:10px Arial;margin-top:5px;'>Debugging information and times</div>
+      <div id='debug' style='background:#DDD; height:150px; border:1px solid black; padding-left:5px; overflow:auto;'></div>
+      <script>
+// ------------------------------------------------------------------------------------------------------------
+// To specify grouping by Complete, differ only 100%, 0% and others
+Grids.OnGetSortValue = function(G,row,col,val,desc,group){
+if(group && col=='C') {
+   if(val=="100%") return 100;
+   if(val=="0%") return 0;
+   return "50";
+   }
+return val;
+}
+// ------------------------------------------------------------------------------------------------------------
+// Used to show tip on Gantt header row
+// For Gantt chart rows and objects use rather OnGanttTip instead
+Grids.OnTip = function(G,row,col,tip,clientx,clienty,x,y){
+if(col=="GANTT" && row.id=="ID") { // Gantt header row
+   var A = G.GetGanttHeaderXY(row,col,x,y);
+   if(!A) return;
+   tip = "<b>"+G.Lang.GanttUnits[A.Units]+"</b><br>" 
+       + DateToString(A.Start,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + " - " + DateToString(A.End,"'<b>'dddddd MMMM yyyy'</b>' HH:mm:ss") + "<br><br>"
+       + "<i>Click to zoom to this date</i><br><i>Right click to zoom back to previous zoom level</i><br><i>Drag by mouse to zoom to selected range</i>";
+
+   }
+return tip;
+}
+// ------------------------------------------------------------------------------------------------------------
+
+      </script>
+
+      <!-- BodyEnd -->
+      <script>
+         if(location.hostname.search(/coqsoft\.|treegrid\./i)>=0) setTimeout('location.replace("../../../www/#..*Examples*Html*Gantt*GanttBig.html"+location.hash.replace("#","\'"));',500);
+      </script>
+   </body>
+</html>
