@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6B139D23-0A48-42D0-B655-B036A9DE5892}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="BWQuerySubscriber.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="BWQueryPublisher.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\Template\MQTTTemplate.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BWQuerySubscriber">
+        <MSBuild Projects="BWQuerySubscriber.dproj"/>
+    </Target>
+    <Target Name="BWQuerySubscriber:Clean">
+        <MSBuild Projects="BWQuerySubscriber.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BWQuerySubscriber:Make">
+        <MSBuild Projects="BWQuerySubscriber.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BWQueryPublisher">
+        <MSBuild Projects="BWQueryPublisher.dproj"/>
+    </Target>
+    <Target Name="BWQueryPublisher:Clean">
+        <MSBuild Projects="BWQueryPublisher.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BWQueryPublisher:Make">
+        <MSBuild Projects="BWQueryPublisher.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MQTTTemplate">
+        <MSBuild Projects="..\..\..\Template\MQTTTemplate.dproj"/>
+    </Target>
+    <Target Name="MQTTTemplate:Clean">
+        <MSBuild Projects="..\..\..\Template\MQTTTemplate.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MQTTTemplate:Make">
+        <MSBuild Projects="..\..\..\Template\MQTTTemplate.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BWQuerySubscriber;BWQueryPublisher;MQTTTemplate"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BWQuerySubscriber:Clean;BWQueryPublisher:Clean;MQTTTemplate:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BWQuerySubscriber:Make;BWQueryPublisher:Make;MQTTTemplate:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

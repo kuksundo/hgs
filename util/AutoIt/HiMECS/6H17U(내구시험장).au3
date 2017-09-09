@@ -1,0 +1,1 @@
+Run("HiMECS.exe /ufA379042.id /pf.\projects\6H1728(내구시험장).himecs")

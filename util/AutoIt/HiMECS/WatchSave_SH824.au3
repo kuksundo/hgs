@@ -1,0 +1,1 @@
+Run("HiMECS_WatchSavep.exe /p=.\SH824_1_2.param")

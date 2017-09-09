@@ -1,0 +1,121 @@
+object setProgress_Frm: TsetProgress_Frm
+  Left = 156
+  Top = 125
+  BorderStyle = bsSizeToolWin
+  Caption = #51652#54665#50984'(%) '#49444#51221
+  ClientHeight = 141
+  ClientWidth = 264
+  Color = clBtnFace
+  Constraints.MaxHeight = 175
+  Constraints.MaxWidth = 280
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesigned
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 74
+    Top = 64
+    Width = 43
+    Height = 15
+    Caption = #51652#54665#50984' :'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 182
+    Top = 64
+    Width = 11
+    Height = 15
+    Caption = '%'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object AdvSmoothProgressBar1: TAdvSmoothProgressBar
+    AlignWithMargins = True
+    Left = 30
+    Top = 30
+    Width = 204
+    Height = 17
+    Margins.Left = 30
+    Margins.Top = 30
+    Margins.Right = 30
+    Step = 10.000000000000000000
+    Maximum = 100.000000000000000000
+    Appearance.BackGroundFill.Color = 16765615
+    Appearance.BackGroundFill.ColorTo = 16765615
+    Appearance.BackGroundFill.ColorMirror = clNone
+    Appearance.BackGroundFill.ColorMirrorTo = clNone
+    Appearance.BackGroundFill.GradientType = gtVertical
+    Appearance.BackGroundFill.GradientMirrorType = gtSolid
+    Appearance.BackGroundFill.BorderColor = clSilver
+    Appearance.BackGroundFill.Rounding = 0
+    Appearance.BackGroundFill.ShadowOffset = 0
+    Appearance.BackGroundFill.Glow = gmNone
+    Appearance.ProgressFill.Color = 14806254
+    Appearance.ProgressFill.ColorTo = 16775647
+    Appearance.ProgressFill.ColorMirror = 16775647
+    Appearance.ProgressFill.ColorMirrorTo = clBlue
+    Appearance.ProgressFill.GradientType = gtVertical
+    Appearance.ProgressFill.GradientMirrorType = gtVertical
+    Appearance.ProgressFill.BorderColor = 16764057
+    Appearance.ProgressFill.Rounding = 0
+    Appearance.ProgressFill.ShadowOffset = 0
+    Appearance.ProgressFill.Glow = gmNone
+    Appearance.Font.Charset = DEFAULT_CHARSET
+    Appearance.Font.Color = clWindowText
+    Appearance.Font.Height = -11
+    Appearance.Font.Name = 'Tahoma'
+    Appearance.Font.Style = []
+    Appearance.ProgressFont.Charset = DEFAULT_CHARSET
+    Appearance.ProgressFont.Color = clWindowText
+    Appearance.ProgressFont.Height = -11
+    Appearance.ProgressFont.Name = 'Tahoma'
+    Appearance.ProgressFont.Style = []
+    Appearance.ValueFormat = '%.0f%%'
+    Version = '1.7.0.0'
+    Align = alTop
+  end
+  object values: TNxNumberEdit
+    Left = 123
+    Top = 56
+    Width = 55
+    Height = 29
+    Alignment = taRightJustify
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    Text = '0'
+    OnChange = valuesChange
+    Precision = 0
+  end
+  object Button1: TButton
+    Left = 181
+    Top = 108
+    Width = 75
+    Height = 25
+    Caption = #54869#51064
+    ImageIndex = 3
+    ImageMargins.Left = 5
+    Images = taskMain_Frm.ImageList16x16
+    ModalResult = 1
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+end

@@ -1,0 +1,54 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{02bdc877-018d-406c-85b8-a894b6501981}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="DataSave\EngineTotal_DataSave.dproj" />
+    <Projects Include="GasEngineMonitoring.dproj" />
+    <Projects Include="GasGraph.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject xmlns=""><Default.Personality></Default.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="GasEngineMonitoring">
+    <MSBuild Projects="GasEngineMonitoring.dproj" Targets="" />
+  </Target>
+  <Target Name="GasEngineMonitoring:Clean">
+    <MSBuild Projects="GasEngineMonitoring.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="GasEngineMonitoring:Make">
+    <MSBuild Projects="GasEngineMonitoring.dproj" Targets="Make" />
+  </Target>
+  <Target Name="EngineTotal_DataSave">
+    <MSBuild Projects="DataSave\EngineTotal_DataSave.dproj" Targets="" />
+  </Target>
+  <Target Name="EngineTotal_DataSave:Clean">
+    <MSBuild Projects="DataSave\EngineTotal_DataSave.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="EngineTotal_DataSave:Make">
+    <MSBuild Projects="DataSave\EngineTotal_DataSave.dproj" Targets="Make" />
+  </Target>
+  <Target Name="GasGraph">
+    <MSBuild Projects="GasGraph.dproj" Targets="" />
+  </Target>
+  <Target Name="GasGraph:Clean">
+    <MSBuild Projects="GasGraph.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="GasGraph:Make">
+    <MSBuild Projects="GasGraph.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="GasEngineMonitoring;EngineTotal_DataSave;GasGraph" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="GasEngineMonitoring:Clean;EngineTotal_DataSave:Clean;GasGraph:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="GasEngineMonitoring:Make;EngineTotal_DataSave:Make;GasGraph:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

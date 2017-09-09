@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{25DB167C-4B85-4D9C-81D2-53EC71ED858E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\Hotkey\HotKeyP.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MacroManagement.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\common\OmniThreadLibrary\tests\59_TWaitFor\app_59_TWaitFor.XE5.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="HotKeyP">
+        <MSBuild Projects="..\Hotkey\HotKeyP.dproj"/>
+    </Target>
+    <Target Name="HotKeyP:Clean">
+        <MSBuild Projects="..\Hotkey\HotKeyP.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HotKeyP:Make">
+        <MSBuild Projects="..\Hotkey\HotKeyP.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MacroManagement">
+        <MSBuild Projects="MacroManagement.dproj"/>
+    </Target>
+    <Target Name="MacroManagement:Clean">
+        <MSBuild Projects="MacroManagement.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MacroManagement:Make">
+        <MSBuild Projects="MacroManagement.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="app_59_TWaitFor_XE5">
+        <MSBuild Projects="..\..\common\OmniThreadLibrary\tests\59_TWaitFor\app_59_TWaitFor.XE5.dproj"/>
+    </Target>
+    <Target Name="app_59_TWaitFor_XE5:Clean">
+        <MSBuild Projects="..\..\common\OmniThreadLibrary\tests\59_TWaitFor\app_59_TWaitFor.XE5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="app_59_TWaitFor_XE5:Make">
+        <MSBuild Projects="..\..\common\OmniThreadLibrary\tests\59_TWaitFor\app_59_TWaitFor.XE5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="HotKeyP;MacroManagement;app_59_TWaitFor_XE5"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="HotKeyP:Clean;MacroManagement:Clean;app_59_TWaitFor_XE5:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="HotKeyP:Make;MacroManagement:Make;app_59_TWaitFor_XE5:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

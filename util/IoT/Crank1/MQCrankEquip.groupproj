@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{180FBF15-DE43-43CF-BE74-88699736B718}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="STOMP4EquipMonitor.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Stomp2Rest4CrankEquip.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MQTT2Stomp4CrankCrane.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MQTT2Stomp4CrankEquip.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DataSave\Stomp2MongoDB4EquipStatus.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="STOMP4EquipMonitor">
+        <MSBuild Projects="STOMP4EquipMonitor.dproj"/>
+    </Target>
+    <Target Name="STOMP4EquipMonitor:Clean">
+        <MSBuild Projects="STOMP4EquipMonitor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="STOMP4EquipMonitor:Make">
+        <MSBuild Projects="STOMP4EquipMonitor.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Stomp2Rest4CrankEquip">
+        <MSBuild Projects="Stomp2Rest4CrankEquip.dproj"/>
+    </Target>
+    <Target Name="Stomp2Rest4CrankEquip:Clean">
+        <MSBuild Projects="Stomp2Rest4CrankEquip.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Stomp2Rest4CrankEquip:Make">
+        <MSBuild Projects="Stomp2Rest4CrankEquip.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankCrane">
+        <MSBuild Projects="MQTT2Stomp4CrankCrane.dproj"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankCrane:Clean">
+        <MSBuild Projects="MQTT2Stomp4CrankCrane.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankCrane:Make">
+        <MSBuild Projects="MQTT2Stomp4CrankCrane.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankEquip">
+        <MSBuild Projects="MQTT2Stomp4CrankEquip.dproj"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankEquip:Clean">
+        <MSBuild Projects="MQTT2Stomp4CrankEquip.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MQTT2Stomp4CrankEquip:Make">
+        <MSBuild Projects="MQTT2Stomp4CrankEquip.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Stomp2MongoDB4EquipStatus">
+        <MSBuild Projects="DataSave\Stomp2MongoDB4EquipStatus.dproj"/>
+    </Target>
+    <Target Name="Stomp2MongoDB4EquipStatus:Clean">
+        <MSBuild Projects="DataSave\Stomp2MongoDB4EquipStatus.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Stomp2MongoDB4EquipStatus:Make">
+        <MSBuild Projects="DataSave\Stomp2MongoDB4EquipStatus.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="STOMP4EquipMonitor;Stomp2Rest4CrankEquip;MQTT2Stomp4CrankCrane;MQTT2Stomp4CrankEquip;Stomp2MongoDB4EquipStatus"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="STOMP4EquipMonitor:Clean;Stomp2Rest4CrankEquip:Clean;MQTT2Stomp4CrankCrane:Clean;MQTT2Stomp4CrankEquip:Clean;Stomp2MongoDB4EquipStatus:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="STOMP4EquipMonitor:Make;Stomp2Rest4CrankEquip:Make;MQTT2Stomp4CrankCrane:Make;MQTT2Stomp4CrankEquip:Make;Stomp2MongoDB4EquipStatus:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

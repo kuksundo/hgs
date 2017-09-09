@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{8C62E6B2-480E-4370-9C14-3ED46676B696}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Mail2SharedMMAddIn.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\..\temp\ipcclient test\IPCConsumer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\consumer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\producer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\PstFileReader\PstFileReader.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Mail2SharedMMAddIn">
+        <MSBuild Projects="Mail2SharedMMAddIn.dproj"/>
+    </Target>
+    <Target Name="Mail2SharedMMAddIn:Clean">
+        <MSBuild Projects="Mail2SharedMMAddIn.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mail2SharedMMAddIn:Make">
+        <MSBuild Projects="Mail2SharedMMAddIn.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IPCConsumer">
+        <MSBuild Projects="..\..\..\..\temp\ipcclient test\IPCConsumer.dproj"/>
+    </Target>
+    <Target Name="IPCConsumer:Clean">
+        <MSBuild Projects="..\..\..\..\temp\ipcclient test\IPCConsumer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IPCConsumer:Make">
+        <MSBuild Projects="..\..\..\..\temp\ipcclient test\IPCConsumer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="consumer">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\consumer.dproj"/>
+    </Target>
+    <Target Name="consumer:Clean">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\consumer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="consumer:Make">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\consumer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="producer">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\producer.dproj"/>
+    </Target>
+    <Target Name="producer:Clean">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\producer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="producer:Make">
+        <MSBuild Projects="..\..\..\common\delphistompclient-master\tutorial\30_PublishSubscribe\producer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PstFileReader">
+        <MSBuild Projects="..\..\PstFileReader\PstFileReader.dproj"/>
+    </Target>
+    <Target Name="PstFileReader:Clean">
+        <MSBuild Projects="..\..\PstFileReader\PstFileReader.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PstFileReader:Make">
+        <MSBuild Projects="..\..\PstFileReader\PstFileReader.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Mail2SharedMMAddIn;IPCConsumer;consumer;producer;PstFileReader"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Mail2SharedMMAddIn:Clean;IPCConsumer:Clean;consumer:Clean;producer:Clean;PstFileReader:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Mail2SharedMMAddIn:Make;IPCConsumer:Make;consumer:Make;producer:Make;PstFileReader:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

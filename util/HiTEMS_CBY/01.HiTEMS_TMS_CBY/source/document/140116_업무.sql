@@ -1,0 +1,74 @@
+
+SELECT 
+    A.*, 
+    (SELECT COUNT(*) FROM TMS_ATTFILES WHERE OWNER LIKE A.PLAN_NO) FILECNT,
+    (SELECT COUNT(*) FROM TMS_TEST_INFO WHERE PLAN_NO LIKE A.PLAN_NO) TESTCNT     
+FROM
+(
+    SELECT 
+        PLAN_NO, A.PRN, TASK_NO, PLAN_CODE, CODE_NAME, PLAN_TYPE, PLAN_NAME, ENG_MODEL, ENG_TYPE, 
+        ENG_PROJNO, PLAN_START, PLAN_END, PLAN_MH, PLAN_PROGRESS, PLAN_DRAFTER, DRAFTER_NAME, SUBSTR(PLAN_TEAM,1,4) PLAN_TEAM, DEPT_NAME, PLAN_TEAM PART, NVL(MH,0) MH
+    FROM
+    (
+        SELECT 
+            A.PLAN_NO, A.PRN, TASK_NO, PLAN_CODE, CODE_NAME, PLAN_TYPE, PLAN_NAME, ENG_MODEL, ENG_TYPE, 
+            ENG_PROJNO, PLAN_START, PLAN_END, PLAN_MH, PLAN_PROGRESS, PLAN_DRAFTER, DRAFTER_NAME, PLAN_TEAM, DEPT_NAME
+        FROM
+        (
+            SELECT 
+                A.PLAN_NO, PRN, TASK_NO, PLAN_CODE, PLAN_TYPE, PLAN_NAME, ENG_MODEL, ENG_TYPE, 
+                ENG_PROJNO, PLAN_START, PLAN_END, PLAN_MH, PLAN_PROGRESS, PLAN_DRAFTER, CODE_NAME, DRAFTER_NAME
+            FROM    
+            (
+                SELECT PLAN_NO, MAX(PLAN_REV_NO) PRN FROM TMS_PLAN GROUP BY PLAN_NO
+            ) A JOIN
+            (
+                SELECT A.*, B.CODE_NAME, C.NAME_KOR DRAFTER_NAME FROM TMS_PLAN A, HITEMS_CODE_GROUP B, HITEMS_USER C
+                WHERE A.PLAN_CODE = B.GRP_NO
+                AND A.PLAN_DRAFTER = C.USERID
+            ) B
+            ON A.PLAN_NO = B.PLAN_NO
+            AND A.PRN = B.PLAN_REV_NO
+        ) A JOIN
+        (    
+            SELECT
+                A.PLAN_NO, PRN, PLAN_TEAM, DEPT_NAME 
+            FROM    
+            (
+                SELECT PLAN_NO, MAX(PLAN_REV_NO) PRN FROM TMS_PLAN GROUP BY PLAN_NO
+            ) A JOIN
+            (
+                SELECT A.PLAN_NO, A.PLAN_REV_NO, PLAN_TEAM, B.DEPT_NAME FROM TMS_PLAN_INCHARGE A, HITEMS_DEPT B
+                WHERE A.PLAN_TEAM = B.DEPT_CD
+                GROUP BY PLAN_NO, PLAN_REV_NO, PLAN_TEAM, DEPT_NAME
+            ) B
+            ON A.PLAN_NO = B.PLAN_NO
+            AND A.PRN = B.PLAN_REV_NO
+        ) B
+        ON A.PLAN_NO = B.PLAN_NO
+        AND A.PRN = B.PRN
+    ) A LEFT OUTER JOIN
+    (
+        SELECT PLAN_NO PN, DEPT_CD TN, SUM(RST_MH) MH FROM
+        (
+            SELECT 
+                A.PLAN_NO, A.RST_NO, B.RST_BY, B.RST_MH, C.DEPT_CD
+            FROM
+                TMS_RESULT A,
+                TMS_RESULT_MH B,
+                HITEMS_USER C
+            WHERE A.RST_NO = B.RST_NO
+            AND B.RST_BY = C.USERID
+        ) GROUP BY PLAN_NO, DEPT_CD   
+    ) B
+    ON A.PLAN_NO = B.PN
+    AND A.PLAN_TEAM = B.TN
+) A;
+    
+
+        
+
+
+          
+    
+SELECT A.*, (SELECT COUNT(*) FROM TMS_ATTFILES WHERE OWNER LIKE A.PLAN_NO) FILECNT FROM TMS_PLAN A;

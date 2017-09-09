@@ -1,0 +1,108 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{1B4C323D-B651-4CB4-84F7-94CCD558A90D}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="DPMS_TMS\source\DPMS_TMS.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DPMS_App_Manager\Source\DPMS_App_Manager.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DPMS_USER\Source\DPMS_USER.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DPMS_Login\Source\DPMS_Login.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DPMS_Update\Source\DPMS_Update.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DPMS\DPMS.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\OutLookAddIn\CalContextMenuAddIn\CalContextAddIn.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="DPMS_TMS">
+        <MSBuild Projects="DPMS_TMS\source\DPMS_TMS.dproj"/>
+    </Target>
+    <Target Name="DPMS_TMS:Clean">
+        <MSBuild Projects="DPMS_TMS\source\DPMS_TMS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS_TMS:Make">
+        <MSBuild Projects="DPMS_TMS\source\DPMS_TMS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DPMS_App_Manager">
+        <MSBuild Projects="DPMS_App_Manager\Source\DPMS_App_Manager.dproj"/>
+    </Target>
+    <Target Name="DPMS_App_Manager:Clean">
+        <MSBuild Projects="DPMS_App_Manager\Source\DPMS_App_Manager.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS_App_Manager:Make">
+        <MSBuild Projects="DPMS_App_Manager\Source\DPMS_App_Manager.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DPMS_USER">
+        <MSBuild Projects="DPMS_USER\Source\DPMS_USER.dproj"/>
+    </Target>
+    <Target Name="DPMS_USER:Clean">
+        <MSBuild Projects="DPMS_USER\Source\DPMS_USER.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS_USER:Make">
+        <MSBuild Projects="DPMS_USER\Source\DPMS_USER.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DPMS_Login">
+        <MSBuild Projects="DPMS_Login\Source\DPMS_Login.dproj"/>
+    </Target>
+    <Target Name="DPMS_Login:Clean">
+        <MSBuild Projects="DPMS_Login\Source\DPMS_Login.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS_Login:Make">
+        <MSBuild Projects="DPMS_Login\Source\DPMS_Login.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DPMS_Update">
+        <MSBuild Projects="DPMS_Update\Source\DPMS_Update.dproj"/>
+    </Target>
+    <Target Name="DPMS_Update:Clean">
+        <MSBuild Projects="DPMS_Update\Source\DPMS_Update.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS_Update:Make">
+        <MSBuild Projects="DPMS_Update\Source\DPMS_Update.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DPMS">
+        <MSBuild Projects="DPMS\DPMS.dproj"/>
+    </Target>
+    <Target Name="DPMS:Clean">
+        <MSBuild Projects="DPMS\DPMS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DPMS:Make">
+        <MSBuild Projects="DPMS\DPMS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CalContextAddIn">
+        <MSBuild Projects="..\OutLookAddIn\CalContextMenuAddIn\CalContextAddIn.dproj"/>
+    </Target>
+    <Target Name="CalContextAddIn:Clean">
+        <MSBuild Projects="..\OutLookAddIn\CalContextMenuAddIn\CalContextAddIn.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CalContextAddIn:Make">
+        <MSBuild Projects="..\OutLookAddIn\CalContextMenuAddIn\CalContextAddIn.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="DPMS_TMS;DPMS_App_Manager;DPMS_USER;DPMS_Login;DPMS_Update;DPMS;CalContextAddIn"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="DPMS_TMS:Clean;DPMS_App_Manager:Clean;DPMS_USER:Clean;DPMS_Login:Clean;DPMS_Update:Clean;DPMS:Clean;CalContextAddIn:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="DPMS_TMS:Make;DPMS_App_Manager:Make;DPMS_USER:Make;DPMS_Login:Make;DPMS_Update:Make;DPMS:Make;CalContextAddIn:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
