@@ -1,1 +1,0 @@
-HiMECS.exe /ufA379042.id /pf.\projects\18H4660(내구시험장).himecs
