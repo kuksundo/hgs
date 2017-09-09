@@ -1,0 +1,1054 @@
+********************************************************************************
+	                  TMCTL .Net 対応ライブラリ 取扱説明
+********************************************************************************
+
+
+はじめに
+
+  このたびは、当社製品をお買い上げいただきましてありがとうございます。
+  この取扱説明は、当社製品とＰＣとを接続して通信を行なう際に、簡単にプログラム
+  するためのライブラリ "TMCTLAPINet.DLL" についての使用条件・方法を説明したものです。
+  ご使用前にこの説明をよくお読みいただき、正しくお使いください。
+  このライブラリを使用して、実際に通信制御を行なうための、通信コマンドについては
+  各製品の通信インターフェースユーザーズマニュアルをお読み下さい。
+
+ご注意
+
+  本説明の内容は、性能・機能の向上などにより、将来予告なしに変更することがあり
+  ます。
+
+商標
+  ●Microsoft，MS-DOS， Windows，Windows NT，Visual BasicおよびVisual C++は，
+    米国 Microsoft Corporation の，米国および他の国における登録商標または商標です。
+  ●その他、本文中の社名や商品名は、各社の登録商標または商標です。
+  ●本文中の各社の登録商標または商標には、TM、(R)マークは表示していません。
+
+履歴
+2007年 12月	初版発行
+2009年 5月	第２版発行
+2009年 10月	第３版発行
+2010年 10月	第４版発行
+2010年 12月	第５版発行
+2011年 6月	第６版発行
+2012年 11月	第７版発行
+
+目次
+  １．動作環境
+	1.1 対象ＯＳと言語
+	1.2 ＲＡＭ
+	1.3 インターフェース
+  ２．通信可能製品
+	2.1 GPIB
+	2.2 RS232
+	2.3 USB
+	2.4 Ethernet
+	2.5 USBTMC
+	2.6 VXI-11
+  ３．使用方法
+	3.1 設定方法
+	3.2 概要
+	3.3 TMCTLクラス
+	3.3.1 定数定義
+	3.3.2 プロパティ
+	3.3.3 メソッド
+
+  １．動作環境
+	1.1 対象ＯＳと言語
+		対象ＯＳ     :Windows XP, Windows Vista, Windows 7
+		対象言語     :Microsoft Visual Basic 2005～Microsoft Visual Basic 2010
+			      Microsoft Visual C# 2005～Microsoft Visual C# 2010
+			      Microsoft Visual C++ 2005～Microsoft Visual C++ 2010
+		.NetFrameWork:Microsoft .Net FrameWork 2.0～Microsoft .Net FrameWork 4.0
+
+	1.2 ＲＡＭ
+		128Mバイト以上
+
+	1.3 インターフェース
+		GPIB          ：上記ＯＳ上で、National Instruments社製GPIB
+		              　インターフェースが動作する環境
+		              　(GPIBドライバがインストール済みの環境)
+		RS232         ：上記ＯＳ上で、シリアルポートが使用可能な環境
+		USB           ：上記ＯＳ上で、当社USBドライバがインストールされている環境
+		Ethernet      ：上記ＯＳ上で、Ethernetインターフェースが動作する環境
+		USBTMC(DL9000)：Windows XPで、当社USBTMCドライバがインストールされている環境
+		USBTMC        ：上記ＯＳ上で、当社USBTMCドライバがインストールされている環境
+		VXI-11        ：上記ＯＳ上で、Ethernetインターフェースが動作する環境
+
+  ２．通信可能製品
+	2.1 GPIB   ：当社GPIB搭載 IEEE St'd 488.2 準拠製品
+		     当社以外の製品も通信は行なえますが、一部使用できない機能
+		     があります(詳しくは、3,4章内の”使用できる関数”をご参照ください)。
+		(ご注意）当社製品で通信を行なう場合、ターミネータの設定は、
+			通常時は、LF及びEOI、バイナリーデータ転送時はEOIを
+			ご使用ください。
+
+	2.2 RS232   ：当社又は他社RS232搭載製品で、以下の設定が可能なもの
+			ボーレート：1200,2400,4800,9600,19200,38400,57600
+			データビット長とパリティ、ストップビットの組み合わせ：
+				・8ビット、ノーパリティ、１ストップビット
+				・7ビット、イブン、１ストップビット
+				・7ビット、オッド、１ストップビット
+			ハンドシェーク：
+				・NO-NO(ハンドシェークなし）
+				・XON-XON(ソフトウェアハンドシェーク）
+				・CTS-RTS(ハードウェアハンドシェーク）
+			ターミネータ：LF,CR+LF
+		     当社以外の製品も通信は行なえますが、一部使用できない機能
+		     があります(詳しくは、3,4章の”使用できる関数”をご参照ください)。
+		(ご注意）当社製品で通信を行なう場合の設定は、通常は以下の設定にしてください。
+			・8ビット、ノーパリティ、１ストップビット
+			・CTS-RTS(ハードウェアハンドシェーク）
+			・ターミネータ LF
+
+	2.3 USB     ：当社ディジタルオシロスコープ DL1740(ファームウェアバージョン1.10以降), DL1720,
+			DL750, DL1700E, DL7400, DL750P, DL1600, SL1400で、
+			USBインターフェースが搭載されているもの。
+			WT3000(ファームウェアバージョン2.01以降)で、USBインターフェースが搭載されているもの。
+			AQ7260, AQ7270, AQ2200で、USBインターフェースが搭載されているもの。
+		(ご注意）ターミネータ設定は、LF及びEOI、またはEOIを設定してください。
+			 回線接続中は、PCおよびDLの電源をOFFにしないようにしてください。
+			 DL9000,SB,DL/DLM6000シリーズのUSBでは、2.5のUSBTMCをご使用ください。
+
+	2.4 Ethernet：当社ディジタルオシロスコープ DL7100(ファームウェアバージョン3.02以降),
+			DL7200(ファームウェアバージョン3.02以降),
+			DL1740(ファームウェアバージョン1.30以降),
+			DL9000, DL1720, DL750, DL1700E, DL7400, DL750P, DL1600, SL1400, SB, DL/DLM6000で、
+			Ethernetインターフェースが搭載されているもの。
+			WT1600(ファームウェアバージョン2.01以降)で、
+			Ethernetインターフェースが搭載されているもの。
+			WT3000(ファームウェアバージョン2.01以降)で、
+			Ethernetインターフェースが搭載されているもの。
+			AQ7270で、Ethernetインターフェースが搭載されているもの。
+			AQ1100, AQ1200, AQ1300で、Ethernetインターフェースが搭載されているもの。
+
+	2.5 USBTMC  ：当社ディジタルオシロスコープ DL9000, SB, DLM2000, DL/DLM6000, DLM4000
+			ハイスピードデータアクイジションユニットSL1000,
+			WT500, WT1800, DL850/DL850V, GS200 ,GS610, GS820
+			AQ1100, AQ1200, AQ1300
+		(ご注意）ターミネータ設定は、LF及びEOI、またはEOIを設定してください。
+
+	2.6 VXI-11    : 当社ディジタルオシロスコープ DLM2000, DLM4000
+			ハイスピードデータアクイジションユニットSL1000,
+			WT500, WT1800, DL850/DL850V
+
+  ３．使用方法
+	3.1 設定方法
+		使用ファイル名：TmctlAPINet.dll
+
+		・アプリケーションが参照するディレクトリに"tmctl.dll"と"YKMUSB.dll"を
+		  入れてください。
+		・USBをご使用の場合は、"ykusb.dll"も入れてください。
+		・USBTMC（DL9000）をご使用の場合は、"USBTMCAPI.dll"も入れてください。
+
+	3.2 概要
+		本ライブラリは、ＰＣに接続されている制御対象のデバイスについて、
+		初期化関数で回線をつなぎます。そして、その引数として返ってくる
+		ID値をそのデバイスの識別IDとし、その他の送受信関数等は、そのID値を使用して、制御を行ないます。
+
+		本ライブラリは、クラスライブラリとして提供しています。
+		開発するプロジェクトにTmctlAPINet.dllを参照設定してください。
+		名前空間名：TmctlAPINet
+		クラス    ：TMCTL
+
+	3.3 TMCTLクラス
+		tmctlライブラリ（tmctl.dll）に実装している関数を.Net開発環境に提供するためのクラスです。
+
+	3.3.1 定数定義
+		TMCTLクラスには、以下の定数を定義しています。
+
+		// USBTMC2使用時専用。USBケーブルの抜き差しのメッセージ
+		TM_WM_DEVICECHANGE		抜き差し時のメッセージ
+
+		// 抜き差し時の詳細コード(Windows XP、Windows Vista、Windows 7のみ）
+		TM_DBT_DEVICEARRIVAL		挿入したときに発生
+		TM_DBT_DEVICEREMOVECOMPLETE	抜いたときに発生
+		TM_DBT_DEVNODES_CHANGED		ノード変更時
+
+		// Initlaize関数・SearchDevices関数に渡す回線の種類
+		TM_NO_CONTROL			予約:設定してはいけない
+		TM_CTL_GPIB			GPIB使用時
+		TM_CTL_RS232			RS232C使用時
+		TM_CTL_ETHER			Ethernet使用時
+		TM_CTL_ETHERUDP			予約:設定してはいけない
+		TM_CTL_VXI11			VXI-11対応製品
+		TM_CTL_USB			USBTMC以外のUSB使用時
+		TM_CTL_USBTMC			DL9000専用  USB使用時
+		TM_CTL_USBTMC2			DL9000以外のUSBTMC対応製品
+		TM_CTL_USB2			予約:設定してはいけない
+
+		// RS232のボーレート設定値
+		TM_RS_1200			ボーレート1200
+		TM_RS_2400			ボーレート2400
+		TM_RS_4800			ボーレート4800
+		TM_RS_9600			ボーレート9600
+		TM_RS_19200			ボーレート19200
+		TM_RS_38400			ボーレート38400
+		TM_RS_57600			ボーレート57600
+
+		// RS232のビット仕様
+		TM_RS_8N			8Bit,NoParity,1StopBit
+		TM_RS_7E			7Bit,EvenParity,1StopBit
+		TM_RS_7O			7Bit,OddParity,1StopBit
+
+		// RS232のハンドシェーク番号
+		TM_RS_NO			NO-NO
+		TM_RS_XON			XON-XON
+		TM_RS_HARD			CTS-RTS
+
+		// USBTMCでCheckUSBメソッドの返り値
+		TM_USB_CHECK_OK			指定したIDのデバイスは接続中
+		TM_USB_CHECK_NOTOPEN		指定したIDのデバイスはオープンしていない
+		TM_USB_CHECK_NODEVICE		指定したIDのデバイスは接続断
+
+		// USBTMCでGetPipeNoのType設定値
+		TM_USB_READPIPE			Readパイプ指定
+		TM_USB_WRITEPIPE		Writeパイプ指定
+		TM_USB_STATUSPIPE		Statusパイプ指定
+
+		TM_USB_INVALIDVALUE		予約
+
+		// エラー番号 GetLastError()で得られるエラーコード
+		TMCTL_NO_ERROR			0x00000000		// エラーなし
+		TMCTL_TIMEOUT			0x00000001		// タイムアウト
+		TMCTL_NO_DEVICE			0x00000002		// 対象デバイスが見つかりません
+		TMCTL_FAIL_OPEN			0x00000004		// デバイスとの接続に失敗しました
+		TMCTL_NOT_OPEN			0x00000008		// デバイスとの接続がされてません
+		TMCTL_DEVICE_ALREADY_OPEN	0x00000010		// デバイスはすでに接続されています
+		TMCTL_NOT_CONTROL		0x00000020		// パソコンが対応していません
+		TMCTL_ILLEGAL_PARAMETER		0x00000040		// 引数が不正です
+		TMCTL_SEND_ERROR		0x00000100		// 送信エラーです
+		TMCTL_RECV_ERROR		0x00000200		// 受信エラーです
+		TMCTL_NOT_BLOCK			0x00000400		// 受信データはブロックデータではありません
+		TMCTL_SYSTEM_ERROR		0x00001000		// システムエラーです
+		TMCTL_ILLEGAL_ID		0x00002000		// デバイスID値が不正です
+		TMCTL_NOT_SUPPORTED		0x00004000		// サポートされていない機能です
+		TMCTL_INSUFFICIENT_BUFFER	0x00008000		// 十分なバッファがありません。
+
+		// DEVICELIST構造体で使用
+		ADRMAXLEN			(64)			// メンバadrの文字列長
+
+	3.3.2 プロパティ
+		なし
+
+	3.3.3 メソッド
+		--------------------------------------------------------------------------------
+		int Initialize( int wire, string adr, ref int id )
+
+		機能：回線を初期化し、指定されたデバイスとの回線をつなぎます。
+		引数：	int	wire  回線の種類
+			string	adr   回線固有のアドレス
+			ref int	id    他の関数等で使用するそのデバイス専用のID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int	wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+			      GPIB		: wire = TM_CTL_GPIB(1)
+			      RS232		: wire = TM_CTL_RS232(2)
+			      USB		: wire = TM_CTL_USB(3)
+			      Ethernet		: wire = TM_CTL_ETHER(4)
+			      USBTMC(DL9000)	: wire = TM_CTL_USBTMC(5)
+			      EthernetUDP	: wire = TM_CTL_ETHERUDP(6)
+			      USBTMC(DL9000以外): wire = TM_CTL_USBTMC2(7)
+			      VXI-11		: wire = TM_CTL_VXI11(8)
+
+			string	adr
+			    制御対象デバイスのGPIBアドレスや、RS232の設定値を文字列として設定します。
+			    インターフェースによる設定の仕方は、以下の通りです。
+			      GPIB : adr = "1"～"30" (デバイスのGPIBアドレス値)
+			      RS232: adr = "ポート番号、ボーレート番号、ビット仕様、ハンドシェーク番号"
+				  ポート番号           1 = COM1
+						       2 = COM2
+						       3 = COM3
+				  ボーレート番号       0 = 1200
+						       1 = 2400
+						       2 = 4800
+						       3 = 9600
+						       4 = 19200
+						       5 = 38400
+						       6 = 57600
+				  ビット仕様	       0 = 8Bit,NoParity,1StopBit
+						       1 = 7Bit,EvenParity,1StopBit
+						       2 = 7Bit,OddParity,1StopBit
+				  ハンドシェーク番号   0 = NO-NO
+						       1 = XON-XON
+						       2 = CTS-RTS
+			      USB: adr = "1"～"127" (デバイスのUSB識別ID値)
+			      Ethernet: adr = "サーバ名、ユーザ名、パスワード名
+				  サーバ名              DLのサーバ名、またはIPアドレス
+				  ユーザ名              ユーザ名
+				  パスワード            パスワード
+					ユーザ名がanonymousの時は、パスワードは必要ありません。
+					(区切りのための、","カンマは必要です)
+			      USBTMC(DL9000): adr = "シリアル番号"
+				  シリアル番号		機器のシリアル番号
+			      USBTMC(DL9000以外): adr = "シリアル番号"をTmcEncodeSerialNumberでエンコードした番号
+				  シリアル番号		機器のシリアル番号
+			      VXI-11:  adr = "IPアドレス"
+
+			ref int	id
+			    初期化後の、各関数に渡すデバイスID値を格納するバッファを割り当てます。
+			    初期化が成功し、回線がつながると、ID値は０以上の整数値を返します。
+
+			戻り値は、初期化が成功すると、0が返ります。デバイスとの回線が開けなかって場合は1が返ります。
+			初期化成功時は、どの回線でも、以下の設定になっています。
+			・ターミネータ：LF(GPIB時は、LF又はEOI)
+			・タイムアウト：30秒
+		使用例：
+			GPIB アドレス 1:
+				ret = tmctl.Initialize( tmctl.TM_CTL_GPIB, "1", id )
+			RS232 COM1,57600,8-NO-1,CTS-RTS
+				ret = tmctl.Initialize( tmctl.TM_CTL_RS232, "1,6,0,2", id )
+			USB ID 1:
+				ret = tmctl.Initialize( tmctl.TM_CTL_USB, "1", id )
+			Ethernet IP = 11.22.33.44, User name = anonymous
+				ret = tmctl.Initialize( tmctl.TM_CTL_ETHER, "11.22.33.44,anonymous,", id )
+			Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+				ret = tmctl.Initialize( tmctl.TM_CTL_ETHER, "11.22.33.44,yokogawa,abcdefgh", id )
+			USBTMC(DL9000) シリアル番号 = 27E000001
+				ret = tmctl.Initialize( tmctl.TM_CTL_USBTMC, "27E000001", id )
+			USBTMC(GS200,GS820) シリアル番号 = 27E000001
+				ret = tmctl.Initialize( tmctl.TM_CTL_USBTMC2, "27E000001", id )
+			USBTMC(GS610) シリアル番号 = 27E000001
+				ret = tmctl.Initialize( tmctl.TM_CTL_USBTMC2, "27E000001C", id )
+			USBTMC(DL9000,GSシリーズ以外) シリアル番号 = 27E000001
+				Dim encode As StringBuilder
+				encode = New StringBuilder()	// インスタンスを生成する
+				ret = tmctl.EncodeSerialNumber(encode,encode.Length,"27E000001")
+				ret = tmctl.Initialize( tmctl.TM_CTL_USBTMC2, encode, id )
+			VXI-11  IP=11.22.33.44
+				ret = tmctl.Initialize( tmctl.TM_CTL_VXI11, "11.22.33.44", id )
+
+		--------------------------------------------------------------------------------
+		int DeviceClear( int id )
+
+		機能：選択されたデバイスのクリア(SDC)を実行します。GPIB専用命令です。
+		引数：  int id  デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int	id
+			    デバイスクリアを実行するデバイスID値を設定します。
+			    この関数は、GPIBとUSBTMC(DL9000以外)につながっているデバイス専用で、
+			    他のインターフェース経由のデバイスには、なにも行ないません。
+			    USBTMC(DL9000以外)では、USBTMC規格のInitiateClearを発行します。
+			    InitiateClearが成功するとClearFeatureを発行し処理を終了します。
+
+			デバイスクリアが成功すると0が返ります。ただし、GPIBとUSBTMC(DL9000以外)以外の
+			インターフェースに対して実行すると必ず0が返ります。
+
+		使用例：
+			ret = tmctl.DeviceClear( id )
+
+		--------------------------------------------------------------------------------
+		int Send( int id, string msg )
+		int Send( int id, StringBuilder msg )
+
+		機能：デバイスへメッセージを送信します。
+		引数：  int	id   デバイス値
+			string	msg  メッセージ文字列
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int		id
+			    メッセージを送信するデバイスIDを設定します。
+			string		msg
+			StringBuilder	msg
+			    メッセージ文字列を設定します。
+
+			ID値で指定されたデバイスへASCII文字列を送信します。
+			Binaryデータを送る時は、"SendByLength"を使用してください。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"SendSetup","SendOnly"を使用してください。
+
+		使用例：
+			ret = tmctl.Send( id, "START" )
+
+		--------------------------------------------------------------------------------
+		int SendByLength( int id, string msg, int len )
+		int SendByLength( int id, StringBuilder msg, int len )
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  int	id   デバイス値
+			string	msg  メッセージ文字列
+			int	len  送信するバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int		id
+			    メッセージを送信するデバイスIDを設定します。
+			string		msg
+			StringBuilder	msg
+			    メッセージを設定します。
+			int		len
+			    メッセージの送信バイト数を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"SendSetup","SendOnly"を使用してください。
+		使用例：
+			ret = tmctl.SendByLength( id, "START", 5 )
+
+		--------------------------------------------------------------------------------
+		int SendSetup( int id )
+
+		機能：デバイスへメッセージを送信する準備をします。
+		引数：  int   id   デバイス値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int	id
+			    メッセージを送信する準備をするデバイスIDを設定します。
+			ID値で指定されたデバイスへメッセージを送信する準備をします。
+			１メッセージを数回に分けて送信する時に送信前に１回実行します。
+			実際のメッセージの送信は、"SendOnly"を使用します。
+		使用例：
+			ret = tmctl.SendSetup( id )
+
+		--------------------------------------------------------------------------------
+		int SendOnly( int id, string msg, int len, int end )
+		int SendOnly( int id, StringBuilder msg, int len, int end )
+		int SendOnly( int id, ref sbyte data, int len, int end )
+		int SendOnly( int id, ref byte data, int len, int end )
+		int SendOnly( int id, ref short data, int len, int end )
+		int SendOnly( int id, ref ushort data, int len, int end )
+		int SendOnly( int id, ref int data, int len, int end )
+		int SendOnly( int id, ref uint data, int len, int end )
+		int SendOnly( int id, ref long data, int len, int end )
+		int SendOnly( int id, ref ulong data, int len, int end )
+		int SendOnly( int id, ref float data, int len, int end )
+		int SendOnly( int id, ref double data, int len, int end )
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  int		id   デバイス値
+			string		msg  メッセージ文字列
+			StringBuilder	msg  メッセージ文字列
+			sbyte		data 送信データ
+			byte		data 送信データ
+			short		data 送信データ
+			ushort		data 送信データ
+			int		data 送信データ
+			uint		data 送信データ
+			long		data 送信データ
+			ulong		data 送信データ
+			float		data 送信データ
+			double		data 送信データ
+			int		len  送信するバイト数
+			int		end  終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int		id
+			    メッセージを送信するデバイスIDを設定します。
+			string		msg
+			StringBuilder	msg
+			    メッセージを設定します。
+			sbyte		data
+			byte		data
+			short		data
+			ushort		data
+			int		data
+			uint		data
+			long		data
+			ulong		data
+			float		data
+			double		data
+			    バイナリデータを設定します。
+			int		len
+			    メッセージまたは、データの送信バイト数を設定します。
+			int		end
+			    今回の送信で送信終了かどうかを設定します。
+			    終了の場合は1を、まだ送信を続ける場合は0を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			終了フラグを1に設定して送信したときのみ、ターミネータをメッセージの最後に送信します。
+			そのため、終了フラグが0のうちは、デバイス側は一連のメッセージと判断します。
+		使用例：
+			ret = tmctl.SendSetup( id )
+			ret = tmctl.SendOnly( id, "STA", 3, 0 )
+			ret = tmctl.SendOnly( id, "RT", 2, 1 )
+
+		--------------------------------------------------------------------------------
+		int Receive( int id, ref string buff, ref int rlen )
+		int Receive( int id, [Out] StringBuilder buff, int blen, ref int rlen)
+
+		機能：デバイスから、メッセージを受信します。
+		引数：  int		id    デバイスID値
+			string		buff  受信データ用バッファ
+			StringBulder	buff	受信データ用バッファ
+			int		blen  受信サイズ（バイト単位）
+			ref int		rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			int		id
+			    メッセージを受信するデバイスIDを設定します。
+			string		buff
+			StringBuilder	buff
+			    受信メッセージを格納するバッファを設定します。
+			int		blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			ref int		rlen
+			    実際に受信したバイト数を返します。
+
+		ID値で指定されたデバイスからメッセージを受信します。ターミネータを検出した場合は、
+		そこまでのデータを、検出しなかった場合は、blenで指定されたバイト数までのデータを
+		受信します。
+		当社ディジタルオシロスコープとの通信で、"WAVeform:SEND?"、"IMAGe:SEND?"等のメッセージの
+		データを受信する場合は、"ReceiveBlockHeader","ReceiveBlockData"を使用してください。
+
+		使用例：
+			Dim	buff As String
+			ret = tmctl.Receive( id, buff, length )
+
+		--------------------------------------------------------------------------------
+		int ReceiveSetup( int id )
+
+		機能：デバイスから、メッセージを受信する準備をします。
+		引数：  int   id    デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージ受信の準備をするデバイスIDを設定します。
+
+			デバイスから、大量データを分割して受信する場合に、受信準備をするために実行します。
+			実際のデータは、"ReceiveOnly"を使用して受信します。
+
+		使用例：
+			ret = tmctl.ReceiveSetup( id )
+
+		--------------------------------------------------------------------------------
+		int ReceiveOnly( int id, ref string buff, ref int rlen)
+		int ReceiveOnly( int id, StringBuilder buff, int blen, ref int rlen)
+
+		機能：デバイスから、（受信準備後の）メッセージを受信します。
+		引数：  int		id    デバイスID値
+			ref string	buff  受信データ用バッファ
+			StringBuilder	buff  受信データ用バッファ
+			int		blen  受信サイズ（バイト単位）
+			ref int		rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    メッセージを受信するデバイスIDを設定します。
+			  ref strig	buff
+			  StringBuilder	buff
+			    受信メッセージを格納するバッファを設定します。
+			  int		blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  ref int	rlen
+			    実際に受信したバイト数を返します。
+
+			大量データを分割して受信する場合に使用します。
+			"TmcReceiveSetup"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			Dim buff As String
+			Dim buff1 As StringBuilder
+			Dim msg As String
+			Dim rlen As Integer
+
+			' テキストデータの送受信 CheckEndの返り値が1になるまで受信しないと全てのデータを受信したことにならない
+			buff = ":ACQuire?;:ACQuire?;:ACQuire?;*IDN?"
+			buff1 = New StringBuilder()
+			buff1.Length = 256
+			rlen = 0
+
+			ret = tmctl.Send(id, buff)
+			ret = tmctl.ReceiveSetup(m_ID)
+			ret = 1
+			While ret = 1
+				ret = tmctl.ReceiveOnly(m_ID, buff1, buff1.Length(), rlen)
+				ret = tmctl.CheckEnd(m_ID)
+				buff1.Remove(0, buff1.Length())
+				buff1.Length = 256
+			End While
+
+		--------------------------------------------------------------------------------
+		int ReceiveBlockHeader( int id, ref int length )
+
+		機能：デバイスから送られてくるBlock Dataのヘッダ部分を受信し、そのあとに続くデータバイト数を返します。
+		引数：  int		id      デバイスID値
+			ref int		length  Block Dataのデータバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    Block Dataを受信するデバイスIDを設定します。
+			  ref int	length
+			    Block Dataのバイト数を返します。
+		Block Dataを受信する時に最初に使用します。
+		lengthに、あとに続くデータバイト数が返ってきますので、そのバイト数＋１（ターミネータ）分を
+		"TmcReceiveBlockData"を使用してデータを受信します。			
+
+		使用例：
+			int length;
+			ret = tmctl.ReceiveBlockHeader( id, length )
+
+		--------------------------------------------------------------------------------
+		int ReceiveBlockData( int id, ref  sbyte buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref   byte buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref  short buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref ushort buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref    int buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref   uint buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref   long buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref  ulong buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref  float buff, int blen, ref int rlen, ref int end)
+		int ReceiveBlockData( int id, ref double buff, int blen, ref int rlen, ref int end)
+
+		機能：デバイスから送られてくるBlock Dataのデータ部分を受信します。
+		引数：  int		id    デバイスID値
+			ref sbyte	buff  受信データ用バッファ
+			ref byte	buff  受信データ用バッファ
+			ref short	buff  受信データ用バッファ
+			ref ushort	buff  受信データ用バッファ
+			ref int		buff  受信データ用バッファ
+			ref uint	buff  受信データ用バッファ
+			ref long	buff  受信データ用バッファ
+			ref ulong	buff  受信データ用バッファ
+			ref float	buff  受信データ用バッファ
+			ref double	buff  受信データ用バッファ
+			int		blen  受信サイズ（バイト単位）
+			ref int		rlen  実受信バイト数
+			ref int		end   終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    メッセージを受信するデバイスIDを設定します。
+			  ref sbyte	buff
+			  ref byte	buff
+			  ref short	buff
+			  ref ushort	buff
+			  ref int	buff
+			  ref uint	buff
+			  ref long	buff
+			  ref ulong	buff
+			  ref float	buff
+			  ref double	buff
+			    受信メッセージを格納するバッファを設定します。
+			    受信するデータの型に合わせて、バッファの種類を決めてください。
+			  int blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  ref int	rlen
+			    実際に受信したバイト数を返します。
+			  ref int	end
+			    "ReceiveBlockHeader"で受信したデータバイト数をすべて受信し終わったかどうかを返します。
+			    終わっている場合は1を、まだ残っている場合は0を返します。
+
+			ブロックデータ(#～で始まるメッセージ)を受信する場合に使用します。
+			"ReceiveBlockHeader"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			Dim buff As String
+			Dim rlen As Integer
+			Dim data(999) As Short
+			Dim end1 As Integer
+
+			' バイナリデータ受信  あらかじめ機器が、データを取っていないと1000点のデータは返ってこない
+			' buff = ":DATA:RAW? 1,1,1,1000"        ' SL1000用
+			buff = ":WAVedata:SEND:BINary?"         ' AQ7270用
+
+			rlen = 0
+			end1 = 0
+			ret = tmctl.Send(m_ID, buff)
+			ret = tmctl.ReceiveBlockHeader(m_ID, rlen)
+			While (end1 <> 1)   ' Endフラグがたつまで受信を続ける
+				ret = tmctl.ReceiveBlockData(m_ID, data(0), 1000, rlen, end1)
+			End While
+
+		--------------------------------------------------------------------------------
+		int CheckEnd( int id )
+
+		機能：デバイスからのメッセージが終了したかどうかを返します。GPIB、USB、Ethernet、USBTMC
+			インターフェースで使用できます。
+		引数：  int   id    デバイスID値
+		戻り値： 1 = メッセージあり, 0 = メッセージ終了
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージ受信終了をチェックするデバイスIDを設定します。
+
+			一連の受信メッセージを分割して受信したとき、"ReceiveOnly"ですべて受信し終わったかどうか
+			を返します。
+		使用例：
+			Dim buff As String
+			Dim buff1 As StringBuilder
+			Dim msg As String
+			Dim rlen As Integer
+
+			' テキストデータの送受信 CheckEndの返り値が0になるまで受信しないと全てのデータを受信したことにならない
+			buff = ":ACQuire?;:ACQuire?;:ACQuire?;*IDN?"
+			buff1 = New StringBuilder()
+			buff1.Length = 256
+			rlen = 0
+
+			ret = tmctl.Send(id, buff)
+			ret = tmctl.ReceiveSetup(m_ID)
+			ret = 1
+			While ret = 1
+				ret = tmctl.ReceiveOnly(m_ID, buff1, buff1.Length(), rlen)
+				ret = tmctl.CheckEnd(m_ID)
+				buff1.Remove(0, buff1.Length())
+				buff1.Length = 256
+			End While
+
+		--------------------------------------------------------------------------------
+		int SetRen( int id, int flag )
+
+		機能：デバイスをリモート／ローカル状態にします。GPIB以外での使用は、当社製品に限定されます。
+		引数：  int  id  デバイスID値
+			int  flag  リモート(1)／ローカル(0)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    リモート／ローカル状態にするデバイスID値を設定します。
+			  int flag
+			    リモートにする場合は1、ローカルにする場合は0を送ります。
+
+			インターフェースの種類によって、動作が若干異なります。
+			GPIBの場合は、RENラインをTRUE/FALSEにします。
+			そのため、実際にリモートにする場合は、そのあと、そのデバイスに対して、
+			なんらかのメッセージを送信した場合に、初めてリモートとなります。
+			（デバイス個別のリモート／ローカル操作は行ないません。）
+			RS232、USB、Ethernetの場合は、当社488.2準拠品で、通信メッセージにCOMMunicateグループを
+			サポートしているものに限ります。この場合は、デバイス個別に操作できます。
+			USBTMCでは、コントロール転送により、リモート／ローカル切り替えを行います。
+
+		使用例：
+			ret = tmctl.SetRen(m_ID, 1)
+
+		--------------------------------------------------------------------------------
+		int GetLastError( int id )
+
+		機能：最後に発生したエラーのエラー番号を返します。
+		引数：  int id  デバイスID値
+		戻り値：エラー番号
+
+		詳細：
+			引数説明
+			  int id
+			    エラー番号を取得するデバイスID値を設定します。
+
+			そのデバイスの最後に発生したエラー番号を返します。
+			初期化関数を含め、関数の戻り値0( = OK)以外の場合に、この関数を使用して、
+			実際のエラー番号を取得します。
+
+		使用例：
+			Dim	err As Integer
+
+			ret = tmctl.Send( id, "START" )
+			if( ret <> 0 ) Then
+				err = tmctl.GetLastError( id )
+			End if
+
+		--------------------------------------------------------------------------------
+		int SetTerm( int id, int eos, int eot )
+
+		機能：メッセージの送受信における、ターミネータを設定します。
+		引数：  int  id   デバイスID値
+			int  eos  ターミネータ
+			int  eot  EOI
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    ターミネータを設定するデバイスID値を設定します。
+			  int eos
+			    ターミネータを設定します。設定値は、以下の通りです。
+			    eos = 0 : CR+LF
+			        = 1 : CR
+			        = 2 : LF
+			        = 3 : EOI(GPIB)又はなし(RS232、USB、Ethernet)
+			    インターフェースがGPIBで、eosが3のときにEOIを使用するかどうかは、eotで設定します。
+			  int eot
+			    ターミネータにEOIを使用するかどうか設定します。GPIB専用です。
+
+			ターミネータを設定します。当社製品との通信を行なう場合には、どのインターフェースでも、
+			基本的には、以下の設定をしてください。
+				int ret = TmcSetTerm( id, 2, 1 ); /* eos = LF, eot = TRUE */
+			binaryデータ受信時には、eos = LFの設定のままですと、binaryコードにLFコードが含まれている場合、
+			そこで終了と判断してしまいます。ただし、当社製品でブロックデータを受信する時は、
+			"TmcReceiveBlockHeader","TmcReceivceBlockData"を使用した場合は、ターミネータを切り替える
+			必要はありません。
+
+			DL9000以外のUSBTMCでは、この関数はサポートしていません。この関数を使う必要はありません。
+
+		使用例：
+			ret = tmctl.SetTerm( id, 2, 1 )
+
+		--------------------------------------------------------------------------------
+		int SetTimeout( int id, int tmo )
+
+		機能：通信のタイムアウト時間を設定します。
+		引数：  int  id   デバイスID値
+			int  tmo  タイムアウト時間(100～6553600ms)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    タイムアウトを設定するデバイスID値を設定します。
+			  int tmo
+			    タイムアウト時間を設定します。100ms単位です。
+			    tmo = 0の場合は、
+				GPIB   : タイムアウト無限
+				その他 : タイムアウトなし
+			通信のタイムアウト時間を設定します。
+			当社製品の場合は、通常30s以上を設定してください。
+			（タイムアウト時間を長くしても、全体のパフォーマンスには影響ありません。）
+
+		使用例：
+			ret = tmctl.SetTimeout( id, 300 )	/* 30s */
+
+		--------------------------------------------------------------------------------
+		int Finish( int id )
+
+		機能：デバイスとつなげている回線を閉じます。
+		引数：  int  id   デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    回線を閉じるデバイスID値を設定します。
+
+			"Initialize"(初期化関数)で開いた回線を閉じます。
+			この関数は、通信を終了する時には、必ず実行してください。
+
+		使用例：
+			ret = tmctl.Finish( id )
+
+		--------------------------------------------------------------------------------
+		int SearchDevices( int wire, [Out] DEVICELIST[] list, int max, ref int num, string option )
+
+		機能：指定した回線につながっている機器のリストを返します。
+		引数：  int			wire	回線の種類
+			[Out]DEVICELIST[]	list	見つかった機器を示す文字列が入る配列へのポインタ
+			int			max	見つかった機器を示す文字列の配列数
+			ref int			num	見つかった機器の数
+			string			option	機器ごとに必要な引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+				GPIB			: サポート外
+				RS232			: サポート外
+				USB			: サポート外
+				Ethernet		: サポート外
+				USBTMC(DL9000)		: サポート外
+				EthernetUDP		: サポート外
+				USBTMC(DL9000以外)	: wire = TM_CTL_USBTMC2(7)
+				VXI-11			: wire = TM_CTL_VXI11(8)
+
+			  [out] DEVICELIST[]	list
+			  public	struct DEVICELIST
+			  {
+				[MarshalAs(UnmanagedType.ByValTStr, SizeConst = TMCTL.ADRMAXLEN)]
+				public string    adr;
+			  }
+
+			  GPIB・RS232・USB・Ethernet・USBTMC(DL9000)は未定。
+			  USBTMCのとき、エンコードしたシリアル番号が返る。
+			  VXI-11のとき、ipアドレスが返る。
+
+			  int		max
+			    ユーザーが用意した上記構造体の配列の数。
+			  ref int	num
+			    取得した機器数
+			  string	option
+			    VXI-11：マスクしたいIPアドレスを文字列にしたもの
+			    USBTMC：不要
+			    その他：未定
+		使用例：
+			Dim list As DEVICELIST()
+			Dim num As Integer
+
+			ReDim Preserve list(127)
+			num = 0
+			ret = 1
+			ret = tmctl.SearchDevices(tmctl.TM_CTL_USBTMC2, list, 128, num, "")
+			ret = tmctl.Initialize(tmctl.TM_CTL_USBTMC2, list(0).adr, id) // USBTMC(DL9000以外)のとき
+
+		--------------------------------------------------------------------------------
+		int EncodeSerialNumber( StringBuilder encode, int len, string src )
+
+		機能： 銘盤のシリアル番号をUSB内部シリアル番号に変換します。
+		引数：  StringBuilder	encode		変換したUSB内部シリアル番号
+			int		len		encodeのバッファの大きさ（バイト数）
+			string		src		銘盤に書かれているシリアル番号
+		戻り値： 0 = OK
+
+		詳細：
+			引数説明
+			  StringBuilder		encode
+			    変換したUSB内部シリアル番号を格納するバッファへのポインタ
+			  int			len
+			    上記バッファの大きさ
+			  string		src
+			    銘盤に書かれている機器のシリアル番号が書かれたバッファへのポインタ
+
+		使用例：
+			Dim encode As StringBuilder
+
+			encode = New StringBuilder()
+			' 銘盤のシリアル番号をUSB内部シリアル番号に変換する。
+			ret = tmctl.EncodeSerialNumber(encode, encode.Length, "12W929658")
+			ret = tmctl.Initialize(tmctl.TM_CTL_USBTMC2, encode.ToString(), id)
+
+		--------------------------------------------------------------------------------
+		int DecodeSerialNumber( StringBuilder decode, int len, string src )
+
+		機能： USB内部シリアル番号を銘盤のシリアル番号に変換します。
+		引数：  StringBuilder	decode		srcをデコードした文字列(銘盤に書かれている機器のシリアル番号)
+			int		len		decodeのバッファの大きさ（バイト数）
+			string		src		変換したいUSB内部シリアル番号
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  StringBuilder		decode
+			   srcをデコードした文字列。(銘盤に書かれている機器のシリアル番号)
+			  int			len
+			    上記バッファの大きさ
+			  string		src
+			    変換したいUSB内部シリアル番号文字列
+
+		使用例：
+			Dim encode As StringBuilder
+			Dim decode As StringBuilder
+
+			' Encode/Decode関数の動作確認 Encodeは、USBTMC(TM_CTL_USBTMC2)のシリアル番号の設定に必要
+			encode = New StringBuilder("aaa")
+			encode.Length = 256
+			decode = New StringBuilder()
+			decode.Length = 256
+			Console.WriteLine("EncodeSerialNumber:len={0}", encode.Length)
+			ret = tmctl.EncodeSerialNumber(encode, encode.Length, "12W929658")
+			Console.WriteLine("EncodeSerialNumber:ret={0} encode={1}", ret, encode)
+			ret = tmctl.DecodeSerialNumber(decode, decode.Length, encode.ToString())
+			Console.WriteLine("DecodeSerialNumber:ret={0} decode={1}", ret, decode)
+
+		--------------------------------------------------------------------------------
+		int WaitSRQ( int id, ref byte stsbyte, int tout)
+
+		機能：指定したID機器のSRQを受け付けます。
+		引数：  int		id	デバイス値
+			ref byte	stsbyte	ステータスバイト格納バッファへのポインタ
+			int		tout	タイムアウト値 (100msec単位)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    SRQを受信するデバイスIDを設定します。
+			  ref byte	stsbyte
+			    SRQの要因が設定される。
+			  int		tout
+			    タイムアウト値 100msec単位で設定します。
+
+		使用例：
+			Dim sts As Byte
+			// タイムアウト値１０秒でSRQ待ち
+			ret = tmctl.WaitSRQ( id, sts, 100)
+
+		--------------------------------------------------------------------------------
+		int AbortWaitSRQ(int id)
+
+		機能：指定した機器のSRQ待ち関数の待ち状態を解除します。
+		引数：  int	id	デバイス値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	id
+			    SRQ待ち関数の待ち状態を解除する対象のデバイスIDを設定します。
+
+		使用例：
+			ret = tmctl.AbortWaitSRQ( id )
+
+		--------------------------------------------------------------------------------
+		int SetCallback(int id, Hndlr func, uint p1, uint p2)
+
+		機能：SRQ発生時コールバックルーチンを登録します。
+		引数：  int		id	デバイス値
+			Hndlr		func	コールバック関数へのポインタ
+			uint		p1	uint型第一引数
+			uint		p2	uint型第二引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    コールバック関数を設定する機器のデバイスIDを設定します。
+			  Hndlr		func
+			    public delegate void Hndlr(int id, byte buff, uint p1, uint p2)
+			    SRQ発生時呼び出されるコールバック関数へのポインタを設定します。
+			  uint		p1
+			    コールバック関数へ渡す第一引数
+			  uint		p2
+			    コールバック関数へ渡す第二引数
+
+		使用例：
+			Public Method As TMCTL.Hndlr            ' Callback関数  SRQ受信をCallback関数で取得する例
+			Method = New TMCTL.Hndlr(AddressOf func1)   ' Callback関数  SRQ受信をCallback関数で取得する例
+
+		Public Shared Sub func1(ByVal id As Integer, ByVal buff As Byte, ByVal p1 As UInteger, ByVal p2 As UInteger)
+			' SRQ取得用Callback関数
+			Console.WriteLine("id={0} buff={1} p1={2} p2={3}", id, buff, p1, p2)
+		End Sub
+
+			Public p1 As UInteger = 1
+			Public p2 As UInteger = 2
+
+		Private Sub Button15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button15.Click
+			' Callback関数を設定する
+			ret = tmctl.SetCallback(m_ID, Method, p1, p2)
+			Console.WriteLine("SetCallback:ret={0}", ret)
+		End Sub
+
+		--------------------------------------------------------------------------------
+		int ResetCallback(int id)
+
+		機能：SRQ発生時コールバックルーチンを削除します。
+		引数：  int		id	デバイス値
+
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			  登録したコールバック関数を削除する機器のデバイスIDを設定します。
+
+		使用例：
+			' Callback関数の設定を解除する
+			ret = tmctl.ResetCallback( id )

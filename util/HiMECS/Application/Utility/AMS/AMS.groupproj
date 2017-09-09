@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{C61C5CFA-FD3A-43C0-A2EE-0133F82586B9}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Server\AMSServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Client\AMSReporter.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="test\Project4.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\..\..\ModbusMapConf_Old\ModbusMapConfp.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="AMSServer">
+        <MSBuild Projects="Server\AMSServer.dproj"/>
+    </Target>
+    <Target Name="AMSServer:Clean">
+        <MSBuild Projects="Server\AMSServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AMSServer:Make">
+        <MSBuild Projects="Server\AMSServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="AMSReporter">
+        <MSBuild Projects="Client\AMSReporter.dproj"/>
+    </Target>
+    <Target Name="AMSReporter:Clean">
+        <MSBuild Projects="Client\AMSReporter.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AMSReporter:Make">
+        <MSBuild Projects="Client\AMSReporter.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Project4">
+        <MSBuild Projects="test\Project4.dproj"/>
+    </Target>
+    <Target Name="Project4:Clean">
+        <MSBuild Projects="test\Project4.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project4:Make">
+        <MSBuild Projects="test\Project4.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ModbusMapConfp">
+        <MSBuild Projects="..\..\..\..\ModbusMapConf_Old\ModbusMapConfp.dproj"/>
+    </Target>
+    <Target Name="ModbusMapConfp:Clean">
+        <MSBuild Projects="..\..\..\..\ModbusMapConf_Old\ModbusMapConfp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ModbusMapConfp:Make">
+        <MSBuild Projects="..\..\..\..\ModbusMapConf_Old\ModbusMapConfp.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="AMSServer;AMSReporter;Project4;ModbusMapConfp"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="AMSServer:Clean;AMSReporter:Clean;Project4:Clean;ModbusMapConfp:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="AMSServer:Make;AMSReporter:Make;Project4:Make;ModbusMapConfp:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

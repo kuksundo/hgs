@@ -1,0 +1,128 @@
+;; tds560usb_plus.inf
+
+;--------- Version Section ---------------------------------------------------
+
+[Version]
+Signature="$WINDOWS NT$"
+Provider=%ProviderName%
+
+
+Class=NewDeviceClass
+ClassGUID={64E45EBE-F0D7-4DBB-BC8C-06357C98AAD3}
+
+;--------- SourceDiskNames and SourceDiskFiles Section -----------------------
+
+; These sections identify source disks and files for installation.  They are
+; shown here as an example, but commented out.
+
+;[SourceDisksNames]
+;1 = "Install Disk",Disk1,,
+
+;[SourceDisksFiles]
+;tds560usb_plus.sys = 1,,
+
+;--------- ClassInstall/ClassInstall32 Section -------------------------------
+
+; Not necessary if using a standard class
+
+; 9X Style
+[ClassInstall]
+Addreg=Class_AddReg
+
+; NT Style
+[ClassInstall32]
+Addreg=Class_AddReg
+
+[Class_AddReg]
+HKR,,,,%DeviceClassName%
+HKR,,Icon,,"101"
+
+[PreCopySection]
+HKR,,NoSetupUI,,1
+
+;--------- DestinationDirs Section -------------------------------------------
+
+[DestinationDirs]
+TDS560USB_Plus_Files_Driver = 10,System32\Drivers
+
+;--------- Manufacturer and Models Sections ----------------------------------
+
+[Manufacturer]
+%MfgName%=Mfg0
+
+[Mfg0]
+%DeviceDesc%=TDS560USB_Plus_DDI, USB\VID_1105&PID_E504
+
+;---------- DDInstall Sections -----------------------------------------------
+; --------- Windows 9X -----------------
+
+; Experimentation has shown that DDInstall root names greater than 19 characters
+; cause problems in Windows 98
+
+[TDS560USB_Plus_DDI]
+CopyFiles=TDS560USB_Plus_Files_Driver
+AddReg=TDS560USB_Plus_9X_AddReg
+
+[TDS560USB_Plus_9X_AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,tds560usb_plus.sys
+HKR, "Parameters", "BreakOnEntry", 0x00010001, 0
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","BreakInKernel",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","BreakOnEntry",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","DebugMask",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","LogEvents",0x10001,00000001
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","SDRAMREF",0x10001,1a,06,00,00
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE0",0x10001,30,00,00,00
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE1",0x10001,21,0c,b1,12
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE2",0x10001,30,00,00,00
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE3",0x10001,21,0c,14,43
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_GCTL",0x10001,6b,37,00,00
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_SDRAMCTL",0x10001,00,60,11,07
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","FIRMWARE_DELAY",0x10001,c8,00,00,00
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","GUID",0x00000,{64E45EBE-F0D7-4DBB-BC8C-06357C98AAD3}
+
+; --------- Windows NT -----------------
+
+[TDS560USB_Plus_DDI.NT]
+CopyFiles=TDS560USB_Plus_Files_Driver
+AddReg=TDS560USB_Plus_NT_AddReg
+
+[TDS560USB_Plus_DDI.NT.Services]
+Addservice = TDS560USB_Plus, 0x00000002, TDS560USB_Plus_AddService
+
+[TDS560USB_Plus_AddService]
+DisplayName    = %SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\TDS560USB_Plus.sys
+
+[TDS560USB_Plus_NT_AddReg]
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","BreakInKernel",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","BreakOnEntry",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","DebugMask",0x10001,00000000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","LogEvents",0x10001,00000001
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","SDRAMREF",0x10001,0x0000061A
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE0",0x10001,0x00000030
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE1",0x10001,0x12B10C21
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE2",0x10001,0x00000030
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_CE3",0x10001,0x43140C21
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_GCTL",0x10001,0x0000376B
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","EMIF_SDRAMCTL",0x10001,0x07116000
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","FIRMWARE_DELAY",0x10001,0xc8
+HKLM,"System\CurrentControlSet\Services\TDS560USB_Plus\Parameters","GUID",0x00000,{64E45EBE-F0D7-4DBB-BC8C-06357C98AAD3}
+
+
+; --------- Files (common) -------------
+
+[TDS560USB_Plus_Files_Driver]
+TDS560USB_Plus.sys
+
+;--------- Strings Section ---------------------------------------------------
+
+[Strings]
+ProviderName="Wintech Digital"
+MfgName="Wintech Digital"
+DeviceDesc="TDS560USB PLUS Emulator for Windows 2000/XP/2003"
+DeviceClassName="WintechDigital JTAG Emulator"
+SvcDesc="WintechDigital TDS560USB PLUS JTAG Emulator for Windows 2000/XP/2003"

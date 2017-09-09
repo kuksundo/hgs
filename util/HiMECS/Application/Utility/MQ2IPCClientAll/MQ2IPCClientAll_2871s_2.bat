@@ -1,0 +1,1 @@
+MQ2IPCClientAll.exe /f2871s_2.INI

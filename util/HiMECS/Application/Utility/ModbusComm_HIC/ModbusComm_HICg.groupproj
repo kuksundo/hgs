@@ -1,0 +1,72 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{3BAC85B5-EA52-41FF-B46D-E8B81F1618D3}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="ModBusComm_HIC.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\HICParameter\HICParameterSet.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\Watch2\HiMECS_Watch2p.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\..\..\..\ModbusMapConf\ModbusMapConfp.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="ModBusComm_HIC">
+			<MSBuild Projects="ModBusComm_HIC.dproj"/>
+		</Target>
+		<Target Name="ModBusComm_HIC:Clean">
+			<MSBuild Projects="ModBusComm_HIC.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="ModBusComm_HIC:Make">
+			<MSBuild Projects="ModBusComm_HIC.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="HICParameterSet">
+			<MSBuild Projects="..\HICParameter\HICParameterSet.dproj"/>
+		</Target>
+		<Target Name="HICParameterSet:Clean">
+			<MSBuild Projects="..\HICParameter\HICParameterSet.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="HICParameterSet:Make">
+			<MSBuild Projects="..\HICParameter\HICParameterSet.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="HiMECS_Watch2p">
+			<MSBuild Projects="..\Watch2\HiMECS_Watch2p.dproj"/>
+		</Target>
+		<Target Name="HiMECS_Watch2p:Clean">
+			<MSBuild Projects="..\Watch2\HiMECS_Watch2p.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="HiMECS_Watch2p:Make">
+			<MSBuild Projects="..\Watch2\HiMECS_Watch2p.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="ModbusMapConfp">
+			<MSBuild Projects="..\..\..\..\ModbusMapConf\ModbusMapConfp.dproj"/>
+		</Target>
+		<Target Name="ModbusMapConfp:Clean">
+			<MSBuild Projects="..\..\..\..\ModbusMapConf\ModbusMapConfp.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="ModbusMapConfp:Make">
+			<MSBuild Projects="..\..\..\..\ModbusMapConf\ModbusMapConfp.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="ModBusComm_HIC;HICParameterSet;HiMECS_Watch2p;ModbusMapConfp"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="ModBusComm_HIC:Clean;HICParameterSet:Clean;HiMECS_Watch2p:Clean;ModbusMapConfp:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="ModBusComm_HIC:Make;HICParameterSet:Make;HiMECS_Watch2p:Make;ModbusMapConfp:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

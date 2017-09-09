@@ -1,0 +1,17 @@
+unit IPCThrdConst_MEXA7000;
+
+interface
+
+const
+  MAX_CLIENTS        = 6;
+  TIMEOUT            = 2000;
+  BUFFER_NAME        = 'BUFFER_NAME_MEXA7000';
+  BUFFER_MUTEX_NAME  = 'BUFFER_MUTEX_MEXA7000';
+  MONITOR_EVENT_NAME = 'MONITOR_EVENT_MEXA7000';
+  CLIENT_EVENT_NAME  = 'CLIENT_EVENT_MEXA7000';
+
+implementation
+
+
+end.
+ 

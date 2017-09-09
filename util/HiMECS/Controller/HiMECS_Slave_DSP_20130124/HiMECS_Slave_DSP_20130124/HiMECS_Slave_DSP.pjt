@@ -1,0 +1,66 @@
+; Code Composer Project File, Version 2.0 (do not modify or remove this line)
+
+[Project Settings]
+ProjectDir="D:\Project\HIMECS\2013_HIMECS\Program\HIMECS_Slave_DSP_Modbus\HiMECS_Slave_DSP_20130115\"
+ProjectType=Executable
+CPUFamily=TMS320C28XX
+Tool="Compiler"
+Tool="CustomBuilder"
+Tool="DspBiosBuilder"
+Tool="Linker"
+Config="Debug"
+Config="Release"
+
+[Source Files]
+Source="source\DSP2833x_ADC_cal.asm"
+Source="source\DSP2833x_CodeStartBranch.asm"
+Source="source\DSP2833x_CpuTimers.c"
+Source="source\DSP2833x_DefaultIsr.c"
+Source="source\DSP2833x_GlobalVariableDefs.c"
+Source="source\DSP2833x_PieCtrl.c"
+Source="source\DSP2833x_PieVect.c"
+Source="source\DSP2833x_SysCtrl.c"
+Source="source\DSP2833x_usDelay.asm"
+Source="source\Slave_DSP_AD7793.c"
+Source="source\Slave_DSP_Analog_Input.c"
+Source="source\Slave_DSP_BIT.c"
+Source="source\Slave_DSP_CAN.c"
+Source="source\Slave_DSP_Debug_SCI.c"
+Source="source\Slave_DSP_Digital_IO.c"
+Source="source\Slave_DSP_External_Interface.c"
+Source="source\Slave_DSP_GPIO.c"
+Source="source\Slave_DSP_I2C.c"
+Source="source\Slave_DSP_Internal_Thermo.c"
+Source="source\Slave_DSP_main.c"
+Source="source\Slave_DSP_McBSP.c"
+Source="source\Slave_DSP_Modbus485.c"
+Source="source\Slave_DSP_RTD.c"
+Source="source\Slave_DSP_SPI.c"
+Source="source\Slave_DSP_Thermocouple.c"
+Source="cmd\28335_RAM_Edited.cmd"
+Source="cmd\DSP2833x_Headers_nonBIOS.cmd"
+
+["Compiler" Settings: "Debug"]
+Options=-g -pdsw225 -fr"$(Proj_dir)\Debug" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 --float_support=fpu32
+
+["Compiler" Settings: "Release"]
+Options=-pdsw225 -o3 -fr"$(Proj_dir)\Release" -d"LARGE_MODEL" -ml -v28
+
+["Linker" Settings: "Debug"]
+Options=-c -m".\Debug\HiMECS_Slave_DSP.map" -o".\Debug\HiMECS_Slave_DSP.out" -stack0x400 -w -x -l".\lib\rts2800_fpu32.lib"
+
+["Linker" Settings: "Release"]
+Options=-c -m".\Release\HiMECS_Slave_DSP.map" -o".\Release\HiMECS_Slave_DSP.out" -w -x
+
+["cmd\28335_RAM_Edited.cmd" Settings: "Debug"]
+LinkOrder=1
+
+["cmd\28335_RAM_Edited.cmd" Settings: "Release"]
+LinkOrder=1
+
+["cmd\DSP2833x_Headers_nonBIOS.cmd" Settings: "Debug"]
+LinkOrder=1
+
+["cmd\DSP2833x_Headers_nonBIOS.cmd" Settings: "Release"]
+LinkOrder=1
+

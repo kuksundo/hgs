@@ -1,0 +1,17 @@
+unit IPCThrdConst_MT210;
+
+interface
+
+const
+  MAX_CLIENTS        = 6;
+  TIMEOUT            = 2000;
+  BUFFER_NAME        = 'BUFFER_NAME_MT210';
+  BUFFER_MUTEX_NAME  = 'BUFFER_MUTEX_MT210';
+  MONITOR_EVENT_NAME = 'MONITOR_EVENT_MT210';
+  CLIENT_EVENT_NAME  = 'CLIENT_EVENT_MT210';
+
+implementation
+
+
+end.
+ 

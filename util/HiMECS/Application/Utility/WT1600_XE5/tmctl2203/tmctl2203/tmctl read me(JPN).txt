@@ -1,0 +1,1945 @@
+********************************************************************************
+	                  TMCTL ライブラリ 取扱説明
+********************************************************************************
+
+
+はじめに
+
+  このたびは、当社製品をお買い上げいただきましてありがとうございます。
+  この取扱説明は、当社製品とＰＣとを接続して通信を行なう際に、簡単にプログラム
+  するためのライブラリ "TMCTL.DLL" についての使用条件・方法を説明したものです。
+  ご使用前にこの説明をよくお読みいただき、正しくお使いください。
+  このライブラリを使用して、実際に通信制御を行なうための、通信コマンドについては
+  各製品の通信インターフェースユーザーズマニュアルをお読み下さい。
+
+ご注意
+
+  本説明の内容は、性能・機能の向上などにより、将来予告なしに変更することがあり
+  ます。
+
+商標
+  ●Microsoft，MS-DOS， Windows，Windows NT，Visual BasicおよびVisual C++は，
+    米国 Microsoft Corporation の，米国および他の国における登録商標または商標です。
+  ●その他、本文中の社名や商品名は、各社の登録商標または商標です。
+  ●本文中の各社の登録商標または商標には、TM、(R)マークは表示していません。
+
+履歴
+2001年 4月	初版発行
+2001年 7月	2版発行
+2002年 11月	3版発行
+2003年 10月	4版発行
+2006年 12月	7版発行(AQ7270対応)
+2007年 7月	8版発行(SL1000対応,Windows Vista対応)
+2008年 8月	9版発行(WT500対応)
+2008年 10月	10版発行(DLM2000対応)
+2009年 5月	11版発行(WT1600,WT3000対応)
+2009年 7月	12版発行(VBの各関数の使用例の修正)
+2009年 10月	13版発行
+2010年 10月	14版発行(AQ1100,AQ1200,AQ1300,DL850対応)
+2011年 6月	15版発行(WT1800,GS200,GS610,GS820対応)
+2012年 11月	16版発行(DLM4000対応)
+
+目次
+  １．動作環境
+	1.1 対象ＯＳと言語
+	1.2 ＲＡＭ
+	1.3 インターフェース
+  ２．通信可能製品
+	2.1 GPIB
+	2.2 RS232
+	2.3 USB
+	2.4 Ethernet
+	2.5 USBTMC
+	2.6 VXI-11
+  ３．Microsoft Visual C++での使用方法
+	3.1 設定方法
+	3.2 概要
+	3.3 使用できる関数
+	3.4 サンプルプログラム
+  ４．Microsoft Visual Basicでの使用方法
+	4.1 設定方法
+	4.2 概要
+	4.3 使用できる関数
+	4.4 サンプルプログラム
+  ５．エラーコード
+
+
+  １．動作環境
+	1.1 対象ＯＳと言語
+		対象ＯＳ：Windows XP, Windows Vista, Windows 7
+		対象言語：Microsoft Visual C++ 6.0～Microsoft Visual C++ 2010
+			  Microsoft Visual Basic 6.0～Microsoft Visual Basic 2010
+
+	1.2 ＲＡＭ
+		32Mバイト以上
+
+	1.3 インターフェース
+		GPIB          ：上記ＯＳ上で、National Instruments社製GPIB
+		              　インターフェースが動作する環境
+		              　(GPIBドライバがインストール済みの環境)
+		RS232         ：上記ＯＳ上で、シリアルポートが使用可能な環境
+		USB           ：上記ＯＳ上で、当社USBドライバがインストールされている環境
+		Ethernet      ：上記ＯＳ上で、Ethernetインターフェースが動作する環境
+		USBTMC(DL9000)：Windows XPで、当社USBTMCドライバがインストールされている環境
+		USBTMC        ：上記ＯＳ上で、当社USBTMCドライバがインストールされている環境
+		VXI-11        ：上記ＯＳ上で、Ethernetインターフェースが動作する環境
+
+  ２．通信可能製品
+	2.1 GPIB   ：当社GPIB搭載 IEEE St'd 488.2 準拠製品
+		     当社以外の製品も通信は行なえますが、一部使用できない機能
+		     があります(詳しくは、3,4章内の”使用できる関数”をご参照ください)。
+		(ご注意）当社製品で通信を行なう場合、ターミネータの設定は、
+			通常時は、LF及びEOI、バイナリーデータ転送時はEOIを
+			ご使用ください。
+		使用するPC側GPIBデバイスのGPIBインターフェースIDは
+		「GPIB0」として下さい。変更方法は、PC側GPIBデバイスの
+		取扱説明書等で確認して下さい。
+		PC側GPIBデバイスのドライバは、各OSに対応したものを
+		使用してください。PC側GPIBデバイスのドライバについては
+		メーカに確認して下さい。
+
+	2.2 RS232   ：当社又は他社RS232搭載製品で、以下の設定が可能なもの
+			ボーレート：1200,2400,4800,9600,19200,38400,57600
+			データビット長とパリティ、ストップビットの組み合わせ：
+				・8ビット、ノーパリティ、１ストップビット
+				・7ビット、イブン、１ストップビット
+				・7ビット、オッド、１ストップビット
+			ハンドシェーク：
+				・NO-NO(ハンドシェークなし）
+				・XON-XON(ソフトウェアハンドシェーク）
+				・CTS-RTS(ハードウェアハンドシェーク）
+			ターミネータ：LF,CR+LF
+		     当社以外の製品も通信は行なえますが、一部使用できない機能
+		     があります(詳しくは、3,4章の”使用できる関数”をご参照ください)。
+		(ご注意）当社製品で通信を行なう場合の設定は、通常は以下の設定にしてください。
+			・8ビット、ノーパリティ、１ストップビット
+			・CTS-RTS(ハードウェアハンドシェーク）
+			・ターミネータ LF
+
+	2.3 USB     ：当社ディジタルオシロスコープ DL1740(ファームウェアバージョン1.10以降), DL1720,
+			DL750, DL1700E, DL7400, DL750P, DL1600, SL1400で、
+			USBインターフェースが搭載されているもの。
+			WT3000(ファームウェアバージョン2.01以降)で、USBインターフェースが搭載されているもの。
+			AQ7260, AQ7270, AQ2200で、USBインターフェースが搭載されているもの。
+		(ご注意）ターミネータ設定は、LF及びEOI、またはEOIを設定してください。
+			 回線接続中は、PCおよびDLの電源をOFFにしないようにしてください。
+			 DL9000,SB,DL/DLM6000シリーズのUSBでは、2.5のUSBTMCをご使用ください。
+
+	2.4 Ethernet：当社ディジタルオシロスコープ DL7100(ファームウェアバージョン3.02以降),
+			DL7200(ファームウェアバージョン3.02以降),
+			DL1740(ファームウェアバージョン1.30以降),
+			DL9000, DL1720, DL750, DL1700E, DL7400, DL750P, DL1600, SL1400, SB, DL/DLM6000で、
+			Ethernetインターフェースが搭載されているもの。
+			WT1600(ファームウェアバージョン2.01以降)で、
+			Ethernetインターフェースが搭載されているもの。
+			WT3000(ファームウェアバージョン2.01以降)で、
+			Ethernetインターフェースが搭載されているもの。
+			AQ7270で、Ethernetインターフェースが搭載されているもの。
+			AQ1100, AQ1200, AQ1300で、Ethernetインターフェースが搭載されているもの。
+
+	2.5 USBTMC  ：当社ディジタルオシロスコープ DL9000, SB, DLM2000, DL/DLM6000, DLM4000,
+			ハイスピードデータアクイジションユニットSL1000,
+			WT500, WT1800, DL850/DL850V, GS200, GS610, GS820
+			AQ1100, AQ1200, AQ1300
+
+	2.6 VXI-11    :当社ディジタルオシロスコープ DLM2000, DLM4000,
+			ハイスピードデータアクイジションユニットSL1000,
+			WT500, WT1800, DL850/DL850V
+
+  ３．Microsoft Visual C++での使用方法
+	3.1 設定方法
+		使用ファイル名：tmctl.h (関数定義ヘッダファイル)
+				tmctl.lib (インポートライブラリ)
+		・ご使用になるソースファイルにインクルードファイルとして
+		  "tmctl.h"を追加してください。
+		  #include "tmctl.h"
+		・リンクするライブラリファイルに、"tmctl.lib"を追加してください。
+		・ アプリケーションが参照するディレクトリに"tmctl.dll"と"YKMUSB.dll"を
+		  入れてください。
+
+	3.2 概要
+		本ライブラリは、ＰＣに接続されている制御対象のデバイスについて、
+		初期化関数で回線をつなぎます。そして、その引数として返ってくる
+		ID値をそのデバイスの識別IDとし、その他の送受信関数等は、そのID値を使用して、制御を行ないます。
+
+	3.3 使用できる関数
+		--------------------------------------------------------------------------------
+		int TmcInitialize( int wire, char* adr, int* id );
+
+		機能：回線を初期化し、指定されたデバイスとの回線をつなぎます。
+		引数：	int   wire  回線の種類
+			char* adr   回線固有のアドレス
+			int*  id    他の関数等で使用するそのデバイス専用のID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int   wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+			      GPIB		: wire = TM_CTL_GPIB(1)
+			      RS232		: wire = TM_CTL_RS232(2)
+			      USB		: wire = TM_CTL_USB(3)
+			      Ethernet		: wire = TM_CTL_ETHER(4)
+			      USBTMC(DL9000)	: wire = TM_CTL_USBTMC(5)
+			      EthernetUDP	: wire = TM_CTL_ETHERUDP(6)
+			      USBTMC(DL9000以外): wire = TM_CTL_USBTMC2(7)
+			      VXI-11		: wire = TM_CTL_VXI11(8)
+
+			  char* adr
+			    制御対象デバイスのGPIBアドレスや、RS232の設定値を文字列として設定します。
+			    インターフェースによる設定の仕方は、以下の通りです。
+			      GPIB : adr = "1"～"30" (デバイスのGPIBアドレス値)
+			      RS232: adr = "ポート番号、ボーレート番号、ビット仕様、ハンドシェーク番号"
+				  ポート番号           1 = COM1
+						       2 = COM2
+						       3 = COM3
+				  ボーレート番号       0 = 1200
+						       1 = 2400
+						       2 = 4800
+						       3 = 9600
+						       4 = 19200
+						       5 = 38400
+						       6 = 57600
+				  ビット仕様	       0 = 8Bit,NoParity,1StopBit
+						       1 = 7Bit,EvenParity,1StopBit
+						       2 = 7Bit,OddParity,1StopBit
+				  ハンドシェーク番号   0 = NO-NO
+						       1 = XON-XON
+						       2 = CTS-RTS
+			      USB: adr = "1"～"127" (デバイスのUSB識別ID値)
+			      Ethernet: adr = "サーバ名、ユーザ名、パスワード名
+				  サーバ名              DLのサーバ名、またはIPアドレス
+				  ユーザ名              ユーザ名
+				  パスワード            パスワード
+					ユーザ名がanonymousの時は、パスワードは必要ありません。
+					(区切りのための、","カンマは必要です)
+			      USBTMC(DL9000): adr = "シリアル番号"
+				  シリアル番号		機器のシリアル番号
+			      USBTMC(GS200,GS820): adr = "シリアル番号"
+				  シリアル番号		機器のシリアル番号
+			      USBTMC(GS610): adr = "シリアル番号" + "C"
+				  シリアル番号		機器のシリアル番号
+			      USBTMC(DL9000,GSシリーズ以外): adr = "シリアル番号"をTmcEncodeSerialNumberでエンコードした番号
+				  シリアル番号		機器のシリアル番号
+			      VXI-11:  adr = "IPアドレス"
+
+			  int* id
+			    初期化後の、各関数に渡すデバイスID値を格納するバッファを割り当てます。
+			    初期化が成功し、回線がつながると、ID値は０以上の整数値を返します。
+
+			戻り値は、初期化が成功すると、0が返ります。デバイスとの回線が開けなかって場合は1が返ります。
+			初期化成功時は、どの回線でも、以下の設定になっています。
+			・ターミネータ：LF(GPIB時は、LF又はEOI)
+			・タイムアウト：30秒
+		使用例：
+			GPIB アドレス 1:
+				int id;
+				int ret = TmcInitialize( TM_CTL_GPIB, "1", &id );
+			RS232 COM1,57600,8-NO-1,CTS-RTS
+				int id;
+				int ret = TmcInitialize( TM_CTL_RS232, "1,6,0,2", &id );
+			USB ID 1:
+				int id;
+				int ret = TmcInitialize( TM_CTL_USB, "1", &id );
+			Ethernet IP = 11.22.33.44, User name = anonymous
+				int id;
+				int ret = TmcInitialize( TM_CTL_ETHER, "11.22.33.44,anonymous,", &id );
+			Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+				int id;
+				int ret = TmcInitialize( TM_CTL_ETHER, "11.22.33.44,yokogawa,abcdefgh", &id );
+			USBTMC(DL9000) シリアル番号 = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC, "27E000001", &id );
+			USBTMC(GS200,GS820) シリアル番号 = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001", &id );
+			USBTMC(GS610) シリアル番号 = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001C", &id );
+			USBTMC(DL9000,GSシリーズ以外) serial number = 27E000001
+				'デバイスリストを使用するとき
+				int id;
+				int ret;
+				DEVICELIST list[127];
+				int num;
+				ret = TmcSearchDevices(TM_CTL_USBTMC2,list,127,&num,NULL);
+				ret = TmcInitialize( TM_CTL_USBTMC2, list[0].adr, &id );
+				'直接シリアル番号を指定するとき
+				int id;
+				char encode[256];
+				int ret;
+				ret = TmcEncodeSerialNumber(encode,256,"27E000001") ;
+				ret = TmcInitialize( TM_CTL_USBTMC2, encode, &id );
+			VXI-11  IP=11.22.33.44
+				int id;
+				int ret = TmcInitialize( TM_CTL_VXI11, "11.22.33.44", &id );
+
+		--------------------------------------------------------------------------------
+		int TmcDeviceClear( int id );
+
+		機能：選択されたデバイスのクリア(SDC)を実行します。GPIB専用命令です。
+		引数：  int id  デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    デバイスクリアを実行するデバイスID値を設定します。
+			    この関数は、GPIBとUSBTMC(DL9000以外)につながっているデバイス専用で、
+			    他のインターフェース経由のデバイスには、なにも行ないません。
+			    USBTMC(DL9000以外)では、USBTMC規格のInitiateClearを発行します。
+			    InitiateClearが成功するとClearFeatureを発行し処理を終了します。
+
+			デバイスクリアが成功すると0が返ります。ただし、GPIBとUSBTMC(DL9000以外)以外の
+			インターフェースに対して実行すると必ず0が返ります。
+
+		使用例：
+			int ret = TmcDeviceClear( id );
+
+		--------------------------------------------------------------------------------
+		int TmcSend( int id, char* msg );
+
+		機能：デバイスへメッセージを送信します。
+		引数：  int   id   デバイス値
+			char* msg  メッセージ文字列
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを送信するデバイスIDを設定します。
+			  char* msg
+			    メッセージ文字列を設定します。
+
+			ID値で指定されたデバイスへASCII文字列を送信します。
+			Binaryデータを送る時は、"TmcSendByLength"を使用してください。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"TmcSendSetup","TmcSendOnly"を使用してください。
+
+		使用例：
+			int ret = TmcSend( id, "START" );
+
+		--------------------------------------------------------------------------------
+		int TmcSendByLength( int id, char* msg, int len );
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  int   id   デバイス値
+			char* msg  メッセージ文字列
+			int   len  送信するバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを送信するデバイスIDを設定します。
+			  char* msg
+			    メッセージを設定します。
+			  int len
+			    メッセージの送信バイト数を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"TmcSendSetup","TmcSendOnly"を使用してください。
+		使用例：
+			int ret = TmcSendByLength( id, "START", 5 );
+
+		--------------------------------------------------------------------------------
+		int TmcSendSetup( int id );
+
+		機能：デバイスへメッセージを送信する準備をします。
+		引数：  int   id   デバイス値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを送信する準備をするデバイスIDを設定します。
+			ID値で指定されたデバイスへメッセージを送信する準備をします。
+			１メッセージを数回に分けて送信する時に送信前に１回実行します。
+			実際のメッセージの送信は、"TmcSendOnly"を使用します。
+		使用例：
+			int ret = TmcSendSetup( id );
+
+		--------------------------------------------------------------------------------
+		int TmcSendOnly( int id, char* msg, int len, int end );
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  int   id   デバイス値
+			char* msg  メッセージ文字列
+			int   len  送信するバイト数
+			int   end  終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを送信するデバイスIDを設定します。
+			  char* msg
+			    メッセージを設定します。
+			  int len
+			    メッセージの送信バイト数を設定します。
+			  int end
+			    今回の送信で送信終了かどうかを設定します。
+			    終了の場合は1を、まだ送信を続ける場合は0を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			終了フラグを1に設定して送信したときのみ、ターミネータをメッセージの最後に送信します。
+			そのため、終了フラグが0のうちは、デバイス側は一連のメッセージと判断します。
+		使用例：
+			int ret;
+			ret = TmcSendSetup( id );
+			ret = TmcSendOnly( id, "STA", 3, 0 );
+			ret = TmcSendOnly( id, "RT", 2, 1 );
+
+		--------------------------------------------------------------------------------
+		int TmcReceive( int id, char* buff, int blen, int* rlen );
+
+		機能：デバイスから、メッセージを受信します。
+		引数：  int   id    デバイスID値
+			char* buff  受信データ用バッファ
+			int   blen  受信サイズ（バイト単位）
+			int*  rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを受信するデバイスIDを設定します。
+			  char* buff
+			    受信メッセージを格納するバッファを設定します。
+			  int blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  int* rlen
+			    実際に受信したバイト数を返します。
+
+			ID値で指定されたデバイスからメッセージを受信します。ターミネータを検出した場合は、
+			そこまでのデータを、検出しなかった場合は、blenで指定されたバイト数までのデータを
+			受信します。
+			当社ディジタルオシロスコープとの通信で、"WAVeform:SEND?"、"IMAGe:SEND?"等のメッセージの
+			データを受信する場合は、"TmcReceiveBlockHeader","TmcReceiveBlockData"を使用してください。
+
+		使用例：
+			char buff[10000];
+			int  length;
+			int ret = TmcReceive( id, buff, 10000, &length );
+
+		--------------------------------------------------------------------------------
+		int TmcReceiveSetup( int id );
+
+		機能：デバイスから、メッセージを受信する準備をします。
+		引数：  int   id    デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージ受信の準備をするデバイスIDを設定します。
+
+			デバイスから、大量データを分割して受信する場合に、受信準備をするために実行します。
+			実際のデータは、"TmcReceiveOnly"を使用して受信します。
+
+		使用例：
+			int ret = TmcReceiveSetup( id );
+
+		--------------------------------------------------------------------------------
+		int TmcReceiveOnly( int id, char* buff, int blen, int* rlen );
+
+		機能：デバイスから、（受信準備後の）メッセージを受信します。
+		引数：  int   id    デバイスID値
+			char* buff  受信データ用バッファ
+			int   blen  受信サイズ（バイト単位）
+			int*  rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを受信するデバイスIDを設定します。
+			  char* buff
+			    受信メッセージを格納するバッファを設定します。
+			  int blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  int* rlen
+			    実際に受信したバイト数を返します。
+
+			大量データを分割して受信する場合に使用します。
+			"TmcReceiveSetup"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			int  ret;
+			char buff[1000];
+			int  length;
+
+			ret = TmcReceiveSetup( id );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+
+		--------------------------------------------------------------------------------
+		int TmcReceiveBlockHeader( int id, int* length );
+
+		機能：デバイスから送られてくるBlock Dataのヘッダ部分を受信し、そのあとに続くデータバイト数を返します。
+		引数：  int   id      デバイスID値
+			int*  length  Block Dataのデータバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    Block Dataを受信するデバイスIDを設定します。
+			  int* length
+			    Block Dataのバイト数を返します。
+		Block Dataを受信する時に最初に使用します。
+		lengthに、あとに続くデータバイト数が返ってきますので、そのバイト数＋１（ターミネータ）分を
+		"TmcReceiveBlockData"を使用してデータを受信します。			
+
+		使用例：
+			int length;
+			int ret = TmcReceiveBlockHeader( id, &length );
+
+		--------------------------------------------------------------------------------
+		int TmcReceiveBlockData( int id, char* buff, int blen, int* rlen, int* end );
+
+		機能：デバイスから送られてくるBlock Dataのデータ部分を受信します。
+		引数：  int   id    デバイスID値
+			char* buff  受信データ用バッファ
+			int   blen  受信サイズ（バイト単位）
+			int*  rlen  実受信バイト数
+			int*  end   終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージを受信するデバイスIDを設定します。
+			  char* buff
+			    受信メッセージを格納するバッファを設定します。
+			  int blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  int* rlen
+			    実際に受信したバイト数を返します。
+			  int* end
+			    "TmcReceiveBlockHeader"で受信したデータバイト数をすべて受信し終わったかどうかを返します。
+			    終わっている場合は1を、まだ残っている場合は0を返します。
+
+			ブロックデータ(#～で始まるメッセージ)を受信する場合に使用します。
+			"TmcReceiveBlockHeader"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+			USBTMCでは、終了フラグが1になるまでこの関数を呼び出して
+			受信し続けてください。途中でやめてしまうと以後の通信がで
+			きなくなる場合があります。
+
+		使用例：
+			int  ret;
+			int  length;
+			int  len;
+			char buf[1000];
+			int  flag;
+
+			ret = TmcReceiveBlockHeader( id, &length );
+			if( length < 1 ) {
+				return;
+			}
+			length += 1;
+			flag = 0;
+			while( flag == 0 ) {
+				ret = TmcReceiveBlockData( id, buf, 1000, &len, &flag );
+			}
+
+		--------------------------------------------------------------------------------
+		int TmcCheckEnd( int id );
+
+		機能：デバイスからのメッセージが終了したかどうかを返します。GPIB、USB、Ethernet、USBTMC
+			インターフェースで使用できます。
+		引数：  int   id    デバイスID値
+		戻り値： 1 = メッセージあり, 0 = メッセージ終了
+
+		詳細：
+			引数説明
+			  int id
+			    メッセージ受信終了をチェックするデバイスIDを設定します。
+
+			一連の受信メッセージを分割して受信したとき、"TmcReceiveOnly"ですべて受信し終わったかどうか
+			を返します。
+		使用例：
+			int ret = TmcCheckEnd( id );
+			if( ret == 0 ) {
+				/* 受信終了 */
+			}
+			else {
+				/* 受信継続 */
+			}
+
+		--------------------------------------------------------------------------------
+		int TmcSetRen( int id, int flag );
+
+		機能：デバイスをリモート／ローカル状態にします。GPIB以外での使用は、当社製品に限定されます。
+		引数：  int  id  デバイスID値
+			int  flag  リモート(1)／ローカル(0)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    リモート／ローカル状態にするデバイスID値を設定します。
+			  int flag
+			    リモートにする場合は1、ローカルにする場合は0を送ります。
+
+			インターフェースの種類によって、動作が若干異なります。
+			GPIBの場合は、RENラインをTRUE/FALSEにします。
+			そのため、実際にリモートにする場合は、そのあと、そのデバイスに対して、
+			なんらかのメッセージを送信した場合に、初めてリモートとなります。
+			（デバイス個別のリモート／ローカル操作は行ないません。）
+			RS232、USB、Ethernetの場合は、当社488.2準拠品で、通信メッセージにCOMMunicateグループを
+			サポートしているものに限ります。この場合は、デバイス個別に操作できます。
+			USBTMCでは、コントロール転送により、リモート／ローカル切り替えを行います。
+
+		使用例：
+			int ret = TmcSetRen( id, 1 );
+
+		--------------------------------------------------------------------------------
+		int TmcGetLastError( int id );
+
+		機能：最後に発生したエラーのエラー番号を返します。
+		引数：  int id  デバイスID値
+		戻り値：エラー番号
+
+		詳細：
+			引数説明
+			  int id
+			    エラー番号を取得するデバイスID値を設定します。
+
+			そのデバイスの最後に発生したエラー番号を返します。
+			初期化関数を含め、関数の戻り値0( = OK)以外の場合に、この関数を使用して、
+			実際のエラー番号を取得します。
+
+		使用例：
+			int ret = TmcSend( id, "START" );
+			if( ret != 0 ) {
+				int err = TmcGetLastError( id );
+			}
+
+		--------------------------------------------------------------------------------
+		int TmcSetTerm( int id, int eos, int eot );
+
+		機能：メッセージの送受信における、ターミネータを設定します。
+		引数：  int  id   デバイスID値
+			int  eos  ターミネータ
+			int  eot  EOI
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    ターミネータを設定するデバイスID値を設定します。
+			  int eos
+			    ターミネータを設定します。設定値は、以下の通りです。
+			    eos = 0 : CR+LF
+			        = 1 : CR
+			        = 2 : LF
+			        = 3 : EOI(GPIB)又はなし(RS232、USB、Ethernet)
+			    インターフェースがGPIBで、eosが3のときにEOIを使用するかどうかは、eotで設定します。
+			  int eot
+			    ターミネータにEOIを使用するかどうか設定します。GPIBまたは、VXI-11用です。
+
+			ターミネータを設定します。当社製品との通信を行なう場合には、どのインターフェースでも、
+			基本的には、以下の設定をしてください。
+				int ret = TmcSetTerm( id, 2, 1 ); /* eos = LF, eot = TRUE */
+			binaryデータ受信時には、eos = LFの設定のままですと、binaryコードにLFコードが含まれている場合、
+			そこで終了と判断してしまいます。ただし、当社製品でブロックデータを受信する時は、
+			"TmcReceiveBlockHeader","TmcReceivceBlockData"を使用した場合は、ターミネータを切り替える
+			必要はありません。
+
+			DL9000以外のUSBTMCでは、この関数はサポートしていません。この関数を使う必要はありません。
+
+		使用例：
+			int ret = TmcSetTerm( id, 2, 1 );
+
+		--------------------------------------------------------------------------------
+		int TmcSetTimeout( int id, int tmo );
+
+		機能：通信のタイムアウト時間を設定します。
+		引数：  int  id   デバイスID値
+			int  tmo  タイムアウト時間(100～6553600ms)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    タイムアウトを設定するデバイスID値を設定します。
+			  int tmo
+			    タイムアウト時間を設定します。100ms単位です。
+			    tmo = 0の場合は、
+				GPIB   : タイムアウト無限
+				その他 : タイムアウトなし
+			通信のタイムアウト時間を設定します。
+			当社製品の場合は、通常30s以上を設定してください。
+			（タイムアウト時間を長くしても、全体のパフォーマンスには影響ありません。）
+
+		使用例：
+			int ret = TmcSetTimeout( id, 300 );	/* 30s */
+
+		--------------------------------------------------------------------------------
+		int TmcFinish( int id );
+
+		機能：デバイスとつなげている回線を閉じます。
+		引数：  int  id   デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int id
+			    回線を閉じるデバイスID値を設定します。
+
+			"TmcInitialize"(初期化関数)で開いた回線を閉じます。
+			この関数は、通信を終了する時には、必ず実行してください。
+
+		使用例：
+			int ret = TmcFinish( id );
+
+		--------------------------------------------------------------------------------
+		int TmcSearchDevices( int wire, DEVICELIST* list, int max, int* num, char* option) ;
+
+		機能：指定した回線につながっている機器のリストを返します。
+		引数：  int		wire	回線の種類
+			DEVICELIST *	list	見つかった機器を示す文字列が入る配列へのポインタ
+			int		max	見つかった機器を示す文字列の配列数
+			int*		num	見つかった機器の数
+			char*		option	機器ごとに必要な引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+				GPIB			: サポート外
+				RS232			: サポート外
+				USB			: サポート外
+				Ethernet		: サポート外
+				USBTMC(DL9000)		: サポート外
+				EthernetUDP		: サポート外
+				USBTMC(DL9000以外)	: wire = TM_CTL_USBTMC2(7)
+				VXI-11			: wire = TM_CTL_VXI11(8)
+
+			DEVICELIST *	list
+			typedef	struct _Devicelist
+			{
+				char	adr[ADRMAXLEN] ;(ADRMAXLEN= 64)
+			} DEVICELIST ;
+
+			GPIB・RS232・USB・Ethernet・USBTMC(DL9000)は未定。
+			USBTMCのとき、エンコードしたシリアル番号が返る。
+			VXI-11のとき、ipアドレスが返る。
+
+			  int	max
+			    ユーザーが用意した上記構造体の配列の数。
+			  int*	num
+			    取得した機器数
+			  char*	option
+			    VXI-11：マスクしたいIPアドレスを文字列にしたもの
+			    USBTMC：不要
+			    その他：未定
+		使用例：
+			int		ret ;
+			DEVICELIST	list[127] ;
+			int		num ;
+			ret = TmcSearchDevices(7,list,127,&num,NULL) ; // USBTMC(DL9000以外)のとき
+
+		--------------------------------------------------------------------------------
+		int TmcEncodeSerialNumber(char* encode, size_t len, char* src) ;
+
+		機能： 銘盤のシリアル番号をUSB内部シリアル番号に変換します。
+		引数：  char*	encode	変換したUSB内部シリアル番号
+			size_t	len	encodeのバッファの大きさ（バイト数）
+			char*	src	銘盤に書かれているシリアル番号
+		戻り値： 0 = OK
+
+		詳細：
+			引数説明
+			  char*		encode
+			    変換したUSB内部シリアル番号を格納するバッファへのポインタ
+			  size_t	len
+			    上記バッファの大きさ
+			  char*		src
+			    銘盤に書かれている機器のシリアル番号が書かれたバッファへのポインタ
+
+		使用例：
+			char	encode[256] ;
+			int	ret ;
+			// 銘盤のシリアル番号をUSB内部シリアル番号に変換する。
+			ret = TmcEncodeSerialNumber(encode,256,”12W929658”) ;
+
+			ret = TmcInitialize(TM_CTL_USBTMC2, encode, &id) ;
+
+		--------------------------------------------------------------------------------
+		int TmcDecodeSerialNumber(char* decode, size_t len, char* src) ;
+
+		機能： 銘盤のシリアル番号をUSB内部シリアル番号に変換します。
+		引数：  char*	encode	銘盤に書かれているシリアル番号
+			size_t	len	encodeのバッファの大きさ（バイト数）
+			char*	src	変換したUSB内部シリアル番号
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  char*		decode
+			   銘盤に書かれている機器のシリアル番号が書かれたバッファへのポインタ
+			  size_t	len
+			    上記バッファの大きさ
+			  char*		src
+			    変換したUSB内部シリアル番号を格納するバッファへのポインタ
+
+		使用例：
+			char	encode[256] ;
+			int	ret ;
+			// USB内部シリアル番号を銘盤のシリアル番号に変換する。
+			ret = TmcDecodeSerialNumber(decode,256,”313257393239363538”) ;
+			// decode = “12W929658”
+
+		--------------------------------------------------------------------------------
+		int TmcWaitSRQ( int id, char* stsbyte, int tout) ;
+
+		機能：指定したID機器のSRQを受け付けます。
+		引数：  int	id	デバイス値
+			char*	stsbyte	ステータスバイト格納バッファへのポインタ
+			int	tout	タイムアウト値 (100msec単位)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	id
+			    SRQを受信するデバイスIDを設定します。
+			  char*	stsbyte
+			    SRQの要因が設定される。
+			  int	tout
+			    タイムアウト値 100msec単位で設定します。
+
+		使用例：
+			int	ret
+			int	sts ;
+
+			// タイムアウト値１０秒でSRQ待ち
+			ret = TmcWaitSRQ(id, &sts, 100) ;
+
+		--------------------------------------------------------------------------------
+		int TmcAbortWaitSRQ( int id) ;
+
+		機能：指定した機器のSRQ待ち関数の待ち状態を解除します。
+		引数：  int	id	デバイス値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	id
+			    SRQ待ち関数の待ち状態を解除する対象のデバイスIDを設定します。
+
+		使用例：
+			int	ret = TmcAbortWaitSRQ(id) ;
+
+		--------------------------------------------------------------------------------
+		int TmcSetCallback(int id, Hndlr func, ULONG p1,ULONG p2) ;
+
+		機能：SRQ発生時コールバックルーチンを登録します。
+		引数：  int		id	デバイス値
+			Hndlr		func	コールバック関数へのポインタ
+			unsigned long	p1	long型第一引数
+			unsigned long	p2	long型第二引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    コールバック関数を設定する機器のデバイスIDを設定します。
+			  Hndlr		func
+			    typedef void(*Hndlr)(int, UCHAR, ULONG, ULONG) ;
+			    SRQ発生時呼び出されるコールバック関数へのポインタを設定します。
+			  Unsigned long p1
+			    コールバック関数へ渡す第一引数
+			  Unsigned long p2
+			    コールバック関数へ渡す第二引数
+
+		使用例：
+			void func1(int id,UCHAR stb,ULONG p1,ULONG p2)
+			{
+				printf(“SRQ occurred id=%d stb=0x%x p1=%d p2=%d\n”,
+							id,stb,p1,p2) ;
+			}
+
+			{
+			int	ret = TmcSetCallback(id, func1, 1, 2) ;
+
+		--------------------------------------------------------------------------------
+		int TmcResetCallback(int id) ;
+
+		機能：SRQ発生時コールバックルーチンを削除します。
+		引数：  int		id	デバイス値
+
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int		id
+			    登録したコールバック関数を削除する機器のデバイスIDを設定します。
+
+		使用例：
+			int	ret = TmcResetCallback(id) ;
+
+		--------------------------------------------------------------------------------
+		typedef void SRQCALLBACK(int id, UCHAR stb, ULONG p1,ULONG p2) ;
+
+		機能：コールバックルーチンのプロトタイプ。
+		引数：  int		id	デバイス値
+			unsigned char	stb	SRQ発生時のステータスバイトが設定されます。
+			unsigned long	p1	long型第一引数
+			unsigned long	p2	long型第二引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  int	id
+			    SRQが発生したデバイスID。
+			  unsigned char	stb
+			    発生したSRQの要因。
+			  Unsigned long p1
+			    コールバック関数登録時の第一引数
+			  Unsigned long p2
+			    コールバック関数登録時の第二引数
+
+		使用例：
+			SRQCALLBACK func1(int id, UCHAR stb, ULONG p1, ULONG p2)
+			{
+				printf(“SRQ occurred id=%d stb=0x%x p1=%d p2=%d\n”,
+							id,stb,p1,p2) ;
+			}
+
+			{
+			int	ret = TmcSetCallback(func1, 1, 2) ;
+
+		--------------------------------------------------------------------------------
+	3.4 サンプルプログラム
+
+		#include "tmctl.h"
+
+		int ExecuteCommunicate( void )
+		{
+			char adr[100];
+			int  ret;
+			int  id;
+			char buf[1000];
+			int  length;
+
+			// 例１：GPIB アドレス = 1
+			ret = TmcInitialize( TM_CTL_GPIB, "1", &id );
+			// 例２：RS232 COM1,57600,8-NO-1,CTS-RTS
+			ret = TmcInitialize( TM_CTL_RS232, "1,6,0,1", &id );
+			// 例３：USB ID = 1
+			ret = TmcInitialize( TM_CTL_USB, "1", &id );
+			// 例４：Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+			ret = TmcInitialize( TM_CTL_ETHER, "11.22.33.44,yokogawa,abcdefgh", &id );
+			// 例５：USBTMC(DL9000) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC, "27E000001", &id );
+			// 例６：USBTMC(GS200,GS820) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001", &id );
+			// 例７：USBTMC(GS610) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001C", &id );
+			// 例８：USBTMC(DL9000,GSシリーズ以外) Serial Number = 27E000001
+			char encode[256] ;
+			ret = TmcEncodeSerialNumber(encode,256,"27E000001") ;
+			ret = TmcInitialize( TM_CTL_USBTMC2, encode, &id) ;
+			// 例９：VXI-11 IP = 11.22.33.44
+			ret = TmcInitialize( TM_CTL_VXI11, "11.22.33.44", &id );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+			ret = TmcSetTerm( id, 2, 1 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+			ret = TmcSetTimeout( id, 300 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			ret = TmcSetRen( id, 1 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			/* *RST送信 */
+			ret = TmcSend( id, "*RST" );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			/* *IDN?送信＆クエリ受信 */
+			ret = TmcSend( id, "*IDN?" );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+			ret = TmcReceive( id, buf, 1000, &length );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+		}
+
+
+
+  ４．Microsoft Visual Basicでの使用方法
+	4.1 設定方法
+		使用ファイル名：tmctl.bas (関数定義ファイル)
+				tmval.bas (定数定義ファイル)
+		・ご使用になるプロジェクトの標準モジュールに
+		  "tmctl.bas","tmval.bas"を追加してください。
+		・アプリケーションが参照するディレクトリに、"tmctl.dll"と"YKMUSB.dll"を
+		  入れてください。
+		・USBをご使用の場合は、"ykusb.dll"も入れてください。
+		・USBTMC（DL9000）をご使用の場合は、"USBTMCAPI.dll"も入れてください。
+
+	4.2 概要
+		本ライブラリは、ＰＣに接続されている制御対象のデバイスについて、
+		初期化関数で回線をつなぎます。そして、その引数として返ってくる
+		ID値をそのデバイスの識別IDとし、その他の送受信関数等は、そのID値を使用
+		して、制御を行ないます。
+
+
+	4.3 使用できる関数
+
+		------------------------------------------------------------------------------
+		TmInitialize(ByVal wire As Long, ByVal adr As String, ByRef id As Long) As Long
+
+		機能：回線を初期化し、指定されたデバイスとの回線をつなぎます。
+		引数：	Long   wire  回線の種類
+			String adr   回線固有のアドレス
+			Long   id    他の関数等で使用するそのデバイス専用のID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long   wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+			      GPIB		: wire = 1
+			      RS232		: wire = 2
+			      USB		: wire = 3
+			      Ethernet		: wire = 4
+			      USBTMC(DL9000)	: wire = 5
+			      EthernetUDP	: wire = 6
+			      USBTMC(DL9000以外): wire = 7
+			      VXI-11		: wire = 8
+			  String adr
+			    制御対象デバイスのGPIBアドレスや、RS232の設定値を文字列として設定します。
+			    インターフェースによる設定の仕方は、以下の通りです。
+			      GPIB : adr = "1"～"30" (デバイスのGPIBアドレス値)
+			      RS232: adr = "ポート番号、ボーレート番号、ビット仕様、ハンドシェーク番号"
+				  ポート番号           1 = COM1
+						       2 = COM2
+						       3 = COM3
+				  ボーレート番号       0 = 1200
+						       1 = 2400
+						       2 = 4800
+						       3 = 9600
+						       4 = 19200
+						       5 = 38400
+						       6 = 57600
+				  ビット仕様	       0 = 8Bit,NoParity,1StopBit
+						       1 = 7Bit,EvenParity,1StopBit
+						       2 = 7Bit,OddParity,1StopBit
+				  ハンドシェーク番号   0 = NO-NO
+						       1 = XON-XON
+						       2 = CTS-RTS
+			      USB: adr = "1"～"127" (デバイスのUSB識別ID値)
+			      Ethernet: adr = "サーバ名、ユーザ名、パスワード"
+				  サーバ名	       DLのサーバ名、またはIPアドレス
+				  ユーザ名	       ユーザ名
+				  パスワード	       パスワード
+							ユーザ名がanonymousの時は、パスワードは必要ありません。
+							(区切りのための、"," は必要です。)
+			      USBTMC: adr = "シリアル番号"
+				  シリアル番号		DL9000のシリアル番号
+			  Long id
+			    初期化後の、各関数に渡すデバイスID値を格納するバッファを割り当てます。
+			    初期化が成功し、回線がつながると、ID値は０以上の整数値を返します。
+
+			戻り値は、初期化が成功すると、0が返ります。デバイスとの回線が開けなかった場合は1が返ります。
+			初期化成功時は、どの回線でも、以下の設定になっています。
+			・ターミネータ：LF(GPIB時は、LF又はEOI)
+			・タイムアウト：30秒
+
+		使用例：
+			GPIB アドレス 1:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1"
+				ret = TmInitialize( 1, adr, id )
+
+			RS232 COM1,57600,8-NO-1,CTS-RTS
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1,6,0,2"
+				ret = TmInitialize( 2, adr, id )
+
+			USB ID 1:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1"
+				ret = TmcInitialize( 3, adr, id )
+
+			Ethernet IP = 11.22.33.44, User name = anonymous
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "11.22.33.44,anonymous,"
+				ret = TmInitialize( 4, adr, id )
+
+			Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "11.22.33.44,yokogawa,abcdefgh"
+				ret = TmInitialize( 4, adr, id )
+
+			USBTMC(DL9000) シリアル番号 = 27E000001
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001"
+				ret = TmcInitialize( 5, adr, id )
+
+			USBTMC(GS200,GS820) シリアル番号 = 27E000001
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001"
+				ret = TmcInitialize( 7, adr, id )
+
+			USBTMC(GS610) シリアル番号 = 27E000001
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001" & "C"
+				ret = TmcInitialize( 7, adr, id )
+
+			USBTMC(DL9000,GSシリーズ以外) シリアル番号 = 27E000001
+				'デバイスリストを使用するとき
+				Dim id As Long
+				Dim ret As Long
+				Dim list As DeviceListArray
+				Dim num As Long
+				ret = TmSearchDevices(7, list, 128, num, 0)
+				ret = TmInitialize(7, list.list(0).adr, id)
+				'直接シリアル番号を指定するとき
+				Dim id As Long
+				Dim ret As Long
+				Dim encode As String * 128 
+				ret = TmEncodeSerialNumber(encode, 128, "27E000001")
+				ret = TmInitialize(7, encode, id)
+
+			VXI-11 IP = 11.22.33.44
+				Dim id As Long
+				Dim ret As Long
+				ret = TmInitialize( 8, "11.22.33.44", id )
+
+		--------------------------------------------------------------------------------
+		TmDeviceClear(ByVal id As Long) As Long
+
+		機能：選択されたデバイスのクリア(SDC)を実行します。GPIB専用命令です。
+		引数：  Long id  デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    デバイスクリアを実行するデバイスID値を設定します。
+			    この関数は、GPIBとUSBTMC(DL9000以外)につながっているデバイス専用で、
+			    他のインターフェース経由のデバイスには、なにも行ないません。
+			    USBTMC(DL9000以外)では、USBTMC規格のInitiateClearを発行します。
+			    InitiateClearが成功するとClearFeatureを発行し処理を終了します。
+
+			デバイスクリアが成功すると0が返ります。ただし、GPIB以外のインターフェースに対して実行すると
+			必ず0が返ります。
+
+		使用例：
+			Dim ret As Long
+			ret = TmDeviceClear( id )
+
+		--------------------------------------------------------------------------------
+		TmSend(ByVal id As Long, ByVal msg As String) As Long
+
+		機能：デバイスへメッセージを送信します。
+		引数：  Long   id   デバイス値
+			String msg  メッセージ文字列
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信するデバイスIDを設定します。
+			  String msg
+			    メッセージ文字列を設定します。
+
+			ID値で指定されたデバイスへASCII文字列を送信します。
+			Binaryデータを送る時は、"TmcSendByLength"を使用してください。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"TmSendSetup","TmSendOnly"を使用してください。
+
+		使用例：
+			Dim ret As Long
+			ret = TmSend( id, "START" )
+
+		--------------------------------------------------------------------------------
+		TmSendByLength(ByVal id As Long, ByVal msg As String, ByVal blen As Long) As Long
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  Long   id   デバイス値
+			String msg  メッセージ文字列
+			Long   len  送信するバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信するデバイスIDを設定します。
+			  String msg
+			    メッセージを設定します。
+			  Long len
+			    メッセージの送信バイト数を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"TmSendSetup","TmSendOnly"を使用してください。
+
+		使用例：
+			Dim ret As Long
+			ret = TmSendByLength( id, "START", 5 )
+
+		--------------------------------------------------------------------------------
+		TmSendByLengthB(ByVal id As Long, ByRef msg() As Byte, ByVal blen As Long) As Long
+
+		機能：デバイスへBYTE配列内のメッセージを指定されたバイト数送信します。
+		引数：  Long   id     デバイス値
+			Byte   msg()  メッセージ(BYTE配列)
+			Long   len    送信するバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信するデバイスIDを設定します。
+			  Byte msg()
+			    メッセージを設定します。
+			  Long len
+			    メッセージの送信バイト数を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			また、１つの送信メッセージを分割して送信する場合は、
+			"TmSendSetup","TmSendOnlyB"を使用してください。
+
+		使用例：
+			Dim ret As Long
+			Dim msg(10) As Byte
+			
+			msg(0) = CByte(Asc("S"))
+			msg(1) = CByte(Asc("T"))
+			msg(2) = CByte(Asc("A"))
+			msg(3) = CByte(Asc("R"))
+			msg(4) = CByte(Asc("T"))
+			ret = TmSendByLengthB( id, msg, 5 )
+
+		--------------------------------------------------------------------------------
+		TmSendSetup(ByVal id As Long) As Long
+
+		機能：デバイスへメッセージを送信する準備をします。
+		引数：  Long  id   デバイス値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信する準備をするデバイスIDを設定します。
+
+			ID値で指定されたデバイスへメッセージを送信する準備をします。
+			１メッセージを数回に分けて送信する時に送信前に１回実行します。
+
+			実際のメッセージの送信は、"TmSendOnly"を使用します。
+		使用例：
+			Dim ret As Long
+			ret = TmSendSetup( id )
+
+		--------------------------------------------------------------------------------
+		TmSendOnly(ByVal id As Long, ByVal msg As String, ByVal len As Long, ByVal end As Long) As Long
+
+		機能：デバイスへメッセージを指定されたバイト数送信します。
+		引数：  Long   id   デバイス値
+			String msg  メッセージ文字列
+			Long   len  送信するバイト数
+			Long   end  終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信するデバイスIDを設定します。
+			  String msg
+			    メッセージを設定します。
+			  Long len
+			    メッセージの送信バイト数を設定します。
+			  Long end
+			    今回の送信で送信終了かどうかを設定します。
+			    終了の場合は1を、まだ送信を続ける場合は0を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			終了フラグを1に設定して送信したときのみ、ターミネータをメッセージの最後に送信します。
+			そのため、終了フラグが0のうちは、デバイス側は一連のメッセージと判断します。
+
+		使用例：
+			Dim ret As Long
+			ret = TmSendSetup( id )
+			ret = TmSendOnly( id, "STA", 3, 0 )
+			ret = TmSendOnly( id, "RT", 2, 1 )
+
+		--------------------------------------------------------------------------------
+		TmSendOnlyB(ByVal id As Long, ByRef buf() As Byte, ByVal blen As Long, ByVal ed As Long) As Long
+
+		機能：デバイスへメッセージ(BYTE配列)を指定されたバイト数送信します。
+		引数：  Long   id   デバイス値
+			Byte   msg()  メッセージ(BYTE配列)
+			Long   len  送信するバイト数
+			Long   end  終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを送信するデバイスIDを設定します。
+			  Byte msg()
+			    メッセージを設定します。
+			  Long len
+			    メッセージの送信バイト数を設定します。
+			  Long end
+			    今回の送信で送信終了かどうかを設定します。
+			    終了の場合は1を、まだ送信を続ける場合は0を設定します。
+
+			ID値で指定されたデバイスへメッセージを送信します。
+			メッセージに、Binaryデータを含む場合でも、送信できます。
+			終了フラグを1に設定して送信したときのみ、ターミネータをメッセージの最後に送信します。
+			そのため、終了フラグが0のうちは、デバイス側は一連のメッセージと判断します。
+
+		使用例：
+			Dim ret As Long
+			Dim msg(10) As Byte
+			
+			ret = TmSendSetup( id )
+			msg(0) = CByte(Asc("S"))
+			msg(1) = CByte(Asc("T"))
+			msg(2) = CByte(Asc("A"))
+			ret = TmSendOnlyB( id, msg, 3, 0 )
+			msg(0) = CByte(Asc("R"))
+			msg(1) = CByte(Asc("T"))
+			ret = TmSendOnlyB( id, msg, 2, 1 )
+
+		--------------------------------------------------------------------------------
+		TmReceive(ByVal id As Long, ByRef buf As String, ByVal blen As Long, ByRef rlen As Long) As Long
+
+		機能：デバイスから、メッセージを文字列として受信します。
+		引数：  Long   id    デバイスID値
+			String buf   受信データ用バッファ
+			Long   blen  受信サイズ（バイト単位）
+			Long   rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを受信するデバイスIDを設定します。
+			  String buf
+			    受信メッセージを格納するバッファを設定します。
+			  Long blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  Long rlen
+			    実際に受信したバイト数を返します。
+
+			ID値で指定されたデバイスからメッセージを受信します。ターミネータを検出した場合は、
+			そこまでのデータを、検出しなかった場合は、blenで指定されたバイト数までのデータを
+			受信します。
+			当社ディジタルオシロスコープとの通信で、"WAVeform:SEND?"、"IMAGe:SEND?"等のメッセージの
+			データを受信する場合は、"TmReceiveBlockHeader","TmReceiveBlock","TmReceiveBlockB"
+			を使用してください。
+
+		使用例：
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			buf = Space$(1000)
+			ret = TmReceive( id, buf, 1000, length )
+
+		--------------------------------------------------------------------------------
+		TmReceiveSetup(ByVal id As Long) As Long
+
+		機能：デバイスから、メッセージを受信する準備をします。
+		引数：  Long  id    デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージ受信の準備をするデバイスIDを設定します。
+
+			デバイスから、大量データを分割して受信する場合に、受信準備をするために実行します。
+			実際のデータは、"TmReceiveOnly"を使用して受信します。
+
+		使用例：
+			Dim ret As Long
+			int ret = TmReceiveSetup( id )
+
+		--------------------------------------------------------------------------------
+		TmReceiveOnly(ByVal id As Long, ByRef buf As String, ByVal blen As Long, ByRef rlen As Long) As Long
+
+		機能：デバイスから、（受信準備後の）メッセージを文字列として受信します。
+		引数：  Long   id    デバイスID値
+			String buf   受信データ用バッファ
+			Long   blen  受信サイズ（バイト単位）
+			Long   rlen  実受信バイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを受信するデバイスIDを設定します。
+			  String buf
+			    受信メッセージを格納するバッファを設定します。
+			  Long blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  Long rlen
+			    実際に受信したバイト数を返します。
+
+			大量データを分割して受信する場合に使用します。
+			"TmReceiveSetup"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+
+			ret = TmReceiveSetup( id )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+
+		--------------------------------------------------------------------------------
+		TmReceiveBlockHeader(ByVal id As Long, ByRef len As Long) As Long
+
+		機能：デバイスから送られてくるBlock Dataのヘッダ部分を受信し、そのあとに続くデータバイト数を返します。
+		引数：  Long   id   デバイスID値
+			Long   len  Block Dataのデータバイト数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    Block Dataを受信するデバイスIDを設定します。
+			  Long length
+			    Block Dataのバイト数を返します。
+
+			Block Dataを受信する時に最初に使用します。
+			lenに、あとに続くデータバイト数が返ってきますので、そのバイト数＋１（ターミネータ）分を
+			"TmReceiveBlock", "TmReceiveBlockB"を使用してデータを受信します。
+
+		使用例：
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			Dim data(999) As Integer
+			Dim rlen As Long
+			Dim ed As Long
+
+			ret = TmSend(id, ":Waveform:Send?")
+			Debug.Print ("TmSend:Ret=" & ret)
+
+			ret = TmReceiveBlockHeader(id, length)
+			Debug.Print ("TmReceiveBlockHeader:Ret=" & ret & " length=" & length)
+
+			ed = 0
+			While ed = 0
+				ret = TmReceiveBlock(id, data(), 1000, rlen, ed)
+				Debug.Print ("TmReceiveBlockData:Ret=" & ret & " rlen=" & rlen & " ed=" & ed)
+			Wend
+
+		--------------------------------------------------------------------------------
+		TmReceiveBlock(ByVal id As Long, buf() As Integer, ByVal blen As Long, ByRef rlen As Long, ByRef end As Long) As Long
+
+		機能：デバイスから送られてくるBlock Dataのデータ部分をInteger配列に受信します。
+		引数：  Long      id      デバイスID値
+			Integer   buf()   受信データ用バッファ
+			Long      blen    受信サイズ（バイト単位）
+			Long      rlen    実受信バイト数
+			Long      end     終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを受信するデバイスIDを設定します。
+			  Integer buf()
+			    受信メッセージを格納するIntegerバッファを設定します。
+			  Long blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  Long rlen
+			    実際に受信したバイト数を返します。
+			  Long end
+			    "TmReceiveBlockHeader"で受信したデータバイト数をすべて受信し終わったかどうかを返します。
+			    終わっている場合は1を、まだ残っている場合は0を返します。
+
+			ブロックデータ(#～で始まるメッセージ)を受信する場合に使用します。
+			"TmReceiveBlockHeader"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			Dim data(999) As Integer
+			Dim rlen As Long
+			Dim ed As Long
+
+			ret = TmSend(id, ":Waveform:Send?")
+			Debug.Print ("TmSend:Ret=" & ret)
+
+			ret = TmReceiveBlockHeader(id, length)
+			Debug.Print ("TmReceiveBlockHeader:Ret=" & ret & " length=" & length)
+
+			ed = 0
+			While ed = 0
+				ret = TmReceiveBlock(id, data(), 1000, rlen, ed)
+				Debug.Print ("TmReceiveBlockData:Ret=" & ret & " rlen=" & rlen & " ed=" & ed)
+			Wend
+
+		--------------------------------------------------------------------------------
+		TmReceiveBlockB(ByVal id As Long, buf() As Byte, ByVal blen As Long, ByRef rlen As Long, ByRef end As Long) As Long
+
+		機能：デバイスから送られてくるBlock Dataのデータ部分をByte配列に受信します。
+		引数：  Long  id      デバイスID値
+			Byte  buf()   受信データ用バッファ
+			Long  blen    受信サイズ（バイト単位）
+			Long  rlen    実受信バイト数
+			Long  end     終了フラグ
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージを受信するデバイスIDを設定します。
+			  Byte buf()
+			    受信メッセージを格納するByteバッファを設定します。
+			  Long blen
+			    メッセージの最大受信バイト数（通常はバッファのバイト数）を設定します。
+			  Long rlen
+			    実際に受信したバイト数を返します。
+			  Long end
+			    "TmReceiveBlockHeader"で受信したデータバイト数をすべて受信し終わったかどうかを返します。
+			    終わっている場合は1を、まだ残っている場合は0を返します。
+
+			ブロックデータ(#～で始まるメッセージ)を受信する場合に使用します。
+			"TmReceiveBlockHeader"で受信準備後に、ID値で指定されたデバイスからメッセージを受信します。
+			ターミネータを検出した場合は、そこまでのデータを、検出しなかった場合は、blenで指定された
+			バイト数までのデータを受信します。
+
+		使用例：
+			Dim ret As Long
+			Dim buf(1000) As Byte
+			Dim length As Long
+			Dim rlen As Long
+			Dim flag As Long
+
+			ret = TmReceiveBlockHeader( id, length )
+			length = length + 1
+			flag = 0
+			While (flag = 0)
+				ret = TmReceiveBlockB( id, buf(), 1000, rlen, flag )
+			Wend
+
+		--------------------------------------------------------------------------------
+		TmCheckEnd(ByVal id As Long) As Long
+
+		機能：デバイスからのメッセージが終了したかどうかを返します。GPIB、USB、Ethernet、USBTMC、VXI-11
+			インターフェースで使用できます。
+		引数：  Long  id    デバイスID値
+		戻り値： 1 = メッセージあり, 0 = メッセージ終了
+
+		詳細：
+			引数説明
+			  Long id
+			    メッセージ受信終了をチェックするデバイスIDを設定します。
+
+			一連の受信メッセージを分割して受信したとき、"TmReceiveOnly","TmReceiveOnlyBinですべて受信し
+			終わったかどうかを返します。
+
+		使用例：
+			Dim ret As Long
+			ret = TmCheckEnd( id )
+			If( ret == 0 ) Then
+				'受信終了
+			Else
+				'受信継続
+			Endif
+
+		--------------------------------------------------------------------------------
+		TmSetRen(ByVal id As Long, ByVal flg As Long) As Long
+
+		機能：デバイスをリモート／ローカル状態にします。GPIB以外での使用は、当社製品に限定されます。
+		引数：  Long  id   デバイスID値
+			Long  flg  リモート(1)／ローカル(0)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    リモート／ローカル状態にするデバイスID値を設定します。
+			  Long flg
+			    リモートにする場合は1、ローカルにする場合は0を送ります。
+
+			インターフェースの種類によって、動作が若干異なります。
+			GPIBの場合は、RENラインをTRUE/FALSEにします。
+			そのため、実際にリモートにする場合は、そのあと、そのデバイスに対して、
+			なんらかのメッセージを送信した場合に、初めてリモートとなります。
+			（デバイス個別のリモート／ローカル操作は行ないません。）
+			RS232、USB、Ethernetの場合は、当社488.2準拠品で、通信メッセージにCOMMunicateグループを
+			サポートしているものに限ります。この場合は、デバイス個別に操作できます。
+			USBTMCでは、コントロール転送により、リモート／ローカル切り替えを行います。
+
+		使用例：
+			Dim ret As Long
+			ret = TmSetRen( id, 1 )
+
+		--------------------------------------------------------------------------------
+		TmGetLastError(ByVal id As Long) As Long
+
+		機能：最後に発生したエラーのエラー番号を返します。
+		引数：  Long id  デバイスID値
+		戻り値：エラー番号
+
+		詳細：
+			引数説明
+			  Long id
+			    エラー番号を取得するデバイスID値を設定します。
+			そのデバイスの最後に発生したエラー番号を返します。
+			初期化関数を含め、関数の戻り値0( = OK)以外の場合に、この関数を使用して、
+			実際のエラー番号を取得します。
+
+		使用例：
+			Dim ret As Long
+			Dim err As Long
+
+			ret = TmSend(id, "*IDN?")
+			If (ret <> 0) Then
+			    err = TmGetLastError(id)
+			End If
+
+		--------------------------------------------------------------------------------
+		TmSetTerm(ByVal id As Long, ByVal eos As Long, ByVal eot As Long) As Long
+
+		機能：メッセージの送受信におけるターミネータを設定します。
+		引数：  Long  id   デバイスID値
+			Long  eos  ターミネータ
+			Long  eot  EOI
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    ターミネータを設定するデバイスID値を設定します。
+			  Long eos
+			    ターミネータを設定します。設定値は、以下の通りです。
+			    eos = 0 : CR+LF
+			        = 1 : CR
+			        = 2 : LF
+			        = 3 : EOI(GPIB)又はなし(RS232、USB、Ethernet)
+			    インターフェースがGPIBで、eosが3のときにEOIを使用するかどうかは、eotで設定します。
+			  Long eot
+			    ターミネータにEOIを使用するかどうか設定します。GPIB専用です。
+
+			ターミネータを設定します。当社製品との通信を行なう場合には、どのインターフェースでも、
+			基本的には、以下の設定をしてください。
+				Dim ret As Long
+				ret = TmSetTerm( id, 2, 1 )  'eos = LF, eot = TRUE
+			binaryデータ受信時には、eos = LFの設定のままですと、binaryコードにLFコードが含まれている場合、
+			そこで終了と判断してしまいます。ただし、当社製品でBlockデータを受信する時は、
+			"TmReceiveBlockHeader","TmReceivceBlock", "TmReceivceBlockB"を使用した場合、
+			ターミネータを切り替える必要はありません。
+
+		使用例：
+			Dim ret As Long
+			ret = TmSetTerm( id, 2, 1 )
+
+		--------------------------------------------------------------------------------
+		TmSetTimeout(ByVal id As Long, ByVal tmo As Long) As Long
+
+		機能：通信のタイムアウト時間を設定します。
+		引数：  Long  id   デバイスID値
+			Long  tmo  タイムアウト時間(100～6553600ms)
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    タイムアウトを設定するデバイスID値を設定します。
+			  Long tmo
+			    タイムアウト時間を設定します。100ms単位です。
+			    tmo = 0の場合は、
+				GPIB   : タイムアウト無限
+				その他 : タイムアウトなし
+
+			通信のタイムアウト時間を設定します。
+			当社製品の場合は、通常30s以上を設定してください。
+			（タイムアウト時間を長くしても、全体のパフォーマンスには影響ありません。）
+
+		使用例：
+			Dim ret As Long
+			ret = TmSetTimeout( id, 300 )	'30s
+
+		--------------------------------------------------------------------------------
+		TmFinish(ByVal id As Long) As Long
+
+		機能：デバイスとつなげている回線を閉じます。
+		引数：  Long  id   デバイスID値
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long id
+			    回線を閉じるデバイスID値を設定します。
+
+			"TmInitialize"(初期化関数)で開いた回線を閉じます。
+			この関数は、通信を終了する時には、必ず実行してください。
+
+		使用例：
+			Dim ret As Long
+			ret = TmFinish( id )
+
+		--------------------------------------------------------------------------------
+		TmSearchDevices(ByVal wire As Long, list As DeviceListArray, ByVal max As Long, ByRef num As Long, ByVal option1 As String) As Long
+
+		機能：指定した回線につながっている機器のリストを返します。
+		引数：  Long		wire	回線の種類
+			DeviceListArray	list	見つかった機器を示す文字列が入る配列へのポインタ
+			Long		max	見つかった機器を示す文字列の配列数
+			Long		num	見つかった機器の数
+			string		option	機器ごとに必要な引数
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  Long	wire
+			    制御対象デバイスがつながっている回線の種類を指定します。
+			    各インターフェースの設定値は、以下の通りです。
+				GPIB			: サポート外
+				RS232			: サポート外
+				USB			: サポート外
+				Ethernet		: サポート外
+				USBTMC(DL9000)		: サポート外
+				EthernetUDP		: サポート外
+				USBTMC(DL9000以外)	: wire = TM_CTL_USBTMC2(7)
+				VXI-11			: wire = TM_CTL_VXI11(8)
+
+			  DeviceListArray	list
+				Public Const MaxStationNum = 128  ' 最大ステーション個数
+
+				Type DeviceList
+				        adr As String * 64        ' 名前
+				End Type
+				Type DeviceListArray
+				    list(MaxStationNum - 1) As DeviceList        ' ステーションリスト
+				End Type
+
+				GPIB・RS232・USB・Ethernet・USBTMC(DL9000)は未定。
+				USBTMCのとき、エンコードしたシリアル番号が返る。
+				VXI-11のとき、ipアドレスが返る。
+
+			  Long	max
+			    ユーザーが用意した上記構造体の配列の数。MaxStationNumを指定してください。
+			  Long	num
+			    取得した機器数
+			  string	option
+			    VXI-11：マスクしたいIPアドレスを文字列にしたもの
+			    USBTMC：不要
+			    その他：未定
+		使用例：
+			Dim	ret As long
+			Dim	list As DeviceListArray
+			Dim	num As long
+			ret = TmSearchDevices(7, list, MaxStationNum, num, 0) ' USBTMC(DL9000以外)
+			ret = TmInitialize(7, listarray.list(0).adr, id)
+'			ret = TmSearchDevices(8, list, MaxStationNum, num, "11.22.33.44") ' VXI-11のとき
+'			ret = TmInitialize(8, listarray.list(0).adr, id)
+
+		--------------------------------------------------------------------------------
+		TmEncodeSerialNumber(ByVal encode As String, ByVal encodelen As Long, ByVal src As String) As Long
+
+		機能： 銘盤のシリアル番号をUSB内部シリアル番号に変換します。
+		引数：  String	encode	変換したUSB内部シリアル番号
+			Long	len	encodeのバッファの大きさ（バイト数）
+			string	src	銘盤に書かれているシリアル番号
+		戻り値： 0 = OK
+
+		詳細：
+			引数説明
+			  String	encode
+			    変換したUSB内部シリアル番号を格納するバッファ(固定長文字列で指定）
+			  Long		len
+			    上記バッファの大きさ
+			  String	src
+			    銘盤に書かれている機器のシリアル番号
+
+		使用例：
+			Dim ret As Long
+			Dim encode As String * 128
+			' 銘盤のシリアル番号をUSB内部シリアル番号に変換する。
+			ret = TmEncodeSerialNumber(encode, 128, "TEMP01")
+			ret = TmInitialize(7, encode, id)
+
+		--------------------------------------------------------------------------------
+		TmDecodeSerialNumber(ByVal decode As String, ByVal decodelen As Long, ByVal src As String) As Long
+
+		機能： 銘盤のシリアル番号をUSB内部シリアル番号に変換します。
+		引数：  String	decode	銘盤に書かれているシリアル番号
+			long	len	encodeのバッファの大きさ（バイト数）
+			String	src	変換したUSB内部シリアル番号
+		戻り値： 0 = OK, 1 = ERROR
+
+		詳細：
+			引数説明
+			  String	decode
+			   変換した文字を格納するバッファ(固定長文字列で指定)
+			  Long		len
+			    上記バッファの大きさ
+			  String	src
+			    変換元文字列
+
+		使用例：
+			Dim ret As Long
+			Dim decode As String * 128
+			Dim encode As String * 128
+
+			ret = TmEncodeSerialNumber(encode, 128, "TEMP01")
+			ret = TmDecodeSerialNumber(decode, 128, encode)
+			' decode = “TEMP01”
+	
+		--------------------------------------------------------------------------------
+
+	4.4 サンプルプログラム
+
+		Function ExecuteCommunicate
+			Dim adr As String
+			Dim ret As Long
+			Dim id As Long
+			Dim buf As String
+			Dim length As Long
+
+			'例１：GPIB アドレス = 1
+			adr = "1"
+			ret = TmInitialize( 1, adr, id )
+			'例２：RS232 COM1,57600,8-NO-1,CTS-RTS
+			adr = "1,6,0,2"
+			ret = TmInitialize( 2, adr, id )
+			'例３：USB ID = 1
+			adr = "1"
+			ret = TmInitialize( 3, adr, id )
+			'例４：Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+			adr = "11.22.33.44,yokogawa,abcdefgh"
+			ret = TmInitialize( 4, adr, id )
+			'例５：USBTMC(DL9000) Serial Number = 27E000001
+			adr = "27E000001"
+			ret = TmInitialize( 5, adr, id )
+			'例６：USBTMC(GS200,GS820) Serial Number = 27E000001
+			adr = "27E000001"
+			ret = TmInitialize( 7, adr, id )
+			'例７：USBTMC(GS610) Serial Number = 27E000001
+			adr = "27E000001C"
+			ret = TmInitialize( 7, adr, id )
+			'例８：USBTMC(DL9000,GSシリーズ以外) Serial Number = 27E000001
+			Dim encode As String * 128
+			ret = TmEncodeSerialNumber(encode,128,"27E000001") 
+			ret = TmInitialize( 7, encode, &id) 
+			'例９：VXI-11 IP = 11.22.33.44
+			ret = TmcInitialize( 8, "11.22.33.44", &id )
+
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ret = TmSetTerm( id, 2, 1 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ret = TmSetTimeout( id, 300 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			ret = TmSetRen( id, 1 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			'*RST送信
+			ret = TmSend( id, "*RST" )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			'*IDN?送信＆クエリ受信
+			ret = TmSend( id, "*IDN?" )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			buf = Space$(1000)
+			ret = TmReceive( id, buf, 1000, &length )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ExecuteCommunicate = 0
+		End Function
+
+
+  ５．エラーコード
+
+	エラー番号	内容                                    	対策
+	1         	タイムアウト                            	タイムアウト時間の設定を確認して下さい。結線を確認してください。
+	2         	対象デバイスが見つかりません            	結線を確認してください。
+	4         	デバイスとの接続に失敗しました          	結線を確認してください。
+	8         	デバイスとの接続がされてません          	初期化関数を使用して、接続してください。
+	16        	デバイスはすでに接続されています        	２重に接続することはできません
+	32        	パソコンが対応していません              	動作環境を確認してください。
+	64        	関数の引数不正です                      	引数の型等を確認してください
+	256       	送信エラーです                          	結線、アドレス、ID等を確認してください	
+	512       	受信エラーです                          	デバイスでエラーが発生していないか、確認してください
+	1024      	受信データはブロックデータではありません
+	4096      	システムエラーです                      	動作環境に問題があります。
+	8192      	デバイスID値が不正です                  	初期化関数で取得したID値を使用してください。
+	16384     	サポートされていない機能です            	この機能はサポートされていません
+	32768     	十分なバッファがありません。            	バッファ量が足りません。
+

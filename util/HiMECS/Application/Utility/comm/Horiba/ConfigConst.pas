@@ -1,0 +1,29 @@
+unit ConfigConst;
+
+interface
+
+uses Messages;
+
+Const
+  WM_TCP_RECEIVE = WM_USER + 100;
+  WM_IPC_BROADCAST = WM_USER + 101;
+  WM_EVENT_DATA = WM_USER + 102;
+  WM_WATCHFORM_CLOSE = WM_USER + 103;
+  WM_UDP_RECEIVE = WM_USER + 104;
+  SB_MESSAGE_IDX = 5;
+  MAXCHANNELCOUNT = 8;
+
+  IPCCLIENTNAME1 = 'MEXA7000';
+  COMP_CODE_FILENAME = 'ComponentCode.ini';
+  INIFILENAME = 'MEXA7000.ini';
+  MEXA7000_SECTION = 'MEXA 7000';
+  C_MRDF = 'MRDF,1,1,0';
+  C_MSSM = 'MSSM,0,1,1';
+  C_MSMD = 'MSMD,0,';
+  C_MRMD = 'MRMD,0,0';
+  C_MSTT = 'MSTT,0,0';
+  C_MSTP = 'MSTP,0,0';
+
+implementation
+
+end.

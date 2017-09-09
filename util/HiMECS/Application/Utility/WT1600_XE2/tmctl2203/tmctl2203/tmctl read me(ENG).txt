@@ -1,0 +1,1972 @@
+********************************************************************************
+	          TMCTL Library User's Manual
+********************************************************************************
+
+
+Foreword
+Thank you for purchasing this YOKOGAWA software product.
+This user's manual explains the requirements and methods for using the TMCTL.DLL library which
+allows you to easily create programs for communications between the PC and our instruments.
+To ensure proper use of the software, please read this manual thoroughly before beginning operation.
+For information on the communications commands for performing actual communications control using
+this library, please refer to the communications interface user's manual for your instrument.
+
+Note
+The contents of this manual are subject to change without prior notice as a result of improvements
+in the software's performance and functions.
+
+Trademarks
+-  Microsoft, MS-DOS, Windows, Windows NT, Visual Basic, and Visual C++ are trademarks or registered
+   trademarks of Microsoft Corporation in the United States and/or other countries.
+-  All other company and product names used in this manual are trademarks or registered trademarks of
+   their respective companies.
+-  The company and product names used in this manual are not accompanied by the trademark or
+   registered trademark symbols (R and TM).
+
+Revisions
+May, 2001	1st Edition
+July,2001	2nd Edition
+Nov, 2002	3rd Edition
+Oct, 2003	4th Edition
+July,2004	5th Edition(start supporting the DL1700E series from this Edition)
+June,2005	6th Edition(start supporting the DL9000 series from this Edition)
+Dec, 2006	7th Edition
+July,2007	8th Edition (support for the SL1000 and Windows Vista)
+Aug, 2008	9th Edition (support for the WT500)
+Oct, 2008	10th Edition (support for the DLM2000)
+May, 2009	11th Edition (support for the WT1600,WT3000)
+July,2009	12th Edition
+Oct, 2009	13th Edition
+Oct, 2010	14th Edition (support for the AQ1100,AQ1200,AQ1300,DL850)
+June,2011	15th Edition (support for the WT1800,GS200,GS610,GS820)
+Nov, 2012	16th Edition (support for the DLM4000)
+
+Contents
+1.  System Requirements
+	1.1 OS and Programming Languages
+	1.2 RAM
+	1.3 Interfaces
+
+2.  Compatible Instruments
+	2.1 For GPIB
+	2.2 For RS232
+	2.3 For USB
+	2.4 Ethernet
+	2.5 USBTMC
+	2.6 VXI-11
+
+3.  Using the Library with Microsoft Visual C++
+	3.1 Configuration
+	3.2 Overview
+	3.3 Available Functions
+	3.4 Sample Programs
+
+4.  Using the Library with Microsoft Visual Basic
+	4.1 Configuration
+	4.2 Overview
+	4.3 Available Functions
+	4.4 Sample Programs
+
+5.  Error Codes
+
+
+
+
+1.  System Requirements
+	1.1  OS and Programming Languages
+		OS:			Windows XP, Windows Vista or Windows 7
+		Programming Languages:	Microsoft Visual C++ 6.0 - Microsoft Visual C++ 2010
+					Microsoft Visual Basic 6.0 - Microsoft Visual Basic 2010
+
+	1.2  RAM
+		32 MB or more
+
+	1.3  Interfaces
+		- GPIB:		An interface by National Instruments and its drivers on an OS above.
+		- RS232:	An available serial port on your system.
+		- USB:		An interface with dedicated YOKOGAWA USB drivers installed.
+		- Ethernet:	A compatible interface.
+		- USBTMC(DL9000):This is only supported in the Windows XP OS, 
+				when the Yokogawa USBTMC device driver is installed.
+		- USBTMC:	An interface with dedicated Yokogawa USBTMC device driver is installed.
+		- VXI-11:	An ethernet interface.
+
+2.  Compatible Instruments
+	2.1  For GPIB:	An instrument from YOKOGAWA equipped with an IEEE Standard 488.2 compliant GPIB interface.
+			You may use other manufacturer's products,
+			however some functions will be unavailable (see "Available Functions" in chapters 3 and 4
+			for more details).
+			Note: when using our instruments for communications, the terminator settings are usually
+				set to LF and EOI, or EOI for transmitting binary data.
+
+	2.2  For RS232: An instrument from YOKOGAWA equipped with an RS232 interface and set from among the
+			following settings:
+
+			  Baud Rate:
+				- 1200, 2400, 4800, 9600, 19200, 38400, or 57600
+			  Data bit length, parity, and stop bit:
+				- 8 bit, no parity, 1 stop bit
+				- 7 bit, even, 1 stop bit
+				- 7 bit, odd, 1 stop bit
+			  Handshaking:
+				- NO-NO (no handshake)
+				- XON-XON (software handshake)
+				- CTS-RTS (hardware handshake)
+			  Terminator:
+				- LF, CR+LF
+
+			You may use other manufacturer's products, however some functions will be unavailable
+			(see "Available Functions" in chapters 3 and 4 for more details).
+			Note: normally, you can enter the following settings for communications using a YOKOGAWA
+				instrument.
+				  - 8 bit, no parity, 1 stop bit
+				  - CTS-RTS (hardware handshake)
+				  - Terminator: LF
+
+	2.3  For USB:	YOKOGAWA's DL1740 Digital Oscilloscope (firmware version 1.10 or later), DL1720, DL750, DL1700E,
+			DL7400, DL750P, DL1600, SL1400, AQ7260, AQ7270, AQ2200 with an USB interface installed,
+			or the WT3000 (firmware version 2.01 or later) with an USB interface installed.
+			(Notice)the terminator could be set as LF and EOI, or EOI.
+			Note: the terminator settings should be LF and EOI, or EOI.
+				Do not turn the power OFF to either the PC or the DL while connected.
+
+	2.4  Ethernet:	YOKOGAWA's DL7100 Digital Oscilloscope (firmware version 3.02 or later), 
+			DL7200 (firmware version 3.02 or later),
+			DL1740 (firmware version 1.30 or later),
+			DL9000 with an Ethernet interface installed,
+			DL1720 with an Ethernet interface installed,
+			DL750 with an Ethernet interface installed,
+			DL1700E with an Ethernet interface installed,
+			DL7400 with an Ethernet interface installed,
+			DL750P with an Ethernet interface installed,
+			DL1600 with an Ethernet interface installed,
+			SL1400 with an Ethernet interface installed,
+			WT1600 (firmware version 2.01 or later) with an Ethernet interface installed,
+			WT3000 (firmware version 2.01 or later) with an Ethernet interface installed,
+			AQ7270 with an Ethernet interface installed,
+			AQ1100, AQ1200, AQ1300 with an Ethernet interface installed,
+			or DL/DLM6000 with an Ethernet interface installed.
+
+	2.5  USBTMC:	YOKOGAWA's DL9000 Digital Oscilloscope, SB, DLM2000, DL/DLM6000, DLM4000.
+			SL1000 series of high speed data acquisition units.
+			WT500, WT1800, DL850/DL850V, GS200 ,GS610, GS820.
+			AQ1100, AQ1200, AQ1300.
+			Note: Please select either (LF & EOI ) or EOI as the terminator.
+
+	2.6  VXI-11:	YOKOGAWA's DLM2000 Digital Oscilloscope, DLM4000. 
+			SL1000 series of high speed data acquisition units.
+			WT500, WT1800, DL850/DL850V.
+
+
+3.  Using the Library with Microsoft Visual C++
+	3.1  Configuration
+		Files:	Tmctl.h (header file for definitions of functions)
+			Tmctl.lib (import library)
+		- Type "tmctl.h" as the include file into to the source file you will use as follows:
+			#include "tmctl.h"
+		- Copy Tmctl.lib to the directory containing the library files to be linked to.
+		- Copy Tmctl.dll to the Windows System directory.
+		- Copy tmctl.dll to the directory that the application is referencing.
+		- Copy Ykusb.dll and YKMUSB.dll to the Windows System directory if you will be using USB.
+		- Copy USBTMCAPI.dll to the Windows System directory if you will be using USBTMC(DL9000).
+
+	3.2  Overview
+		This library uses an initialization function to set up a connection between the PC and devices to
+		be controlled. Then, values are returned as parameters and used as distinguishing IDs for the
+		connected devices. Those IDs can be passed to other functions (such as send/receive functions)
+		to allow them to carry out their controls.
+
+	3.3  Available Functions
+		---------------------------------------------------------------------------------------------------------------
+		int TmcInitialize( int wire, char* adr, int* id );
+
+		Purpose:	Initializes and opens a connection to the specified device
+		Parameters:	int   wire  connection types
+				char* adr   the address of the connection
+				int*  id    special device ID used by other functions
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int wire
+				Set this parameter to the type of connection through which the device will be
+				controlled.
+				The settings for each type of interface are shown below.
+					GPIB:				wire = TM_CTL_GPIB(1)
+					RS232:				wire = TM_CTL_RS232(2)
+					USB:				wire = TM_CTL_USB(3)
+					Ethernet:			wire = TM_CTL_ETHER(4)
+					USBTMC(DL9000):			wire = TM_CTL_USBTMC(5)
+					EthernetUDP:			wire = TM_CTL_ETHERUDP(6)
+					USBTMC(excluding DL9000):	wire = TM_CTL_ETHERUDP(7)
+					VXI-11:				wire = TM_CTL_VXI11(8)
+			  char* adr
+				Use a character string to set this parameter to the GPIB address or RS-232
+				settings of the device to be controlled.
+				The following shows how the settings for each interface.
+				GPIB:  adr = "1"-"30" (the GPIB address value of the device)
+				RS232: adr = "port number, baud rate number, bit specification, handshaking number"
+					port number		1 = COM1
+								2 = COM2
+								3 = COM3
+					baud rate number	0 = 1200
+								1 = 2400
+								2 = 4800
+								3 = 9600
+								4 = 19200
+								5 = 38400
+								6 = 57600
+					bit specifications	0 = 8 bits, no parity, 1 stop bit
+								1 = 7 bits, even parity, 1 stop bit
+								2 = 7 bits, odd parity, 1 stop bit
+					handshaking number	0 = NO-NO
+								1 = XON-XON
+								2= CTS-RTS
+				USB: adr = "1"-"127" (the unique USB ID for the device)
+				Ethernet: adr =	"server name, user name, password"
+					sever name		The server name or IP address of the DL
+					user name		The user name
+					password		The password
+								When the user name is anonymous,
+								a password is not required.
+								(A delimiting comma "," is required.)
+				USBTMC(DL9000): adr = "serial number"
+					Serial number	The instrument serial number
+				USBTMC(GS200 and GS820): adr = "serial number"
+					Serial number	The instrument serial number
+				USBTMC(GS610): adr = "serial number" + "C"
+					Serial number	The instrument serial number
+				USBTMC (other than the DL9000 and GS series):  adr = the number
+				encoded by TmcEncodeSerialNumber using "serial number"
+					 Serial number	The instrument serial number
+				VXI-11: adr = "IP address"
+
+			  int* id
+				Allocates the device ID passed to each function after initialization to the storage
+				buffer.
+				If initialization succeeds and a connection is opened, an integer equal to or greater
+				than 0 is returned for the ID.
+
+				If initialization succeeds, the return value is 0. If a connection could not be opened,
+				the return value is 1.
+				Regardless of the type of connection, the settings below take effect if initialization
+				is successful.
+				- Terminator: LF (LF or EOI for GPIB)
+				- Timeout: 30 seconds
+		Example:
+			GPIB address 1:
+				int id;
+				int ret = TmcInitialize( TM_CTL_GPIB, "1", &id );
+			RS232 COM1,57600,8-NO-1,CTS-RTS:
+				int id;
+				ret = TmcInitialize( TM_CTL_RS232, "1,6,0,2", &id );
+			USB ID 1:
+				int id;
+				int ret = TmcInitialize( TM_CTL_USB, "1", &id );
+			Ethernet IP = 11.22.33.44, User name = anonymous
+				int id;
+				int ret = TmcInitialize( TM_CTL_ETHER, "11.22.33.44,anonymous,", &id );
+			Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+				int id;
+				int ret = TmcInitialize( TM_CTL_ETHE, "11.22.33.44,yokogawa,abcdefgh ", &id );
+			USBTMC (DL9000) serial number = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC, "27E000001", &id );
+			USBTMC (GS200 and GS820) serial number = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001", &id );
+			USBTMC (GS610) serial number = 27E000001
+				int id;
+				int ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001C", &id );
+			USBTMC (other than the DL9000 and GS series) serial number = 27E000001
+				' When using the device list
+				int id;
+				int ret;
+				DEVICELIST list[127];
+				int num;
+				ret = TmcSearchDevices(TM_CTL_USBTMC2,list,127,&num,NULL);
+				ret = TmcInitialize( TM_CTL_USBTMC2, list[0].adr, &id );
+				' When specifying the serial number directly
+				int id;
+				char encode[256];
+				int ret;
+				ret = TmcEncodeSerialNumber(encode,256,"27E000001");
+				ret = TmcInitialize( TM_CTL_USBTMC2, encode, &id );
+			VXI-11 IP=11.22.33.44
+				int id;
+				int ret = TmcInitialize( TM_CTL_VXI11, "11.22.33.44", &id );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcDeviceClear( int id );
+
+		Purpose:	Executes a selected device clear(SDC). This is a GPIB-specific command.
+		Parameters:	int id   device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device for which the device clear will be executed.
+				This function is specific to GPIB devices, and doesn't affect devices using other
+				interfaces.
+				This function is specific to GPIB and USBTMC (other than the DL9000) devices, and doesn't affect devices using other interfaces.
+				With USBTMC (other than the DL9000), a USBTMC standard InitiateClear is issued.
+				If the InitiateClear succeeds, ClearFeature is issued and execution ends.
+
+				If the device clear succeeds, the return value is 0. However, if it is executed on non-GPIB or USBTMC (other than the DL9000) devices, the value is always 0.
+
+
+				If device clear succeeds, the return value is 0.
+				However, if it is executed on non-GPIB devices, the value is always 0.
+		Example:
+			int ret = TmcDeviceClear( id );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSend( int id, char* msg );
+
+		Purpose:	Sends a message to a device.
+		Parameters:	int   id  device ID
+				char* msg message character string
+		Return value:	 0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  char* msg
+				For this parameter, enter the character string for the message itself.
+
+			Sends an ASCII character string to the device specified by the ID.
+			When sending binary data, use "TmcSendByLength".
+			Also, when dividing up a message to be sent, use "TmcSendSetup" and "TmcSendOnly".
+		Example:
+			int ret = TmcSend( id, "START" );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSendByLength( int id, char* msg, int len );
+
+		Purpose:	Sends a message of the specified number of bytes to a device.
+		Parameters:	int   id   device ID
+				char* msg  message character string
+				int   len  the length in bytes to be sent
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  char* msg
+				For this parameter, enter the message itself.
+			  int len
+				Set this parameter to the number of bytes to be sent in the message.
+
+			Sends a message to the device specified by the ID.
+			You can send a message even if it includes binary data.
+			When dividing up a message to be sent, use "TmcSendSetup" and "TmcSendOnly".
+		Example:
+			int ret = TmcSendByLength( id, "START", 5 );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSendSetup( int id );
+
+		Purpose:	Prepares the PC to send a message to a device.
+		Parameters:	int   id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device to which the PC should prepare to send a
+				message.
+
+			Prepares to send a message to the device specified by the ID.
+			When sending a single message over several transmissions, executes only once prior to the
+			transmission.
+			Use "TmcSendOnly" for the actual transmission.
+		Example:
+			int ret = TmcSendSetup( id );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSendOnly( int id, char* msg, int len, int end );
+
+		Purpose:	Sends a message of the specified number of bytes to a device.
+		Parameters:	int   id   device ID
+				char* msg  message character string
+				int   len  the length in bytes to be sent
+				int   end  end flag
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  char* msg
+				For this parameter, enter the message itself.
+			  int len
+				Set this parameter to the number of bytes to be sent in the message.
+			  int end
+				Set this parameter to indicate whether the current transmission is the final
+				transmission.
+				The value is 1 at the end of transmission, or 0 if transmission is to continue.
+
+			Sends a message to the device specified by the ID.
+			You can send a message even if it includes binary data.
+			If the end flag was set to 1, a terminator is sent at the end of the message.
+			Therefore while the end flag is 0, the device side considers the message to be in a series.
+		Examples:
+			int ret;
+			ret = TmcSendSetup( id );
+			ret = TmcSendOnly( id, "STA", 3, 0 );
+			ret = TmcSendOnly( id, "RT", 2, 1 );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcReceive( int id, char* buff, int blen, int* rlen );
+
+		Purpose:	Receives a message from a device.
+		Parameters:	int   id    device ID
+				char* buff  buffer for received data
+				int   blen  size of the buffer (in bytes)
+				int   rlen  the actual number of bytes received
+		Return value:	 0 = OK, 1 = ERROR
+		
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which the message will be received.
+			  char* buff
+				Set this parameter to create a buffer that will store the message.
+			  int blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  int* rlen
+				Returns the actual number of bytes received.
+
+			Receives a message from the device specified by the ID. Receives data up to the terminator
+			when one is detected, or the number of bytes specified by blen if no terminator is detected.
+			When using YOKOGAWA digital oscilloscopes, use "TmcReceiveBlockHeader" and
+			"TmcReceiveBlockData" to receive message data such as "WAVeform:SEND?" and "IMAGe:SEND?".
+		Examples:
+			char buff[10000];
+			int length;
+			int ret = TmcReceive( id, buff, 10000, &length );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcReceiveSetup( int id );
+
+		Purpose:	Prepares the PC to receive a message from a device.
+		Parameters:	int id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which the PC will receive the
+				message.
+
+			Executes in order to prepare to receive from the device large amounts of data that has
+			been divided up into multiple transmissions.
+			Use "TmcReceiveOnly" for the actual receiving of data.
+		Example:
+			int ret = TmcReceiveSetup( id );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcReceiveOnly( int id, char* buff, int blen, int* rlen );
+
+		Purpose:	Receives a message (after preparation) from a device.
+		Parameters:	int   id    device ID
+				char* buff  buffer for received data
+				int   blen  size of the buffer (in bytes)
+				int   rlen  the actual number of bytes received
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which the message will be received.
+			  char* buff
+				Set this parameter to create a buffer that will store the message.
+			  int blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  int* rlen
+				Returns the actual number of bytes received.
+
+			Used when receiving large amounts of data that has been divided up.
+			After preparing for reception using "TmcReceiveSetup", receives the message from the
+			device specified by the ID.
+			Receives data up to the terminator when one is detected, or the number of bytes specified
+			by blen if no terminator is detected.
+		Examples:
+			int	ret;
+			char	buff [1000];
+			int	length;
+
+			ret = TmcReceiveSetup( id );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+			ret = TmcReceiveOnly( id, buff, 1000, &length );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcReceiveBlockHeader( int id, int* length );
+
+		Purpose:	Receives the header portion of the Block Data sent from the device, and returns
+				the number of bytes after the header.
+		Parameters:	int   id      device ID
+				int*  length  the number of bytes in the Block Data
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which Block Data will be received.
+			  int* length
+				Returns the number of bytes in the Block Data.
+
+
+			This is the first command to be used before receiving Block Data.
+			The number of bytes in the data after the header is returned as the length, so that
+			number plus 1 (for the terminator) is assigned to "TmcReceiveBlockData" and then the
+			data is received.
+		Examples:
+			int length;
+			int ret = TmcReceiveBlockHeader( id, &length );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcReceiveBlockData( int id, char* buff, int blen, int* rlen, int* end );
+
+		Purpose:	Receives the data portion of the Block Data sent from a device.
+		Parameters:	int   id    device ID
+				char* buff  buffer for received data
+				int   blen  size of the buffer (in bytes)
+				int   rlen  the actual number of bytes received
+				int*  end   end flag
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which the message will be received.
+			  char* buff
+				Set this parameter to create a buffer that will store the message.
+			  int blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  int* rlen
+				Returns the actual number of bytes received.
+			  int* end
+				Returns whether all of the number of bytes of data returned by
+				"TmcReceiveBlockHeader" are finished being received.
+				The value is 1 at the end of reception, or 0 if reception is to continue.
+
+			Used when receiving block data (messages starting with a #).
+			After preparing for reception using "TmcReceiveBlockHeader", the message is received
+			from the device specified by the ID.
+			Receives data up to the terminator when one is detected, or the number of bytes specified
+			by blen if no terminator is detected.
+		Example:
+			int	ret;
+			int	length;
+			int	len;
+			char	buff [1000];
+			int	flag;
+			ret = TmcReceiveBlockHeader( id, &length );
+			if( length < 1 ) {
+				return;
+			}
+			length += 1;
+			flag = 0;
+			while( flag == 0 ) {
+				ret = TmcReceiveBlockData( id, buf, 1000, &len, &flag );
+			}
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcCheckEnd( int id );
+
+		Purpose:	Returns whether the message from the device is finished. 
+				Can be used with the GPIB, USB, Ethernet, USBTMC, and VXI-11 interfaces.
+		Parameters:	int id  device ID
+		Return value:	 1 = message to continue, 0 = message complete
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which the message to be checked
+				for completion will be received.
+
+			When receiving a message that has been divided up into a series of messages, all of the
+			message is received using "TmcReveiveOnly", and the function returns the value indicating
+			whether reception is complete.
+		Example:
+			int ret = TmcCheckEnd( id );
+			if( ret == 0 ) {
+				/* end of reception */
+			}
+			else {
+				/* reception continuing */
+			}
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSetRen( int id, int flag );
+
+		Purpose:	Places a device in remote or local mode. Use with non-GPIB interfaces is limited to 
+				YOKOGAWA instruments.
+		Parameters:	int  id    device ID
+				int  flag  remote (1)/local (0)
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device that will be placed in remote or
+				local mode.
+			  int flag
+				Send 1 for remote, and 0 for local mode.
+
+			Depending on the type of interface, there are some differences in the way this command
+			is used.
+			For GPIB, the REN line is set to TRUE or FALSE.
+			Even after the parameter is entered, the device isn't actually placed in the mode until
+			messages are sent to that device.
+			With GPIB, the remote/local function cannot be applied separately to different devices.
+			When using RS232, USB or Ethernet with YOKOGAWA 488.2 compliant devices, only devices
+			that support COMMunications groups as messages can utilize this function.
+			In this case, the function can be applied separately to different devices.
+			In the USBTMC, remote / local switch is realized by control transfer.
+		Example:
+			int ret = TmcSetRen( id, 1 );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcGetLastError( int id );
+
+		Purpose:	Returns the number of the last error that occurred.
+		Parameters:	int id  device ID
+		Return value:	Error number
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device from which an error number will
+				be acquired.
+
+			Returns the number of the last error that occurred on that device.
+			If the return value from any of the functions is non-zero (including the initialization
+			function), this function can be used to acquire the actual error number.
+		Example:
+			int ret = TmcSend( id, "START" );
+			if( ret != 0 ) {
+				int err = TmcGetLastError( id );
+			}
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSetTerm( int id, int eos, int eot );
+
+		Purpose:	Sets the terminator for sending or receiving a message.
+		Parameters:	int id    device ID
+				int  eos  terminator
+				int  eot  EOI
+		Return value:	 0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device for the terminator.
+			  int eos
+				Set this parameter to the terminator itself. The settings are shown below.
+				eos = 0 : CR+LF
+				    = 1 : CR
+				    = 2 : LF
+				    = 3 : EOI (GPIB), or not (RS232, USB, Ethernet)
+				When the interface is GPIB and eos is 3, eot determines whether EOI is used.
+			  int eot
+				Set this parameter to determine whether EOI can be used for the terminator.
+				This is a GPIB-specific command.
+
+			Sets the terminator. In general, you can use the following settings for any interface
+			when carrying out communications with YOKOGAWA products.
+			   int ret = TmcSetTerm( id, 2, 1 ); /* eos = LF, eot = TRUE */
+			When sending or receiving binary data with the setting eos = LF, if LF code is included
+			in the binary code, the transmission concludes when the LF code is encountered.
+			However, when receiving block data using a YOKOGAWA product, if you use
+			"TmcReceiveBlockHeader" and "TmcReceivceBlockData", there's no need to switch the
+			terminator.
+			This function not supported with USBTMC on instruments other than the DL9000. It is not necessary to use the function.
+		Example:
+			int ret = TmcSetTerm( id, 2, 1 );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSetTimeout( int id, int tmo );
+
+		Purpose:	Sets the timeout time for communications.
+		Parameters:	int  id   device ID
+				int  tmo  timeout time (100-6553600 ms)
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device on which timeout will be set.
+			  int tmo
+				Set this parameter to the timeout time in units of 100 ms.
+				When tmo = 0
+					GPIB:  Timeout unlimited
+					Other: No timeout
+
+			Sets the timeout time for communications. Generally you should set the timeout time
+			to 30 seconds when using YOKOGAWA products. (Even if you lengthen the timeout time,
+			performance will not be affected.
+		Example:
+			int ret = TmcSetTimeout( id, 300 );	/* 30s */
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcFinish( int id );
+
+		Purpose:	Closes the connection to a device.
+		Parameters:	int id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  int id
+				Set this parameter to the ID of the device whose connection will be closed.
+
+			Closes connections opened with "TmcInitialize" (initialization function).
+			You must execute this function when concluding communications.
+		Example:
+			int ret = TmcFinish( id );
+
+		---------------------------------------------------------------------------------------------------------------
+		int TmcSearchDevices( int wire, DEVICELIST* list, int max, int* num, char* option);
+
+		Purpose:	Returns a list of devices connected to the specified wire.
+		Parameters:	int          wire    Wire type
+				DEVICELIST*  list    Pointer to the array containing the strings indicating the found devices
+				int          max     Number of arrays of strings indicating the found devices
+				int*         num     Number of found devices
+				char*        option  Required parameters for each devices
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int wire
+				Specifies the type of wire to which the device to be controlled is connected. 
+				The settings for each interface are as follows:
+				GPIB			: Not supported
+				RS232			: Not supported
+				USB			: Not supported
+				Ethernet		: Not supported
+				USBTMC(DL9000)		: Not supported
+				EthernetUDP		: Not supported
+				USBTMC (other than the DL9000): wire = TM_CTL_USBTMC2(7)
+				VXI-11			: wire = TM_CTL_VXI11(8)
+
+			  DEVICELIST*	list
+			  typedef	struct _Devicelist
+			  {
+			  	char	adr[ADRMAXLEN];(ADRMAXLEN= 64)
+			  } DEVICELIST;
+
+				GPIB, RS232, USB, Ethernet, and USBTMC (DL9000) are undefined.
+				For USBTMC, the encoded serial number is returned.
+				For VXI-11, the IP address is returned.
+
+			  int max
+				Number of arrays of the above structure prepared by the user.
+			  int* num
+				Number of devices acquired
+			  char* option
+				VXI-11: IP address to be masked, in the form of a string
+				USBTMC: Not required
+				Other: Undefined
+		Example:
+			int		ret;
+			DEVICELIST	list[127];
+			int		num;
+			ret = TmcSearchDevices(7,list,127,&num,NULL); //	USBTMC (other than the DL9000)
+
+		--------------------------------------------------------------------------------
+		int TmcEncodeSerialNumber(char* encode, size_t len, char* src);
+
+		Purpose:	Converts the name plate serial number to a USB internal serial number.
+		Parameters:	char*   encode  The converted USB internal serial number
+				size_t  len     Size of the encode buffer (no. of bytes)
+				char*   src     Serial number printed on the name plate
+		Return value:	0 = OK
+
+		Details:
+			Description of parameters
+			char* encode
+				Pointer to the buffer in which the converted USB internal serial number is stored
+			size_t len
+				Size of the above buffer
+			char* src
+				Pointer to the buffer to which the serial number of the instrument printed on the name plate is written.
+
+		Example:
+			char	encode[256];
+			int	ret;
+			// Converts the name plate serial number to a USB internal serial number.
+			ret = TmcEncodeSerialNumber(encode,256,"12W929658");
+
+			ret = TmcInitialize(TM_CTL_USBTMC2, encode, &id);
+
+		--------------------------------------------------------------------------------
+		int TmcDecodeSerialNumber(char* decode, size_t len, char* src);
+
+		Purpose:	Converts the name plate serial number to a USB internal serial number.
+		Parameters:	char*   encode  Serial number printed on the name plate
+				size_t  len     Size of the encode buffer (no. of bytes)
+				char*   src     The converted USB internal serial number
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  char* decode
+				 Pointer to the buffer to which the serial number of the instrument printed on the name plate is written.
+			  size_t len
+				Size of the above buffer
+			  char* src
+				Pointer to the buffer in which the converted USB internal serial number is stored
+
+		Example:
+			char	encode[256];
+			int	ret;
+			// Converts the USB internal serial number to the name plate serial number.
+			ret = TmcDecodeSerialNumber(decode,256,"313257393239363538");
+			// decode = "12W929658"
+	
+		--------------------------------------------------------------------------------
+		int TmcWaitSRQ( int id, char* stsbyte, int tout);
+
+		Purpose:	Receives the SRQ of the device of the specified ID
+		Parameters:	int    id       Device value
+				char*  stsbyte  Pointer to the status byte storage buffer
+				int    tout     Timeout value (in 100 msec units)
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int id
+				Sets the ID of the device that receives the SRQ.
+			  char* stsbyte
+				Sets the SRQ attributes.
+			  int tout
+				Timeout value set in 100 msec units.
+
+		Example:
+			int	ret
+			int	sts;
+	
+			// Waits for the SRQ with a timeout value of 10 seconds
+			ret = TmcWaitSRQ(id, &sts, 100);
+
+		--------------------------------------------------------------------------------
+		int TmcAbortWaitSRQ( int id);
+
+		Purpose:	Clears the wait state of the SRQ wait function of the specified device.
+		Parameters:	int  id  Device value
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int id
+				Specifies the ID of the device on which to clear the wait state of the SRQ wait function.
+
+		Example:
+			int	ret = TmcAbortWaitSRQ(id);
+
+		--------------------------------------------------------------------------------
+		int TmcSetCallback(int id, Hndlr func, ULONG p1,ULONG p2);
+
+		Purpose:	Registers the call back routine when an SRQ occurs.
+		Parameters:	int             id      Device value
+				Hndlr           func    Pointer to the call back function
+				unsigned long   p1      long first parameter
+				unsigned long   p2      long second parameter
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int id
+				Sets the device ID of the device that sets the call back function.
+			  Hndlr func
+				typedef void(*Hndlr)(int, UCHAR, ULONG, ULONG);
+				Sets the pointer to the call back function called when an SRQ occurs.
+			  Unsigned long p1
+				First parameter passed to the call back function
+			  Unsigned long p2
+				Second parameter passed to the call back function
+
+		Example:
+			void func1(int id,UCHAR stb,ULONG p1,ULONG p2)
+			{
+				printf("SRQ occurred id=%d stb=0x%x p1=%d p2=%d\n",
+							id,stb,p1,p2);
+			}
+
+			{
+			int	ret = TmcSetCallback(id, func1, 1, 2);
+
+		--------------------------------------------------------------------------------
+		int TmcResetCallback(int id);
+
+		Purpose:	Resets the call back routine when an SRQ occurs.
+		Parameters:	int  id  Device value
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int id
+				Sets the device ID of the device that resets the registered call back function.
+
+		Example:
+			int	ret = TmcResetCallback(id);
+
+		--------------------------------------------------------------------------------
+		typedef void SRQCALLBACK(int id, UCHAR stb, ULONG p1,ULONG p2);
+
+		Purpose:	Prototype of the call back routine.
+		Parameters:	int             id   Device value
+				unsigned char   stb  Sets the status byte when an SRQ occurs.
+				unsigned long   p1   long first parameter
+				unsigned long   p2   long second parameter
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  int id
+				The device ID on which the SRQ occurred.
+			  unsigned char stb
+				The attributes of the SRQ that occurred.
+			  unsigned long p1
+				First parameter when the call back function is registered
+			  unsigned long p2
+				Second parameter when the call back function is registered
+
+		Example:
+			SRQCALLBACK func1(int id, UCHAR stb, ULONG p1, ULONG p2)
+			{
+				printf("SRQ occurred id=%d stb=0x%x p1=%d p2=%d\n",
+							id,stb,p1,p2);
+			}
+
+			{
+			int	ret = TmcSetCallback(func1, 1, 2);
+
+		---------------------------------------------------------------------------------------------------------------
+
+	3.4  Sample Programs
+
+		#include "tmctl.h"
+
+		int ExecuteCommunicate( void )
+		{
+			char adr[100];
+			int  ret;
+			int  id;
+			char buf[1000];
+			int  length;
+
+			// Example 1: GPIB address = 1
+			ret = TmcInitialize( TM_CTL_GPIB, "1", &id );
+			// Example 2: RS232 COM1, 57600, 8-NO-1, CTS-RTS
+			ret = TmcInitialize( TM_CTL_RS232, "1,6,0,1", &id );
+			// Example 3: USB ID = 1
+			ret = TmcInitialize( TM_CTL_USB, "1", &id );
+			// Example TM_CTL_ETHER: Ethernet IP = 11.22.33.44,User name = yokogawa,Password = abcdefgh
+			ret = TmcInitialize( TM_CTL_ETHER, "11.22.33.44,yokogawa,abcdefg", &id );
+			// Example 5: USBTMC(DL9000) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC, "27E000001", &id );
+			// Example 6: USBTMC(GS200 and GS820) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001", &id );
+			// Example 7: USBTMC(GS610) Serial Number = 27E000001
+			ret = TmcInitialize( TM_CTL_USBTMC2, "27E000001C", &id );
+			// Ex. 8: USBTMC (other than DL9000 and GS series) Serial Number = 27E000001
+			char encode[256];
+			ret = TmcEncodeSerialNumber(encode,256,"27E000001");
+			ret = TmcInitialize( TM_CTL_USBTMC2, encode, &id);
+			// Example 9: VXI-11 IP = 11.22.33.44
+			ret = TmcInitialize( TM_CTL_VXI11, "11.22.33.44", &id );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+			ret = TmcSetTerm( id, 2, 1 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+			ret = TmcSetTimeout( id, 300 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			ret = TmcSetRen( id, 1 );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			/* sending *RST */
+			ret = TmcSend( id, "*RST" );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			/* *sending IDN? & receiving query */
+			ret = TmcSend( id, "*IDN?" );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+
+			ret = TmcReceive( id, buf, 1000, &length );
+			if( ret != 0 ) {
+				return	TmcGetLastError( id );
+			}
+		}
+
+
+4.  Using the Library with Microsoft Visual Basic
+	4.1  Configuration
+		Files:	Tmctl.bas (file for definitions of functions)
+			Tmval.bas (file for definitions of constants)
+		- Copy Tmctl.bas and Tmval.bas to the standard module of the project you will be using.
+		- Copy Tmctl.dll to the Windows system directory.
+		- Copy ykusb.dll and YKMUSB.dll to the Windows System directory when using USB.
+		- Copy USBTMCAPI.dll to the Windows System directory when using USBTMC (DL9000).
+
+	4.2  Overview
+		This library uses an initialization function to set up a connection between the PC and devices
+		to be controlled. Then, values are returned as parameters and used as distinguishing IDs for 
+		the connected devices. Those IDs can be passed to other functions (such as send/receive
+		functions) to allow them to carry out their controls.
+
+	4.3  Available Functions
+		---------------------------------------------------------------------------------------------------------------
+		TmInitialize(ByVal wire As Long, ByVal adr As String, ByRef id As Long) As Long
+
+		Purpose:	Initializes and opens a connection to the specified devices
+		Parameters:	Long    wire  connection types
+				String  adr   the address of the connection
+				Long    id    special device ID used in other commands
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long wire
+				Set this parameter to the type of wire with which the device to be controlled
+				is connected.
+				The settings for each type of interface are shown below.
+					GPIB:			wire = 1
+					RS232:			wire = 2
+					USB:			wire = 3
+					Ethernet:		wire = 4
+					USBTMC (DL9000):	wire = 5
+					EthernetUDP:		wire = 6
+					USBTMC (other than the DL9000):	wire = 7
+					VXI-11:			wire = 8
+
+			  String adr
+				Enter a character string to set this parameter to the GPIB address or RS-232
+				settings for the device to be controlled.
+				The following shows the settings for each interface.
+				GPIB:  adr = "1"-"30" (the GPIB address value of the device)
+				RS232: adr = "port number, baud rate number, bit specification, handshaking number"
+					port number		1 = COM1
+								2 = COM2
+								3 = COM3
+					baud rate number	0 = 1200
+								1 = 2400
+								2 = 4800
+								3 = 9600
+								4 = 19200
+								5 = 38400
+								6 = 57600
+					bit specifications	0 = 8 bits, no parity, 1 stop bit
+								1 = 7 bits, even parity, 1 stop bit
+								2 = 7 bits, odd parity, 1 stop bit
+					handshaking no.		0 = NO-NO
+								1 = XON-XON
+								2= CTS-RTS
+				USB: adr = "1-127" (the USB ID for the device)
+				Ethernet: adr = "server name,user name,password"
+					sever name	The server name or IP address of the DL
+					user name	The user name
+					password	The password
+							When the user name is anonymous,
+							a password is not required.
+							(A delimiting comma "," is required.)
+				USBTMC(DL9000): adr = "serial number"
+					where serial number is the serial number of the DL9000.
+				USBTMC(GS200 and GS820): adr = "serial number"
+					Serial number	The instrument serial number
+				USBTMC(GS610): adr = "serial number" + "C"
+					Serial number	The instrument serial number
+				USBTMC (other than the DL9000 and GS series):  adr = the number
+				encoded by TmcEncodeSerialNumber using "serial number"
+					 Serial number	The instrument serial number
+			  Long id
+				Allocates the device ID passed to each function after initialization to the
+				storage buffer. If initialization succeeds and a connection is opened, an
+				integer greater than or equal to 0 is returned for the ID.
+
+			If initialization succeeds, the return value is 0. If a connection could not be opened,
+			the return value is 1.
+			Regardless of the type of connection, the settings below take effect if initialization
+			is successful.
+			- Terminator: LF (LF or EOI for GPIB)
+			- Timeout: 30 seconds
+		Example:
+			GPIB address 1:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1"
+				ret = TmInitialize( 1, adr, id )
+			RS232 COM1,57600,8-NO-1,CTS-RTS:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1,6,0,2"
+				ret = TmInitialize( 2, adr, id )
+			USB ID 1:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "1"
+				ret = TmcInitialize( 3, adr, id )
+			Ethernet IP = 11.22.33.44, User name = anonymous:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "11.22.33.44,anonymous,"
+				ret = TmInitialize( 4, adr, id )
+			Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "11.22.33.44,yokogawa,abcdefgh"
+				ret = TmInitialize( 4, adr, id )
+			USBTMC(DL9000) serial number Serial Number = 27E000001:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001"
+				ret = TmcInitialize( 5, adr, id )
+			USBTMC(GS200 and GS820) serial number Serial Number = 27E000001:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001"
+				ret = TmcInitialize( 7, adr, id )
+			USBTMC(GS610) serial number Serial Number = 27E000001:
+				Dim id As Long
+				Dim ret As Long
+				Dim adr As String
+				adr = "27E000001" & "C"
+				ret = TmcInitialize( 7, adr, id )
+			USBTMC (other than the DL9000 and GS series) serial number = 27E000001
+				' When using the device list
+				Dim id As Long
+				Dim ret As Long
+				Dim list As DeviceListArray
+				Dim num As Long
+				ret = TmSearchDevices(7, list, 128, num, 0)
+				ret = TmInitialize(7, list.list(0).adr, id)
+				' When specifying the serial number directly
+				Dim id As Long
+				Dim ret As Long
+				Dim encode As String * 128
+				ret = TmEncodeSerialNumber(encode, 128, "27E000001")
+				ret = TmInitialize(7, encode, id)
+				Note: It is easy to specify the serial number directly using USBTMC (other than the DL9000) by passing the value encoded by TmEncodeSerialNumber to TmInitializeA.
+			VXI-11 IP = 11.22.33.44
+				Dim id As Long
+				Dim ret As Long
+				ret = TmInitialize( 8, "11.22.33.44", id )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmDeviceClear(ByVal id As Long) As Long
+
+		Purpose:	Executes a selected device clear(SDC). This is a GPIB-specific command.
+		Parameters:	Long id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device on which the device clear will
+				be executed. This function is specific to GPIB and USBTMC(other than the DL9000) devices, and doesn't affect
+				devices using other interfaces.
+				With USBTMC (other than the DL9000), a USBTMC standard InitiateClear is issued.
+				If the InitiateClear succeeds, ClearFeature is issued and execution ends.
+
+			If device clear succeeds, the return value is 0.
+			However, if it is executed on non-GPIB devices, the value is always 0.
+		Example:
+			Dim ret As Long
+			ret = TmDeviceClear( id )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSend(ByVal id As Long, ByVal msg As String) As Long
+
+		Purpose:	Sends a message to a device.
+		Parameters:	Long   id   device ID
+				String msg  message character string
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  String msg
+				For this parameter, enter the character string for the message itself.
+
+			Sends an ASCII character string to the device specified by the ID. When sending binary
+			data, use "TmcSendByLength". Also, when dividing up a message to be sent,
+			use "TmSendSetup" and "TmSendOnly".
+		Example:
+			Dim ret As Long
+			ret = TmSend( id, "START" )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSendByLength(ByVal id As Long, ByVal msg As String, ByVal blen As Long) As Long
+
+		Purpose:	Sends a message of the specified number of bytes to a device.
+		Parameters:	Long   id   device ID
+				String msg  message character string
+				Long   len  the length in bytes to be sent
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  Byte msg()
+				For this parameter, enter the message itself.
+			  Long len
+				Set this parameter to the number of bytes sent in the message.
+
+			Sends a message to the device specified by the ID.
+			Also, when dividing up a message to be sent, use "TmSendSetup" and "TmSendOnly".
+		Example:
+			Dim ret As Long
+			ret = TmSendByLength( id, "START", 5 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSendByLengthB(ByVal id As Long, ByRef msg() As Byte, ByVal blen As Long) As Long
+
+		Purpose:	Sends a message(byte array) of the specified number of bytes to a device.
+		Parameters:	Long   id     device ID
+				Byte   msg()  message byte array
+				Long   len    the length in bytes to be sent
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  Byte msg()
+				For this parameter, enter the message itself.
+			  Long len
+				Set this parameter to the number of bytes sent in the message.
+
+			Sends a message to the device specified by the ID. You can send a message even if
+			it includes binary data. Also, when dividing up a message to be sent, use
+			"TmSendSetup" and "TmSendOnlyB".
+		Example:
+			Dim ret As Long
+			Dim msg(10) As Byte
+			
+			msg(0) = CByte(Asc("S"))
+			msg(1) = CByte(Asc("T"))
+			msg(2) = CByte(Asc("A"))
+			msg(3) = CByte(Asc("R"))
+			msg(4) = CByte(Asc("T"))
+			ret = TmSendByLengthB( id, msg, 5 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSendSetup(ByVal id As Long) As Long
+
+		Purpose:	Prepares the PC to send a message to a device.
+		Parameters:	Long   id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the PC should prepare
+				to send a message.
+
+			Prepares to send a message to the device specified by the ID.
+			When sending a single message over several transmissions, executes only once prior to the
+			transmission.
+			Use "TmSendOnly" for the actual transmission.
+		Example:
+			Dim ret As Long
+			ret = TmSendSetup( id )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSendOnly(ByVal id As Long, ByVal msg As String, ByVal len As Long, ByVal end As Long)	As Long
+
+		Purpose:	Sends a message of the specified number of bytes to a device.
+		Parameters:	Long   id   device ID
+				String msg  message character string
+				Long   len  the length in bytes to be sent
+				Long   end  end flag
+		Return value:	 0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  String msg
+				For this parameter, enter the message itself.
+			  Long len
+				Set this parameter to the length in bytes to be sent.
+			  Long end
+				Set this parameter to indicate whether the current transmission is the final
+				transmission.
+				The value is 1 at the end of transmission, or 0 if transmission is to continue.
+
+			Sends a message to the device specified by the ID. You can send a message even if it
+			includes binary data. If the end flag was set to 1, a terminator is sent at the end of
+			the message. Therefore while the end flag is 0, the device side considers the message
+			to be in a series.
+		Example:
+			Dim ret As Long
+			ret = TmSendSetup( id )
+			ret = TmSendOnly( id, "STA", 3, 0 )
+			ret = TmSendOnly( id, "RT", 2, 1 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSendOnlyB((ByVal id As Long, ByRef buf() As Byte, ByVal blen As Long, ByVal ed As Long) As Long
+
+		Purpose:	Sends a message(byte array) of the specified number of bytes to a device.
+		Parameters:	Long   id     device ID
+				Byte   msg()  message byte array
+				Long   len    the length in bytes to be sent
+				Long   end    end flag
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device to which the message will be sent.
+			  Byte msg()
+				For this parameter, enter the message itself.
+			  Long len
+				Set this parameter to the length in bytes to be sent.
+			  Long end
+				Set this parameter to indicate whether the current transmission is the final
+				transmission.
+				The value is 1 at the end of transmission, or 0 if transmission is to continue.
+
+			Sends a message to the device specified by the ID. You can send a message even if it
+			includes binary data. If the end flag was set to 1, a terminator is sent at the end of
+			the message. Therefore while the end flag is 0, the device side considers the message
+			to be in a series.
+		Example:
+			Dim ret As Long
+			Dim msg(10) As Byte
+			
+			ret = TmSendSetup( id )
+			msg(0) = CByte(Asc("S"))
+			msg(1) = CByte(Asc("T"))
+			msg(2) = CByte(Asc("A"))
+			ret = TmSendOnlyB( id, msg, 3, 0 )
+			msg(0) = CByte(Asc("R"))
+			msg(1) = CByte(Asc("T"))
+			ret = TmSendOnlyB( id, msg, 2, 1 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceive(ByVal id As Long, ByRef buf As String, ByVal blen As Long, ByRef rlen As Long) As Long
+
+		Purpose:	Receives a message from a device as a character string.
+		Parameters:	Long   id    device ID
+				String buf   buffer for received data
+				Long   blen  size of the buffer (in bytes)
+				Long   rlen  the actual number of bytes received
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the message will be received.
+			  String buf
+				Set this parameter to the create a buffer that will store the message.
+			  Long blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  Long rlen
+				Returns the actual number of bytes received.
+
+			Receives a message from the device specified by the ID. Receives data up to the
+			terminator when one is detected, or the number of bytes specified by blen if no
+			terminator is detected. When using YOKOGAWA digital oscilloscopes,
+			use "TmReceiveBlockHeader","TmReceiveBlock", and "TmReceiveBlockB" to receive message data
+			such as "WAVeform:SEND?" and "IMAGe:SEND?".
+		Example:
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			buf = Space$(1000)
+			ret = TmReceive( id, buf, 1000, length )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceiveSetup(ByVal id As Long) As Long
+
+		Purpose:	Prepares the PC to receive a message from a device.
+		Parameters:	Long id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the PC will receive the
+				message.
+
+			Executed in order to prepare the PC to receive from the device large amounts of data
+			that has been divided up into multiple transmissions. Use "TmReceiveOnly" for the
+			actual data transmission.
+		Example:
+			Dim ret As Long
+			int ret = TmReceiveSetup( id )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceiveOnly(ByVal id As Long, ByRef buf As String, ByVal blen As Long, ByRef rlen As Long) As Long
+
+		Purpose:	Receives a message (after preparation) from a device as a character string.
+		Parameters:	Long id      device ID
+				String buf   buffer for received data
+				Long   blen  size of the buffer (in bytes)
+				Long   rlen  the actual number of bytes received
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the message will be received.
+			  String buf
+				Set this parameter to create a buffer that will store the message.
+			  Long blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  Long rlen
+				Returns the actual number of bytes received.
+
+			Used when receiving large amounts of data that has been divided up.
+			After preparing for reception using "TmReceiveSetup", receives the message from the
+			device specified by the ID.
+			Receives data up to the terminator when one is detected, or the number of bytes
+			specified by blen if no terminator is detected.
+		Example:
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+
+			ret = TmReceiveSetup( id )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+			buf = Space$(1000)
+			ret = TmReceiveOnly( id, buf, 1000, &length )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceiveBlockHeader(ByVal id As Long, ByRef len As Long) As Long
+
+		Purpose:	Receives the header portion of the Block Data sent from the device, and returns the number of bytes of the data after the header.
+		Parameters:	Long  id   device ID
+				Long  len  the number of bytes in the Block Data
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which Block Data will be received.
+			  Long length
+				Returns the number of bytes in the Block Data.
+
+			This is the first command to be used before receiving Block Data.
+			The number of bytes in the data after the header is returned for len, so that
+			number plus 1 (for the terminator) is assigned to "TmReceiveBlock" and
+			"TmReceiveBlockB", then the data is received.
+		Example:
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			Dim data(999) As Integer
+			Dim rlen As Long
+			Dim ed As Long
+
+			ret = TmSend(id, ":Waveform:Send?")
+			Debug.Print ("TmSend:Ret=" & ret)
+
+			ret = TmReceiveBlockHeader(id, length)
+			Debug.Print ("TmReceiveBlockHeader:Ret=" & ret & " length=" & length)
+
+			ed = 0
+			While ed = 0
+			ret = TmReceiveBlock(id, data(), 1000, rlen, ed)
+				Debug.Print ("TmReceiveBlockData:Ret=" & ret & " rlen=" & rlen & " ed=" & ed)
+			Wend
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceiveBlock(ByVal id As Long, buf() As Integer, ByVal blen As Long, ByRef rlen As Long, ByRef end As Long) As Long
+
+		Purpose:	Receives the data portion of the Block Data sent from a device into an integer array.
+		Parameters:	Long     id     device ID
+				Integer  buf()  buffer for received data
+				Long     blen   size of the buffer (in bytes)
+				Long     rlen   the actual number of bytes received
+				Long     end    end flag
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the message will be received.
+			  Integer buf()
+				Set this parameter to create a integer array that will store the message.
+			  Long blen
+				Set this parameter to the maximum number of bytes in the message that may be
+				received (normally the number of bytes in the buffer).
+			  Long rlen
+				Returns the actual number of bytes received.
+			  Long end
+				Returns whether all of the number of bytes of data returned by
+				"TmReceiveBlockHeader" are received.
+				The value is 1 at the end of reception, or 0 if reception is to continue.
+
+			Used when receiving block data (message starting with #-).
+			After preparing for reception using "TmReceiveBlockHeader", the message is received
+			from the device specified by the ID. Receives data up to the terminator when one
+			is detected, or the number of bytes specified by blen if no terminator is detected.
+		Example:
+			Dim ret As Long
+			Dim buf As String
+			Dim length As Long
+			Dim data(999) As Integer
+			Dim rlen As Long
+			Dim ed As Long
+
+			ret = TmSend(id, ":Waveform:Send?")
+			Debug.Print ("TmSend:Ret=" & ret)
+
+			ret = TmReceiveBlockHeader(id, length)
+			Debug.Print ("TmReceiveBlockHeader:Ret=" & ret & " length=" & length)
+
+			ed = 0
+			While ed = 0
+				ret = TmReceiveBlock(id, data(), 1000, rlen, ed)
+				Debug.Print ("TmReceiveBlockData:Ret=" & ret & " rlen=" & rlen & " ed=" & ed)
+			Wend
+
+		---------------------------------------------------------------------------------------------------------------
+		TmReceiveBlockB(ByVal id As Long, buf() As Byte, ByVal blen As Long, ByRef rlen As Long, ByRef end As Long) As Long
+
+		Purpose:	Receives the data portion of the Block Data sent from a device into a byte array.
+		Parameters:	Long  id     device ID
+				Byte  buf()  buffer for received data
+				Long  blen   size of the buffer (in bytes)
+				Long  rlen   the actual number of bytes received
+				Long  end    end flag
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the message will be received.
+			  Byte buf()
+				Set this parameter to create a byte array that will store the message.
+			  Long blen
+				Set this parameter to the maximum number of bytes in the message that may
+				be received (normally the number of bytes in the buffer).
+			  Long rlen
+				Returns the actual number of bytes received.
+			  Long end
+				Returns whether all of the number of bytes of data returned by
+				"TmReceiveBlockHeader" are received.
+				The value is 1 at the end of reception, or 0 if reception is to continue.
+
+			Used when receiving block data (message starting with #-).
+			After preparing for reception using "TmReceiveBlockHeader", receives the message
+			from the device specified by the ID. Receives data up to the terminator when one
+			is detected, or the number of bytes specified by blen if no terminator is detected.
+		Example:
+			Dim ret As Long
+			Dim buf(1000) As Byte
+			Dim length As Long
+			Dim rlen As Long
+			Dim flag As Long
+
+			ret = TmReceiveBlockHeader( id, length )
+			length = length + 1
+			flag = 0
+			While (flag = 0)
+				ret = TmReceiveBlockB( id, buf(), 1000, rlen, flag )
+			Wend
+
+		---------------------------------------------------------------------------------------------------------------
+		TmCheckEnd(ByVal id As Long) As Long
+
+		Purpose:	Returns whether the message from the device is finished. Can be used with the GPIB, USB, Ethernet, USBTMC, and VXI-11 interfaces 
+				Used with the GPIB, USB, Ethernet or USBTMC interface.
+		Parameters:	Long id  device ID
+		Return value:	1 = message to continue, 0 = message complete
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the message to be
+				checked for completion was received.
+
+			When receiving a message that has been divided up into a series of messages,
+			all of the message is received using "TmReceiveOnly", and "TmReceiveOnlyBin"
+			and the function returns the value indicating whether reception is complete.
+		Example:
+			Dim ret As Long
+			ret = TmCheckEnd( id )
+			If( ret == 0 ) Then
+				'end of reception
+			Else
+				'reception continuing
+			Endif
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSetRen(ByVal id As Long, ByVal flg As Long) As Long
+
+		Purpose:	Places a device in remote or local mode. Use with non-GPIB interfaces is limited to YOKOGAWA instruments.
+		Parameters:	Long  id    device ID
+				Long  flg   remote (1)/local (0)
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device that will be placed in remote or
+				local mode.
+			  Long flg
+				Send 1 for remote, and 0 for local mode.
+
+			Depending on the type of interface, there are some differences in the way this
+			command is used.
+			For GPIB, the REN line is set to TRUE or FALSE.
+			Even after the remote parameter is entered, the device isn't actually placed in
+			the mode until messages are sent to that device.
+			With GPIB, the remote/local function cannot be applied separately to different devices.
+			When using RS232, USB and Ethernet with YOKOGAWA 488.2 compliant products,
+			only devices that support COMMunicate groups as messages can process this function.
+			If your system complies, the function can be applied separately to different devices.
+			In the USBTMC, remote / local switch is realized by control transfer.
+		Example:
+			Dim ret As Long
+			ret = TmSetRen( id, 1 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmGetLastError(ByVal id As Long) As Long
+
+		Purpose:	Returns the number of the last error that occurred.
+		Parameters:	Long id  device ID
+		Return value:	Error number
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device from which the error number
+				is acquired.
+
+			Returns the number of the last error that occurred on that device.
+			If the return value from any of the functions is non-zero (including the initialization
+			function), this function can be used to acquire the actual error number.
+		Example:
+			Dim ret As Long
+			Dim err As Long
+
+			ret = TmSend(id, "*IDN?")
+			If (ret <> 0) Then
+				err = TmGetLastError(id)
+			End If
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSetTerm(ByVal id As Long, ByVal eos As Long, ByVal eot As Long) As Long
+
+		Purpose:	Sets the terminator for sending or receiving a message.
+		Parameters:	Long id    device ID
+				Long  eos  terminator
+				Long  eot  EOI
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device for the terminator.
+			  Long eos
+				Set this parameter to the terminator itself. The settings are shown below.
+				eos = 0 : CR+LF
+				    = 1 : CR
+				    = 2 : LF
+				    = 3 : EOI (GPIB), or not (RS232, USB, Ethernet)
+				When the interface is GPIB and eos is 3, eot determines whether EOI is used.
+			  Long eot
+				Set this parameter to determine whether EOI can be used for the terminator.
+				This is a GPIB-specific command.
+
+			Sets the terminator. In general, you can use the following settings for any interface
+			when carrying out communications with YOKOGAWA products.
+				Dim ret As Long
+				ret = TmSetTerm( id, 2, 1 )  'eos = LF, eot = TRUE
+			When sending or receiving binary data with the setting eos = LF, if LF code is included
+			in the binary code, the transmission concludes when the LF code is encountered.
+			However, when receiving block data using a YOKOGAWA product, if you use
+			"TmReceiveBlockHeader", "TmReceivceBlock", and "TmReceivceBlockB", there's no need to
+			switch the terminator.
+		Example:
+			Dim ret As Long
+			ret = TmSetTerm( id, 2, 1 )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSetTimeout(ByVal id As Long, ByVal tmo As Long) As Long
+
+		Purpose:	Sets the timeout time for communications.
+		Parameters:	Long id    device ID
+				Long  tmo  timeout time (100-6553600 ms)
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device on which timeout will be set.
+			  Long tmo
+				Set this parameter to the timeout time in units of 100 ms.
+				When tmo = 0,
+					GPIB: Timeout unlimited
+					Other: No timeout
+
+			Sets the timeout time for communications.
+			Generally you should set the timeout time to 30 seconds when using YOKOGAWA products.
+			(Even if you lengthen the timeout time, performance will not be affected.)
+		Example:
+			Dim ret As Long
+			ret = TmSetTimeout( id, 300 )	'30s
+
+		---------------------------------------------------------------------------------------------------------------
+		TmFinish(ByVal id As Long) As Long
+
+		Purpose:	Closes the connection to a device.
+		Parameters:	Long id  device ID
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of Parameters
+			  Long id
+				Set this parameter to the ID of the device whose connection will be closed.
+
+			Closes connections opened with "TmInitialize" (initialization function).
+			You must execute this function when concluding communications.
+		Example:
+			Dim ret As Long
+			ret = TmFinish( id )
+
+		---------------------------------------------------------------------------------------------------------------
+		TmSearchDevices(ByVal wire As Long, list As DeviceListArray, ByVal max As Long, ByRef num As Long, ByVal option1 As String) As Long
+
+		Purpose:	Returns a list of devices connected to the specified wire.
+		Parameters:	Long             wire    Wire type
+				DeviceListArray  list    Pointer to the array containing the strings indicating the found devices
+				Long             max     Number of arrays of strings indicating the found devices
+				Long             num     Number of found devices
+				string           option  Required parameters for each device
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  Long wire
+				Specifies the type of wire to which the device to be controlled is connected.
+				The settings for each interface are as follows:
+				GPIB:				Not supported
+				RS232:				Not supported
+				USB:				Not supported
+				Ethernet:			Not supported
+				USBTMC(DL9000):			Not supported
+				EthernetUDP:			Not supported
+				USBTMC (other than DL9000):	wire = TM_CTL_USBTMC2(7)
+				VXI-11:				wire = TM_CTL_VXI11(8)
+
+			  DeviceListArray list
+			  Public Const MaxStationNum = 128 ' Maximum number of stations
+			  Type DeviceList
+			      adr As String * 64 ' Name
+			  End Type
+			  Type DeviceListArray
+			      list(MaxStationNum - 1) As DeviceList ' Station list
+			  End Type
+				GPIB, RS232, USB, Ethernet, and USBTMC (DL9000) are undefined.
+				For USBTMC, the encoded serial number is returned.
+				For VXI-11, the IP address is returned.
+
+			Long max
+				Number of arrays of the above structure prepared by the user. Specify MaxStationNum.
+			Long num
+				Number of devices acquired
+			string option
+				VXI-11:	IP address to be masked, in the form of a string
+				USBTMC:	Not required
+				Other:	Undefined
+		Example:
+			Dim	ret As long
+			Dim	list As DeviceListArray
+			Dim	num As long
+			ret = TmSearchDevices(7, list, MaxStationNum, num, 0) ' USBTMC (other than DL9000)
+			ret = TmInitialize(7, listarray.list(0).adr, id)
+			' ret = TmSearchDevices(8, list, MaxStationNum, num, "11.22.33.44") ' For VXI-11
+			' ret = TmInitialize(8, listarray.list(0).adr, id)
+
+		--------------------------------------------------------------------------------
+		TmEncodeSerialNumber(ByVal encode As String, ByVal encodelen As Long, ByVal src As String) As Long
+
+		Purpose:	Converts the name plate serial number to a USB internal serial number.
+		Parameters:	String  encode  The converted USB internal serial number
+				Long    len     Size of the encode buffer (no. of bytes)
+				string  src     Serial number printed on the name plate
+		Return value:	0 = OK
+
+		Details:
+			Description of parameters
+			  String encode
+				Buffer (specified with a fixed-length string) in which the converted USB internal serial number is stored
+			  Long len
+				Size of the above buffer
+			  String src
+				Serial number of the instrument printed on the name plate
+
+		Example:
+			Dim ret As Long
+			Dim encode As String * 128
+			' Converts the name plate serial number to a USB internal serial number.
+			ret = TmEncodeSerialNumber(encode, 128, "TEMP01")
+			ret = TmInitialize(7, encode, id)
+
+		--------------------------------------------------------------------------------
+		TmDecodeSerialNumber(ByVal decode As String, ByVal decodelen As Long, ByVal src As String) As Long
+
+		Purpose:	Converts the name plate serial number to a USB internal serial number.
+		Parameters:	String  decode  Serial number printed on the name plate
+				long    len     Size of the encode buffer (no. of bytes)
+				String  src     The converted USB internal serial number
+		Return value:	0 = OK, 1 = ERROR
+
+		Details:
+			Description of parameters
+			  String decode
+				Buffer (specified with a fixed-length string) in which the converted characters are stored
+			  Long len
+				Size of the above buffer
+			  String src
+				The string converted (source)
+
+		Usage example:
+			Dim ret As Long
+			Dim decode As String * 128
+			Dim encode As String * 128
+
+			ret = TmEncodeSerialNumber(encode, 128, "TEMP01")
+			ret = TmDecodeSerialNumber(decode, 128, encode)
+			' decode = "TEMP01"
+
+		--------------------------------------------------------------------------------
+
+	4.4  Sample Programs
+
+		Function ExecuteCommunicate
+			Dim adr As String
+			Dim ret As Long
+			Dim id As Long
+			Dim buf As String
+			Dim length As Long
+
+			'Example 1: GPIB address = 1
+			adr = "1"
+			ret = TmInitialize( 1, adr, id )
+			'Example 2: RS232 COM1, 57600, 8-NO-1, CTS-RTS
+			adr = "1,6,0,2"
+			ret = TmInitialize( 2, adr, id )
+			'Example 3: USB ID = 1
+			adr = "1"
+			ret = TmInitialize( 3, adr, id )
+			'Example 4: Ethernet IP = 11.22.33.44, User name = yokogawa, Password = abcdefgh
+			adr = "11.22.33.44,yokogawa,abcdefgh"
+			ret = TmInitialize( 4, adr, id )
+			'Example. 5: USBTMC (DL9000) Serial Number = 27E000001
+			adr = "27E000001"
+			ret = TmInitialize( 5, adr, id )
+			'Example. 6: USBTMC (GS200 and GS820) Serial Number = 27E000001
+			adr = "27E000001"
+			ret = TmInitialize( 7, adr, id )
+			'Example. 7: USBTMC (GS610) Serial Number = 27E000001
+			adr = "27E000001" & "C"
+			ret = TmInitialize( 7, adr, id )
+			'Example. 8: USBTMC (other than DL9000 and GS series) Serial Number = 27E000001
+			Dim encode As String * 128
+			ret = TmEncodeSerialNumber(encode,128,"27E000001")
+			ret = TmInitialize( 7, encode, &id)
+			'Example 9: VXI-11 IP = 11.22.33.44
+			ret = TmcInitialize( 8, "11.22.33.44", &id )
+
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ret = TmSetTerm( id, 2, 1 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ret = TmSetTimeout( id, 300 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			ret = TmSetRen( id, 1 )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			'sending *RST
+			ret = TmSend( id, "*RST" )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+
+			'*sending IDN? & receiving query
+			ret = TmSend( id, "*IDN?" )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			buf = Space$(1000)
+			ret = TmReceive( id, buf, 1000, &length )
+			If( ret <> 0 ) Then
+				ExecuteCommunicate = TmGetLastError( id )
+				Exit Function
+			Endif
+			ExecuteCommunicate = 0
+		End Function
+
+
+5.  Error Codes
+	Error number	Problem                    	Solutions
+	1           	Timeout error              	Check the wiring.
+	2           	Device not found           	Check the wiring.
+	4           	Connection to device failed	Check the wiring.
+	8           	Device not connected       	Connect the device using the initialization function.
+	16          	Device already connected   	Two connections cannot be opened.
+	32          	Incompatible PC            	Check the hardware you are using.
+	64          	Illegal parameter          	Check parameter type etc.
+	256         	Send error                 	Check the wiring, address, and ID.
+	512         	Receive error              	Check whether an error occurred on the device.
+	1024        	Received data not block data
+	4096        	System error               	There is a problem with the operating environment.
+	8192        	Illegal device ID          	Use the ID of the device acquired by the initialization function.
+	16384       	An unsupported function.   	This function is not supported.
+	32768       	Insufficient buffers.      	Buffer size is insufficient.

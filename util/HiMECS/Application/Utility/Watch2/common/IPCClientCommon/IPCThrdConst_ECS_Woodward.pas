@@ -1,0 +1,17 @@
+unit IPCThrdConst_ECS_Woodward;
+
+interface
+
+const
+  MAX_CLIENTS        = 6;
+  TIMEOUT            = 2000;
+  BUFFER_NAME        = 'BUFFER_NAME_ECS_WOODWARD';
+  BUFFER_MUTEX_NAME  = 'BUFFER_MUTEX_ECS_WOODWARD';
+  MONITOR_EVENT_NAME = 'MONITOR_EVENT_ECS_WOODWARD';
+  CLIENT_EVENT_NAME  = 'CLIENT_EVENT_ECS_WOODWARD';
+
+implementation
+
+
+end.
+ 

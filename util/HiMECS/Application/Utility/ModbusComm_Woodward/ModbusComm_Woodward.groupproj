@@ -1,0 +1,62 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{f4b7b9f3-58f3-4b66-b07d-ad002470a70d}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="ModBusComP_Woodward.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Monitoring\EngineMonitoringp_XE2.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="DataSave\ECS_DataSave.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<BorlandProject>
+					<Default.Personality/>
+				</BorlandProject>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="ModBusComP_Woodward">
+			<MSBuild Projects="ModBusComP_Woodward.dproj"/>
+		</Target>
+		<Target Name="ModBusComP_Woodward:Clean">
+			<MSBuild Projects="ModBusComP_Woodward.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="ModBusComP_Woodward:Make">
+			<MSBuild Projects="ModBusComP_Woodward.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="EngineMonitoringp_XE2">
+			<MSBuild Projects="Monitoring\EngineMonitoringp_XE2.dproj"/>
+		</Target>
+		<Target Name="EngineMonitoringp_XE2:Clean">
+			<MSBuild Projects="Monitoring\EngineMonitoringp_XE2.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="EngineMonitoringp_XE2:Make">
+			<MSBuild Projects="Monitoring\EngineMonitoringp_XE2.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="ECS_DataSave">
+			<MSBuild Projects="DataSave\ECS_DataSave.dproj"/>
+		</Target>
+		<Target Name="ECS_DataSave:Clean">
+			<MSBuild Projects="DataSave\ECS_DataSave.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="ECS_DataSave:Make">
+			<MSBuild Projects="DataSave\ECS_DataSave.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="ModBusComP_Woodward;EngineMonitoringp_XE2;ECS_DataSave"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="ModBusComP_Woodward:Clean;EngineMonitoringp_XE2:Clean;ECS_DataSave:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="ModBusComP_Woodward:Make;EngineMonitoringp_XE2:Make;ECS_DataSave:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

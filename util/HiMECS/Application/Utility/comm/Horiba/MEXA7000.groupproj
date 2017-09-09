@@ -1,0 +1,74 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6db4a8af-9ad8-445a-a89f-ddbadcb414c5}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Mexa7000_xe5.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TCP Server\MEXA7000_TCPServerp_xe_XE5.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TCP Client\MEXA7000_TCPClient_xe_XE5.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DataSave\MEXA7000_DataSave_xe_XE5.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <BorlandProject>
+                <Default.Personality/>
+            </BorlandProject>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Mexa7000_xe5">
+        <MSBuild Projects="Mexa7000_xe5.dproj"/>
+    </Target>
+    <Target Name="Mexa7000_xe5:Clean">
+        <MSBuild Projects="Mexa7000_xe5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Mexa7000_xe5:Make">
+        <MSBuild Projects="Mexa7000_xe5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MEXA7000_TCPServerp_xe_XE5">
+        <MSBuild Projects="TCP Server\MEXA7000_TCPServerp_xe_XE5.dproj"/>
+    </Target>
+    <Target Name="MEXA7000_TCPServerp_xe_XE5:Clean">
+        <MSBuild Projects="TCP Server\MEXA7000_TCPServerp_xe_XE5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MEXA7000_TCPServerp_xe_XE5:Make">
+        <MSBuild Projects="TCP Server\MEXA7000_TCPServerp_xe_XE5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MEXA7000_TCPClient_xe_XE5">
+        <MSBuild Projects="TCP Client\MEXA7000_TCPClient_xe_XE5.dproj"/>
+    </Target>
+    <Target Name="MEXA7000_TCPClient_xe_XE5:Clean">
+        <MSBuild Projects="TCP Client\MEXA7000_TCPClient_xe_XE5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MEXA7000_TCPClient_xe_XE5:Make">
+        <MSBuild Projects="TCP Client\MEXA7000_TCPClient_xe_XE5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MEXA7000_DataSave_xe_XE5">
+        <MSBuild Projects="DataSave\MEXA7000_DataSave_xe_XE5.dproj"/>
+    </Target>
+    <Target Name="MEXA7000_DataSave_xe_XE5:Clean">
+        <MSBuild Projects="DataSave\MEXA7000_DataSave_xe_XE5.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MEXA7000_DataSave_xe_XE5:Make">
+        <MSBuild Projects="DataSave\MEXA7000_DataSave_xe_XE5.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Mexa7000_xe5;MEXA7000_TCPServerp_xe_XE5;MEXA7000_TCPClient_xe_XE5;MEXA7000_DataSave_xe_XE5"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Mexa7000_xe5:Clean;MEXA7000_TCPServerp_xe_XE5:Clean;MEXA7000_TCPClient_xe_XE5:Clean;MEXA7000_DataSave_xe_XE5:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Mexa7000_xe5:Make;MEXA7000_TCPServerp_xe_XE5:Make;MEXA7000_TCPClient_xe_XE5:Make;MEXA7000_DataSave_xe_XE5:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

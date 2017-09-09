@@ -1,0 +1,1082 @@
+object WatchF2: TWatchF2
+  Left = 549
+  Top = 250
+  AlphaBlend = True
+  Caption = 'Watch'
+  ClientHeight = 318
+  ClientWidth = 454
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  FormStyle = fsMDIChild
+  OldCreateOrder = False
+  PopupMenu = PopupMenu1
+  Position = poDefault
+  Visible = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 454
+    Height = 287
+    ActivePage = TabSheet1
+    Align = alClient
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Simple'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object DisplayPanel: TPanel
+        Left = 0
+        Top = 0
+        Width = 446
+        Height = 183
+        Align = alClient
+        Color = clBlack
+        ParentBackground = False
+        TabOrder = 0
+        DesignSize = (
+          446
+          183)
+        object Label1: TLabel
+          Left = 8
+          Top = 8
+          Width = 391
+          Height = 33
+          Caption = '11111111111111111111111'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object WatchLabel: TLabel
+          Left = 285
+          Top = 48
+          Width = 147
+          Height = 112
+          Alignment = taRightJustify
+          Anchors = [akRight]
+          Caption = '0.0'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -93
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+          ExplicitLeft = 348
+          ExplicitTop = 67
+        end
+      end
+      object AvgPanel: TPanel
+        Left = 0
+        Top = 183
+        Width = 446
+        Height = 76
+        Align = alBottom
+        Color = clBlack
+        ParentBackground = False
+        TabOrder = 1
+        Visible = False
+        DesignSize = (
+          446
+          76)
+        object Label2: TLabel
+          Left = 16
+          Top = 12
+          Width = 132
+          Height = 39
+          Anchors = [akLeft]
+          Caption = 'Average'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -32
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object AvgLabel: TLabel
+          Left = 307
+          Top = 2
+          Width = 107
+          Height = 81
+          Alignment = taRightJustify
+          Anchors = [akRight]
+          Caption = '0.0'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -67
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Min/Max'
+      ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 446
+        Height = 259
+        Align = alClient
+        Color = clBlack
+        ParentBackground = False
+        TabOrder = 0
+        DesignSize = (
+          446
+          259)
+        object Label3: TLabel
+          Left = 8
+          Top = 0
+          Width = 106
+          Height = 39
+          Caption = 'Label1'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -32
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object CurLabel: TLabel
+          Left = 318
+          Top = 69
+          Width = 107
+          Height = 81
+          Anchors = [akRight]
+          Caption = '0.0'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -67
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+          ExplicitLeft = 364
+          ExplicitTop = 83
+        end
+        object Label5: TLabel
+          Left = 8
+          Top = 51
+          Width = 66
+          Height = 33
+          Anchors = [akLeft]
+          Caption = 'Max:'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitTop = 59
+        end
+        object Label6: TLabel
+          Left = 8
+          Top = 103
+          Width = 133
+          Height = 39
+          Anchors = [akLeft]
+          Caption = 'Current:'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -32
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitTop = 118
+        end
+        object Label7: TLabel
+          Left = 8
+          Top = 153
+          Width = 59
+          Height = 33
+          Anchors = [akLeft]
+          Caption = 'Min:'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitTop = 175
+        end
+        object MinLabel: TLabel
+          Left = 318
+          Top = 137
+          Width = 63
+          Height = 48
+          Anchors = [akRight]
+          Caption = '0.0'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -40
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+          ExplicitLeft = 364
+          ExplicitTop = 158
+        end
+        object MaxLabel: TLabel
+          Left = 318
+          Top = 40
+          Width = 63
+          Height = 48
+          Anchors = [akRight]
+          Caption = '0.0'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -40
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+          ExplicitLeft = 364
+          ExplicitTop = 48
+        end
+        object Button1: TButton
+          Left = 360
+          Top = 209
+          Width = 65
+          Height = 25
+          Anchors = [akRight, akBottom]
+          Caption = 'Reset'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = #44404#47548#52404
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 0
+          OnClick = Button1Click
+        end
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Graph'
+      ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object iPlot1: TiPlot
+        Left = 0
+        Top = 0
+        Width = 446
+        Height = 259
+        PopupMenu = PopupMenu2
+        DataViewZHorz = 1
+        DataViewZVert = 1
+        UserCanAddRemoveChannels = True
+        PrintMarginLeft = 1.000000000000000000
+        PrintMarginTop = 1.000000000000000000
+        PrintMarginRight = 1.000000000000000000
+        PrintMarginBottom = 1.000000000000000000
+        PrintShowDialog = False
+        PrintDocumentName = 'Untitled'
+        HintsFont.Charset = DEFAULT_CHARSET
+        HintsFont.Color = clWindowText
+        HintsFont.Height = -11
+        HintsFont.Name = 'MS Sans Serif'
+        HintsFont.Style = []
+        EditorFormStyle = ipfsModal
+        CopyToClipBoardFormat = ipefMetaFile
+        TitleVisible = False
+        TitleText = 'Untitled'
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWhite
+        TitleFont.Height = -19
+        TitleFont.Name = 'Arial'
+        TitleFont.Style = [fsBold]
+        AnnotationDefaultFont.Charset = DEFAULT_CHARSET
+        AnnotationDefaultFont.Color = clWhite
+        AnnotationDefaultFont.Height = -11
+        AnnotationDefaultFont.Name = 'MS Sans Serif'
+        AnnotationDefaultFont.Style = []
+        AnnotationDefaultBrushStlye = bsSolid
+        AnnotationDefaultBrushColor = clWhite
+        AnnotationDefaultPenStlye = psSolid
+        AnnotationDefaultPenColor = clWhite
+        AnnotationDefaultPenWidth = 1
+        AnnotationDefaultReference = iprtDataView
+        AnnotationDefaultReferencePositionX = ipriAuto
+        AnnotationDefaultReferencePositionY = ipriAuto
+        AnnotationDefaultReferenceSizeX = ipriAuto
+        AnnotationDefaultReferenceSizeY = ipriAuto
+        ClipAnnotationsToAxes = True
+        BackGroundGradientEnabled = False
+        BackGroundGradientDirection = ifdTopBottom
+        BackGroundGradientStartColor = clBlue
+        BackGroundGradientStopColor = clBlack
+        DataFileColumnSeparator = ipdfcsTab
+        DataFileFormat = ipdffText
+        DefaultSaveImageFormat = ipifBitmap
+        Align = alClient
+        TabOrder = 0
+        DataViewZHorz = 1
+        DataViewZVert = 1
+        ToolBarManager = <
+          item
+            Name = 'Toolbar 1'
+            Horizontal = True
+            ZOrder = 3
+            StopPercent = 100.000000000000000000
+            ZoomInOutFactor = 2.000000000000000000
+          end>
+        LegendManager = <
+          item
+            Name = 'Legend 1'
+            Horizontal = False
+            ZOrder = 2
+            StopPercent = 100.000000000000000000
+            MarginLeft = 1.000000000000000000
+            MarginTop = 1.000000000000000000
+            MarginRight = 1.000000000000000000
+            MarginBottom = 1.000000000000000000
+            SelectedItemFont.Charset = DEFAULT_CHARSET
+            SelectedItemFont.Color = clBlack
+            SelectedItemFont.Height = -11
+            SelectedItemFont.Name = 'MS Sans Serif'
+            SelectedItemFont.Style = []
+            CaptionColumnTitle = 'Title'
+            CaptionColumnXAxisTitle = 'X-Axis'
+            CaptionColumnYAxisTitle = 'Y-Axis'
+            CaptionColumnXValue = 'X'
+            CaptionColumnYValue = 'Y'
+            CaptionColumnYMax = 'Y-Max'
+            CaptionColumnYMin = 'Y-Min'
+            CaptionColumnYMean = 'Y-Mean'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ColumnSpacing = 0.500000000000000000
+            RowSpacing = 0.250000000000000000
+            WrapColDesiredCount = 1
+            WrapColAutoCountEnabled = False
+            WrapColAutoCountMax = 100
+            WrapColSpacingMin = 2.000000000000000000
+            WrapColSpacingAuto = True
+            WrapRowDesiredCount = 5
+            WrapRowAutoCountEnabled = True
+            WrapRowAutoCountMax = 100
+            WrapRowSpacingMin = 0.250000000000000000
+            WrapRowSpacingAuto = False
+            ColumnTitlesFont.Charset = DEFAULT_CHARSET
+            ColumnTitlesFont.Color = clAqua
+            ColumnTitlesFont.Height = -11
+            ColumnTitlesFont.Name = 'MS Sans Serif'
+            ColumnTitlesFont.Style = [fsBold]
+            LineColumnHeight = 3
+          end>
+        XAxisManager = <
+          item
+            Name = 'X-Axis 1'
+            Horizontal = True
+            ZOrder = 0
+            StopPercent = 100.000000000000000000
+            Span = 100.000000000000000000
+            Title = 'X-Axis 1'
+            TitleMargin = 0.250000000000000000
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWhite
+            TitleFont.Height = -13
+            TitleFont.Name = 'Arial'
+            TitleFont.Style = [fsBold]
+            LabelsMargin = 0.250000000000000000
+            LabelsFont.Charset = DEFAULT_CHARSET
+            LabelsFont.Color = clWhite
+            LabelsFont.Height = -11
+            LabelsFont.Name = 'Tahoma'
+            LabelsFont.Style = []
+            LabelSeparation = 2.000000000000000000
+            LabelsRotation = ira000
+            DateTimeFormat = 'hh:nn:ss'
+            LabelsMinLength = 5.000000000000000000
+            ScaleLineShow = True
+            StackingEndsMargin = 0.500000000000000000
+            TrackingStyle = iptsScrollSmooth
+            TrackingIncrementStyle = iptisMinimum
+            TrackingAlignFirstStyle = ipafsAuto
+            CursorDateTimeFormat = 'hh:nn:ss'
+            CursorPrecision = 3
+            CursorMinLength = 5.000000000000000000
+            LegendDateTimeFormat = 'hh:nn:ss'
+            LegendPrecision = 3
+            LegendMinLength = 5.000000000000000000
+            CursorScaler = 1.000000000000000000
+            ScrollMinMaxEnabled = False
+            ScrollMax = 100.000000000000000000
+            RestoreValuesOnResume = True
+            MasterUIInput = False
+            CartesianStyle = ipcsNone
+            CartesianChildRefAxisName = '<None>'
+            AlignRefAxisName = '<None>'
+            GridLinesVisible = True
+            ForceStacking = False
+          end>
+        YAxisManager = <
+          item
+            Name = 'Y-Axis 1'
+            Horizontal = False
+            ZOrder = 0
+            StopPercent = 100.000000000000000000
+            Span = 100.000000000000000000
+            Title = 'Y-Axis 1'
+            TitleMargin = 0.250000000000000000
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWhite
+            TitleFont.Height = -13
+            TitleFont.Name = 'Arial'
+            TitleFont.Style = [fsBold]
+            LabelsMargin = 0.250000000000000000
+            LabelsFont.Charset = DEFAULT_CHARSET
+            LabelsFont.Color = clWhite
+            LabelsFont.Height = -11
+            LabelsFont.Name = 'Tahoma'
+            LabelsFont.Style = []
+            LabelSeparation = 2.000000000000000000
+            LabelsRotation = ira000
+            DateTimeFormat = 'hh:nn:ss'
+            LabelsMinLength = 5.000000000000000000
+            ScaleLineShow = True
+            StackingEndsMargin = 0.500000000000000000
+            TrackingStyle = iptsScaleMinMax
+            TrackingIncrementStyle = iptisMinimum
+            TrackingAlignFirstStyle = ipafsNone
+            CursorDateTimeFormat = 'hh:nn:ss'
+            CursorPrecision = 3
+            CursorMinLength = 5.000000000000000000
+            LegendDateTimeFormat = 'hh:nn:ss'
+            LegendPrecision = 3
+            LegendMinLength = 5.000000000000000000
+            CursorScaler = 1.000000000000000000
+            ScrollMinMaxEnabled = False
+            ScrollMax = 100.000000000000000000
+            RestoreValuesOnResume = True
+            MasterUIInput = False
+            CartesianStyle = ipcsNone
+            CartesianChildRefAxisName = '<None>'
+            AlignRefAxisName = '<None>'
+            GridLinesVisible = True
+            ForceStacking = False
+          end>
+        ChannelManager = <
+          item
+            Name = 'Channel 1'
+            TitleText = 'Channel 1'
+            MarkersTurnOffLimit = 0
+            MarkersFont.Charset = DEFAULT_CHARSET
+            MarkersFont.Color = clWhite
+            MarkersFont.Height = -11
+            MarkersFont.Name = 'Tahoma'
+            MarkersFont.Style = [fsBold]
+            XAxisName = 'X-Axis 1'
+            YAxisName = 'Y-Axis 1'
+            DataStyle = ipdsStandard
+            DigitalReferenceLow = 10.000000000000000000
+            DigitalReferenceHigh = 90.000000000000000000
+            HighLowBarColor = clAqua
+            HighLowBarWidth = 0.500000000000000000
+            HighLowOpenColor = clLime
+            HighLowOpenWidth = 1.000000000000000000
+            HighLowOpenHeight = 1.000000000000000000
+            HighLowCloseWidth = 1.000000000000000000
+            HighLowCloseHeight = 1.000000000000000000
+            BarWidth = 5.000000000000000000
+            OPCComputerName = 'Local'
+          end>
+        DataViewManager = <
+          item
+            Name = 'Data View 1'
+            Horizontal = False
+            ZOrder = 0
+            StopPercent = 100.000000000000000000
+            GridXAxisName = 'X-Axis 1'
+            GridYAxisName = 'Y-Axis 1'
+            AxesControlEnabled = False
+            AxesControlMouseStyle = ipacsBoth
+            AxesControlWheelStyle = ipacsXAxis
+          end>
+        DataCursorManager = <
+          item
+            Name = 'Cursor 1'
+            Visible = False
+            ChannelName = 'Channel 1'
+            ChannelAllowAll = True
+            ChannelShowAllInLegend = True
+            Style = ipcsValueXY
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            Color = clYellow
+            UseChannelColor = True
+            HintShow = True
+            HintHideOnRelease = False
+            HintOrientationSide = iosBottomRight
+            HintPosition = 50.000000000000000000
+            Pointer1Position = 50.000000000000000000
+            Pointer2Position = 60.000000000000000000
+            PointerPenWidth = 1
+            MenuItemVisibleValueXY = True
+            MenuItemVisibleValueX = True
+            MenuItemVisibleValueY = True
+            MenuItemVisibleDeltaX = True
+            MenuItemVisibleDeltaY = True
+            MenuItemVisibleInverseDeltaX = True
+            MenuItemCaptionValueXY = 'Value X-Y'
+            MenuItemCaptionValueX = 'Value X'
+            MenuItemCaptionValueY = 'Value Y'
+            MenuItemCaptionDeltaX = 'Period'
+            MenuItemCaptionDeltaY = 'Peak-Peak'
+            MenuItemCaptionInverseDeltaX = 'Frequency'
+          end>
+        LabelManager = <
+          item
+            Name = 'Title'
+            Visible = False
+            Horizontal = True
+            ZOrder = 2
+            StopPercent = 100.000000000000000000
+            Caption = 'Untitled'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -19
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+          end>
+      end
+    end
+  end
+  object StatusBarPro1: TStatusBarPro
+    Left = 0
+    Top = 287
+    Width = 454
+    Height = 31
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+    DesignSize = (
+      454
+      31)
+    object Label4: TLabel
+      Left = 211
+      Top = 3
+      Width = 77
+      Height = 16
+      Anchors = [akRight]
+      Caption = 'AlphaBlend:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      ExplicitLeft = 274
+    end
+    object AlphaTrackBar: TAdvTrackBar
+      Left = 294
+      Top = 2
+      Width = 150
+      Height = 26
+      Anchors = [akRight]
+      BorderColor = clNone
+      BorderColorDisabled = clNone
+      Buttons.BorderColor = 9262895
+      Buttons.BorderColorHot = 10079963
+      Buttons.BorderColorDown = 4548219
+      Buttons.Color = 15653832
+      Buttons.ColorTo = 16178633
+      Buttons.ColorHot = 15465983
+      Buttons.ColorHotTo = 11332863
+      Buttons.ColorDown = 7778289
+      Buttons.ColorDownTo = 4296947
+      Buttons.ColorMirror = 15586496
+      Buttons.ColorMirrorTo = 16245200
+      Buttons.ColorMirrorHot = 5888767
+      Buttons.ColorMirrorHotTo = 10807807
+      Buttons.ColorMirrorDown = 946929
+      Buttons.ColorMirrorDownTo = 5021693
+      Buttons.GradientMirror = ggVertical
+      Buttons.MinPicture.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0F1510CF46
+        B7A20000000774494D4507D7070C0E1A3B30A1DB6A000000097048597300000A
+        F000000AF00142AC349800000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        C04944415478DA639092E293D5D3D4D681036D5D3D390129290629F1F0C4C414
+        149098182E21C520E6171D8B01A2FD4519445C7C02838020C05E1F4A040505FA
+        BA483270F0AB1B999A9A2AB0B3B199800920C758839F938147C8C0CADACA5299
+        9585C50C44985B01B986C2DC0C5C2A36EE1E9E6E0E16AAD28E20C2C9C3D3C3DD
+        568B974151DE2E38222A32C4DBD52B144484C5444504DB29C93048310B3AC725
+        A5A526C4C727A70389A48CA438674166A03FA4D49818191919189100939A9414
+        0075BB33F4BD2CCD600000000049454E44AE426082}
+      Buttons.MinPictureHot.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0F1510CF46
+        B7A20000000774494D4507D7070C0E1A3B30A1DB6A000000097048597300000A
+        F000000AF00142AC349800000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        C04944415478DA639092E293D5D3D4D681036D5D3D390129290629F1F0C4C414
+        149098182E21C520E6171D8B01A2FD4519445C7C02838020C05E1F4A040505FA
+        BA483270F0AB1B999A9A2AB0B3B199800920C758839F938147C8C0CADACA5299
+        9585C50C44985B01B986C2DC0C5C2A36EE1E9E6E0E16AAD28E20C2C9C3D3C3DD
+        568B974151DE2E38222A32C4DBD52B144484C5444504DB29C93048310B3AC725
+        A5A526C4C727A70389A48CA438674166A03FA4D49818191919189100939A9414
+        0075BB33F4BD2CCD600000000049454E44AE426082}
+      Buttons.MinPictureDown.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0F1510CF46
+        B7A20000000774494D4507D7070C0E1A3B30A1DB6A000000097048597300000A
+        F000000AF00142AC349800000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        C04944415478DA639092E293D5D3D4D681036D5D3D390129290629F1F0C4C414
+        149098182E21C520E6171D8B01A2FD4519445C7C02838020C05E1F4A040505FA
+        BA483270F0AB1B999A9A2AB0B3B199800920C758839F938147C8C0CADACA5299
+        9585C50C44985B01B986C2DC0C5C2A36EE1E9E6E0E16AAD28E20C2C9C3D3C3DD
+        568B974151DE2E38222A32C4DBD52B144484C5444504DB29C93048310B3AC725
+        A5A526C4C727A70389A48CA438674166A03FA4D49818191919189100939A9414
+        0075BB33F4BD2CCD600000000049454E44AE426082}
+      Buttons.MaxPicture.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0E1510CE84
+        DD950000000774494D4507D7070C0E1A071FCEA7ED000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        BF4944415478DA6390921290D3D3D5D681036D4D3D593E2929062989F0C4C414
+        149098182E2EC520EA1F1D8B01A2FDC418245D7C03838040DF3E004A040505FA
+        B8883070F26B189B9A9A9AB0B1B12B800920C7489D9F83815BD8D0CADACACA9C
+        858555D90C445802B906423C0CBC5AB6EE1E9E1E4ED2AA160E8E20C2CDD3C3DD
+        46858B4146C92E38222A26CCCBD53B24144444464504DBC92B3248310B3AC725
+        6524C5C727A4270389D4B4A438674166A03FA4D498189100031033A949490100
+        785233F4717B45C80000000049454E44AE426082}
+      Buttons.MaxPictureHot.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0E1510CE84
+        DD950000000774494D4507D7070C0E1A071FCEA7ED000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        BF4944415478DA6390921290D3D3D5D681036D4D3D593E2929062989F0C4C414
+        149098182E2EC520EA1F1D8B01A2FDC418245D7C03838040DF3E004A040505FA
+        B8883070F26B189B9A9A9AB0B1B12B800920C7489D9F83815BD8D0CADACACA9C
+        858555D90C445802B906423C0CBC5AB6EE1E9E1E4ED2AA160E8E20C2CDD3C3DD
+        46858B4146C92E38222A26CCCBD53B24144444464504DBC92B3248310B3AC725
+        6524C5C727A4270389D4B4A438674166A03FA4D498189100031033A949490100
+        785233F4717B45C80000000049454E44AE426082}
+      Buttons.MaxPictureDown.Data = {
+        89504E470D0A1A0A0000000D49484452000000180000000A080300000099B76E
+        5A00000015744558744372656174696F6E2054696D650007D7070C0E1510CE84
+        DD950000000774494D4507D7070C0E1A071FCEA7ED000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295BA2295CA4547CB65C83BA7590
+        B67A94BA7894BC7A97BE5687CE5788CF5E87C55987CC5A87CC6089C66490CD67
+        93D26D97D07D9ECF769ED8779FD87AA0D77DA1D57DA2D47DA3D87EA3D87FA3D8
+        FF40FF879EC08AA7D18EADDB8EAEDB8FAEDA91ABCD90ACD490AFDB99AFD191B1
+        DF9BB0D09FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0B5
+        C5DAA6C0E2A7C0E2A9C0E0AAC0E1ABC1E1ACC2E1B0C4E2B0C5E2B6C7E3B3C8E4
+        B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC1CFE2C0CFE8C0D0E8C2D2E9C3D3EBC1D3
+        EDC7D4EAC7D5EBC7D6ECC9D7ECCAD8ECCCD8ECCED9EDCEDCEECFDCEECCDBF0CD
+        DCF0D2DEEDD4DFEFD5E0EFD5E1F2D8E2F1D9E2F1DCE5F2DCE6F5E0E8F5E1E9F5
+        E3EAF5E3EBF6E4EBF6E7EDF6EAF0F9EBF0F8F0F3FAF1F5FAF1F5FBF2F4FAF2F5
+        FAF3F6FBF3F6FCF4F6FBF4F7FC00000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000004B6053820000001B74524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0027340B35000000
+        BF4944415478DA6390921290D3D3D5D681036D4D3D593E2929062989F0C4C414
+        149098182E2EC520EA1F1D8B01A2FDC418245D7C03838040DF3E004A040505FA
+        B8883070F26B189B9A9A9AB0B1B12B800920C7489D9F83815BD8D0CADACACA9C
+        858555D90C445802B906423C0CBC5AB6EE1E9E1E4ED2AA160E8E20C2CDD3C3DD
+        46858B4146C92E38222A26CCCBD53B24144444464504DBC92B3248310B3AC725
+        6524C5C727A4270389D4B4A438674166A03FA4D498189100031033A949490100
+        785233F4717B45C80000000049454E44AE426082}
+      Buttons.Visible = True
+      Buttons.Size = 24
+      Buttons.Spacing = 10
+      ColorTo = clMenu
+      ColorDisabled = clNone
+      ColorDisabledTo = clNone
+      Direction = gdHorizontal
+      Color = clMenuHighlight
+      Max = 255
+      Position = 255
+      Slider.BorderColor = clNone
+      Slider.BorderColorDisabled = clNone
+      Slider.Color = 14395006
+      Slider.ColorTo = clWhite
+      Slider.ColorDisabled = clBlack
+      Slider.ColorDisabledTo = clBlack
+      Slider.ColorCompleted = 53895
+      Slider.ColorCompletedTo = 43037
+      Slider.ColorCompletedDisabled = clNone
+      Slider.ColorCompletedDisabledTo = clNone
+      Slider.Direction = gdVertical
+      Slider.Size = 8
+      Slider.Offset = 1
+      TabOrder = 0
+      Thumb.BorderColor = 10317632
+      Thumb.BorderColorHot = 10079963
+      Thumb.BorderColorDown = 4548219
+      Thumb.BorderColorDisabled = clBlack
+      Thumb.Color = 15653832
+      Thumb.ColorTo = 16178633
+      Thumb.ColorDown = 7778289
+      Thumb.ColorDownTo = 4296947
+      Thumb.ColorHot = 15465983
+      Thumb.ColorHotTo = 11332863
+      Thumb.ColorDisabled = clBlack
+      Thumb.ColorDisabledTo = clBlack
+      Thumb.ColorMirror = 15586496
+      Thumb.ColorMirrorTo = 16245200
+      Thumb.ColorMirrorHot = 5888767
+      Thumb.ColorMirrorHotTo = 10807807
+      Thumb.ColorMirrorDown = 946929
+      Thumb.ColorMirrorDownTo = 5021693
+      Thumb.ColorMirrorDisabled = clBlack
+      Thumb.ColorMirrorDisabledTo = clBlack
+      Thumb.Gradient = ggVertical
+      Thumb.GradientMirror = ggRadial
+      Thumb.Picture.Data = {
+        89504E470D0A1A0A0000000D49484452000000140000000A0803000000838B8E
+        D400000015744558744372656174696F6E2054696D650007D7070C0D010A1F0E
+        4DE30000000774494D4507D7070C0E1A2254CA73AA000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295CA4547CB65C83BB5687CE5788
+        CF5987CC5E89C65A88CC608AC86793D27D9ECF729DD6769ED8779FD87BA1D8FF
+        40FF80A5DA81A6DA81A7DB84A8DD8AA7D38FAEDA90ACD690AFDB90B0DD91B1DF
+        9FB6D599B5DD9AB6DD9FB9DC92B2E0A0BADBA1BADBA0B9DCA5BDE0A6C0E2A7C0
+        E2A9C0E0AAC0E1ACC2E1B4C8E4B5C9E4B2C8E8B3C9E8BED1ECC3D3EBC1D3EDC7
+        D6ECC9D7ECCAD8ECCEDCEECFDCEECCDBF0CDDCF0D4DFEFD5E0EFD5E1F2DCE6F5
+        E0E8F5E3EAF5E3EBF6E4EBF5E4EBF6E7EDF6EAF0F9F1F5FAF1F5FBF2F5FAF4F7
+        FCF5F8FCF6F8FC00000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000000000000000000A0D143A80000001074524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFF00E0235D19000000904944415478DA55CE4712
+        82401040D1062318DA2C62403181120D48121904EF7F2429CAA2C6B7FCAB0F88
+        28C84B695D9036B2D04204EC7B84BC4B8478833CDEC2D79FF03E84AE71711E14
+        E76AF4A0C2CDF747CA61C155A1D1DE2AAA5252955DA706F5D9C9B46CEBC7B6CC
+        F3AA0993B1E6FA41F42C4481EF6AD31120CBEB7192669F5C9626B1CEB3F9128A
+        0C501811F10BAF8A1F1917A4B25A0000000049454E44AE426082}
+      Thumb.PictureHot.Data = {
+        89504E470D0A1A0A0000000D49484452000000140000000A0803000000838B8E
+        D400000015744558744372656174696F6E2054696D650007D7070C0E1721AD6C
+        BF2D0000000774494D4507D7070C0E1A15EC77D6A5000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295CA4376CB53E71B63F72B6547C
+        B6497EC75C85BC5382C55583C55D8DD05E8ED16991C96F95CB6592D26693D36F
+        99D16F99D2709BD9729DDA7DA8E2FF40FF86A9D98AA8D490ACD69FB6D582ACE5
+        83ACE688B0E989B1E981B4F99DBCE89FBFEBA1BEE6A0BFEB94C6FF95C7FF98C3
+        FF99C4FF9EC6FFADDAFFAEDBFFB5DEFFBDDFFFBEDFFFBEE7FFBFE8FFC1D2EAC1
+        D3EBD1DEEFD3DFF0CFE0F8C9EAFBC4F0FFC9F5FFCCFAFFCDFBFFD4E5FDD5E6FE
+        DBFFFFDDFFFFE7EDF7E6FFFFEDF3FBF0F5FDF0F6FDF0F6FEF5FFFFFCFFFFFFFF
+        FF00000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000A620DC40000001574524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF002BD97DEA000000884944415478
+        DA55CEC51A82601484E141013B392806618B2D252A2578FFD7248F0BF97D97B3
+        F906446DD9D0F4D997AE19728B08D40DDE7F820EA17F89E2E4F593C4D1B587C6
+        C9F2EF0CDF3A37C109EA72CD58A90287726D6E1E1CD7BBE53CD7399A8B7A0995
+        D1E6911699F4B91D57319CEC42361EEEA7039028D959B165B624E63F49E1C1E0
+        15A20F755A218D5D799EF00000000049454E44AE426082}
+      Thumb.PictureDown.Data = {
+        89504E470D0A1A0A0000000D49484452000000140000000A0803000000838B8E
+        D400000015744558744372656174696F6E2054696D650007D7070C0E18393998
+        3BB40000000774494D4507D7070C0E19331557009B000000097048597300000B
+        1200000B1201D2DD7EFC00000300504C5445295CA4547CB64B7AC34C7BC44F7C
+        C3507DC35C83BB5883C15A84C35A85C7678FCD6890CD6E94CE6B96D16C97D176
+        97CA7297D0759AD2759BD27FA0D47CA0D87DA1D8FF40FF81A2D282A3D380A1D5
+        81A2D486A4D287A5D28AA7D38BA8D18CA8D08CA8D18DA8D090ABD590ACD691AE
+        D692AED694AED595AED696B0D69FB6D59DB5D89EB6D89CB5DC9DB6DCA6BDE0A9
+        BFE1AEC2E0B0C3E0B0C3E1B1C4E0B2C6E4B3C7E4B4C7E2B5C7E2B9CAE3BACBE3
+        BACCE6C0D0E9C4D2E9C7D4E9C7D5E9CAD7E9CDD9ECD3DEEDD3DEEED4DEEDD5E0
+        EFD6E1EFD7E1EF00000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000009C3B84760000001774524E53FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00E640E65E0000008D494441
+        5478DA55CE070E82401000C0C58262C3BA2A16142BA0540BD20FC1FF3F496208
+        39E70503883D415A8BDB1F7123095D44C08147C8BB4488374498DCC2E84F781F
+        43477F382F8AF3D4FB50E116C733E5B4E4AA506FED155529A9CAA15D83C6E862
+        98B659B04DE33A6FC26EAAB97E101602DFD5662B4096B7E224CD3EB92C4D628B
+        67F327CA0C501819F10B16AC2041578C17060000000049454E44AE426082}
+      Thumb.Size = 10
+      Thumb.Width = 20
+      Thumb.Shape = tsPointer
+      TickMark.Color = clBlack
+      TickMark.ColorDisabled = clBlack
+      TickMark.Font.Charset = DEFAULT_CHARSET
+      TickMark.Font.Color = clWindowText
+      TickMark.Font.Height = -11
+      TickMark.Font.Name = 'Tahoma'
+      TickMark.Font.Style = []
+      TickMark.Style = tsNone
+      TrackHint = False
+      TrackLabel.Font.Charset = DEFAULT_CHARSET
+      TrackLabel.Font.Color = clWindowText
+      TrackLabel.Font.Height = -11
+      TrackLabel.Font.Name = 'Tahoma'
+      TrackLabel.Font.Style = []
+      TrackLabel.Format = 'Pos: %d'
+      Version = '1.6.2.0'
+      OnMouseMove = AlphaTrackBarMouseMove
+    end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 144
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 280
+    object Add1: TMenuItem
+      Caption = 'Add Data'
+      object CurrentValue1: TMenuItem
+        Caption = 'Current Value'
+        OnClick = CurrentValue1Click
+      end
+      object Average1: TMenuItem
+        Caption = 'Average'
+        OnClick = Average1Click
+      end
+      object MinValue1: TMenuItem
+        Caption = 'Min Value'
+        OnClick = MinValue1Click
+      end
+      object MaxValue1: TMenuItem
+        Caption = 'Max Value'
+        OnClick = MaxValue1Click
+      end
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 176
+    object Config1: TMenuItem
+      Caption = 'Config'
+      OnClick = Config1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object Displayalldatainthischart1: TMenuItem
+      Caption = 'Display all data in this chart'
+      OnClick = Displayalldatainthischart1Click
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Close1: TMenuItem
+      Caption = 'Close'
+      OnClick = Close1Click
+    end
+  end
+  object DropTextTarget1: TDropTextTarget
+    DragTypes = [dtCopy, dtLink]
+    OnDrop = DropTextTarget1Drop
+    Target = DisplayPanel
+    Left = 216
+  end
+end
