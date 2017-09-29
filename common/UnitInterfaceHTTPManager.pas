@@ -17,6 +17,7 @@ type
     FHTTPClient: TSQLRestClientURI;
 
     constructor Create(ARootName, AServerIP, APortName: string);
+    destructor Destroy;
     procedure InitVar(ARootName, AServerIP, APortName: string; AModel: TSQLModel);
     function CreateHTTPClient: RawUTF8;
   end;
@@ -45,7 +46,11 @@ begin
     FHTTPClient := TSQLHttpClient.Create(FServerIP, FPortName, FModel);
 
     try
-      if not FHTTPClient.ServerTimeStampSynchronize then begin
+      if not FHTTPClient.ServerTimeStampSynchronize then
+      begin
+        FHTTPClient.SetUser('User','synopse');
+//        (FHTTPClient as TSQLHttpClientGeneric).KeepAliveMS := 30000;
+//        (FHTTPClient as TSQLHttpClientGeneric).Compression := [hcSynShaAes];
         Result := FHTTPClient.LastErrorMessage;
   //      ShowMessage(UTF8ToString(FClient_BWQry.LastErrorMessage));
   //      DestroyHTTPClient_BWQry;
@@ -74,6 +79,13 @@ begin
     FHTTPClient.SetUser(FUserName,FPassword);//'User','synopse');
     g_HTTPOK := True;
   end;
+end;
+
+destructor TmORMotHTTPClient.Destroy;
+begin
+  FHTTPClient.Free;
+
+  inherited;
 end;
 
 procedure TmORMotHTTPClient.InitVar(ARootName, AServerIP, APortName: string;
