@@ -10,7 +10,7 @@ uses
   JvToolEdit, JvBaseEdits, AdvEdit, AdvEdBtn, pjhComboBox, NxColumnClasses,
   NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid, NxEdit,
   AdvGlowButton, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls, JvExControls, JvLabel,
-  UElecDataRecord, SynCommons, CommonData, mORMot;
+  UElecDataRecord, SynCommons, CommonData, mORMot, UnitMakeReport;
 
 type
   TInvoiceTaskEditF = class(TForm)
@@ -27,7 +27,7 @@ type
     HullNoEdit: TEdit;
     ShipNameEdit: TEdit;
     OrderNoEdit: TEdit;
-    QTNNoEdit: TEdit;
+    PONoEdit: TEdit;
     InvoiceIssuePicker: TDateTimePicker;
     InqRecvPicker: TDateTimePicker;
     PageControl1: TPageControl;
@@ -127,6 +127,9 @@ type
     JvLabel61: TJvLabel;
     CurrencyKindCB: TComboBox;
     ItemDesc: TNxTextColumn;
+    PopupMenu2: TPopupMenu;
+    Doc1: TMenuItem;
+    InvoiceEnglish1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
@@ -135,9 +138,12 @@ type
     procedure Add1Click(Sender: TObject);
     procedure ItemTypeSelect(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
+    procedure InvoiceEnglish1Click(Sender: TObject);
   private
     function GetSQLInvoiceItem(AGrid: TNextGrid; ARow: integer; var AInvoiceItem: TSQLInvoiceItem): Boolean;
+    procedure GetInvoiceItemFromGrid2StrList(AGrid: TNextGrid; var AList: TStringList);
     procedure ClearTIDList4Grid(AGrid: TNextGrid);
+    function Get_Doc_Inv_Rec: Doc_Invoice_Rec;
   public
 //    FSQLInvoiceFiles: TSQLInvoiceFile;
 //    FSQLInvoiceItem: TSQLInvoiceItem;
@@ -447,6 +453,7 @@ end;
 
 procedure TInvoiceTaskEditF.FormCreate(Sender: TObject);
 begin
+  DOC_DIR := ExtractFilePath(Application.ExeName) + '..\¾ç½Ä\';
 //  FSQLInvoiceFiles := nil;
 end;
 
@@ -459,6 +466,27 @@ begin
 //    FreeAndNil(FInvoiceTask);
 
   ClearTIDList4Grid(InvoiceGrid);
+end;
+
+procedure TInvoiceTaskEditF.GetInvoiceItemFromGrid2StrList(AGrid: TNextGrid;
+  var AList: TStringList);
+var
+  i: integer;
+  LStr: string;
+begin
+  AList.Clear;
+
+  for i := 0 to AGrid.RowCount - 1 do
+  begin
+    LStr := AGrid.CellByName['ItemType', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['ItemDesc', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['Qty', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['AUnit', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['UnitPrice', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['TotalPrice', i].AsString;
+
+    AList.Add(LStr);
+  end;
 end;
 
 function TInvoiceTaskEditF.GetSQLInvoiceItem(AGrid: TNextGrid;
@@ -478,6 +506,19 @@ begin
   AInvoiceItem.UnitPrice := AGrid.CellByName['UnitPrice', ARow].AsString;
   AInvoiceItem.TotalPrice := AGrid.CellByName['TotalPrice', ARow].AsString;
   AInvoiceItem.InvoiceItemType := String2GSInvoiceItemType(AGrid.CellByName['ItemType', ARow].AsString);
+end;
+
+function TInvoiceTaskEditF.Get_Doc_Inv_Rec: Doc_Invoice_Rec;
+begin
+  Result.FCustomerInfo := CustomerAddressMemo.Text;
+  Result.FCustomerInfo := Result.FCustomerInfo.Replace(#13, '');
+  Result.FInvNo := OrderNoEdit.Text;
+  Result.FHullNo := HullNoEdit.Text;
+  Result.FShipName := ShipNameEdit.Text;
+  Result.FSubject := SubjectEdit.Text;
+  Result.FPONo := PONoEdit.Text;
+
+  Result.FInvoiceItemList := TStringList.Create;
 end;
 
 function TInvoiceTaskEditF.LoadForm2InvoiceItem(AForm: TInvoiceTaskEditF): Boolean;
@@ -801,6 +842,17 @@ end;
 procedure TInvoiceTaskEditF.AttachmentsButtonClick(Sender: TObject);
 begin
   ShowFileListForm;
+end;
+
+procedure TInvoiceTaskEditF.InvoiceEnglish1Click(Sender: TObject);
+var
+  LRec: Doc_Invoice_Rec;
+  LStrList: TStringList;
+begin
+  LRec := Get_Doc_Inv_Rec;
+  GetInvoiceItemFromGrid2StrList(InvoiceGrid, LRec.FInvoiceItemList);
+
+  MakeDocInvoice(LRec);
 end;
 
 procedure TInvoiceTaskEditF.ItemTypeSelect(Sender: TObject);

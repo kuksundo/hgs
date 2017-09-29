@@ -3,7 +3,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
   Top = 0
   Caption = 'Invoice Edit'
   ClientHeight = 666
-  ClientWidth = 769
+  ClientWidth = 686
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +11,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
   OldCreateOrder = False
+  PopupMenu = PopupMenu2
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -100,11 +101,12 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
   object JvLabel6: TJvLabel
     AlignWithMargins = True
     Left = 335
-    Top = 80
+    Top = 78
     Width = 100
     Height = 25
     Alignment = taCenter
     AutoSize = False
+    Caption = 'Customer PO'
     Color = 14671839
     FrameColor = clGrayText
     Font.Charset = ANSI_CHARSET
@@ -312,7 +314,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     ImeName = 'Microsoft IME 2010'
     TabOrder = 2
   end
-  object QTNNoEdit: TEdit
+  object PONoEdit: TEdit
     Left = 441
     Top = 80
     Width = 155
@@ -356,7 +358,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
   object PageControl1: TPageControl
     Left = 0
     Top = 224
-    Width = 769
+    Width = 686
     Height = 442
     ActivePage = TabSheet4
     Align = alBottom
@@ -368,7 +370,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       ImageIndex = 4
       ExplicitWidth = 745
       DesignSize = (
-        761
+        678
         408)
       object JvLabel36: TJvLabel
         AlignWithMargins = True
@@ -615,7 +617,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       Caption = 'Customer'
       ExplicitWidth = 745
       DesignSize = (
-        761
+        678
         408)
       object JvLabel12: TJvLabel
         AlignWithMargins = True
@@ -625,7 +627,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         Height = 25
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Invoice Address'
+        Caption = 'Company Address'
         Color = 14671839
         FrameColor = clGrayText
         Font.Charset = ANSI_CHARSET
@@ -891,7 +893,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         Left = 122
         Top = 166
         Width = 458
-        Height = 143
+        Height = 104
         Anchors = [akLeft, akTop, akBottom]
         BevelInner = bvNone
         BevelKind = bkFlat
@@ -1007,7 +1009,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       ImageIndex = 1
       ExplicitWidth = 745
       DesignSize = (
-        761
+        678
         408)
       object JvLabel15: TJvLabel
         AlignWithMargins = True
@@ -1593,7 +1595,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       object InvoiceGrid: TNextGrid
         Left = 0
         Top = 0
-        Width = 761
+        Width = 678
         Height = 408
         Margins.Left = 40
         Margins.Top = 0
@@ -1602,14 +1604,14 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         Align = alClient
         Caption = ''
         Color = clWhite
-        HeaderSize = 25
+        HeaderSize = 65
         Options = [goGrid, goHeader, goSelectFullRow]
         RowSize = 20
         PopupMenu = PopupMenu1
         SelectionColor = 12615680
         TabOrder = 0
         TabStop = True
-        ExplicitWidth = 745
+        ExplicitWidth = 761
         object NxIncrementColumn1: TNxIncrementColumn
           Alignment = taCenter
           DefaultWidth = 32
@@ -1661,24 +1663,23 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
             'Ex(Etc)')
         end
         object ItemDesc: TNxTextColumn
-          DefaultWidth = 200
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
-          Header.Caption = 'Item Desc'
+          Header.Caption = 'Number'#13#10'    of'#13#10'Workers'
           Header.Alignment = taCenter
           Header.Font.Charset = DEFAULT_CHARSET
           Header.Font.Color = clWindowText
           Header.Font.Height = -11
           Header.Font.Name = 'Tahoma'
           Header.Font.Style = []
+          Header.MultiLine = True
           Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
           ParentFont = False
           Position = 2
           SortType = stAlphabetic
-          Width = 200
         end
         object Qty: TNxTextColumn
           DefaultWidth = 50
@@ -1762,6 +1763,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         end
         object Attachments: TNxButtonColumn
           Alignment = taCenter
+          DefaultWidth = 110
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -1777,6 +1779,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
           ParentFont = False
           Position = 7
           SortType = stAlphabetic
+          Width = 110
           OnButtonClick = AttachmentsButtonClick
         end
       end
@@ -1786,7 +1789,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     AlignWithMargins = True
     Left = 0
     Top = 3
-    Width = 769
+    Width = 686
     Height = 36
     Margins.Left = 0
     Margins.Right = 0
@@ -1817,7 +1820,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     end
     object btn_Close: TAeroButton
       AlignWithMargins = True
-      Left = 702
+      Left = 619
       Top = 3
       Width = 64
       Height = 30
@@ -1832,7 +1835,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     end
     object AeroButton1: TAeroButton
       AlignWithMargins = True
-      Left = 621
+      Left = 538
       Top = 3
       Width = 75
       Height = 30
@@ -4329,6 +4332,17 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       object Delete1: TMenuItem
         Caption = 'Delete'
         OnClick = Delete1Click
+      end
+    end
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 176
+    Top = 11
+    object Doc1: TMenuItem
+      Caption = 'Doc'
+      object InvoiceEnglish1: TMenuItem
+        Caption = 'Invoice-English'
+        OnClick = InvoiceEnglish1Click
       end
     end
   end
