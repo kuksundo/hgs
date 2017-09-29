@@ -24,7 +24,9 @@ type
     FSubject,
     FTo,
     FHTMLBody,
-    FHullNo: string;
+    FHullNo,
+    FAttached,
+    FAttachFileName: string;
     FIgnoreReceiver2pjh: Boolean; //True = 수신자가 pjh인가 비교하지 않음
     FIgnoreEmailMove2WorkFolder: Boolean; //True = Working Folder로 이동 안함
     //True = Move하고자 선택한 폴더 아래에 HullNo Folder 생성 후 생성된 폴더에 메일 이동 함
@@ -39,7 +41,9 @@ type
     FReceiver,
     FCarbonCopy,
     FBlindCC,
-    FSubject: string;
+    FSubject,
+    FUserEmail,
+    FUserName: string;
     FMailItem: MailItem;
     FReceiveDate: TDateTime;
 
@@ -57,6 +61,10 @@ type
               dtTaxBill2Customer, dtTaxBillFromSubCon,
               dtCompanySelection, dtConfirmComplete, dtBudgetApproval,
               dtContract, dtFinal);
+  TGSInvoiceItemType = (iitNull, iitServiceReport, iitWorkDay, iitTravellingDay,
+              iitMaterials, iitAirFare, iitAccommodation, iitTransportation,
+              iitMeal, iitEtc, iitFinal);
+
   TCompanyType = (ctNull, ctNewCompany, ctMaker, ctOwner, ctAgent, ctCorporation, ctFinal);
   TSalesProcess = (spNone, spQtnReqRecvFromCust, spQtnReq2SubCon, spQtnRecvFromSubCon, spQtnSend2Cust,
     spSEAttendReqFromCust, spVslSchedReq2Cust, spSECanAvail2SubCon, spSEAvailRecvFromSubCon,
@@ -71,6 +79,9 @@ type
   TSalesProcessType = (sptNone, sptForeignCustOnlyService, sptDomesticCustOnlyService,
     sptForeignCustOnlyMaterial,  sptDomesticCustOnlyMaterial,
     sptForeignCustWithServiceNMaterial, sptDomesticCustWithServiceNMaterial,
+    sptForeignCustOnlyService4FieldService, sptDomesticCustOnlyService4FieldService,
+    sptForeignCustWithServiceNMaterial4FieldService,
+    sptDomesticCustWithServiceNMaterial4FieldService,
     sptFinal);
   TProcessDirection = (pdNone, pdToCustomer, pdFromCustomer, pdToSubCon, pdFromSubCon,
     pdToHElec, pdFromHElec, pdToHGS, pdFromHGS, pdFinal);
@@ -190,6 +201,10 @@ const
          (Description : '자재구매-국내고객';          Value : sptDomesticCustOnlyMaterial),
          (Description : '유상용역/자재구매-해외고객'; Value : sptForeignCustWithServiceNMaterial),
          (Description : '유상용역/자재구매-국내고객'; Value : sptDomesticCustWithServiceNMaterial),
+         (Description : '유상용역-해외고객(Field Service)';          Value : sptForeignCustOnlyService4FieldService),
+         (Description : '유상용역-국내고객(Field Service)';          Value : sptDomesticCustOnlyService4FieldService),
+         (Description : '유상용역/자재구매-해외고객(Field Service)'; Value : sptForeignCustWithServiceNMaterial4FieldService),
+         (Description : '유상용역/자재구매-국내고객(Field Service)'; Value : sptDomesticCustWithServiceNMaterial4FieldService),
          (Description : ''; Value : sptFinal)
   );
 
@@ -212,16 +227,32 @@ const
     Description : string;
     Value       : TContainData4Mail;
   end = ((Description : '';                         Value : cdmNone),
-         (Description : '서비스리포트';             Value : cdmServiceReport),
-         (Description : '견적서 -> 고객';           Value : cdmQtn2Cust),
-         (Description : '견적서 <- 협력사';         Value : cdmQtnFromSubCon),
-         (Description : 'PO <- 고객';               Value : cdmPoFromCust),
-         (Description : 'PO <- 협력사';             Value : cdmPo2SubCon),
-         (Description : 'Invoice -> 고객';          Value : cdmInvoice2Cust),
-         (Description : 'Invoice <- 협력사';        Value : cdmInvoiceFromSubCon),
-         (Description : '세금계산서 <- 협력사';     Value : cdmTaxBillFromSubCon),
-         (Description : '세금계산서 -> 고객';       Value : cdmTaxBill2Cust),
-         (Description : '세금계산서 -> 고객';       Value : cdmFinal)
+         (Description : 'Service Report';             Value : cdmServiceReport),
+         (Description : 'Quotation -> Customer';           Value : cdmQtn2Cust),
+         (Description : 'Quotation <- SubCon';         Value : cdmQtnFromSubCon),
+         (Description : 'PO <- Customer';               Value : cdmPoFromCust),
+         (Description : 'PO <- SubCon';             Value : cdmPo2SubCon),
+         (Description : 'Invoice -> Customer';          Value : cdmInvoice2Cust),
+         (Description : 'Invoice <- SubCon';        Value : cdmInvoiceFromSubCon),
+         (Description : 'Tax Bill <- SubCon';     Value : cdmTaxBillFromSubCon),
+         (Description : 'Tax Bill -> Customer';       Value : cdmTaxBill2Cust),
+         (Description : 'Tax Bill -> Customer';       Value : cdmFinal)
+  );
+
+  R_GSInvoiceItemType : array[iitNull..iitFinal] of record
+    Description : string;
+    Value       : TGSInvoiceItemType;
+  end = ((Description : '';                         Value : iitNull),
+         (Description : 'Service Report';           Value : iitServiceReport),
+         (Description : 'Work Day';                 Value : iitWorkDay),
+         (Description : 'Trevelling Day';           Value : iitTravellingDay),
+         (Description : 'Materials';                Value : iitMaterials),
+         (Description : 'Ex(Airfare)';        Value : iitAirFare),
+         (Description : 'Ex(Accommodation)';  Value : iitAccommodation),
+         (Description : 'Ex(Transportation)'; Value : iitTransportation),
+         (Description : 'Ex(Meal)';           Value : iitMeal),
+         (Description : 'Ex(Etc)';            Value : iitEtc),
+         (Description : '';                         Value : iitFinal)
   );
 
   gpSHARED_DATA_NAME = 'SharedData_{BCB1C40A-3B72-44FC-9E72-91E5FF498924}';
@@ -261,7 +292,11 @@ const
   MY_EMAIL_SIG = '부품서비스2팀 박정현 차장';
   SHIPPING_MANAGER_SIG = '판토스 김윤겸 주임님';
   SALES_MANAGER_SIG = '부품서비스1팀 전선희 사원님';
-  FIELDSERVICE_MANAGER_SIG = '필드서비스팀 이동희 대리님';
+  FIELDSERVICE_MANAGER_SIG = '필드서비스팀 이용준 부장님';
+
+  //Task를 Outlook 첨부파일로 만들때 인식하기 위한 문자열
+  TASK_JSON_DRAG_SIGNATURE = '{274C083F-EB64-49D8-ADE7-8804CFD0D030}';
+  INVOICETASK_JSON_DRAG_SIGNATURE = '{144B4D16-A8E7-4E9A-89C1-994FE6AEC793}';
 
 procedure OLMsgFileRecordClear;
 function QueryDateType2String(AQueryDateType:TQueryDateType) : string;
@@ -288,8 +323,10 @@ procedure ContainData4Mail2Combo(AComboBox:TComboBox);
 function ProcessDirection2String(AProcessDirection:TProcessDirection) : string;
 function String2ProcessDirection(AProcessDirection:string): TProcessDirection;
 procedure ProcessDirection2Combo(AComboBox:TComboBox);
-
 procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
+function GSInvoiceItemType2String(AGSInvoiceItemType:TGSInvoiceItemType) : string;
+function String2GSInvoiceItemType(AGSInvoiceItemType:string): TGSInvoiceItemType;
+procedure GSInvoiceItemType2Combo(AComboBox:TComboBox);
 
 implementation
 
@@ -568,6 +605,36 @@ begin
 
   for i := Low(LIntArr) to High(LIntArr) do
     AList.Add(SalesProcess2String(TSalesProcess(LIntArr[i])));
+end;
+
+function GSInvoiceItemType2String(AGSInvoiceItemType: TGSInvoiceItemType) : string;
+begin
+  if AGSInvoiceItemType <= High(TGSInvoiceItemType) then
+    Result := R_GSInvoiceItemType[AGSInvoiceItemType].Description;
+end;
+
+function String2GSInvoiceItemType(AGSInvoiceItemType: string): TGSInvoiceItemType;
+var Li: TGSInvoiceItemType;
+begin
+  for Li := iitNull to iitFinal do
+  begin
+    if R_GSInvoiceItemType[Li].Description = AGSInvoiceItemType then
+    begin
+      Result := R_GSInvoiceItemType[Li].Value;
+      exit;
+    end;
+  end;
+end;
+
+procedure GSInvoiceItemType2Combo(AComboBox: TComboBox);
+var Li: TGSInvoiceItemType;
+begin
+  AComboBox.Clear;
+
+  for Li := iitNull to Pred(iitFinal) do
+  begin
+    AComboBox.Items.Add(R_GSInvoiceItemType[Li].Description);
+  end;
 end;
 
 end.

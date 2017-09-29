@@ -31,16 +31,9 @@ object InquiryF: TInquiryF
       inherited Panel1: TPanel
         inherited btn_Search: TAeroButton
           OnClick = TDTFbtn_SearchClick
-          ExplicitLeft = 3
         end
         inherited btn_Close: TAeroButton
           OnClick = TDTFbtn_CloseClick
-          ExplicitLeft = 139
-        end
-        inherited AeroButton1: TAeroButton
-          ExplicitLeft = 71
-          ExplicitTop = 4
-          ExplicitHeight = 111
         end
       end
     end
@@ -470,6 +463,7 @@ object InquiryF: TInquiryF
     end
     inherited grid_Req: TNextGrid
       Height = 438
+      OnMouseDown = TDTFgrid_ReqMouseDown
       ExplicitHeight = 438
       inherited Subject: TNxTextColumn
         ParentFont = False
@@ -504,7 +498,7 @@ object InquiryF: TInquiryF
     end
     inherited imagelist24x24: TImageList
       Bitmap = {
-        494C010101007000000318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C010101007000140318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000600000001800000001002000000000000024
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000005C43
@@ -810,7 +804,7 @@ object InquiryF: TInquiryF
     end
     inherited ImageList32x32: TImageList
       Bitmap = {
-        494C01010300C8002C0420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C01010300C800400420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000800000002000000001002000000000000040
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1347,7 +1341,7 @@ object InquiryF: TInquiryF
     end
     inherited ImageList16x16: TImageList
       Bitmap = {
-        494C010102005402100310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C010102005402240310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000400000001000000001002000000000000010
         000000000000000000000000000000000000000000000505052E101010521717
         17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -1486,6 +1480,19 @@ object InquiryF: TInquiryF
         0000000000000000000000000000000000000000000000000000000000000000
         000000000000}
     end
+    inherited PopupMenu1: TPopupMenu
+      object MAPS1: TMenuItem [1]
+        Caption = 'MAPS'
+        object QUOTATIONINPUT1: TMenuItem
+          Caption = 'QUOTATION INPUT'
+          OnClick = QUOTATIONINPUT1Click
+        end
+        object test1: TMenuItem
+          Caption = 'test'
+          OnClick = test1Click
+        end
+      end
+    end
   end
   object DropEmptyTarget1: TDropEmptyTarget
     DragTypes = [dtCopy, dtLink]
@@ -1498,6 +1505,29 @@ object InquiryF: TInquiryF
     DragDropComponent = DropEmptyTarget1
     DataFormatName = 'TOutlookDataFormat'
     Left = 244
+    Top = 212
+  end
+  object DropEmptySource1: TDropEmptySource
+    DragTypes = [dtCopy, dtMove]
+    Left = 212
+    Top = 260
+  end
+  object DataFormatAdapter2: TDataFormatAdapter
+    DragDropComponent = DropEmptySource1
+    DataFormatName = 'TVirtualFileStreamDataFormat'
+    Left = 252
+    Top = 263
+  end
+  object DataFormatAdapterTarget: TDataFormatAdapter
+    DragDropComponent = DropEmptyTarget1
+    DataFormatName = 'TVirtualFileStreamDataFormat'
+    Left = 280
+    Top = 212
+  end
+  object DataFormatAdapter1: TDataFormatAdapter
+    DragDropComponent = DropEmptyTarget1
+    DataFormatName = 'TFileDataFormat'
+    Left = 314
     Top = 212
   end
 end

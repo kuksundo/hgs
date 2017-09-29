@@ -41,7 +41,10 @@ end;
 procedure HttpStop;
 begin
   if Assigned(g_HTTPClient) then
-    FreeAndNil(g_HTTPClient);
+  begin
+    g_HTTPClient.Destroy;
+//    FreeAndNil(g_HTTPClient);
+  end;
 end;
 
 function SendReqSerialNo_Http(ACustomerInfo: RawUTF8): RawUTF8;

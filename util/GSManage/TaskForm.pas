@@ -11,7 +11,8 @@ uses
   FrmFileSelect, mORMot, SynCommons, UViewMailList, Vcl.Menus, FSMState,
   DragDropFile, Clipbrd,
   DragDrop, DropTarget, UnitMakeReport, DropSource, Vcl.Mask, JvExMask,
-  JvToolEdit, JvBaseEdits, FSMClass_Dic, pjhComboBox, UnitTodoCollect;
+  JvToolEdit, JvBaseEdits, FSMClass_Dic, pjhComboBox, UnitTodoCollect, AdvEdit,
+  AdvEdBtn;
 
 type
   TTaskEditF = class(TForm)
@@ -57,7 +58,6 @@ type
     N5: TMenuItem;
     TabSheet2: TTabSheet;
     JvLabel15: TJvLabel;
-    SubCompanyEdit: TEdit;
     JvLabel16: TJvLabel;
     SubCompanyCodeEdit: TEdit;
     JvLabel17: TJvLabel;
@@ -205,6 +205,17 @@ type
     Mail1: TMenuItem;
     Reply1: TMenuItem;
     N17: TMenuItem;
+    JvLabel63: TJvLabel;
+    DeliveryConditionCB: TComboBox;
+    JvLabel64: TJvLabel;
+    EstimateTypeCB: TComboBox;
+    JvLabel65: TJvLabel;
+    TermsPaymentCB: TComboBox;
+    JvLabel66: TJvLabel;
+    BaseProjectNoEdit: TEdit;
+    SubCompanyEdit: TAdvEditBtn;
+    JvLabel67: TJvLabel;
+    ChargeInPersonIdEdit: TEdit;
     procedure AeroButton1Click(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -234,7 +245,6 @@ type
     procedure INQInput1Click(Sender: TObject);
   private
     function GetFileFromDropDataFormat(AFormat: TVirtualFileStreamDataFormat): TFileStream;
-    function GetStreamFromDropDataFormat(AFormat: TVirtualFileStreamDataFormat): TStream;
 
     function Get_Doc_Qtn_Rec: Doc_Qtn_Rec;
     function Get_Doc_Inv_Rec: Doc_Invoice_Rec;
@@ -299,15 +309,121 @@ type
       AMaterial: TSQLMaterial4Project; ATaskID: TID = 0);
   end;
 
+    function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
+      ASQLEmailMsg: TSQLEmailMsg; ADoc: variant): Boolean; overload;
+
 var
   TaskEditF: TTaskEditF;
 
 implementation
 
 uses FrmInqManage, FrmDisplayTaskInfo, DragDropInternet, DragDropFormats,
-  UnitIPCModule, UnitTodoList, FrmSearchCustomer;
+  UnitIPCModule, UnitTodoList, FrmSearchCustomer, UnitDragUtil, UnitStringUtil;
 
 {$R *.dfm}
+
+function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
+  ASQLEmailMsg: TSQLEmailMsg; ADoc: variant): Boolean;
+var
+  LTaskEditF: TTaskEditF;
+  LCustomer: TSQLCustomer;
+  LSubCon: TSQLSubCon;
+  LMat4Proj: TSQLMaterial4Project;
+  LTask, LTask2: TSQLGSTask;
+  LFiles: TSQLGSFile;
+//  LTaskIds: TIDDynArray;
+  i: integer;
+  LID: TID;
+begin
+  LTaskEditF := TTaskEditF.Create(nil);
+  try
+    with LTaskEditF do
+    begin
+      LTask := ATask;
+      if ATask.IsUpdate then
+        Caption := Caption + ' (Update)'
+      else
+        Caption := Caption + ' (New)';
+
+      LTaskEditF.FEmailDisplayTask := ATask;
+      if ADoc <> null then
+        LoadTaskFromVariant(ATask, ADoc.Task);
+      LoadTaskVar2Form(LTask, LTaskEditF, g_FSMClass);
+      LCustomer := GetCustomerFromTask(LTask);
+      if ADoc <> null then
+        LoadCustomerFromVariant(LCustomer, ADoc.Customer);
+      LoadCustomer2Form(LCustomer, LTaskEditF);
+      LSubCon := GetSubConFromTask(LTask);
+      if ADoc <> null then
+        LoadSubConFromVariant(LSubCon, ADoc.SubCon);
+      LoadSubCon2Form(LSubCon, LTaskEditF);
+      LMat4Proj := GetMaterial4ProjFromTask(LTask);
+      if ADoc <> null then
+        LoadMaterial4ProjectFromVariant(LMat4Proj, ADoc.Material4Project);
+      LoadMaterial4Project2Form(LMat4Proj, LTaskEditF);
+
+      LTaskEditF.SelectMailBtn.Enabled := Assigned(ASQLEmailMsg);
+      LTaskEditF.CancelMailSelectBtn.Enabled := Assigned(ASQLEmailMsg);
+
+      if LTaskEditF.ShowModal = mrOK then
+      begin
+        Result := True;
+        LoadTaskForm2Var(LTaskEditF, LTask);
+
+        //IPC를 통해서  Email을 수신한 경우
+        if Assigned(ASQLEmailMsg) then
+        begin
+          //대표 메일을 선택한 경우
+          if Assigned(LTaskEditF.FTask) then
+          begin
+            LTask := LTaskEditF.FTask;
+          end;
+
+          g_ProjectDB.Add(ASQLEmailMsg, true);
+
+          if not LTask.IsUpdate then
+          begin
+            LID := g_ProjectDB.Add(LTask, true);
+            ShowMessage('Task 및 Email Add 완료');
+          end;
+
+          LTask.EmailMsg.ManyAdd(g_ProjectDB, LTask.ID, ASQLEmailMsg.ID, True)
+        end
+        else
+        begin
+          AddOrUpdateTask(LTask);
+        end;
+
+        if High(LTaskEditF.FSQLGSFiles.Files) >= 0 then
+        begin
+          g_FileDB.Delete(TSQLGSFile, LTaskEditF.FSQLGSFiles.ID);
+          LTaskEditF.FSQLGSFiles.TaskID := LTask.ID;
+          g_FileDB.Add(LTaskEditF.FSQLGSFiles, true);
+        end
+        else
+          g_FileDB.Delete(TSQLGSFile, LTaskEditF.FSQLGSFiles.ID);
+
+        LoadTaskForm2Customer(LTaskEditF, LCustomer, LTask.ID);
+        LoadTaskForm2SubCon(LTaskEditF, LSubCon, LTask.ID);
+        LoadTaskForm2Material4Project(LTaskEditF, LMat4Proj, LTask.ID);
+
+        AddOrUpdateCustomer(LCustomer);
+        AddOrUpdateSubCon(LSubCon);
+        AddOrUpdateMaterial4Project(LMat4Proj);
+      end;
+    end;//with
+  finally
+    //대표 메일을 선택한 경우
+//    if Assigned(LTaskEditF.FTask) then
+//      ATask := nil;
+
+    FreeAndNil(LCustomer);
+    FreeAndNil(LSubCon);
+    FreeAndNil(LMat4Proj);
+
+    FreeAndNil(LTaskEditF);
+  end;
+end;
 
 procedure TTaskEditF.AdvGlowButton5Click(Sender: TObject);
 var
@@ -438,7 +554,7 @@ begin
     if LFileName <> '' then
     begin
       FFileContent := StringFromFile(LFileName);
-      LFromOutlook := False;
+//      LFromOutlook := False;
     end;
   end;
 
@@ -552,8 +668,6 @@ begin
   if (FileGrid.SelectedCount > 0) and
     (DragDetectPlus(FileGrid.Handle, Point(X,Y))) then
   begin
-    // Transfer the file names to the data format. The content will be extracted
-    // by the target on-demand.
     TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).FileNames.Clear;
     for i := 0 to FileGrid.RowCount - 1 do
       if (FileGrid.Row[i].Selected) then
@@ -562,7 +676,6 @@ begin
           FileNames.Add(FileGrid.CellByName['FileName',i].AsString);
       end;
 
-    // ...and let it rip!
     DropEmptySource1.Execute;
   end;
 end;
@@ -582,6 +695,8 @@ begin
   CompanyType2Combo(CustCompanyTypeCB);
   SetCurrentDir(ExtractFilePath(Application.ExeName));
   DOC_DIR := ExtractFilePath(Application.ExeName) + '양식\';
+
+  PageControl1.ActivePageIndex := 0;
 end;
 
 procedure TTaskEditF.FormDestroy(Sender: TObject);
@@ -635,43 +750,7 @@ end;
 
 function TTaskEditF.GetQTN_InqContent: string;
 begin
-  Result := FEmailDisplayTask.HullNo + ' ' + FEmailDisplayTask.ShipName + #13#10 +
-            '작업일: ' + FormatDateTime('YYYY.MM.DD', TimeLogToDateTime(FEmailDisplayTask.WorkBeginDate)) +
-            ' ~ ' + FormatDateTime('YYYY.MM.DD',TimeLogToDateTime(FEmailDisplayTask.WorkEndDate)) + #13#10 +
-            '작업내용: ' + FEmailDisplayTask.WorkSummary + ' (' + FEmailDisplayTask.NationPort + ')';
-end;
-
-function TTaskEditF.GetStreamFromDropDataFormat(
-  AFormat: TVirtualFileStreamDataFormat):TStream;
-var
-  LStream, LTargetAdapter: IStream;
-  LTargetStream: TMemoryStream;
-  LInt1, LInt2: LargeInt;
-begin
-  Result := nil;
-  LStream := TVirtualFileStreamDataFormat(AFormat).FileContentsClipboardFormat.GetStream(0);
-
-  if (LStream <> nil) then
-  begin
-    try
-      LTargetStream := TMemoryStream.Create;
-     try
-        LTargetAdapter := TStreamAdapter.Create(LTargetStream);
-      except
-        LTargetStream.Free;
-        raise;
-      end;
-
-      LStream.CopyTo(LTargetAdapter, High(Int64), LInt1, LInt2);
-    finally
-//      ShowMessage(IntToStr(LInt1));
-      LTargetAdapter := nil;
-      LTargetStream.Position := 0;
-      Result := LTargetStream;
-    end;
-  end
-  else
-    ShowMessage('LStream not Assigned');
+  Result := GetQTNContent(FEmailDisplayTask);
 end;
 
 function TTaskEditF.Get_Doc_Cust_Reg_Rec: Doc_Cust_Reg_Rec;
@@ -1011,6 +1090,11 @@ begin
     AVar.ShippingNo := ShippingNoEdit.Text;
     AVar.CurrencyKind := CurrencyKindCB.ItemIndex;
 
+    AVar.BaseProjectNo := BaseProjectNoEdit.Text;
+    AVar.DeliveryCondition := DeliveryConditionCB.ItemIndex;
+    AVar.EstimateType := EstimateTypeCB.ItemIndex;
+    AVar.TermsOfPayment := TermsPaymentCB.ItemIndex;
+
     AVar.QTNInputDate := TimeLogFromDateTime(QTNInputPicker.Date);
     AVar.OrderInputDate := TimeLogFromDateTime(OrderInputPicker.Date);
     AVar.InvoiceIssueDate := TimeLogFromDateTime(InvoiceIssuePicker.Date);
@@ -1030,9 +1114,19 @@ end;
 procedure TTaskEditF.LoadTaskVar2Form(AVar: TSQLGSTask; AForm: TTaskEditF; AFSMClass: TFSMClass);
 var
   LFSMState: TFSMState;
+  LStr: string;
 begin
   with AForm do
   begin
+    if AVar.UniqueTaskID = '' then
+    begin
+      LStr := NewGUID;
+      LStr := StringReplace(LStr, '{', '', [rfReplaceAll]);
+      LStr := StringReplace(LStr, '}', '', [rfReplaceAll]);
+
+      AVar.UniqueTaskID := LStr;
+    end;
+
     HullNoEdit.Text := AVar.HullNo;
     ShipNameEdit.Text := AVar.ShipName;
 //    CustomerNameEdit.Text := AVar.ReqCustomer;
@@ -1053,7 +1147,11 @@ begin
     ExchangeRateEdit.Text := AVar.ExchangeRate;
     ShippingNoEdit.Text := AVar.ShippingNo;
     CurrencyKindCB.ItemIndex := AVar.CurrencyKind;
-
+    BaseProjectNoEdit.Text := AVar.BaseProjectNo;
+    DeliveryConditionCB.ItemIndex := AVar.DeliveryCondition;
+    EstimateTypeCB.ItemIndex := AVar.EstimateType;
+    TermsPaymentCB.ItemIndex := AVar.TermsOfPayment;
+    ChargeInPersonIdEdit.Text := AVar.ChargeInPersonId;
 //    CompanyTypeCB.ItemIndex := Ord(AVar.CompanyType);
 
     LFSMState := AFSMClass.GetState(Ord(AVar.SalesProcessType));
@@ -1213,7 +1311,7 @@ begin
 
           FTask := nil;
           LIdList := TIDList(LGrid.Row[LRow].Data);
-          FTask := LDisplayTaskInfoF.TDisplayTaskF1.CreateOrGetLoadTask(LIdList.fTaskId);
+          FTask := CreateOrGetLoadTask(LIdList.fTaskId);
         end;
       end;
     end;

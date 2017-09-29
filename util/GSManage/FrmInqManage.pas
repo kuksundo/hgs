@@ -3,18 +3,21 @@ unit FrmInqManage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Winapi.ActiveX,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, NxColumnClasses, NxColumns,
   NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid, AdvOfficeTabSet,
   Vcl.StdCtrls, Vcl.ComCtrls, AdvGroupBox, AdvOfficeButtons, AeroButtons,
   JvExControls, JvLabel, CurvyControls, Vcl.ImgList, System.SyncObjs,
   OtlCommon, OtlComm, OtlTaskControl, OtlContainerObserver, otlTask,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
-  CommonData, TaskForm, UElecDataRecord,
+  CommonData, TaskForm, UElecDataRecord, System.Rtti,
+  DragDropInternet,DropSource,DragDropFile,DragDropFormats, DragDrop, DropTarget,
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
-  FrameDisplayTaskInfo, DragDrop, DropTarget, Vcl.Menus,
+  FrameDisplayTaskInfo, Vcl.Menus,
   mORMotHttpClient, MailCallbackInterface, UnitRegistrationClass, UnitRegCodeConst,
-  UnitHttpModule, UnitRegCodeServerInterface, UnitRegistrationRecord;
+  UnitHttpModule, UnitRegCodeServerInterface, UnitRegistrationRecord,
+  thundax.lib.actions, UnitMAPSMacro;
 
 const
   WM_OLMSG_RESULT = WM_USER + 1;
@@ -42,6 +45,13 @@ type
     DropEmptyTarget1: TDropEmptyTarget;
     DataFormatAdapterOutlook: TDataFormatAdapter;
     TDTF: TDisplayTaskF;
+    MAPS1: TMenuItem;
+    QUOTATIONINPUT1: TMenuItem;
+    test1: TMenuItem;
+    DropEmptySource1: TDropEmptySource;
+    DataFormatAdapter2: TDataFormatAdapter;
+    DataFormatAdapterTarget: TDataFormatAdapter;
+    DataFormatAdapter1: TDataFormatAdapter;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
@@ -56,6 +66,10 @@ type
       APoint: TPoint; var Effect: Integer);
     procedure TDTFShowTaskID1Click(Sender: TObject);
     procedure TDTFbtn_CloseClick(Sender: TObject);
+    procedure QUOTATIONINPUT1Click(Sender: TObject);
+    procedure test1Click(Sender: TObject);
+    procedure TDTFgrid_ReqMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FIPCServer: TIPCServer;
 //    FHttpClientWebsocket: TSQLHttpClientWebsockets;
@@ -63,8 +77,13 @@ type
     FDBMsgQueue: TOmniMessageQueue;
     FIPCMQFromOL: TOmniMessageQueue;
     FWorker4OLMsg: TWorker4OLMsg;
-//    FRegInfo: TRegistrationInfo;
+    FTaskJson: String;
+    FFileContent: RawByteString;
+//    FRegInfo: TRegistrationInfo;
 
+    procedure OnGetStream(Sender: TFileContentsStreamOnDemandClipboardFormat;
+      Index: integer; out AStream: IStream);
+
     procedure OnClientConnect(const Context: ICommContext);
     procedure OnClientDisconnect(const Context: ICommContext);
     procedure OnServerError(const Context: ICommContext; const Error: TServerError);
@@ -74,6 +93,12 @@ type
     function CheckRegistration: Boolean;
 
     procedure ProcessCommand(ARespond: string);
+    //Macro에서 ExecFunction으로 FunctionName을 주면 아래의 public란 Procedure에서
+    //함수명을 찾아서 실행해 줌
+    procedure ExecFunc(AFuncName: string);
+    procedure ExecMethod(MethodName:string; const Args: array of TValue);
+
+    function SaveCurrentTask2File(AFileName: string = '') : string;
   public
     //Main or 단순 조회: Main := 0, 단순 조회 := 1
     FProgMode: integer;
@@ -82,6 +107,14 @@ type
     procedure SendReqOLEmailInfo;
     procedure SendReqOLEmailInfo_CromisIPC;
     procedure SendReqOLEmailInfo_WS;
+
+    procedure KeyIn_CompanyCode;
+    procedure KeyIn_RFQ;
+    procedure Select_Money;
+    procedure KeyIn_Content;
+    procedure Select_DeliveryCondition;
+    procedure Select_EstimateType;
+    procedure Select_TermsOfPayment;
   end;
 
 var
@@ -89,10 +122,8 @@ var
 
 implementation
 
-Uses System.DateUtils, OtlParallel,
-  DragDropFile,
-  DragDropInternet,
-  UnitIPCModule, FrmRegistration, Vcl.ogutil;
+Uses System.DateUtils, OtlParallel, Clipbrd,
+  UnitIPCModule, FrmRegistration, Vcl.ogutil, UnitDragUtil, UnitVariantJsonUtil;
 
 {$R *.dfm}
 
@@ -111,10 +142,11 @@ begin
       handles: array [0..1] of THandle;
       msg    : TOmniMessage;
       rec    : TOLMsgFileRecord;
-//      LOmniValue: TOmniValue;
       LID: TID;
       LTaskIds: TIDDynArray;
-      LIsAddTask: Boolean;//True=신규 Task 등록
+      LIsAddTask,  //True=신규 Task 등록
+      LIsProcessJson: Boolean; //Task정보를 Json파일로 받음
+      LStr: string;
     begin
       handles[0] := FStopEvent.Handle;
       handles[1] := FIPCMQFromOL.GetNewMessageEvent;
@@ -129,6 +161,8 @@ begin
 
           if msg.MsgID = 1 then
           begin
+            LIsProcessJson := False;
+
             if (rec.FEntryID <> '') and (rec.FStoreID <> '') then
             begin
               LEmailMsg := TSQLEmailMsg.Create(g_ProjectDB,
@@ -158,7 +192,7 @@ begin
                   try
                     for i:= low(LTaskIds) to high(LTaskIds) do
                     begin
-                      LTask2 := TDTF.CreateOrGetLoadTask(LTaskIds[i]);
+                      LTask2 := CreateOrGetLoadTask(LTaskIds[i]);
                       break;
                     end;
                   finally
@@ -174,9 +208,10 @@ begin
                 end
                 else
                 begin //제목이 존재하지 않으면 Task도 새로 등록 해야 함
-                  LIsAddTask := True;
+//                  LIsAddTask := True;
                   LTask.InqRecvDate := TimeLogFromDateTime(rec.FReceiveDate);
-                  TDTF.DisplayTaskInfo2EditForm(LTask, LEmailMsg);
+                  LTask.ChargeInPersonId := rec.FUserEmail;
+                  LIsAddTask := TaskForm.DisplayTaskInfo2EditForm(LTask, LEmailMsg, null);
   //                g_ProjectDB.Add(LTask, true);
   //                LTask.EmailMsg.ManyAdd(g_ProjectDB, LTask.ID, LEmailMsg.ID, true);
                 end;
@@ -188,8 +223,15 @@ begin
           begin
             //task.Invoke함수에서 Grid에 Task 추가하는 것을 방지함
             LIsAddTask := False;
-
+            LIsProcessJson := False;
             TDTF.AddFolderListFromOL(rec.FEntryId + '=' + rec.FStoreId);
+          end
+          else
+          if msg.MsgID = 3 then
+          begin
+            LStr := rec.FSubject;
+            LIsProcessJson := True;
+            LIsAddTask := False;
           end;
 
           task.Invoke(
@@ -205,7 +247,12 @@ begin
 //                TDTF.grid_Req.Row[i].Data := TIDList.Create;
 //                TIDList(TDTF.grid_Req.Row[i].Data).EmailId := LID;
 //                TIDList(TDTF.grid_Req.Row[i].Data).TaskId := LTask.ID;
-              end
+              end;
+
+              if LIsProcessJson then
+              begin
+                ProcessTaskJson(LStr);
+              end;
             end
           );
         end;//while
@@ -243,12 +290,103 @@ end;
 
 procedure TInquiryF.DropEmptyTarget1Drop(Sender: TObject;
   ShiftState: TShiftState; APoint: TPoint; var Effect: Integer);
+var
+  LTargetStream: TStream;
+  LStr: RawByteString;
+  LProcessOK: Boolean;
+  LFileName: string;
+  rec    : TOLMsgFileRecord;
+  LOmniValue: TOmniValue;
 begin
-  // Check if we have a data format and if so...
-  if (DataFormatAdapterOutlook.DataFormat <> nil) then
+  LFileName := '';
+  // 윈도우 탐색기에서 Drag 했을 경우
+  if (DataFormatAdapter1.DataFormat <> nil) then
+  begin
+    LFileName := (DataFormatAdapter1.DataFormat as TFileDataFormat).Files.Text;
+
+    if LFileName <> '' then
+    begin
+      if ExtractFileExt(LFileName) <> '.hgs' then
+      begin
+        ShowMessage('This file is not auto created by HGS from explorer');
+        exit;
+      end;
+
+      LStr := StringFromFile(LFileName);
+      rec.FSubject := LStr;
+      LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
+      FIPCMQFromOL.Enqueue(TOmniMessage.Create(3, LOmniValue));
+//      LProcessOK := ProcessTaskJson(LStr);
+      exit;
+    end;
+  end;
+
+  // OutLook에서 첨부파일을 Drag 했을 경우
+  if (TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat).FileNames.Count > 0) then
+  begin
+    LFileName := TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat).FileNames[0];
+
+    if ExtractFileExt(LFileName) <> '.msg' then
+    begin
+      if ExtractFileExt(LFileName) <> '.hgs' then
+      begin
+        ShowMessage('This file is not auto created by HGS');
+        exit;
+      end;
+
+      LTargetStream := GetStreamFromDropDataFormat(TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat));
+      try
+        if not Assigned(LTargetStream) then
+          ShowMessage('Not Assigned');
+
+        LStr := StreamToRawByteString(LTargetStream);
+  //      LStr := LTargetStream.DataString;
+
+        rec.FSubject := LStr;
+        LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
+        FIPCMQFromOL.Enqueue(TOmniMessage.Create(3, LOmniValue));
+        exit;
+//        LProcessOK := ProcessTaskJson(LStr);
+
+  //      LTargetStream.Seek(0,soBeginning);
+  //      LStr := ReadStringFromStream(LTargetStream);
+  //      ShowMessage(LStr);
+      finally
+        if Assigned(LTargetStream) then
+          LTargetStream.Free;
+      end;
+    end;
+  end;
+
+  // OutLook에서 메일을 Drag 했을 경우
+  if not LProcessOK and (DataFormatAdapterOutlook.DataFormat <> nil) then
   begin
     SendReqOLEmailInfo;
 //    ShowMessage('Outlook Mail Dropped');
+  end;
+end;
+
+procedure TInquiryF.ExecFunc(AFuncName: string);
+begin
+  if AFuncName <> '' then
+    ExecMethod(AFuncName,[]);
+end;
+
+procedure TInquiryF.ExecMethod(MethodName: string; const Args: array of TValue);
+var
+  R : TRttiContext;
+  T : TRttiType;
+  M : TRttiMethod;
+begin
+  T := R.GetType(Self.ClassType);
+
+  for M in t.GetMethods do
+  begin
+    if (m.Parent = t) and (m.Name = MethodName)then
+    begin
+      M.Invoke(Self,Args);
+      break;
+    end;
   end;
 end;
 
@@ -290,6 +428,7 @@ begin
   FIPCServer.ServerName := IPC_SERVER_NAME_4_INQMANAGE;
   FIPCServer.Start;
 
+  (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
   FDBMsgQueue := TOmniMessageQueue.Create(1000);
   FIPCMQFromOL := TOmniMessageQueue.Create(1000);
 //  FWorker4OLMsg := TWorker4OLMsg.Create(FDBMsgQueue, FIPCMQFromOL);
@@ -300,6 +439,7 @@ begin
   UnitRegistrationRecord.InitClient();
   AsynDisplayOLMsg2Grid();
   TDTF.rg_periodClick(nil);
+  g_ExecuteFunction := ExecFunc;
 end;
 
 procedure TInquiryF.FormDestroy(Sender: TObject);
@@ -314,6 +454,48 @@ begin
   FIPCMQFromOL.Free;
   FreeAndNil(FIPCServer);
   FreeAndNil(FStopEvent);
+end;
+
+procedure TInquiryF.KeyIn_CompanyCode;
+var
+  LCode: string;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LCode := GetCompanyCode(LTask);
+    Key_Input_CompanyCode(LCode);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.KeyIn_Content;
+var
+  LContent: string;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LContent := GetQTNContent(LTask);
+    QTN_Key_Input_Content(LContent);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.KeyIn_RFQ;
+var
+  LPONo: string;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LPONo := UTF8ToString(LTask.PO_No);
+    Key_Input_RFQ(LPONo);
+  finally
+    LTask.Free;
+  end;
 end;
 
 procedure TInquiryF.OnClientConnect(const Context: ICommContext);
@@ -395,6 +577,28 @@ begin
   );
 end;
 
+procedure TInquiryF.OnGetStream(
+  Sender: TFileContentsStreamOnDemandClipboardFormat; Index: integer;
+  out AStream: IStream);
+var
+  Data: AnsiString;
+  i: integer;
+  SelIndex: integer;
+  Found: boolean;
+  LStream: TStringStream;
+  LStr: string;
+begin
+  LStream := TStringStream.Create;
+  try
+//    LStr := Utf8ToString(AnsiToUTF8(FTaskJson));
+    LStream.WriteString(FTaskJson);
+    AStream := nil;
+    AStream := TFixedStreamAdapter.Create(LStream, soOwned);
+  except
+    raise;
+  end;
+end;
+
 procedure TInquiryF.OnServerError(const Context: ICommContext;
   const Error: TServerError);
 begin
@@ -426,6 +630,8 @@ begin
       rec.FCarbonCopy := LStrList.Values['CC'];
       rec.FBlindCC := LStrList.Values['BCC'];
       rec.FSubject := LStrList.Values['Subject'];
+      rec.FUserEMail := LStrList.Values['UserEmail'];
+      rec.FUserName := LStrList.Values['UserName'];
       LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
       FIPCMQFromOL.Enqueue(TOmniMessage.Create(1, LOmniValue));
     end
@@ -452,6 +658,117 @@ begin
     end;
   finally
     LStrList.Free;
+  end;
+end;
+
+procedure TInquiryF.QUOTATIONINPUT1Click(Sender: TObject);
+begin
+  QTN_Input;
+end;
+
+function TInquiryF.SaveCurrentTask2File(AFileName: string): string;
+var
+  LTask: TSQLGSTask;
+//  LUtf8: RawUTF8;
+//  LDynArr: TDynArray;
+//  LCount: integer;
+//  LCustomer: TSQLCustomer;
+//  LSubCon: TSQLSubCon;
+//  LMat4Proj: TSQLMaterial4Project;
+//  LV,LV2,LV3: variant;
+    LFileName, LStr: string;
+//    LTaskJson: RawByteString;
+//  LGuid: TGuid;
+begin
+//  if AFileName = '' then
+//  begin
+//    CreateGUID(LGuid);
+//    AFileName := '.\' + GUIDToString(LGuid);
+//  end;
+  Result := '';
+//  TDocVariant.New(LV);
+
+  LTask := TDTF.GetTask;
+  try
+    if LTask.IsUpdate then
+    begin
+      FTaskJson := MakeTaskInfoEmailAttached(LTask, LFileName);
+
+//      FTaskJson := UTF8ToAnsi(StringToUTF8(FTaskJson));
+//      FTaskJson := SynLZDecompress(FTaskJson);
+//      ShowMessage(FTaskJson);
+      if AFileName = '' then
+      begin
+        AFileName := LFileName;
+      end;
+
+      Result := AFileName;
+    end;
+//    TDocVariant.New(LV3);
+//    LV3 := _JSON(LUtf8);
+//
+//    TDocVariant.New(LV2);
+//    LV2 := _JSON(LV3.Task);
+//    ShowMessage(LV2.ShipName);
+//    Memo1.Text := Utf8ToString(LV3.Task);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.Select_DeliveryCondition;
+var
+  LDeliveryCondition: integer;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LDeliveryCondition := LTask.DeliveryCondition;
+    Sel_DeliveryCondition(LDeliveryCondition);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.Select_EstimateType;
+var
+  LEstimateType: integer;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LEstimateType := LTask.EstimateType;
+    Sel_EstimateType(LEstimateType);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.Select_Money;
+var
+  LCurrencyKind: integer;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LCurrencyKind := LTask.CurrencyKind;
+    Sel_CurrencyKind(LCurrencyKind);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.Select_TermsOfPayment;
+var
+  LTermsOfPayment: integer;
+  LTask: TSQLGSTask;
+begin
+  LTask := TDTF.GetTask;
+  try
+    LTermsOfPayment := LTask.TermsOfPayment;
+    Sel_TermsOfPayment(LTermsOfPayment);
+  finally
+    LTask.Free;
   end;
 end;
 
@@ -555,6 +872,29 @@ begin
   TDTF.grid_ReqCellDblClick(Sender, ACol,ARow);
 end;
 
+procedure TInquiryF.TDTFgrid_ReqMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  i: integer;
+  LFileName: string;
+begin
+  if (DragDetectPlus(TDTF.grid_Req.Handle, Point(X,Y))) then
+  begin
+    if TDTF.grid_Req.SelectedRow = -1 then
+      exit;
+
+    TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).FileNames.Clear;
+    LFileName := SaveCurrentTask2File;
+
+    if LFileName <> '' then
+      //파일 이름에 공란이 들어가면 OnGetStream 함수를 안 탐
+      TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).
+            FileNames.Add(LFileName);
+
+    DropEmptySource1.Execute;
+  end;
+end;
+
 procedure TInquiryF.TDTFJvLabel7Click(Sender: TObject);
 //var
 //  rec    : TOLMsgFileRecord;
@@ -582,6 +922,16 @@ procedure TInquiryF.TDTFShowTaskID1Click(Sender: TObject);
 begin
   TDTF.ShowTaskID1Click(Sender);
 
+end;
+
+procedure TInquiryF.test1Click(Sender: TObject);
+begin
+  SaveCurrentTask2File;
+  ProcessTaskJson(FTaskJson);
+//  KeyIn_Content;
+//  Macro_MouseMove(808,279);
+//  Macro_MouseLClick;
+//  Sel_CurrencyKind(3);
 end;
 
 { TWorker4OLMsg }

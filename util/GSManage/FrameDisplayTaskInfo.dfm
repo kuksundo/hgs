@@ -179,8 +179,8 @@ object DisplayTaskF: TDisplayTaskF
     end
     object JvLabel4: TJvLabel
       AlignWithMargins = True
-      Left = 760
-      Top = 9
+      Left = 759
+      Top = 40
       Width = 80
       Height = 25
       Alignment = taCenter
@@ -206,13 +206,40 @@ object DisplayTaskF: TDisplayTaskF
     end
     object JvLabel8: TJvLabel
       AlignWithMargins = True
-      Left = 760
-      Top = 40
+      Left = 759
+      Top = 70
       Width = 80
       Height = 25
       Alignment = taCenter
       AutoSize = False
       Caption = #44277#49324#48264#54840
+      Color = 14671839
+      FrameColor = clGrayText
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #47569#51008' '#44256#46357
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      RoundedFrame = 3
+      Transparent = True
+      HotTrackFont.Charset = ANSI_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -13
+      HotTrackFont.Name = #47569#51008' '#44256#46357
+      HotTrackFont.Style = []
+    end
+    object JvLabel9: TJvLabel
+      AlignWithMargins = True
+      Left = 758
+      Top = 11
+      Width = 80
+      Height = 25
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'PO'#48264#54840
       Color = 14671839
       FrameColor = clGrayText
       Font.Charset = ANSI_CHARSET
@@ -346,7 +373,7 @@ object DisplayTaskF: TDisplayTaskF
     object SubjectEdit: TEdit
       Left = 441
       Top = 69
-      Width = 514
+      Width = 317
       Height = 21
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
@@ -428,7 +455,6 @@ object DisplayTaskF: TDisplayTaskF
         Caption = #51312#54924
         TabOrder = 0
         OnClick = btn_SearchClick
-        ExplicitLeft = 37
       end
       object btn_Close: TAeroButton
         AlignWithMargins = True
@@ -443,7 +469,6 @@ object DisplayTaskF: TDisplayTaskF
         Align = alRight
         Caption = #45803#44592
         TabOrder = 1
-        ExplicitLeft = 167
       end
       object AeroButton1: TAeroButton
         AlignWithMargins = True
@@ -459,9 +484,6 @@ object DisplayTaskF: TDisplayTaskF
         Caption = #54624#51068
         TabOrder = 2
         OnClick = AeroButton1Click
-        ExplicitLeft = 102
-        ExplicitTop = 1
-        ExplicitHeight = 117
       end
     end
     object WorkKindCB: TComboBox
@@ -485,8 +507,8 @@ object DisplayTaskF: TDisplayTaskF
         #45796#51020#51089#50629)
     end
     object QtnNoEdit: TEdit
-      Left = 843
-      Top = 12
+      Left = 842
+      Top = 43
       Width = 112
       Height = 21
       CharCase = ecUpperCase
@@ -495,13 +517,23 @@ object DisplayTaskF: TDisplayTaskF
       OnKeyPress = HullNoEditKeyPress
     end
     object OrderNoEdit: TEdit
-      Left = 843
-      Top = 43
+      Left = 842
+      Top = 73
       Width = 112
       Height = 21
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
       TabOrder = 11
+      OnKeyPress = HullNoEditKeyPress
+    end
+    object PONoEdit: TEdit
+      Left = 841
+      Top = 14
+      Width = 112
+      Height = 21
+      CharCase = ecUpperCase
+      ImeName = 'Microsoft IME 2010'
+      TabOrder = 12
       OnKeyPress = HullNoEditKeyPress
     end
   end
@@ -1239,6 +1271,7 @@ object DisplayTaskF: TDisplayTaskF
     TabOrder = 2
     TabStop = True
     OnCellDblClick = grid_ReqCellDblClick
+    ExplicitTop = 171
     object NxIncrementColumn1: TNxIncrementColumn
       Alignment = taCenter
       DefaultWidth = 30
@@ -1301,7 +1334,7 @@ object DisplayTaskF: TDisplayTaskF
     end
     object Subject: TNxTextColumn
       DefaultWidth = 300
-      Header.Caption = #47700#51068#51228#47785
+      Header.Caption = #44277#49324#49444#47749'('#47700#51068#51228#47785')'
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
       Header.Font.Color = clWindowText
@@ -1543,7 +1576,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000E80218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000F40218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1854,7 +1887,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010300C800140420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010300C800200420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2395,7 +2428,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 104
     Top = 208
     Bitmap = {
-      494C010102005402F80210001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402040310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -2590,6 +2623,10 @@ object DisplayTaskF: TDisplayTaskF
     object ShowGSFileID1: TMenuItem
       Caption = 'Show GSFileID'
       OnClick = ShowGSFileID1Click
+    end
+    object GetJsonValues1: TMenuItem
+      Caption = 'GetJsonValues'
+      OnClick = GetJsonValues1Click
     end
   end
   object MainMenu1: TMainMenu

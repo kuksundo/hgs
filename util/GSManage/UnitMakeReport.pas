@@ -2,7 +2,7 @@ unit UnitMakeReport;
 
 interface
 
-uses Sysutils, Dialogs, UnitExcelUtil;
+uses Sysutils, Dialogs, Classes, UnitExcelUtil, Syncommons;
 
 const
 //  DOC_DIR = 'C:\Users\HGS\Documents\양식\';
@@ -30,6 +30,14 @@ const
   SHIPPING_MUSTACHE_FILE_NAME = 'Mustache_SHIPPING요청메일.htm';
   FORWARD_FIELDSERVICE_MUSTACHE_FILE_NAME = 'Mustache_FIELDSERVICE전달메일.htm';
 
+  INVOICE_ITEM_SE_CHARGE = 'Service Engineering Charge' + #13#10 + '({{NumOfWorker}} S/E, {{Qty}} WorkDay(s), USD1,190/day)';
+  INVOICE_ITEM_TRAVELLING_CHARGE = 'Travelling Charge' + #13#10 + '({{NumOfWorker}} S/E, {{TravellingDays}} Day(s), USD120/hr)';
+  INVOICE_ITEM_FLIGHT_FEE = 'Flight Fee' + #13#10 + '(Actual Cost + Admin fee:15%)';
+  INVOICE_ITEM_ACCOMMODATION_FEE = 'Accommodation Fee' + #13#10 + '(Actual Cost + Admin fee:15%)';
+  INVOICE_ITEM_MATERIAL_CHARGE = 'Material' + #13#10 + '({{Material}})';
+  INVOICE_ITEM_TRANSPORTATION_FEE = 'Transportation' + #13#10 + '({{Transportation}})';
+  INVOICE_ITEM_MEAL_FEE = 'Meal' + #13#10 + '({{Meal}})';
+
   COMPANY_SELECTION_CONTENT = '   표제 호선의 작업을 위해 다음과 같이 업체 견적을 접수/검토 후 ';
 type
   Doc_Qtn_Rec = record
@@ -40,6 +48,11 @@ type
   Doc_Invoice_Rec = record
     FCustomerInfo, FInvNo, FInvDate, FHullNo, FShipName,
     FSubject, FProduceType, FPONo: string;
+    FInvoiceItemList: TStringList;
+  end;
+
+  Doc_Invoice_Item_Rec = record
+    FItemType, FNumOfWorker, FQty, FFUnit, FUnitPrice, FTotalPrice: string;
   end;
 
   Doc_ServiceOrder_Rec = record
@@ -65,7 +78,8 @@ type
   procedure MakeDocQtn(AQtnR: Doc_Qtn_Rec; ALang: integer = 1);
   procedure MakeDocPO(ALang: integer=1);
   procedure MakeDocInvoice(AInvR: Doc_Invoice_Rec; ALang: integer=1);
-
+  procedure GetInvoiceItemRec(ADelimitedStr: string;
+    var AItem: Doc_Invoice_Item_Rec);
   procedure MakeDocServiceOrder(ASOR: Doc_ServiceOrder_Rec);
   procedure MakeDocCompanySelection(ASOR: Doc_ServiceOrder_Rec);
   procedure MakeDocConfirmComplete(ASOR: Doc_ServiceOrder_Rec);
@@ -83,6 +97,8 @@ var
   DOC_DIR: string;
 
 implementation
+
+uses UnitStringUtil, UnitVariantJsonUtil;
 
 procedure MakeDocQtn(AQtnR: Doc_Qtn_Rec; ALang: integer = 1);
 var
@@ -146,7 +162,11 @@ var
   LWorkBook: OleVariant;
   LRange: OleVariant;
   LWorksheet: OleVariant;
-  LFileName: string;
+  LFileName, LStr, LRangeStr: string;
+  LStrList: TStringList;
+  i,j, LRow: integer;
+  LDoc : variant;
+//  LItem: Doc_Invoice_Item_Rec;
 begin
   if ALang = 1 then
     LFileName := INVOICE_FILE_2_CUST_ENG
@@ -182,6 +202,84 @@ begin
   LRange.FormulaR1C1 := AInvR.FProduceType;
   LRange := LWorksheet.range['D23'];
   LRange.FormulaR1C1 := AInvR.FPONo;
+
+  if Assigned(AInvR.FInvoiceItemList) then
+  begin
+    LStrList := TStringList.Create;
+    LStrList.StrictDelimiter := True;
+    LStrList.Delimiter := ';';
+    try
+      LRow := 27;
+      TDocVariant.New(LDoc);
+
+      for i := 0 to AInvR.FInvoiceItemList.Count - 1 do
+      begin
+//        LStrList.Text := AInvR.FInvoiceItemList.Strings[i];
+//        for j := 0 to LStrList.Count - 1 do
+//        begin
+        LStr := AInvR.FInvoiceItemList.Strings[i];
+        GetInvoiceItem2Var(LStr, LDoc);
+        LStr := MakeInvoiceItemFromVar(LDoc);
+
+        if LRow > 27 then
+        begin
+          LRangeStr := 'A' + IntToStr(LRow-1) + ':M' + IntToStr(LRow-1);
+          LRange := LWorksheet.range[LRangeStr];//['A27:M27']
+          LRange.Copy;
+          LRangeStr := 'A' + IntToStr(LRow) + ':M' + IntToStr(LRow);
+          LRange := LWorksheet.range[LRangeStr];//'A28:M28'];
+          LRange.Insert;
+          LRange := LWorkSheet.Rows[LRow];
+          LRange.RowHeight := 25;
+        end;
+
+        //No.
+        LRangeStr := 'A' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+        LRange.FormulaR1C1 := IntToStr(LRow-27+1);
+        //Description.
+        LRangeStr := 'B' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+        LRange.FormulaR1C1 := LStr;
+        //Qty.
+        LRangeStr := 'H' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+        LStr := LDoc.Qty;
+        LRange.FormulaR1C1 := LStr;
+        //Unit.
+        LRangeStr := 'I' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+//        LStr := LDoc.FUnit;
+        LRange.FormulaR1C1 := 'SET';
+        //Unit Price.
+        LRangeStr := 'K' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+        LStr := LDoc.UnitPrice;
+        LRange.FormulaR1C1 := LStr;
+        //Unit Price.
+        LRangeStr := 'L' + IntToStr(LRow);
+        LRange := LWorksheet.range[LRangeStr];
+        LStr := LDoc.TotalPrice;
+        LRange.FormulaR1C1 := LStr;
+
+        inc(LRow);
+//        end;
+      end;
+    finally
+      LStrList.Free;
+    end;
+  end;
+end;
+
+procedure GetInvoiceItemRec(ADelimitedStr: string;
+  var AItem: Doc_Invoice_Item_Rec);
+begin
+  AItem.FItemType := strToken(ADelimitedStr, ';');
+  AItem.FNumOfWorker := strToken(ADelimitedStr, ';');
+  AItem.FQty := strToken(ADelimitedStr, ';');
+  AItem.FFUnit := strToken(ADelimitedStr, ';');
+  AItem.FUnitPrice := strToken(ADelimitedStr, ';');
+  AItem.FTotalPrice := strToken(ADelimitedStr, ';');
 end;
 
 procedure MakeDocServiceOrder(ASOR: Doc_ServiceOrder_Rec);

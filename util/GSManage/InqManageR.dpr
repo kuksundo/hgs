@@ -1,8 +1,9 @@
-program InqManage;
+program InqManageR;
 
 uses
   Vcl.Forms,
   SynSqlite3Static,
+  UnitRegistrationUtil,
   FrmInqManage in 'FrmInqManage.pas' {InquiryF},
   UViewMailList in 'UViewMailList.pas' {ViewMailListF},
   UElecDataRecord in 'UElecDataRecord.pas',
@@ -30,13 +31,10 @@ uses
   UnitHttpModule in 'UnitHttpModule.pas',
   UnitRegCodeServerInterface in '..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   FrmRegistration in '..\..\common\FrmRegistration.pas' {RegistrationF},
-  getIp in '..\..\common\getIp.pas',
-  UnitMAPSMacro in 'UnitMAPSMacro.pas',
+  UnitMacroListClass in '..\MacroManagement\UnitMacroListClass.pas',
   thundax.lib.actions in '..\..\OpenSrc\thundax-macro-actions-master\thundax.lib.actions.pas',
   UnitNextGridFrame in '..\..\common\Frames\UnitNextGridFrame.pas' {Frame1: TFrame},
-  FrmSelect in '..\..\common\Forms\FrmSelect.pas' {Form4},
-  UnitDragUtil in '..\..\common\UnitDragUtil.pas',
-  UnitVariantJsonUtil in 'UnitVariantJsonUtil.pas';
+  getIp in '..\..\common\getIp.pas';
 
 {$R *.res}
 
@@ -44,7 +42,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
-  Application.CreateForm(TRegistrationF, RegistrationF);
-  Application.CreateForm(TForm4, Form4);
   Application.Run;
 end.

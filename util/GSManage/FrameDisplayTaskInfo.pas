@@ -95,6 +95,9 @@ type
     QtnNoEdit: TEdit;
     JvLabel8: TJvLabel;
     OrderNoEdit: TEdit;
+    GetJsonValues1: TMenuItem;
+    JvLabel9: TJvLabel;
+    PONoEdit: TEdit;
     procedure btn_SearchClick(Sender: TObject);
     procedure ComboBox1DropDown(Sender: TObject);
     procedure rg_periodClick(Sender: TObject);
@@ -113,31 +116,16 @@ type
     procedure SubjectEditKeyPress(Sender: TObject; var Key: Char);
     procedure Invoice4Click(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
+    procedure GetJsonValues1Click(Sender: TObject);
   private
     procedure ExecuteSearch(Key: Char);
 
-    procedure InitFSM;
-    procedure Add2FSM(ASPType:TSalesProcessType=sptNone;
-      ACompanyType: TCompanyType=ctNull);
     //TaskTab의 tag에 TSalesProcess값을 지정함
     //마우스로 tab 선택 시 해당 Task만 보이기 위함
     procedure InitTaskTab;
 
-    procedure AddOrUpdateTask(ATask: TSQLGSTask);
-    procedure AddOrUpdateCustomer(ACustomer: TSQLCustomer);
-    procedure AddOrUpdateSubCon(ASubCon: TSQLSubCon);
-    procedure AddOrUpdateMaterial4Project(AMaterial4Project: TSQLMaterial4Project);
-
     function GetSqlWhereFromQueryDate(AQueryDate: TQueryDateType): string;
     function GetTaskIdFromGrid(ARow: integer): TID;
-
-    procedure DeleteTask(ATaskID: TID);
-    procedure DeleteMailsFromTask(ATask: TSQLGSTask);
-    procedure DeleteFilesFromTask(ATask: TSQLGSTask);
-    procedure DeleteCustomerFromTask(ATask: TSQLGSTask);
-    procedure DeleteSubConFromTask(ATask: TSQLGSTask);
-    procedure DeleteMaterial4ProjFromTask(ATask: TSQLGSTask);
-    procedure DeleteToDoListFromTask(ATask: TSQLGSTask);
 
     function Get_Doc_SubCon_Invoice_List_Rec: Doc_SubCon_Invoice_List_Rec;
 
@@ -154,7 +142,6 @@ type
     procedure ShowTaskIDFromGrid;
     procedure ShowEmailIDFromGrid;
   public
-    FFSMClass: TFSMClass;
     //메일을 이동시킬 폴더 리스트,
     //HGS Task/Send Folder Name 2 IPC 메뉴에 의해 OL으로 부터 수신함
     FFolderListFromOL: TStringList;
@@ -163,14 +150,11 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    function CreateOrGetLoadTask(const ATaskID: integer): TSQLGSTask;
-    function GetLoadTask(const ATaskID: integer): TSQLGSTask;
+    function GetTask: TSQLGSTask;
     procedure DisplayTaskInfo2EditForm(const ATaskID: integer); overload;
-    procedure DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
-      ASQLEmailMsg: TSQLEmailMsg = nil); overload;
     procedure DisplayTaskInfo2Grid(AFrom,ATo: TDateTime; AQueryDate: TQueryDateType;
       AHullNo, AShipName, ACustomer, AProdType, ASubject: string; ACurWork,
-      ABefAft, AWorkKind: integer; AQtnNo, AOrderNo: string);
+      ABefAft, AWorkKind: integer; AQtnNo, AOrderNo, APoNo: string);
     procedure LoadTaskVar2Grid(AVar: TSQLGSTask; AGrid: TNextGrid;
       ARow: integer = -1);
 
@@ -193,29 +177,6 @@ uses System.Rtti;
 procedure TDisplayTaskF.SubjectEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
-end;
-
-function TDisplayTaskF.CreateOrGetLoadTask(const ATaskID: integer): TSQLGSTask;
-begin
-  if ATaskID = 0 then
-  begin
-    Result := TSQLGSTask.Create;
-    Result.IsUpdate := False;
-  end
-  else
-  begin
-    Result:= TSQLGSTask.Create(g_ProjectDB, ATaskID);
-    if Result.ID = ATaskID then
-    begin
-//      Result.FillRewind;
-      Result.IsUpdate := True;
-    end
-    else
-    begin
-      Result := TSQLGSTask.Create;
-      Result.IsUpdate := False;
-    end;
-  end;
 end;
 
 procedure TDisplayTaskF.CurWorkCBDropDown(Sender: TObject);
@@ -278,7 +239,7 @@ begin
       end
       else
       begin
-        LFSMState := FFSMClass.GetState(Ord(SalesProcessType));
+        LFSMState := g_FSMClass.GetState(Ord(SalesProcessType));
         if Assigned(LFSMState) then
         begin
           LStrList := TStringList.Create;
@@ -382,14 +343,50 @@ begin
   end;
 end;
 
-function TDisplayTaskF.GetLoadTask(const ATaskID: integer): TSQLGSTask;
+procedure TDisplayTaskF.GetJsonValues1Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+  LUtf8: RawUTF8;
+  LDynArr: TDynArray;
+  LCount: integer;
+  LCustomer: TSQLCustomer;
+  LSubCon: TSQLSubCon;
+  LMat4Proj: TSQLMaterial4Project;
+  LV,LV2,LV3: variant;
 begin
-  Result := nil;
+  TDocVariant.New(LV);
 
-  if ATaskID > 0 then
-  begin
-    Result:= TSQLGSTask.Create(g_ProjectDB, ATaskID);
-    Result.IsUpdate := True;
+  LTask := GetTask;
+  try
+    LUtf8 := LTask.GetJSONValues(true, true, soSelect);
+    LV.Task := _JSON(LUtf8);
+
+    LCustomer := GetCustomerFromTask(LTask);
+    LUtf8 := LCustomer.GetJSONValues(true, true, soSelect);
+    LV.Customer := _JSON(LUtf8);;
+
+    LSubCon := GetSubConFromTask(LTask);
+    LUtf8 := LSubCon.GetJSONValues(true, true, soSelect);
+    LV.SubCon := _JSON(LUtf8);;
+
+    LMat4Proj := GetMaterial4ProjFromTask(LTask);
+    LUtf8 := LMat4Proj.GetJSONValues(true, true, soSelect);
+    LV.Mat4Proj := _JSON(LUtf8);
+
+    LUtf8 := VariantSaveJSON(LV);
+
+    TDocVariant.New(LV3);
+    LV3 := _JSON(LUtf8);
+
+    TDocVariant.New(LV2);
+    LV2 := _JSON(LV3.Task);
+//    ShowMessage(LV2.ShipName);
+//    Memo1.Text := Utf8ToString(LV3.Task);
+  finally
+    FreeAndNil(LCustomer);
+    FreeAndNil(LSubCon);
+    FreeAndNil(LMat4Proj);
+    LTask.Free;
   end;
 end;
 
@@ -401,6 +398,14 @@ begin
     qdtQTNInput: Result := 'QTNInputDate >= ? and QTNInputDate <= ? ';
     qdtOrderInput: Result := 'OrderInputDate >= ? and OrderInputDate <= ? ';
   end;
+end;
+
+function TDisplayTaskF.GetTask: TSQLGSTask;
+var
+  LTaskID: TID;
+begin
+  LTaskID := GetTaskIdFromGrid(grid_Req.SelectedRow);
+  Result := GetLoadTask(LTaskID);
 end;
 
 function TDisplayTaskF.GetTaskIdFromGrid(ARow: integer): TID;
@@ -590,13 +595,6 @@ begin
   ExecuteSearch(Key);
 end;
 
-procedure TDisplayTaskF.InitFSM;
-var Li: TSalesProcessType;
-begin
-  for Li := sptNone to Pred(sptFinal) do
-    Add2FSM(LI);
-end;
-
 procedure TDisplayTaskF.InitTaskTab;
 var
   i: integer;
@@ -622,72 +620,10 @@ var
 begin
   LTask:= CreateOrGetLoadTask(ATaskID);
   try
-    DisplayTaskInfo2EditForm(LTask);
+    TaskForm.DisplayTaskInfo2EditForm(LTask,nil,null);
   finally
     FreeAndNil(LTask);
   end;
-end;
-
-procedure TDisplayTaskF.Add2FSM(ASPType: TSalesProcessType;
-  ACompanyType: TCompanyType);
-var
-  LFSMState: TFSMState;
-  LNumOfTransaction: integer;
-begin
-  LNumOfTransaction := 26;
-
-  if ASPType > sptDomesticCustOnlyService then
-    LNumOfTransaction := LNumOfTransaction + 6
-  else
-    LNumOfTransaction := LNumOfTransaction + 1;
-
-  LFSMState := TFSMState.Create(ord(ASPType), LNumOfTransaction);
-
-  with LFSMState do
-  begin
-    AddTransition(ord(spNone), ord(spQtnReqRecvFromCust));
-    AddTransition(ord(spQtnReqRecvFromCust), ord(spQtnReq2SubCon));
-    AddTransition(ord(spQtnReq2SubCon), ord(spQtnRecvFromSubCon));
-    AddTransition(ord(spQtnRecvFromSubCon), ord(spQtnSend2Cust));
-    AddTransition(ord(spQtnSend2Cust), ord(spVslSchedReq2Cust));
-    AddTransition(ord(spVslSchedReq2Cust), ord(spSECanAvail2SubCon));
-    AddTransition(ord(spSECanAvail2SubCon), ord(spSEAvailRecvFromSubCon));
-    AddTransition(ord(spSEAvailRecvFromSubCon), ord(spSECanAttend2Cust));
-    AddTransition(ord(spSECanAttend2Cust), ord(spPOReq2Cust));
-    AddTransition(ord(spPOReq2Cust), ord(spPORecvFromCust));
-    AddTransition(ord(spPORecvFromCust), ord(spSEDispatchReq2SubCon));
-    AddTransition(ord(spSEDispatchReq2SubCon), ord(spQtnInput));
-    AddTransition(ord(spQtnInput), ord(spQtnApproval));
-    AddTransition(ord(spQtnApproval), ord(spOrderInput));
-    AddTransition(ord(spOrderInput), ord(spOrderApproval));
-
-    if ASPType > sptDomesticCustOnlyService then
-    begin
-      //자재가 없으면 아래 생략할 것
-      AddTransition(ord(spOrderApproval), ord(spPORCheck4HiPRO));
-      AddTransition(ord(spPORCheck4HiPRO), ord(spShipInstruct));//출하지시
-      AddTransition(ord(spShipInstruct), ord(spDelivery));
-      AddTransition(ord(spDelivery), ord(spAWBRecv));
-      AddTransition(ord(spAWBRecv), ord(spAWBSend2Cust));
-      AddTransition(ord(spAWBSend2Cust), ord(spSRRecvFromSubCon));
-    end
-    else
-      AddTransition(ord(spOrderApproval), ord(spSRRecvFromSubCon));
-
-    AddTransition(ord(spSRRecvFromSubCon), ord(spSRSend2Cust));
-    AddTransition(ord(spSRSend2Cust), ord(spInvoiceRecvFromSubCon));
-    AddTransition(ord(spInvoiceRecvFromSubCon), ord(spInvoiceSend2Cust));
-    AddTransition(ord(spInvoiceSend2Cust), ord(spInvoiceConfirmFromCust));
-    AddTransition(ord(spInvoiceConfirmFromCust), ord(spOrderPriceModify));
-    AddTransition(ord(spOrderPriceModify), ord(spModifiedOrderApproval));
-    AddTransition(ord(spModifiedOrderApproval), ord(spTaxBillReq2SubCon));
-    AddTransition(ord(spTaxBillReq2SubCon), ord(spTaxBillIssue2Cust));
-    AddTransition(ord(spTaxBillIssue2Cust), ord(spTaxBillRecvFromSubCon));
-    AddTransition(ord(spTaxBillRecvFromSubCon), ord(spTaxBillSend2GeneralAffair));
-    AddTransition(ord(spTaxBillSend2GeneralAffair), ord(spSaleReq2GeneralAffair));
-  end;
-
-  FFSMClass.AddState(LFSMState);
 end;
 
 procedure TDisplayTaskF.AddFolderListFromOL(AFolder: string);
@@ -704,63 +640,6 @@ begin
   end
   else
     ShowMessage('동일한 Folder 이름이 존재함 : ' + AFolder);
-end;
-
-procedure TDisplayTaskF.AddOrUpdateCustomer(ACustomer: TSQLCustomer);
-begin
-  if ACustomer.IsUpdate then
-  begin
-    g_MasterDB.Update(ACustomer);
-//    ShowMessage('Customer Update 완료');
-  end
-  else
-  begin
-    g_MasterDB.Add(ACustomer, true);
-//    ShowMessage('Customer Add 완료');
-  end;
-end;
-
-procedure TDisplayTaskF.AddOrUpdateMaterial4Project(
-  AMaterial4Project: TSQLMaterial4Project);
-begin
-  if AMaterial4Project.IsUpdate then
-  begin
-    g_MasterDB.Update(AMaterial4Project);
-//    ShowMessage('자재 Update 완료');
-  end
-  else
-  begin
-    g_MasterDB.Add(AMaterial4Project, true);
-//    ShowMessage('자재 Add 완료');
-  end;
-end;
-
-procedure TDisplayTaskF.AddOrUpdateSubCon(ASubCon: TSQLSubCon);
-begin
-  if ASubCon.IsUpdate then
-  begin
-    g_MasterDB.Update(ASubCon);
-//    ShowMessage('협력사 Update 완료');
-  end
-  else
-  begin
-    g_MasterDB.Add(ASubCon, true);
-//    ShowMessage('협력사 Add 완료');
-  end;
-end;
-
-procedure TDisplayTaskF.AddOrUpdateTask(ATask: TSQLGSTask);
-begin
-  if ATask.IsUpdate then
-  begin
-    g_ProjectDB.Update(ATask);
-    ShowMessage('Task Update 완료');
-  end
-  else
-  begin
-    g_ProjectDB.Add(ATask, true);
-    ShowMessage('Task Add 완료');
-  end;
 end;
 
 procedure TDisplayTaskF.AeroButton1Click(Sender: TObject);
@@ -823,7 +702,8 @@ begin
   DisplayTaskInfo2Grid(dt_Begin.Date, dt_end.Date, LQueryDateType,
     HullNoEdit.Text, ShipNameEdit.Text, CustomerCombo.Text,
     ProductTypeCombo.Text, SubjectEdit.Text, CurWorkCB.ItemIndex,
-    BefAftCB.ItemIndex, WorkKindCB.ItemIndex, QtnNoEdit.Text, OrderNoEdit.Text);
+    BefAftCB.ItemIndex, WorkKindCB.ItemIndex, QtnNoEdit.Text, OrderNoEdit.Text,
+    PONoEdit.Text);
 end;
 
 procedure TDisplayTaskF.ComboBox1DropDown(Sender: TObject);
@@ -840,97 +720,10 @@ begin
   FFolderListFromOL := TStringList.Create;
   if FileExists('.\'+FOLDER_LIST_FILE_NAME) then
     FFolderListFromOL.LoadFromFile('.\'+FOLDER_LIST_FILE_NAME);
-  FFSMClass := TFSMClass.Create(0);
   FToDoCollect := TpjhToDoItemCollection.Create(TpjhTodoItem);
-  InitFSM;
   InitTaskTab;
   ComboBox1DropDown(nil);
 //  ComboBox1.ItemIndex := 1;
-end;
-
-procedure TDisplayTaskF.DeleteCustomerFromTask(ATask: TSQLGSTask);
-var
-  LSQLCustomer: TSQLCustomer;
-begin
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    g_MasterDB.Delete(TSQLCustomer, LSQLCustomer.ID);
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-end;
-
-procedure TDisplayTaskF.DeleteFilesFromTask(ATask: TSQLGSTask);
-var
-  LSQLGSFile: TSQLGSFile;
-begin
-  LSQLGSFile := GetFilesFromTask(ATask);
-
-  try
-    while LSQLGSFile.FillOne do
-    begin
-      g_FileDB.Delete(TSQLGSFile, LSQLGSFile.ID);
-    end;
-  finally
-    FreeAndNil(LSQLGSFile);
-  end;
-end;
-
-procedure TDisplayTaskF.DeleteMailsFromTask(ATask: TSQLGSTask);
-var
-  LIds: TIDDynArray;
-  i: integer;
-begin
-  ATask.EmailMsg.DestGet(g_ProjectDB, ATask.ID, LIds);
-
-  for i := Low(LIds) to High(LIds) do
-  begin
-    ATask.EmailMsg.ManyDelete(g_ProjectDB, ATask.ID, LIds[i]);
-    g_ProjectDB.Delete(TSQLEmailMsg, LIds[i]);
-  end;
-end;
-
-procedure TDisplayTaskF.DeleteMaterial4ProjFromTask(ATask: TSQLGSTask);
-var
-  LSQLMaterial4Project: TSQLMaterial4Project;
-begin
-  LSQLMaterial4Project := GetMaterial4ProjFromTask(ATask);
-  try
-    g_MasterDB.Delete(TSQLMaterial4Project, LSQLMaterial4Project.ID);
-  finally
-    FreeAndNil(LSQLMaterial4Project);
-  end;
-end;
-
-procedure TDisplayTaskF.DeleteSubConFromTask(ATask: TSQLGSTask);
-var
-  LSQLSubCon: TSQLSubCon;
-begin
-  LSQLSubCon := GetSubConFromTask(ATask);
-  try
-    g_MasterDB.Delete(TSQLSubCon, LSQLSubCon.ID);
-  finally
-    FreeAndNil(LSQLSubCon);
-  end;
-end;
-
-procedure TDisplayTaskF.DeleteTask(ATaskID: TID);
-var
-  LTask: TSQLGSTask;
-begin
-  LTask := GetLoadTask(ATaskID);
-
-  if Assigned(LTask) then
-  begin
-    DeleteMailsFromTask(LTask);
-    DeleteFilesFromTask(LTask);
-    DeleteCustomerFromTask(LTask);
-    DeleteSubConFromTask(LTask);
-    DeleteMaterial4ProjFromTask(LTask);
-    DeleteToDoListFromTask(LTask);
-
-    g_ProjectDB.Delete(TSQLGSTask, LTask.ID);
-  end;
 end;
 
 procedure TDisplayTaskF.DeleteTask1Click(Sender: TObject);
@@ -948,123 +741,17 @@ begin
   end;
 end;
 
-procedure TDisplayTaskF.DeleteToDoListFromTask(ATask: TSQLGSTask);
-var
-  LSQLToDoItem: TSQLToDoItem;
-begin
-  LSQLToDoItem := GetToDoItemFromTask(ATask);
-  try
-    LSQLToDoItem.FillRewind;
-
-    while LSQLToDoItem.FillOne do
-      g_ProjectDB.Delete(TSQLToDoItem, LSQLToDoItem.ID);
-  finally
-    FreeAndNil(LSQLToDoItem);
-  end;
-end;
-
 destructor TDisplayTaskF.Destroy;
 begin
   FreeAndNil(FToDoCollect);
   FFolderListFromOL.Free;
-  FFSMClass.Destroy;
 
   inherited;
 end;
 
-procedure TDisplayTaskF.DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
-  ASQLEmailMsg: TSQLEmailMsg);
-var
-  LTaskEditF: TTaskEditF;
-  LCustomer: TSQLCustomer;
-  LSubCon: TSQLSubCon;
-  LMat4Proj: TSQLMaterial4Project;
-  LTask, LTask2: TSQLGSTask;
-  LFiles: TSQLGSFile;
-//  LTaskIds: TIDDynArray;
-  i: integer;
-  LID: TID;
-begin
-  LTaskEditF := TTaskEditF.Create(nil);
-  try
-    with LTaskEditF do
-    begin
-      LTask := ATask;
-      LTaskEditF.FEmailDisplayTask := ATask;
-//      LTaskEditF.FTask := ATask;
-      LoadTaskVar2Form(LTask, LTaskEditF, FFSMClass);
-      LCustomer := GetCustomerFromTask(LTask);
-      LoadCustomer2Form(LCustomer, LTaskEditF);
-      LSubCon := GetSubConFromTask(LTask);
-      LoadSubCon2Form(LSubCon, LTaskEditF);
-      LMat4Proj := GetMaterial4ProjFromTask(LTask);
-      LoadMaterial4Project2Form(LMat4Proj, LTaskEditF);
-
-      LTaskEditF.SelectMailBtn.Enabled := Assigned(ASQLEmailMsg);
-      LTaskEditF.CancelMailSelectBtn.Enabled := Assigned(ASQLEmailMsg);
-
-      if LTaskEditF.ShowModal = mrOK then
-      begin
-        LoadTaskForm2Var(LTaskEditF, LTask);
-
-        //IPC를 통해서  Email을 수신한 경우
-        if Assigned(ASQLEmailMsg) then
-        begin
-          //대표 메일을 선택한 경우
-          if Assigned(LTaskEditF.FTask) then
-          begin
-            LTask := LTaskEditF.FTask;
-          end;
-
-          g_ProjectDB.Add(ASQLEmailMsg, true);
-
-          if not LTask.IsUpdate then
-          begin
-            LID := g_ProjectDB.Add(LTask, true);
-            ShowMessage('Task 및 Email Add 완료');
-          end;
-
-          LTask.EmailMsg.ManyAdd(g_ProjectDB, LTask.ID, ASQLEmailMsg.ID, True)
-        end
-        else
-        begin
-          AddOrUpdateTask(LTask);
-        end;
-
-        if High(LTaskEditF.FSQLGSFiles.Files) >= 0 then
-        begin
-          g_FileDB.Delete(TSQLGSFile, LTaskEditF.FSQLGSFiles.ID);
-          LTaskEditF.FSQLGSFiles.TaskID := LTask.ID;
-          g_FileDB.Add(LTaskEditF.FSQLGSFiles, true);
-        end
-        else
-          g_FileDB.Delete(TSQLGSFile, LTaskEditF.FSQLGSFiles.ID);
-
-        LoadTaskForm2Customer(LTaskEditF, LCustomer, LTask.ID);
-        LoadTaskForm2SubCon(LTaskEditF, LSubCon, LTask.ID);
-        LoadTaskForm2Material4Project(LTaskEditF, LMat4Proj, LTask.ID);
-
-        AddOrUpdateCustomer(LCustomer);
-        AddOrUpdateSubCon(LSubCon);
-        AddOrUpdateMaterial4Project(LMat4Proj);
-      end;
-    end;//with
-  finally
-    //대표 메일을 선택한 경우
-//    if Assigned(LTaskEditF.FTask) then
-//      ATask := nil;
-
-    FreeAndNil(LCustomer);
-    FreeAndNil(LSubCon);
-    FreeAndNil(LMat4Proj);
-
-    LTaskEditF.Free;
-  end;
-end;
-
 procedure TDisplayTaskF.DisplayTaskInfo2Grid(AFrom, ATo: TDateTime; AQueryDate: TQueryDateType;
   AHullNo, AShipName, ACustomer, AProdType, ASubject: string;
-  ACurWork, ABefAft, AWorkKind: integer; AQtnNo, AOrderNo: string);
+  ACurWork, ABefAft, AWorkKind: integer; AQtnNo, AOrderNo, APoNo: string);
 var
   ConstArray: TConstArray;
   LWhere, LStr: string;
@@ -1189,6 +876,14 @@ begin
       LWhere := LWhere + ' Order_No LIKE ? ';
     end;
 
+    if APoNo <> '' then
+    begin
+      AddConstArray(ConstArray, ['%'+APoNo+'%']);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + ' PO_No LIKE ? ';
+    end;
+
     if LWhere = '' then
     begin
       //완료되지 않은 모든 Task를 보여줌
@@ -1238,7 +933,7 @@ var
 begin
   LTask:= CreateOrGetLoadTask(AIDList.fTaskId);
   try
-    DisplayTaskInfo2EditForm(LTask);
+    TaskForm.DisplayTaskInfo2EditForm(LTask,nil,null);
     LoadTaskVar2Grid(LTask, grid_Req, ARow);
   finally
     if Assigned(LTask) then

@@ -6,7 +6,7 @@ uses System.Classes, Dialogs, System.Rtti,
   NxColumnClasses, NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
   CommonData, SynCommons, mORMot, DateUtils, System.SysUtils, UElecDataRecord,
-  mORMotHttpClient, MailCallbackInterface;
+  mORMotHttpClient, MailCallbackInterface, Winapi.ActiveX;
 
 //AMailType = 1: invoice 송부, 2: 매출처리요청, 3: 직투입요청
 //            4: 해외 매출 고객사 등록 요청, 5: 전전 비표준공사 생성 요청
@@ -35,24 +35,13 @@ function SendReqAddAppointment_WS(AJsonpjhTodoItem: string): boolean;
 
 function GetClientWS: TSQLHttpClientWebsockets;
 
-function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer): string;
-function MakeSalesReqEmailBody(ATask: TSQLGSTask): string;
-function MakeInvoiceEmailBody(ATask: TSQLGSTask): string;
-function MakeDirectShippingEmailBody(ATask: TSQLGSTask): string;
-function MakeForeignRegEmailBody(ATask: TSQLGSTask): string;
-function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask): string;
-function MakePOReqEmailBody(ATask: TSQLGSTask): string;
-function MakeShippingReqEmailBody(ATask: TSQLGSTask): string;
-function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask): string;
+function ProcessTaskJson(AJson: String): Boolean;
 
-function GetMustacheJSON(ADoc: variant; AMustacheFile: string): string;
-function MakeMailSubject(ATask: TSQLGSTask; AMailType: integer): string;
-function GetRecvEmailAddress(AMailType: integer): string;
 procedure ShowEmailListFromIDs(AGrid: TNextGrid; AIDs: TIDDynArray);
 
 implementation
 
-uses UnitMakeReport, SynMustache, UnitStringUtil;
+uses UnitMakeReport, SynMustache, UnitStringUtil, TaskForm, UnitVariantJsonUtil;
 
 procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask);
 begin
@@ -348,7 +337,7 @@ var
   Client: TSQLHttpClientWebsockets;
   Service: IOLMailService;
   LStrList: TStringList;
-  LCommand, LRespond: string;
+  LCommand, LRespond, LFileName: string;
 begin
   LStrList := TStringList.Create;
   try
@@ -356,9 +345,10 @@ begin
     LStrList.Add('Command='+CMD_REQ_REPLY_MAIL);
     LStrList.Add('EntryId='+AEntryId);
     LStrList.Add('StoreId='+AStoreId);
+    LStrList.Add('TaskInfoAttached='+MakeTaskInfoEmailAttached(ATask, LFileName));
+    LStrList.Add('AttachedFileName='+'.\'+LFileName);
     LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask, AMailType));
     LCommand := LStrList.Text;
-
     Client := GetClientWS;
     try
       if not Client.Services.Resolve(IOLMailService,Service) then
@@ -637,240 +627,32 @@ begin
   Result.ServiceDefine([IOLMailService], sicShared);//sicClientDriven
 end;
 
-function MakeDirectShippingEmailBody(ATask: TSQLGSTask): string;
+function ProcessTaskJson(AJson: String): Boolean;
 var
   LDoc: variant;
-  LSQLMaterial: TSQLMaterial4Project;
-  LJSON: RawUTF8;
-  LMustache: TSynMustache;
-  LFile: RawByteString;
+  LTask: TSQLGSTask;
+  LUTF8: RawUTF8;
+  LRaw: RawByteString;
 begin
   TDocVariant.New(LDoc);
-  LDoc.OrderNo := ATask.ShipName;
+  LRaw := Base64ToBin(StringToUTF8(AJson));
+  LRaw := SynLZDecompress(LRaw);
+//  LUTF8 := AnsiToUTF8(LRaw);
+  LUTF8 := LRaw;
+  LDoc := _JSON(LUTF8);
+  Result := LDoc.TaskJsonDragSign = TASK_JSON_DRAG_SIGNATURE;
 
-  LSQLMaterial := GetMaterial4ProjFromTask(ATask);
-  try
-    LDoc.PorNo := LSQLMaterial.PORNo;
-  finally
-    FreeAndNil(LSQLMaterial);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + DIRECT_SHIPPING_MUSTACHE_FILE_NAME);
-end;
-
-function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LJSON: RawUTF8;
-  LMustache: TSynMustache;
-  LFile: RawByteString;
-  LSQLCustomer: TSQLCustomer;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.HullNo := ATask.HullNo;
-  LDoc.Summary := ATask.WorkSummary;
-  LDoc.ProductType := ATask.ProductType;
-
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.CompanyName := LSQLCustomer.CompanyName;
-    LDoc.CompanyCode := LSQLCustomer.CompanyCode;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + ELEC_HULLNO_REG_REQ_MUSTACHE_FILE_NAME);
-end;
-
-function MakeForeignRegEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LJSON: RawUTF8;
-  LMustache: TSynMustache;
-  LFile: RawByteString;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.CompanyName := ATask.ShipOwner;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + FOREIGN_REG_MUSTACHE_FILE_NAME);
-end;
-
-function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer): string;
-begin
-  case AMailType of
-    1: Result := MakeInvoiceEmailBody(ATask);
-    2: Result := MakeSalesReqEmailBody(ATask);
-    3: Result := MakeDirectShippingEmailBody(ATask);
-    4: Result := MakeForeignRegEmailBody(ATask);
-    5: Result := MakeElecHullRegReqEmailBody(ATask);
-    6: Result := MakePOReqEmailBody(ATask);
-    7: Result := MakeShippingReqEmailBody(ATask);
-    8: Result := MakeForwardFieldServiceEmailBody(ATask);
-  end;
-end;
-
-function MakeInvoiceEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LSQLCustomer: TSQLCustomer;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.VesselName := ATask.ShipName;
-  LDoc.HullNo := ATask.HullNo;
-  LDoc.Location := ATask.NationPort;
-
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.Name := LSQLCustomer.ManagerName;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + INVOICE_SEND_MUSTACHE_FILE_NAME);
-end;
-
-function MakeMailSubject(ATask: TSQLGSTask; AMailType: integer): string;
-begin
-  case AMailType of
-    1: Result := 'Send Invouice';
-    2: Result := '[메출처리 요청 건] ' + ATask.Order_No;
-    3: Result := '입고 처리 요청';
-    4: Result := '해외매출 고객사 거래처 등록 요청의 건';
-    5: Result := '전전 비표준 공사 생성 요청 건 (' + ATask.HullNo + ')';
-    6: Result := MakeDirectShippingEmailBody(ATask);
-    7: Result := '[출하 요청 건] / ' + ATask.ShippingNo;
-  end;
-end;
-
-function MakePOReqEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LJSON: RawUTF8;
-  LMustache: TSynMustache;
-  LFile: RawByteString;
-  LSQLCustomer: TSQLCustomer;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.HullNo := ATask.HullNo;
-  LDoc.Summary := ATask.WorkSummary;
-  LDoc.ProductType := ATask.ProductType;
-
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.CompanyName := LSQLCustomer.CompanyName;
-    LDoc.CompanyCode := LSQLCustomer.CompanyCode;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + PO_REQ_MUSTACHE_FILE_NAME);
-end;
-
-function MakeSalesReqEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LSQLCustomer: TSQLCustomer;
-  LDate: TDate;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.To := SALES_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
-  LDoc.OrderNo := ATask.Order_No;
-  LDoc.SalesPrice :=
-    TRttiEnumerationType.GetName<TCurrencyKind>(TCurrencyKind(ATask.CurrencyKind)) +
-     ' ' + AddThousandSeparator(UTF8ToString(ATask.SalesPrice),',') ;
-  LDoc.ShippingNo := ATask.ShippingNo;
-
-  LDate := TimeLogToDateTime(ATask.SalesReqDate);
-
-  if YearOf(LDate) > 1900 then
-    LDoc.SalesReqDate := FormatDateTime('yyyy-mm-dd',LDate)
+  if Result then
+  begin
+    LTask := GetTaskFromHullNoNPONo(LDoc.Task.HullNo, LDoc.Task.PO_No);
+    try
+      TaskForm.DisplayTaskInfo2EditForm(LTask, nil, LDoc);
+    finally
+      FreeAndNil(LTask);
+    end;
+  end
   else
-    LDoc.SalesReqDate := 'NIL';
-
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.CustName := LSQLCustomer.CompanyName;
-    LDoc.CustNo := LSQLCustomer.CompanyCode;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + SALES_MUSTACHE_FILE_NAME);
-//  QuotedStrJSON(VariantToUTF8(LDoc), LJSON);
-end;
-
-function MakeShippingReqEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LSQLMaterial4Project: TSQLMaterial4Project;
-  LDate: TDate;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.To := SHIPPING_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
-  LDoc.ShippingNo := ATask.ShippingNo; //출하지시번호
-  LDoc.OrderNo := ATask.Order_No;//공사지시번호
-  LDoc.PONo := ATask.PO_No;
-  LDoc.ShipName := ATask.ShipName;
-
-  LSQLMaterial4Project := GetMaterial4ProjFromTask(ATask);
-  try
-    LDoc.DeliveryAddr := LSQLMaterial4Project.DeliveryAddress;
-  finally
-    FreeAndNil(LSQLMaterial4Project);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + SHIPPING_MUSTACHE_FILE_NAME);
-end;
-
-function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask): string;
-var
-  LDoc: variant;
-  LSQLCustomer: TSQLCustomer;
-  LDate: TDate;
-begin
-  TDocVariant.New(LDoc);
-  LDoc.To := FIELDSERVICE_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
-  LDoc.Summary := ATask.WorkSummary;
-  LDoc.WorkDay := FormatDateTime('yyyy-mm-dd', TimeLogToDateTime(ATask.WorkBeginDate));
-  LDoc.Port := ATask.NationPort;
-
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.LocalAgent := LSQLCustomer.AgentInfo;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
-
-  Result := GetMustacheJSON(LDoc, DOC_DIR + FORWARD_FIELDSERVICE_MUSTACHE_FILE_NAME);
-end;
-
-function GetMustacheJSON(ADoc: variant;
-  AMustacheFile: string): string;
-var
-  LJSON: RawUTF8;
-  LMustache: TSynMustache;
-  LFile: RawByteString;
-begin
-  LJSON := Utf8ToString(VariantSaveJson(ADoc));
-  LFile := StringFromFile(AMustacheFile);
-  LMustache := TSynMustache.Parse(LFile);
-  Result := Utf8ToString(BinToBase64(LMustache.RenderJSON(LJSON)));
-end;
-
-function GetRecvEmailAddress(AMailType: integer): string;
-begin
-  case AMailType of
-    1: Result := '';//Invoice 송부
-    2: Result := SALES_DIRECTOR_EMAIL_ADDR;//매출처리요청
-    3: Result := MATERIAL_INPUT_EMAIL_ADDR;//자재직투입요청
-    4: Result := FOREIGN_INPUT_EMAIL_ADDR;//해외고객업체등록
-    5: Result := ELEC_HULL_REG_EMAIL_ADDR;//전전비표준공사 생성 요청
-    6: Result := PO_REQ_EMAIL_ADDR; //PO 요청
-    7: Result := SHIPPING_REQ_EMAIL_ADDR; //출하 요청
-  end;
+    ShowMessage('Signature is not correct');
 end;
 
 procedure ShowEmailListFromIDs(AGrid: TNextGrid; AIDs: TIDDynArray);

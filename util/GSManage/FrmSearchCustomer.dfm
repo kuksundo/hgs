@@ -1,9 +1,9 @@
 object SearchCustomerF: TSearchCustomerF
   Left = 0
   Top = 0
-  Caption = 'SearchCustomerF'
-  ClientHeight = 421
-  ClientWidth = 599
+  Caption = 'Search Customer'
+  ClientHeight = 475
+  ClientWidth = 540
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,13 +17,11 @@ object SearchCustomerF: TSearchCustomerF
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 599
+    Width = 540
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 136
-    ExplicitTop = 48
-    ExplicitWidth = 185
+    ExplicitWidth = 599
     object Label1: TLabel
       Left = 32
       Top = 16
@@ -68,14 +66,13 @@ object SearchCustomerF: TSearchCustomerF
   end
   object Panel2: TPanel
     Left = 0
-    Top = 380
-    Width = 599
+    Top = 434
+    Width = 540
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitLeft = 152
-    ExplicitTop = 312
-    ExplicitWidth = 185
+    ExplicitTop = 380
+    ExplicitWidth = 599
     object BitBtn1: TBitBtn
       Left = 136
       Top = 6
@@ -135,8 +132,8 @@ object SearchCustomerF: TSearchCustomerF
   object NextGrid1: TNextGrid
     Left = 0
     Top = 41
-    Width = 599
-    Height = 339
+    Width = 540
+    Height = 393
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Align = alClient
@@ -144,8 +141,15 @@ object SearchCustomerF: TSearchCustomerF
     TabOrder = 2
     TabStop = True
     OnCellDblClick = NextGrid1CellDblClick
+    ExplicitWidth = 599
+    ExplicitHeight = 339
     object CompanyName: TNxTextColumn
       DefaultWidth = 200
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #50629#52404#47749
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -153,11 +157,17 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 0
       SortType = stAlphabetic
       Width = 200
     end
     object ManagerName: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #45812#45817#51088
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -165,11 +175,17 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 1
       SortType = stAlphabetic
     end
     object Email: TNxTextColumn
       DefaultWidth = 150
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #51060#47700#51068
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -177,11 +193,17 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 2
       SortType = stAlphabetic
       Width = 150
     end
     object Nation: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #44397#44032
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -189,10 +211,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 3
       SortType = stAlphabetic
     end
     object CompanyType: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #44256#44061#50976#54805
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -200,10 +228,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 4
       SortType = stAlphabetic
     end
     object CompanyCode: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #50629#52404#53076#46300
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -211,10 +245,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 5
       SortType = stAlphabetic
     end
     object Position: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #51649#50948
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -222,10 +262,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 6
       SortType = stAlphabetic
     end
     object Officeno: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #49324#47924#49892#51204#54868
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -233,10 +279,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 7
       SortType = stAlphabetic
     end
     object Mobileno: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #47784#48148#51068#51204#54868
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -244,10 +296,16 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 8
       SortType = stAlphabetic
     end
     object CompanyAddress: TNxTextColumn
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Header.Caption = #54924#49324' '#51452#49548
       Header.Alignment = taCenter
       Header.Font.Charset = DEFAULT_CHARSET
@@ -255,6 +313,7 @@ object SearchCustomerF: TSearchCustomerF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
+      ParentFont = False
       Position = 9
       SortType = stAlphabetic
     end

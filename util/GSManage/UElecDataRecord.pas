@@ -3,11 +3,12 @@ unit UElecDataRecord;
 interface
 
 uses
+  Classes,
   SynCommons,
   mORMot,
   CommonData,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
-  UnitTodoCollect;
+  UnitTodoCollect, FSMClass_Dic, FSMState, Vcl.Dialogs;
 
 type
   TSQLEmailMsgs = class;
@@ -21,6 +22,15 @@ type
   end;
 
   TSQLGSFileRecs = array of TSQLGSFileRec;
+
+  PSQLInvoiceFileRec = ^TSQLInvoiceFileRec;
+  TSQLInvoiceFileRec = Packed Record
+    fFilename: RawUTF8;
+    fGSInvoiceItemType: TGSInvoiceItemType;
+    fData: RawByteString;
+  end;
+
+  TSQLInvoiceFileRecs = array of TSQLInvoiceFileRec;
 
   PSQLSubConRec = ^TSQLSubConRec;
   TSQLSubConRec = Packed Record
@@ -40,6 +50,21 @@ type
     property Files: TSQLGSFileRecs read fFiles write fFiles;
   end;
 
+  TSQLInvoiceFile = class(TSQLRecord)
+  private
+    fTaskID: TID;
+    fItemID: TID;
+    fItemIndex: integer; //Item내 DynArray Index를 가리킴
+    fFiles: TSQLInvoiceFileRecs;
+  public
+    FIsUpdate: Boolean;
+  published
+    property TaskID: TID read fTaskID write fTaskID;
+    property ItemID: TID read fItemID write fItemID;
+    property ItemIndex: integer read fItemIndex write fItemIndex;
+    property Files: TSQLInvoiceFileRecs read fFiles write fFiles;
+  end;
+
   TSQLPerson = class(TSQLRecord)
   private
     fTaskID: TID;
@@ -192,6 +217,7 @@ type
 
   TSQLGSTaskInfo = class(TSQLRecord)
   private
+    FUniqueTaskID: RawUTF8;  //GUID: InvoiceTask와 정보 교환시 필요
     FHullNo,
     FShipName,
     FProductType,
@@ -205,6 +231,7 @@ type
     FEtcContent,
     FShipOwner: RawUTF8;
     fSEList: RawUTF8;
+    FChargeInPersonId: RawUTF8;//담당자 사번(또는 Emial)
     fSECount: integer;
     //화폐(0:원,1:USD,2:EUR)
     FCurrencyKind: integer;
@@ -218,6 +245,11 @@ type
     FShippingNo,//출하지시번호
     FSalesPrice,//매출금액
     FExchangeRate: RawUTF8; //환율
+    FBaseProjectNo: RawUTF8; //본공사번호
+
+    FDeliveryCondition,//납품조건
+    FEstimateType, //견적유형
+    FTermsOfPayment: integer; //지불조건
 
     FInqRecvDate,
     FInvoiceIssueDate,
@@ -245,6 +277,7 @@ type
     property NationPort: RawUTF8 read FNationPort write FNationPort;
     property EtcContent: RawUTF8 read FEtcContent write FEtcContent;
     property ShipOwner: RawUTF8 read FShipOwner write FShipOwner;
+    property ChargeInPersonId: RawUTF8 read FChargeInPersonId write FChargeInPersonId;
 
     property SalesProcessType: TSalesProcessType read FSalesProcessType write FSalesProcessType;
 //    property CompanyType: TCompanyType read FCompanyType write FCompanyType;
@@ -257,8 +290,12 @@ type
     property SubConPrice: RawUTF8 read FSubConPrice write FSubConPrice;
     property SalesPrice: RawUTF8 read FSalesPrice write FSalesPrice;
     property ExchangeRate: RawUTF8 read FExchangeRate write FExchangeRate;
+    property BaseProjectNo: RawUTF8 read FBaseProjectNo write FBaseProjectNo;
     property ShippingNo: RawUTF8 read FShippingNo write FShippingNo;
     property CurrencyKind: integer read FCurrencyKind write FCurrencyKind;
+    property DeliveryCondition: integer read FDeliveryCondition write FDeliveryCondition;
+    property EstimateType: integer read FEstimateType write FEstimateType;
+    property TermsOfPayment: integer read FTermsOfPayment write FTermsOfPayment;
 
     property InqRecvDate: TTimeLog read FInqRecvDate write FInqRecvDate;
     property InvoiceIssueDate: TTimeLog read FInvoiceIssueDate write FInvoiceIssueDate;
@@ -273,6 +310,7 @@ type
     property SubConInvoiceIssueDate: TTimeLog read FSubConInvoiceIssueDate write FSubConInvoiceIssueDate;
     property SalesReqDate: TTimeLog read FSalesReqDate write FSalesReqDate;
     property ShippingDate: TTimeLog read FShippingDate write FShippingDate;
+    property UniqueTaskID: RawUTF8 read FUniqueTaskID write FUniqueTaskID;
   end;
 
   TSQLGSTask = class(TSQLGSTaskInfo)
@@ -376,6 +414,93 @@ type
     property Alarm2Email: integer read FAlarm2Email write FAlarm2Email;
   end;
 
+  TSQLMAPS_QTN = class(TSQLRecord)
+  private
+    fTaskID: TID;
+    FIsUpdate: Boolean;
+  public
+    property IsUpdate: Boolean read FIsUpdate write FIsUpdate;
+  published
+    property TaskID: TID read fTaskID write fTaskID;
+  end;
+
+  //협력사에서 청구서 만들떄 사용
+  TSQLInvoiceTask = class(TSQLRecord)
+  private
+    FUniqueTaskID: RawUTF8;  //GUID: InvoiceTask와 정보 교환시 필요
+    FIsUpdate: Boolean;
+    FHullNo,
+    FShipName,
+    FWorkSummary,
+    FNationPort,
+    FEtcContent,
+    FShipOwner: RawUTF8;
+    fSEList: RawUTF8;
+    fAgentInfo: RawUTF8;
+    FOrder_No, //공사번호
+    FChargeInPersonId: RawUTF8;//담당자 사번
+    FInvoicePrice,//청구금액
+    FExchangeRate: RawUTF8; //환율
+
+    //화폐(0:원,1:USD,2:EUR)
+    FCurrencyKind: integer;
+
+    FAttendScheduled,
+    FInqRecvDate,
+    FInvoiceIssueDate,
+    FWorkBeginDate, FWorkEndDate: TTimeLog;
+  public
+    property IsUpdate: Boolean read FIsUpdate write FIsUpdate;
+  published
+    property UniqueTaskID: RawUTF8 read FUniqueTaskID write FUniqueTaskID;
+    property HullNo: RawUTF8 read FHullNo write FHullNo;
+    property ShipName: RawUTF8 read FShipName write FShipName;
+    property WorkSummary: RawUTF8 read FWorkSummary write FWorkSummary;
+    property NationPort: RawUTF8 read FNationPort write FNationPort;
+    property EtcContent: RawUTF8 read FEtcContent write FEtcContent;
+    property ShipOwner: RawUTF8 read FShipOwner write FShipOwner;
+    property SEList: RawUTF8 read fSEList write fSEList;
+    property Order_No: RawUTF8 read FOrder_No write FOrder_No;
+    property ChargeInPersonId: RawUTF8 read FChargeInPersonId write FChargeInPersonId;
+    property InvoicePrice: RawUTF8 read FInvoicePrice write FInvoicePrice;
+    property ExchangeRate: RawUTF8 read FExchangeRate write FExchangeRate;
+    property AgentInfo: RawUTF8 read fAgentInfo write fAgentInfo;
+
+    property CurrencyKind: integer read FCurrencyKind write FCurrencyKind;
+
+    property AttendScheduled: TTimeLog read FAttendScheduled write FAttendScheduled;
+    property InqRecvDate: TTimeLog read FInqRecvDate write FInqRecvDate;
+    property InvoiceIssueDate: TTimeLog read FInvoiceIssueDate write FInvoiceIssueDate;
+    property WorkBeginDate: TTimeLog read FWorkBeginDate write FWorkBeginDate;
+    property WorkEndDate: TTimeLog read FWorkEndDate write FWorkEndDate;
+  end;
+
+  TSQLInvoiceItem = class(TSQLRecord)
+  private
+    FUniqueItemID: RawUTF8;  //GUID: InvoiceTask와 정보 교환시 필요
+    fTaskID: TID;
+    fItemID: TID; //Variant로 저장 후 로딩시 ItemID가 필요함
+    FIsUpdate: Boolean;
+    fItemDesc,
+    fQty,
+    ffUnit,
+    fUnitPrice,
+    fTotalPrice: RawUTF8;
+    fGSInvoiceItemType: TGSInvoiceItemType;
+  public
+    property IsUpdate: Boolean read FIsUpdate write FIsUpdate;
+  published
+    property UniqueItemID: RawUTF8 read FUniqueItemID write FUniqueItemID;
+    property TaskID: TID read fTaskID write fTaskID;
+    property ItemID: TID read fItemId write fItemId;
+    property ItemDesc: RawUTF8 read fItemDesc write fItemDesc;
+    property Qty: RawUTF8 read fQty write fQty;
+    property fUnit: RawUTF8 read ffUnit write ffUnit;
+    property UnitPrice: RawUTF8 read fUnitPrice write fUnitPrice;
+    property TotalPrice: RawUTF8 read fTotalPrice write fTotalPrice;
+    property InvoiceItemType: TGSInvoiceItemType read fGSInvoiceItemType write fGSInvoiceItemType;
+  end;
+
 //  TSQLGSFiles = class(TSQLRecordMany)
 //  private
 //    fSource: TSQLGSTask;
@@ -393,17 +518,59 @@ type
     property EmailId: TID read fEmailId write fEmailId;
   end;
 
+  TIDList4Invoice = class
+    fTaskId  : TID;
+    fItemId  : TID;
+    fItemAction: integer;  //1: Add, 2: Delete
+    fUniqueItemID: RawUTF8;
+    fItemType : TGSInvoiceItemType;
+    fInvoiceFile: TSQLInvoiceFile;
+  published
+    property TaskId: TID read fTaskId write fTaskId;
+    property ItemId: TID read fItemId write fItemId;
+    property ItemAction: integer read fItemAction write fItemAction;
+    property UniqueItemID: RawUTF8 read fUniqueItemID write fUniqueItemID;
+    property ItemType: TGSInvoiceItemType read fItemType write fItemType;
+    property InvoiceFile: TSQLInvoiceFile read fInvoiceFile write fInvoiceFile;
+  end;
+
 function CreateProjectModel: TSQLModel;
 function CreateMasterModel: TSQLModel;
 function CreateFilesModel: TSQLModel;
+function CreateInvoiceFilesModel: TSQLModel;
+function CreateInvoiceTaskModel: TSQLModel;
+function CreateInvoiceItemModel: TSQLModel;
 procedure InitClient();
+procedure InitFSM;
+procedure Add2FSM(ASPType:TSalesProcessType=sptNone;
+  ACompanyType: TCompanyType=ctNull);
 
+function CreateOrGetLoadTask(const ATaskID: integer): TSQLGSTask;
+function GetLoadTask(const ATaskID: integer): TSQLGSTask;
+
+function GetTaskFromHullNoNPONo(AHullNo, APONo: string): TSQLGSTask;
 function GetFilesFromTask(ATask: TSQLGSTask): TSQLGSFile;
 function GetCustomerFromTask(ATask: TSQLGSTask): TSQLCustomer;
 function GetSubConFromTask(ATask: TSQLGSTask): TSQLSubCon;
 function GetMaterial4ProjFromTask(ATask: TSQLGSTask): TSQLMaterial4Project;
 function GetMasterCustomerFromCompanyCodeNName(ACompanyCode, ACompanyName: string): TSQLMasterCustomer;
 function GetToDoItemFromTask(ATask: TSQLGSTask): TSQLToDoItem;
+
+procedure DeleteTask(ATaskID: TID);
+procedure DeleteMailsFromTask(ATask: TSQLGSTask);
+procedure DeleteFilesFromTask(ATask: TSQLGSTask);
+procedure DeleteCustomerFromTask(ATask: TSQLGSTask);
+procedure DeleteSubConFromTask(ATask: TSQLGSTask);
+procedure DeleteMaterial4ProjFromTask(ATask: TSQLGSTask);
+procedure DeleteToDoListFromTask(ATask: TSQLGSTask);
+
+function GetCompanyCode(ATask: TSQLGSTask): string;
+function GetQTNContent(ATask: TSQLGSTask): string;
+
+procedure AddOrUpdateTask(ATask: TSQLGSTask);
+procedure AddOrUpdateCustomer(ACustomer: TSQLCustomer);
+procedure AddOrUpdateSubCon(ASubCon: TSQLSubCon);
+procedure AddOrUpdateMaterial4Project(AMaterial4Project: TSQLMaterial4Project);
 
 procedure InsertOrUpdateToDoList2DB(ApjhTodoItem: TpjhTodoItem; AIdAdd: Boolean);
 procedure DeleteToDoListFromDB(ApjhTodoItem: TpjhTodoItem);
@@ -412,12 +579,48 @@ procedure LoadToDoCollectFromTask(ATask: TSQLGSTask; var AToDoCollect: TpjhToDoI
 procedure AssignpjhTodoItemToSQLToDoItem(ApjhTodoItem: TpjhTodoItem; ASQLToDoItem: TSQLToDoItem);
 procedure AssignSQLToDoItemTopjhTodoItem(ASQLToDoItem: TSQLToDoItem; ApjhTodoItem: TpjhTodoItem);
 
+procedure LoadTaskFromVariant(ATask:TSQLGSTask; ADoc: variant);
+procedure LoadCustomerFromVariant(ACustomer: TSQLCustomer; ADoc: variant);
+procedure LoadSubConFromVariant(ASubCon: TSQLSubCon; ADoc: variant);
+procedure LoadMaterial4ProjectFromVariant(AMat4Proj: TSQLMaterial4Project; ADoc: variant);
+
+procedure InitClient4InvoiceManage;
+function CreateOrGetLoadInvoiceTask(const ATaskID: integer): TSQLInvoiceTask;
+function GetInvoiceTaskFromID(const ATaskID: integer): TSQLInvoiceTask;
+function GetFilesFromInvoiceTask(ATask: TSQLInvoiceTask): TSQLInvoiceFile;
+function GetFilesFromInvoiceItem(AItem: TSQLInvoiceItem): TSQLInvoiceFile;
+function GetFilesFromInvoiceIDList(AIDList: TIDList4Invoice): TSQLInvoiceFile;
+function GetItemsFromInvoiceTask(ATask: TSQLInvoiceTask): TSQLInvoiceItem;
+function GetInvoiceTaskFromHullNoNOrderNo(AHullNo, AOrderNo: string): TSQLInvoiceTask;
+function GetInvoiceTaskFromUniqueID(AUniqueID: string): TSQLInvoiceTask;
+function GetInvoiceItemFromUniqueID(AUniqueID: string): TSQLInvoiceItem;
+function GetInvoiceItemUpdate(AItem: TSQLInvoiceItem): Boolean;
+function GetInvoiceItemFromID(ATaskID, AItemID: TID): TSQLInvoiceItem;
+procedure GetInvoiceItem2StrList(AItem:TSQLInvoiceItem; var AList: TStringList);
+function GetInvoiceFileFromID(ATaskID, AItemID: TID): TSQLInvoiceFile;
+function GetInvoiceFileUpdate(AFiles: TSQLInvoiceFile): Boolean;
+
+procedure AddOrUpdateInvoiceTask(ATask: TSQLInvoiceTask);
+procedure DeleteInvoiceTaskFromID(ATaskID: TID);
+procedure DeleteFilesFromInvoiceTask(ATask: TSQLInvoiceTask);
+procedure AddOrUpdateInvoiceItem(AItem: TSQLInvoiceItem);
+procedure DeleteInvoiceItemFromTask(ATask: TSQLInvoiceTask);
+procedure DeleteInvoiceItemFromID(AItemID: TID);
+procedure AddOrUpdateInvoiceFiles(AFiles: TSQLInvoiceFile);
+procedure DeleteFilesFromInvoiceItem(AItem: TSQLInvoiceItem);
+procedure DeleteFilesFromID(ATaskID, AItemID: TID);
+
 var
   g_ProjectDB,
   g_MasterDB,
-  g_FileDB: TSQLRestClientURI;
-  ProjectModel, MasterModel, FileModel: TSQLModel;
+  g_FileDB,
+  g_InvoiceFileDB,
+  g_InvoiceProjectDB,
+  g_InvoiceItemDB: TSQLRestClientURI;
+  ProjectModel, MasterModel, FileModel, InvoiceFileModel, InvoiceTaskModel,
+  InvoiceItemModel: TSQLModel;
   g_IPCClient: TIPCClient;
+  g_FSMClass: TFSMClass;
 
 implementation
 
@@ -459,6 +662,162 @@ end;
 function CreateFilesModel: TSQLModel;
 begin
   result := TSQLModel.Create([TSQLGSFile]);
+end;
+
+function CreateInvoiceFilesModel: TSQLModel;
+begin
+  result := TSQLModel.Create([TSQLInvoiceFile]);
+end;
+
+function CreateInvoiceTaskModel: TSQLModel;
+begin
+  result := TSQLModel.Create([TSQLInvoiceTask]);
+end;
+
+function CreateInvoiceItemModel: TSQLModel;
+begin
+  result := TSQLModel.Create([TSQLInvoiceItem]);
+end;
+
+procedure InitFSM;
+var Li: TSalesProcessType;
+begin
+  g_FSMClass := TFSMClass.Create(0);
+
+  for Li := sptNone to sptFinal do
+    Add2FSM(LI);
+end;
+
+procedure Add2FSM(ASPType:TSalesProcessType=sptNone;
+  ACompanyType: TCompanyType=ctNull);
+var
+  LFSMState: TFSMState;
+  LNumOfTransaction: integer;
+begin
+  if (ASPType = sptForeignCustOnlyService4FieldService) or
+    (ASPType = sptForeignCustOnlyService4FieldService) or
+    (ASPType = sptForeignCustOnlyService4FieldService) or
+    (ASPType = sptForeignCustOnlyService4FieldService) then
+  begin
+    LFSMState := TFSMState.Create(ord(ASPType), 10);
+
+    with LFSMState do
+    begin
+      AddTransition(ord(spNone), ord(spQtnReq2SubCon));
+      AddTransition(ord(spQtnReq2SubCon), ord(spQtnRecvFromSubCon));
+      AddTransition(ord(spQtnRecvFromSubCon), ord(spSECanAvail2SubCon));
+      AddTransition(ord(spSECanAvail2SubCon), ord(spSEAvailRecvFromSubCon));
+      AddTransition(ord(spSEAvailRecvFromSubCon), ord(spSEDispatchReq2SubCon));
+      AddTransition(ord(spSEDispatchReq2SubCon), ord(spSRRecvFromSubCon));
+      AddTransition(ord(spSRRecvFromSubCon), ord(spInvoiceRecvFromSubCon));
+      AddTransition(ord(spInvoiceRecvFromSubCon), ord(spTaxBillReq2SubCon));
+      AddTransition(ord(spTaxBillReq2SubCon), ord(spTaxBillRecvFromSubCon));
+      AddTransition(ord(spTaxBillRecvFromSubCon), ord(spFinal));
+    end;
+  end
+  else
+  begin
+    LNumOfTransaction := 26;
+
+    if ASPType > sptDomesticCustOnlyService then
+      LNumOfTransaction := LNumOfTransaction + 6
+    else
+      LNumOfTransaction := LNumOfTransaction + 1;
+
+    LFSMState := TFSMState.Create(ord(ASPType), LNumOfTransaction);
+
+    with LFSMState do
+    begin
+      AddTransition(ord(spNone), ord(spQtnReqRecvFromCust));
+      AddTransition(ord(spQtnReqRecvFromCust), ord(spQtnReq2SubCon));
+      AddTransition(ord(spQtnReq2SubCon), ord(spQtnRecvFromSubCon));
+      AddTransition(ord(spQtnRecvFromSubCon), ord(spQtnSend2Cust));
+      AddTransition(ord(spQtnSend2Cust), ord(spVslSchedReq2Cust));
+      AddTransition(ord(spVslSchedReq2Cust), ord(spSECanAvail2SubCon));
+      AddTransition(ord(spSECanAvail2SubCon), ord(spSEAvailRecvFromSubCon));
+      AddTransition(ord(spSEAvailRecvFromSubCon), ord(spSECanAttend2Cust));
+      AddTransition(ord(spSECanAttend2Cust), ord(spPOReq2Cust));
+      AddTransition(ord(spPOReq2Cust), ord(spPORecvFromCust));
+      AddTransition(ord(spPORecvFromCust), ord(spSEDispatchReq2SubCon));
+      AddTransition(ord(spSEDispatchReq2SubCon), ord(spQtnInput));
+      AddTransition(ord(spQtnInput), ord(spQtnApproval));
+      AddTransition(ord(spQtnApproval), ord(spOrderInput));
+      AddTransition(ord(spOrderInput), ord(spOrderApproval));
+
+      if ASPType > sptDomesticCustOnlyService then
+      begin
+        //자재가 없으면 아래 생략할 것
+        AddTransition(ord(spOrderApproval), ord(spPORCheck4HiPRO));
+        AddTransition(ord(spPORCheck4HiPRO), ord(spShipInstruct));//출하지시
+        AddTransition(ord(spShipInstruct), ord(spDelivery));
+        AddTransition(ord(spDelivery), ord(spAWBRecv));
+        AddTransition(ord(spAWBRecv), ord(spAWBSend2Cust));
+        AddTransition(ord(spAWBSend2Cust), ord(spSRRecvFromSubCon));
+      end
+      else
+        AddTransition(ord(spOrderApproval), ord(spSRRecvFromSubCon));
+
+      AddTransition(ord(spSRRecvFromSubCon), ord(spSRSend2Cust));
+      AddTransition(ord(spSRSend2Cust), ord(spInvoiceRecvFromSubCon));
+      AddTransition(ord(spInvoiceRecvFromSubCon), ord(spInvoiceSend2Cust));
+      AddTransition(ord(spInvoiceSend2Cust), ord(spInvoiceConfirmFromCust));
+      AddTransition(ord(spInvoiceConfirmFromCust), ord(spOrderPriceModify));
+      AddTransition(ord(spOrderPriceModify), ord(spModifiedOrderApproval));
+      AddTransition(ord(spModifiedOrderApproval), ord(spTaxBillReq2SubCon));
+      AddTransition(ord(spTaxBillReq2SubCon), ord(spTaxBillIssue2Cust));
+      AddTransition(ord(spTaxBillIssue2Cust), ord(spTaxBillRecvFromSubCon));
+      AddTransition(ord(spTaxBillRecvFromSubCon), ord(spTaxBillSend2GeneralAffair));
+      AddTransition(ord(spTaxBillSend2GeneralAffair), ord(spSaleReq2GeneralAffair));
+      AddTransition(ord(spTaxBillSend2GeneralAffair), ord(spFinal));
+    end;
+  end;
+
+  g_FSMClass.AddState(LFSMState);
+end;
+
+function CreateOrGetLoadTask(const ATaskID: integer): TSQLGSTask;
+begin
+  if ATaskID = 0 then
+  begin
+    Result := TSQLGSTask.Create;
+    Result.IsUpdate := False;
+  end
+  else
+  begin
+    Result:= TSQLGSTask.Create(g_ProjectDB, ATaskID);
+    if Result.ID = ATaskID then
+    begin
+//      Result.FillRewind;
+      Result.IsUpdate := True;
+    end
+    else
+    begin
+      Result := TSQLGSTask.Create;
+      Result.IsUpdate := False;
+    end;
+  end;
+end;
+
+function GetLoadTask(const ATaskID: integer): TSQLGSTask;
+begin
+  Result := nil;
+
+  if ATaskID > 0 then
+  begin
+    Result:= TSQLGSTask.Create(g_ProjectDB, ATaskID);
+    Result.IsUpdate := True;
+  end;
+end;
+
+function GetTaskFromHullNoNPONo(AHullNo, APONo: string): TSQLGSTask;
+begin
+  Result := TSQLGSTask.CreateAndFillPrepare(g_ProjectDB,
+    'HullNo = ? AND PO_No = ?', [AHullNo, APONo]);
+
+  if Result.FillOne then
+    Result.IsUpdate := True
+  else
+    Result.IsUpdate := False;
 end;
 
 function GetFilesFromTask(ATask: TSQLGSTask): TSQLGSFile;
@@ -533,7 +892,7 @@ begin
 
     if Result.FillOne then
     begin
-      Result.FillRewind;
+//      Result.FillRewind;
       Result.IsUpdate := True;
     end
     else
@@ -557,6 +916,187 @@ begin
     Result := TSQLToDoItem.Create;
     Result.IsUpdate := False;
   end
+end;
+
+procedure DeleteTask(ATaskID: TID);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetLoadTask(ATaskID);
+
+  if Assigned(LTask) then
+  begin
+    DeleteMailsFromTask(LTask);
+    DeleteFilesFromTask(LTask);
+    DeleteCustomerFromTask(LTask);
+    DeleteSubConFromTask(LTask);
+    DeleteMaterial4ProjFromTask(LTask);
+    DeleteToDoListFromTask(LTask);
+
+    g_ProjectDB.Delete(TSQLGSTask, LTask.ID);
+  end;
+end;
+
+procedure DeleteMailsFromTask(ATask: TSQLGSTask);
+var
+  LIds: TIDDynArray;
+  i: integer;
+begin
+  ATask.EmailMsg.DestGet(g_ProjectDB, ATask.ID, LIds);
+
+  for i := Low(LIds) to High(LIds) do
+  begin
+    ATask.EmailMsg.ManyDelete(g_ProjectDB, ATask.ID, LIds[i]);
+    g_ProjectDB.Delete(TSQLEmailMsg, LIds[i]);
+  end;
+end;
+
+procedure DeleteFilesFromTask(ATask: TSQLGSTask);
+var
+  LSQLGSFile: TSQLGSFile;
+begin
+  LSQLGSFile := GetFilesFromTask(ATask);
+
+  try
+    while LSQLGSFile.FillOne do
+    begin
+      g_FileDB.Delete(TSQLGSFile, LSQLGSFile.ID);
+    end;
+  finally
+    FreeAndNil(LSQLGSFile);
+  end;
+end;
+
+procedure DeleteCustomerFromTask(ATask: TSQLGSTask);
+var
+  LSQLCustomer: TSQLCustomer;
+begin
+  LSQLCustomer := GetCustomerFromTask(ATask);
+  try
+    g_MasterDB.Delete(TSQLCustomer, LSQLCustomer.ID);
+  finally
+    FreeAndNil(LSQLCustomer);
+  end;
+end;
+
+procedure DeleteMaterial4ProjFromTask(ATask: TSQLGSTask);
+var
+  LSQLMaterial4Project: TSQLMaterial4Project;
+begin
+  LSQLMaterial4Project := GetMaterial4ProjFromTask(ATask);
+  try
+    g_MasterDB.Delete(TSQLMaterial4Project, LSQLMaterial4Project.ID);
+  finally
+    FreeAndNil(LSQLMaterial4Project);
+  end;
+end;
+
+procedure DeleteSubConFromTask(ATask: TSQLGSTask);
+var
+  LSQLSubCon: TSQLSubCon;
+begin
+  LSQLSubCon := GetSubConFromTask(ATask);
+  try
+    g_MasterDB.Delete(TSQLSubCon, LSQLSubCon.ID);
+  finally
+    FreeAndNil(LSQLSubCon);
+  end;
+end;
+
+procedure DeleteToDoListFromTask(ATask: TSQLGSTask);
+var
+  LSQLToDoItem: TSQLToDoItem;
+begin
+  LSQLToDoItem := GetToDoItemFromTask(ATask);
+  try
+//    LSQLToDoItem.FillRewind;
+
+    while LSQLToDoItem.FillOne do
+      g_ProjectDB.Delete(TSQLToDoItem, LSQLToDoItem.ID);
+  finally
+    FreeAndNil(LSQLToDoItem);
+  end;
+end;
+
+function GetCompanyCode(ATask: TSQLGSTask): string;
+var
+  LCustomer: TSQLCustomer;
+begin
+  LCustomer := GetCustomerFromTask(ATask);
+  try
+    if LCustomer.IsUpdate then
+    begin
+      Result := UTF8ToString(LCustomer.fCompanyCode);
+    end;
+  finally
+    LCustomer.Free;
+  end;
+end;
+
+function GetQTNContent(ATask: TSQLGSTask): string;
+begin
+  Result := ATask.HullNo + ' ' + ATask.ShipName + #13#10 +
+            '작업일: ' + FormatDateTime('YYYY.MM.DD', TimeLogToDateTime(ATask.WorkBeginDate)) +
+            ' ~ ' + FormatDateTime('YYYY.MM.DD',TimeLogToDateTime(ATask.WorkEndDate)) + #13#10 +
+            '작업내용: ' + ATask.WorkSummary + ' (' + ATask.NationPort + ')';
+
+end;
+
+procedure AddOrUpdateTask(ATask: TSQLGSTask);
+begin
+  if ATask.IsUpdate then
+  begin
+    g_ProjectDB.Update(ATask);
+    ShowMessage('Task Update 완료');
+  end
+  else
+  begin
+    g_ProjectDB.Add(ATask, true);
+    ShowMessage('Task Add 완료');
+  end;
+end;
+
+procedure AddOrUpdateCustomer(ACustomer: TSQLCustomer);
+begin
+  if ACustomer.IsUpdate then
+  begin
+    g_MasterDB.Update(ACustomer);
+//    ShowMessage('Customer Update 완료');
+  end
+  else
+  begin
+    g_MasterDB.Add(ACustomer, true);
+//    ShowMessage('Customer Add 완료');
+  end;
+end;
+
+procedure AddOrUpdateMaterial4Project(
+  AMaterial4Project: TSQLMaterial4Project);
+begin
+  if AMaterial4Project.IsUpdate then
+  begin
+    g_MasterDB.Update(AMaterial4Project);
+//    ShowMessage('자재 Update 완료');
+  end
+  else
+  begin
+    g_MasterDB.Add(AMaterial4Project, true);
+//    ShowMessage('자재 Add 완료');
+  end;
+end;
+
+procedure AddOrUpdateSubCon(ASubCon: TSQLSubCon);
+begin
+  if ASubCon.IsUpdate then
+  begin
+    g_MasterDB.Update(ASubCon);
+//    ShowMessage('협력사 Update 완료');
+  end
+  else
+  begin
+    g_MasterDB.Add(ASubCon, true);
+//    ShowMessage('협력사 Add 완료');
+  end;
 end;
 
 procedure InsertOrUpdateToDoList2DB(ApjhTodoItem: TpjhTodoItem; AIdAdd: Boolean);
@@ -698,15 +1238,448 @@ begin
   ApjhTodoItem.ModDate := TimeLogToDateTime(ASQLToDoItem.ModDate);
 end;
 
+procedure LoadTaskFromVariant(ATask:TSQLGSTask; ADoc: variant);
+begin
+  if ADoc = null then
+    exit;
+
+  ATask.HullNo := ADoc.HullNo;
+  ATask.ShipName := ADoc.ShipName;
+  ATask.ProductType := ADoc.ProductType;
+  ATask.PO_No := ADoc.PO_No;
+  ATask.QTN_No := ADoc.QTN_No;
+  ATask.Order_No := ADoc.Order_No;
+  ATask.WorkSummary := ADoc.WorkSummary;
+  ATask.NationPort := ADoc.NationPort;
+  ATask.EtcContent := ADoc.EtcContent;
+  ATask.ShipOwner := ADoc.ShipOwner;
+  ATask.ChargeInPersonId := ADoc.ChargeInPersonId;
+
+  ATask.SalesProcessType := ADoc.SalesProcessType;
+//  ATask.CompanyType := TCompanyType read FCompanyType write FCompanyType;
+  ATask.CurrentWorkStatus := ADoc.CurrentWorkStatus;
+  ATask.NextWork := ADoc.NextWork;
+  ATask.SECount := ADoc.SECount;
+  ATask.SEList := ADoc.SEList;
+//  ATask.SubConRecs := ADoc.SubConRecs;
+  ATask.EngineerAgency := ADoc.EngineerAgency;
+  ATask.SubConPrice := ADoc.SubConPrice;
+  ATask.SalesPrice := ADoc.SalesPrice;
+  ATask.ExchangeRate := ADoc.ExchangeRate;
+  ATask.BaseProjectNo := ADoc.BaseProjectNo;
+  ATask.ShippingNo := ADoc.ShippingNo;
+  ATask.CurrencyKind := ADoc.CurrencyKind;
+  ATask.DeliveryCondition := ADoc.DeliveryCondition;
+  ATask.EstimateType := ADoc.EstimateType;
+  ATask.TermsOfPayment := ADoc.TermsOfPayment;
+
+  ATask.InqRecvDate := ADoc.InqRecvDate;
+  ATask.InvoiceIssueDate := ADoc.InvoiceIssueDate;
+  ATask.QTNIssueDate := ADoc.QTNIssueDate;
+  ATask.QTNInputDate := ADoc.QTNInputDate;
+  ATask.OrderInputDate := ADoc.OrderInputDate;
+  ATask.AttendScheduled := ADoc.AttendScheduled;
+  ATask.WorkBeginDate := ADoc.WorkBeginDate;
+  ATask.WorkEndDate := ADoc.WorkEndDate;
+  ATask.CurWorkFinishDate := ADoc.CurWorkFinishDate;
+  ATask.SRRecvDate := ADoc.SRRecvDate;
+  ATask.SubConInvoiceIssueDate := ADoc.SubConInvoiceIssueDate;
+  ATask.SalesReqDate := ADoc.SalesReqDate;
+  ATask.ShippingDate := ADoc.ShippingDate;
+  ATask.CustomerID := ADoc.CustomerID;
+  ATask.SubConId := ADoc.SubConId;
+  ATask.ToDoId := ADoc.ToDoId;
+  ATask.UniqueTaskID := ADoc.UniqueTaskID;
+//  ATask.EmailMsg := ADoc.EmailMsg;
+end;
+
+procedure LoadCustomerFromVariant(ACustomer: TSQLCustomer; ADoc: variant);
+begin
+  if ADoc = null then
+    exit;
+
+  ACustomer.TaskID := ADoc.TaskID;
+  ACustomer.FirstName := ADoc.FirstName;
+  ACustomer.Surname := ADoc.Surname;
+  ACustomer.CompanyCode := ADoc.CompanyCode;
+  ACustomer.EMail := ADoc.EMail;
+  ACustomer.CompanyName := ADoc.CompanyName;
+  ACustomer.MobilePhone := ADoc.MobilePhone;
+  ACustomer.OfficePhone := ADoc.OfficePhone;
+  ACustomer.CompanyAddress := ADoc.CompanyAddress;
+  ACustomer.Position := ADoc.Position;
+  ACustomer.ManagerName := ADoc.ManagerName;
+  ACustomer.Nation := ADoc.Nation;
+  ACustomer.CompanyType := ADoc.CompanyType;
+  ACustomer.AgentInfo := ADoc.AgentInfo;
+end;
+
+procedure LoadSubConFromVariant(ASubCon: TSQLSubCon; ADoc: variant);
+begin
+  if ADoc = null then
+    exit;
+
+  ASubCon.TaskID := ADoc.TaskID;
+  ASubCon.FirstName := ADoc.FirstName;
+  ASubCon.Surname := ADoc.Surname;
+  ASubCon.CompanyCode := ADoc.CompanyCode;
+  ASubCon.EMail := ADoc.EMail;
+  ASubCon.CompanyName := ADoc.CompanyName;
+  ASubCon.MobilePhone := ADoc.MobilePhone;
+  ASubCon.OfficePhone := ADoc.OfficePhone;
+  ASubCon.CompanyAddress := ADoc.CompanyAddress;
+  ASubCon.Position := ADoc.Position;
+  ASubCon.ManagerName := ADoc.ManagerName;
+  ASubCon.Nation := ADoc.Nation;
+  ASubCon.CompanyType := ADoc.CompanyType;
+
+end;
+
+procedure LoadMaterial4ProjectFromVariant(AMat4Proj: TSQLMaterial4Project; ADoc: variant);
+begin
+  if ADoc = null then
+    exit;
+
+  AMat4Proj.PORNo :=ADoc.PORNo;
+  AMat4Proj.SupplyCount :=ADoc.SupplyCount;
+  AMat4Proj.PORIssueDate :=ADoc.PORIssueDate;
+  AMat4Proj.DeliveryAddress :=ADoc.DeliveryAddress;
+  AMat4Proj.AirWayBill :=ADoc.AirWayBill;
+  AMat4Proj.DeliveryCharge :=ADoc.DeliveryCharge;
+  AMat4Proj.DeliveryCompany :=ADoc.DeliveryCompany;
+end;
+
+procedure InitClient4InvoiceManage;
+var
+  LStr: string;
+begin
+  LStr := ChangeFileExt(Application.ExeName,'.db3');
+  InvoiceTaskModel:= CreateInvoiceTaskModel;
+  g_InvoiceProjectDB:= TSQLRestClientDB.Create(InvoiceTaskModel, CreateInvoiceTaskModel,
+    LStr, TSQLRestServerDB);
+  TSQLRestClientDB(g_InvoiceProjectDB).Server.CreateMissingTables;
+
+  LStr := LStr.Replace('.db3', '_Items.db3');
+  InvoiceItemModel := CreateInvoiceItemModel;
+  g_InvoiceItemDB:= TSQLRestClientDB.Create(InvoiceItemModel, CreateInvoiceItemModel,
+    LStr, TSQLRestServerDB);
+  TSQLRestClientDB(g_InvoiceItemDB).Server.CreateMissingTables;
+
+  LStr := LStr.Replace('.db3', '_Files.db3');
+  InvoiceFileModel := CreateInvoiceFilesModel;
+  g_InvoiceFileDB:= TSQLRestClientDB.Create(InvoiceFileModel, CreateInvoiceFilesModel,
+    LStr, TSQLRestServerDB);
+  TSQLRestClientDB(g_InvoiceFileDB).Server.CreateMissingTables;
+end;
+
+function CreateOrGetLoadInvoiceTask(const ATaskID: integer): TSQLInvoiceTask;
+begin
+  if ATaskID = 0 then
+  begin
+    Result := TSQLInvoiceTask.Create;
+    Result.IsUpdate := False;
+  end
+  else
+  begin
+    Result:= TSQLInvoiceTask.Create(g_InvoiceProjectDB, ATaskID);
+    if Result.ID = ATaskID then
+    begin
+      Result.IsUpdate := True;
+    end
+    else
+    begin
+      Result := TSQLInvoiceTask.Create;
+      Result.IsUpdate := False;
+    end;
+  end;
+end;
+
+function GetInvoiceTaskFromID(const ATaskID: integer): TSQLInvoiceTask;
+begin
+  Result := nil;
+
+  if ATaskID > 0 then
+  begin
+    Result:= TSQLInvoiceTask.Create(g_InvoiceProjectDB, ATaskID);
+    Result.IsUpdate := True;
+  end;
+end;
+
+function GetFilesFromInvoiceTask(ATask: TSQLInvoiceTask): TSQLInvoiceFile;
+begin
+  Result := TSQLInvoiceFile.CreateAndFillPrepare(g_InvoiceFileDB, 'TaskID = ?', [ATask.ID]);
+end;
+
+function GetFilesFromInvoiceItem(AItem: TSQLInvoiceItem): TSQLInvoiceFile;
+begin
+  Result := TSQLInvoiceFile.CreateAndFillPrepare(g_InvoiceFileDB, 'TaskID = ? and ItemID = ?', [AItem.TaskID, AItem.ItemID]);
+end;
+
+function GetFilesFromInvoiceIDList(AIDList: TIDList4Invoice): TSQLInvoiceFile;
+begin
+  Result := TSQLInvoiceFile.CreateAndFillPrepare(g_InvoiceFileDB, 'TaskID = ? and ItemID = ?', [AIDList.TaskID, AIDList.ItemId]);
+end;
+
+function GetItemsFromInvoiceTask(ATask: TSQLInvoiceTask): TSQLInvoiceItem;
+begin
+  Result := TSQLInvoiceItem.CreateAndFillPrepare(g_InvoiceItemDB, 'TaskID = ?', [ATask.ID]);
+end;
+
+function GetInvoiceTaskFromHullNoNOrderNo(AHullNo, AOrderNo: string): TSQLInvoiceTask;
+begin
+  Result := TSQLInvoiceTask.CreateAndFillPrepare(g_InvoiceProjectDB,
+    'HullNo = ? AND Order_No = ?', [AHullNo, AOrderNo]);
+
+  if Result.FillOne then
+    Result.IsUpdate := True
+  else
+    Result.IsUpdate := False;
+end;
+
+function GetInvoiceTaskFromUniqueID(AUniqueID: string): TSQLInvoiceTask;
+begin
+  Result := TSQLInvoiceTask.CreateAndFillPrepare(g_InvoiceProjectDB,
+    'UniqueTaskID = ?', [AUniqueID]);
+
+  if Result.FillOne then
+    Result.IsUpdate := True
+  else
+    Result.IsUpdate := False;
+end;
+
+function GetInvoiceItemFromUniqueID(AUniqueID: string): TSQLInvoiceItem;
+begin
+  Result := TSQLInvoiceItem.CreateAndFillPrepare(g_InvoiceItemDB,
+    'UniqueItemID = ?', [AUniqueID]);
+
+  if Result.FillOne then
+    Result.IsUpdate := True
+  else
+    Result.IsUpdate := False;
+end;
+
+function GetInvoiceItemUpdate(AItem: TSQLInvoiceItem): Boolean;
+var
+  LItem: TSQLInvoiceItem;
+begin
+  LItem := TSQLInvoiceItem.CreateAndFillPrepare(g_InvoiceItemDB,
+    'TaskID = ?', [AItem.TaskID]);
+
+  try
+    Result := LItem.FillOne;
+  finally
+    LItem.Free;
+  end;
+end;
+
+function GetInvoiceItemFromID(ATaskID, AItemID: TID): TSQLInvoiceItem;
+begin
+  Result := TSQLInvoiceItem.CreateAndFillPrepare(g_InvoiceItemDB,
+    'TaskID = ? and ID = ?', [ATaskID, AItemID]);
+end;
+
+procedure GetInvoiceItem2StrList(AItem:TSQLInvoiceItem; var AList: TStringList);
+var
+  LStr: string;
+begin
+  if AItem.FillRewind then
+  begin
+    AList.Clear;
+
+    while AItem.FillOne do
+    begin
+      LStr := GSInvoiceItemType2String(AItem.InvoiceItemType) + ';';
+      LStr := LStr + AItem.ItemDesc + ';';
+      LStr := LStr + AItem.Qty + ';';
+      LStr := LStr + AItem.fUnit + ';';
+      LStr := LStr + AItem.UnitPrice + ';';
+      LStr := LStr + AItem.TotalPrice;
+
+      AList.Add(LStr);
+    end;
+  end;
+end;
+
+function GetInvoiceFileFromID(ATaskID, AItemID: TID): TSQLInvoiceFile;
+begin
+  Result := TSQLInvoiceFile.CreateAndFillPrepare(g_InvoiceFileDB, 'TaskID = ? and ItemID = ?', [ATaskID, AItemID]);
+end;
+
+function GetInvoiceFileUpdate(AFiles: TSQLInvoiceFile): Boolean;
+var
+  LFile: TSQLInvoiceFile;
+begin
+  LFile := TSQLInvoiceFile.CreateAndFillPrepare(g_InvoiceFileDB,
+    'TaskID = ? and ItemID = ?', [AFiles.TaskID, AFiles.ItemID]);
+
+  try
+    Result := LFile.FillOne;
+  finally
+    LFile.Free;
+  end;
+end;
+
+procedure AddOrUpdateInvoiceTask(ATask: TSQLInvoiceTask);
+begin
+  if ATask.IsUpdate then
+  begin
+    g_InvoiceProjectDB.Update(ATask);
+    ShowMessage('Task Update 완료');
+  end
+  else
+  begin
+    g_InvoiceProjectDB.Add(ATask, true);
+    ShowMessage('Task Add 완료');
+  end;
+end;
+
+procedure DeleteInvoiceTaskFromID(ATaskID: TID);
+var
+  LTask: TSQLInvoiceTask;
+begin
+  LTask := GetInvoiceTaskFromID(ATaskID);
+
+  if Assigned(LTask) then
+  begin
+    DeleteInvoiceItemFromTask(LTask);
+
+    g_InvoiceProjectDB.Delete(TSQLInvoiceTask, LTask.ID);
+  end;
+end;
+
+procedure DeleteFilesFromInvoiceTask(ATask: TSQLInvoiceTask);
+var
+  LSQLGSFile: TSQLInvoiceFile;
+begin
+  LSQLGSFile := GetFilesFromInvoiceTask(ATask);
+
+  try
+    while LSQLGSFile.FillOne do
+    begin
+      g_InvoiceFileDB.Delete(TSQLInvoiceFile, LSQLGSFile.ID);
+    end;
+  finally
+    FreeAndNil(LSQLGSFile);
+  end;
+end;
+
+procedure AddOrUpdateInvoiceItem(AItem: TSQLInvoiceItem);
+begin
+  if AItem.IsUpdate then
+  begin
+//    g_InvoiceItemDB.Delete(TSQLInvoiceItem, 'TaskID = ?', [AItem.TaskID]);
+    g_InvoiceItemDB.Update(AItem);
+  end
+  else
+  begin
+    g_InvoiceItemDB.Add(AItem, true);
+  end;
+
+  AItem.ItemID := AItem.ID;
+  g_InvoiceItemDB.Update(AItem);
+end;
+
+procedure DeleteInvoiceItemFromTask(ATask: TSQLInvoiceTask);
+var
+  LItem: TSQLInvoiceItem;
+begin
+  LItem := GetItemsFromInvoiceTask(ATask);
+
+  try
+    while LItem.FillOne do
+    begin
+      DeleteFilesFromInvoiceItem(LItem);
+
+      DeleteInvoiceItemFromID(LItem.ID);
+    end;
+  finally
+    FreeAndNil(LItem);
+  end;
+end;
+
+procedure DeleteInvoiceItemFromID(AItemID: TID);
+begin
+  g_InvoiceItemDB.Delete(TSQLInvoiceItem, AItemID);
+end;
+
+procedure AddOrUpdateInvoiceFiles(AFiles: TSQLInvoiceFile);
+begin
+  if AFiles.FIsUpdate then
+  begin
+//    DeleteFilesFromID(AFiles.TaskID, AFiles.ItemID);
+//    g_InvoiceFileDB.Add(AFiles, True);
+    g_InvoiceFileDB.Update(AFiles);
+  end
+  else
+  begin
+    g_InvoiceFileDB.Add(AFiles, true);
+  end;
+end;
+
+procedure DeleteFilesFromInvoiceItem(AItem: TSQLInvoiceItem);
+var
+  LInvoiceFile: TSQLInvoiceFile;
+begin
+  LInvoiceFile := GetFilesFromInvoiceItem(AItem);
+
+  try
+    while LInvoiceFile.FillOne do
+    begin
+      g_InvoiceFileDB.Delete(TSQLInvoiceFile, LInvoiceFile.ID);
+    end;
+  finally
+    FreeAndNil(LInvoiceFile);
+  end;
+end;
+
+procedure DeleteFilesFromID(ATaskID, AItemID: TID);
+var
+  LIDList: TIDList4Invoice;
+  LSQLGSFile: TSQLInvoiceFile;
+begin
+  LIDList := TIDList4Invoice.Create;
+  try
+    LIDList.TaskId := ATaskID;
+    LIDList.ItemId := AItemID;
+
+    LSQLGSFile := GetFilesFromInvoiceIDList(LIDList);
+    try
+      while LSQLGSFile.FillOne do
+      begin
+        g_InvoiceFileDB.Delete(TSQLInvoiceFile, LSQLGSFile.ID);
+      end;
+    finally
+      FreeAndNil(LSQLGSFile);
+    end;
+  finally
+    LIDList.Free;
+  end;
+end;
+
 initialization
+  InitFSM;
+
   g_IPCClient := TIPCClient.Create;
   g_IPCClient.ServerName := IPC_SERVER_NAME_4_OUTLOOK;
   g_IPCClient.ConnectClient;
 
 finalization
-  FreeAndNil(g_ProjectDB);
-  FreeAndNil(ProjectModel);
-  FreeAndNil(g_MasterDB);
-  FreeAndNil(MasterModel);
-  FreeAndNil(g_IPCClient);
+  g_FSMClass.Destroy;
+
+  if Assigned(g_ProjectDB) then
+    FreeAndNil(g_ProjectDB);
+  if Assigned(ProjectModel) then
+    FreeAndNil(ProjectModel);
+  if Assigned(g_MasterDB) then
+    FreeAndNil(g_MasterDB);
+  if Assigned(MasterModel) then
+    FreeAndNil(MasterModel);
+  if Assigned(g_FileDB) then
+    FreeAndNil(g_FileDB);
+  if Assigned(FileModel) then
+    FreeAndNil(FileModel);
+  if Assigned(InvoiceTaskModel) then
+    FreeAndNil(InvoiceTaskModel);
+  if Assigned(g_IPCClient) then
+    FreeAndNil(g_IPCClient);
 end.
