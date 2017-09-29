@@ -3,7 +3,7 @@ object MacroManageF: TMacroManageF
   Top = 21
   Caption = 'Macro Management'
   ClientHeight = 557
-  ClientWidth = 707
+  ClientWidth = 831
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object MacroManageF: TMacroManageF
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 707
+    Width = 831
     Height = 233
     Align = alTop
     TabOrder = 0
@@ -34,12 +34,12 @@ object MacroManageF: TMacroManageF
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 705
+      Width = 829
       Height = 41
       Align = alTop
       TabOrder = 0
       object btnSequence: TSpeedButton
-        Left = 469
+        Left = 593
         Top = 1
         Width = 121
         Height = 39
@@ -108,7 +108,7 @@ object MacroManageF: TMacroManageF
         ExplicitHeight = 33
       end
       object btnStop: TSpeedButton
-        Left = 590
+        Left = 714
         Top = 1
         Width = 114
         Height = 39
@@ -186,7 +186,7 @@ object MacroManageF: TMacroManageF
         ExplicitHeight = 33
       end
       object SpeedButton1: TSpeedButton
-        Left = 352
+        Left = 476
         Top = 1
         Width = 117
         Height = 39
@@ -265,9 +265,10 @@ object MacroManageF: TMacroManageF
           E3FDFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFCFC500
           0000}
         OnClick = SpeedButton1Click
+        ExplicitLeft = 352
       end
       object SpeedButton2: TSpeedButton
-        Left = 259
+        Left = 383
         Top = 1
         Width = 93
         Height = 39
@@ -279,7 +280,7 @@ object MacroManageF: TMacroManageF
         ExplicitHeight = 22
       end
       object SpeedButton3: TSpeedButton
-        Left = 135
+        Left = 218
         Top = 1
         Width = 39
         Height = 39
@@ -345,7 +346,7 @@ object MacroManageF: TMacroManageF
         ExplicitLeft = 104
       end
       object SpeedButton4: TSpeedButton
-        Left = 174
+        Left = 257
         Top = 1
         Width = 44
         Height = 39
@@ -412,7 +413,7 @@ object MacroManageF: TMacroManageF
         ExplicitTop = 0
       end
       object SpeedButton5: TSpeedButton
-        Left = 218
+        Left = 342
         Top = 1
         Width = 41
         Height = 39
@@ -477,6 +478,72 @@ object MacroManageF: TMacroManageF
         OnClick = SpeedButton5Click
         ExplicitLeft = 135
       end
+      object SpeedButton8: TSpeedButton
+        Left = 301
+        Top = 1
+        Width = 41
+        Height = 39
+        Align = alRight
+        Glyph.Data = {
+          F6060000424DF606000000000000360000002800000018000000180000000100
+          180000000000C006000000000000000000000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1A751C1A751C0B6F0F0B6F0F0B6F
+          0D0B6F0D086B0B086B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1A751C72D288
+          22C34D22C34D22C24B22C24B1DAC3B086B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFF1A751C6ED08421C04D21BE4C21BE4A21BE4A1CA839086B0BFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFF1A751C6ED18421C04F21C04F21C04D21BE4C1CAA3B08
+          6B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1A751C6ED08621C25021C24F21C0
+          4F21C04F1CAB3C086B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1A751C6ED287
+          1EC3531EC25221C25021C24F1CAD3E086B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFF1A751C6FD58C21C55521C3531EC3531EC2521CAF3F086B0BFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFF1A751C5CCB7C1FC6581FC65721C55521C3551BAE4208
+          6B0BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2083291A751C
+          1A751C1A751C1A751C1A751C1A751C1A751C086B0B5CCB7C1FC85B1FC65A1FC6
+          581FC6581BAE42086B0B086B0B086B0B086B0B086B0B086B0B086B0B086B0B08
+          6B0B278D3446CE781BB44D1BB44D1BB44D1BB44D1BB44D1BB44D1BB44D5CCB7C
+          1FC95E1FC95D1FC85B1FC65A1BAE421BAE421BB44D1BB44D1BB44D1BB44D1BB4
+          4D1BB44D1BAE4210801C28903555ED9F18D16D1ED36E1ED16D1ED16B1ED0691E
+          D0681ECE661FCD631FCD621FCB601FC95E1FC95D1FC85B1FC65A1FC6581FC658
+          1FC55721C55521C3531EC35321C04F12831D28933855F0A218D4711CD5731CD5
+          711CD36E1ED16D1ED16B1ED0691ED0681ECE661FCD651FCD621FCB601FC95E1F
+          C95D1FC85B1FC85B1FC6571FC6581FC55721C55521C04F12872029963B53F2A5
+          17D8751CD8761CD6741CD5731CD5711CD36E1ED36D1ED16B1ED0691ED0681ECE
+          661FCE651FCD631FCB601FCB5E1FC95D1FC85D1FC85B1FC65A1FC65821C04F12
+          8B23299B3E4FF4A714DA7717DA7917D87718D77618D47118D57019D46F1BD370
+          1ED36E1ED16B1ED0691ED0681ECE661DCD641CCC611BC95F1BC95D1BC75B1BC6
+          5A1BC6581FC65A128E262B9E416CFFBD4CEFA34EF0A24FEE9F4FEE9E4FED9C51
+          EB9B53E89A18D5701CD5711CD3701ED36E1ED16D1DCF681CCC6154E38F52E38D
+          52E28B52E08952E08852DD8655E28A1E9832249E3C249E3C249E3C249E3C249E
+          3C249E3C249E3C249E3C249E3C6EE5A01CD8761CD6731CD5711CD37019C35E12
+          8C23128C23128C23128C23128C23128C23128C23128C23128C23FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1E98326EE5A01BD9791CD9781CD8
+          761CD67419C35E1E9832FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1E98326DEAA6
+          1BDC7E1BDB7C1BDB7B1BD9781BC8641E9832FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFF1E983270ECA619E08319DE8119DC7E1BDB7C1BCB681E9832FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFF1E983270ECA819E08419E08419E08319DE8119CF6D1E
+          9832FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1E98326FEEAA19E08419E08419E0
+          8419E08419D2731E9832FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1E98326EF0AA
+          12DE7F12DE7F12DE7F12DE7F14D3701E9832FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFF249E3C6EF0AC8AFFCE8AFFCE8AFFCE8AFFCE72F2AF249E3CFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFF249E3C2CBB5331C15731C15731C15731C1572CBB5324
+          9E3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        OnClick = SpeedButton8Click
+        ExplicitLeft = 135
+      end
       object Button3: TButton
         Left = 20
         Top = 9
@@ -505,7 +572,7 @@ object MacroManageF: TMacroManageF
       TabOrder = 2
     end
     object Panel7: TPanel
-      Left = 403
+      Left = 527
       Top = 42
       Width = 303
       Height = 190
@@ -650,12 +717,12 @@ object MacroManageF: TMacroManageF
   object Panel2: TPanel
     Left = 0
     Top = 233
-    Width = 707
+    Width = 831
     Height = 283
     Align = alClient
     TabOrder = 1
     object Splitter1: TSplitter
-      Left = 367
+      Left = 491
       Top = 7
       Width = 7
       Height = 275
@@ -667,66 +734,68 @@ object MacroManageF: TMacroManageF
     object Splitter2: TSplitter
       Left = 1
       Top = 1
-      Width = 705
+      Width = 829
       Height = 6
       Cursor = crVSplit
       Align = alTop
       ExplicitWidth = 1061
     end
     inline NGFrame: TFrame1
-      Left = 1
+      Left = 164
       Top = 7
-      Width = 366
+      Width = 327
       Height = 275
-      Align = alClient
+      Align = alRight
       TabOrder = 0
-      ExplicitLeft = 1
+      ExplicitLeft = 164
       ExplicitTop = 7
-      ExplicitWidth = 366
+      ExplicitWidth = 327
       ExplicitHeight = 275
       inherited Panel4: TPanel
-        Width = 366
+        Width = 327
         Height = 275
-        ExplicitWidth = 366
+        ExplicitWidth = 327
         ExplicitHeight = 275
         inherited NextGrid1: TNextGrid
-          Top = 57
-          Width = 364
-          Height = 217
-          ExplicitTop = 57
-          ExplicitWidth = 364
-          ExplicitHeight = 217
-          inherited Itemname: TNxTextColumn [0]
+          Top = 89
+          Width = 325
+          Height = 185
+          ExplicitTop = 89
+          ExplicitWidth = 325
+          ExplicitHeight = 185
+          inherited NxIncrementColumn1: TNxIncrementColumn
+            Font.Height = -13
+            ParentFont = False
+          end
+          inherited Itemname: TNxTextColumn
             Font.Height = -13
             Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
             ParentFont = False
           end
-          inherited Value: TNxTextColumn [1]
+          inherited Value: TNxTextColumn
             Font.Height = -13
             Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
             ParentFont = False
-          end
-          inherited NxIncrementColumn1: TNxIncrementColumn [2]
           end
         end
         inherited CoolBar1: TCoolBar
-          Width = 364
-          Height = 56
+          Width = 325
+          Height = 88
           Bands = <
             item
               Control = NGFrame.ToolBar1
               ImageIndex = -1
-              MinHeight = 56
-              Width = 362
+              MinHeight = 88
+              Width = 323
             end>
-          ExplicitWidth = 364
-          ExplicitHeight = 56
+          ExplicitWidth = 325
+          ExplicitHeight = 88
           inherited ToolBar1: TToolBar
-            Width = 353
-            Height = 56
+            Width = 314
+            Height = 88
             ButtonHeight = 24
-            ExplicitWidth = 353
-            ExplicitHeight = 56
+            ExplicitWidth = 314
+            ExplicitHeight = 88
             inherited btnLeftAlignment: TToolButton
               ExplicitHeight = 24
             end
@@ -765,86 +834,139 @@ object MacroManageF: TMacroManageF
               ExplicitHeight = 24
             end
             inherited ToolButton12: TToolButton
-              ExplicitHeight = 24
+              Left = 0
+              Wrap = True
+              ExplicitLeft = 0
+              ExplicitHeight = 32
             end
             inherited ToolButton14: TToolButton
+              Left = 0
+              Top = 32
+              ExplicitLeft = 0
+              ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton16: TToolButton
+              Left = 23
+              Top = 32
+              ExplicitLeft = 23
+              ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton15: TToolButton
+              Left = 46
+              Top = 32
+              ExplicitLeft = 46
+              ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton8: TToolButton
+              Left = 54
+              Top = 32
+              ExplicitLeft = 54
+              ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton17: TToolButton
+              Left = 77
+              Top = 32
+              ExplicitLeft = 77
+              ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton20: TToolButton
-              ExplicitHeight = 32
+              Left = 100
+              Top = 32
+              Wrap = False
+              ExplicitLeft = 100
+              ExplicitTop = 32
+              ExplicitHeight = 24
             end
             inherited ToolButton18: TToolButton
+              Left = 108
               Top = 32
+              ExplicitLeft = 108
               ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton19: TToolButton
+              Left = 131
               Top = 32
+              ExplicitLeft = 131
               ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton9: TToolButton
+              Left = 154
               Top = 32
+              ExplicitLeft = 154
               ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton21: TToolButton
+              Left = 162
               Top = 32
               OnClick = NGFrameToolButton21Click
+              ExplicitLeft = 162
               ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton22: TToolButton
+              Left = 185
               Top = 32
+              ExplicitLeft = 185
               ExplicitTop = 32
               ExplicitHeight = 24
             end
             inherited ToolButton1: TToolButton
+              Left = 0
               Top = 32
+              Wrap = True
+              ExplicitLeft = 0
               ExplicitTop = 32
-              ExplicitHeight = 24
+              ExplicitHeight = 32
             end
             inherited btnBold: TToolButton
-              Top = 32
-              ExplicitTop = 32
+              Left = 0
+              Top = 64
+              ExplicitLeft = 0
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
             inherited btnItalic: TToolButton
-              Top = 32
-              ExplicitTop = 32
+              Left = 23
+              Top = 64
+              ExplicitLeft = 23
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
             inherited btnUnderline: TToolButton
-              Top = 32
-              ExplicitTop = 32
+              Left = 46
+              Top = 64
+              ExplicitLeft = 46
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
             inherited ToolButton2: TToolButton
-              Top = 32
-              ExplicitTop = 32
+              Left = 69
+              Top = 64
+              ExplicitLeft = 69
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
             inherited ColorPickerEditor1: TNxColorPicker
-              Top = 32
+              Left = 77
+              Top = 64
               Height = 24
-              ExplicitTop = 32
+              ExplicitLeft = 77
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
             inherited ToolButton11: TToolButton
-              Top = 32
-              ExplicitTop = 32
+              Left = 182
+              Top = 64
+              ExplicitLeft = 182
+              ExplicitTop = 64
               ExplicitHeight = 24
             end
           end
@@ -854,7 +976,7 @@ object MacroManageF: TMacroManageF
         Left = 19
         Top = 87
         Bitmap = {
-          494C010115001800880010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+          494C0101150018009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
           0000000000003600000028000000400000006000000001002000000000000060
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
@@ -1655,7 +1777,7 @@ object MacroManageF: TMacroManageF
       end
     end
     object Panel5: TPanel
-      Left = 374
+      Left = 498
       Top = 7
       Width = 332
       Height = 275
@@ -1690,11 +1812,118 @@ object MacroManageF: TMacroManageF
         end
       end
     end
+    object Panel8: TPanel
+      Left = 1
+      Top = 7
+      Width = 163
+      Height = 275
+      Align = alClient
+      TabOrder = 2
+      object Panel9: TPanel
+        Left = 1
+        Top = 1
+        Width = 161
+        Height = 41
+        Align = alTop
+        TabOrder = 0
+        object SpeedButton6: TSpeedButton
+          Left = 100
+          Top = 1
+          Width = 31
+          Height = 39
+          Align = alRight
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC5600DC96511FFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC45D0BDD
+            963BEDBD65C76312FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFC45D0DDE922CF5D675F6BF29D27C16C96817FFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC25809E3931FFCDC6EF2
+            B62BE68A00EF9B00CE720CC96818FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFC15707E59F2EFEE68CF2BD38EFA71BEDA418E68F02ED9E02D0730AC968
+            19FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC15605E5A540FFF3B1F7D474F5BD36F3
+            B534EFA921EC9C0EE48C00F0A90ED47608C9681AFFFFFFFFFFFFFFFFFFC15505
+            E5A63FFFFCCCFDE9A2F8C947F6C951F4BD3CF1B02CEEA41AE99505E18B00F0AD
+            15D57708C05500FFFFFFC15708E4A541FFFEC8FFFBC8FDDE67FBD463F7CD55F5
+            C547F3B635EFA824ED9F12E99300E69101F4BA23D47A0BC05500DA8A26F8BE33
+            F3B83BECA01AE7A33BFFF7C7FAD261F7C84EF5BF40F2B32FF3AB1CCA6709BE51
+            00BE5100BF5400C05500FFFFFFFFFFFFFFFFFFFFFFFFE8A037FFFDD9FBD769F8
+            CB55F6C749F4BD39F5B427C5610BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFEAA83DFFFCD8FBDC71F9D260F7C952F6C443F8BC33C5600AFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBA83CFFFEDDFDE07AFB
+            D769F9CF5CF7CA4DFCC63EC56009FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFECAA3DFFFFE0FEE380FCDC72F9D365F8CD56FDCD47C55F08FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEDAB3EFFFFE3FEE789FD
+            E17AFBDA6FFAD063FFD555C45E07FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFEEB144FFFFFAFFF49DFFF08EFFEB83FFE676FFE767C45E06FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEEA42AF1BC5AEDAC38E9
+            A231E3982EDE9128DC8C25CA6713FFFFFFFFFFFFFFFFFFFFFFFF}
+          OnClick = SpeedButton6Click
+          ExplicitLeft = 69
+          ExplicitTop = -4
+        end
+        object SpeedButton7: TSpeedButton
+          Left = 131
+          Top = 1
+          Width = 29
+          Height = 39
+          Align = alRight
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FFFFFF140EAE
+            1711B8100BA1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF100B
+            A11711B8140EAEFFFFFF1F1AB52522E92723F11F1BD1130EA6FFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFF130EA61F1BD12723F12522E91F1AB53D3AC84648F6
+            2425F12A2BF32121D4140FADFFFFFFFFFFFFFFFFFFFFFFFF140FAD2121D42A2B
+            F32425F14648F63D3AC8221CB66262E1444BF3262DEF2C33F22326D71812B3FF
+            FFFFFFFFFF1812B32326D72C33F2262DEF474DF46262E1221CB6FFFFFF241DBB
+            6566E34853F32934EF2F3BF2262BD91A13BA1A13BA262BD92F3BF22834EF4752
+            F35F61DF241DBAFFFFFFFFFFFFFFFFFF2621C2656AE54756F32C3DF03041F12B
+            36E42B36E43041F12D3DF04A59F35D5FE02119BFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF2721C66267E64356F23044F03448F23448F23044EF4255F26166E5221A
+            C4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2C23CC4551E9354DF136
+            4CEF364CEF354DF04251EA2B23CDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFF1D14CE3240E63C54F23850F0384FF03B54F23445E91D15CEFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1F17D4313EE43E58F13953F045
+            5EF2455FF23A53F03E57F0303AE31F15D3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            2018D93542E7425FF33D59F1556EF3737FF2737EF2566EF33D59F1425EF3313A
+            E41F16D9FFFFFFFFFFFFFFFFFF2018DE3744E94663F2405DF15C77F36E76EF30
+            28DF2E25DF7078F05D77F4405DF14562F2333DE82117DDFFFFFF221BE23947EC
+            4A69F34462F25F7AF3686EF0271FE2FFFFFFFFFFFF2C23E2717AF1607BF44362
+            F24A69F33846EB2019E24144EC5372F44464F26481F46E76F2271EE6FFFFFFFF
+            FFFFFFFFFFFFFFFF2D25E7747CF26480F44564F25270F33D41EB4441ED7B8FF5
+            7A94F6737BF32D24EAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2D24EA737C
+            F37A93F67A8FF64441EDFFFFFF4845F05A59F22D24EDFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFF2D24ED5959F24844F0FFFFFF}
+          OnClick = SpeedButton7Click
+        end
+        object Edit1: TEdit
+          Left = 1
+          Top = 1
+          Width = 99
+          Height = 39
+          Align = alClient
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 0
+          ExplicitHeight = 24
+        end
+      end
+      object ListBox1: TListBox
+        Left = 1
+        Top = 42
+        Width = 161
+        Height = 232
+        Align = alClient
+        ImeName = 'Microsoft IME 2010'
+        TabOrder = 1
+      end
+    end
   end
   object Panel3: TPanel
     Left = 0
     Top = 516
-    Width = 707
+    Width = 831
     Height = 41
     Align = alBottom
     TabOrder = 2
@@ -1740,7 +1969,7 @@ object MacroManageF: TMacroManageF
     Left = 67
     Top = 175
     Bitmap = {
-      494C010115001800800010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010115001800940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

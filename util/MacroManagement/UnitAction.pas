@@ -37,7 +37,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Buttons, ComCtrls, StdCtrls, thundax.lib.actions, ExtCtrls,
-  Vcl.Samples.Spin, Vcl.Menus, UnitMacroListClass2;
+  Vcl.Samples.Spin, Vcl.Menus, UnitMacroListClass;
 
 type
   TfrmActions = class(TForm)
@@ -89,13 +89,15 @@ type
     procedure btnDownClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
+    procedure edtXKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     pos: Integer;
-
   public
     FBreak : Boolean;
     FActionCollection: TActionCollection;
     list: TActionList;
+    FCurrentActionType: TActionType;
+    FIsUpdateMousePos: Boolean;
 
     class function GetActionType(description: string): TActionType;
     class function AddAction2List(var AList: TActionList;
@@ -182,13 +184,13 @@ begin
     TKey:
       begin
         if (AItem.InputText = '') then
-          raise Exception.Create('Fields must contain valid coordinates');
+          raise Exception.Create('Fields must contain valid key');
         action := TAction<String>.Create(actionType, TParameters<String>.Create(AItem.InputText, ''));
       end;
     TMessage:
       begin
         if (AItem.InputText = '') then
-          raise Exception.Create('Fields must contain valid coordinates');
+          raise Exception.Create('Fields must contain valid message');
         action := TAction<String>.Create(actionType, TParameters<String>.Create(AItem.InputText, ''));
       end;
     TWait:
@@ -202,6 +204,12 @@ begin
         if (AItem.GridIndex <= 0) then
           raise Exception.Create('Fields must contain valid Grid Index');
         action := TAction<Integer>.Create(actionType, TParameters<Integer>.Create(AItem.GridIndex, 0));
+      end;
+    TExecuteFunc:
+      begin
+        if (AItem.InputText = '') then
+          raise Exception.Create('Fields must contain valid function name');
+        action := TAction<String>.Create(actionType, TParameters<String>.Create(AItem.InputText, ''));
       end;
   end;
 
@@ -260,6 +268,10 @@ begin
         begin
           LItem.GridIndex := StrToIntDef(edtIndex.Text, -1);
         end;
+      TExecuteFunc:
+        begin
+          LItem.InputText := edtFreeText.Text;
+        end;
     end;
 
     action := AddAction2List(list, LItem);
@@ -308,6 +320,8 @@ begin
     actionType := TWait;
   if description = 'Dynamic message' then
     actionType := TMessage_Dyn;
+  if description = 'Execute Function' then
+    actionType := TExecuteFunc;
   result := actionType;
 end;
 
@@ -355,10 +369,9 @@ end;
 procedure TfrmActions.ComboBox1Change(Sender: TObject);
 var
   descAction: string;
-  actionType: TActionType;
 begin
   descAction := ComboBox1.Text;
-  actionType := GetActionType(descAction);
+  FCurrentActionType := GetActionType(descAction);
 
   edtX.Enabled := True;
   edtY.Enabled := True;
@@ -367,13 +380,14 @@ begin
   edtTime.Enabled := True;
   btnAddAction.Enabled := True;
 
-  case actionType of
+  case FCurrentActionType of
     tMousePos:
       begin
         cmbStrokes.Enabled := false;
         edtFreeText.Enabled := false;
         edtIndex.Enabled := false;
         edtTime.Enabled := false;
+        FIsUpdateMousePos := True;
         PageControl1.ActivePageIndex := 0;
       end;
     TMouseLClick, TMouseLDClick, TMouseRClick, TMouseRDClick:
@@ -384,6 +398,7 @@ begin
         edtFreeText.Enabled := false;
         edtIndex.Enabled := false;
         edtTime.Enabled := false;
+        FIsUpdateMousePos := False;
         PageControl1.ActivePageIndex := 0;
       end;
     TKey:
@@ -393,6 +408,7 @@ begin
         edtFreeText.Enabled := false;
         edtIndex.Enabled := false;
         edtTime.Enabled := false;
+        FIsUpdateMousePos := False;
         PageControl1.ActivePageIndex := 1;
       end;
     TMessage:
@@ -402,6 +418,7 @@ begin
         edtIndex.Enabled := false;
         cmbStrokes.Enabled := false;
         edtTime.Enabled := false;
+        FIsUpdateMousePos := False;
         PageControl1.ActivePageIndex := 1;
       end;
     TWait:
@@ -411,6 +428,7 @@ begin
         edtIndex.Enabled := false;
         cmbStrokes.Enabled := false;
         edtTime.Enabled := true;
+        FIsUpdateMousePos := False;
         PageControl1.ActivePageIndex := 2;
       end;
     TMessage_Dyn:
@@ -421,6 +439,17 @@ begin
         edtTime.Enabled := false;
         edtX.Enabled := false;
         edtY.Enabled := false;
+        FIsUpdateMousePos := False;
+        PageControl1.ActivePageIndex := 1;
+      end;
+    TExecuteFunc:
+      begin
+        edtX.Enabled := false;
+        edtY.Enabled := false;
+        edtIndex.Enabled := false;
+        cmbStrokes.Enabled := false;
+        edtTime.Enabled := false;
+        FIsUpdateMousePos := False;
         PageControl1.ActivePageIndex := 1;
       end;
   end;
@@ -430,6 +459,23 @@ procedure TfrmActions.CopyActionList(ADest: TActionList);
 begin
   ADest.Clear;
   ADest.InsertRange(0, list);
+end;
+
+procedure TfrmActions.edtXKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  pt: TPoint;
+begin
+  if (Shift = [ssCtrl]) and ((Key = Ord('c')) or (Key = Ord('C'))) then
+  begin
+    GetCursorPos(pt);
+
+    if FCurrentActionType = tMousePos then
+    begin
+      edtX.Text := IntToStr(pt.x);
+      edtY.Text := IntToStr(pt.y);
+    end;
+  end;
 end;
 
 procedure TfrmActions.btnDownClick(Sender: TObject);
@@ -460,6 +506,12 @@ begin
   Application.ProcessMessages;
   GetCursorPos(pt);
   Label7.caption := 'Mouse Position (x,y) (' + IntToStr(pt.x) + ',' + IntToStr(pt.y) + ')';
+
+//  if FIsUpdateMousePos and (FCurrentActionType = tMousePos) then
+//  begin
+//    edtX.Text := IntToStr(pt.x);
+//    edtY.Text := IntToStr(pt.y);
+//  end;
 end;
 
 end.

@@ -4,7 +4,7 @@ object frmActions: TfrmActions
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Thundax Macro Actions v1.1'
-  ClientHeight = 257
+  ClientHeight = 251
   ClientWidth = 601
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -360,7 +360,8 @@ object frmActions: TfrmActions
       'Press special key'
       'Type message'
       'Wait (ms)'
-      'Dynamic message')
+      'Dynamic message'
+      'Execute Function')
   end
   object PageControl1: TPageControl
     Left = 305
@@ -392,6 +393,7 @@ object frmActions: TfrmActions
         Height = 21
         ImeName = 'Microsoft IME 2010'
         TabOrder = 0
+        OnKeyDown = edtXKeyDown
       end
       object edtY: TEdit
         Left = 95
@@ -521,7 +523,7 @@ object frmActions: TfrmActions
   end
   object Panel1: TPanel
     Left = 0
-    Top = 216
+    Top = 210
     Width = 601
     Height = 41
     Align = alBottom

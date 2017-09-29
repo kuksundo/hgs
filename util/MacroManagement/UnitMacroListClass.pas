@@ -9,6 +9,7 @@ const
   MACRO_START = 'MacroStart';
   MACRO_ONE_STEP = 'Macro One-Step';
   MACRO_STOP = 'Macro Stop';
+  MACRO_MOUSE_POS = 'Macro Mouse position';
 
 type
   TMacroItem = class(TSynAutoCreateFields)
@@ -46,22 +47,16 @@ type
   TMacros = class(TCollectionItemAutoCreateFields)
   private
     FMacroItem : TMacroItem;
-//    FActionItem: TActionItem;
+    FMacroItemDescription: String;
   published
     property MacroItem : TMacroItem read FMacroItem;
-//    property ActionItem : TActionItem read FActionItem;
+    property MacroItemDescription : String read FMacroItemDescription;
   end;
 
 //  TMacroCollect<T: TMacros> = class(Generics.Legacy.TCollection<T>);
 
   //THIS IS NEW CLASS FOR MANAGE COLLECTION AND ACCESS LIKE AN ARRAY
 type
-
-
-
-
-
-
   TMacroCollection = class(TInterfacedCollection)
   private
     function GetCollItem(aIndex: Integer): TMacros;
@@ -104,6 +99,8 @@ type
     FActionCollection: TActionCollection;
   public
     FActionList: TActionList;
+
+    function MacroArrayAdd: TMacros;
   published
     property MacroName: string read FMacroName write FMacroName;
     property MacroDesc: string read FMacroDesc write FMacroDesc;
@@ -117,6 +114,7 @@ type
 
   TMacroManagements = class(TObjectList)
   public
+    procedure ClearObject;
     function LoadFromJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
     function SaveToJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
     function LoadFromStream(AStream: TStream; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
@@ -229,6 +227,21 @@ end;
 
 { TMacroManagements }
 
+procedure TMacroManagements.ClearObject;
+var
+  i: integer;
+begin
+  for i := Self.Count - 1 downto 0 do
+  begin
+    if Assigned(TMacroManagement(Self.Items[i]).FActionList) then
+      TMacroManagement(Self.Items[i]).FActionList.Free;
+
+//    TMacroManagement(Self.Items[i]).Free;  ==> 이거살리면 Self.Clear할떄 에러남
+  end;
+
+  Self.Clear;
+end;
+
 function TMacroManagements.LoadFromJSONFile(AFileName, APassPhrase: string;
   AIsEncrypt: Boolean): integer;
 var
@@ -326,6 +339,20 @@ begin
   WaitSec := TActionItem(Source).FWaitSec;
   InputText := TActionItem(Source).FInputText;
   GridIndex := TActionItem(Source).FGridIndex;
+end;
+
+{ TMacroManagement }
+
+function TMacroManagement.MacroArrayAdd: TMacros;
+var
+  i: integer;
+begin
+  Result := nil;
+  i := High(FMacroArray) + 1;
+  SetLength(FMacroArray, i);
+
+  FMacroArray[i-1] := TMacroCollection.Create;
+  Result := TMacroCollection(FMacroArray[i-1]).Add;
 end;
 
 initialization

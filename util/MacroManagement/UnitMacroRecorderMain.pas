@@ -13,8 +13,9 @@ uses
   OtlParallel,
   OtlSync,
   OtlComm,
+  OtlCommon,
   SynCommons, mORMot, thundax.lib.actions,
-  UnitMacroListClass, UnitNextGridFrame, Vcl.Buttons, Vcl.ToolWin;
+  UnitMacroListClass, UnitNextGridFrame, Vcl.Buttons, Vcl.ToolWin, UnitAction;
 
 type
   TMacroManageF = class(TForm)
@@ -64,6 +65,13 @@ type
     SpeedButton3: TSpeedButton;
     SpeedButton4: TSpeedButton;
     SpeedButton5: TSpeedButton;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    ListBox1: TListBox;
+    Edit1: TEdit;
+    SpeedButton6: TSpeedButton;
+    SpeedButton7: TSpeedButton;
+    SpeedButton8: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure HotKeyManager1HotKeyPressed(HotKey: Cardinal; Index: Word);
     procedure FormDestroy(Sender: TObject);
@@ -90,8 +98,10 @@ type
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton4Click(Sender: TObject);
     procedure SpeedButton5Click(Sender: TObject);
+    procedure SpeedButton6Click(Sender: TObject);
+    procedure SpeedButton7Click(Sender: TObject);
+    procedure SpeedButton8Click(Sender: TObject);
   private
-    FMacroManageList: TMacroManagements;
     FMacroCancelToken: IOmniCancellationToken;
     FMacroStepQueue    : TOmniMessageQueue;
     FActionStepQueue    : TOmniMessageQueue;
@@ -113,23 +123,38 @@ type
       const msg: string; checkHandle: integer = -1);
 
     procedure AddActionFromForm;
-    procedure AssignActionData2Form(ASrcActColl, ADestActColl: TActionCollection;
-      var ADestActList: TActionList);
 
     procedure AddMacroTest1;
     procedure AddMacroTest2;
     function IsExistMacroName(AName: string): boolean;
 
-    procedure PlayMacro;
-    procedure PlaySequence(AActionList: TActionList; ATimes: integer);
   public
     FWorker  : IOmniParallelLoop<integer>;
+    FWorker2  : IOmniParallelLoop<pointer>;
+    FfrmActions: TfrmActions;
+    FMacroManageList: TMacroManagements;
 
-    procedure AddMacroName(AName: string);
+    procedure ShowMacroManageListCount;
+    procedure AssignActionData2Form(ASrcActColl, ADestActColl: TActionCollection;
+      var ADestActList: TActionList);
+
+    procedure PlayMacro;
+    procedure PlayMacro2;
+    procedure _PlaySequence(AIdx: integer);
+    procedure PlaySequence(AActionList: TActionList; ATimes: integer);
+    procedure StopMacro;
+
+    procedure CreateNewMacro;
+    procedure ClearMacro;
+    procedure ClearMacroFromGrid;
+    procedure AddMacroName(AName: string='');
     procedure DeleteMacroname(AIdx: integer);
     procedure SaveMacroToFile(AFileName: string);
     procedure LoadMacroFromFile(AFileName: string);
     procedure DisplayMacroToGrid(AName: string = '');
+
+    procedure AddMacroItemName(AName: string);
+    procedure DeleteMacroItemName(AIdx: integer = -1);
     procedure SelectMacroItem(AIdx: integer);
     procedure SelectMacroCollect(AIdx: integer);
     procedure SelectActionCollect(AIdx: integer);
@@ -141,7 +166,7 @@ var
 
 implementation
 
-uses UnitAction, UnitNameEdit;
+uses UnitNameEdit;
 
 {$R *.dfm}
 
@@ -164,7 +189,6 @@ end;
 
 procedure TMacroManageF.AddActionFromForm;
 var
-  FfrmActions: TfrmActions;
   LMacroManagement: TMacroManagement;
   LMacroItem: TMacroItem;
   LActionItem: TActionItem;
@@ -187,7 +211,7 @@ begin
       if ShowModal = mrOK then
       begin
         AssignActionData2Form(FActionCollection,LMacroManagement.ActionCollect,
-          LMacroManagement.FActionList); 
+          LMacroManagement.FActionList);
 //  CopyActionCollect(FActionCollection, LMacroManagement.ActionCollect);
 //
 //  for i := 0 to FActionCollection.Count - 1 do
@@ -205,8 +229,16 @@ begin
       end;
     end;
   finally
-    FfrmActions.Free;
+    FreeAndNil(FfrmActions);
   end;
+end;
+
+procedure TMacroManageF.AddMacroItemName(AName: string);
+begin
+  if AName = '' then
+    AName := IntToStr(Random(100));
+
+  ListBox1.Items.Add(AName);
 end;
 
 procedure TMacroManageF.AddMacroName(AName: string);
@@ -223,6 +255,9 @@ begin
   end
   else
   begin
+    if AName = '' then
+      AName := 'Noname Macro1';
+
     LMacroManagement := TMacroManagement.Create;
     LMacroManagement.MacroName := AName;
     LMacroManagement.FActionList := TActionList.Create;
@@ -306,7 +341,8 @@ begin
   LMacroManagement := TMacroManagement.Create;
   LMacroManagement.MacroName := 'Test1 Name';
   LMacroManagement.MacroDesc := 'Test1 Desc';
-  LMacroItem := LMacroManagement.MacroCollect.Add;
+//  LMacroItem := LMacroManagement.MacroCollect.Add;
+  LMacroItem := LMacroManagement.MacroArrayAdd;
   LMacroItem.MacroItem.ItemName := 'Test1 Item Name';
   LMacroItem.MacroItem.ItemValue := 'Test1 Item Value';
   LActionItem := LMacroManagement.ActionCollect.Add;
@@ -357,8 +393,7 @@ end;
 
 procedure TMacroManageF.btnStopClick(Sender: TObject);
 begin
-  FBreak := true;
-  FMacroCancelToken.Signal;
+  StopMacro;
 end;
 
 procedure TMacroManageF.Button1Click(Sender: TObject);
@@ -399,6 +434,20 @@ begin
   AddActionFromForm;
 end;
 
+procedure TMacroManageF.ClearMacro;
+begin
+  FMacroManageList.ClearObject;
+  ClearMacroFromGrid;
+end;
+
+procedure TMacroManageF.ClearMacroFromGrid;
+begin
+  NextGrid2.ClearRows;
+  ListBox1.Clear;
+  NGFrame.NextGrid1.ClearRows;
+  ActionLB.Clear;
+end;
+
 procedure TMacroManageF.CreateEvents(manualReset: boolean; ANoOfEvent: integer);
 var
   i: integer;
@@ -414,6 +463,30 @@ begin
     FActionStepHandles[i] := CreateEvent(nil, manualReset, false, nil);
   FActionStepWaiter := TWaitFor.Create(FActionStepHandles);
 
+end;
+
+procedure TMacroManageF.CreateNewMacro;
+begin
+  if FMacroManageList.Count > 0 then
+  begin
+    if MessageDlg('Are you sure to create new Macro?', mtConfirmation, mbOKCancel, 0) = mrCancel then
+    begin
+      exit;
+    end;
+  end;
+
+  ClearMacro;
+  AddMacroName;
+end;
+
+procedure TMacroManageF.DeleteMacroItemName(AIdx: integer);
+begin
+  if ListBox1.ItemIndex >= 0 then
+  begin
+//    list.Remove(list.Items[ListBox1.ItemIndex]);
+//    FActionCollection.Delete(ListBox1.ItemIndex);
+    ListBox1.Items.Delete(ListBox1.ItemIndex);
+  end;
 end;
 
 procedure TMacroManageF.DeleteMacroname(AIdx: integer);
@@ -498,16 +571,8 @@ begin
 end;
 
 procedure TMacroManageF.FormDestroy(Sender: TObject);
-var
-  i:integer;
 begin
-  for i := FMacroManageList.Count - 1 downto 0 do
-  begin
-    if Assigned(TMacroManagement(FMacroManageList.Items[i]).FActionList) then
-    TMacroManagement(FMacroManageList.Items[i]).FActionList.Free;
-  end;
-
-  FMacroManageList.Clear;
+  FMacroManageList.ClearObject;
   FMacroManageList.Free;
 
   FreeAndNil(FMacroStepQueue);
@@ -531,6 +596,18 @@ var
 begin
   s := HotKeyManager1.GetCommand(Index);
 
+  if s = MACRO_MOUSE_POS then
+  begin
+    if Assigned(FfrmActions) then
+    begin
+      if FfrmActions.FCurrentActionType = tMousePos then
+      begin
+        FfrmActions.FIsUpdateMousePos := not FfrmActions.FIsUpdateMousePos;
+//        ShowMessage('FIsUpdateMousePos is ' + BoolToStr(FfrmActions.FIsUpdateMousePos));
+      end;
+    end;
+  end
+  else
   if s = MACRO_START then
   begin
 
@@ -550,7 +627,7 @@ begin
   else
   if s = MACRO_STOP then
   begin
-
+    StopMacro;
   end;
 end;
 
@@ -570,6 +647,10 @@ begin
   //Ctrl + Alt + F7 = Macro Stop
   HotKeyVar := HotKeyManager.GetHotKey(MOD_CONTROL + MOD_ALT, VK_F7);
   HotKeyManager1.AddHotKey(HotKeyVar, MACRO_STOP);
+
+  //Ctrl + Space = Mouse Move Update Stop
+  HotKeyVar := HotKeyManager.GetHotKey(MOD_CONTROL, VK_SPACE);
+  HotKeyManager1.AddHotKey(HotKeyVar, MACRO_MOUSE_POS);
 end;
 
 function TMacroManageF.IsExistMacroName(AName: string): boolean;
@@ -645,12 +726,12 @@ begin
   else
   begin
     LMacroManagement := FMacroManageList.Items[j] as TMacroManagement;
-    LMacroManagement.MacroCollect.Clear;
+//    LMacroManagement.MacroCollect.Clear;
   end;
-  
+
   for i := 0 to NGFrame.NextGrid1.RowCount - 1 do
   begin
-    LMacros := LMacroManagement.MacroCollect.Add;
+//    LMacros := LMacroManagement.MacroCollect.Add;
     LMacros.MacroItem.ItemName := NGFrame.NextGrid1.CellByName['Itemname', i].AsString;
     LMacros.MacroItem.ItemValue := NGFrame.NextGrid1.CellByName['Value', i].AsString;
   end;
@@ -660,13 +741,15 @@ procedure TMacroManageF.PlayMacro;
 var
   LActionList: TActionList;
   LMsg: TOmniMessage;
+  Li, LTimes: integer;
 begin
   btnSequence.Enabled := false;
   FMacroCancelToken := CreateOmniCancellationToken;
-
   FWorker := Parallel.ForEach(0,FMacroManageList.Count-1)
-    .NoWait // important, otherwise message loop will be blocked while ForEach waits for all tasks to terminate
     .CancelWith(FMacroCancelToken)
+    .NumTasks(1)
+    .PreserveOrder
+    .NoWait
     .OnStop(
       procedure (const task: IOmniTask)
       begin
@@ -674,6 +757,7 @@ begin
         task.Invoke(
           procedure begin
             btnSequence.Enabled := true;
+            ShowMessage('Macro Stopped!');
           end
         );
       end
@@ -681,21 +765,71 @@ begin
 
   FWorker.Execute(
     procedure (const task: IOmniTask; const i: integer)
+    var
+      Li: integer;
     begin
-      LActionList := TMacroManagement(FMacroManageList.Items[i]).FActionList;
-
-//      cancelToken.Signal; // this will tell all tasks to stop even if there is data in the nodeQueue
-      if Assigned(LActionList) then
-        PlaySequence(LActionList,TMacroManagement(FMacroManageList.Items[i]).IterateCount);
-//      task.Invoke(IncrementProgressBar);
-
-      if FMacroStepQueue.TryDequeue(LMsg) then
+      if TMacroManagement(FMacroManageList.Items[i]).IsExecute then
       begin
-        if LMsg.MsgData.AsInteger = 1 then //0: No Step, 1: Macro Step
-          WaitForAny(FMacroStepWaiter, 10000, waAwaited, '');
+        LActionList := TMacroManagement(FMacroManageList.Items[i]).FActionList;
+        LTimes := TMacroManagement(FMacroManageList.Items[i]).IterateCount;
+        ShowMessage(TMacroManagement(FMacroManageList.Items[i]).MacroName+':'+IntToStr(i));
+        if Assigned(LActionList) then
+          PlaySequence(LActionList,LTimes);
+
+        if FMacroStepQueue.TryDequeue(LMsg) then
+        begin
+          if LMsg.MsgData.AsInteger = 1 then //0: No Step, 1: Macro Step
+            WaitForAny(FMacroStepWaiter, 10000, waAwaited, '');
+        end;
       end;
     end
   );
+end;
+
+procedure TMacroManageF.PlayMacro2;
+var
+  LActionList: TActionList;
+  LMsg: TOmniMessage;
+  Li, LTimes: integer;
+begin
+//  btnSequence.Enabled := false;
+//  FMacroCancelToken := CreateOmniCancellationToken;
+//  FWorker2 := Parallel.ForEach<pointer>(FMacroManageList.GetEnumerator)
+//    .CancelWith(FMacroCancelToken)
+//    .NoWait
+//    .OnStop(
+//      procedure (const task: IOmniTask)
+//      begin
+//        task.Invoke(
+//          procedure begin
+//            btnSequence.Enabled := true;
+//            ShowMessage('Macro Stopped!');
+//          end
+//        );
+//      end
+//    );
+//
+//  FWorker2.Execute(
+//    procedure (const task: IOmniTask; const AObj: pointer)
+//    var
+//      Li: integer;
+//    begin
+//      if TMacroManagement(AObj).IsExecute then
+//      begin
+//        LActionList := TMacroManagement(AObj).FActionList;
+//        LTimes := TMacroManagement(AObj).IterateCount;
+//        ShowMessage(TMacroManagement(AObj).MacroName+':'+IntToStr(i));
+//        if Assigned(LActionList) then
+//          PlaySequence(LActionList,LTimes);
+//
+//        if FMacroStepQueue.TryDequeue(LMsg) then
+//        begin
+//          if LMsg.MsgData.AsInteger = 1 then //0: No Step, 1: Macro Step
+//            WaitForAny(FMacroStepWaiter, 10000, waAwaited, '');
+//        end;
+//      end;
+//    end
+//  );
 end;
 
 procedure TMacroManageF.PlaySequence(AActionList: TActionList; ATimes: integer);
@@ -789,7 +923,7 @@ begin
     ActionLB.Items.Clear;
 
     LMacroManagement := FMacroManageList.Items[AIdx] as TMacroManagement;
-    
+
     for j := 0 to LMacroManagement.ActionCollect.Count - 1 do
     begin
       ActionLB.Items.Add(LMacroManagement.ActionCollect.Item[j].ActionItem.ActionDesc);
@@ -810,12 +944,12 @@ begin
 
     LMacroManagement := FMacroManageList.Items[AIdx] as TMacroManagement;
 
-    for j := 0 to LMacroManagement.MacroCollect.Count - 1 do
-    begin
-      LRow := NGFrame.NextGrid1.AddRow;
-      NGFrame.NextGrid1.CellByName['Itemname',LRow].AsString := LMacroManagement.MacroCollect.Item[j].MacroItem.ItemName;
-      NGFrame.NextGrid1.CellByName['Value',LRow].AsString := LMacroManagement.MacroCollect.Item[j].MacroItem.ItemValue;
-    end;
+//    for j := 0 to LMacroManagement.MacroCollect.Count - 1 do
+//    begin
+//      LRow := NGFrame.NextGrid1.AddRow;
+//      NGFrame.NextGrid1.CellByName['Itemname',LRow].AsString := LMacroManagement.MacroCollect.Item[j].MacroItem.ItemName;
+//      NGFrame.NextGrid1.CellByName['Value',LRow].AsString := LMacroManagement.MacroCollect.Item[j].MacroItem.ItemValue;
+//    end;
   finally
     NGFrame.NextGrid1.EndUpdate;
   end;
@@ -825,6 +959,11 @@ procedure TMacroManageF.SelectMacroItem(AIdx: integer);
 begin
   SelectMacroCollect(AIdx);
   SelectActionCollect(AIdx);
+end;
+
+procedure TMacroManageF.ShowMacroManageListCount;
+begin
+  ShowMessage(IntToStr(FMacroManageList.Count));
 end;
 
 procedure TMacroManageF.SpeedButton1Click(Sender: TObject);
@@ -848,6 +987,14 @@ end;
 
 procedure TMacroManageF.SpeedButton3Click(Sender: TObject);
 begin
+  if FMacroManageList.Count > 0 then
+  begin
+    if MessageDlg('Are you sure to load Macro from file?', mtConfirmation, mbOKCancel, 0) = mrCancel then
+    begin
+      exit;
+    end;
+  end;
+
   if OpenDialog1.Execute(Handle) then
   begin
     LoadMacroFromFile(OpenDialog1.FileName);
@@ -864,6 +1011,27 @@ end;
 procedure TMacroManageF.SpeedButton5Click(Sender: TObject);
 begin
   DeleteMacroname(NextGrid2.SelectedRow);
+end;
+
+procedure TMacroManageF.SpeedButton6Click(Sender: TObject);
+begin
+  AddMacroItemName(Edit1.Text);
+end;
+
+procedure TMacroManageF.SpeedButton7Click(Sender: TObject);
+begin
+  DeleteMacroItemName;
+end;
+
+procedure TMacroManageF.SpeedButton8Click(Sender: TObject);
+begin
+  CreateNewMacro;
+end;
+
+procedure TMacroManageF.StopMacro;
+begin
+  FBreak := true;
+  FMacroCancelToken.Signal;
 end;
 
 procedure TMacroManageF.ToolButton1Click(Sender: TObject);
@@ -931,6 +1099,16 @@ begin
   end
   else
     raise Exception.Create('WaitAny returned unexpected result');
+end;
+
+procedure TMacroManageF._PlaySequence(AIdx: integer);
+var
+  LActionList: TActionList;
+begin
+  LActionList := TMacroManagement(FMacroManageList.Items[AIdx]).FActionList;
+
+  if Assigned(LActionList) then
+    PlaySequence(LActionList,TMacroManagement(FMacroManageList.Items[AIdx]).IterateCount);
 end;
 
 end.
