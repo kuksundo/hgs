@@ -541,7 +541,6 @@ begin
 
     if Result then
     begin
-//      LTask := GetInvoiceTaskFromHullNoNOrderNo(LDoc.Task.HullNo, LDoc.Task.Order_No);
       LTask := GetInvoiceTaskFromUniqueID(LDoc.Task.UniqueTaskID);
       try
         if FrmInvoiceEdit.DisplayInvoiceTaskInfo2EditForm(LTask, LDoc) then

@@ -59,9 +59,6 @@ type
     CustFaxEdit: TEdit;
     CustPositionEdit: TEdit;
     NationEdit: TEdit;
-    Button1: TButton;
-    Button2: TButton;
-    CustomerNameCB: TComboBoxInc;
     TabSheet2: TTabSheet;
     JvLabel15: TJvLabel;
     JvLabel16: TJvLabel;
@@ -86,12 +83,11 @@ type
     SECountEdit: TEdit;
     SubPhonNumEdit: TEdit;
     SubFaxEdit: TEdit;
-    PositionEdit: TEdit;
+    SubPositionEdit: TEdit;
     ServicePOEdit: TEdit;
     SubConInvoiceIssuePicker: TDateTimePicker;
     SRRecvDatePicker: TDateTimePicker;
     SubConPriceEdit: TEdit;
-    SubCompanyEdit: TAdvEditBtn;
     TabSheet4: TTabSheet;
     CurvyPanel1: TCurvyPanel;
     JvLabel14: TJvLabel;
@@ -130,6 +126,8 @@ type
     PopupMenu2: TPopupMenu;
     Doc1: TMenuItem;
     InvoiceEnglish1: TMenuItem;
+    CustomerNameEdit: TEdit;
+    SubCompanyNameEdit: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
@@ -221,6 +219,8 @@ begin
       if ADoc <> null then
       begin
         LoadInvoiceTaskFromVariant(ATask, ADoc.Task);
+        LoadInvoiceTaskFromVariant2(ATask, ADoc.Customer);
+        LoadInvoiceTaskFromVariant3(ATask, ADoc.SubCon);
 
 //        //InvoiceManage.exe에서 만들어진 *.hgs 파일인 경우
 //        //InvoiceItem 및 InvoiceFile도 포함됨
@@ -553,6 +553,26 @@ begin
   ATask.InvoicePrice := SalesPriceEdit.Text;
   ATask.ExchangeRate := ExchangeRateEdit.Text;
 //  ATask.CurrencyKind := CurrencyKindCB.Text;
+  ATask.CustCompanyName := CustomerNameEdit.Text;
+  ATask.CustCompanyCode := CustCompanyCodeEdit.Text;
+  ATask.CustManagerName := CustManagerEdit.Text;
+  ATask.CustPosition := CustPositionEdit.Text;
+  ATask.CustEMail := CustEmailEdit.Text;
+  ATask.CustNation := NationEdit.Text;
+  ATask.CustOfficePhone := CustPhonNumEdit.Text;
+  ATask.CustMobilePhone := CustFaxEdit.Text;
+  ATask.CustCompanyAddress := CustomerAddressMemo.Text;
+  ATask.CustAgentInfo := CustAgentMemo.Text;
+
+  ATask.SubConCompanyName := SubCompanyNameEdit.Text;
+  ATask.SubConCompanyCode := SubCompanyCodeEdit.Text;
+//  ServicePOEdit.Text := ATask.Order_No;
+  ATask.SubConManagerName := SubManagerEdit.Text;
+  ATask.SubConPosition := SubPositionEdit.Text;
+  ATask.SubConEMail := SubEmailEdit.Text;
+  ATask.SubConOfficePhone := SubPhonNumEdit.Text;
+  ATask.SubConMobilePhone := SubFaxEdit.Text;
+  ATask.SubConCompanyAddress := SubCompanyAddressMemo.Text;
 
   ATask.AttendScheduled := TimeLogFromDateTime(AttendSchedulePicker.DateTime);
   ATask.InqRecvDate := TimeLogFromDateTime(InqRecvPicker.DateTime);
@@ -801,6 +821,28 @@ begin
   EtcContentMemo.Text := ATask.EtcContent;
   SalesPriceEdit.Text := ATask.InvoicePrice;
   ExchangeRateEdit.Text := ATask.ExchangeRate;
+
+  CustomerNameEdit.Text := ATask.CustCompanyName;
+  CustCompanyCodeEdit.Text := ATask.CustCompanyCode;
+  CustManagerEdit.Text := ATask.CustManagerName;
+  CustPositionEdit.Text := ATask.CustPosition;
+  CustEmailEdit.Text := ATask.CustEMail;
+  NationEdit.Text := ATask.CustNation;
+  CustPhonNumEdit.Text := ATask.CustOfficePhone;
+  CustFaxEdit.Text := ATask.CustMobilePhone;
+  CustomerAddressMemo.Text := ATask.CustCompanyAddress;
+  CustAgentMemo.Text := ATask.CustAgentInfo;
+
+  SubCompanyNameEdit.Text := ATask.SubConCompanyName;
+  SubCompanyCodeEdit.Text := ATask.SubConCompanyCode;
+  ServicePOEdit.Text := ATask.Order_No;
+  SubManagerEdit.Text := ATask.SubConManagerName;
+  SubPositionEdit.Text := ATask.SubConPosition;
+  SubEmailEdit.Text := ATask.SubConEMail;
+  SubPhonNumEdit.Text := ATask.SubConOfficePhone;
+  SubFaxEdit.Text := ATask.SubConMobilePhone;
+  SubCompanyAddressMemo.Text := ATask.SubConCompanyAddress;
+
 //  CurrencyKindCB.Text := ATask.CurrencyKind;
   AttendSchedulePicker.DateTime := TimeLogToDateTime(ATask.AttendScheduled);
   InqRecvPicker.DateTime := TimeLogToDateTime(ATask.InqRecvDate);

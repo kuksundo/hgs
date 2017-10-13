@@ -360,15 +360,13 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     Top = 224
     Width = 686
     Height = 442
-    ActivePage = TabSheet4
+    ActivePage = TabSheet5
     Align = alBottom
     TabOrder = 6
     TabWidth = 120
-    ExplicitWidth = 753
     object TabSheet5: TTabSheet
       Caption = 'Work Process'
       ImageIndex = 4
-      ExplicitWidth = 745
       DesignSize = (
         678
         408)
@@ -615,7 +613,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     end
     object TabSheet1: TTabSheet
       Caption = 'Customer'
-      ExplicitWidth = 745
       DesignSize = (
         678
         408)
@@ -978,36 +975,18 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         ImeName = 'Microsoft IME 2010'
         TabOrder = 8
       end
-      object Button1: TButton
-        Left = 533
-        Top = 8
-        Width = 56
-        Height = 28
-        Caption = 'Save MS'
-        TabOrder = 9
-      end
-      object Button2: TButton
-        Left = 511
-        Top = 11
-        Width = 22
-        Height = 25
-        Caption = '...'
-        TabOrder = 10
-      end
-      object CustomerNameCB: TComboBoxInc
-        Left = 125
-        Top = 11
-        Width = 385
+      object CustomerNameEdit: TEdit
+        Left = 122
+        Top = 10
+        Width = 456
         Height = 27
-        AutoComplete = False
         ImeName = 'Microsoft IME 2010'
-        TabOrder = 11
+        TabOrder = 9
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Partner'
       ImageIndex = 1
-      ExplicitWidth = 745
       DesignSize = (
         678
         408)
@@ -1378,7 +1357,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       object JvLabel54: TJvLabel
         AlignWithMargins = True
         Left = 227
-        Top = 126
+        Top = 129
         Width = 126
         Height = 25
         Alignment = taCenter
@@ -1478,7 +1457,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         ImeName = 'Microsoft IME 2010'
         TabOrder = 7
       end
-      object PositionEdit: TEdit
+      object SubPositionEdit: TEdit
         Left = 371
         Top = 68
         Width = 213
@@ -1518,68 +1497,20 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       end
       object SubConPriceEdit: TEdit
         Left = 359
-        Top = 124
+        Top = 127
         Width = 225
         Height = 27
         Alignment = taCenter
         ImeName = 'Microsoft IME 2010'
         TabOrder = 12
       end
-      object SubCompanyEdit: TAdvEditBtn
+      object SubCompanyNameEdit: TEdit
         Left = 114
-        Top = 6
+        Top = 4
         Width = 470
         Height = 27
-        EmptyTextStyle = []
-        Flat = False
-        LabelFont.Charset = DEFAULT_CHARSET
-        LabelFont.Color = clWindowText
-        LabelFont.Height = -11
-        LabelFont.Name = 'Tahoma'
-        LabelFont.Style = []
-        Lookup.Font.Charset = DEFAULT_CHARSET
-        Lookup.Font.Color = clWindowText
-        Lookup.Font.Height = -11
-        Lookup.Font.Name = 'Arial'
-        Lookup.Font.Style = []
-        Lookup.Separator = ';'
-        Color = clWindow
         ImeName = 'Microsoft IME 2010'
-        ReadOnly = False
         TabOrder = 13
-        Text = ''
-        Visible = True
-        Version = '1.3.5.0'
-        ButtonStyle = bsButton
-        ButtonWidth = 20
-        Etched = False
-        Glyph.Data = {
-          36030000424D3603000000000000360000002800000010000000100000000100
-          1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FF4D74AB234179C5ABA7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFF4173AF008EEC009AF41F4B80FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFF2F6EB22BA7
-          F516C0FF00A0F3568BC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFEFFFF2974BB68C4F86BD4FF279CE66696C8FFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3D8FD5A4E3FEB5EEFF4CAA
-          E7669DD2FFFFFFFFFFFFFFFFFFFFFFFFFEFEFEA188898A6A6A93736E866567B0
-          9595BAA8B1359EE8BDF5FF77C4EF63A1DAFFFFFFFFFFFFFFFFFFFFFFFFD7CDCD
-          7E5857DFD3CBFFFFF7FFFFE7FFFEDBD6BB9E90584D817B8E1794E46BB5E9FFFF
-          FFFFFFFFFFFFFFFFFFFFEDE9E9886565FFFFFFFFFFFFFDF8E8FAF2DCF8EDCFFF
-          F1CFF6DEBA9F5945C0C7D5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA38889F6EFEA
-          FFFFFFFEFBF5FBF7E8F9F4DAF5EBCCE6CEACF3DAB8E2BD99AB8B8EFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFF937674FFFFFFFDFBF1FCF8EEFAF3E1FCF5E3F7F0D7F0
-          DFC1E7C9A9F0D1ABA87E75F8F6F6FFFFFFFFFFFFFFFFFFFFFFFF997D7AFFFFFC
-          F9F2E1FAF3DEFAF7E5FAF1DCF1DFC0EDD9BAECD8B9EDCAA5AF8679EDE8E9FFFF
-          FFFFFFFFFFFFFFFFFFFF9C807BFFFFEBF9EED5FAF1D7F9F2DAF2E3C6FEFBF9FF
-          FFF0EFDFC0E9C69EB0857BF5F2F3FFFFFFFFFFFFFFFFFFFFFFFFAF9596F7EAC8
-          F9EBCCEFDCBEF4E4C7F0E1C5FDFCECFAF5DDEFDCBCDFB087B59A9AFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFDED4D7BA998CFDECC4EDD4B0E5CAA8EFDBBFF2E3C4F2
-          DEBCEABF93BB8E7DE7DFE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCEBFC5
-          BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
-          B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
       end
     end
     object TabSheet4: TTabSheet
@@ -1591,7 +1522,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       Font.Style = [fsBold]
       ImageIndex = 3
       ParentFont = False
-      ExplicitWidth = 745
       object InvoiceGrid: TNextGrid
         Left = 0
         Top = 0
@@ -1611,7 +1541,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
         SelectionColor = 12615680
         TabOrder = 0
         TabStop = True
-        ExplicitWidth = 761
         object NxIncrementColumn1: TNxIncrementColumn
           Alignment = taCenter
           DefaultWidth = 32
@@ -1796,7 +1725,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     Align = alTop
     Rounding = 4
     TabOrder = 7
-    ExplicitWidth = 753
     object JvLabel14: TJvLabel
       Left = 10
       Top = 9
@@ -1831,7 +1759,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       Caption = 'Close'
       TabOrder = 0
       OnClick = btn_CloseClick
-      ExplicitLeft = 686
     end
     object AeroButton1: TAeroButton
       AlignWithMargins = True
@@ -1846,7 +1773,6 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
       Caption = 'Save'
       TabOrder = 1
       OnClick = AeroButton1Click
-      ExplicitLeft = 605
     end
   end
   object AttendSchedulePicker: TDateTimePicker
@@ -1897,7 +1823,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     Left = 99
     Top = 8
     Bitmap = {
-      494C010130009800E00310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010130009800E40310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3642,7 +3568,7 @@ object InvoiceTaskEditF: TInvoiceTaskEditF
     Left = 136
     Top = 8
     Bitmap = {
-      494C010110001400B40010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010110001400B80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
