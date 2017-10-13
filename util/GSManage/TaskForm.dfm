@@ -522,7 +522,7 @@ object TaskEditF: TTaskEditF
     Top = 269
     Width = 604
     Height = 397
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     Align = alBottom
     TabOrder = 10
     TabWidth = 120
@@ -1896,6 +1896,33 @@ object TaskEditF: TTaskEditF
         HotTrackFont.Name = #47569#51008' '#44256#46357
         HotTrackFont.Style = []
       end
+      object JvLabel68: TJvLabel
+        AlignWithMargins = True
+        Left = 281
+        Top = 186
+        Width = 100
+        Height = 25
+        Alignment = taCenter
+        AutoSize = False
+        Caption = #44397#44032
+        Color = 14671839
+        FrameColor = clGrayText
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = #47569#51008' '#44256#46357
+        Font.Style = [fsBold]
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
+        RoundedFrame = 3
+        Transparent = True
+        HotTrackFont.Charset = ANSI_CHARSET
+        HotTrackFont.Color = clWindowText
+        HotTrackFont.Height = -13
+        HotTrackFont.Name = #47569#51008' '#44256#46357
+        HotTrackFont.Style = []
+      end
       object SubCompanyCodeEdit: TEdit
         Left = 114
         Top = 36
@@ -1939,7 +1966,7 @@ object TaskEditF: TTaskEditF
       object SubEmailEdit: TEdit
         Left = 114
         Top = 188
-        Width = 375
+        Width = 163
         Height = 24
         Alignment = taCenter
         ImeName = 'Microsoft IME 2010'
@@ -2022,7 +2049,7 @@ object TaskEditF: TTaskEditF
       object SubCompanyEdit: TAdvEditBtn
         Left = 114
         Top = 6
-        Width = 444
+        Width = 385
         Height = 24
         EmptyTextStyle = []
         Flat = False
@@ -2074,6 +2101,25 @@ object TaskEditF: TTaskEditF
           BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
           B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        OnClickBtn = SubCompanyEditClickBtn
+      end
+      object Button4: TButton
+        Left = 505
+        Top = 3
+        Width = 56
+        Height = 28
+        Caption = 'Save MS'
+        TabOrder = 14
+        OnClick = Button4Click
+      end
+      object SubConNationEdit: TEdit
+        Left = 387
+        Top = 187
+        Width = 146
+        Height = 24
+        Alignment = taCenter
+        ImeName = 'Microsoft IME 2010'
+        TabOrder = 15
       end
     end
     object TabSheet4: TTabSheet
@@ -2960,7 +3006,7 @@ object TaskEditF: TTaskEditF
     Left = 11
     Top = 8
     Bitmap = {
-      494C010130009800E40310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010130009800EC0310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4796,6 +4842,40 @@ object TaskEditF: TTaskEditF
         object N17: TMenuItem
           Caption = #54596#46300#49436#48708#49828#54016' '#51204#45804
         end
+        object PO2: TMenuItem
+          Caption = 'PO '#50836#52397
+        end
+        object Invoice2: TMenuItem
+          Caption = 'Invoice '#49569#48512
+        end
+      end
+      object Create1: TMenuItem
+        Caption = 'Create'
+        object N18: TMenuItem
+          Tag = 2
+          Caption = #47588#52636#52376#47532' '#50836#52397
+          OnClick = N18Click
+        end
+        object N19: TMenuItem
+          Tag = 3
+          Caption = #51088#51116#51649#53804#51077' '#50836#52397
+          OnClick = N19Click
+        end
+        object N20: TMenuItem
+          Tag = 4
+          Caption = #54644#50808' '#47588#52636' '#44256#44061#49324' '#46321#47197' '#50836#52397
+          OnClick = N20Click
+        end
+        object N21: TMenuItem
+          Tag = 5
+          Caption = #51204#51204' '#48708#54364#51456' '#44277#49324' '#49373#49457' '#50836#52397
+          OnClick = N21Click
+        end
+        object N22: TMenuItem
+          Tag = 7
+          Caption = #52636#54616#51648#49884' '#50836#52397
+          OnClick = N22Click
+        end
       end
     end
   end
@@ -4823,7 +4903,7 @@ object TaskEditF: TTaskEditF
     Left = 48
     Top = 8
     Bitmap = {
-      494C010110001400B80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010110001400C00010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

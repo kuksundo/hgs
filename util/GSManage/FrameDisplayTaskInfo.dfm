@@ -341,7 +341,7 @@ object DisplayTaskF: TDisplayTaskF
       end
     end
     object ProductTypeCombo: TComboBox
-      Left = 640
+      Left = 639
       Top = 10
       Width = 118
       Height = 25
@@ -357,8 +357,8 @@ object DisplayTaskF: TDisplayTaskF
       OnDropDown = ProductTypeComboDropDown
     end
     object CustomerCombo: TComboBox
-      Left = 640
-      Top = 40
+      Left = 642
+      Top = 39
       Width = 118
       Height = 25
       Font.Charset = ANSI_CHARSET
@@ -535,6 +535,23 @@ object DisplayTaskF: TDisplayTaskF
       ImeName = 'Microsoft IME 2010'
       TabOrder = 12
       OnKeyPress = HullNoEditKeyPress
+    end
+    object DisplayFinalCheck: TCheckBox
+      Left = 832
+      Top = 104
+      Width = 114
+      Height = 17
+      Caption = #50756#47308#51089#50629' '#54364#49884
+      TabOrder = 13
+    end
+    object Button1: TButton
+      Left = 277
+      Top = 100
+      Width = 75
+      Height = 25
+      Caption = 'Clear'
+      TabOrder = 14
+      OnClick = Button1Click
     end
   end
   object TaskTab: TAdvOfficeTabSet
@@ -1271,7 +1288,8 @@ object DisplayTaskF: TDisplayTaskF
     TabOrder = 2
     TabStop = True
     OnCellDblClick = grid_ReqCellDblClick
-    ExplicitTop = 171
+    ExplicitLeft = 120
+    ExplicitTop = 162
     object NxIncrementColumn1: TNxIncrementColumn
       Alignment = taCenter
       DefaultWidth = 30
@@ -1292,6 +1310,18 @@ object DisplayTaskF: TDisplayTaskF
       SortType = stAlphabetic
       Width = 30
     end
+    object OrderNo: TNxTextColumn
+      Alignment = taCenter
+      Header.Caption = #44277#49324#48264#54840
+      Header.Alignment = taCenter
+      Header.Font.Charset = DEFAULT_CHARSET
+      Header.Font.Color = clWindowText
+      Header.Font.Height = -11
+      Header.Font.Name = 'Tahoma'
+      Header.Font.Style = []
+      Position = 1
+      SortType = stAlphabetic
+    end
     object HullNo: TNxTextColumn
       Alignment = taCenter
       DefaultWidth = 110
@@ -1308,7 +1338,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 1
+      Position = 2
       SortType = stAlphabetic
       Width = 110
     end
@@ -1328,7 +1358,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 2
+      Position = 3
       SortType = stAlphabetic
       Width = 110
     end
@@ -1341,7 +1371,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
-      Position = 3
+      Position = 4
       SortType = stAlphabetic
       Width = 300
     end
@@ -1361,7 +1391,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 4
+      Position = 5
       SortType = stAlphabetic
       Width = 200
     end
@@ -1375,12 +1405,13 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
-      Position = 5
+      Position = 6
       SortType = stAlphabetic
       Width = 200
     end
     object ReqCustomer: TNxTextColumn
-      DefaultWidth = 8
+      Alignment = taCenter
+      DefaultWidth = 120
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -1393,11 +1424,10 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
-      Options = [coAutoSize, coCanClick, coCanInput, coCanSort, coPublicUsing, coShowTextFitHint]
       ParentFont = False
-      Position = 6
+      Position = 7
       SortType = stAlphabetic
-      Width = 8
+      Width = 120
     end
     object ProdType: TNxTextColumn
       Alignment = taCenter
@@ -1414,7 +1444,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 7
+      Position = 8
       SortType = stAlphabetic
     end
     object RecvDate: TNxDateColumn
@@ -1433,12 +1463,13 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 8
+      Position = 9
       SortType = stDate
       NoneCaption = 'None'
       TodayCaption = 'Today'
     end
     object Email: TNxButtonColumn
+      Alignment = taCenter
       DefaultWidth = 60
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1454,7 +1485,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Style = []
       Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
       ParentFont = False
-      Position = 9
+      Position = 10
       SortType = stAlphabetic
       Width = 60
       OnButtonClick = EmailButtonClick
@@ -1474,7 +1505,7 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 10
+      Position = 11
       SortType = stAlphabetic
       Visible = False
     end
@@ -1484,21 +1515,11 @@ object DisplayTaskF: TDisplayTaskF
       Header.Font.Height = -11
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
-      Position = 11
-      SortType = stAlphabetic
-      Visible = False
-    end
-    object QtnNo: TNxTextColumn
-      Header.Font.Charset = DEFAULT_CHARSET
-      Header.Font.Color = clWindowText
-      Header.Font.Height = -11
-      Header.Font.Name = 'Tahoma'
-      Header.Font.Style = []
       Position = 12
       SortType = stAlphabetic
       Visible = False
     end
-    object OrderNo: TNxTextColumn
+    object QtnNo: TNxTextColumn
       Header.Font.Charset = DEFAULT_CHARSET
       Header.Font.Color = clWindowText
       Header.Font.Height = -11
@@ -1576,7 +1597,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000F40218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000F80218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1887,7 +1908,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010300C800200420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010300C800240420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2428,7 +2449,7 @@ object DisplayTaskF: TDisplayTaskF
     Left = 104
     Top = 208
     Bitmap = {
-      494C010102005402040310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402080310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -2570,6 +2591,37 @@ object DisplayTaskF: TDisplayTaskF
   object PopupMenu1: TPopupMenu
     Left = 160
     Top = 208
+    object Mail1: TMenuItem
+      Caption = 'EMail'
+      object Create1: TMenuItem
+        Caption = 'Create'
+        object N11: TMenuItem
+          Tag = 2
+          Caption = #47588#52636#52376#47532' '#50836#52397
+          OnClick = N11Click
+        end
+        object N12: TMenuItem
+          Tag = 3
+          Caption = #51088#51116#51649#53804#51077' '#50836#52397
+          OnClick = N12Click
+        end
+        object N13: TMenuItem
+          Tag = 4
+          Caption = #54644#50808' '#47588#52636' '#44256#44061#49324' '#46321#47197' '#50836#52397
+          OnClick = N13Click
+        end
+        object N14: TMenuItem
+          Tag = 5
+          Caption = #51204#51204' '#48708#54364#51456' '#44277#49324' '#49373#49457' '#50836#52397
+          OnClick = N14Click
+        end
+        object N15: TMenuItem
+          Tag = 7
+          Caption = #52636#54616#51648#49884' '#50836#52397
+          OnClick = N15Click
+        end
+      end
+    end
     object N6: TMenuItem
       Caption = #49436#48708#49828#47532#54252#53944' '#51077#49688' '#54980' '#50629#47924' '#51208#52264
       object Invoice4: TMenuItem

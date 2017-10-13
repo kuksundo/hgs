@@ -25,6 +25,8 @@ procedure GetInvoiceItem2Var(ADelimitedStr: string; var ADoc: variant);
 function GetTaskInfoAttachedFileName(AVar: variant): string;
 function GetInvoiceTaskInfoAttachedFileName(AVar: variant): string;
 procedure LoadInvoiceTaskFromVariant(ATask:TSQLInvoiceTask; ADoc: variant);
+procedure LoadInvoiceTaskFromVariant2(ATask:TSQLInvoiceTask; ADoc: variant);
+procedure LoadInvoiceTaskFromVariant3(ATask:TSQLInvoiceTask; ADoc: variant);
 procedure LoadInvoiceItemListFromVariant(ADoc: variant; AItemList: TObjectList<TSQLInvoiceItem>);
 procedure LoadInvoiceItemFromVariant(AItem:TSQLInvoiceItem; ADoc: variant);
 procedure LoadInvoiceFileListFromVariant(ADoc: variant; AFileList: TObjectList<TSQLInvoiceFile>);
@@ -38,7 +40,7 @@ function GetRecvEmailAddress(AMailType: integer): string;
 
 implementation
 
-uses SynMustache, UnitMakeReport, UnitStringUtil;
+uses SynMustache, UnitMakeReport, UnitStringUtil, StrUtils;
 
 function MakeDirectShippingEmailBody(ATask: TSQLGSTask): string;
 var
@@ -174,14 +176,20 @@ var
   LDoc: variant;
   LSQLCustomer: TSQLCustomer;
   LDate: TDate;
+  LPrice: string;
 begin
   TDocVariant.New(LDoc);
   LDoc.To := SALES_MANAGER_SIG;
   LDoc.From := MY_EMAIL_SIG;
   LDoc.OrderNo := ATask.Order_No;
+  LPrice := UTF8ToString(ATask.SalesPrice);
+
+  if not ContainsText(LPrice, ',') then
+    LPrice := AddThousandSeparator(LPrice,',');
+
   LDoc.SalesPrice :=
     TRttiEnumerationType.GetName<TCurrencyKind>(TCurrencyKind(ATask.CurrencyKind)) +
-     ' ' + AddThousandSeparator(UTF8ToString(ATask.SalesPrice),',') ;
+     ' ' + LPrice;
   LDoc.ShippingNo := ATask.ShippingNo;
 
   LDate := TimeLogToDateTime(ATask.SalesReqDate);
@@ -447,6 +455,33 @@ begin
   ATask.UniqueTaskID := ADoc.UniqueTaskID;
 end;
 
+procedure LoadInvoiceTaskFromVariant2(ATask:TSQLInvoiceTask; ADoc: variant);
+begin
+  ATask.CustCompanyCode := ADoc.CompanyCode;
+  ATask.CustEMail := ADoc.EMail;
+  ATask.CustCompanyName := ADoc.CompanyName;
+  ATask.CustMobilePhone := ADoc.MobilePhone;
+  ATask.CustOfficePhone := ADoc.OfficePhone;
+  ATask.CustCompanyAddress := ADoc.CompanyAddress;
+  ATask.CustPosition := ADoc.Position;
+  ATask.CustManagerName := ADoc.ManagerName;
+  ATask.CustNation := ADoc.Nation;
+  ATask.CustAgentInfo := ADoc.AgentInfo;
+end;
+
+procedure LoadInvoiceTaskFromVariant3(ATask:TSQLInvoiceTask; ADoc: variant);
+begin
+  ATask.SubConCompanyCode := ADoc.CompanyCode;
+  ATask.SubConEMail := ADoc.EMail;
+  ATask.SubConCompanyName := ADoc.CompanyName;
+  ATask.SubConMobilePhone := ADoc.MobilePhone;
+  ATask.SubConOfficePhone := ADoc.OfficePhone;
+  ATask.SubConCompanyAddress := ADoc.CompanyAddress;
+  ATask.SubConPosition := ADoc.Position;
+  ATask.SubConManagerName := ADoc.ManagerName;
+  ATask.SubConNation := ADoc.Nation;
+end;
+
 procedure LoadInvoiceItemListFromVariant(ADoc: variant; AItemList: TObjectList<TSQLInvoiceItem>);
 var
   LDynUtf8: TRawUTF8DynArray;

@@ -217,6 +217,9 @@ var
   i: integer;
   LpjhTodoItem: TpjhTodoItem;
 begin
+  if not Assigned(Source) then
+    exit;
+
   Clear;
 
   for i := 0 to TpjhToDoItemCollection(Source).Count - 1 do

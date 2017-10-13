@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, NxScrollControl, NxCustomGridControl,
   NxCustomGrid, NxGrid, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls, UElecDataRecord,
-  NxColumns, NxColumnClasses;
+  NxColumns, NxColumnClasses, CommonData;
 
 type
   TSearchCustomerF = class(TForm)
@@ -38,6 +38,7 @@ type
   private
     procedure ExecuteSearch(Key: Char);
   public
+    FCompanyType: TCompanyType;
     procedure DoSearchCustomer;
   end;
 
@@ -45,8 +46,6 @@ var
   SearchCustomerF: TSearchCustomerF;
 
 implementation
-
-uses CommonData;
 
 {$R *.dfm}
 
@@ -76,12 +75,13 @@ begin
   LCompanyName := CompanyNameEdit.Text;
   LCompanyCode := CompanyCodeEdit.Text;
 
-  if (LCompanyCode = '') and (LCompanyName = '') then
-    exit;
+//  if (LCompanyCode = '') and (LCompanyName = '') then
+//    exit;
 
-  LMasterCustomer := GetMasterCustomerFromCompanyCodeNName(LCompanyCode, LCompanyName);
+  LMasterCustomer := GetMasterCustomerFromCompanyCodeNName(LCompanyCode, LCompanyName, FCompanyType);
   try
     NextGrid1.ClearRows;
+    LMasterCustomer.FillRewind;
 
     while LMasterCustomer.FillOne do
     begin

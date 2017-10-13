@@ -442,6 +442,27 @@ type
     FInvoicePrice,//청구금액
     FExchangeRate: RawUTF8; //환율
 
+    fCustCompanyCode,
+    fCustEMail,
+    fCustCompanyName,
+    fCustMobilePhone,
+    fCustOfficePhone,
+    fCustCompanyAddress,
+    fCustPosition,
+    fCustManagerName,
+    fCustNation,
+    fCustAgentInfo,
+
+    fSubConCompanyCode,
+    fSubConEMail,
+    fSubConCompanyName,
+    fSubConMobilePhone,
+    fSubConOfficePhone,
+    fSubConCompanyAddress,
+    fSubConPosition,
+    fSubConManagerName,
+    fSubConNation  : RawUTF8;
+
     //화폐(0:원,1:USD,2:EUR)
     FCurrencyKind: integer;
 
@@ -464,7 +485,27 @@ type
     property ChargeInPersonId: RawUTF8 read FChargeInPersonId write FChargeInPersonId;
     property InvoicePrice: RawUTF8 read FInvoicePrice write FInvoicePrice;
     property ExchangeRate: RawUTF8 read FExchangeRate write FExchangeRate;
-    property AgentInfo: RawUTF8 read fAgentInfo write fAgentInfo;
+
+    property CustCompanyCode: RawUTF8 read fCustCompanyCode write fCustCompanyCode;
+    property CustEMail: RawUTF8 read fCustEMail write fCustEMail;
+    property CustCompanyName: RawUTF8 read fCustCompanyName write fCustCompanyName;
+    property CustMobilePhone: RawUTF8 read fCustMobilePhone write fCustMobilePhone;
+    property CustOfficePhone: RawUTF8 read fCustOfficePhone write fCustOfficePhone;
+    property CustCompanyAddress: RawUTF8 read fCustCompanyAddress write fCustCompanyAddress;
+    property CustPosition: RawUTF8 read fCustPosition write fCustPosition;
+    property CustManagerName: RawUTF8 read fCustManagerName write fCustManagerName;
+    property CustNation: RawUTF8 read fCustNation write fCustNation;
+    property CustAgentInfo: RawUTF8 read fCustAgentInfo write fCustAgentInfo;
+
+    property SubConCompanyCode: RawUTF8 read fSubConCompanyCode write fSubConCompanyCode;
+    property SubConEMail: RawUTF8 read fSubConEMail write fSubConEMail;
+    property SubConCompanyName: RawUTF8 read fSubConCompanyName write fSubConCompanyName;
+    property SubConMobilePhone: RawUTF8 read fSubConMobilePhone write fSubConMobilePhone;
+    property SubConOfficePhone: RawUTF8 read fSubConOfficePhone write fSubConOfficePhone;
+    property SubConCompanyAddress: RawUTF8 read fSubConCompanyAddress write fSubConCompanyAddress;
+    property SubConPosition: RawUTF8 read fSubConPosition write fSubConPosition;
+    property SubConManagerName: RawUTF8 read fSubConManagerName write fSubConManagerName;
+    property SubConNation: RawUTF8 read fSubConNation write fSubConNation;
 
     property CurrencyKind: integer read FCurrencyKind write FCurrencyKind;
 
@@ -553,7 +594,8 @@ function GetFilesFromTask(ATask: TSQLGSTask): TSQLGSFile;
 function GetCustomerFromTask(ATask: TSQLGSTask): TSQLCustomer;
 function GetSubConFromTask(ATask: TSQLGSTask): TSQLSubCon;
 function GetMaterial4ProjFromTask(ATask: TSQLGSTask): TSQLMaterial4Project;
-function GetMasterCustomerFromCompanyCodeNName(ACompanyCode, ACompanyName: string): TSQLMasterCustomer;
+function GetMasterCustomerFromCompanyCodeNName(ACompanyCode, ACompanyName: string;
+  ACompanyType: TCompanyType = ctNull): TSQLMasterCustomer;
 function GetToDoItemFromTask(ATask: TSQLGSTask): TSQLToDoItem;
 
 procedure DeleteTask(ATaskID: TID);
@@ -717,7 +759,7 @@ begin
   end
   else
   begin
-    LNumOfTransaction := 26;
+    LNumOfTransaction := 27;
 
     if ASPType > sptDomesticCustOnlyService then
       LNumOfTransaction := LNumOfTransaction + 6
@@ -864,7 +906,8 @@ begin
   end
 end;
 
-function GetMasterCustomerFromCompanyCodeNName(ACompanyCode, ACompanyName: string): TSQLMasterCustomer;
+function GetMasterCustomerFromCompanyCodeNName(ACompanyCode, ACompanyName: string;
+  ACompanyType: TCompanyType): TSQLMasterCustomer;
 var
   ConstArray: TConstArray;
   LWhere, LStr: string;
@@ -887,6 +930,21 @@ begin
         LWhere := LWhere + ' and ';
       LWhere := LWhere + 'CompanyCode LIKE ? ';
     end;
+
+    if LWhere = '' then
+    begin
+      AddConstArray(ConstArray, [-1]);
+      LWhere := 'ID <> ? ';
+    end;
+
+    AddConstArray(ConstArray, [Ord(ctSubContractor)]);
+    if LWhere <> '' then
+      LWhere := LWhere + ' and ';
+
+    if ACompanyType = ctSubContractor then
+      LWhere := LWhere + 'CompanyType = ? '
+    else
+      LWhere := LWhere + 'CompanyType <> ? ';
 
     Result := TSQLMasterCustomer.CreateAndFillPrepare(g_MasterDB, Lwhere, ConstArray);
 

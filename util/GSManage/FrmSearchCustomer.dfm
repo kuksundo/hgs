@@ -11,6 +11,7 @@ object SearchCustomerF: TSearchCustomerF
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -21,7 +22,6 @@ object SearchCustomerF: TSearchCustomerF
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 599
     object Label1: TLabel
       Left = 32
       Top = 16
@@ -71,8 +71,6 @@ object SearchCustomerF: TSearchCustomerF
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 380
-    ExplicitWidth = 599
     object BitBtn1: TBitBtn
       Left = 136
       Top = 6
@@ -141,8 +139,6 @@ object SearchCustomerF: TSearchCustomerF
     TabOrder = 2
     TabStop = True
     OnCellDblClick = NextGrid1CellDblClick
-    ExplicitWidth = 599
-    ExplicitHeight = 339
     object CompanyName: TNxTextColumn
       DefaultWidth = 200
       Font.Charset = DEFAULT_CHARSET

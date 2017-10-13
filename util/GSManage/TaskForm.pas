@@ -216,6 +216,17 @@ type
     SubCompanyEdit: TAdvEditBtn;
     JvLabel67: TJvLabel;
     ChargeInPersonIdEdit: TEdit;
+    Create1: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
+    PO2: TMenuItem;
+    Invoice2: TMenuItem;
+    Button4: TButton;
+    JvLabel68: TJvLabel;
+    SubConNationEdit: TEdit;
     procedure AeroButton1Click(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -243,6 +254,13 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure INQInput1Click(Sender: TObject);
+    procedure N18Click(Sender: TObject);
+    procedure N19Click(Sender: TObject);
+    procedure N20Click(Sender: TObject);
+    procedure N21Click(Sender: TObject);
+    procedure N22Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure SubCompanyEditClickBtn(Sender: TObject);
   private
     function GetFileFromDropDataFormat(AFormat: TVirtualFileStreamDataFormat): TFileStream;
 
@@ -265,6 +283,8 @@ type
 
     procedure SaveCustomer2MasterCustomer(AMCustomer: TSQLMasterCustomer);
     procedure SaveCustEdit2MasterCustomer;
+    procedure SaveSubContractEdit2MasterSubContract(AMCustomer: TSQLMasterCustomer);
+    procedure SaveSubConEdit2MasterCustomer;
   public
     FTask,
     FEmailDisplayTask: TSQLGSTask;
@@ -300,6 +320,8 @@ type
     procedure LoadTaskForm2Customer(AForm: TTaskEditF; ACustomer: TSQLCustomer;
       ATaskID: TID = 0);
     procedure LoadTaskForm2MasterCustomer(AForm: TTaskEditF; var ACustomer: TSQLMasterCustomer;
+      ATaskID: TID);
+    procedure LoadTaskForm2MasterSubContractor(AForm: TTaskEditF; var ACustomer: TSQLMasterCustomer;
       ATaskID: TID);
     procedure LoadSubCon2Form(ASubCon: TSQLSubCon; AForm: TTaskEditF);
     procedure LoadTaskForm2SubCon(AForm: TTaskEditF; ASubCon: TSQLSubCon;
@@ -493,6 +515,32 @@ begin
   end;
 end;
 
+procedure TTaskEditF.SaveSubConEdit2MasterCustomer;
+var
+  LCustomer: TSQLMasterCustomer;
+begin
+  LCustomer := GetMasterCustomerFromCompanyCodeNName(SubCompanyCodeEdit.Text, SubCompanyEdit.Text);
+  try
+    SaveSubContractEdit2MasterSubContract(LCustomer);
+  finally
+    FreeAndNil(LCustomer);
+  end;
+end;
+
+procedure TTaskEditF.SaveSubContractEdit2MasterSubContract(AMCustomer: TSQLMasterCustomer);
+begin
+  if AMCustomer.IsUpdate then
+  begin
+    if MessageDlg('협력사 정보가 이미 MasterDB에 존재합니다.' + #13#10 + '새로운 정보로 Update 하시겠습니까?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+      g_MasterDB.Update(AMCustomer);
+  end
+  else
+  begin
+    LoadTaskForm2MasterSubContractor(Self,AMCustomer, Self.FTask.ID);
+    g_MasterDB.Add(AMCustomer, true);
+  end;
+end;
+
 procedure TTaskEditF.SelectMailBtnClick(Sender: TObject);
 begin
   ShowDTIForm;
@@ -597,6 +645,12 @@ end;
 
 procedure TTaskEditF.Button1Click(Sender: TObject);
 begin
+  if (CustomerNameCB.Text = '') or (CustCompanyCodeEdit.Text = '') then
+  begin
+    ShowMessage('회사이름 과 업체코드는 필수 입력 항목 입니다.');
+    exit;
+  end;
+
   if MessageDlg('Are you sure save to MasterCustomerDB?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
     SaveCustEdit2MasterCustomer;
 end;
@@ -609,6 +663,8 @@ begin
   try
     with LSearchCustomerF do
     begin
+      FCompanyType := ctNull;
+
       if ShowModal = mrOk then
       begin
         if NextGrid1.SelectedRow <> -1 then
@@ -637,6 +693,18 @@ begin
 
   Create_ToDoList_Frm(IntToStr(FEmailDisplayTask.ID), FToDoCollect, False,
     InsertOrUpdateToDoList2DB, DeleteToDoListFromDB);
+end;
+
+procedure TTaskEditF.Button4Click(Sender: TObject);
+begin
+  if (SubCompanyCodeEdit.Text = '') or (SubCompanyEdit.Text = '') then
+  begin
+    ShowMessage('회사이름 과 업체코드는 필수 입력 항목 입니다.');
+    exit;
+  end;
+
+  if MessageDlg('Are you sure save to MasterSubContractDB?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+    SaveSubConEdit2MasterCustomer;
 end;
 
 procedure TTaskEditF.fileGridCellDblClick(Sender: TObject; ACol, ARow: Integer);
@@ -693,8 +761,6 @@ begin
 //  SalesProcess2Combo(CurWorkCB);
   SalesProcessType2Combo(SalesProcTypeCB);
   CompanyType2Combo(CustCompanyTypeCB);
-  SetCurrentDir(ExtractFilePath(Application.ExeName));
-  DOC_DIR := ExtractFilePath(Application.ExeName) + '양식\';
 
   PageControl1.ActivePageIndex := 0;
 end;
@@ -1028,6 +1094,25 @@ begin
   end;
 end;
 
+procedure TTaskEditF.LoadTaskForm2MasterSubContractor(AForm: TTaskEditF;
+  var ACustomer: TSQLMasterCustomer; ATaskID: TID);
+begin
+  with AForm do
+  begin
+    ACustomer.CompanyName := SubCompanyEdit.Text;
+    ACustomer.CompanyCode := SubCompanyCodeEdit.Text;
+    ACustomer.CompanyType := ctSubContractor;
+    ACustomer.ManagerName := SubManagerEdit.Text;
+    ACustomer.Position := PositionEdit.Text;
+    ACustomer.OfficePhone := SubPhonNumEdit.Text;
+    ACustomer.MobilePhone := SubFaxEdit.Text;
+
+    ACustomer.EMail := SubEmailEdit.Text;
+    ACustomer.CompanyAddress := SubCompanyAddressMemo.Text;
+    ACustomer.Nation := SubConNationEdit.Text;
+  end;
+end;
+
 procedure TTaskEditF.LoadTaskForm2Material4Project(AForm: TTaskEditF;
   AMaterial: TSQLMaterial4Project; ATaskID: TID);
 begin
@@ -1185,6 +1270,31 @@ begin
     FSQLGSFiles := GetFilesFromTask(AVar);
     LoadGSFiles2Form(FSQLGSFiles, AForm);
   end;
+end;
+
+procedure TTaskEditF.N18Click(Sender: TObject);
+begin
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+end;
+
+procedure TTaskEditF.N19Click(Sender: TObject);
+begin
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+end;
+
+procedure TTaskEditF.N20Click(Sender: TObject);
+begin
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+end;
+
+procedure TTaskEditF.N21Click(Sender: TObject);
+begin
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+end;
+
+procedure TTaskEditF.N22Click(Sender: TObject);
+begin
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
 end;
 
 procedure TTaskEditF.N2Click(Sender: TObject);
@@ -1442,6 +1552,37 @@ begin
   LRow := AGrid.AddRow();
   AGrid.CellByName['FileName', LRow].AsString := ARec.fFilename;
   AGrid.CellByName['DocType', LRow].AsString := GSDocType2String(ARec.fGSDocType);
+end;
+
+procedure TTaskEditF.SubCompanyEditClickBtn(Sender: TObject);
+var
+  LSearchCustomerF: TSearchCustomerF;
+begin
+  LSearchCustomerF := TSearchCustomerF.Create(nil);
+  try
+    with LSearchCustomerF do
+    begin
+      FCompanyType := ctSubContractor;
+
+      if ShowModal = mrOk then
+      begin
+        if NextGrid1.SelectedRow <> -1 then
+        begin
+          SubCompanyEdit.Text := NextGrid1.CellByName['CompanyName', NextGrid1.SelectedRow].AsString;
+          SubCompanyCodeEdit.Text := NextGrid1.CellByName['CompanyCode', NextGrid1.SelectedRow].AsString;
+          SubManagerEdit.Text := NextGrid1.CellByName['ManagerName', NextGrid1.SelectedRow].AsString;
+          PositionEdit.Text := NextGrid1.CellByName['Position', NextGrid1.SelectedRow].AsString;
+          SubEmailEdit.Text := NextGrid1.CellByName['EMail', NextGrid1.SelectedRow].AsString;
+          SubConNationEdit.Text := NextGrid1.CellByName['Nation', NextGrid1.SelectedRow].AsString;
+          SubPhonNumEdit.Text := NextGrid1.CellByName['Officeno', NextGrid1.SelectedRow].AsString;
+          SubFaxEdit.Text := NextGrid1.CellByName['Mobileno', NextGrid1.SelectedRow].AsString;
+          SubCompanyAddressMemo.Text := NextGrid1.CellByName['CompanyAddress', NextGrid1.SelectedRow].AsString;
+        end;
+      end;
+    end;
+  finally
+    LSearchCustomerF.Free;
+  end;
 end;
 
 end.

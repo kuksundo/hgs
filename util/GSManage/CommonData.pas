@@ -65,7 +65,7 @@ type
               iitMaterials, iitAirFare, iitAccommodation, iitTransportation,
               iitMeal, iitEtc, iitFinal);
 
-  TCompanyType = (ctNull, ctNewCompany, ctMaker, ctOwner, ctAgent, ctCorporation, ctFinal);
+  TCompanyType = (ctNull, ctNewCompany, ctMaker, ctOwner, ctAgent, ctCorporation, ctSubContractor, ctFinal);
   TSalesProcess = (spNone, spQtnReqRecvFromCust, spQtnReq2SubCon, spQtnRecvFromSubCon, spQtnSend2Cust,
     spSEAttendReqFromCust, spVslSchedReq2Cust, spSECanAvail2SubCon, spSEAvailRecvFromSubCon,
     spSECanAttend2Cust, spSEAttendConfirmFromCust, spPOReq2Cust, spPORecvFromCust, spSEDispatchReq2SubCon,//13
@@ -146,6 +146,7 @@ const
          (Description : '4.Owner';            Value : ctOwner),
          (Description : '6.Agent';            Value : ctAgent),
          (Description : 'B.법인';             Value : ctCorporation),
+         (Description : '협력사';             Value : ctSubContractor),
          (Description : '';                   Value : ctFinal)
          );
 
@@ -227,16 +228,16 @@ const
     Description : string;
     Value       : TContainData4Mail;
   end = ((Description : '';                         Value : cdmNone),
-         (Description : 'Service Report';             Value : cdmServiceReport),
-         (Description : 'Quotation -> Customer';           Value : cdmQtn2Cust),
-         (Description : 'Quotation <- SubCon';         Value : cdmQtnFromSubCon),
-         (Description : 'PO <- Customer';               Value : cdmPoFromCust),
+         (Description : 'Service Report';           Value : cdmServiceReport),
+         (Description : 'Quotation -> Customer';    Value : cdmQtn2Cust),
+         (Description : 'Quotation <- SubCon';      Value : cdmQtnFromSubCon),
+         (Description : 'PO <- Customer';           Value : cdmPoFromCust),
          (Description : 'PO <- SubCon';             Value : cdmPo2SubCon),
-         (Description : 'Invoice -> Customer';          Value : cdmInvoice2Cust),
+         (Description : 'Invoice -> Customer';      Value : cdmInvoice2Cust),
          (Description : 'Invoice <- SubCon';        Value : cdmInvoiceFromSubCon),
-         (Description : 'Tax Bill <- SubCon';     Value : cdmTaxBillFromSubCon),
-         (Description : 'Tax Bill -> Customer';       Value : cdmTaxBill2Cust),
-         (Description : 'Tax Bill -> Customer';       Value : cdmFinal)
+         (Description : 'Tax Bill <- SubCon';       Value : cdmTaxBillFromSubCon),
+         (Description : 'Tax Bill -> Customer';     Value : cdmTaxBill2Cust),
+         (Description : 'Tax Bill -> Customer';     Value : cdmFinal)
   );
 
   R_GSInvoiceItemType : array[iitNull..iitFinal] of record
@@ -282,7 +283,8 @@ const
   CMD_REQ_CREATE_MAIL = 'Request Create Mail';
   CMD_REQ_ADD_APPOINTMENT = 'Request Add Appointment';
 
-  SALES_DIRECTOR_EMAIL_ADDR = 'shjeon@hyundai-gs.com';//매출처리담당자
+//  SALES_DIRECTOR_EMAIL_ADDR = 'shjeon@hyundai-gs.com';//매출처리담당자
+  SALES_DIRECTOR_EMAIL_ADDR = 'seonyunshin@hyundai-gs.com';//매출처리담당자
   MATERIAL_INPUT_EMAIL_ADDR = 'geunhyuk.lim@pantos.com';//자재직투입요청
   FOREIGN_INPUT_EMAIL_ADDR = 'seryeongkim@hyundai-gs.com';//해외고객업체등록
   ELEC_HULL_REG_EMAIL_ADDR = 'seryeongkim@hyundai-gs.com';//전전비표준공사 생성 요청
@@ -291,7 +293,8 @@ const
 
   MY_EMAIL_SIG = '부품서비스2팀 박정현 차장';
   SHIPPING_MANAGER_SIG = '판토스 김윤겸 주임님';
-  SALES_MANAGER_SIG = '부품서비스1팀 전선희 사원님';
+//  SALES_MANAGER_SIG = '부품서비스1팀 전선희 사원님';
+  SALES_MANAGER_SIG = '부품서비스2팀 신선윤씨';
   FIELDSERVICE_MANAGER_SIG = '필드서비스팀 이용준 부장님';
 
   //Task를 Outlook 첨부파일로 만들때 인식하기 위한 문자열

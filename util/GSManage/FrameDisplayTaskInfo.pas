@@ -98,6 +98,15 @@ type
     GetJsonValues1: TMenuItem;
     JvLabel9: TJvLabel;
     PONoEdit: TEdit;
+    DisplayFinalCheck: TCheckBox;
+    Button1: TButton;
+    Mail1: TMenuItem;
+    Create1: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    N14: TMenuItem;
+    N15: TMenuItem;
     procedure btn_SearchClick(Sender: TObject);
     procedure ComboBox1DropDown(Sender: TObject);
     procedure rg_periodClick(Sender: TObject);
@@ -117,12 +126,19 @@ type
     procedure Invoice4Click(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
     procedure GetJsonValues1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure N11Click(Sender: TObject);
+    procedure N12Click(Sender: TObject);
+    procedure N13Click(Sender: TObject);
+    procedure N14Click(Sender: TObject);
+    procedure N15Click(Sender: TObject);
   private
     procedure ExecuteSearch(Key: Char);
 
     //TaskTab의 tag에 TSalesProcess값을 지정함
     //마우스로 tab 선택 시 해당 Task만 보이기 위함
     procedure InitTaskTab;
+    procedure InputValueClear;
 
     function GetSqlWhereFromQueryDate(AQueryDate: TQueryDateType): string;
     function GetTaskIdFromGrid(ARow: integer): TID;
@@ -170,7 +186,7 @@ type
 
 implementation
 
-uses System.Rtti;
+uses System.Rtti, UnitIPCModule;
 
 {$R *.dfm}
 
@@ -192,6 +208,7 @@ var
   LSubject: string;
   LStrList: TStringList;
   LFSMState: TFSMState;
+  LMailCount: integer;
 begin
   if not Assigned(AVar) then
     exit;
@@ -206,13 +223,18 @@ begin
   AVar.EmailMsg.DestGet(g_ProjectDB, AVar.ID, LIds);
   LSQLEmailMsg:= TSQLEmailMsg.CreateAndFillPrepare(g_ProjectDB, TInt64DynArray(LIds));
   try
+    LMailCount := 0;
+    LSubject := '';
+
     while LSQLEmailMsg.FillOne do
     begin
-      if LSQLEmailMsg.ParentID = '' then
+      if (LSubject = '') and (LSQLEmailMsg.ParentID = '') then
       begin
         LSubject := LSQLEmailMsg.Subject;
-        break;
+//        break;
       end;
+
+      Inc(LMailCount);
     end;
 
     with AVar, AGrid do
@@ -229,8 +251,10 @@ begin
       CellByName['PONo', ARow].AsString := PO_No;
       CellByName['QtnNo', ARow].AsString := QTN_No;
       CellByName['OrderNo', ARow].AsString := Order_No;
+      CellByName['ReqCustomer', ARow].AsString := ShipOwner;
       CellByName['Status', ARow].AsString := SalesProcess2String(
         TSalesProcess(CurrentWorkStatus));
+      CellByName['Email', ARow].AsInteger := LMailCount;
 
       if NextWork > 0 then
       begin
@@ -297,6 +321,66 @@ var
 begin
   LRec := Get_Doc_ServiceOrder_Rec(ARow);
   MakeDocServiceOrder(LRec);
+end;
+
+procedure TDisplayTaskF.N11Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N12Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N13Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N14Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N15Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+  finally
+    FreeAndNil(LTask);
+  end;
 end;
 
 procedure TDisplayTaskF.N4Click(Sender: TObject);
@@ -609,6 +693,21 @@ begin
   end;
 end;
 
+procedure TDisplayTaskF.InputValueClear;
+begin
+  HullNoEdit.Text := '';
+  ShipNameEdit.Text := '';
+  CustomerCombo.Text := '';
+  PONoEdit.Text := '';
+  QtnNoEdit.Text := '';
+  SubjectEdit.Text := '';
+  OrderNoEdit.Text := '';
+  ComboBox1.ItemIndex := -1;
+  ProductTypeCombo.ItemIndex := -1;
+  CurWorkCB.ItemIndex := -1;
+  BefAftCB.ItemIndex := -1;
+end;
+
 procedure TDisplayTaskF.Invoice4Click(Sender: TObject);
 begin
   MakeInvoice(grid_Req.SelectedRow);
@@ -706,6 +805,11 @@ begin
     PONoEdit.Text);
 end;
 
+procedure TDisplayTaskF.Button1Click(Sender: TObject);
+begin
+  InputValueClear;
+end;
+
 procedure TDisplayTaskF.ComboBox1DropDown(Sender: TObject);
 begin
   ComboBox1.Clear;
@@ -717,6 +821,7 @@ begin
   inherited;
 
   SetCurrentDir(ExtractFilePath(Application.ExeName));
+  DOC_DIR := ExtractFilePath(Application.ExeName) + '양식\';
   FFolderListFromOL := TStringList.Create;
   if FileExists('.\'+FOLDER_LIST_FILE_NAME) then
     FFolderListFromOL.LoadFromFile('.\'+FOLDER_LIST_FILE_NAME);
@@ -795,28 +900,32 @@ begin
 
     if ACustomer <> '' then
     begin
-      LSQLCustomer := TSQLCustomer.CreateAndFillPrepare(g_MasterDB,'CompanyName LIKE ?',['%'+ACustomer+'%']);
-      LStr := '';
-      try
-        while LSQLCustomer.FillOne do
-        begin
-          AddConstArray(ConstArray, [LSQLCustomer.TaskID]);
-
-          if LStr <> '' then
-            LStr := LStr + ' or ';
-
-          LStr := LStr + ' ID = ? ';
-        end;
-      finally
-        if LStr <> '' then
-        begin
-          if LWhere <> '' then
-            LWhere := LWhere + ' and ';
-          LWhere :=  LWhere + '( ' + LStr + ')';
-        end;
-
-        FreeAndNil(LSQLCustomer);
-      end;
+//      LSQLCustomer := TSQLCustomer.CreateAndFillPrepare(g_MasterDB,'CompanyName LIKE ?',['%'+ACustomer+'%']);
+//      LStr := '';
+//      try
+//        while LSQLCustomer.FillOne do
+//        begin
+//          AddConstArray(ConstArray, [LSQLCustomer.TaskID]);
+//
+//          if LStr <> '' then
+//            LStr := LStr + ' or ';
+//
+//          LStr := LStr + ' ID = ? ';
+//        end;
+//      finally
+//        if LStr <> '' then
+//        begin
+//          if LWhere <> '' then
+//            LWhere := LWhere + ' and ';
+//          LWhere :=  LWhere + '( ' + LStr + ')';
+//        end;
+//
+//        FreeAndNil(LSQLCustomer);
+//      end;
+      AddConstArray(ConstArray, ['%'+ACustomer+'%']);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + ' ShipOwner LIKE ? ';
     end;
 
     if ASubject <> '' then
@@ -884,14 +993,20 @@ begin
       LWhere := LWhere + ' PO_No LIKE ? ';
     end;
 
-    if LWhere = '' then
+    ACurWork := Ord(spFinal);
+    //완료되지 않은 모든 Task를 보여줌
+    AddConstArray(ConstArray, [ACurWork]);
+
+    if LWhere <> '' then
+      LWhere := LWhere + ' and ';
+
+    if not DisplayFinalCheck.Checked then
     begin
-      //완료되지 않은 모든 Task를 보여줌
-      ACurWork := Ord(spFinal);
-      AddConstArray(ConstArray, [ACurWork]);
-      LWhere := 'CurrentWorkStatus <> ?';
-//      ShowMessage('조회 조건을 선택하세요.');
-//      exit;
+      LWhere := LWhere + 'CurrentWorkStatus <> ?';
+    end
+    else
+    begin
+      LWhere := LWhere + 'CurrentWorkStatus <= ?';
     end;
 
     LSQLGSTask := TSQLGSTask.CreateAndFillPrepare(g_ProjectDB, Lwhere, ConstArray); //ConstArray

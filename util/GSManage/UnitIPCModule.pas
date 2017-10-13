@@ -376,10 +376,15 @@ begin
   try
     LStrList.Add('ServerName='+IPC_SERVER_NAME_4_OUTLOOK2);
     LStrList.Add('Command='+CMD_REQ_CREATE_MAIL);
-    LEntryId := AGrid.CellByName['EntryId', ARow].AsString;
-    LStoreId := AGrid.CellByName['StoreId', ARow].AsString;
-    LStrList.Add('EntryId='+LEntryId);
-    LStrList.Add('StoreId='+LStoreId);
+
+    if Assigned(AGrid) then
+    begin
+      LEntryId := AGrid.CellByName['EntryId', ARow].AsString;
+      LStoreId := AGrid.CellByName['StoreId', ARow].AsString;
+      LStrList.Add('EntryId='+LEntryId);
+      LStrList.Add('StoreId='+LStoreId);
+    end;
+
     LStrList.Add('Subject='+MakeMailSubject(ATask, AMailType));
     LStrList.Add('To='+GetRecvEmailAddress(AMailType));
     LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask,AMailType));
@@ -637,7 +642,6 @@ begin
   TDocVariant.New(LDoc);
   LRaw := Base64ToBin(StringToUTF8(AJson));
   LRaw := SynLZDecompress(LRaw);
-//  LUTF8 := AnsiToUTF8(LRaw);
   LUTF8 := LRaw;
   LDoc := _JSON(LUTF8);
   Result := LDoc.TaskJsonDragSign = TASK_JSON_DRAG_SIGNATURE;
