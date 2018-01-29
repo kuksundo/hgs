@@ -20,11 +20,13 @@ object InvoiceManageF: TInvoiceManageF
   object CurvyPanel1: TCurvyPanel
     AlignWithMargins = True
     Left = 0
-    Top = 3
+    Top = 0
     Width = 1031
     Height = 102
     Margins.Left = 0
+    Margins.Top = 0
     Margins.Right = 0
+    Margins.Bottom = 0
     Align = alTop
     Rounding = 4
     TabOrder = 0
@@ -245,12 +247,13 @@ object InvoiceManageF: TInvoiceManageF
     end
     object SubjectEdit: TEdit
       Left = 441
-      Top = 39
+      Top = 41
       Width = 112
       Height = 21
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
       TabOrder = 1
+      OnKeyPress = SubjectEditKeyPress
     end
     object HullNoEdit: TEdit
       Left = 441
@@ -269,6 +272,7 @@ object InvoiceManageF: TInvoiceManageF
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
       TabOrder = 3
+      OnKeyPress = ShipNameEditKeyPress
     end
     object Panel1: TPanel
       Left = 826
@@ -330,11 +334,12 @@ object InvoiceManageF: TInvoiceManageF
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
       TabOrder = 5
+      OnKeyPress = OrderNoEditKeyPress
     end
   end
   object TaskTab: TAdvOfficeTabSet
     Left = 0
-    Top = 108
+    Top = 102
     Width = 1031
     Height = 27
     AdvOfficeTabs = <
@@ -732,9 +737,9 @@ object InvoiceManageF: TInvoiceManageF
   end
   object grid_Req: TNextGrid
     Left = 0
-    Top = 135
+    Top = 129
     Width = 1031
-    Height = 526
+    Height = 532
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Align = alClient
@@ -1076,7 +1081,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000100318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101010070001C0318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1387,7 +1392,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010300C8003C0420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010300C800480420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1928,7 +1933,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 104
     Top = 208
     Bitmap = {
-      494C010102005402200310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101020054022C0310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -2137,6 +2142,12 @@ object InvoiceManageF: TInvoiceManageF
       object Delete1: TMenuItem
         Caption = 'Delete'
         OnClick = Delete1Click
+      end
+    end
+    object Documents1: TMenuItem
+      Caption = 'Documents'
+      object CreateInvoice1: TMenuItem
+        Caption = 'Create Invoice'
       end
     end
   end

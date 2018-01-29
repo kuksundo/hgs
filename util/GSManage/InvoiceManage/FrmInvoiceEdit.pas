@@ -19,7 +19,6 @@ type
     JvLabel5: TJvLabel;
     JvLabel6: TJvLabel;
     JvLabel9: TJvLabel;
-    JvLabel11: TJvLabel;
     JvLabel2: TJvLabel;
     JvLabel31: TJvLabel;
     JvLabel30: TJvLabel;
@@ -28,7 +27,6 @@ type
     ShipNameEdit: TEdit;
     OrderNoEdit: TEdit;
     PONoEdit: TEdit;
-    InvoiceIssuePicker: TDateTimePicker;
     InqRecvPicker: TDateTimePicker;
     PageControl1: TPageControl;
     TabSheet5: TTabSheet;
@@ -128,6 +126,14 @@ type
     InvoiceEnglish1: TMenuItem;
     CustomerNameEdit: TEdit;
     SubCompanyNameEdit: TEdit;
+    SomePicker: TDateTimePicker;
+    JvLabel11: TJvLabel;
+    Panel1: TPanel;
+    AeroButton2: TAeroButton;
+    AeroButton3: TAeroButton;
+    ExchangeRate: TNxTextColumn;
+    Document1: TMenuItem;
+    Create1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
@@ -137,6 +143,8 @@ type
     procedure ItemTypeSelect(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
     procedure InvoiceEnglish1Click(Sender: TObject);
+    procedure AeroButton2Click(Sender: TObject);
+    procedure AeroButton3Click(Sender: TObject);
   private
     function GetSQLInvoiceItem(AGrid: TNextGrid; ARow: integer; var AInvoiceItem: TSQLInvoiceItem): Boolean;
     procedure GetInvoiceItemFromGrid2StrList(AGrid: TNextGrid; var AList: TStringList);
@@ -181,6 +189,9 @@ type
     procedure UpdateItemID2InvoiceGrid(AItemID: TID; AUniqueItemID:RawUTF8; AGrid: TNextGrid;
       AIndex: Integer);
 
+    procedure InvoiceItemAdd;
+    procedure InvoiceItemDelete;
+
     procedure ShowFileListForm;
   end;
 
@@ -219,8 +230,6 @@ begin
       if ADoc <> null then
       begin
         LoadInvoiceTaskFromVariant(ATask, ADoc.Task);
-        LoadInvoiceTaskFromVariant2(ATask, ADoc.Customer);
-        LoadInvoiceTaskFromVariant3(ATask, ADoc.SubCon);
 
 //        //InvoiceManage.exe에서 만들어진 *.hgs 파일인 경우
 //        //InvoiceItem 및 InvoiceFile도 포함됨
@@ -261,20 +270,8 @@ begin
 end;
 
 procedure TInvoiceTaskEditF.Add1Click(Sender: TObject);
-var
-  LRow: integer;
-//  LSQLItemRec: TSQLInvoiceItemRec;
 begin
-  LRow := InvoiceGrid.AddRow;
-  InvoiceGrid.Row[LRow].Data := TIDList4Invoice.Create;
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile := TSQLInvoiceFile.Create;
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).TaskId := FInvoiceTask.ID;
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId := -1;
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := 1; //Add
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemType := iitWorkDay;
-  InvoiceGrid.CellByName['ItemType', LRow].AsString :=
-    GSInvoiceItemType2String(iitWorkDay);
-  InvoiceGrid.CellByName['AUnit', LRow].AsString := 'Day';
+  InvoiceItemAdd;
 end;
 
 procedure TInvoiceTaskEditF.AddInvoiceFileFromGrid(AGrid: TNextGrid;
@@ -393,6 +390,16 @@ begin
   ModalResult := mrOK;
 end;
 
+procedure TInvoiceTaskEditF.AeroButton2Click(Sender: TObject);
+begin
+  InvoiceItemAdd;
+end;
+
+procedure TInvoiceTaskEditF.AeroButton3Click(Sender: TObject);
+begin
+  InvoiceItemDelete;
+end;
+
 procedure TInvoiceTaskEditF.btn_CloseClick(Sender: TObject);
 begin
   ModalResult := mrCancel;
@@ -410,39 +417,8 @@ begin
 end;
 
 procedure TInvoiceTaskEditF.Delete1Click(Sender: TObject);
-var
-  LRow: integer;
-//  LID: TID;
 begin
-  LRow := InvoiceGrid.SelectedRow;
-
-  if LRow = -1 then
-    exit;
-
-//  LID := TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId;
-
-//  FSQLInvoiceFiles.FillRewind;
-//
-//  while FSQLInvoiceFiles.FillOne do
-//  begin
-//    if LID = FSQLInvoiceFiles.ItemID then
-//    begin
-//      FSQLInvoiceFiles.DynArray('Files').Clear;
-//      FSQLInvoiceFiles.ClearProperties;
-//    end;
-//  end;
-
-//  FSQLInvoiceItem.DynArray('Items').Delete(LRow);
-//  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile.Free;
-//  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).Free;
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := 2; //Delete
-  InvoiceGrid.BeginUpdate;
-  try
-    InvoiceGrid.Row[LRow].Visible := False;
-  finally
-    InvoiceGrid.EndUpdate;
-  end;
-//  InvoiceGrid.DeleteRow(LRow);
+  InvoiceItemDelete;
 end;
 
 procedure TInvoiceTaskEditF.DeleteInvoiceItemFromGrid(AIDList: TIDList4Invoice);
@@ -454,6 +430,7 @@ end;
 procedure TInvoiceTaskEditF.FormCreate(Sender: TObject);
 begin
   DOC_DIR := ExtractFilePath(Application.ExeName) + '..\양식\';
+  InvoiceGrid.DoubleBuffered := False;
 //  FSQLInvoiceFiles := nil;
 end;
 
@@ -576,7 +553,7 @@ begin
 
   ATask.AttendScheduled := TimeLogFromDateTime(AttendSchedulePicker.DateTime);
   ATask.InqRecvDate := TimeLogFromDateTime(InqRecvPicker.DateTime);
-  ATask.InvoiceIssueDate := TimeLogFromDateTime(InvoiceIssuePicker.DateTime);
+//  ATask.InvoiceIssueDate := TimeLogFromDateTime(InvoiceIssuePicker.DateTime);
   ATask.WorkBeginDate := TimeLogFromDateTime(WorkBeginPicker.DateTime);
   ATask.WorkEndDate := TimeLogFromDateTime(WorkEndPicker.DateTime);
   ATask.SEList := SEEdit.Text;
@@ -623,6 +600,9 @@ begin
     if AInvoiceFiles.FillOne then
     begin
 //      if LIndex = AInvoiceFiles.ItemIndex then
+      if Assigned(TIDList4Invoice(AGrid.Row[ARow].Data).fInvoiceFile) then
+        FreeAndNil(TIDList4Invoice(AGrid.Row[ARow].Data).fInvoiceFile);
+
         TIDList4Invoice(AGrid.Row[ARow].Data).fInvoiceFile :=
           TSQLInvoiceFile(AInvoiceFiles.CreateCopy);
     end;
@@ -846,7 +826,7 @@ begin
 //  CurrencyKindCB.Text := ATask.CurrencyKind;
   AttendSchedulePicker.DateTime := TimeLogToDateTime(ATask.AttendScheduled);
   InqRecvPicker.DateTime := TimeLogToDateTime(ATask.InqRecvDate);
-  InvoiceIssuePicker.DateTime := TimeLogToDateTime(ATask.InvoiceIssueDate);
+//  InvoiceIssuePicker.DateTime := TimeLogToDateTime(ATask.InvoiceIssueDate);
   WorkBeginPicker.DateTime := TimeLogToDateTime(ATask.WorkBeginDate);
   WorkEndPicker.DateTime := TimeLogToDateTime(ATask.WorkEndDate);
   SEEdit.Text := ATask.SEList;
@@ -895,6 +875,67 @@ begin
   GetInvoiceItemFromGrid2StrList(InvoiceGrid, LRec.FInvoiceItemList);
 
   MakeDocInvoice(LRec);
+end;
+
+procedure TInvoiceTaskEditF.InvoiceItemAdd;
+var
+  LRow: integer;
+//  LSQLItemRec: TSQLInvoiceItemRec;
+begin
+  LRow := InvoiceGrid.AddRow;
+  InvoiceGrid.Row[LRow].Data := TIDList4Invoice.Create;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile := TSQLInvoiceFile.Create;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).TaskId := FInvoiceTask.ID;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId := -1;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := 1; //Add
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemType := iitWorkDay;
+  InvoiceGrid.CellByName['ItemType', LRow].AsString :=
+    GSInvoiceItemType2String(iitWorkDay);
+  InvoiceGrid.CellByName['AUnit', LRow].AsString := 'Day';
+
+  if ExchangeRateEdit.Text <> '' then
+    InvoiceGrid.CellByName['ExchangeRate', LRow].AsString := ExchangeRateEdit.Text
+  else
+    InvoiceGrid.CellByName['ExchangeRate', LRow].AsString := '1.0';
+end;
+
+procedure TInvoiceTaskEditF.InvoiceItemDelete;
+var
+  LRow: integer;
+//  LID: TID;
+begin
+  LRow := InvoiceGrid.SelectedRow;
+
+  if LRow = -1 then
+    exit;
+
+  if MessageDlg('선택한 Invoice Item을 삭제 하시겠습니까?', mtConfirmation, [mbYes, mbNo],0) = mrNo then
+    exit;
+
+//  LID := TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId;
+
+//  FSQLInvoiceFiles.FillRewind;
+//
+//  while FSQLInvoiceFiles.FillOne do
+//  begin
+//    if LID = FSQLInvoiceFiles.ItemID then
+//    begin
+//      FSQLInvoiceFiles.DynArray('Files').Clear;
+//      FSQLInvoiceFiles.ClearProperties;
+//    end;
+//  end;
+
+//  FSQLInvoiceItem.DynArray('Items').Delete(LRow);
+//  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile.Free;
+//  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).Free;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := 2; //Delete
+  InvoiceGrid.BeginUpdate;
+  try
+    InvoiceGrid.Row[LRow].Visible := False;
+  finally
+    InvoiceGrid.EndUpdate;
+  end;
+//  InvoiceGrid.DeleteRow(LRow);
 end;
 
 procedure TInvoiceTaskEditF.ItemTypeSelect(Sender: TObject);

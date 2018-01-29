@@ -6,7 +6,8 @@ uses
   FrmInvoiceEdit in 'FrmInvoiceEdit.pas' {InvoiceTaskEditF},
   FrmFileList in 'FrmFileList.pas' {FileListF},
   UnitDM in '..\UnitDM.pas' {DM1: TDataModule},
-  UnitStringUtil in '..\..\..\common\UnitStringUtil.pas';
+  UnitStringUtil in '..\..\..\common\UnitStringUtil.pas',
+  UnitMakeReport in '..\UnitMakeReport.pas';
 
 {$R *.res}
 

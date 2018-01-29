@@ -29,6 +29,8 @@ type
     DataFormatAdapter1: TDataFormatAdapter;
     AdvGlowButton1: TAdvGlowButton;
     AdvGlowButton2: TAdvGlowButton;
+    DropEmptySource1: TDropEmptySource;
+    DataFormatAdapter2: TDataFormatAdapter;
     procedure DropEmptyTarget1Drop(Sender: TObject; ShiftState: TShiftState;
       APoint: TPoint; var Effect: Integer);
     procedure FormDestroy(Sender: TObject);
@@ -38,6 +40,8 @@ type
     procedure AdvGlowButton2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure fileGridCellDblClick(Sender: TObject; ACol, ARow: Integer);
+    procedure fileGridMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FFileContent: RawByteString;
 
@@ -174,9 +178,33 @@ begin
   end;
 end;
 
+procedure TFileListF.fileGridMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  i: integer;
+  LFileName: string;
+begin
+  if (DragDetectPlus(fileGrid.Handle, Point(X,Y))) then
+  begin
+    if fileGrid.SelectedRow = -1 then
+      exit;
+
+    TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).FileNames.Clear;
+    LFileName := fileGrid.CellsByName['FileName',fileGrid.SelectedRow];;
+
+    if LFileName <> '' then
+      //파일 이름에 공란이 들어가면 OnGetStream 함수를 안 탐
+      TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).
+            FileNames.Add(LFileName);
+
+    DropEmptySource1.Execute;
+  end;
+end;
+
 procedure TFileListF.FormCreate(Sender: TObject);
 begin
   FInvoiceFiles_ := nil;
+  (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
 end;
 
 procedure TFileListF.FormDestroy(Sender: TObject);
@@ -191,9 +219,11 @@ var
   LRow: integer;
 begin
   LRow := AGrid.AddRow();
+//  AGrid.Row[LRow].Data := TIDList4Invoice.Create;
+//  TIDList4Invoice(AGrid.Row[LRow].Data).ItemAction := -1;
   AGrid.Row[LRow].ImageIndex := ADynIndex;
   AGrid.CellByName['FileName', LRow].AsString := ARec.fFilename;
-  AGrid.CellByName['DocType', LRow].AsString := GSInvoiceItemType2String(ARec.fGSInvoiceItemType);
+//  AGrid.CellByName['DocType', LRow].AsString := GSInvoiceItemType2String(ARec.fGSInvoiceItemType);
 end;
 
 procedure TFileListF.LoadFiles2Grid(AIDList: TIDList4Invoice);
@@ -210,7 +240,7 @@ begin
 
     for LRow := Low(FInvoiceFiles_.Files) to High(FInvoiceFiles_.Files) do
     begin
-      if FInvoiceFiles_.Files[LRow].fGSInvoiceItemType = FItemType then
+//      if FInvoiceFiles_.Files[LRow].fGSInvoiceItemType = FItemType then
         InvoiceFileRec2Grid(FInvoiceFiles_.Files[LRow], LRow, FileGrid);
     end;
   finally
@@ -277,8 +307,10 @@ begin
     if AFileName <> '' then
       LFileSelectF.JvFilenameEdit1.FileName := AFileName;
 
-    LFileSelectF.ComboBox1.Text := GSInvoiceItemType2String(FItemType);
-    LFileSelectF.ComboBox1.Enabled := False;
+//    LFileSelectF.ComboBox1.Text := GSInvoiceItemType2String(FItemType);
+    LFileSelectF.ComboBox1.Visible := False;
+    LFileSelectF.Label1.Visible := False;
+//    LFileSelectF.ComboBox1.Enabled := False;
 
     if LFileSelectF.ShowModal = mrOK then
     begin
@@ -297,7 +329,7 @@ begin
             LDoc := StringFromFile(LFileSelectF.JvFilenameEdit1.FileName);
 
           LSQLInvoiceFileRec.fData := LDoc;
-          LSQLInvoiceFileRec.fGSInvoiceItemType := String2GSInvoiceItemType(LFileSelectF.ComboBox1.Text);
+//          LSQLInvoiceFileRec.fGSInvoiceItemType := String2GSInvoiceItemType(LFileSelectF.ComboBox1.Text);
           LSQLInvoiceFileRec.fFilename := lfilename;
 
           if not Assigned(FInvoiceFiles_) then

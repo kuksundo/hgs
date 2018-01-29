@@ -63,6 +63,7 @@ object FileListF: TFileListF
     TabOrder = 0
     TabStop = True
     OnCellDblClick = fileGridCellDblClick
+    OnMouseDown = fileGridMouseDown
     object NxIncrementColumn3: TNxIncrementColumn
       Alignment = taCenter
       DefaultWidth = 32
@@ -101,7 +102,7 @@ object FileListF: TFileListF
       ParentFont = False
       Position = 1
       SortType = stAlphabetic
-      Width = 283
+      Width = 403
     end
     object FileSize: TNxTextColumn
       Font.Charset = ANSI_CHARSET
@@ -159,6 +160,7 @@ object FileListF: TFileListF
       ParentFont = False
       Position = 4
       SortType = stAlphabetic
+      Visible = False
       Width = 120
     end
   end
@@ -183,7 +185,7 @@ object FileListF: TFileListF
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ImageIndex = 4
-      Images = DM1.ImageList16x16
+      Images = ImageList16x16
       NotesFont.Charset = DEFAULT_CHARSET
       NotesFont.Color = clWindowText
       NotesFont.Height = -11
@@ -223,7 +225,7 @@ object FileListF: TFileListF
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ImageIndex = 2
-      Images = DM1.ImageList16x16
+      Images = ImageList16x16
       NotesFont.Charset = DEFAULT_CHARSET
       NotesFont.Color = clWindowText
       NotesFont.Height = -11
@@ -263,7 +265,7 @@ object FileListF: TFileListF
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ImageIndex = 1
-      Images = DM1.ImageList16x16
+      Images = ImageList16x16
       NotesFont.Charset = DEFAULT_CHARSET
       NotesFont.Color = clWindowText
       NotesFont.Height = -11
@@ -303,7 +305,7 @@ object FileListF: TFileListF
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ImageIndex = 3
-      Images = DM1.ImageList16x16
+      Images = ImageList16x16
       NotesFont.Charset = DEFAULT_CHARSET
       NotesFont.Color = clWindowText
       NotesFont.Height = -11
@@ -335,7 +337,7 @@ object FileListF: TFileListF
     Left = 11
     Top = 8
     Bitmap = {
-      494C010130009800E80310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010130009800EC0310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2076,5 +2078,16 @@ object FileListF: TFileListF
     DataFormatName = 'TFileDataFormat'
     Left = 82
     Top = 60
+  end
+  object DropEmptySource1: TDropEmptySource
+    DragTypes = [dtCopy, dtMove]
+    Left = 12
+    Top = 108
+  end
+  object DataFormatAdapter2: TDataFormatAdapter
+    DragDropComponent = DropEmptySource1
+    DataFormatName = 'TVirtualFileStreamDataFormat'
+    Left = 52
+    Top = 111
   end
 end

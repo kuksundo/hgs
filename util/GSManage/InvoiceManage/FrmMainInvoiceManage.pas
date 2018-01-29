@@ -12,7 +12,7 @@ uses
   OtlCommon, OtlComm, OtlTaskControl, OtlContainerObserver, otlTask, otlParallel,
   DragDropInternet,DropSource,DragDropFile,DragDropFormats, DragDrop, DropTarget,
   mORMot, SynCommons, SynSqlite3Static, CommonData, UElecDataRecord,
-  FSMClass_Dic, FSMState, Vcl.Menus;
+  FSMClass_Dic, FSMState, Vcl.Menus, UnitMakeReport;
 
 type
   TInvoiceManageF = class(TForm)
@@ -74,6 +74,8 @@ type
     PopupMenu1: TPopupMenu;
     Items1: TMenuItem;
     Delete1: TMenuItem;
+    Documents1: TMenuItem;
+    CreateInvoice1: TMenuItem;
 
     procedure btn_SearchClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -89,6 +91,9 @@ type
     procedure grid_ReqMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Delete1Click(Sender: TObject);
+    procedure ShipNameEditKeyPress(Sender: TObject; var Key: Char);
+    procedure OrderNoEditKeyPress(Sender: TObject; var Key: Char);
+    procedure SubjectEditKeyPress(Sender: TObject; var Key: Char);
   private
     FStopEvent    : TEvent;
     FAsyncMQ: TOmniMessageQueue;
@@ -104,6 +109,8 @@ type
     function GetTaskIdFromGrid(ARow: integer): TID;
     function SaveCurrentTask2File(AFileName: string = '') : string;
     function GetTask: TSQLInvoiceTask;
+
+    procedure ExecuteSearch(Key: Char);
   public
     procedure DisplayTaskInfo2Grid(AFrom,ATo: TDateTime; AQueryDate: TQueryDateType;
       AHullNo, AShipName, ASubject, AOrderNo: string);
@@ -378,6 +385,12 @@ begin
   end;
 end;
 
+procedure TInvoiceManageF.ExecuteSearch(Key: Char);
+begin
+  if Key = Chr(VK_RETURN) then
+    btn_SearchClick(nil);
+end;
+
 procedure TInvoiceManageF.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FStopEvent.SetEvent;
@@ -519,6 +532,11 @@ begin
   end;
 end;
 
+procedure TInvoiceManageF.OrderNoEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
+end;
+
 function TInvoiceManageF.ProcessInvoiceTaskJson(AJson: String): Boolean;
 var
   LDoc: variant;
@@ -600,6 +618,11 @@ begin
   end;
 end;
 
+procedure TInvoiceManageF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
+end;
+
 procedure TInvoiceManageF.ShowInvoiceTaskEditFormFromGrid(ARow: integer);
 var
   LIdList: TIDList4Invoice;
@@ -615,6 +638,11 @@ begin
       LoadTaskVar2Grid(LTask, grid_Req, ARow);
     end;
   end;
+end;
+
+procedure TInvoiceManageF.SubjectEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
 end;
 
 end.
