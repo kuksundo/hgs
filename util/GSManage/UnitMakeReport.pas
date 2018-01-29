@@ -15,6 +15,8 @@ const
   INVOICE_FILE_2_CUST_ENG = 'INVOICE-ENG.xlsx';
   COMMERCIAL_INVOICE_FILE = 'COMMERCIAL-INVOICE-PACKING-LIST.xlsx';
   COMPANY_SELECTION_FILE = '업체선정품의서.xls';
+  COMPANY_SELECTION_FILE1 = '업체선정품의서_단독업체.xls';
+  COMPANY_SELECTION_FILE2 = '업체선정품의서_복수업체.xls';
   CONFIRM_COMPLETION_FILE = '공사완료확인서.xls';
   BUDGET_APPROVAL_FILE = '';
   CONTRACT_FILE = '';
@@ -29,6 +31,10 @@ const
   PO_REQ_MUSTACHE_FILE_NAME = 'Mustache_PO요청메일.htm';
   SHIPPING_MUSTACHE_FILE_NAME = 'Mustache_SHIPPING요청메일.htm';
   FORWARD_FIELDSERVICE_MUSTACHE_FILE_NAME = 'Mustache_FIELDSERVICE전달메일.htm';
+  PAYCHECK_SUBCON_MUSTACHE_FILE_NAME = 'Mustache_기성확인요청메일.htm';
+  SUBCON_QUOTATION_REQ_MUSTACHE_FILE_NAME = 'Mustache_업체견적요청메일.htm';
+  SUBCON_PAYMENT_REQ_MUSTACHE_FILE_NAME = 'Mustache_기성처리요청메일.htm';
+  SUBCON_SERVICE_ORDER_REQ_MUSTACHE_FILE_NAME = 'Mustache_서비스오더날인요청메일.htm';
 
   INVOICE_ITEM_SE_CHARGE = 'Service Engineering Charge' + #13#10 + '({{NumOfWorker}} S/E, {{Qty}} WorkDay(s), USD1,190/day)';
   INVOICE_ITEM_TRAVELLING_CHARGE = 'Travelling Charge' + #13#10 + '({{NumOfWorker}} S/E, {{TravellingDays}} Day(s), USD120/hr)';
@@ -39,6 +45,7 @@ const
   INVOICE_ITEM_MEAL_FEE = 'Meal' + #13#10 + '({{Meal}})';
 
   COMPANY_SELECTION_CONTENT = '   표제 호선의 작업을 위해 다음과 같이 업체 견적을 접수/검토 후 ';
+  WORK_PERIOD_CHANGE_DESC = '※ Work schedule can be changed according to vessel schedule';
 type
   Doc_Qtn_Rec = record
     FCustomerInfo, FQtnNo, FQtnDate, FHullNo, FShipName,
@@ -58,7 +65,7 @@ type
   Doc_ServiceOrder_Rec = record
     FSubConName, FSubConManager, FSubConPhonNo, FSubConEmail, FHullNo, FShipName,
     FShipOwner, FSubject, FProduceType, FPONo2SubCon, FOrderDate, FWorkSch, FEngineerNo,
-    FTechnicanNo, FLocalAgent, FWorkDesc, FProjCode, FCustomer, FWorkPeriod,
+    FTechnicanNo, FLocalAgent, FWorkDesc, FProjCode, FCustomer, FWorkPeriod, FWorkDays,
     FNationPort, FWorkSummary, FSubConPrice: string;
   end;
 
@@ -81,7 +88,8 @@ type
   procedure GetInvoiceItemRec(ADelimitedStr: string;
     var AItem: Doc_Invoice_Item_Rec);
   procedure MakeDocServiceOrder(ASOR: Doc_ServiceOrder_Rec);
-  procedure MakeDocCompanySelection(ASOR: Doc_ServiceOrder_Rec);
+  //ADocType = 1 : 단독업체, 2 : 복수업체
+  procedure MakeDocCompanySelection(ASOR: Doc_ServiceOrder_Rec; ADocType: integer);
   procedure MakeDocConfirmComplete(ASOR: Doc_ServiceOrder_Rec);
   procedure MakeDocBudgetApproval;
   procedure MakeDocContract;
@@ -93,6 +101,12 @@ type
   procedure MakeDocSubConInvoiceList2(AWorkSheet: OleVariant;
     ASIL: Doc_SubCon_Invoice_List_Rec; ARow: integer);
 
+  //업체 Invoice
+  procedure MakeSubConInvoice(ACompanyName: string);
+  procedure MakeSubConInvoice_SANISN;
+  procedure MakeSubConInvoice_LUXCO;
+
+  //힘센엔진 견적서
 var
   DOC_DIR: string;
 
@@ -319,14 +333,14 @@ begin
   LRange.FormulaR1C1 := ASOR.FSubject;
   LRange := LWorksheet.range['K10'];
   LRange.FormulaR1C1 := ASOR.FShipOwner;
-  LRange := LWorksheet.range['S8'];
+  LRange := LWorksheet.range['W10'];
   LRange.FormulaR1C1 := ASOR.FProduceType;
-  LRange := LWorksheet.range['S7'];
-  LRange.FormulaR1C1 := ASOR.FPONo2SubCon;
   LRange := LWorksheet.range['S6'];
   LRange.FormulaR1C1 := ASOR.FOrderDate;
+  LRange := LWorksheet.range['S7'];
+  LRange.FormulaR1C1 := ASOR.FPONo2SubCon;
   LRange := LWorksheet.range['E13'];
-  LRange.FormulaR1C1 := ASOR.FWorkSch;
+  LRange.FormulaR1C1 := ASOR.FWorkSch + #13#10 + WORK_PERIOD_CHANGE_DESC;
   LRange := LWorksheet.range['X13'];
   LRange.FormulaR1C1 := ASOR.FEngineerNo;
   LRange := LWorksheet.range['S17'];
@@ -335,7 +349,7 @@ begin
   LRange.FormulaR1C1 := ASOR.FWorkDesc;
 end;
 
-procedure MakeDocCompanySelection(ASOR: Doc_ServiceOrder_Rec);
+procedure MakeDocCompanySelection(ASOR: Doc_ServiceOrder_Rec; ADocType: integer);
 var
   LExcel: OleVariant;
   LWorkBook: OleVariant;
@@ -343,7 +357,11 @@ var
   LWorksheet: OleVariant;
   LFileName, LStr: string;
 begin
-  LFileName := DOC_DIR + COMPANY_SELECTION_FILE;
+  if ADocType = 1 then
+    LFileName := DOC_DIR + COMPANY_SELECTION_FILE1
+  else
+  if ADocType = 2 then
+    LFileName := DOC_DIR + COMPANY_SELECTION_FILE2;
 
   if not FileExists(LFileName) then
   begin
@@ -359,21 +377,23 @@ begin
   LRange := LWorksheet.range['C4'];
   LRange.FormulaR1C1 := FormatDateTime('YYYY.MM.DD', now);
   LRange := LWorksheet.range['C47']; //제목
-  LRange.FormulaR1C1 := ASOR.FSubject;
-  LRange := LWorksheet.range['A49'];
-  LStr := COMPANY_SELECTION_CONTENT + ASOR.FSubConName + '를 선정하여';
-  LRange.FormulaR1C1 := LStr;
+  LRange.FormulaR1C1 := ASOR.FHullNo + ' ' + ASOR.FShipName + ' - ' + ASOR.FSubject;
+//  LRange := LWorksheet.range['A49'];
+//  LStr := COMPANY_SELECTION_CONTENT + ASOR.FSubConName + '를 선정하여';
+//  LRange.FormulaR1C1 := LStr;
   LRange := LWorksheet.range['A52'];
   LRange.FormulaR1C1 := '   1. 선정 업체 : ' + ASOR.FSubConName;
-  LRange := LWorksheet.range['A59'];
+  LRange := LWorksheet.range['A58'];
   LStr := '   3. 고객(공사코드) : ' + ASOR.FCustomer + ' ( ' + ASOR.FProjCode + ' ) ';
   LRange.FormulaR1C1 := LStr;
+  LRange := LWorksheet.range['A59'];
+  LRange.FormulaR1C1 := '   4. 작업 일정(작업장소) : ' + ASOR.FWorkPeriod + ' ( ' + ASOR.FWorkDays + ' 일), ' + ASOR.FNationPort;
   LRange := LWorksheet.range['A60'];
-  LRange.FormulaR1C1 := '   4. 작업 일정(작업장소) : ' + ASOR.FWorkPeriod + ' ( ' + ASOR.FNationPort + ' ) ';
-  LRange := LWorksheet.range['A61'];
   LRange.FormulaR1C1 := '   5. 작업 내용 : ' + ASOR.FWorkSummary;
+  LRange := LWorksheet.range['A61'];
+  LRange.FormulaR1C1 := '   6. 기타 : 1) 작업인원 (' + ASOR.FEngineerNo + '명)';
   LRange := LWorksheet.range['A62'];
-  LRange.FormulaR1C1 := '   6. 기타 : 작업인원 (' + ASOR.FEngineerNo + '명)';
+  LRange.FormulaR1C1 := '             2) Service Tariff에 의거 정산 예정';
   LWorksheet := LExcel.WorkSheets.Item['Sheet1'];
   LRange := LWorksheet.range['C4'];
   LRange.FormulaR1C1 := ASOR.FSubConName;
@@ -407,7 +427,7 @@ begin
   LRange := LWorksheet.range['E9'];
   LRange.FormulaR1C1 := ASOR.FSubConName;
   LRange := LWorksheet.range['E10'];
-  LRange.FormulaR1C1 := ASOR.FWorkPeriod;
+  LRange.FormulaR1C1 := ASOR.FSubConPrice;
   LRange := LWorksheet.range['A24'];
   LRange.FormulaR1C1 := FormatDateTime('YYYY년 MM월 DD일', now);
 end;
@@ -521,6 +541,25 @@ begin
   LRange.FormulaR1C1 := ASIL.FWorkFinishDate;
   LRange := AWorkSheet.range['K'+LStr];
   LRange.FormulaR1C1 := ASIL.FInvoiceIssueDate;
+end;
+
+procedure MakeSubConInvoice(ACompanyName: string);
+begin
+  if ACompanyName = 'SANISN' then
+    MakeSubConInvoice_SANISN
+  else
+  if ACompanyName = 'LUXCO' then
+    MakeSubConInvoice_LUXCO;
+end;
+
+procedure MakeSubConInvoice_SANISN;
+begin
+
+end;
+
+procedure MakeSubConInvoice_LUXCO;
+begin
+
 end;
 
 end.

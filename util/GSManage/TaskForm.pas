@@ -12,7 +12,7 @@ uses
   DragDropFile, Clipbrd,
   DragDrop, DropTarget, UnitMakeReport, DropSource, Vcl.Mask, JvExMask,
   JvToolEdit, JvBaseEdits, FSMClass_Dic, pjhComboBox, UnitTodoCollect, AdvEdit,
-  AdvEdBtn;
+  AdvEdBtn, UnitGSFileRecord;
 
 type
   TTaskEditF = class(TForm)
@@ -227,6 +227,8 @@ type
     Button4: TButton;
     JvLabel68: TJvLabel;
     SubConNationEdit: TEdit;
+    N23: TMenuItem;
+    N24: TMenuItem;
     procedure AeroButton1Click(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -247,7 +249,6 @@ type
     procedure ServiceOrder1Click(Sender: TObject);
     procedure fileGridMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure N2Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure N8Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -261,6 +262,8 @@ type
     procedure N22Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure SubCompanyEditClickBtn(Sender: TObject);
+    procedure N23Click(Sender: TObject);
+    procedure N24Click(Sender: TObject);
   private
     function GetFileFromDropDataFormat(AFormat: TVirtualFileStreamDataFormat): TFileStream;
 
@@ -331,8 +334,8 @@ type
       AMaterial: TSQLMaterial4Project; ATaskID: TID = 0);
   end;
 
-    function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
-      ASQLEmailMsg: TSQLEmailMsg; ADoc: variant): Boolean; overload;
+  function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
+      ASQLEmailMsg: TSQLEmailMsg; ADoc: variant; ADocIsFromInvoiceManage: Boolean = False): Boolean; overload;
 
 var
   TaskEditF: TTaskEditF;
@@ -340,12 +343,13 @@ var
 implementation
 
 uses FrmInqManage, FrmDisplayTaskInfo, DragDropInternet, DragDropFormats,
-  UnitIPCModule, UnitTodoList, FrmSearchCustomer, UnitDragUtil, UnitStringUtil;
+  UnitIPCModule, UnitTodoList, FrmSearchCustomer, UnitDragUtil, UnitStringUtil,
+  DateUtils;
 
 {$R *.dfm}
 
 function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
-  ASQLEmailMsg: TSQLEmailMsg; ADoc: variant): Boolean;
+  ASQLEmailMsg: TSQLEmailMsg; ADoc: variant; ADocIsFromInvoiceManage: Boolean): Boolean;
 var
   LTaskEditF: TTaskEditF;
   LCustomer: TSQLCustomer;
@@ -362,26 +366,35 @@ begin
     with LTaskEditF do
     begin
       LTask := ATask;
+
       if ATask.IsUpdate then
         Caption := Caption + ' (Update)'
       else
         Caption := Caption + ' (New)';
 
       LTaskEditF.FEmailDisplayTask := ATask;
-      if ADoc <> null then
+
+      if (not ADocIsFromInvoiceManage) and (ADoc <> null) then
         LoadTaskFromVariant(ATask, ADoc.Task);
+
       LoadTaskVar2Form(LTask, LTaskEditF, g_FSMClass);
       LCustomer := GetCustomerFromTask(LTask);
-      if ADoc <> null then
+
+      if (not ADocIsFromInvoiceManage) and (ADoc <> null) then
         LoadCustomerFromVariant(LCustomer, ADoc.Customer);
+
       LoadCustomer2Form(LCustomer, LTaskEditF);
       LSubCon := GetSubConFromTask(LTask);
+
       if ADoc <> null then
         LoadSubConFromVariant(LSubCon, ADoc.SubCon);
+
       LoadSubCon2Form(LSubCon, LTaskEditF);
       LMat4Proj := GetMaterial4ProjFromTask(LTask);
-      if ADoc <> null then
+
+      if (not ADocIsFromInvoiceManage) and (ADoc <> null) then
         LoadMaterial4ProjectFromVariant(LMat4Proj, ADoc.Material4Project);
+
       LoadMaterial4Project2Form(LMat4Proj, LTaskEditF);
 
       LTaskEditF.SelectMailBtn.Enabled := Assigned(ASQLEmailMsg);
@@ -502,15 +515,17 @@ end;
 procedure TTaskEditF.SaveCustomer2MasterCustomer(
   AMCustomer: TSQLMasterCustomer);
 begin
+  LoadTaskForm2MasterCustomer(Self, AMCustomer, Self.FTask.ID);
+
   if AMCustomer.IsUpdate then
   begin
     if MessageDlg('고객 정보가 이미 MasterDB에 존재합니다.' + #13#10 + '새로운 정보로 Update 하시겠습니까?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+    begin
       g_MasterDB.Update(AMCustomer);
+    end;
   end
   else
   begin
-//    AMCustomer.CompanyCode :=
-    LoadTaskForm2MasterCustomer(Self,AMCustomer, Self.FTask.ID);
     g_MasterDB.Add(AMCustomer, true);
   end;
 end;
@@ -841,6 +856,7 @@ begin
   Result.FSubject := WorkSummaryEdit.Text;
 //  Result.FProduceType := ProductTypeCB.Text;
   Result.FPONo := PONoEdit.Text;
+  Result.FInvoiceItemList := nil;
 end;
 
 function TTaskEditF.Get_Doc_Qtn_Rec: Doc_Qtn_Rec;
@@ -867,6 +883,7 @@ end;
 function TTaskEditF.Get_Doc_ServiceOrder_Rec: Doc_ServiceOrder_Rec;
 var
   LPeriod:string;
+  LDays: integer;
 begin
   Result.FSubConName := SubCompanyEdit.Text;
   Result.FSubConManager := SubManagerEdit.Text;
@@ -875,15 +892,26 @@ begin
   Result.FHullNo := HullNoEdit.Text;
   Result.FShipName := ShipNameEdit.Text;
   Result.FSubject := WorkSummaryEdit.Text;
+  Result.FShipOwner := ShipOwnerEdit.Text;
 //  Result.FWorkDesc := WorkSummaryEdit.Text;
-//  Result.FProduceType := ProductTypeCB.Text;
-  Result.FPONo2SubCon := ServicePOEdit.Text;
+  Result.FProduceType := ProductTypeCB.Text;
+  if ServicePOEdit.Text = '' then
+    Result.FPONo2SubCon := OrderNOEdit.Text
+  else
+    Result.FPONo2SubCon := ServicePOEdit.Text;
   Result.FOrderDate := FormatDateTime('dd.mmm.yyyy', now);
   Result.FWorkSch := '1.Place : ' + NationPortEdit.Text;
-  LPeriod := FormatDateTime('yyyy.mm.dd',WorkBeginPicker.Date);
+  LPeriod := FormatDateTime('yyyy.mm.dd', WorkBeginPicker.Date);
   LPeriod := LPeriod + ' ~ ' + FormatDateTime('yyyy.mm.dd',WorkEndPicker.Date);
   Result.FWorkPeriod := LPeriod;
-  Result.FWorkSch := Result.FWorkSch + #13#10 + '2.Period : ' + NationPortEdit.Text;
+  LDays := DaysBetween(WorkEndPicker.Date, WorkEndPicker.Date);
+
+  if LDays = 0 then
+    Result.FWorkDays := '1'
+  else
+    Result.FWorkDays := IntToStr(LDays+1);
+
+  Result.FWorkSch := Result.FWorkSch + #13#10 + '2.Period : ' + LPeriod;
   Result.FEngineerNo := SECountEdit.Text;
   Result.FLocalAgent := CustAgentMemo.Text;
   Result.FLocalAgent := Result.FLocalAgent.Replace(#13,'');
@@ -943,10 +971,36 @@ end;
 class procedure TTaskEditF.LoadEmailListFromTask(ATask: TSQLGSTask;
   AForm: TViewMailListF);
 var
- LIds: TIDDynArray;
+  LIds: TIDDynArray;
+
+  procedure SetMoveFolderCB;
+  var
+    i,j,k: integer;
+    LFolderPath: string;
+  begin
+    for i := 0 to AForm.grid_Mail.RowCount - 1 do
+    begin
+      LFolderPath := AForm.grid_Mail.CellByName['FolderPath',i].AsString;
+
+      for j := 0 to AForm.MoveFolderCB.Items.Count - 1 do
+      begin
+        k := Pos(AForm.MoveFolderCB.Items.Strings[j], LFolderPath);
+
+        if k > 0 then
+        begin
+          AForm.MoveFolderCB.ItemIndex := j;
+          Exit;
+        end;
+      end;
+    end;
+  end;
 begin
+  AForm.FillInMoveFolderCB;
   ATask.EmailMsg.DestGet(g_ProjectDB, ATask.ID, LIds);
   ShowEmailListFromIDs(AForm.grid_Mail, LIds);
+//  LFolderPath := AForm.grid_Mail.CellByName['FolderPath',].AsString;
+  SetMoveFolderCB;//(AForm.MoveFolderCB, AForm.grid_Mail);
+  AForm.SubFolderNameEdit.Text := ATask.Order_No;
 end;
 
 procedure TTaskEditF.LoadGrid2TaskEditForm(AGrid: TNextGrid; ARow: integer;
@@ -1022,6 +1076,7 @@ begin
     SubPhonNumEdit.Text := ASubCon.OfficePhone;
     SubFaxEdit.Text := ASubCon.MobilePhone;
     PositionEdit.Text := ASubCon.Position;
+    ServicePOEdit.Text := ASubCon.ServicePO;
   end;
 end;
 
@@ -1143,6 +1198,11 @@ begin
     ASubCon.OfficePhone := SubPhonNumEdit.Text;
     ASubCon.MobilePhone := SubFaxEdit.Text;
     ASubCon.Position := PositionEdit.Text;
+
+    if ServicePOEdit.Text = '' then
+      ASubCon.ServicePO := OrderNOEdit.Text
+    else
+    ASubCon.ServicePO := ServicePOEdit.Text;
   end;
 end;
 
@@ -1274,37 +1334,57 @@ end;
 
 procedure TTaskEditF.N18Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask,
+    InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TTaskEditF.N19Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask,
+    InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TTaskEditF.N20Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask,
+    InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TTaskEditF.N21Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask,
+    InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TTaskEditF.N22Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask);
+  SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, FEmailDisplayTask,
+    InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
-procedure TTaskEditF.N2Click(Sender: TObject);
+procedure TTaskEditF.N23Click(Sender: TObject);
 var
   LRec: Doc_ServiceOrder_Rec;
 begin
   LRec := Get_Doc_ServiceOrder_Rec;
 
   if CheckDocCompanySelection(LRec) then
-    MakeDocCompanySelection(LRec);
+    MakeDocCompanySelection(LRec,TMenuItem(Sender).Tag);
+end;
+
+procedure TTaskEditF.N24Click(Sender: TObject);
+var
+  LRec: Doc_ServiceOrder_Rec;
+begin
+  LRec := Get_Doc_ServiceOrder_Rec;
+
+  if CheckDocCompanySelection(LRec) then
+    MakeDocCompanySelection(LRec,TMenuItem(Sender).Tag);
 end;
 
 procedure TTaskEditF.N3Click(Sender: TObject);

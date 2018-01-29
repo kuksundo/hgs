@@ -25,6 +25,7 @@ type
     FTo,
     FHTMLBody,
     FHullNo,
+    FSubFolder,
     FAttached,
     FAttachFileName: string;
     FIgnoreReceiver2pjh: Boolean; //True = 수신자가 pjh인가 비교하지 않음
@@ -43,11 +44,33 @@ type
     FBlindCC,
     FSubject,
     FUserEmail,
-    FUserName: string;
+    FUserName,
+    FSavedOLFolderPath: string;
     FMailItem: MailItem;
     FReceiveDate: TDateTime;
 
     procedure Clear;
+  end;
+
+  TOLAccountInfo = record
+    SmtpAddress, DisplayName, UserName: string;
+  end;
+
+  TSettingInfo = record
+    FSalesDirectorEmailAddr,
+    FMaterialInputEmailAddr,
+    FForeignInputEmailAddr,
+    FElecHullRegEmailAddr,
+    FShippingReqEmailAddr,
+    FFieldServiceReqEmailAddr,
+    FSubConPaymentEmailAddr,
+    FMyNameSig,
+    FShippingPICSig,
+    FSalesPICSig,
+    FFieldServicePICSig,
+    FElecHullRegPICSig,
+    FSubConPaymentPICSig
+    : string;
   end;
 
   TQueryDateType = (qdtNull, qdtInqRecv, qdtInvoiceIssue, qdtQTNInput,
@@ -86,7 +109,7 @@ type
   TProcessDirection = (pdNone, pdToCustomer, pdFromCustomer, pdToSubCon, pdFromSubCon,
     pdToHElec, pdFromHElec, pdToHGS, pdFromHGS, pdFinal);
   TContainData4Mail = (cdmNone, cdmServiceReport,cdmQtn2Cust, cdmQtnFromSubCon,
-    cdmPoFromCust, cdmPo2SubCon,cdmInvoice2Cust, cdmInvoiceFromSubCon,
+    cdmPoFromCust, cdmPo2SubCon,cdmInvoice2Cust, cdmInvoiceFromSubCon, cdmInvoiceConfirmFromCust,
     cdmTaxBillFromSubCon, cdmTaxBill2Cust, cdmFinal
   );
   TEngineerAgency = (eaNone, eaSubCon, eaHGS, eaHELEC);//엔지니어 소속사
@@ -108,12 +131,12 @@ const
     Description : string;
     Value       : TElecProductType;
   end = ((Description : '';                   Value : eptNull),
-         (Description : 'EB-차단기';          Value : eptEB),
-         (Description : 'EC-선박자동화';      Value : eptEC),
-         (Description : 'EG-몰드변압기';      Value : eptEG),
-         (Description : 'EM-배전반';          Value : eptEM),
-         (Description : 'ER-발전기';          Value : eptER),
-         (Description : 'ER-발전기';          Value : eptFinal)
+         (Description : '차단기';          Value : eptEB),
+         (Description : '선박자동화';      Value : eptEC),
+         (Description : '몰드변압기';      Value : eptEG),
+         (Description : '배전반';          Value : eptEM),
+         (Description : '발전기';          Value : eptER),
+         (Description : '';          Value : eptFinal)
          );
 
   R_GSDocType : array[dtNull..dtFinal] of record
@@ -235,6 +258,7 @@ const
          (Description : 'PO <- SubCon';             Value : cdmPo2SubCon),
          (Description : 'Invoice -> Customer';      Value : cdmInvoice2Cust),
          (Description : 'Invoice <- SubCon';        Value : cdmInvoiceFromSubCon),
+         (Description : 'InvoiceConfirm <- Customer';        Value : cdmInvoiceConfirmFromCust),
          (Description : 'Tax Bill <- SubCon';       Value : cdmTaxBillFromSubCon),
          (Description : 'Tax Bill -> Customer';     Value : cdmTaxBill2Cust),
          (Description : 'Tax Bill -> Customer';     Value : cdmFinal)
@@ -256,11 +280,11 @@ const
          (Description : '';                         Value : iitFinal)
   );
 
-  gpSHARED_DATA_NAME = 'SharedData_{BCB1C40A-3B72-44FC-9E72-91E5FF498924}';
-  SHARED_DATA_NAME = 'SharedData_{32EF1528-1D5E-48AE-B8AF-341309C303FA}';
+//  gpSHARED_DATA_NAME = 'SharedData_{BCB1C40A-3B72-44FC-9E72-91E5FF498924}';
+//  SHARED_DATA_NAME = 'SharedData_{32EF1528-1D5E-48AE-B8AF-341309C303FA}';
 
-  CONSUME_EVENT_NAME = SHARED_DATA_NAME + '_ConsumeEvent';
-  PRODUCE_EVENT_NAME = SHARED_DATA_NAME + '_ProduceEvent';
+//  CONSUME_EVENT_NAME = SHARED_DATA_NAME + '_ConsumeEvent';
+//  PRODUCE_EVENT_NAME = SHARED_DATA_NAME + '_ProduceEvent';
 
   EMAIL_TOPIC_NAME = '/topic/emailtopic';
   FOLDER_LIST_FILE_NAME = 'FolderList';
@@ -281,6 +305,7 @@ const
   CMD_REQ_MOVE_FOLDER_MAIL = 'Request Move Mail to Folder';
   CMD_REQ_REPLY_MAIL = 'Request Reply Mail';
   CMD_REQ_CREATE_MAIL = 'Request Create Mail';
+  CMD_REQ_FORWARD_MAIL = 'Request Forward Mail';
   CMD_REQ_ADD_APPOINTMENT = 'Request Add Appointment';
 
 //  SALES_DIRECTOR_EMAIL_ADDR = 'shjeon@hyundai-gs.com';//매출처리담당자
@@ -290,6 +315,7 @@ const
   ELEC_HULL_REG_EMAIL_ADDR = 'seryeongkim@hyundai-gs.com';//전전비표준공사 생성 요청
   PO_REQ_EMAIL_ADDR = 'seryeongkim@hyundai-gs.com';//PO 요청
   SHIPPING_REQ_EMAIL_ADDR = 'yungem.kim@pantos.com';//출하 요청
+  FIELDSERVICE_REQ_EMAIL_ADDR = 'yongjunelee@hyundai-gs.com';//필드서비스 팀장
 
   MY_EMAIL_SIG = '부품서비스2팀 박정현 차장';
   SHIPPING_MANAGER_SIG = '판토스 김윤겸 주임님';
@@ -300,6 +326,10 @@ const
   //Task를 Outlook 첨부파일로 만들때 인식하기 위한 문자열
   TASK_JSON_DRAG_SIGNATURE = '{274C083F-EB64-49D8-ADE7-8804CFD0D030}';
   INVOICETASK_JSON_DRAG_SIGNATURE = '{144B4D16-A8E7-4E9A-89C1-994FE6AEC793}';
+
+  REGEX_HULLNO_PATTERN = '^[A-Za-z]{1,4}\d{4}$';
+  REGEX_SHIPNAME_PATTERN = '^[A-Za-z]+[A-Za-z0-9]+$';
+  REGEX_ORDERNO_PATTERN = '^[A-Za-z]{3}[0-9]{1,7}$';
 
 procedure OLMsgFileRecordClear;
 function QueryDateType2String(AQueryDateType:TQueryDateType) : string;
@@ -330,6 +360,9 @@ procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
 function GSInvoiceItemType2String(AGSInvoiceItemType:TGSInvoiceItemType) : string;
 function String2GSInvoiceItemType(AGSInvoiceItemType:string): TGSInvoiceItemType;
 procedure GSInvoiceItemType2Combo(AComboBox:TComboBox);
+
+var
+  g_MyEmailInfo: TOLAccountInfo;
 
 implementation
 

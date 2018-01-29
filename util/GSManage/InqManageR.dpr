@@ -23,7 +23,6 @@ uses
   UnitTodoList in 'UnitTodoList.pas' {ToDoListF},
   UnitDateUtil in '..\..\common\UnitDateUtil.pas',
   UnitTodoCollect in 'UnitTodoCollect.pas',
-  MailCallbackInterface in '..\OutLookAddIn\Mail2IPCClient\MailCallbackInterface.pas',
   FrmSearchCustomer in 'FrmSearchCustomer.pas' {SearchCustomerF},
   UnitRegistryUtil in '..\..\common\UnitRegistryUtil.pas',
   UnitRegistrationClass in '..\..\common\UnitRegistrationClass.pas',
@@ -34,13 +33,22 @@ uses
   UnitMacroListClass in '..\MacroManagement\UnitMacroListClass.pas',
   thundax.lib.actions in '..\..\OpenSrc\thundax-macro-actions-master\thundax.lib.actions.pas',
   UnitNextGridFrame in '..\..\common\Frames\UnitNextGridFrame.pas' {Frame1: TFrame},
-  getIp in '..\..\common\getIp.pas';
+  getIp in '..\..\common\getIp.pas',
+  UnitConfigIniClass2 in '..\..\common\UnitConfigIniClass2.pas',
+  FrmInqManageConfig in 'FrmInqManageConfig.pas' {ConfigF},
+  OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas',
+  FrmEditProduct in '..\RegCodeManager\FrmEditProduct.pas' {ProdEditF};
 
 {$R *.res}
 
 begin
+  {$IfDef USE_REGCODE}
+    CheckRegistration('{563EBFC1-922F-4605-95C9-7725946BA209}', [crmHTTP]);
+  {$EndIf USE_REGCODE}
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
+  Application.CreateForm(TProdEditF, ProdEditF);
   Application.Run;
 end.

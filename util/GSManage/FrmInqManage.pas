@@ -15,7 +15,7 @@ uses
   DragDropInternet,DropSource,DragDropFile,DragDropFormats, DragDrop, DropTarget,
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
   FrameDisplayTaskInfo, Vcl.Menus,
-  mORMotHttpClient, MailCallbackInterface, UnitRegistrationClass, UnitRegCodeConst,
+  mORMotHttpClient, OLMailWSCallbackInterface, UnitRegistrationClass, UnitRegCodeConst,
   UnitHttpModule, UnitRegCodeServerInterface, UnitRegistrationRecord,
   thundax.lib.actions, UnitMAPSMacro;
 
@@ -52,6 +52,9 @@ type
     DataFormatAdapter2: TDataFormatAdapter;
     DataFormatAdapterTarget: TDataFormatAdapter;
     DataFormatAdapter1: TDataFormatAdapter;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    est1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
@@ -70,6 +73,8 @@ type
     procedure test1Click(Sender: TObject);
     procedure TDTFgrid_ReqMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure N2Click(Sender: TObject);
+    procedure TDTFN16Click(Sender: TObject);
   private
     FIPCServer: TIPCServer;
 //    FHttpClientWebsocket: TSQLHttpClientWebsockets;
@@ -148,113 +153,127 @@ begin
       LIsProcessJson: Boolean; //Task정보를 Json파일로 받음
       LStr: string;
     begin
+      try
+        g_MyEmailInfo := SendReqOLEmailAccountInfo_WS;
+      except
+      end;
+
       handles[0] := FStopEvent.Handle;
       handles[1] := FIPCMQFromOL.GetNewMessageEvent;
       LEmailMsg := TSQLEmailMsg.Create;
-      LTask := TSQLGSTask.Create;
-
+
       while WaitForMultipleObjects(2, @handles, false, INFINITE) = (WAIT_OBJECT_0 + 1) do
       begin
         while FIPCMQFromOL.TryDequeue(msg) do
         begin
-          rec := msg.MsgData.ToRecord<TOLMsgFileRecord>;
+          LTask := TSQLGSTask.Create;
+          try
+            rec := msg.MsgData.ToRecord<TOLMsgFileRecord>;
 
-          if msg.MsgID = 1 then
-          begin
-            LIsProcessJson := False;
-
-            if (rec.FEntryID <> '') and (rec.FStoreID <> '') then
+            if msg.MsgID = 1 then
             begin
-              LEmailMsg := TSQLEmailMsg.Create(g_ProjectDB,
-                'EntryID = ? AND StoreID = ?', [rec.FEntryID,rec.FStoreID]);
+              LIsProcessJson := False;
 
-              //데이터가 없으면
-//              if LEmailMsg.ID = 0 then
-              if not LEmailMsg.FillOne then
+              if (rec.FEntryID <> '') and (rec.FStoreID <> '') then
               begin
-                LEmailMsg.Sender := rec.FSender;
-                LEmailMsg.Receiver := rec.FReceiver;
-                LEmailMsg.CarbonCopy := rec.FCarbonCopy;
-                LEmailMsg.BlindCC := rec.FBlindCC;
-                LEmailMsg.EntryID := rec.FEntryId;
-                LEmailMsg.StoreID := rec.FStoreId;
-                LEmailMsg.Subject := rec.FSubject;
-                LEmailMsg.RecvDate := TimeLogFromDateTime(rec.FReceiveDate);
+                LEmailMsg := TSQLEmailMsg.Create(g_ProjectDB,
+                  'EntryID = ? AND StoreID = ?', [rec.FEntryID,rec.FStoreID]);
 
-                LEmailMsg2 := TSQLEmailMsg.Create(g_ProjectDB,
-                  'Subject = ?', [rec.FSubject]);
-
-                if LEmailMsg2.FillOne then //동일한 제목의 메일이 존재하면
+                //데이터가 없으면
+  //              if LEmailMsg.ID = 0 then
+                if not LEmailMsg.FillOne then
                 begin
-                  LIsAddTask := False;
-                  LTask.EmailMsg.SourceGet(g_ProjectDB, LEmailMsg2.ID, LTaskIds);
+                  LEmailMsg.Sender := rec.FSender;
+                  LEmailMsg.Receiver := rec.FReceiver;
+                  LEmailMsg.CarbonCopy := rec.FCarbonCopy;
+                  LEmailMsg.BlindCC := rec.FBlindCC;
+                  LEmailMsg.EntryID := rec.FEntryId;
+                  LEmailMsg.StoreID := rec.FStoreId;
+                  LEmailMsg.Subject := rec.FSubject;
+                  LEmailMsg.SavedOLFolderPath := rec.FSavedOLFolderPath;
+                  LEmailMsg.RecvDate := TimeLogFromDateTime(rec.FReceiveDate);
 
-                  try
-                    for i:= low(LTaskIds) to high(LTaskIds) do
-                    begin
-                      LTask2 := CreateOrGetLoadTask(LTaskIds[i]);
-                      break;
+                  LEmailMsg2 := TSQLEmailMsg.Create(g_ProjectDB,
+                    'Subject = ?', [rec.FSubject]);
+
+                  if LEmailMsg2.FillOne then //동일한 제목의 메일이 존재하면
+                  begin
+                    LIsAddTask := False;
+                    LTask.EmailMsg.SourceGet(g_ProjectDB, LEmailMsg2.ID, LTaskIds);
+
+                    try
+                      for i:= low(LTaskIds) to high(LTaskIds) do
+                      begin
+                        LTask2 := CreateOrGetLoadTask(LTaskIds[i]);
+                        break;
+                      end;
+                    finally
+                      if LTask2.ID <> 0 then
+                      begin
+                        LTask2.EmailMsg.ManyAdd(g_ProjectDB, LTask2.ID, LEMailMsg.ID, True);
+                        FreeAndNil(LTask2);
+                      end;
                     end;
-                  finally
-                    if LTask2.ID <> 0 then
-                    begin
-                      LTask2.EmailMsg.ManyAdd(g_ProjectDB, LTask2.ID, LEMailMsg.ID, True);
-                      FreeAndNil(LTask2);
-                    end;
+
+                    LEmailMsg.ParentID := LEmailMsg2.EntryID+';'+LEmailMsg2.StoreID;
+                    LID := g_ProjectDB.Add(LEmailMsg, true);
+                  end
+                  else
+                  begin //제목이 존재하지 않으면 Task도 새로 등록 해야 함
+  //                  LIsAddTask := True;
+                    LTask.InqRecvDate := TimeLogFromDateTime(rec.FReceiveDate);
+                    LTask.ChargeInPersonId := rec.FUserEmail;
+                    LIsAddTask := TaskForm.DisplayTaskInfo2EditForm(LTask, LEmailMsg, null);
+    //                g_ProjectDB.Add(LTask, true);
+    //                LTask.EmailMsg.ManyAdd(g_ProjectDB, LTask.ID, LEmailMsg.ID, true);
                   end;
-
-                  LEmailMsg.ParentID := LEmailMsg2.EntryID+';'+LEmailMsg2.StoreID;
-                  LID := g_ProjectDB.Add(LEmailMsg, true);
-                end
-                else
-                begin //제목이 존재하지 않으면 Task도 새로 등록 해야 함
-//                  LIsAddTask := True;
-                  LTask.InqRecvDate := TimeLogFromDateTime(rec.FReceiveDate);
-                  LTask.ChargeInPersonId := rec.FUserEmail;
-                  LIsAddTask := TaskForm.DisplayTaskInfo2EditForm(LTask, LEmailMsg, null);
-  //                g_ProjectDB.Add(LTask, true);
-  //                LTask.EmailMsg.ManyAdd(g_ProjectDB, LTask.ID, LEmailMsg.ID, true);
                 end;
               end;
-            end;
-          end
-          else
-          if msg.MsgID = 2 then
-          begin
-            //task.Invoke함수에서 Grid에 Task 추가하는 것을 방지함
-            LIsAddTask := False;
-            LIsProcessJson := False;
-            TDTF.AddFolderListFromOL(rec.FEntryId + '=' + rec.FStoreId);
-          end
-          else
-          if msg.MsgID = 3 then
-          begin
-            LStr := rec.FSubject;
-            LIsProcessJson := True;
-            LIsAddTask := False;
-          end;
-
-          task.Invoke(
-            procedure
-            begin
-              //동일한 제목의 메일이 존재하지 않으면 Grid에 추가
-              if LIsAddTask then
-              begin
-                if Assigned(LTask) then
-                  TDTF.LoadTaskVar2Grid(LTask, TDTF.grid_Req);
-//                i := TDTF.grid_Req.AddRow;
-//                TDTF.grid_Req.CellByName['Subject',i].AsString := rec.FSubject;
-//                TDTF.grid_Req.Row[i].Data := TIDList.Create;
-//                TIDList(TDTF.grid_Req.Row[i].Data).EmailId := LID;
-//                TIDList(TDTF.grid_Req.Row[i].Data).TaskId := LTask.ID;
-              end;
-
-              if LIsProcessJson then
-              begin
-                ProcessTaskJson(LStr);
-              end;
             end
-          );
+            else
+            if msg.MsgID = 2 then
+            begin
+              //task.Invoke함수에서 Grid에 Task 추가하는 것을 방지함
+              LIsAddTask := False;
+              LIsProcessJson := False;
+              TDTF.AddFolderListFromOL(rec.FEntryId + '=' + rec.FStoreId);
+            end
+            else
+            if msg.MsgID = 3 then
+            begin
+              LStr := rec.FSubject;
+              LIsProcessJson := True;
+              LIsAddTask := False;
+            end;
+
+            task.Invoke(
+              procedure
+              begin
+                //동일한 제목의 메일이 존재하지 않으면 Grid에 추가
+                if LIsAddTask then
+                begin
+                  if Assigned(LTask) then
+                  begin
+                    TDTF.LoadTaskVar2Grid(LTask, TDTF.grid_Req);
+                    FreeAndNil(LTask);
+                  end;
+  //                i := TDTF.grid_Req.AddRow;
+  //                TDTF.grid_Req.CellByName['Subject',i].AsString := rec.FSubject;
+  //                TDTF.grid_Req.Row[i].Data := TIDList.Create;
+  //                TIDList(TDTF.grid_Req.Row[i].Data).EmailId := LID;
+  //                TIDList(TDTF.grid_Req.Row[i].Data).TaskId := LTask.ID;
+                end;
+
+                if LIsProcessJson then
+                begin
+                  ProcessTaskJson(LStr);
+                end;
+              end
+            );
+          finally
+            if (not LIsAddTask) and Assigned(LTask) then
+              FreeAndNil(LTask);
+          end;
         end;//while
       end;//while
     end,
@@ -263,7 +282,6 @@ begin
       procedure
       begin
         FreeAndNil(LEmailMsg);
-        FreeAndNil(LTask);
       end
     )
   );
@@ -440,6 +458,8 @@ begin
   AsynDisplayOLMsg2Grid();
   TDTF.rg_periodClick(nil);
   g_ExecuteFunction := ExecFunc;
+
+  TDTF.LoadConfigFromFile;
 end;
 
 procedure TInquiryF.FormDestroy(Sender: TObject);
@@ -496,6 +516,11 @@ begin
   finally
     LTask.Free;
   end;
+end;
+
+procedure TInquiryF.N2Click(Sender: TObject);
+begin
+  TDTF.SetConfig;
 end;
 
 procedure TInquiryF.OnClientConnect(const Context: ICommContext);
@@ -630,6 +655,7 @@ begin
       rec.FCarbonCopy := LStrList.Values['CC'];
       rec.FBlindCC := LStrList.Values['BCC'];
       rec.FSubject := LStrList.Values['Subject'];
+      rec.FSavedOLFolderPath := LStrList.Values['FolderPath'];
       rec.FUserEMail := LStrList.Values['UserEmail'];
       rec.FUserName := LStrList.Values['UserName'];
       LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
@@ -878,6 +904,9 @@ var
   i: integer;
   LFileName: string;
 begin
+  if not PtInRect(TDTF.grid_Req.GetRowRect(TDTF.grid_Req.SelectedRow), Point(X,Y)) then
+    exit;
+
   if (DragDetectPlus(TDTF.grid_Req.Handle, Point(X,Y))) then
   begin
     if TDTF.grid_Req.SelectedRow = -1 then
@@ -911,6 +940,12 @@ begin
 //
 //  LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
 //  FIPCMQFromOL.Enqueue(TOmniMessage.Create(1, LOmniValue));
+end;
+
+procedure TInquiryF.TDTFN16Click(Sender: TObject);
+begin
+  TDTF.N16Click(Sender);
+
 end;
 
 procedure TInquiryF.TDTFrg_periodClick(Sender: TObject);

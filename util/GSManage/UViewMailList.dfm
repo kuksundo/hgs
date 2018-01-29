@@ -3,7 +3,7 @@ object ViewMailListF: TViewMailListF
   Top = 0
   Caption = 'Outlook Email List'
   ClientHeight = 532
-  ClientWidth = 840
+  ClientWidth = 1035
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object ViewMailListF: TViewMailListF
   object mailPanel1: TPanel
     Left = 0
     Top = 0
-    Width = 840
+    Width = 1035
     Height = 532
     Margins.Left = 5
     Margins.Right = 5
@@ -31,19 +31,19 @@ object ViewMailListF: TViewMailListF
     TabOrder = 0
     StyleElements = [seFont, seClient]
     DesignSize = (
-      840
+      1035
       532)
     object tabMail: TTabControl
       Left = 5
       Top = 41
-      Width = 830
+      Width = 1025
       Height = 458
       Align = alClient
       TabOrder = 0
       object StatusBar: TStatusBar
         Left = 4
         Top = 435
-        Width = 822
+        Width = 1017
         Height = 19
         AutoHint = True
         Panels = <
@@ -73,7 +73,7 @@ object ViewMailListF: TViewMailListF
       object EmailTab: TAdvOfficeTabSet
         Left = 4
         Top = 6
-        Width = 822
+        Width = 1017
         Height = 27
         AdvOfficeTabs = <
           item
@@ -674,7 +674,7 @@ object ViewMailListF: TViewMailListF
       object grid_Mail: TNextGrid
         Left = 4
         Top = 33
-        Width = 822
+        Width = 1017
         Height = 402
         Touch.InteractiveGestures = [igPan, igPressAndTap]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
@@ -903,12 +903,30 @@ object ViewMailListF: TViewMailListF
           SortType = stAlphabetic
           Visible = False
         end
+        object FolderPath: TNxTextColumn
+          Alignment = taCenter
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Caption = #51200#51109#54260#45908
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 12
+          SortType = stAlphabetic
+        end
       end
     end
     object panMailButtons: TPanel
       Left = 5
       Top = 499
-      Width = 830
+      Width = 1025
       Height = 33
       Align = alBottom
       BevelOuter = bvNone
@@ -953,6 +971,7 @@ object ViewMailListF: TViewMailListF
         Height = 25
         Caption = 'Check &All'
         TabOrder = 1
+        Visible = False
         PngImage.Data = {
           89504E470D0A1A0A0000000D49484452000000100000000E0806000000262F9C
           8A000000097048597300000B1300000B1301009A9C1800000A39694343505068
@@ -1064,6 +1083,7 @@ object ViewMailListF: TViewMailListF
         Height = 25
         Caption = 'To &Tray'
         TabOrder = 2
+        Visible = False
         PngImage.Data = {
           89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
           61000002564944415478DA8591CB4B945118C67F5F3AA8E5252DF312159A24B9
@@ -1088,10 +1108,11 @@ object ViewMailListF: TViewMailListF
           0C9F4A0000000049454E44AE426082}
       end
       object BitBtn1: TBitBtn
-        Left = 528
-        Top = 2
+        Left = 936
+        Top = 0
         Width = 89
-        Height = 31
+        Height = 33
+        Align = alRight
         Caption = 'Close'
         Kind = bkCancel
         NumGlyphs = 2
@@ -1099,7 +1120,7 @@ object ViewMailListF: TViewMailListF
       end
     end
     object panProgress: TPanel
-      Left = 623
+      Left = 818
       Top = 477
       Width = 205
       Height = 18
@@ -1151,7 +1172,7 @@ object ViewMailListF: TViewMailListF
     object Panel1: TPanel
       Left = 5
       Top = 0
-      Width = 830
+      Width = 1025
       Height = 41
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -1163,7 +1184,7 @@ object ViewMailListF: TViewMailListF
       TabOrder = 3
       object Label1: TLabel
         Left = 8
-        Top = 16
+        Top = 12
         Width = 91
         Height = 16
         Caption = 'Move Folder : '
@@ -1171,7 +1192,7 @@ object ViewMailListF: TViewMailListF
       object AutoMoveCB: TCheckBox
         Left = 448
         Top = 13
-        Width = 249
+        Width = 234
         Height = 17
         Caption = 'Auto Move Email To HullNo Folder'
         TabOrder = 0
@@ -1191,6 +1212,24 @@ object ViewMailListF: TViewMailListF
         ParentFont = False
         TabOrder = 1
         OnDropDown = MoveFolderCBDropDown
+      end
+      object SubFolderCB: TCheckBox
+        Left = 688
+        Top = 12
+        Width = 109
+        Height = 17
+        Caption = 'To Sub-Folder'
+        TabOrder = 2
+        OnClick = SubFolderCBClick
+      end
+      object SubFolderNameEdit: TEdit
+        Left = 799
+        Top = 9
+        Width = 146
+        Height = 24
+        Enabled = False
+        ImeName = 'Microsoft IME 2010'
+        TabOrder = 3
       end
     end
   end
@@ -1699,6 +1738,25 @@ object ViewMailListF: TViewMailListF
         Caption = #54596#46300#49436#48708#49828#54016' '#51204#45804
         OnClick = N10Click
       end
+      object N14: TMenuItem
+        Caption = '-'
+      end
+      object N12: TMenuItem
+        Tag = 10
+        Caption = #49436#48708#49828#50724#45908' '#45216#51064' '#50836#52397
+      end
+    end
+    object ForwardEMail1: TMenuItem
+      Caption = 'Forward EMail'
+      object N11: TMenuItem
+        Tag = 9
+        Caption = #44592#49457#54869#51064' '#50836#52397
+        OnClick = N11Click
+      end
+      object N13: TMenuItem
+        Tag = 11
+        Caption = #44592#49457#52376#47532' '#50836#52397
+      end
     end
     object EditMailInfo1: TMenuItem
       Caption = 'Edit Mail Info'
@@ -1708,7 +1766,11 @@ object ViewMailListF: TViewMailListF
       Caption = '-'
     end
     object MoveEmail1: TMenuItem
-      Caption = 'Move Email To Folder'
+      Caption = 'Move Email To'
+    end
+    object MoveEmailToSelected1: TMenuItem
+      Caption = 'Move Email To Selected'
+      OnClick = MoveEmailToSelected1Click
     end
     object DeleteMail1: TMenuItem
       Caption = 'Delete Mail'

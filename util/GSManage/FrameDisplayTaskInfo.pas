@@ -12,7 +12,8 @@ uses
   OtlCommon, OtlComm, OtlTaskControl, OtlContainerObserver, otlTask, OtlParallel,
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
   CommonData, UElecDataRecord, TaskForm, FSMClass_Dic, FSMState, Vcl.Menus,
-  Vcl.ExtCtrls, UnitMakeReport, UnitTodoList, UnitTodoCollect;
+  Vcl.ExtCtrls, UnitMakeReport, UnitTodoList, UnitTodoCollect, FrmInqManageConfig,
+  UnitIniConfigSetting;
 
 type
   TDisplayTaskF = class(TFrame)
@@ -107,6 +108,12 @@ type
     N13: TMenuItem;
     N14: TMenuItem;
     N15: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N21: TMenuItem;
     procedure btn_SearchClick(Sender: TObject);
     procedure ComboBox1DropDown(Sender: TObject);
     procedure rg_periodClick(Sender: TObject);
@@ -132,6 +139,9 @@ type
     procedure N13Click(Sender: TObject);
     procedure N14Click(Sender: TObject);
     procedure N15Click(Sender: TObject);
+    procedure N16Click(Sender: TObject);
+    procedure grid_ReqKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     procedure ExecuteSearch(Key: Char);
 
@@ -157,14 +167,25 @@ type
   protected
     procedure ShowTaskIDFromGrid;
     procedure ShowEmailIDFromGrid;
+
+    procedure ProcessPasteEvent(ATxt: string);
   public
     //메일을 이동시킬 폴더 리스트,
     //HGS Task/Send Folder Name 2 IPC 메뉴에 의해 OL으로 부터 수신함
     FFolderListFromOL: TStringList;
     FToDoCollect: TpjhToDoItemCollection;
+    FSettings : TConfigSettings;
+    FIniFileName: string;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    procedure LoadConfigFromFile(AFileName: string = '');
+    procedure LoadConfig2Form(AForm: TConfigF);
+    procedure LoadConfigForm2Object(AForm: TConfigF);
+    procedure SetConfig;
+    procedure ApplyConfigChanged;
+    function GetRecvEmailAddress(AMailType: integer): string;
 
     function GetTask: TSQLGSTask;
     procedure DisplayTaskInfo2EditForm(const ATaskID: integer); overload;
@@ -186,7 +207,7 @@ type
 
 implementation
 
-uses System.Rtti, UnitIPCModule;
+uses System.Rtti, UnitIPCModule, ClipBrd, System.RegularExpressions, UnitGSFileRecord;
 
 {$R *.dfm}
 
@@ -198,6 +219,24 @@ end;
 procedure TDisplayTaskF.CurWorkCBDropDown(Sender: TObject);
 begin
   SalesProcess2Combo(CurWorkCB);
+end;
+
+procedure TDisplayTaskF.LoadConfig2Form(AForm: TConfigF);
+begin
+  FSettings.LoadConfig2Form(AForm, FSettings);
+end;
+
+procedure TDisplayTaskF.LoadConfigForm2Object(AForm: TConfigF);
+begin
+  FSettings.LoadConfigForm2Object(AForm, FSettings);
+end;
+
+procedure TDisplayTaskF.LoadConfigFromFile(AFileName: string);
+begin
+  FSettings.Load(AFileName);
+
+  if FSettings.MQServerIP = '' then
+    FSettings.MQServerIP := '127.0.0.1';
 end;
 
 procedure TDisplayTaskF.LoadTaskVar2Grid(AVar: TSQLGSTask; AGrid: TNextGrid;
@@ -329,7 +368,9 @@ var
 begin
   LTask := GetTask;
   try
-    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
   finally
     FreeAndNil(LTask);
   end;
@@ -341,7 +382,9 @@ var
 begin
   LTask := GetTask;
   try
-    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
   finally
     FreeAndNil(LTask);
   end;
@@ -353,7 +396,9 @@ var
 begin
   LTask := GetTask;
   try
-      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
   finally
     FreeAndNil(LTask);
   end;
@@ -365,7 +410,9 @@ var
 begin
   LTask := GetTask;
   try
-      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+      SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
   finally
     FreeAndNil(LTask);
   end;
@@ -377,7 +424,23 @@ var
 begin
   LTask := GetTask;
   try
-    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask)
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N16Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
   finally
     FreeAndNil(LTask);
   end;
@@ -392,6 +455,47 @@ begin
 //  LRec := Get_Doc_SubCon_Invoice_List_Rec;
 //  LWorksheet := MakeDocSubConInvoiceList;
 //  MakeDocSubConInvoiceList2(LWorkSheet, LRec, LRow);
+end;
+
+procedure TDisplayTaskF.ProcessPasteEvent(ATxt: string);
+var
+  LStr: string;
+  LRegexpr: TRegEx;
+  LMatch: TMatch;
+  LGroup: TGroup;
+begin
+  LStr := System.SysUtils.Trim(ATxt);
+
+  LRegexpr := TRegEx.Create(REGEX_HULLNO_PATTERN, [roIgnoreCase]);
+  LMatch := LRegexpr.Match(LStr);
+
+  if LMatch.Success then
+  begin
+    InputValueClear;
+    HullNoEdit.Text := LStr;
+  end
+  else
+  begin
+    LRegexpr := TRegEx.Create(REGEX_ORDERNO_PATTERN, [roIgnoreCase]);
+    LMatch := LRegexpr.Match(LStr);
+
+    if LMatch.Success then
+    begin
+      InputValueClear;
+      OrderNoEdit.Text := LStr;
+    end
+    else
+    begin
+      LRegexpr := TRegEx.Create(REGEX_SHIPNAME_PATTERN, [roIgnoreCase]);
+      LMatch := LRegexpr.Match(LStr);
+
+      if LMatch.Success then
+      begin
+        InputValueClear;
+        ShipNameEdit.Text := LStr;
+      end;
+    end;
+  end;
 end;
 
 procedure TDisplayTaskF.ProductTypeComboDropDown(Sender: TObject);
@@ -471,6 +575,20 @@ begin
     FreeAndNil(LSubCon);
     FreeAndNil(LMat4Proj);
     LTask.Free;
+  end;
+end;
+
+function TDisplayTaskF.GetRecvEmailAddress(AMailType: integer): string;
+begin
+  case AMailType of
+    1: Result := '';//Invoice 송부
+    2: Result := FSettings.SalesDirectorEmailAddr;// SALES_DIRECTOR_EMAIL_ADDR;//매출처리요청
+    3: Result := FSettings.MaterialInputEmailAddr;// MATERIAL_INPUT_EMAIL_ADDR;//자재직투입요청
+    4: Result := FSettings.ForeignInputEmailAddr;// FOREIGN_INPUT_EMAIL_ADDR;//해외고객업체등록
+    5: Result := FSettings.ElecHullRegEmailAddr;// ELEC_HULL_REG_EMAIL_ADDR;//전전비표준공사 생성 요청
+    6: Result := PO_REQ_EMAIL_ADDR; //PO 요청
+    7: Result := FSettings.ShippingReqEmailAddr;// SHIPPING_REQ_EMAIL_ADDR; //출하 요청
+    8: Result := FSettings.FieldServiceReqEmailAddr;// FIELDSERVICE_REQ_EMAIL_ADDR; //필드서비스팀 요청
   end;
 end;
 
@@ -674,6 +792,14 @@ begin
   ShowTaskFormFromData(ARow);
 end;
 
+procedure TDisplayTaskF.grid_ReqKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Shift = [ssCtrl]) and ((Key = Ord('V')) or (Key = Ord('v'))  ) then
+    ProcessPasteEvent(ClipBoard.AsText);
+//    ShowMessage(ClipBoard.AsText);
+end;
+
 procedure TDisplayTaskF.HullNoEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
@@ -744,6 +870,11 @@ end;
 procedure TDisplayTaskF.AeroButton1Click(Sender: TObject);
 begin
   ShowTodoListFormFromData(-1);
+end;
+
+procedure TDisplayTaskF.ApplyConfigChanged;
+begin
+  LoadConfigFromFile;
 end;
 
 procedure TDisplayTaskF.ShowToDoListFromCollect(AToDoCollect: TpjhToDoItemCollection);
@@ -829,6 +960,10 @@ begin
   InitTaskTab;
   ComboBox1DropDown(nil);
 //  ComboBox1.ItemIndex := 1;
+  if FIniFileName = '' then
+    FIniFileName := ChangeFileExt(Application.ExeName, '.ini');
+
+  FSettings := TConfigSettings.create(FIniFileName);
 end;
 
 procedure TDisplayTaskF.DeleteTask1Click(Sender: TObject);
@@ -848,6 +983,7 @@ end;
 
 destructor TDisplayTaskF.Destroy;
 begin
+  FSettings.Free;
   FreeAndNil(FToDoCollect);
   FFolderListFromOL.Free;
 
@@ -1148,6 +1284,32 @@ begin
 
   FToDoCollect.Sort(1);
   ShowToDoListFromCollect(FToDoCollect);
+end;
+
+procedure TDisplayTaskF.SetConfig;
+var
+  LConfigF: TConfigF;
+  LParamFileName: string;
+begin
+  LConfigF := TConfigF.Create(Self);
+
+  try
+    LParamFileName := FSettings.ParamFileName;
+    LoadConfig2Form(LConfigF);
+
+    if LConfigF.ShowModal = mrOK then
+    begin
+      LoadConfigForm2Object(LConfigF);
+      FSettings.Save();
+
+//      FParamFileNameChanged := (LParamFileName <> FSettings.ParamFileName) and
+//        (FileExists(FSettings.ParamFileName));
+//      ApplyUI;
+      ApplyConfigChanged;
+    end;
+  finally
+    LConfigF.Free;
+  end;
 end;
 
 procedure TDisplayTaskF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);

@@ -111,6 +111,15 @@ type
     ShowStoreID1: TMenuItem;
     N9: TMenuItem;
     N10: TMenuItem;
+    SubFolderCB: TCheckBox;
+    SubFolderNameEdit: TEdit;
+    FolderPath: TNxTextColumn;
+    MoveEmailToSelected1: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    N14: TMenuItem;
+    ForwardEMail1: TMenuItem;
     procedure grid_MailCellDblClick(Sender: TObject; ACol, ARow: Integer);
     procedure DropEmptyTarget1Drop(Sender: TObject; ShiftState: TShiftState;
       APoint: TPoint; var Effect: Integer);
@@ -132,6 +141,9 @@ type
     procedure N7Click(Sender: TObject);
     procedure N9Click(Sender: TObject);
     procedure N10Click(Sender: TObject);
+    procedure SubFolderCBClick(Sender: TObject);
+    procedure MoveEmailToSelected1Click(Sender: TObject);
+    procedure N11Click(Sender: TObject);
   private
     procedure DeleteMail(ARow: integer);
     function GetEmailIDFromGrid(ARow: integer): TID;
@@ -147,6 +159,7 @@ type
     FFolderListFromOL: TStringList;
 
     procedure SetMoveFolderIndex;
+    procedure FillInMoveFolderCB;
   end;
 
 var
@@ -155,7 +168,7 @@ var
 implementation
 
 uses TaskForm, SynMustache, UnitMakeReport, UnitStringUtil, UnitIPCModule,
-  DragDropInternet;
+  DragDropInternet, FrmInqManage;
 
 {$R *.dfm}
 
@@ -220,12 +233,13 @@ begin
   DeleteMail(grid_Mail.SelectedRow);
   FTask.EmailMsg.DestGet(g_ProjectDB, FTask.ID, LIds);
   ShowEmailListFromIDs(grid_Mail, LIds);
+  SubFolderNameEdit.Text := FTask.Order_No;
 end;
 
 procedure TViewMailListF.DropEmptyTarget1Drop(Sender: TObject;
   ShiftState: TShiftState; APoint: TPoint; var Effect: Integer);
 var
-  LStoreId, LStorePath, LOriginalEntryId, LOriginalStoreId: string;
+  LStoreId, LStorePath, LOriginalEntryId, LOriginalStoreId, LSubFolder: string;
   OutlookDataFormat: TOutlookDataFormat;
   LIsMultiDrop: boolean;
   i: integer;
@@ -240,11 +254,16 @@ begin
 
     LStoreId := '';
     LStorePath := '';
+    LSubFolder := '';
 
     if (MoveFolderCB.ItemIndex > -1) and (AutoMoveCB.Checked) then
     begin
       LStoreId := FFolderListFromOL.ValueFromIndex[MoveFolderCB.ItemIndex];
       LStorePath := FFolderListFromOL.Names[MoveFolderCB.ItemIndex];
+
+      if SubFolderCB.Checked then
+        LSubFolder := SubFolderNameEdit.Text;
+//        LStorePath := IncludeTrailingPathDelimiter(LStorePath) + SubFolderNameEdit.Text;
     end;
 
     LStrList := TStringList.Create;
@@ -260,6 +279,7 @@ begin
       begin
         FTask.EmailMsg.DestGet(g_ProjectDB, FTask.ID, LIds);
         ShowEmailListFromIDs(grid_Mail ,LIds);
+        SubFolderNameEdit.Text := FTask.Order_No;
 
         if (LStoreId <> '') and (LStorePath <> '') then
         begin
@@ -267,7 +287,7 @@ begin
           begin
             LOriginalEntryId := LStrList.Names[i];
             LOriginalStoreId := LStrList.ValueFromIndex[i];
-            SendCmd2IPC4MoveFolderEmail(LOriginalEntryId, LOriginalStoreId, LStoreId, LStorePath, FTask);
+            SendCmd2IPC4MoveFolderEmail(LOriginalEntryId, LOriginalStoreId, LStoreId, LStorePath, FTask, LSubFolder);
           end;
 
           ShowMessage('Email move to folder( ' + LStorePath + ' ) completed!' + #13#10 +
@@ -322,6 +342,16 @@ begin
 //    FTask.EmailMsg.ManyDelete(g_ProjectDB, FTask.ID, LEmailID);
 //    g_ProjectDB.Delete(TSQLEmailMsg, LEmailID);
   end;
+end;
+
+procedure TViewMailListF.FillInMoveFolderCB;
+var
+  i: integer;
+begin
+  MoveFolderCB.Clear;
+
+  for i := 0 to FFolderListFromOL.Count - 1 do
+    MoveFolderCB.Items.Add(FFolderListFromOL.Names[i]);
 end;
 
 procedure TViewMailListF.FinilizeFolderListMenu;
@@ -414,7 +444,7 @@ end;
 
 procedure TViewMailListF.MoveEmailToFolderClick(Sender: TObject);
 var
-  LEntryId, LStoreId: string;
+  LEntryId, LStoreId, LSubFolder: string;
 begin
   if grid_Mail.SelectedRow = -1 then
     exit;
@@ -422,20 +452,41 @@ begin
   LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
   LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
 
-  if SendCmd2IPC4MoveFolderEmail(LEntryId, LStoreId,
-      FFolderListFromOL.ValueFromIndex[TMenuItem(Sender).Tag],
-      FFolderListFromOL.Names[TMenuItem(Sender).Tag], FTask) then
-    ShowMessage('Email move to folder( ' + FFolderListFromOL.Names[TMenuItem(Sender).Tag] + ' ) completed!');
+  LSubFolder := '';
+
+  if SubFolderCB.Checked then
+    LSubFolder := SubFolderNameEdit.Text;
+
+  if Assigned(Sender) then
+  begin
+    if SendCmd2IPC4MoveFolderEmail(LEntryId, LStoreId,
+        FFolderListFromOL.ValueFromIndex[TMenuItem(Sender).Tag],
+        FFolderListFromOL.Names[TMenuItem(Sender).Tag], FTask, LSubFolder) then
+      ShowMessage('Email move to folder( ' + FFolderListFromOL.Names[TMenuItem(Sender).Tag] + ' ) completed!');
+  end
+  else
+  begin
+    if SendCmd2IPC4MoveFolderEmail(LEntryId, LStoreId,
+        FFolderListFromOL.ValueFromIndex[MoveFolderCB.ItemIndex],
+        FFolderListFromOL.Names[MoveFolderCB.ItemIndex], FTask, LSubFolder) then
+      ShowMessage('Email move to Selected folder( ' + FFolderListFromOL.Names[MoveFolderCB.ItemIndex] + ' ) completed!');
+  end;
+end;
+
+procedure TViewMailListF.MoveEmailToSelected1Click(Sender: TObject);
+begin
+  if MoveFolderCB.ItemIndex = -1 then
+  begin
+    ShowMessage('Select Move Folder First!');
+    exit;
+  end;
+
+  MoveEmailToFolderClick(nil);
 end;
 
 procedure TViewMailListF.MoveFolderCBDropDown(Sender: TObject);
-var
-  i: integer;
 begin
-  MoveFolderCB.Clear;
-
-  for i := 0 to FFolderListFromOL.Count - 1 do
-    MoveFolderCB.Items.Add(FFolderListFromOL.Names[i]);
+  FillInMoveFolderCB;
 end;
 
 procedure TViewMailListF.N10Click(Sender: TObject);
@@ -445,7 +496,19 @@ begin
   LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
   LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
 
-  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask,
+    InquiryF.TDTF.FSettings);
+end;
+
+procedure TViewMailListF.N11Click(Sender: TObject);
+var
+  LEntryId, LStoreId: string;
+begin
+  LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
+  LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
+
+  SendCmd2IPC4ForwardMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask,
+    InquiryF.TDTF.FSettings);
 end;
 
 procedure TViewMailListF.N2Click(Sender: TObject);
@@ -455,32 +518,44 @@ begin
   LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
   LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
 
-  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask,
+    InquiryF.TDTF.FSettings);
 end;
 
 procedure TViewMailListF.N3Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag,
+    FTask, InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
+
 end;
 
 procedure TViewMailListF.N5Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag,
+    FTask, InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TViewMailListF.N6Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag,
+    FTask, InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TViewMailListF.N7Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag,
+    FTask, InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TViewMailListF.N9Click(Sender: TObject);
 begin
-  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4CreateMail(grid_Mail, grid_Mail.SelectedRow, TMenuItem(Sender).Tag,
+    FTask, InquiryF.TDTF.FSettings,
+    InquiryF.TDTF.GetRecvEmailAddress(TMenuItem(Sender).Tag));
 end;
 
 procedure TViewMailListF.PopupMenu1Popup(Sender: TObject);
@@ -494,7 +569,8 @@ var
 begin
   LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
   LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
-  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask);
+  SendCmd2IPC4ReplyMail(LEntryId, LStoreId, TMenuItem(Sender).Tag, FTask,
+    InquiryF.TDTF.FSettings);
 end;
 
 procedure TViewMailListF.SetMoveFolderIndex;
@@ -519,6 +595,14 @@ end;
 procedure TViewMailListF.ShowStoreID1Click(Sender: TObject);
 begin
   ShowMessage(grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString);
+end;
+
+procedure TViewMailListF.SubFolderCBClick(Sender: TObject);
+begin
+  if SubFolderCB.Checked then
+    AutoMoveCB.Checked := True;
+
+  SubFolderNameEdit.Enabled := SubFolderCB.Checked;
 end;
 
 end.

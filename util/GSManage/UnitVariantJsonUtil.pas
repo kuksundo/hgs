@@ -8,15 +8,24 @@ uses System.Classes, Dialogs, System.Rtti,
   CommonData, SynCommons, mORMot, DateUtils, System.SysUtils, UElecDataRecord,
   mORMotHttpClient, Winapi.ActiveX, Generics.Collections;
 
-function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer): string;
-function MakeSalesReqEmailBody(ATask: TSQLGSTask): string;
+function MakeRawUTF8ToBin64(AUTF8: RawUTF8; AIsCompress: Boolean = True): string;
+function MakeRawByteStringToBin64(ARaw: RawByteString; AIsCompress: Boolean = True): string;
+function MakeBin64ToRawByteString(AStr: string; AIsCompress: Boolean = True): RawByteString;
+function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer;
+  ASalesPICSig, ATaskAShippingPICSig, AFieldServicePICSig, AElecHullRegPICSig, AMyNameSig: string): string;
+function MakeSalesReqEmailBody(ATask: TSQLGSTask; ASalesPICSig, AMyNameSig: string): string;
 function MakeInvoiceEmailBody(ATask: TSQLGSTask): string;
 function MakeDirectShippingEmailBody(ATask: TSQLGSTask): string;
 function MakeForeignRegEmailBody(ATask: TSQLGSTask): string;
-function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask): string;
+function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask; AElecHullRegPICSig, AMyNameSig: string): string;
 function MakePOReqEmailBody(ATask: TSQLGSTask): string;
-function MakeShippingReqEmailBody(ATask: TSQLGSTask): string;
-function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask): string;
+function MakeShippingReqEmailBody(ATask: TSQLGSTask; AShippingPICSig, AMyNameSig: string): string;
+function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask; AFieldServicePICSig, AMyNameSig: string): string;
+function MakeForwardPayCheckSubConEmailBody(ATask: TSQLGSTask; AMyNameSig: string): string;
+function MakeSubConQuotationReqEmailBody(ATask: TSQLGSTask; ASubConPICEMailAddr, ASubConPICSig, AMyNameSig: string): string;
+function MakeForwardSubConPaymentReqEmailBody(ATask: TSQLGSTask; ASubConPaymentPICSig, AMyNameSig: string): string;
+function MakeSubConServiceOrderReqEmailBody(ATask: TSQLGSTask; ASubConPICEMailAddr, ASubConPICSig, AMyNameSig: string): string;
+
 function MakeTaskInfoEmailAttached(ATask: TSQLGSTask; var AFileName: string): string;
 function MakeInvoiceTaskInfo2JSON(ATask: TSQLInvoiceTask; var AFileName: string): string;
 function MakeInvoiceItemFromVar(ADoc: variant): string;
@@ -25,8 +34,6 @@ procedure GetInvoiceItem2Var(ADelimitedStr: string; var ADoc: variant);
 function GetTaskInfoAttachedFileName(AVar: variant): string;
 function GetInvoiceTaskInfoAttachedFileName(AVar: variant): string;
 procedure LoadInvoiceTaskFromVariant(ATask:TSQLInvoiceTask; ADoc: variant);
-procedure LoadInvoiceTaskFromVariant2(ATask:TSQLInvoiceTask; ADoc: variant);
-procedure LoadInvoiceTaskFromVariant3(ATask:TSQLInvoiceTask; ADoc: variant);
 procedure LoadInvoiceItemListFromVariant(ADoc: variant; AItemList: TObjectList<TSQLInvoiceItem>);
 procedure LoadInvoiceItemFromVariant(AItem:TSQLInvoiceItem; ADoc: variant);
 procedure LoadInvoiceFileListFromVariant(ADoc: variant; AFileList: TObjectList<TSQLInvoiceFile>);
@@ -36,7 +43,6 @@ procedure LoadInvoiceFileFromVariant(AFile:TSQLInvoiceFile; ADoc: variant);
 function GetMustacheJSONFromFile(ADoc: variant; AMustacheFile: string): string;
 function GetMustacheJSONFromStr(ADoc: variant; AMustacheStr: string): string;
 function MakeMailSubject(ATask: TSQLGSTask; AMailType: integer): string;
-function GetRecvEmailAddress(AMailType: integer): string;
 
 implementation
 
@@ -63,7 +69,7 @@ begin
   Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + DIRECT_SHIPPING_MUSTACHE_FILE_NAME);
 end;
 
-function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask): string;
+function MakeElecHullRegReqEmailBody(ATask: TSQLGSTask; AElecHullRegPICSig, AMyNameSig: string): string;
 var
   LDoc: variant;
   LJSON: RawUTF8;
@@ -72,6 +78,8 @@ var
   LSQLCustomer: TSQLCustomer;
 begin
   TDocVariant.New(LDoc);
+  LDoc.To := AElecHullRegPICSig;
+  LDoc.From := AMyNameSig;
   LDoc.HullNo := ATask.HullNo;
   LDoc.Summary := ATask.WorkSummary;
   LDoc.ProductType := ATask.ProductType;
@@ -100,17 +108,52 @@ begin
   Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + FOREIGN_REG_MUSTACHE_FILE_NAME);
 end;
 
-function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer): string;
+function MakeRawUTF8ToBin64(AUTF8: RawUTF8; AIsCompress: Boolean = True): string;
+var
+  LRaw: RawByteString;
+begin
+  LRaw := AUTF8;
+  Result := MakeRawByteStringToBin64(LRaw, AIsCompress);
+end;
+
+function MakeRawByteStringToBin64(ARaw: RawByteString; AIsCompress: Boolean = True): string;
+var
+  LUTF8 : RawUTF8;
+begin
+  if AIsCompress then
+    ARaw := SynLZCompress(ARaw);
+
+  LUTF8 := BinToBase64(ARaw);
+  Result := UTF8ToString(LUTF8);
+end;
+
+function MakeBin64ToRawByteString(AStr: string; AIsCompress: Boolean = True): RawByteString;
+var
+  LUTF8 : RawUTF8;
+begin
+  LUTF8 := StringToUTF8(AStr);
+  Result := Base64ToBin(LUTF8);
+
+  if AIsCompress then
+    Result := SynLZDecompress(Result);
+end;
+
+function MakeEmailHTMLBody(ATask: TSQLGSTask; AMailType: integer;
+  ASalesPICSig, ATaskAShippingPICSig, AFieldServicePICSig, AElecHullRegPICSig,
+  AMyNameSig: string): string;
 begin
   case AMailType of
     1: Result := MakeInvoiceEmailBody(ATask);
-    2: Result := MakeSalesReqEmailBody(ATask);
+    2: Result := MakeSalesReqEmailBody(ATask, ASalesPICSig, AMyNameSig);
     3: Result := MakeDirectShippingEmailBody(ATask);
     4: Result := MakeForeignRegEmailBody(ATask);
-    5: Result := MakeElecHullRegReqEmailBody(ATask);
+    5: Result := MakeElecHullRegReqEmailBody(ATask, AElecHullRegPICSig, AMyNameSig);
     6: Result := MakePOReqEmailBody(ATask);
-    7: Result := MakeShippingReqEmailBody(ATask);
-    8: Result := MakeForwardFieldServiceEmailBody(ATask);
+    7: Result := MakeShippingReqEmailBody(ATask, ATaskAShippingPICSig, AMyNameSig);
+    8: Result := MakeForwardFieldServiceEmailBody(ATask, AFieldServicePICSig, AMyNameSig);
+    9: Result := MakeForwardPayCheckSubConEmailBody(ATask, AMyNameSig);
+//    10: Result := '[서비스 오더 날인 및 회신 요청] / ' + ATask.HullNo + ', 공사번호: ' + ATask.Order_No;
+//    11: Result := '[업체 기성 처리 요청] / ' + ATask.HullNo + ', 공사번호: ' + ATask.Order_No;
   end;
 end;
 
@@ -122,6 +165,7 @@ begin
   TDocVariant.New(LDoc);
   LDoc.VesselName := ATask.ShipName;
   LDoc.HullNo := ATask.HullNo;
+  LDoc.PONO := ATask.PO_No;
   LDoc.Location := ATask.NationPort;
 
   LSQLCustomer := GetCustomerFromTask(ATask);
@@ -144,6 +188,10 @@ begin
     5: Result := '전전 비표준 공사 생성 요청 건 (' + ATask.HullNo + ')';
     6: Result := MakeDirectShippingEmailBody(ATask);
     7: Result := '[출하 요청 건] / ' + ATask.ShippingNo;
+    8: Result := '[필드서비스팀 진행 요청] / ' + ATask.HullNo + ', PO: ' + ATask.PO_No;
+    9: Result := '[업체 기성 확인 요청] / ' + ATask.HullNo + ', 공사번호: ' + ATask.Order_No;
+    10: Result := '[서비스 오더 날인 및 회신 요청] / ' + ATask.HullNo + ', 공사번호: ' + ATask.Order_No;
+    11: Result := '[업체 기성 처리 요청] / ' + ATask.HullNo + ', 공사번호: ' + ATask.Order_No;
   end;
 end;
 
@@ -171,7 +219,7 @@ begin
   Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + PO_REQ_MUSTACHE_FILE_NAME);
 end;
 
-function MakeSalesReqEmailBody(ATask: TSQLGSTask): string;
+function MakeSalesReqEmailBody(ATask: TSQLGSTask; ASalesPICSig, AMyNameSig: string): string;
 var
   LDoc: variant;
   LSQLCustomer: TSQLCustomer;
@@ -179,8 +227,8 @@ var
   LPrice: string;
 begin
   TDocVariant.New(LDoc);
-  LDoc.To := SALES_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
+  LDoc.To := ASalesPICSig;// SALES_MANAGER_SIG;
+  LDoc.From := AMyNameSig;//MY_EMAIL_SIG;
   LDoc.OrderNo := ATask.Order_No;
   LPrice := UTF8ToString(ATask.SalesPrice);
 
@@ -211,15 +259,16 @@ begin
 //  QuotedStrJSON(VariantToUTF8(LDoc), LJSON);
 end;
 
-function MakeShippingReqEmailBody(ATask: TSQLGSTask): string;
+function MakeShippingReqEmailBody(ATask: TSQLGSTask;
+  AShippingPICSig, AMyNameSig: string): string;
 var
   LDoc: variant;
   LSQLMaterial4Project: TSQLMaterial4Project;
   LDate: TDate;
 begin
   TDocVariant.New(LDoc);
-  LDoc.To := SHIPPING_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
+  LDoc.To := AShippingPICSig;// SHIPPING_MANAGER_SIG;
+  LDoc.From := AMyNameSig;// MY_EMAIL_SIG;
   LDoc.ShippingNo := ATask.ShippingNo; //출하지시번호
   LDoc.OrderNo := ATask.Order_No;//공사지시번호
   LDoc.PONo := ATask.PO_No;
@@ -235,28 +284,65 @@ begin
   Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + SHIPPING_MUSTACHE_FILE_NAME);
 end;
 
-function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask): string;
+function MakeForwardFieldServiceEmailBody(ATask: TSQLGSTask;
+  AFieldServicePICSig, AMyNameSig: string): string;
 var
   LDoc: variant;
   LSQLCustomer: TSQLCustomer;
   LDate: TDate;
 begin
   TDocVariant.New(LDoc);
-  LDoc.To := FIELDSERVICE_MANAGER_SIG;
-  LDoc.From := MY_EMAIL_SIG;
+  LDoc.To := AFieldServicePICSig;// FIELDSERVICE_MANAGER_SIG;
+  LDoc.From := AMyNameSig;//MY_EMAIL_SIG;
   LDoc.Summary := ATask.WorkSummary;
   LDoc.WorkDay := FormatDateTime('yyyy-mm-dd', TimeLogToDateTime(ATask.WorkBeginDate));
   LDoc.Port := ATask.NationPort;
   LDoc.WorkOrder := ATask.Order_No;
 
-  LSQLCustomer := GetCustomerFromTask(ATask);
-  try
-    LDoc.LocalAgent := LSQLCustomer.AgentInfo;
-  finally
-    FreeAndNil(LSQLCustomer);
-  end;
+  if ATask.ID <> 0 then
+  begin
+    LSQLCustomer := GetCustomerFromTask(ATask);
+    try
+      LDoc.LocalAgent := LSQLCustomer.AgentInfo;
+    finally
+      FreeAndNil(LSQLCustomer);
+    end;
+  end
+  else
+    LDoc.LocalAgent := ATask.EtcContent;
 
   Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + FORWARD_FIELDSERVICE_MUSTACHE_FILE_NAME);
+end;
+
+function MakeForwardPayCheckSubConEmailBody(ATask: TSQLGSTask; AMyNameSig: string): string;
+var
+  LDoc: variant;
+  LSQLMaterial4Project: TSQLMaterial4Project;
+  LDate: TDate;
+begin
+  TDocVariant.New(LDoc);
+  LDoc.To := '영업 담당자님';// SHIPPING_MANAGER_SIG;
+  LDoc.From := AMyNameSig;// MY_EMAIL_SIG;
+  LDoc.HullNo := ATask.HullNo; //호선번호
+  LDoc.OrderNo := ATask.Order_No;//공사지시번호
+  LDoc.ShipName := ATask.ShipName;
+
+  Result := GetMustacheJSONFromFile(LDoc, DOC_DIR + PAYCHECK_SUBCON_MUSTACHE_FILE_NAME);
+end;
+
+function MakeSubConQuotationReqEmailBody(ATask: TSQLGSTask; ASubConPICEMailAddr, ASubConPICSig, AMyNameSig: string): string;
+begin
+
+end;
+
+function MakeForwardSubConPaymentReqEmailBody(ATask: TSQLGSTask; ASubConPaymentPICSig, AMyNameSig: string): string;
+begin
+
+end;
+
+function MakeSubConServiceOrderReqEmailBody(ATask: TSQLGSTask; ASubConPICEMailAddr, ASubConPICSig, AMyNameSig: string): string;
+begin
+
 end;
 
 function MakeTaskInfoEmailAttached(ATask: TSQLGSTask; var AFileName: string): string;
@@ -291,10 +377,11 @@ begin
 //    LUtf8 := VariantSaveJSON(LV);
     LUtf8 := LV;
 //    LRaw := UTF8ToAnsi(LUtf8);
-    LRaw := LUtf8;
-    LRaw := SynLZCompress(LRaw);
-    LUtf8 := BinToBase64(LRaw);
-    Result := UTF8ToString(LUtf8);
+    Result := MakeRawUTF8ToBin64(LUtf8);
+//    LRaw := LUtf8;
+//    LRaw := SynLZCompress(LRaw);
+//    LUtf8 := BinToBase64(LRaw);
+//    Result := UTF8ToString(LUtf8);
     AFileName := GetTaskInfoAttachedFileName(LV);
   finally
     FreeAndNil(LCustomer);
@@ -332,16 +419,6 @@ begin
       LDynArr.Add(LUtf8);
     end;
 
-//    LUtf8 := '[';
-//    for i := 0 to LDynArr.Count - 1 do
-//    begin
-//      LUtf8 := LUtf8 + LDynUtf8[i];
-//
-//      if i <> (LDynArr.Count - 1) then
-//        LUtf8 := LUtf8 + ',';
-//    end;
-
-//    LUtf8 := LUtf8 + ']';
     LUtf8 := LDynArr.SaveToJSON;
     LV.InvoiceItem := _JSON(LUtf8);
 
@@ -369,7 +446,9 @@ begin
 
 //    LRaw := UTF8ToAnsi(LUtf8);
     LRaw := LUtf8;
+//    ShowMessage(IntToStr(Length(LRaw)));
     LRaw := SynLZCompress(LRaw);
+//    ShowMessage(IntToStr(Length(LRaw)));
     LUtf8 := BinToBase64(LRaw);
     Result := UTF8ToString(LUtf8);
     AFileName := GetInvoiceTaskInfoAttachedFileName(LV);
@@ -453,35 +532,30 @@ begin
   ATask.WorkBeginDate := ADoc.WorkBeginDate;
   ATask.WorkEndDate := ADoc.WorkEndDate;
   ATask.UniqueTaskID := ADoc.UniqueTaskID;
+
+  if ADoc.CustCompanyCode <> '' then
+    ATask.CustCompanyCode := ADoc.CustCompanyCode;
+  ATask.CustEMail := ADoc.CustEMail;
+  ATask.CustCompanyName := ADoc.CustCompanyName;
+  ATask.CustMobilePhone := ADoc.CustMobilePhone;
+  ATask.CustOfficePhone := ADoc.CustOfficePhone;
+  ATask.CustCompanyAddress := ADoc.CustCompanyAddress;
+  ATask.CustPosition := ADoc.CustPosition;
+  ATask.CustManagerName := ADoc.CustManagerName;
+  ATask.CustNation := ADoc.CustNation;
+  ATask.CustAgentInfo := ADoc.CustAgentInfo;
+
+  ATask.SubConCompanyCode := ADoc.SubConCompanyCode;
+  ATask.SubConEMail := ADoc.SubConEMail;
+  ATask.SubConCompanyName := ADoc.SubConCompanyName;
+  ATask.SubConMobilePhone := ADoc.SubConMobilePhone;
+  ATask.SubConOfficePhone := ADoc.SubConOfficePhone;
+  ATask.SubConCompanyAddress := ADoc.SubConCompanyAddress;
+  ATask.SubConPosition := ADoc.SubConPosition;
+  ATask.SubConManagerName := ADoc.SubConManagerName;
+  ATask.SubConNation := ADoc.SubConNation;
 end;
 
-procedure LoadInvoiceTaskFromVariant2(ATask:TSQLInvoiceTask; ADoc: variant);
-begin
-  ATask.CustCompanyCode := ADoc.CompanyCode;
-  ATask.CustEMail := ADoc.EMail;
-  ATask.CustCompanyName := ADoc.CompanyName;
-  ATask.CustMobilePhone := ADoc.MobilePhone;
-  ATask.CustOfficePhone := ADoc.OfficePhone;
-  ATask.CustCompanyAddress := ADoc.CompanyAddress;
-  ATask.CustPosition := ADoc.Position;
-  ATask.CustManagerName := ADoc.ManagerName;
-  ATask.CustNation := ADoc.Nation;
-  ATask.CustAgentInfo := ADoc.AgentInfo;
-end;
-
-procedure LoadInvoiceTaskFromVariant3(ATask:TSQLInvoiceTask; ADoc: variant);
-begin
-  ATask.SubConCompanyCode := ADoc.CompanyCode;
-  ATask.SubConEMail := ADoc.EMail;
-  ATask.SubConCompanyName := ADoc.CompanyName;
-  ATask.SubConMobilePhone := ADoc.MobilePhone;
-  ATask.SubConOfficePhone := ADoc.OfficePhone;
-  ATask.SubConCompanyAddress := ADoc.CompanyAddress;
-  ATask.SubConPosition := ADoc.Position;
-  ATask.SubConManagerName := ADoc.ManagerName;
-  ATask.SubConNation := ADoc.Nation;
-end;
-
 procedure LoadInvoiceItemListFromVariant(ADoc: variant; AItemList: TObjectList<TSQLInvoiceItem>);
 var
   LDynUtf8: TRawUTF8DynArray;
@@ -627,19 +701,6 @@ begin
   LJSON := Utf8ToString(VariantSaveJson(ADoc));
   LMustache := TSynMustache.Parse(AMustacheStr);
   Result := LMustache.RenderJSON(LJSON);
-end;
-
-function GetRecvEmailAddress(AMailType: integer): string;
-begin
-  case AMailType of
-    1: Result := '';//Invoice 송부
-    2: Result := SALES_DIRECTOR_EMAIL_ADDR;//매출처리요청
-    3: Result := MATERIAL_INPUT_EMAIL_ADDR;//자재직투입요청
-    4: Result := FOREIGN_INPUT_EMAIL_ADDR;//해외고객업체등록
-    5: Result := ELEC_HULL_REG_EMAIL_ADDR;//전전비표준공사 생성 요청
-    6: Result := PO_REQ_EMAIL_ADDR; //PO 요청
-    7: Result := SHIPPING_REQ_EMAIL_ADDR; //출하 요청
-  end;
 end;
 
 end.

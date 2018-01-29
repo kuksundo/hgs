@@ -6,32 +6,43 @@ uses System.Classes, Dialogs, System.Rtti,
   NxColumnClasses, NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
   CommonData, SynCommons, mORMot, DateUtils, System.SysUtils, UElecDataRecord,
-  mORMotHttpClient, MailCallbackInterface, Winapi.ActiveX;
+  mORMotHttpClient, OLMailWSCallbackInterface, Winapi.ActiveX, UnitIniConfigSetting;
 
 //AMailType = 1: invoice 송부, 2: 매출처리요청, 3: 직투입요청
 //            4: 해외 매출 고객사 등록 요청, 5: 전전 비표준공사 생성 요청
 //            6: PO 요청 메일, 7: 출하지시 요청
-procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask);
-procedure SendCmd2IPC4CreateMail(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings);
+procedure SendCmd2IPC4CreateMail(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
+procedure SendCmd2IPC4ForwardMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+   ASettings: TConfigSettings);
 procedure SendCmd2IPC4ViewEmail(AGrid: TNextGrid; ARow: integer);
 function SendCmd2IPC4MoveFolderEmail(AOriginalEntryId, AOriginalStoreId,
-  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask): boolean;
+  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask; ASubFolderName: string): boolean;
 function SendReqOLEmailInfo2(AGrid: TNextGrid; ATask: TSQLGSTask; var AResultList: TStringList): boolean;
 
-procedure SendCmd2IPC4ReplyMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
-procedure SendCmd2IPC4CreateMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings);
+procedure SendCmd2IPC4CreateMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
 procedure SendCmd2IPC4ViewEmail_CromisIPC(AGrid: TNextGrid; ARow: integer);
 function SendCmd2IPC4MoveFolderEmail_CromisIPC(AOriginalEntryId, AOriginalStoreId,
   AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask): boolean;
 function SendReqOLEmailInfo2_CromisIPC(AGrid: TNextGrid; ATask: TSQLGSTask; var AResultList: TStringList): boolean;
 
-procedure SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask);
-procedure SendCmd2IPC4CreateMail_WS(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+  ASettings: TConfigSettings);
+procedure SendCmd2IPC4CreateMail_WS(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
+procedure SendCmd2IPC4ForwardMail_WS(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+  ASettings: TConfigSettings);
 procedure SendCmd2IPC4ViewEmail_WS(AGrid: TNextGrid; ARow: integer);
 function SendCmd2IPC4MoveFolderEmail_WS(AOriginalEntryId, AOriginalStoreId,
-  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask): boolean;
+  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask; ASubFolderName: string): boolean;
 function SendReqOLEmailInfo2_WS(AGrid: TNextGrid; ATask: TSQLGSTask; var AResultList: TStringList): boolean;
 function SendReqAddAppointment_WS(AJsonpjhTodoItem: string): boolean;
+function SendReqOLEmailAccountInfo_WS: TOLAccountInfo;
 
 function GetClientWS: TSQLHttpClientWebsockets;
 
@@ -43,10 +54,15 @@ implementation
 
 uses UnitMakeReport, SynMustache, UnitStringUtil, TaskForm, UnitVariantJsonUtil;
 
-procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+  ASettings: TConfigSettings);
 begin
 //  SendCmd2IPC4ReplyMail_CromisIPC(AGrid, ARow, AMailType,ATask);
-  SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId, AMailType, ATask);
+  if g_MyEmailInfo.SmtpAddress = '' then
+    g_MyEmailInfo := SendReqOLEmailAccountInfo_WS;
+
+  SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId, AMailType, ATask,
+    ASettings);
 end;
 
 procedure SendCmd2IPC4ViewEmail(AGrid: TNextGrid; ARow: integer);
@@ -55,19 +71,34 @@ begin
   SendCmd2IPC4ViewEmail_WS(AGrid, ARow);
 end;
 
-procedure SendCmd2IPC4CreateMail(AGrid: TNextGrid; ARow, AMailType: integer;ATask: TSQLGSTask);
+procedure SendCmd2IPC4CreateMail(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
 begin
 //  SendCmd2IPC4CreateMail_CromisIPC(AGrid, ARow, AMailType, ATask);
-  SendCmd2IPC4CreateMail_WS(AGrid, ARow, AMailType, ATask);
+  if g_MyEmailInfo.SmtpAddress = '' then
+    g_MyEmailInfo := SendReqOLEmailAccountInfo_WS;
+
+  SendCmd2IPC4CreateMail_WS(AGrid, ARow, AMailType, ATask,
+    ASettings, AMailAddr);
+end;
+
+procedure SendCmd2IPC4ForwardMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+  ASettings: TConfigSettings);
+begin
+  if g_MyEmailInfo.SmtpAddress = '' then
+    g_MyEmailInfo := SendReqOLEmailAccountInfo_WS;
+
+  SendCmd2IPC4ForwardMail_WS(AEntryId, AStoreId, AMailType, ATask,
+    ASettings);
 end;
 
 function SendCmd2IPC4MoveFolderEmail(AOriginalEntryId, AOriginalStoreId,
-  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask): boolean;
+  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask; ASubFolderName: string): boolean;
 begin
 //  SendCmd2IPC4MoveFolderEmail_CromisIPC(AOriginalEntryId, AOriginalStoreId,
 //    AMoveStoreId, AMoveStorePath, ATask);
   Result := SendCmd2IPC4MoveFolderEmail_WS(AOriginalEntryId, AOriginalStoreId,
-    AMoveStoreId, AMoveStorePath, ATask);
+    AMoveStoreId, AMoveStorePath, ATask, ASubFolderName);
 end;
 
 function SendReqOLEmailInfo2(AGrid: TNextGrid; ATask: TSQLGSTask; var AResultList: TStringList): boolean;
@@ -76,7 +107,8 @@ begin
   Result := SendReqOLEmailInfo2_WS(AGrid, ATask, AResultList);
 end;
 
-procedure SendCmd2IPC4ReplyMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings);
 var
   Request: IIPCData;
   Result: IIPCData;
@@ -91,7 +123,9 @@ begin
     LStoreId := AGrid.CellByName['StoreId', ARow].AsString;
     LStrList.Add('EntryId='+LEntryId);
     LStrList.Add('StoreId='+LStoreId);
-    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask, AMailType));
+    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(
+      ATask, AMailType, ASettings.SalesPICSig, ASettings.ShippingPICSig,
+      ASettings.FieldServicePICSig, ASettings.ElecHullRegPICSig, ASettings.MyNameSig));
 
     Request := AcquireIPCData;
     Request.ID := DateTimeToStr(Now);
@@ -109,7 +143,8 @@ begin
   end;
 end;
 
-procedure SendCmd2IPC4CreateMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4CreateMail_CromisIPC(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
 var
   Request: IIPCData;
   Result: IIPCData;
@@ -125,8 +160,9 @@ begin
     LStrList.Add('EntryId='+LEntryId);
     LStrList.Add('StoreId='+LStoreId);
     LStrList.Add('Subject='+MakeMailSubject(ATask, AMailType));
-    LStrList.Add('To='+GetRecvEmailAddress(AMailType));
-    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask,AMailType));
+    LStrList.Add('To='+ AMailAddr);//GetRecvEmailAddress(AMailType));
+    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask,AMailType, ASettings.SalesPICSig,
+      ASettings.ShippingPICSig, ASettings.FieldServicePICSig, ASettings.ElecHullRegPICSig, ASettings.MyNameSig));
 
     Request := AcquireIPCData;
     Request.ID := DateTimeToStr(Now);
@@ -332,7 +368,8 @@ begin
   end;
 end;
 
-procedure SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4ReplyMail_WS(AEntryId, AStoreId: string; AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings);
 var
   Client: TSQLHttpClientWebsockets;
   Service: IOLMailService;
@@ -345,9 +382,17 @@ begin
     LStrList.Add('Command='+CMD_REQ_REPLY_MAIL);
     LStrList.Add('EntryId='+AEntryId);
     LStrList.Add('StoreId='+AStoreId);
-    LStrList.Add('TaskInfoAttached='+MakeTaskInfoEmailAttached(ATask, LFileName));
-    LStrList.Add('AttachedFileName='+'.\'+LFileName);
-    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask, AMailType));
+    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask, AMailType, ASettings.SalesPICSig,
+      ASettings.ShippingPICSig, ASettings.FieldServicePICSig,
+      ASettings.ElecHullRegPICSig, ASettings.MyNameSig));
+
+
+    if AMailType = 8 then
+    begin
+      LStrList.Add('TaskInfoAttached='+MakeTaskInfoEmailAttached(ATask, LFileName));
+      LStrList.Add('AttachedFileName='+'.\'+LFileName);
+    end;
+
     LCommand := LStrList.Text;
     Client := GetClientWS;
     try
@@ -364,13 +409,14 @@ begin
   end;
 end;
 
-procedure SendCmd2IPC4CreateMail_WS(AGrid: TNextGrid; ARow, AMailType: integer; ATask: TSQLGSTask);
+procedure SendCmd2IPC4CreateMail_WS(AGrid: TNextGrid; ARow, AMailType: integer;
+  ATask: TSQLGSTask; ASettings: TConfigSettings; AMailAddr: string);
 var
   Client: TSQLHttpClientWebsockets;
   Service: IOLMailService;
   LStrList: TStringList;
   LEntryId, LStoreId: string;
-  LCommand, LRespond: string;
+  LCommand, LRespond, LFileName: string;
 begin
   LStrList := TStringList.Create;
   try
@@ -386,10 +432,60 @@ begin
     end;
 
     LStrList.Add('Subject='+MakeMailSubject(ATask, AMailType));
-    LStrList.Add('To='+GetRecvEmailAddress(AMailType));
-    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask,AMailType));
+    LStrList.Add('To='+AMailAddr);//GetRecvEmailAddress(AMailType));
+    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask,AMailType, ASettings.SalesPICSig,
+      ASettings.ShippingPICSig, ASettings.FieldServicePICSig, ASettings.ElecHullRegPICSig,
+      ASettings.MyNameSig));
+
+    if AMailType = 8 then
+    begin
+      LStrList.Add('TaskInfoAttached='+MakeTaskInfoEmailAttached(ATask, LFileName));
+      LStrList.Add('AttachedFileName='+'.\'+LFileName);
+    end;
+
     LCommand := LStrList.Text;
 
+    Client := GetClientWS;
+    try
+      if not Client.Services.Resolve(IOLMailService,Service) then
+        raise EServiceException.Create('Service IOLMailService unavailable');
+
+      LRespond := Service.GetOLEmailInfo(LCommand);
+    finally
+      Service := nil;
+      Client.Free;
+    end;
+  finally
+    LStrList.Free;
+  end;
+end;
+
+procedure SendCmd2IPC4ForwardMail_WS(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
+  ASettings: TConfigSettings);
+var
+  Client: TSQLHttpClientWebsockets;
+  Service: IOLMailService;
+  LStrList: TStringList;
+  LCommand, LRespond, LFileName: string;
+begin
+  LStrList := TStringList.Create;
+  try
+    LStrList.Add('ServerName='+IPC_SERVER_NAME_4_OUTLOOK);
+    LStrList.Add('Command='+CMD_REQ_FORWARD_MAIL);
+    LStrList.Add('EntryId='+AEntryId);
+    LStrList.Add('StoreId='+AStoreId);
+    LStrList.Add('HTMLBody='+MakeEmailHTMLBody(ATask, AMailType, ASettings.SalesPICSig,
+      ASettings.ShippingPICSig, ASettings.FieldServicePICSig,
+      ASettings.ElecHullRegPICSig, ASettings.MyNameSig));
+
+
+    if AMailType = 8 then
+    begin
+      LStrList.Add('TaskInfoAttached='+MakeTaskInfoEmailAttached(ATask, LFileName));
+      LStrList.Add('AttachedFileName='+'.\'+LFileName);
+    end;
+
+    LCommand := LStrList.Text;
     Client := GetClientWS;
     try
       if not Client.Services.Resolve(IOLMailService,Service) then
@@ -439,7 +535,7 @@ begin
 end;
 
 function SendCmd2IPC4MoveFolderEmail_WS(AOriginalEntryId, AOriginalStoreId,
-  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask): boolean;
+  AMoveStoreId, AMoveStorePath: string; ATask: TSQLGSTask; ASubFolderName: string): boolean;
 var
   Client: TSQLHttpClientWebsockets;
   Service: IOLMailService;
@@ -464,6 +560,7 @@ begin
       LStrList.Add('HullNo='+ATask.HullNo);
 
     LStrList.Add('IsCreateHullNoFolder='+'True');
+    LStrList.Add('SubFolderName=' + ASubFolderName);
     LCommand := LStrList.Text;
 
     Client := GetClientWS;
@@ -493,6 +590,7 @@ begin
           begin
             LEmailMsg.EntryID := LStrList.Values['NewEntryId'];
             LEmailMsg.StoreID := LStrList.Values['MovedStoreId'];
+            LEmailMsg.SavedOLFolderPath := LStrList.Values['MovedFolderPath'];
             g_ProjectDB.Update(LEmailMsg);
             Result := True;
           end;
@@ -571,6 +669,7 @@ begin
                 LEmailMsg2.CarbonCopy := LVarArr[i].CC;
                 LEmailMsg2.BlindCC := LVarArr[i].BCC;
                 LEmailMsg2.Subject := LVarArr[i].Subject;
+                LEmailMsg2.SavedOLFolderPath := LVarArr[i].FolderPath;
                 LEmailMsg2.RecvDate := TimeLogFromDateTime(StrToDateTime(LVarArr[i].RecvDate));
 
                 g_ProjectDB.Add(LEmailMsg2, true);
@@ -620,6 +719,25 @@ begin
   end;
 end;
 
+function SendReqOLEmailAccountInfo_WS: TOLAccountInfo;
+var
+  Client: TSQLHttpClientWebsockets;
+  Service: IOLMailService;
+  LRespond: String;
+begin
+  Client := GetClientWS;
+  try
+    if not Client.Services.Resolve(IOLMailService,Service) then
+      raise EServiceException.Create('Service IOLMailService unavailable');
+
+    LRespond := Service.GetOLEmailAccountInfo;
+    Syncommons.RecordLoadJson(Result, Lrespond, TypeInfo(TOLAccountInfo));
+  finally
+    Service := nil;
+    Client.Free;
+  end;
+end;
+
 function GetClientWS: TSQLHttpClientWebsockets;
 begin
   Result := TSQLHttpClientWebsockets.Create('127.0.0.1',OL_PORT_NAME_4_WS,TSQLModel.Create([]));
@@ -638,6 +756,8 @@ var
   LTask: TSQLGSTask;
   LUTF8: RawUTF8;
   LRaw: RawByteString;
+  LHullNo, LPONO: string;
+  LIsFromInvoiceManage: Boolean;
 begin
   TDocVariant.New(LDoc);
   LRaw := Base64ToBin(StringToUTF8(AJson));
@@ -648,9 +768,18 @@ begin
 
   if Result then
   begin
-    LTask := GetTaskFromHullNoNPONo(LDoc.Task.HullNo, LDoc.Task.PO_No);
+    LIsFromInvoiceManage := LDoc.InvoiceTaskJsonDragSign = INVOICETASK_JSON_DRAG_SIGNATURE;
+
+    LHullNo := LDoc.Task.HullNo;
     try
-      TaskForm.DisplayTaskInfo2EditForm(LTask, nil, LDoc);
+      LPONO := LDoc.Task.PO_No;
+    except
+      LPONO := '';
+    end;
+
+    LTask := GetTaskFromHullNoNPONo(LHullNo, LPONO);
+    try
+      TaskForm.DisplayTaskInfo2EditForm(LTask, nil, LDoc, LIsFromInvoiceManage);
     finally
       FreeAndNil(LTask);
     end;
@@ -684,6 +813,7 @@ begin
         CellByName['EMailId', LRow].AsString := IntToStr(LSQLEmailMsg.ID);
         CellByName['EntryId', LRow].AsString := LSQLEmailMsg.EntryID;
         CellByName['StoreId', LRow].AsString := LSQLEmailMsg.StoreID;
+        CellByName['FolderPath', LRow].AsString := LSQLEmailMsg.SavedOLFolderPath;
 
         if LSQLEmailMsg.ContainData <> cdmNone then
         begin

@@ -1,8 +1,9 @@
-program InqManage;
+program FieldServiceR;
 
 uses
   Vcl.Forms,
   SynSqlite3Static,
+  UnitRegistrationUtil,
   FrmInqManage in 'FrmInqManage.pas' {InquiryF},
   UViewMailList in 'UViewMailList.pas' {ViewMailListF},
   UElecDataRecord in 'UElecDataRecord.pas',
@@ -29,26 +30,24 @@ uses
   UnitHttpModule in 'UnitHttpModule.pas',
   UnitRegCodeServerInterface in '..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   FrmRegistration in '..\..\common\FrmRegistration.pas' {RegistrationF},
-  getIp in '..\..\common\getIp.pas',
-  UnitMAPSMacro in 'UnitMAPSMacro.pas',
+  UnitMacroListClass in '..\MacroManagement\UnitMacroListClass.pas',
   thundax.lib.actions in '..\..\OpenSrc\thundax-macro-actions-master\thundax.lib.actions.pas',
   UnitNextGridFrame in '..\..\common\Frames\UnitNextGridFrame.pas' {Frame1: TFrame},
-  UnitDragUtil in '..\..\common\UnitDragUtil.pas',
-  UnitVariantJsonUtil in 'UnitVariantJsonUtil.pas',
+  getIp in '..\..\common\getIp.pas',
   UnitConfigIniClass2 in '..\..\common\UnitConfigIniClass2.pas',
-  OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas',
-  FrmInqManageConfig in 'FrmInqManageConfig.pas',
-  UnitIniConfigSetting in 'UnitIniConfigSetting.pas',
-  UnitComboBoxUtil in '..\..\common\UnitComboBoxUtil.pas',
-  UnitVesselMasterRecord in 'UnitVesselMasterRecord.pas',
-  UnitMakeHgsDB in 'UnitMakeHgsDB.pas',
-  UnitMakeHimsenWaringSpareDB in 'QuotationManage\UnitMakeHimsenWaringSpareDB.pas';
+  FrmInqManageConfig in 'FrmInqManageConfig.pas' {ConfigF},
+  OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas';
 
 {$R *.res}
 
 begin
+  {$IFDEF USE_REGCODE}
+    CheckRegistration('{2D1970CA-90FA-44C0-8120-F847C648AA34}', [crmHTTP]);
+  {$ENDIF USE_REGCODE}
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
+  InquiryF.Caption := InquiryF.Caption + ' (For Field Service Team)';
   Application.Run;
 end.

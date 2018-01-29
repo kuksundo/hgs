@@ -26,231 +26,22 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
     inherited CurvyPanel1: TCurvyPanel
       Width = 984
       ExplicitWidth = 984
-      inherited btn_Close: TAeroButton
-        Left = 915
-        OnClick = TDisplayTaskF1btn_CloseClick
-        ExplicitLeft = 915
-      end
-      inherited btn_Search: TAeroButton
-        Left = 851
-        ExplicitLeft = 851
-      end
-      inherited et_msNumber: TEdit
-        Width = 99
-        ExplicitWidth = 99
-      end
-      inherited Button2: TButton
-        Left = 783
-        ExplicitLeft = 783
+      inherited Panel1: TPanel
+        inherited btn_Search: TAeroButton
+          Left = 71
+          ExplicitLeft = 71
+        end
+        inherited btn_Close: TAeroButton
+          OnClick = TDisplayTaskF1btn_CloseClick
+        end
+        inherited AeroButton1: TAeroButton
+          Left = 3
+          ExplicitLeft = 3
+        end
       end
     end
-    inherited AdvOfficeTabSet1: TAdvOfficeTabSet
+    inherited TaskTab: TAdvOfficeTabSet
       Width = 984
-      AdvOfficeTabs = <
-        item
-          Caption = #51204#52404
-          Name = 'TOfficeTabCollectionItem1'
-          TabAppearance.BorderColor = clNone
-          TabAppearance.BorderColorHot = 15383705
-          TabAppearance.BorderColorSelected = 14922381
-          TabAppearance.BorderColorSelectedHot = 6343929
-          TabAppearance.BorderColorDisabled = clNone
-          TabAppearance.BorderColorDown = clNone
-          TabAppearance.Color = clBtnFace
-          TabAppearance.ColorTo = clWhite
-          TabAppearance.ColorSelected = 16709360
-          TabAppearance.ColorSelectedTo = 16445929
-          TabAppearance.ColorDisabled = clWhite
-          TabAppearance.ColorDisabledTo = clSilver
-          TabAppearance.ColorHot = 14542308
-          TabAppearance.ColorHotTo = 16768709
-          TabAppearance.ColorMirror = clWhite
-          TabAppearance.ColorMirrorTo = clWhite
-          TabAppearance.ColorMirrorHot = 14016477
-          TabAppearance.ColorMirrorHotTo = 10736609
-          TabAppearance.ColorMirrorSelected = 16445929
-          TabAppearance.ColorMirrorSelectedTo = 16181984
-          TabAppearance.ColorMirrorDisabled = clWhite
-          TabAppearance.ColorMirrorDisabledTo = clSilver
-          TabAppearance.Font.Charset = DEFAULT_CHARSET
-          TabAppearance.Font.Color = clWindowText
-          TabAppearance.Font.Height = -11
-          TabAppearance.Font.Name = 'Tahoma'
-          TabAppearance.Font.Style = []
-          TabAppearance.Gradient = ggVertical
-          TabAppearance.GradientMirror = ggVertical
-          TabAppearance.GradientHot = ggRadial
-          TabAppearance.GradientMirrorHot = ggVertical
-          TabAppearance.GradientSelected = ggVertical
-          TabAppearance.GradientMirrorSelected = ggVertical
-          TabAppearance.GradientDisabled = ggVertical
-          TabAppearance.GradientMirrorDisabled = ggVertical
-          TabAppearance.TextColor = 9126421
-          TabAppearance.TextColorHot = 9126421
-          TabAppearance.TextColorSelected = 9126421
-          TabAppearance.TextColorDisabled = clGray
-          TabAppearance.ShadowColor = 15255470
-          TabAppearance.HighLightColorSelected = 16775871
-          TabAppearance.HighLightColorHot = 16643309
-          TabAppearance.HighLightColorSelectedHot = 12451839
-          TabAppearance.HighLightColorDown = 16776144
-          TabAppearance.BackGround.Color = 16767935
-          TabAppearance.BackGround.ColorTo = clNone
-          TabAppearance.BackGround.Direction = gdHorizontal
-        end
-        item
-          Caption = #48120#51217#49688
-          Name = 'TOfficeTabCollectionItem2'
-          TabAppearance.BorderColor = clNone
-          TabAppearance.BorderColorHot = 15383705
-          TabAppearance.BorderColorSelected = 14922381
-          TabAppearance.BorderColorSelectedHot = 6343929
-          TabAppearance.BorderColorDisabled = clNone
-          TabAppearance.BorderColorDown = clNone
-          TabAppearance.Color = clBtnFace
-          TabAppearance.ColorTo = clWhite
-          TabAppearance.ColorSelected = 16709360
-          TabAppearance.ColorSelectedTo = 16445929
-          TabAppearance.ColorDisabled = clWhite
-          TabAppearance.ColorDisabledTo = clSilver
-          TabAppearance.ColorHot = 14542308
-          TabAppearance.ColorHotTo = 16768709
-          TabAppearance.ColorMirror = clWhite
-          TabAppearance.ColorMirrorTo = clWhite
-          TabAppearance.ColorMirrorHot = 14016477
-          TabAppearance.ColorMirrorHotTo = 10736609
-          TabAppearance.ColorMirrorSelected = 16445929
-          TabAppearance.ColorMirrorSelectedTo = 16181984
-          TabAppearance.ColorMirrorDisabled = clWhite
-          TabAppearance.ColorMirrorDisabledTo = clSilver
-          TabAppearance.Font.Charset = DEFAULT_CHARSET
-          TabAppearance.Font.Color = clWindowText
-          TabAppearance.Font.Height = -11
-          TabAppearance.Font.Name = 'Tahoma'
-          TabAppearance.Font.Style = []
-          TabAppearance.Gradient = ggVertical
-          TabAppearance.GradientMirror = ggVertical
-          TabAppearance.GradientHot = ggRadial
-          TabAppearance.GradientMirrorHot = ggVertical
-          TabAppearance.GradientSelected = ggVertical
-          TabAppearance.GradientMirrorSelected = ggVertical
-          TabAppearance.GradientDisabled = ggVertical
-          TabAppearance.GradientMirrorDisabled = ggVertical
-          TabAppearance.TextColor = 9126421
-          TabAppearance.TextColorHot = 9126421
-          TabAppearance.TextColorSelected = 9126421
-          TabAppearance.TextColorDisabled = clGray
-          TabAppearance.ShadowColor = 15255470
-          TabAppearance.HighLightColorSelected = 16775871
-          TabAppearance.HighLightColorHot = 16643309
-          TabAppearance.HighLightColorSelectedHot = 12451839
-          TabAppearance.HighLightColorDown = 16776144
-          TabAppearance.BackGround.Color = 16767935
-          TabAppearance.BackGround.ColorTo = clNone
-          TabAppearance.BackGround.Direction = gdHorizontal
-        end
-        item
-          Caption = #51652#54665
-          Name = 'TOfficeTabCollectionItem3'
-          TabAppearance.BorderColor = clNone
-          TabAppearance.BorderColorHot = 15383705
-          TabAppearance.BorderColorSelected = 14922381
-          TabAppearance.BorderColorSelectedHot = 6343929
-          TabAppearance.BorderColorDisabled = clNone
-          TabAppearance.BorderColorDown = clNone
-          TabAppearance.Color = clBtnFace
-          TabAppearance.ColorTo = clWhite
-          TabAppearance.ColorSelected = 16709360
-          TabAppearance.ColorSelectedTo = 16445929
-          TabAppearance.ColorDisabled = clWhite
-          TabAppearance.ColorDisabledTo = clSilver
-          TabAppearance.ColorHot = 14542308
-          TabAppearance.ColorHotTo = 16768709
-          TabAppearance.ColorMirror = clWhite
-          TabAppearance.ColorMirrorTo = clWhite
-          TabAppearance.ColorMirrorHot = 14016477
-          TabAppearance.ColorMirrorHotTo = 10736609
-          TabAppearance.ColorMirrorSelected = 16445929
-          TabAppearance.ColorMirrorSelectedTo = 16181984
-          TabAppearance.ColorMirrorDisabled = clWhite
-          TabAppearance.ColorMirrorDisabledTo = clSilver
-          TabAppearance.Font.Charset = DEFAULT_CHARSET
-          TabAppearance.Font.Color = clWindowText
-          TabAppearance.Font.Height = -11
-          TabAppearance.Font.Name = 'Tahoma'
-          TabAppearance.Font.Style = []
-          TabAppearance.Gradient = ggVertical
-          TabAppearance.GradientMirror = ggVertical
-          TabAppearance.GradientHot = ggRadial
-          TabAppearance.GradientMirrorHot = ggVertical
-          TabAppearance.GradientSelected = ggVertical
-          TabAppearance.GradientMirrorSelected = ggVertical
-          TabAppearance.GradientDisabled = ggVertical
-          TabAppearance.GradientMirrorDisabled = ggVertical
-          TabAppearance.TextColor = 9126421
-          TabAppearance.TextColorHot = 9126421
-          TabAppearance.TextColorSelected = 9126421
-          TabAppearance.TextColorDisabled = clGray
-          TabAppearance.ShadowColor = 15255470
-          TabAppearance.HighLightColorSelected = 16775871
-          TabAppearance.HighLightColorHot = 16643309
-          TabAppearance.HighLightColorSelectedHot = 12451839
-          TabAppearance.HighLightColorDown = 16776144
-          TabAppearance.BackGround.Color = 16767935
-          TabAppearance.BackGround.ColorTo = clNone
-          TabAppearance.BackGround.Direction = gdHorizontal
-        end
-        item
-          Caption = #50756#47308
-          Name = 'TOfficeTabCollectionItem4'
-          TabAppearance.BorderColor = clNone
-          TabAppearance.BorderColorHot = 15383705
-          TabAppearance.BorderColorSelected = 14922381
-          TabAppearance.BorderColorSelectedHot = 6343929
-          TabAppearance.BorderColorDisabled = clNone
-          TabAppearance.BorderColorDown = clNone
-          TabAppearance.Color = clBtnFace
-          TabAppearance.ColorTo = clWhite
-          TabAppearance.ColorSelected = 16709360
-          TabAppearance.ColorSelectedTo = 16445929
-          TabAppearance.ColorDisabled = clWhite
-          TabAppearance.ColorDisabledTo = clSilver
-          TabAppearance.ColorHot = 14542308
-          TabAppearance.ColorHotTo = 16768709
-          TabAppearance.ColorMirror = clWhite
-          TabAppearance.ColorMirrorTo = clWhite
-          TabAppearance.ColorMirrorHot = 14016477
-          TabAppearance.ColorMirrorHotTo = 10736609
-          TabAppearance.ColorMirrorSelected = 16445929
-          TabAppearance.ColorMirrorSelectedTo = 16181984
-          TabAppearance.ColorMirrorDisabled = clWhite
-          TabAppearance.ColorMirrorDisabledTo = clSilver
-          TabAppearance.Font.Charset = DEFAULT_CHARSET
-          TabAppearance.Font.Color = clWindowText
-          TabAppearance.Font.Height = -11
-          TabAppearance.Font.Name = 'Tahoma'
-          TabAppearance.Font.Style = []
-          TabAppearance.Gradient = ggVertical
-          TabAppearance.GradientMirror = ggVertical
-          TabAppearance.GradientHot = ggRadial
-          TabAppearance.GradientMirrorHot = ggVertical
-          TabAppearance.GradientSelected = ggVertical
-          TabAppearance.GradientMirrorSelected = ggVertical
-          TabAppearance.GradientDisabled = ggVertical
-          TabAppearance.GradientMirrorDisabled = ggVertical
-          TabAppearance.TextColor = 9126421
-          TabAppearance.TextColorHot = 9126421
-          TabAppearance.TextColorSelected = 9126421
-          TabAppearance.TextColorDisabled = clGray
-          TabAppearance.ShadowColor = 15255470
-          TabAppearance.HighLightColorSelected = 16775871
-          TabAppearance.HighLightColorHot = 16643309
-          TabAppearance.HighLightColorSelectedHot = 12451839
-          TabAppearance.HighLightColorDown = 16776144
-          TabAppearance.BackGround.Color = 16767935
-          TabAppearance.BackGround.ColorTo = clNone
-          TabAppearance.BackGround.Direction = gdHorizontal
-        end>
       ExplicitWidth = 984
     end
     inherited grid_Req: TNextGrid
@@ -259,7 +50,13 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
       OnCellDblClick = TDisplayTaskF1grid_ReqCellDblClick
       ExplicitWidth = 984
       ExplicitHeight = 352
+      inherited OrderNo: TNxTextColumn
+        ParentFont = False
+      end
       inherited Subject: TNxTextColumn
+        ParentFont = False
+      end
+      inherited NextProcess: TNxTextColumn
         ParentFont = False
       end
       inherited ReqCustomer: TNxTextColumn
@@ -273,9 +70,6 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
         ParentFont = False
       end
       inherited QtnNo: TNxTextColumn
-        ParentFont = False
-      end
-      inherited OrderNo: TNxTextColumn
         ParentFont = False
       end
       inherited CustomerName: TNxTextColumn
@@ -296,7 +90,7 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
     end
     inherited imagelist24x24: TImageList
       Bitmap = {
-        494C010101007000DC0218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C010101007000E00218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000600000001800000001002000000000000024
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000005C43
@@ -602,7 +396,7 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
     end
     inherited ImageList32x32: TImageList
       Bitmap = {
-        494C01010300C800080420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C01010300C8000C0420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000800000002000000001002000000000000040
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1139,7 +933,7 @@ object DisplayTaskInfoF: TDisplayTaskInfoF
     end
     inherited ImageList16x16: TImageList
       Bitmap = {
-        494C010102005402EC0210001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+        494C010102005402F00210001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000400000001000000001002000000000000010
         000000000000000000000000000000000000000000000505052E101010521717
         17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E

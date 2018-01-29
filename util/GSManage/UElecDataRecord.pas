@@ -8,20 +8,11 @@ uses
   mORMot,
   CommonData,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
-  UnitTodoCollect, FSMClass_Dic, FSMState, Vcl.Dialogs;
+  UnitTodoCollect, FSMClass_Dic, FSMState, Vcl.Dialogs, UnitGSFileRecord;
 
 type
   TSQLEmailMsgs = class;
 //  TSQLGSFiles = class;
-
-  PSQLGSFileRec = ^TSQLGSFileRec;
-  TSQLGSFileRec = Packed Record
-    fFilename: RawUTF8;
-    fGSDocType: TGSDocType;
-    fData: RawByteString;
-  end;
-
-  TSQLGSFileRecs = array of TSQLGSFileRec;
 
   PSQLInvoiceFileRec = ^TSQLInvoiceFileRec;
   TSQLInvoiceFileRec = Packed Record
@@ -40,15 +31,6 @@ type
   end;
 
   TSQLSubConRecs = array of TSQLSubConRec;
-
-  TSQLGSFile = class(TSQLRecord)
-  private
-    fTaskID: TID;
-    fFiles: TSQLGSFileRecs;
-  published
-    property TaskID: TID read fTaskID write fTaskID;
-    property Files: TSQLGSFileRecs read fFiles write fFiles;
-  end;
 
   TSQLInvoiceFile = class(TSQLRecord)
   private
@@ -117,7 +99,9 @@ type
 
   TSQLSubCon = class(TSQLCompany)
   private
+    fServicePO: RawUTF8;
   published
+    property ServicePO: RawUTF8 read fServicePO write fServicePO;
   end;
 
   TSQLMaterial = class(TSQLRecord)
@@ -203,6 +187,7 @@ type
     FContainData: TContainData4Mail;
     //해당 메일이 누구한테 보내는 건지 구분하기 위함
     FProcDirection: TProcessDirection;
+    FSavedOLFolderPath: RawUTF8;
   published
     property Subject: RawUTF8 read fSubject write fSubject;
     property Sender: RawUTF8 read fSender write fSender;
@@ -213,6 +198,7 @@ type
     property RecvDate: TTimeLog read FRecvDate write FRecvDate;
     property ContainData: TContainData4Mail read FContainData write FContainData;
     property ProcDirection: TProcessDirection read FProcDirection write FProcDirection;
+    property SavedOLFolderPath: RawUTF8 read FSavedOLFolderPath write FSavedOLFolderPath;
   end;
 
   TSQLGSTaskInfo = class(TSQLRecord)
@@ -577,7 +563,6 @@ type
 
 function CreateProjectModel: TSQLModel;
 function CreateMasterModel: TSQLModel;
-function CreateFilesModel: TSQLModel;
 function CreateInvoiceFilesModel: TSQLModel;
 function CreateInvoiceTaskModel: TSQLModel;
 function CreateInvoiceItemModel: TSQLModel;
@@ -655,11 +640,10 @@ procedure DeleteFilesFromID(ATaskID, AItemID: TID);
 var
   g_ProjectDB,
   g_MasterDB,
-  g_FileDB,
   g_InvoiceFileDB,
   g_InvoiceProjectDB,
   g_InvoiceItemDB: TSQLRestClientURI;
-  ProjectModel, MasterModel, FileModel, InvoiceFileModel, InvoiceTaskModel,
+  ProjectModel, MasterModel, InvoiceFileModel, InvoiceTaskModel,
   InvoiceItemModel: TSQLModel;
   g_IPCClient: TIPCClient;
   g_FSMClass: TFSMClass;
@@ -684,11 +668,7 @@ begin
     LStr, TSQLRestServerDB);
   TSQLRestClientDB(g_MasterDB).Server.CreateMissingTables;
 
-  LStr := LStr.Replace('_Master.db3', '_Files.db3');
-  FileModel := CreateFilesModel;
-  g_FileDB:= TSQLRestClientDB.Create(FileModel, CreateFilesModel,
-    LStr, TSQLRestServerDB);
-  TSQLRestClientDB(g_FileDB).Server.CreateMissingTables;
+  InitGSFileClient(Application.ExeName);
 end;
 
 function CreateProjectModel: TSQLModel;
@@ -699,11 +679,6 @@ end;
 function CreateMasterModel: TSQLModel;
 begin
   result := TSQLModel.Create([TSQLCustomer, TSQLSubCon, TSQLMaterial4Project, TSQLMasterCustomer]);
-end;
-
-function CreateFilesModel: TSQLModel;
-begin
-  result := TSQLModel.Create([TSQLGSFile]);
 end;
 
 function CreateInvoiceFilesModel: TSQLModel;
@@ -864,7 +839,7 @@ end;
 
 function GetFilesFromTask(ATask: TSQLGSTask): TSQLGSFile;
 begin
-  Result := TSQLGSFile.CreateAndFillPrepare(g_FileDB, 'TaskID = ?', [ATask.ID]);
+  Result := GetGSFilesFromID(ATask.ID);
 end;
 
 function GetCustomerFromTask(ATask: TSQLGSTask): TSQLCustomer;
@@ -1732,10 +1707,6 @@ finalization
     FreeAndNil(g_MasterDB);
   if Assigned(MasterModel) then
     FreeAndNil(MasterModel);
-  if Assigned(g_FileDB) then
-    FreeAndNil(g_FileDB);
-  if Assigned(FileModel) then
-    FreeAndNil(FileModel);
   if Assigned(InvoiceTaskModel) then
     FreeAndNil(InvoiceTaskModel);
   if Assigned(g_IPCClient) then
