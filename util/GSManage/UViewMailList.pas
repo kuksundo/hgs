@@ -120,6 +120,7 @@ type
     N13: TMenuItem;
     N14: TMenuItem;
     ForwardEMail1: TMenuItem;
+    estRemote1: TMenuItem;
     procedure grid_MailCellDblClick(Sender: TObject; ACol, ARow: Integer);
     procedure DropEmptyTarget1Drop(Sender: TObject; ShiftState: TShiftState;
       APoint: TPoint; var Effect: Integer);
@@ -144,6 +145,7 @@ type
     procedure SubFolderCBClick(Sender: TObject);
     procedure MoveEmailToSelected1Click(Sender: TObject);
     procedure N11Click(Sender: TObject);
+    procedure estRemote1Click(Sender: TObject);
   private
     procedure DeleteMail(ARow: integer);
     function GetEmailIDFromGrid(ARow: integer): TID;
@@ -152,11 +154,18 @@ type
     procedure MoveEmailToFolderClick(Sender: TObject);
 //    function GetMailBody(AMailType: integer): string;
     function GetFirstStoreIdFromEmail: string;
+    procedure ShowEmailContentFromRemote(AGrid: TNextGrid; ARow: integer);
+
+    procedure TestRemote;
   public
     FTask: TSQLGSTask;
     //메일을 이동시킬 폴더 리스트,
     //HGS Task/Send Folder Name 2 IPC 메뉴에 의해 OL으로 부터 수신함
-    FFolderListFromOL: TStringList;
+    FFolderListFromOL,
+    //Remote Mode에서 메일 조회시에 temp 폴더에 GUID.msg 파일로 저장되며
+    //창이 닫힐 때 이 파일들을 삭제하기 위함
+    FTempEmailMsgFileListFromRemote: TStringList;
+    FRemoteIPAddress: string;
 
     procedure SetMoveFolderIndex;
     procedure FillInMoveFolderCB;
@@ -167,8 +176,9 @@ var
 
 implementation
 
-uses TaskForm, SynMustache, UnitMakeReport, UnitStringUtil, UnitIPCModule,
-  DragDropInternet, FrmInqManage;
+uses ShellApi, TaskForm, SynMustache, UnitMakeReport, UnitStringUtil, UnitIPCModule,
+  DragDropInternet, FrmInqManage, UnitHttpModule4InqManageServer, UnitBase64Util,
+  UnitElecServiceData;
 
 {$R *.dfm}
 
@@ -200,6 +210,13 @@ begin
       EndUpdate;
     end;
   end;
+end;
+
+procedure TViewMailListF.estRemote1Click(Sender: TObject);
+begin
+//    ShellExecute(handle,'open', PChar(g_MsgFileName),nil,nil,SW_NORMAL);
+
+//  TestRemote;
 end;
 
 procedure TViewMailListF.btnStartProgramClick(Sender: TObject);
@@ -328,8 +345,8 @@ begin
 
       if LEmailInfoF.ShowModal = mrOK then
       begin
-        LEmailMsg.ContainData := TContainData4Mail(LEmailInfoF.ContainDataCB.ItemIndex);
-        LEmailMsg.ProcDirection := TProcessDirection(LEmailInfoF.EmailDirectionCB.ItemIndex);
+        LEmailMsg.ContainData := g_ContainData4Mail.ToType(LEmailInfoF.ContainDataCB.ItemIndex);
+        LEmailMsg.ProcDirection := g_ProcessDirection.ToType(LEmailInfoF.EmailDirectionCB.ItemIndex);
 
         g_ProjectDB.Update(LEmailMsg);
         TTaskEditF.LoadEmailListFromTask(FTask, Self);
@@ -374,12 +391,15 @@ end;
 procedure TViewMailListF.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FFolderListFromOL.Free;
+  FTempEmailMsgFileListFromRemote.Free;
 end;
 
 procedure TViewMailListF.FormCreate(Sender: TObject);
 begin
   SetCurrentDir(ExtractFilePath(Application.ExeName));
   FFolderListFromOL := TStringList.Create;
+  FTempEmailMsgFileListFromRemote := TStringList.Create;
+  FRemoteIPAddress := '';
 
   if FileExists('.\'+FOLDER_LIST_FILE_NAME) then
     FFolderListFromOL.LoadFromFile('.\'+FOLDER_LIST_FILE_NAME);
@@ -421,7 +441,10 @@ begin
   if ARow = -1 then
     exit;
 
-  SendCmd2IPC4ViewEmail(grid_Mail, ARow);
+  if FRemoteIPAddress = '' then
+    SendCmd2IPC4ViewEmail(grid_Mail, ARow)
+  else
+    ShowEmailContentFromRemote(grid_Mail, ARow);
 end;
 
 procedure TViewMailListF.InitFolderListMenu;
@@ -587,6 +610,38 @@ begin
     end;
 end;
 
+procedure TViewMailListF.ShowEmailContentFromRemote(AGrid: TNextGrid;
+  ARow: integer);
+var
+  LStrList: TStringList;
+  LEntryId, LStoreId, LFileName: string;
+  LRespond: RawUTF8;
+  LParam: Variant;
+begin
+  LStrList := TStringList.Create;
+  try
+//    LStrList.Add('ServerName='+IPC_SERVER_NAME_4_OUTLOOK);
+//    LStrList.Add('Command='+CMD_SEND_MAIL_2_MSGFILE);
+    LEntryId := AGrid.CellByName['EntryId', ARow].AsString;
+    LStoreId := AGrid.CellByName['StoreId', ARow].AsString;
+    LRespond := '{"EntryId":"' + LEntryId + '", "StoreId":"' + LStoreId + '"}';
+    LParam := _JSON(LRespond);
+//    LStrList.Add('EntryId='+LEntryId);
+//    LStrList.Add('StoreId='+LStoreId);
+//    LCommand := StringToUtf8(LStrList.Text);
+    LRespond := SendReq2InqManagerServer_Http(FRemoteIPAddress, InquiryF.TDTF.FPortName,
+      InquiryF.TDTF.FRootName, CMD_REQ_TASK_EAMIL_CONTENT, LParam);
+    LRespond := MakeBase64ToUTF8(LRespond);
+    LFileName := EnsureDirectoryExists(FOLDER_NAME_4_TEMP_MSG_FILES);
+    LFileName := LFileName + TGuid.NewGuid.ToString + '.msg';
+    FTempEmailMsgFileListFromRemote.Add(LFileName);
+    FileFromString(LRespond,LFileName,True);
+    SendCmd2IPC4ViewEmailFromMsgFile_WS(LFileName);
+  finally
+    LStrList.Free;
+  end;
+end;
+
 procedure TViewMailListF.ShowEntryID1Click(Sender: TObject);
 begin
   ShowMessage(grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString);
@@ -603,6 +658,46 @@ begin
     AutoMoveCB.Checked := True;
 
   SubFolderNameEdit.Enabled := SubFolderCB.Checked;
+end;
+
+procedure TViewMailListF.TestRemote;
+var
+  LCommand, LJson: String;
+  LEntryId, LStoreId: string;
+  LFileName: string;
+  LStrList: TStringList;
+  LUtf8: RawUTF8;
+  LRaw: RawByteString;
+  LParam: Variant;
+begin
+  if grid_Mail.SelectedRow = -1 then
+  begin
+    ShowMessage('Please select the item from mail grid');
+    exit;
+  end;
+
+  LStrList := TStringList.Create;
+  try
+    LEntryId := grid_Mail.CellByName['EntryId', grid_Mail.SelectedRow].AsString;
+    LStoreId := grid_Mail.CellByName['StoreId', grid_Mail.SelectedRow].AsString;
+    LCommand := '{"EntryId":"' + LEntryId + '", "StoreId":"' + LStoreId + '"}';
+    LParam := _JSON(LCommand);
+    LUtf8 := MakeCommand4InqManagerServer(CMD_REQ_TASK_EAMIL_CONTENT, LParam);
+    LJson := MakeBase64ToString(LUtf8);
+    LStrList.Text := LJson;
+    LJson := LStrList.Values['Parameter'];
+    LUtf8 := SendReqOLEmail2MagFile(LJson);  //file path + name이 반환됨
+    LFileName := Utf8ToString(LUtf8);
+
+    if FileExists(LFileName) then
+    begin
+      LRaw := StringFromFile(LFileName);
+      LUtf8 := MakeRawUTF8ToBin64(LRaw);
+      System.SysUtils.DeleteFile(LFileName);
+    end;
+  finally
+    LStrList.Free;
+  end;
 end;
 
 end.

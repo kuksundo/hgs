@@ -84,7 +84,7 @@ type
   end;
 
 function CreateHiMAPModel: TSQLModel;
-procedure InitHiMAPClient();
+procedure InitHiMAPClient(AExeName: string);
 
 function GetHiMAPFromHullNo(const AHullNo: string): TSQLHiMAPRecord;
 function GetHiMAPFromShipName(const AShipName: string): TSQLHiMAPRecord;
@@ -106,20 +106,23 @@ var
 implementation
 
 uses SysUtils, mORMotSQLite3, Forms, VarRecUtils, Vcl.Dialogs, UnitHiMAPData,
-  UnitMSBDData;
+  UnitMSBDData, UnitFolderUtil;
 
-procedure InitHiMAPClient();
+procedure InitHiMAPClient(AExeName: string);
 var
   LStr: string;
 begin
 //  LStr := ChangeFileExt(Application.ExeName,'.sqlite');
-  LStr := 'HiMapData.sqlite';
+//  LStr := 'HiMapData.sqlite';
+  LStr := GetSubFolderPath(ExtractFilePath(AExeName), 'db');
+  LStr := EnsureDirectoryExists(LStr);
+  LStr := LStr + 'HiMapData.sqlite';
   HiMAPModel:= CreateHiMAPModel;
   g_HiMAPDB:= TSQLRestClientDB.Create(HiMAPModel, CreateHiMAPModel,
     LStr, TSQLRestServerDB);
   TSQLRestClientDB(g_HiMAPDB).Server.CreateMissingTables;
 
-  InitGSFileClient('HiMapData.exe');
+  InitGSFileClient(ExtractFilePath(AExeName)+'HiMapData.exe');
 end;
 
 function CreateHiMAPModel: TSQLModel;

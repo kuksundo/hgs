@@ -27,8 +27,11 @@ type
     FSalesPICSig,
     FFieldServicePICSig,
     FElecHullRegPICSig,
-    FSubConPaymentPICSig
+    FSubConPaymentPICSig,
+
+    FWSServerPort
     : string;
+    FWSEnabled, FRemoteAuthEnabled: Boolean;
   public
     //Section Name, Key Name, Default Key Value  (Control.hint = SectionName;KeyName 으로 저장 함)
 //    [IniValue('MQ Server','MQ Server Enable', 'False')]
@@ -72,6 +75,13 @@ type
     property SubConPaymentEmailAddr : string read FSubConPaymentEmailAddr write FSubConPaymentEmailAddr;
     [IniValue('Signature','기성처리담당자서명','필드서비스팀 송민주 사원님',19)]
     property SubConPaymentPICSig : string read FSubConPaymentPICSig write FSubConPaymentPICSig;
+
+    [IniValue('WS Server','WS Server Port','2018',20)]
+    property WSServerPort : string read FWSServerPort write FWSServerPort;
+    [IniValue('WS Server','WS Server Enabled', 'True',21)]
+    property WSEnabled : Boolean read FWSEnabled write FWSEnabled;
+    [IniValue('WS Server','Remote Auth Enabled', 'False',22)]
+    property RemoteAuthEnabled : Boolean read FRemoteAuthEnabled write FRemoteAuthEnabled;
   end;
 
 implementation

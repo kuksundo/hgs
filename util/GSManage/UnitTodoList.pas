@@ -38,7 +38,7 @@ type
     procedure SetDeleteToDoListFromDB(AProc:TDeleteToDoListFromDB);
     procedure SetInsertOrUpdateToDoList2DB(AProc:TInsertOrUpdateToDoList2DB);
 
-    procedure EditToDoList(AToDoList: TToDoList);
+    procedure EditToDoList(AToDoList: TToDoList; AIsEdit: Boolean = False);
     procedure DeleteToDoItem;
     procedure AddToDoItem;
     procedure LoadToDoList2Detail(AToDoItem: TToDoItem; AToDoDetailF: TToDoDetailF);
@@ -191,22 +191,19 @@ begin
     EditToDoList(TodoList1);
 end;
 
-procedure TToDoListF.EditToDoList(AToDoList: TToDoList);
+procedure TToDoListF.EditToDoList(AToDoList: TToDoList; AIsEdit: Boolean);
 var
   LToDoDetailF: TToDoDetailF;
-  LIsEdit: Boolean;
   LIdx: integer;
 begin
   LToDoDetailF := TToDoDetailF.Create(Self);
   try
-    LIsEdit := Assigned(AToDoList.Selected);
-
-    if LIsEdit then
+    if AIsEdit then
       LoadToDoList2Detail(AToDoList.Selected, LToDoDetailF);
 
     if LToDoDetailF.ShowModal = mrOK then
     begin
-      if LIsEdit then
+      if AIsEdit then
         LIdx := AToDoList.Selected.Tag
       else
         LIdx := -1;
@@ -422,7 +419,7 @@ end;
 procedure TToDoListF.TodoList1DblClick(Sender: TObject);
 begin
   if Assigned(TodoList1.Selected) then
-    EditToDoList(TodoList1);
+    EditToDoList(TodoList1, True);
 end;
 
 end.

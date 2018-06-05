@@ -1790,5 +1790,9 @@ object ViewMailListF: TViewMailListF
         OnClick = ShowStoreID1Click
       end
     end
+    object estRemote1: TMenuItem
+      Caption = 'Test Remote'
+      OnClick = estRemote1Click
+    end
   end
 end

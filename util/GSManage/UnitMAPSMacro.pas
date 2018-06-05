@@ -80,7 +80,7 @@ procedure Key_Input_CompanyCode(ACompanyCode: string);
 var
   LAction: IAction;
 begin
-  LAction := TAction<String>.Create(TMessage, TParameters<String>.Create(ACompanyCode, ''));
+  LAction := TAction<String>.Create(TMessage, TParameters<String>.Create(ACompanyCode, ''), '');
   try
     LAction.Execute;
   finally
@@ -92,7 +92,7 @@ procedure Key_Input_RFQ(ARFQ: string);
 var
   LAction: IAction;
 begin
-  LAction := TAction<String>.Create(TMessage, TParameters<String>.Create(ARFQ, ''));
+  LAction := TAction<String>.Create(TMessage, TParameters<String>.Create(ARFQ, ''), '');
   try
     LAction.Execute;
   finally
@@ -107,7 +107,7 @@ var
 begin
   for i := 0 to AKind do
   begin
-    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''));
+    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''), '');
     try
       LAction.Execute;
       Sleep(500);
@@ -116,7 +116,7 @@ begin
     end;
   end;
 
-  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''));
+  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''), '');
   try
     LAction.Execute;
       Sleep(200);
@@ -141,7 +141,7 @@ var
 begin
   for i := 0 to ADeliveryCondition do
   begin
-    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''));
+    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''), '');
     try
       LAction.Execute;
       Sleep(500);
@@ -150,7 +150,7 @@ begin
     end;
   end;
 
-  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''));
+  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''), '');
   try
     LAction.Execute;
       Sleep(200);
@@ -166,7 +166,7 @@ var
 begin
   for i := 0 to AEstimateType do
   begin
-    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''));
+    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''), '');
     try
       LAction.Execute;
       Sleep(500);
@@ -175,7 +175,7 @@ begin
     end;
   end;
 
-  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''));
+  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''), '');
   try
     LAction.Execute;
       Sleep(200);
@@ -191,7 +191,7 @@ var
 begin
   for i := 0 to ATermsOfPayment do
   begin
-    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''));
+    LAction := TAction<String>.Create(TKey, TParameters<String>.Create('DOWN', ''), '');
     try
       LAction.Execute;
       Sleep(500);
@@ -200,7 +200,7 @@ begin
     end;
   end;
 
-  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''));
+  LAction := TAction<String>.Create(TKey, TParameters<String>.Create('RETURN', ''), '');
   try
     LAction.Execute;
       Sleep(200);
@@ -213,7 +213,7 @@ procedure Macro_MouseMove(Ax, Ay: integer);
 var
   LAction: IAction;
 begin
-  LAction := TAction<Integer>.Create(tMousePos, TParameters<Integer>.Create(Ax, Ay));
+  LAction := TAction<Integer>.Create(tMousePos, TParameters<Integer>.Create(Ax, Ay), '');
   try
     LAction.Execute;
     Sleep(200);
@@ -226,7 +226,7 @@ procedure Macro_MouseLClick;
 var
   LAction: IAction;
 begin
-  LAction := TAction<String>.Create(TMouseLClick, TParameters<String>.Create('', ''));
+  LAction := TAction<String>.Create(TMouseLClick, TParameters<String>.Create('', ''), '');
   try
     LAction.Execute;
     Sleep(200);

@@ -2,7 +2,8 @@ unit UnitMakeReport;
 
 interface
 
-uses Sysutils, Dialogs, Classes, UnitExcelUtil, Syncommons;
+uses Sysutils, Dialogs, Classes, UnitExcelUtil, Syncommons, CommonData, Word2010,
+  System.Variants;
 
 const
 //  DOC_DIR = 'C:\Users\HGS\Documents\양식\';
@@ -13,6 +14,8 @@ const
   PO_FILE_2_SUBCON_ENG = 'Service-Order.xlsx';
   INVOICE_FILE_2_CUST_KOR = 'INVOICE-KOR.xlsx';
   INVOICE_FILE_2_CUST_ENG = 'INVOICE-ENG.xlsx';
+  INVOICE_FILE_SUBCON_SANISN = '업체청구서_SANISN.docx';
+  INVOICE_FILE_SUBCON_LUXCO = '업체청구서_럭스코.xls';
   COMMERCIAL_INVOICE_FILE = 'COMMERCIAL-INVOICE-PACKING-LIST.xlsx';
   COMPANY_SELECTION_FILE = '업체선정품의서.xls';
   COMPANY_SELECTION_FILE1 = '업체선정품의서_단독업체.xls';
@@ -36,8 +39,12 @@ const
   SUBCON_PAYMENT_REQ_MUSTACHE_FILE_NAME = 'Mustache_기성처리요청메일.htm';
   SUBCON_SERVICE_ORDER_REQ_MUSTACHE_FILE_NAME = 'Mustache_서비스오더날인요청메일.htm';
 
-  INVOICE_ITEM_SE_CHARGE = 'Service Engineering Charge' + #13#10 + '({{NumOfWorker}} S/E, {{Qty}} WorkDay(s), USD1,190/day)';
-  INVOICE_ITEM_TRAVELLING_CHARGE = 'Travelling Charge' + #13#10 + '({{NumOfWorker}} S/E, {{TravellingDays}} Day(s), USD120/hr)';
+  //HGS Invoice 작성시 Mustache에서 사용함
+  INVOICE_ITEM_SE_CHARGE_WN = 'Service Engineering Charge' + #13#10 + '({{InvoiceItemDesc}} S/E, {{Qty}} WorkDay(s), USD1,310/day)';
+  INVOICE_ITEM_SE_CHARGE_WOT = 'Service Engineering Charge' + #13#10 + '({{InvoiceItemDesc}} S/E, {{Qty}} WorkHours, USD220/hr)';
+  INVOICE_ITEM_SE_CHARGE_HN = 'Service Engineering Charge' + #13#10 + '({{InvoiceItemDesc}} S/E, {{Qty}} WorkDay(s), USD1,850/day)';
+  INVOICE_ITEM_SE_CHARGE_HOT = 'Service Engineering Charge' + #13#10 + '({{InvoiceItemDesc}} S/E, {{Qty}} WorkHours, USD330/hr)';
+  INVOICE_ITEM_TRAVELLING_CHARGE = 'Travelling Charge' + #13#10 + '({{InvoiceItemDesc}} S/E, {{TravellingHours}} Hours, USD120/hr)';
   INVOICE_ITEM_FLIGHT_FEE = 'Flight Fee' + #13#10 + '(Actual Cost + Admin fee:15%)';
   INVOICE_ITEM_ACCOMMODATION_FEE = 'Accommodation Fee' + #13#10 + '(Actual Cost + Admin fee:15%)';
   INVOICE_ITEM_MATERIAL_CHARGE = 'Material' + #13#10 + '({{Material}})';
@@ -54,19 +61,20 @@ type
 
   Doc_Invoice_Rec = record
     FCustomerInfo, FInvNo, FInvDate, FHullNo, FShipName,
-    FSubject, FProduceType, FPONo: string;
+    FSubject, FProduceType, FPONo, FTotalPrice: string;
+    FOnboardDate: TDate;
     FInvoiceItemList: TStringList;
   end;
 
   Doc_Invoice_Item_Rec = record
-    FItemType, FNumOfWorker, FQty, FFUnit, FUnitPrice, FTotalPrice: string;
+    FItemType, FItemDesc, FQty, FFUnit, FUnitPrice, FTotalPrice: string;
   end;
 
   Doc_ServiceOrder_Rec = record
     FSubConName, FSubConManager, FSubConPhonNo, FSubConEmail, FHullNo, FShipName,
     FShipOwner, FSubject, FProduceType, FPONo2SubCon, FOrderDate, FWorkSch, FEngineerNo,
     FTechnicanNo, FLocalAgent, FWorkDesc, FProjCode, FCustomer, FWorkPeriod, FWorkDays,
-    FNationPort, FWorkSummary, FSubConPrice: string;
+    FNationPort, FWorkSummary, FSubConPrice, FManagerDepartment: string;
   end;
 
   Doc_Cust_Reg_Rec = record
@@ -101,10 +109,10 @@ type
   procedure MakeDocSubConInvoiceList2(AWorkSheet: OleVariant;
     ASIL: Doc_SubCon_Invoice_List_Rec; ARow: integer);
 
-  //업체 Invoice
-  procedure MakeSubConInvoice(ACompanyName: string);
-  procedure MakeSubConInvoice_SANISN;
-  procedure MakeSubConInvoice_LUXCO;
+  //업체 Invoice 생성
+  procedure MakeSubConInvoice(ACompanyName: string; ADoc_Invoice_Rec:Doc_Invoice_Rec);
+  procedure MakeSubConInvoice_SANISN(ADoc_Invoice_Rec:Doc_Invoice_Rec);
+  procedure MakeSubConInvoice_LUXCO(ADoc_Invoice_Rec:Doc_Invoice_Rec);
 
   //힘센엔진 견적서
 var
@@ -112,7 +120,7 @@ var
 
 implementation
 
-uses UnitStringUtil, UnitVariantJsonUtil;
+uses UnitStringUtil, UnitVariantJsonUtil, UnitElecServiceData;
 
 procedure MakeDocQtn(AQtnR: Doc_Qtn_Rec; ALang: integer = 1);
 var
@@ -289,7 +297,7 @@ procedure GetInvoiceItemRec(ADelimitedStr: string;
   var AItem: Doc_Invoice_Item_Rec);
 begin
   AItem.FItemType := strToken(ADelimitedStr, ';');
-  AItem.FNumOfWorker := strToken(ADelimitedStr, ';');
+  AItem.FItemDesc := strToken(ADelimitedStr, ';');
   AItem.FQty := strToken(ADelimitedStr, ';');
   AItem.FFUnit := strToken(ADelimitedStr, ';');
   AItem.FUnitPrice := strToken(ADelimitedStr, ';');
@@ -376,6 +384,8 @@ begin
 
   LRange := LWorksheet.range['C4'];
   LRange.FormulaR1C1 := FormatDateTime('YYYY.MM.DD', now);
+//  LRange := LWorksheet.range['C11']; //부서명
+//  LRange.FormulaR1C1 := ASOR.;
   LRange := LWorksheet.range['C47']; //제목
   LRange.FormulaR1C1 := ASOR.FHullNo + ' ' + ASOR.FShipName + ' - ' + ASOR.FSubject;
 //  LRange := LWorksheet.range['A49'];
@@ -543,23 +553,259 @@ begin
   LRange.FormulaR1C1 := ASIL.FInvoiceIssueDate;
 end;
 
-procedure MakeSubConInvoice(ACompanyName: string);
+procedure MakeSubConInvoice(ACompanyName: string; ADoc_Invoice_Rec:Doc_Invoice_Rec);
 begin
   if ACompanyName = 'SANISN' then
-    MakeSubConInvoice_SANISN
+    MakeSubConInvoice_SANISN(ADoc_Invoice_Rec)
   else
-  if ACompanyName = 'LUXCO' then
-    MakeSubConInvoice_LUXCO;
+  if ACompanyName = '럭스코' then
+    MakeSubConInvoice_LUXCO(ADoc_Invoice_Rec);
 end;
 
-procedure MakeSubConInvoice_SANISN;
+procedure MakeSubConInvoice_SANISN(ADoc_Invoice_Rec:Doc_Invoice_Rec);
+var
+  wordApp : _Application;
+  doc : WordDocument;
+  LSections: Sections;
+  LSection: Section;
+  LHeaders: HeadersFooters;
+  LHeader: HeaderFooter;
+  LTable: Table;
+  LCell: Cell;
+  LFields: Fields;
+  LField: Field;
+  filename : OleVariant;
+  i, LTotalPrice, LTotalPrice2, LQty, LNumOfWorker: integer;
+  LStr,LStr2: string;
+  LDoc: Variant;
 begin
+  filename := DOC_DIR + INVOICE_FILE_SUBCON_SANISN;
+  try
+    wordApp := CoWordApplication.Create;
+    wordApp.visible := True;
 
+    doc := wordApp.documents.open( filename, emptyparam,emptyparam,emptyparam,
+      emptyparam,emptyparam,emptyparam,emptyparam,
+      emptyparam,emptyparam,emptyparam,emptyparam,
+      emptyparam,emptyparam,emptyparam,emptyparam );
+
+//    for i := 1 to doc.Tables.Count do
+//    begin
+    LTable := doc.Tables.Item(1);
+    LCell := LTable.Cell(1,1);
+    LCell.Range.Text := 'Invoice To: ' + ADoc_Invoice_Rec.FShipName + ' (' + ADoc_Invoice_Rec.FHullNo + ')';
+
+    LTable := doc.Tables.Item(2);
+    LCell := LTable.Cell(2,2);
+    LCell.Range.Text := ADoc_Invoice_Rec.FPONo;
+    LCell := LTable.Cell(2,4);
+    LCell.Range.Text := FormatDateTime('dd-mmmm-yyyy',now);
+    LCell := LTable.Cell(5,4);
+    LCell.Range.Text := FormatDateTime('dd-mmmm-yyyy',ADoc_Invoice_Rec.FOnboardDate);
+
+    TDocVariant.New(LDoc);
+
+    for i := 0 to ADoc_Invoice_Rec.FInvoiceItemList.Count - 1 do
+    begin
+      LStr := ADoc_Invoice_Rec.FInvoiceItemList.Strings[i];
+      GetInvoiceItem2Var(LStr, LDoc);
+      LTotalPrice := StrToIntDef(LDoc.TotalPrice,0);
+      LQty := StrToIntDef(LDoc.Qty,0);
+      LNumOfWorker := StrToIntDef(LDoc.InvoiceItemDesc,1);
+
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitMaterials) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(12,3);
+        LCell.Range.Text := LDoc.InvoiceItemDesc;  //자재 desc
+        LCell := LTable.Cell(12,4);
+        LCell.Range.Text := IntToStr(LQty);
+        LCell := LTable.Cell(12,5);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(12,6);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitWork_Week_N) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(3,6);
+        LCell.Range.Text := IntToStr(LQty * LNumOfWorker);  //Normal work Qty
+        LCell := LTable.Cell(3,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(3,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitWork_Holiday_N) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(4,6);
+        LCell.Range.Text := IntToStr(LQty * LNumOfWorker);  //Holiday work Qty
+        LCell := LTable.Cell(4,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(4,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitTravellingHours) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(5,4);
+        LCell.Range.Text := IntToStr(LQty * LNumOfWorker);  //Travelling Qty
+        LCell := LTable.Cell(5,5);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(5,6);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitAirFare) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(7,6);
+        LCell.Range.Text := IntToStr(LQty);  //Air Fare Qty
+        LCell := LTable.Cell(7,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(7,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitAccommodation) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(10,6);
+        LCell.Range.Text := IntToStr(LQty);  //Accommodation Qty
+        LCell := LTable.Cell(10,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(10,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitTransportation) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(9,6);
+        LCell.Range.Text := IntToStr(LQty);  //Transportation Qty
+        LCell := LTable.Cell(9,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(9,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitMeal) then
+      begin
+        LTable := doc.Tables.Item(3);
+        LCell := LTable.Cell(11,6);
+        LCell.Range.Text := IntToStr(LQty);  //Meal Qty
+        LCell := LTable.Cell(11,7);
+        LCell.Range.Text := LDoc.UnitPrice;
+        LCell := LTable.Cell(11,8);
+        LCell.Range.Text := IntToStr(LTotalPrice);
+      end
+      else
+      if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitEtc) then
+      begin
+
+      end;
+    end;
+
+  LTable := doc.Tables.Item(3);
+  LCell := LTable.Cell(13,2);
+  LCell.Range.Text := ADoc_Invoice_Rec.FTotalPrice;
+//      ShowMessage(LStr2);
+//    end;
+  finally
+//    wordApp.quit(EmptyParam, EmptyParam, EmptyParam);
+  end;
 end;
 
-procedure MakeSubConInvoice_LUXCO;
+procedure MakeSubConInvoice_LUXCO(ADoc_Invoice_Rec:Doc_Invoice_Rec);
+var
+  LExcel: OleVariant;
+  LWorkBook: OleVariant;
+  LRange: OleVariant;
+  LWorksheet: OleVariant;
+  LFileName, LStr: string;
+  LDoc: Variant;
+  i, LTotalPrice, LTotalPrice2, LQty, LNumOfWorker: integer;
 begin
+  LFileName := DOC_DIR + INVOICE_FILE_SUBCON_LUXCO;
 
+  if not FileExists(LFileName) then
+  begin
+    ShowMessage('File(' + LFileName + ')이 존재하지 않습니다');
+    exit;
+  end;
+
+  LExcel := GetActiveExcelOleObject(True);
+  LWorkBook := LExcel.Workbooks.Open(LFileName);
+  LExcel.Visible := true;
+  LWorksheet := LExcel.ActiveSheet;
+
+  LRange := LWorksheet.range['C7'];
+  LRange.FormulaR1C1 := ADoc_Invoice_Rec.FSubject;
+
+  TDocVariant.New(LDoc);
+
+  for i := 0 to ADoc_Invoice_Rec.FInvoiceItemList.Count - 1 do
+  begin
+    LStr := ADoc_Invoice_Rec.FInvoiceItemList.Strings[i];
+    GetInvoiceItem2Var(LStr, LDoc);
+    LTotalPrice := StrToIntDef(LDoc.TotalPrice,0);
+    LQty := StrToIntDef(LDoc.Qty,0);
+    LNumOfWorker := StrToIntDef(LDoc.InvoiceItemDesc,1);
+
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitMaterials) then
+    begin
+      LRange := LWorksheet.range['G14'];
+      LRange.FormulaR1C1 := LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitWork_Week_N) then
+    begin
+      LRange := LWorksheet.range['G20'];
+      LRange.FormulaR1C1 := LQty * LNumOfWorker;
+      LRange := LWorksheet.range['I20'];
+      LRange.FormulaR1C1 := LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitTravellingHours) then
+    begin
+      LRange := LWorksheet.range['G21'];
+      LRange.FormulaR1C1 := LQty * LNumOfWorker;
+      LRange := LWorksheet.range['I21'];
+      LRange.FormulaR1C1 := LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitAirFare) then
+    begin
+      LRange := LWorksheet.range['G23'];
+      LRange.FormulaR1C1 := LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitAccommodation) then
+    begin
+      LTotalPrice2 := LTotalPrice2 + LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitTransportation) then
+    begin
+      LTotalPrice2 := LTotalPrice2 + LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitMeal) then
+    begin
+      LTotalPrice2 := LTotalPrice2 + LTotalPrice;
+    end
+    else
+    if LDoc.InvoiceItemType = g_GSInvoiceItemType.ToString(iitEtc) then
+    begin
+      LTotalPrice2 := LTotalPrice2 + LTotalPrice;
+    end;
+
+    LRange := LWorksheet.range['G24'];
+    LRange.FormulaR1C1 := LTotalPrice2;
+  end;
 end;
 
 end.
