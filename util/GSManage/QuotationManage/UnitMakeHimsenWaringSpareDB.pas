@@ -5,23 +5,23 @@ interface
 uses Sysutils, Dialogs, Classes, UnitExcelUtil, Syncommons,
   UnitHimsenWearingSpareMarineRecord, UnitHimsenWearingSpareStationaryRecord;
 
-procedure ImportHimsenWearingSpareMFromXlsFile(AFileName: string);
-procedure ImportHimsenWearingSpareSFromXlsFile(AFileName: string);
+procedure ImportHimsenWearingSpareMFromXlsFile(AFileName, AEngType: string; ATierStep: integer);
+procedure ImportHimsenWearingSpareSFromXlsFile(AFileName, AEngType: string; ATierStep: integer);
 
 implementation
 
 uses UnitStringUtil;
 
-procedure ImportHimsenWearingSpareMFromXlsFile(AFileName: string);
+procedure ImportHimsenWearingSpareMFromXlsFile(AFileName, AEngType: string; ATierStep: integer);
 var
   LExcel: OleVariant;
   LWorkBook: OleVariant;
   LRange: OleVariant;
   LWorksheet: OleVariant;
-  LStr, LStr2, LStr3: string;
-  LIdx: integer;
+  LStr, LStr2, LStr3, LSectionPrefix: string;
+  LIdx, LLastRow: integer;
   LDoc: Variant;
-  LUseTC, LUseCyl: Boolean;
+  LUseTC, LUseCyl, LUseRPM: Boolean;
 begin
   if not FileExists(AFileName) then
   begin
@@ -29,18 +29,30 @@ begin
     exit;
   end;
 
-
   LExcel := GetActiveExcelOleObject(True);
   LWorkBook := LExcel.Workbooks.Open(AFileName);
 //  LExcel.Visible := true;
   LWorksheet := LExcel.ActiveSheet;
+  LLastRow := GetLastRowNumFromExcel(LWorkSheet);
   TDocVariant.New(LDoc, [dvoReturnNullForUnknownProperty]);
+
+  if Pos('H17', AEngType) <> 0 then
+    LSectionPrefix := 'S'
+  else
+  if Pos('H21', AEngType) <> 0 then
+    LSectionPrefix := 'A'
+  else
+  if Pos('H25', AEngType) <> 0 then
+    LSectionPrefix := 'C'
+  else
+  if Pos('H32', AEngType) <> 0 then
+    LSectionPrefix := 'L';
 
   LStr := 'A';
   LIdx := 8;
   LRange := LWorksheet.range[LStr+IntToStr(LIdx)];
 
-  while LIdx < 253 do
+  while LIdx < LLastRow do //253
   begin
     LRange := LWorksheet.range['A'+IntToStr(LIdx)];
 
@@ -50,7 +62,7 @@ begin
       Inc(LIdx);
     end;
 
-    LDoc.EngineType := 'H17M';
+    LDoc.EngineType := AEngType;
 
     LRange := LWorksheet.range['C'+IntToStr(LIdx)];
     if LRange.FormulaR1C1 <> '' then
@@ -59,7 +71,7 @@ begin
 
       LRange := LWorksheet.range['U'+IntToStr(LIdx)];
       LDoc.SectionNo := LRange.FormulaR1C1;
-      LUseTC := Pos('S8', LDoc.SectionNo) <> 0;
+      LUseTC := Pos(LSectionPrefix + '8', LDoc.SectionNo) <> 0;//H21=A, H25=C, H17=S, H32=L
       //TC 사양에 따라 PlateNo,도면번호 등이 달라짐
       if LUseTC then
       begin
@@ -75,7 +87,7 @@ begin
       else
         LDoc.TurboChargerModel := '*';
 
-      LUseCyl := Pos('S42', LDoc.SectionNo) <> 0;
+      LUseCyl := Pos(LSectionPrefix + '42', LDoc.SectionNo) <> 0;
       //실린더수에 따라 PlateNo,도면번호 등이 달라짐
       if LUseCyl then
       begin
@@ -90,6 +102,22 @@ begin
       end
       else
         LDoc.AdaptedCylCount := '*';
+
+      LUseRPM := Pos(LSectionPrefix + '51', LDoc.SectionNo) <> 0;
+      //RPM에 따라 도면번호가 달라짐
+      if LUseRPM then
+      begin
+        LStr3 := LDoc.PartDesc;
+        if Pos('(', LStr3) <> 0 then
+        begin
+          strToken(LStr3, '(');
+          LDoc.RatedRPM := strToken(LStr3, ')');
+        end
+        else
+          LDoc.RatedRPM := '*';
+      end
+      else
+        LDoc.RatedRPM := '*';
 
       LRange := LWorksheet.range['V'+IntToStr(LIdx)];
       LDoc.PartNo := LRange.FormulaR1C1;
@@ -111,8 +139,11 @@ begin
 
       LRange := LWorksheet.range['AB'+IntToStr(LIdx)];
 
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS4000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS4000ApplyNo := '0';
+        LDoc.HRS4000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -120,27 +151,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS4000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS4000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS4000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS4000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AC'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS8000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS8000ApplyNo := '0';
+        LDoc.HRS8000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -148,27 +182,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS8000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS8000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS8000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS8000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AD'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS12000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS12000ApplyNo := '0';
+        LDoc.HRS12000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -176,27 +213,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS12000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS12000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS12000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS12000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AE'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS16000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS16000ApplyNo := '0';
+        LDoc.HRS16000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -204,27 +244,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS16000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS16000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS16000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS16000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AF'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS20000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS20000ApplyNo := '0';
+        LDoc.HRS20000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -232,27 +275,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS20000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS20000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS20000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS20000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AG'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS24000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS24000ApplyNo := '0';
+        LDoc.HRS24000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -260,27 +306,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS24000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS24000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS24000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS24000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AH'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS28000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS28000ApplyNo := '0';
+        LDoc.HRS28000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -288,27 +337,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS28000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS28000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS28000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS28000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AI'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS32000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS32000ApplyNo := '0';
+        LDoc.HRS32000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -316,27 +368,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS32000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS32000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS32000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS32000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AJ'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS36000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS36000ApplyNo := '0';
+        LDoc.HRS36000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -344,27 +399,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS36000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS36000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS36000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS36000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AK'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS40000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS40000ApplyNo := '0';
+        LDoc.HRS40000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -372,27 +430,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS40000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS40000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS40000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS40000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AL'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS44000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS44000ApplyNo := '0';
+        LDoc.HRS44000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -400,27 +461,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS44000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS44000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS44000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS44000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AM'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS48000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS48000ApplyNo := '0';
+        LDoc.HRS48000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -428,42 +492,169 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS48000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS48000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS48000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS48000ApplyNo := Trim(LStr2);
       end;
 
-      AddHimsenWaringSpareMFromVariant(LDoc);
+      LRange := LWorksheet.range['AN'+IntToStr(LIdx)];
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS60000ApplyNo := '0';
+        LDoc.HRS60000Formula := '*';
+      end
+      else
+      begin
+        LStr2 := LRange.Formula;
+        strToken(LStr2, ')');
+
+        if Pos('*', LStr2) <> 0 then
+        begin
+          LDoc.HRS60000Formula := '*';
+          strToken(LStr2, '*');
+        end
+        else
+        if Pos('+', LStr2) <> 0 then
+        begin
+          LDoc.HRS60000Formula := '+';
+          strToken(LStr2, '+');
+        end
+        else
+        begin
+          LDoc.HRS60000Formula := '*';
+          LStr2 := '1';
+        end;
+
+        LDoc.HRS60000ApplyNo := Trim(LStr2);
+      end;
+
+      LRange := LWorksheet.range['AO'+IntToStr(LIdx)];
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS72000ApplyNo := '0';
+        LDoc.HRS72000Formula := '*';
+      end
+      else
+      begin
+        LStr2 := LRange.Formula;
+        strToken(LStr2, ')');
+
+        if Pos('*', LStr2) <> 0 then
+        begin
+          LDoc.HRS72000Formula := '*';
+          strToken(LStr2, '*');
+        end
+        else
+        if Pos('+', LStr2) <> 0 then
+        begin
+          LDoc.HRS72000Formula := '+';
+          strToken(LStr2, '+');
+        end
+        else
+        begin
+          LDoc.HRS72000Formula := '*';
+          LStr2 := '1';
+        end;
+
+        LDoc.HRS72000ApplyNo := Trim(LStr2);
+      end;
+
+      LRange := LWorksheet.range['AP'+IntToStr(LIdx)];
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS88000ApplyNo := '0';
+        LDoc.HRS88000Formula := '*';
+      end
+      else
+      begin
+        LStr2 := LRange.Formula;
+        strToken(LStr2, ')');
+
+        if Pos('*', LStr2) <> 0 then
+        begin
+          LDoc.HRS88000Formula := '*';
+          strToken(LStr2, '*');
+        end
+        else
+        if Pos('+', LStr2) <> 0 then
+        begin
+          LDoc.HRS88000Formula := '+';
+          strToken(LStr2, '+');
+        end
+        else
+        begin
+          LDoc.HRS88000Formula := '*';
+          LStr2 := '1';
+        end;
+
+        LDoc.HRS88000ApplyNo := Trim(LStr2);
+      end;
+
+      LRange := LWorksheet.range['AQ'+IntToStr(LIdx)];
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS100000ApplyNo := '0';
+        LDoc.HRS100000Formula := '*';
+      end
+      else
+      begin
+        LStr2 := LRange.Formula;
+        strToken(LStr2, ')');
+
+        if Pos('*', LStr2) <> 0 then
+        begin
+          LDoc.HRS100000Formula := '*';
+          strToken(LStr2, '*');
+        end
+        else
+        if Pos('+', LStr2) <> 0 then
+        begin
+          LDoc.HRS100000Formula := '+';
+          strToken(LStr2, '+');
+        end
+        else
+        begin
+          LDoc.HRS100000Formula := '*';
+          LStr2 := '1';
+        end;
+
+        LDoc.HRS100000ApplyNo := Trim(LStr2);
+      end;
+
+      AddHimsenWaringSpareMFromVariant(LDoc, ATierStep);
     end;
 
     Inc(LIdx);
     LRange := LWorksheet.range[LStr+IntToStr(LIdx)];
   end;
+
+  LWorkBook.Close;
+  LExcel.Quit;
 end;
 
-procedure ImportHimsenWearingSpareSFromXlsFile(AFileName: string);
+procedure ImportHimsenWearingSpareSFromXlsFile(AFileName, AEngType: string; ATierStep: integer);
 var
   LExcel: OleVariant;
   LWorkBook: OleVariant;
   LRange: OleVariant;
   LWorksheet: OleVariant;
-  LStr, LStr2, LStr3: string;
-  LIdx: integer;
+  LStr, LStr2, LStr3, LSectionPrefix: string;
+  LIdx, LLastRow: integer;
   LDoc: Variant;
-  LUseTC, LUseCyl: Boolean;
+  LUseTC, LUseCyl, LUseRPM: Boolean;
 begin
   if not FileExists(AFileName) then
   begin
@@ -476,13 +667,26 @@ begin
   LWorkBook := LExcel.Workbooks.Open(AFileName);
 //  LExcel.Visible := true;
   LWorksheet := LExcel.ActiveSheet;
+  LLastRow := GetLastRowNumFromExcel(LWorkSheet);
   TDocVariant.New(LDoc, [dvoReturnNullForUnknownProperty]);
 
   LStr := 'A';
   LIdx := 8;
   LRange := LWorksheet.range[LStr+IntToStr(LIdx)];
 
-  while LIdx < 253 do
+  if Pos('H17', AEngType) <> 0 then
+    LSectionPrefix := 'S'
+  else
+  if Pos('H21', AEngType) <> 0 then
+    LSectionPrefix := 'A'
+  else
+  if Pos('H25', AEngType) <> 0 then
+    LSectionPrefix := 'C'
+  else
+  if Pos('H32', AEngType) <> 0 then
+    LSectionPrefix := 'L';
+
+  while LIdx < LLastRow do
   begin
     LRange := LWorksheet.range['A'+IntToStr(LIdx)];
 
@@ -492,7 +696,7 @@ begin
       Inc(LIdx);
     end;
 
-    LDoc.EngineType := 'H17S';
+    LDoc.EngineType := AEngType;
 
     LRange := LWorksheet.range['C'+IntToStr(LIdx)];
     if LRange.FormulaR1C1 <> '' then
@@ -501,7 +705,7 @@ begin
 
       LRange := LWorksheet.range['U'+IntToStr(LIdx)];
       LDoc.SectionNo := LRange.FormulaR1C1;
-      LUseTC := Pos('S8', LDoc.SectionNo) <> 0;//H21=A, H25=C, H17=S
+      LUseTC := Pos(LSectionPrefix + '8', LDoc.SectionNo) <> 0;//H21=A, H25=C, H17=S, H32=L
       //TC 사양에 따라 PlateNo,도면번호 등이 달라짐
       if LUseTC then
       begin
@@ -517,7 +721,7 @@ begin
       else
         LDoc.TurboChargerModel := '*';
 
-      LUseCyl := Pos('S42', LDoc.SectionNo) <> 0;
+      LUseCyl := Pos(LSectionPrefix + '42', LDoc.SectionNo) <> 0;
       //실린더수에 따라 PlateNo,도면번호 등이 달라짐
       if LUseCyl then
       begin
@@ -532,6 +736,22 @@ begin
       end
       else
         LDoc.AdaptedCylCount := '*';
+
+      LUseRPM := Pos(LSectionPrefix + '51', LDoc.SectionNo) <> 0;
+      //RPM에 따라 도면번호가 달라짐
+      if LUseRPM then
+      begin
+        LStr3 := LDoc.PartDesc;
+        if Pos('(', LStr3) <> 0 then
+        begin
+          strToken(LStr3, '(');
+          LDoc.RatedRPM := strToken(LStr3, ')');
+        end
+        else
+          LDoc.RatedRPM := '*';
+      end
+      else
+        LDoc.RatedRPM := '*';
 
       LRange := LWorksheet.range['V'+IntToStr(LIdx)];
       LDoc.PartNo := LRange.FormulaR1C1;
@@ -553,8 +773,11 @@ begin
 
       LRange := LWorksheet.range['AB'+IntToStr(LIdx)];
 
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS3000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS3000ApplyNo := '0';
+        LDoc.HRS3000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -562,27 +785,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS3000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS3000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS3000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS3000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AC'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS6000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS6000ApplyNo := '0';
+        LDoc.HRS6000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -590,27 +816,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS6000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS6000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS6000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS6000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AD'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS9000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS9000ApplyNo := '0';
+        LDoc.HRS9000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -618,27 +847,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS9000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS9000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS9000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS9000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AE'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS12000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS12000ApplyNo := '0';
+        LDoc.HRS12000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -646,27 +878,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS12000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS12000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS12000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS12000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AF'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS15000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS15000ApplyNo := '0';
+        LDoc.HRS15000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -674,27 +909,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS15000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS15000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS15000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS15000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AG'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS18000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS18000ApplyNo := '0';
+        LDoc.HRS18000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -702,27 +940,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS18000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS18000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS18000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS18000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AH'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS21000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS21000ApplyNo := '0';
+        LDoc.HRS21000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -730,27 +971,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS21000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS21000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS21000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS21000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AI'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS24000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS24000ApplyNo := '0';
+        LDoc.HRS24000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -758,27 +1002,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS24000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS24000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS24000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS24000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AJ'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS27000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS27000ApplyNo := '0';
+        LDoc.HRS27000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -786,27 +1033,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS27000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS27000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS27000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS27000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AK'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS30000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS30000ApplyNo := '0';
+        LDoc.HRS30000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -814,27 +1064,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS30000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS30000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS30000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS30000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AL'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS33000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS33000ApplyNo := '0';
+        LDoc.HRS33000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -842,27 +1095,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS33000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS33000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS33000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS33000ApplyNo := LStr2;
       end;
 
       LRange := LWorksheet.range['AM'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS36000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS36000ApplyNo := '0';
+        LDoc.HRS36000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -870,27 +1126,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS36000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS36000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS36000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS36000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AN'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS39000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS39000ApplyNo := '0';
+        LDoc.HRS39000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -898,27 +1157,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS39000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS39000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS39000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS39000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AO'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS42000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS42000ApplyNo := '0';
+        LDoc.HRS42000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -926,27 +1188,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS42000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS42000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS42000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS42000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AP'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS45000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS45000ApplyNo := '0';
+        LDoc.HRS45000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -954,27 +1219,30 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS45000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS45000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS45000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS45000ApplyNo := Trim(LStr2);
       end;
 
       LRange := LWorksheet.range['AQ'+IntToStr(LIdx)];
-      if LRange.FormulaR1C1 = '-' then
-        LDoc.HRS48000ApplyNo := '0'
+      if (LRange.FormulaR1C1 = '-') or (LRange.FormulaR1C1 = '')  then
+      begin
+        LDoc.HRS48000ApplyNo := '0';
+        LDoc.HRS48000Formula := '*';
+      end
       else
       begin
         LStr2 := LRange.Formula;
@@ -982,30 +1250,33 @@ begin
 
         if Pos('*', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '*';
+          LDoc.HRS48000Formula := '*';
           strToken(LStr2, '*');
         end
         else
         if Pos('+', LStr2) <> 0 then
         begin
-          LDoc.CalcFormula := '+';
+          LDoc.HRS48000Formula := '+';
           strToken(LStr2, '+');
         end
         else
         begin
-          LDoc.CalcFormula := '*';
-          LStr2 := '0';
+          LDoc.HRS48000Formula := '*';
+          LStr2 := '1';
         end;
 
         LDoc.HRS48000ApplyNo := Trim(LStr2);
       end;
 
-      AddHimsenWaringSpareSFromVariant(LDoc);
+      AddHimsenWaringSpareSFromVariant(LDoc, ATierStep);
     end;
 
     Inc(LIdx);
     LRange := LWorksheet.range[LStr+IntToStr(LIdx)];
   end;
+
+  LWorkBook.Close;
+  LExcel.Quit;
 end;
 
 end.

@@ -8,7 +8,10 @@ uses
   NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   AdvOfficeTabSet, Vcl.ExtCtrls, Vcl.StdCtrls, AeroButtons, Vcl.ComCtrls,
   AdvGroupBox, AdvOfficeButtons, JvExControls, JvLabel, CurvyControls,
-  Vcl.ImgList, UnitHimsenWearingSpareMarineRecord, UnitHimsenWearingSpareStationaryRecord;
+  Vcl.ImgList, UnitHimsenWearingSpareMarineRecord, UnitHimsenWearingSpareStationaryRecord,
+  UnitHimsenWearingSparePropulsionRecord,
+  AdvSmoothSplashScreen, UnitQuotationManageCommandLineClass, GpCommandLineParser,
+  CommonData;
 
 type
   THimsenWearSpareQF = class(TForm)
@@ -46,12 +49,10 @@ type
     PartNo: TNxTextColumn;
     StatusBarPro1: TStatusBarPro;
     EngTypeCB: TComboBox;
-    CylCountEdit: TEdit;
     TCModelCB: TComboBox;
     RunHourCB: TComboBox;
     JvLabel1: TJvLabel;
     HullNoEdit: TEdit;
-    Label1: TLabel;
     SectionNo: TNxTextColumn;
     UsedAmount: TNxTextColumn;
     CalcFormula: TNxTextColumn;
@@ -60,16 +61,34 @@ type
     Amount: TNxTextColumn;
     TCModel: TNxTextColumn;
     ImportWearingSpareSFromXls2: TMenuItem;
+    DB1: TMenuItem;
+    DeleteEngine1: TMenuItem;
+    SplashScreen1: TAdvSmoothSplashScreen;
+    JvLabel3: TJvLabel;
+    RatedRPMEdit: TEdit;
+    TierRG: TAdvOfficeRadioGroup;
+    UsageRG: TAdvOfficeRadioGroup;
+    EngineModelEdit: TEdit;
+    CylCountEdit: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure ImportWearingSpareMFromXls2Click(Sender: TObject);
     procedure Close1Click(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure btn_SearchClick(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
     procedure ImportWearingSpareSFromXls2Click(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure RunHourCBDropDown(Sender: TObject);
+    procedure DeleteEngine1Click(Sender: TObject);
+    procedure EngTypeCBDropDown(Sender: TObject);
+    procedure EngTypeCBSelect(Sender: TObject);
+    procedure TCModelCBDropDown(Sender: TObject);
   private
+    FCommandLine: TQuotationManageParameter;
+
+    function CommandLineParse(var AErrMsg: string): boolean;
+    function GetEngTypeFromModel(AEngineModel: string; AAdapt: string=''): string;
+
     procedure GetHimsenWearingSpare2Grid;
     procedure GetHimsenWearingSpareM2Grid;
     procedure GetHimsenWearingSpareS2Grid;
@@ -81,6 +100,9 @@ type
 
     procedure ExecuteSearch(Key: Char);
     procedure MakeHimsenWearPartQuotation();
+    procedure FillInEngineTypeCombo;
+    procedure FillInUsageRG(AUsage: string);
+    procedure FillInTierRG(ATier: string);
   public
     FRunHourList: TStringList;
   end;
@@ -93,7 +115,8 @@ var
 
 implementation
 
-uses UnitMakeHimsenWaringSpareDB, UnitExcelUtil;
+uses UnitMakeHimsenWaringSpareDB, UnitExcelUtil, UnitStringUtil,
+  UnitEngineMasterData, UnitEnumHelper;
 
 {$R *.dfm}
 
@@ -117,21 +140,175 @@ begin
   Close;
 end;
 
+function THimsenWearSpareQF.CommandLineParse(var AErrMsg: string): boolean;
+var
+  LStr: string;
+begin
+  AErrMsg := '';
+
+  try
+    CommandLineParser.Options := [opIgnoreUnknownSwitches];
+    Result := CommandLineParser.Parse(FCommandLine);
+  except
+    on E: ECLPConfigurationError do begin
+      AErrMsg := '*** Configuration error ***' + #13#10 +
+        Format('%s, position = %d, name = %s',
+          [E.ErrorInfo.Text, E.ErrorInfo.Position, E.ErrorInfo.SwitchName]);
+      Exit;
+    end;
+  end;
+
+  if not Result then
+  begin
+    AErrMsg := Format('%s, position = %d, name = %s',
+      [CommandLineParser.ErrorInfo.Text, CommandLineParser.ErrorInfo.Position,
+       CommandLineParser.ErrorInfo.SwitchName]) + #13#10;
+    for LStr in CommandLineParser.Usage do
+      AErrMsg := AErrMSg + LStr + #13#10;
+  end
+  else
+  begin
+  end;
+end;
+
+procedure THimsenWearSpareQF.DeleteEngine1Click(Sender: TObject);
+var
+  LHimsenWearingSpareParamMRec: THimsenWearingSpareMRec;
+  LHimsenWearingSpareParamSRec: THimsenWearingSpareSRec;
+begin
+  if EngTypeCB.ItemIndex = -1 then
+    ShowMessage('Select Engine Type first for delete')
+  else
+  begin
+    if MessageDlg('Are you sure to delete the engine type(' + EngTypeCB.Text +')', mtConfirmation, [mbYes, mbNo],0) = mrNo then
+      exit;
+
+    if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
+    begin
+      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Delete Data from QuotationManage_M.sqlite!';
+      SplashScreen1.Show;
+      try
+        GetHimsenWearingSpareMParam2Rec(LHimsenWearingSpareParamMRec);
+        DeleteEngineTypeMFromSearchRec(LHimsenWearingSpareParamMRec);
+      finally
+        SplashScreen1.Hide;
+      end;
+    end
+    else
+    if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
+    begin
+      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Delete Data from QuotationManage_S.sqlite!';
+      SplashScreen1.Show;
+      try
+        GetHimsenWearingSpareSParam2Rec(LHimsenWearingSpareParamSRec);
+        DeleteEngineTypeSFromSearchRec(LHimsenWearingSpareParamSRec);
+      finally
+        SplashScreen1.Hide;
+      end;
+    end;
+  end;
+end;
+
+procedure THimsenWearSpareQF.EngTypeCBDropDown(Sender: TObject);
+begin
+  FillinEngineTypeCombo;
+end;
+
+procedure THimsenWearSpareQF.EngTypeCBSelect(Sender: TObject);
+var
+  LUsage: string;
+begin
+  LUsage := GetEngineUsageChar(UsageRG.ItemIndex + 1);
+  EngineModelEdit.Text := GetEngTypeFromModel(EngTypeCB.Text, LUsage);
+end;
+
 procedure THimsenWearSpareQF.ExecuteSearch(Key: Char);
 begin
   if Key = Chr(VK_RETURN) then
     btn_SearchClick(nil);
 end;
 
+procedure THimsenWearSpareQF.FillInEngineTypeCombo;
+//var
+//  g_EngineTier1: TLabelledEnum<TEngineModel_TierI>;
+//  g_EngineTier2: TLabelledEnum<TEngineModel_TierII>;
+//  g_EngineTier3: TLabelledEnum<TEngineModel_TierIII>;
+begin
+  EngTypeCB.Clear;
+
+  case TierRG.ItemIndex of
+    0: begin
+//      g_EngineTier1.InitArrayRecord(R_EngineModel_TierI);
+      g_EngineTier1.SetType2Combo(EngTypeCB);
+    end;
+    1: begin
+//      g_EngineTier2.InitArrayRecord(R_EngineModel_TierII);
+      g_EngineTier2.SetType2Combo(EngTypeCB);
+    end;
+    2: begin
+//      g_EngineTier3.InitArrayRecord(R_EngineModel_TierIII);
+      g_EngineTier3.SetType2Combo(EngTypeCB);
+    end;
+  end;
+end;
+
+procedure THimsenWearSpareQF.FillInTierRG(ATier: string);
+var
+  i:integer;
+begin
+  i := StrToIntDef(ATier, 0);
+  TierRG.ItemIndex := i-1;
+end;
+
+procedure THimsenWearSpareQF.FillInUsageRG(AUsage: string);
+begin
+  if AUsage = 'M' then
+    UsageRG.ItemIndex := 0
+  else
+  if AUsage = 'S' then
+    UsageRG.ItemIndex := 1
+  else
+  if AUsage = 'P' then
+    UsageRG.ItemIndex := 2
+end;
+
 procedure THimsenWearSpareQF.FormCreate(Sender: TObject);
+var
+  LMsg, LEngType: string;
+  LIdx: integer;
 begin
   InitHimsenWearingSpareMClient(Application.ExeName);
   InitHimsenWearingSpareSClient(Application.ExeName);
+  InitHimsenWearingSparePClient(Application.ExeName);
   FRunHourList := TStringList.Create;
+  FCommandLine := TQuotationManageParameter.Create;
+  CommandLineParse(LMsg);
+
+  if FCommandLine.EngineModel <> '' then
+  begin
+    FillInUsageRG(FCommandLine.Adapt);
+    FillInTierRG(FCommandLine.Tier);
+    FillInEngineTypeCombo;
+    EngineModelEdit.Text := GetEngTypeFromModel(FCommandLine.EngineModel, FCommandLine.Adapt);
+    LEngType := FCommandLine.EngineModel;
+    strToken(LEngType, 'H');
+    LEngType := 'H' + StringReplace(LEngType, 'V', '(V)', [rfReplaceAll]);
+    LIdx := EngTypeCB.Items.IndexOf(LEngType);
+    EngTypeCB.ItemIndex := LIdx;
+    CylCountEdit.Text := FCommandLine.CylCount;
+    LMsg := FCommandLine.TCModel;
+    LIdx := TCModelCB.Items.IndexOf(LMsg);
+    RunHourCBDropDown(nil);
+    LMsg := FCommandLine.RunHour;
+    LIdx := RunHourCB.Items.IndexOf(LMsg);
+
+    btn_SearchClick(nil);
+  end;
 end;
 
 procedure THimsenWearSpareQF.FormDestroy(Sender: TObject);
 begin
+  FCommandLine.Free;
   FRunHourList.Free;
 end;
 
@@ -144,99 +321,206 @@ begin
   LRunHour := RunHourCB.Text;
   LCylCount := StrToIntDef(CylCountEdit.Text, 0);
 
-  if Pos('M', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
   begin
     if LRunHour = '4000' then
-      LCalcNo := StrToIntDef(ADoc.HRS4000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS4000ApplyNo,0);
+      LFormula := ADoc.HRS4000Formula;
+    end
     else
     if LRunHour = '8000' then
-      LCalcNo := StrToIntDef(ADoc.HRS8000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS8000ApplyNo,0);
+      LFormula := ADoc.HRS8000Formula;
+    end
     else
     if LRunHour = '12000' then
-      LCalcNo := StrToIntDef(ADoc.HRS12000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS12000ApplyNo,0);
+      LFormula := ADoc.HRS12000Formula;
+    end
     else
     if LRunHour = '16000' then
-      LCalcNo := StrToIntDef(ADoc.HRS16000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS16000ApplyNo,0);
+      LFormula := ADoc.HRS16000Formula;
+    end
     else
     if LRunHour = '20000' then
-      LCalcNo := StrToIntDef(ADoc.HRS20000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS20000ApplyNo,0);
+      LFormula := ADoc.HRS20000Formula;
+    end
     else
     if LRunHour = '24000' then
-      LCalcNo := StrToIntDef(ADoc.HRS24000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS24000ApplyNo,0);
+      LFormula := ADoc.HRS24000Formula;
+    end
     else
     if LRunHour = '28000' then
-      LCalcNo := StrToIntDef(ADoc.HRS28000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS28000ApplyNo,0);
+      LFormula := ADoc.HRS28000Formula;
+    end
     else
     if LRunHour = '32000' then
-      LCalcNo := StrToIntDef(ADoc.HRS32000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS32000ApplyNo,0);
+      LFormula := ADoc.HRS32000Formula;
+    end
     else
     if LRunHour = '36000' then
-      LCalcNo := StrToIntDef(ADoc.HRS36000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS36000ApplyNo,0);
+      LFormula := ADoc.HRS36000Formula;
+    end
     else
     if LRunHour = '40000' then
-      LCalcNo := StrToIntDef(ADoc.HRS40000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS40000ApplyNo,0);
+      LFormula := ADoc.HRS40000Formula;
+    end
     else
     if LRunHour = '44000' then
-      LCalcNo := StrToIntDef(ADoc.HRS44000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS44000ApplyNo,0);
+      LFormula := ADoc.HRS44000Formula;
+    end
     else
     if LRunHour = '48000' then
+    begin
       LCalcNo := StrToIntDef(ADoc.HRS48000ApplyNo,0);
+      LFormula := ADoc.HRS48000Formula;
+    end
+    else
+    if LRunHour = '60000' then
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS60000ApplyNo,0);
+      LFormula := ADoc.HRS60000Formula;
+    end
+    else
+    if LRunHour = '72000' then
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS72000ApplyNo,0);
+      LFormula := ADoc.HRS72000Formula;
+    end
+    else
+    if LRunHour = '88000' then
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS88000ApplyNo,0);
+      LFormula := ADoc.HRS88000Formula;
+    end
+    else
+    if LRunHour = '100000' then
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS100000ApplyNo,0);
+      LFormula := ADoc.HRS100000Formula;
+    end
   end
   else
-  if Pos('S', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
   begin
     if LRunHour = '3000' then
-      LCalcNo := StrToIntDef(ADoc.HRS3000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS3000ApplyNo,0);
+      LFormula := ADoc.HRS3000Formula;
+    end
     else
     if LRunHour = '6000' then
-      LCalcNo := StrToIntDef(ADoc.HRS6000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS6000ApplyNo,0);
+      LFormula := ADoc.HRS6000Formula;
+    end
     else
     if LRunHour = '9000' then
-      LCalcNo := StrToIntDef(ADoc.HRS9000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS9000ApplyNo,0);
+      LFormula := ADoc.HRS9000Formula;
+    end
     else
     if LRunHour = '12000' then
-      LCalcNo := StrToIntDef(ADoc.HRS12000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS12000ApplyNo,0);
+      LFormula := ADoc.HRS12000Formula;
+    end
     else
     if LRunHour = '15000' then
-      LCalcNo := StrToIntDef(ADoc.HRS15000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS15000ApplyNo,0);
+      LFormula := ADoc.HRS15000Formula;
+    end
     else
     if LRunHour = '18000' then
-      LCalcNo := StrToIntDef(ADoc.HRS18000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS18000ApplyNo,0);
+      LFormula := ADoc.HRS18000Formula;
+    end
     else
     if LRunHour = '21000' then
-      LCalcNo := StrToIntDef(ADoc.HRS21000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS21000ApplyNo,0);
+      LFormula := ADoc.HRS21000Formula;
+    end
     else
     if LRunHour = '24000' then
-      LCalcNo := StrToIntDef(ADoc.HRS24000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS24000ApplyNo,0);
+      LFormula := ADoc.HRS24000Formula;
+    end
     else
     if LRunHour = '27000' then
-      LCalcNo := StrToIntDef(ADoc.HRS27000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS27000ApplyNo,0);
+      LFormula := ADoc.HRS27000Formula;
+    end
     else
     if LRunHour = '30000' then
-      LCalcNo := StrToIntDef(ADoc.HRS30000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS30000ApplyNo,0);
+      LFormula := ADoc.HRS30000Formula;
+    end
     else
     if LRunHour = '33000' then
-      LCalcNo := StrToIntDef(ADoc.HRS33000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS33000ApplyNo,0);
+      LFormula := ADoc.HRS33000Formula;
+    end
     else
     if LRunHour = '36000' then
-      LCalcNo := StrToIntDef(ADoc.HRS36000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS36000ApplyNo,0);
+      LFormula := ADoc.HRS36000Formula;
+    end
     else
     if LRunHour = '39000' then
-      LCalcNo := StrToIntDef(ADoc.HRS39000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS39000ApplyNo,0);
+      LFormula := ADoc.HRS39000Formula;
+    end
     else
     if LRunHour = '42000' then
-      LCalcNo := StrToIntDef(ADoc.HRS42000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS42000ApplyNo,0);
+      LFormula := ADoc.HRS42000Formula;
+    end
     else
     if LRunHour = '45000' then
-      LCalcNo := StrToIntDef(ADoc.HRS45000ApplyNo,0)
+    begin
+      LCalcNo := StrToIntDef(ADoc.HRS45000ApplyNo,0);
+      LFormula := ADoc.HRS45000Formula;
+    end
     else
     if LRunHour = '48000' then
+    begin
       LCalcNo := StrToIntDef(ADoc.HRS48000ApplyNo,0);
+      LFormula := ADoc.HRS48000Formula;
+    end
   end;
 
   LUsedAmount := StrToIntDef(ADoc.UsedAmount,0);
   LSpareAmount := StrToIntDef(ADoc.SpareAmount,0);
-  LFormula := ADoc.CalcFormula;
 
   if LFormula = '*' then
   begin
@@ -252,12 +536,22 @@ begin
   Result := IntToStr(LResult);
 end;
 
+function THimsenWearSpareQF.GetEngTypeFromModel(AEngineModel: string; AAdapt: string): string;
+var
+  LPos: integer;
+begin
+  Result := strToken(AEngineModel, '/');
+  LPos := Pos('H', Result);
+  Result := Copy(Result, LPos, Length(Result)-LPos+1);
+  Result := Result + AAdapt;
+end;
+
 procedure THimsenWearSpareQF.GetHimsenWearingSpare2Grid;
 begin
-  if Pos('M', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
     GetHimsenWearingSpareM2Grid
   else
-  if Pos('S', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
     GetHimsenWearingSpareS2Grid;
 end;
 
@@ -275,7 +569,7 @@ begin
   WearingPartGrid.CellsByName['DrawingNo', LRow] := ADoc.DrawingNo;
   WearingPartGrid.CellsByName['SpareAmount', LRow] := ADoc.SpareAmount;
   WearingPartGrid.CellsByName['UsedAmount', LRow] := ADoc.UsedAmount;
-  WearingPartGrid.CellsByName['CalcFormula', LRow] := ADoc.CalcFormula;
+//  WearingPartGrid.CellsByName['CalcFormula', LRow] := ADoc.CalcFormula;
   WearingPartGrid.CellsByName['PartUnit', LRow] := ADoc.PartUnit;
 
   WearingPartGrid.CellsByName['Amount', LRow] := GetCalcSparePartAmount(ADoc);
@@ -312,11 +606,13 @@ end;
 procedure THimsenWearSpareQF.GetHimsenWearingSpareMParam2Rec(
   var AHimsenWearingSpareParamRec: THimsenWearingSpareMRec);
 begin
+  AHimsenWearingSpareParamRec.fTierStep := TierRG.ItemIndex + 1;
   AHimsenWearingSpareParamRec.fHullNo := HullNoEdit.Text;
-  AHimsenWearingSpareParamRec.fEngineType := EngTypeCB.Text;
+  AHimsenWearingSpareParamRec.fEngineType := EngineModelEdit.Text;
   AHimsenWearingSpareParamRec.fTCModel := TCModelCB.Text;
   AHimsenWearingSpareParamRec.fRunningHour := RunHourCB.Text;
   AHimsenWearingSpareParamRec.fCylCount := CylCountEdit.Text;
+  AHimsenWearingSpareParamRec.fRatedRPM := RatedRPMEdit.Text;
 end;
 
 procedure THimsenWearSpareQF.GetHimsenWearingSpareS2Grid;
@@ -350,33 +646,57 @@ end;
 procedure THimsenWearSpareQF.GetHimsenWearingSpareSParam2Rec(
   var AHimsenWearingSpareParamRec: THimsenWearingSpareSRec);
 begin
+  AHimsenWearingSpareParamRec.fTierStep := TierRG.ItemIndex + 1;
   AHimsenWearingSpareParamRec.fHullNo := HullNoEdit.Text;
   AHimsenWearingSpareParamRec.fEngineType := EngTypeCB.Text;
   AHimsenWearingSpareParamRec.fTCModel := TCModelCB.Text;
   AHimsenWearingSpareParamRec.fRunningHour := RunHourCB.Text;
   AHimsenWearingSpareParamRec.fCylCount := CylCountEdit.Text;
+  AHimsenWearingSpareParamRec.fRatedRPM := RatedRPMEdit.Text;
 end;
 
 procedure THimsenWearSpareQF.ImportWearingSpareMFromXls2Click(Sender: TObject);
+var
+  LHimsenWearingSpareParamRec: THimsenWearingSpareMRec;
 begin
   if OpenDialog1.Execute then
   begin
     if FileExists(OpenDialog1.FileName) then
     begin
-      ImportHimsenWearingSpareMFromXlsFile(OpenDialog1.FileName);
-      GetHimsenWearingSpare2Grid;
+      SplashScreen1.BeginUpdate;
+      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Importing Data from xls...';
+      SplashScreen1.EndUpdate;
+      SplashScreen1.Show;
+      try
+//        GetHimsenWearingSpareMParam2Rec(LHimsenWearingSpareParamRec);
+        ImportHimsenWearingSpareMFromXlsFile(OpenDialog1.FileName, HullNoEdit.Text, TierRG.ItemIndex+1);
+        GetHimsenWearingSpare2Grid;
+      finally
+        SplashScreen1.Hide;
+      end;
     end;
   end;
 end;
 
 procedure THimsenWearSpareQF.ImportWearingSpareSFromXls2Click(Sender: TObject);
+var
+  LHimsenWearingSpareParamRec: THimsenWearingSpareSRec;
 begin
   if OpenDialog1.Execute then
   begin
     if FileExists(OpenDialog1.FileName) then
     begin
-      ImportHimsenWearingSpareSFromXlsFile(OpenDialog1.FileName);
-      GetHimsenWearingSpare2Grid;
+      SplashScreen1.BeginUpdate;
+      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Importing Data from xls...';
+      SplashScreen1.EndUpdate;
+      SplashScreen1.Show;
+      try
+//        GetHimsenWearingSpareSParam2Rec(LHimsenWearingSpareParamRec);
+        ImportHimsenWearingSpareSFromXlsFile(OpenDialog1.FileName, HullNoEdit.Text, TierRG.ItemIndex+1);
+        GetHimsenWearingSpare2Grid;
+      finally
+        SplashScreen1.Hide;
+      end;
     end;
   end;
 end;
@@ -417,6 +737,7 @@ begin
   for LGRow := 0 to WearingPartGrid.RowCount - 1 do
   begin
     LMSDesc := WearingPartGrid.CellsByName['MSDesc', LGRow];
+//    LMSDesc := strToken(LMSDesc, '(');
 
     if LStr <> LMSDesc then
     begin
@@ -480,11 +801,25 @@ var
 begin
   LStrList := RunHourCB.Items;
 
-  if Pos('M', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
     GetRunHour2List4M(LStrList)
   else
-  if Pos('S', EngTypeCB.Text) <> 0 then
+  if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
     GetRunHour2List4S(LStrList);
+end;
+
+procedure THimsenWearSpareQF.TCModelCBDropDown(Sender: TObject);
+begin
+  TCModelCB.Clear;
+
+  if TTierStep(TierRG.ItemIndex+1) = tsTierI then
+    g_TCModelTier1.SetType2Combo(TCModelCB)
+  else
+  if TTierStep(TierRG.ItemIndex+1) = tsTierII then
+    g_TCModelTier2.SetType2Combo(TCModelCB)
+  else
+  if TTierStep(TierRG.ItemIndex+1) = tsTierIII then
+    g_TCModelTier3.SetType2Combo(TCModelCB)
 end;
 
 end.

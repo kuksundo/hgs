@@ -8,7 +8,10 @@ uses
   VarRecUtils in '..\..\..\common\openarr\source\VarRecUtils.pas',
   UnitStringUtil in '..\..\..\common\UnitStringUtil.pas',
   UnitExcelUtil in '..\..\..\common\UnitExcelUtil.pas',
-  UnitHimsenWearingSpareStationaryRecord in 'UnitHimsenWearingSpareStationaryRecord.pas';
+  UnitHimsenWearingSpareStationaryRecord in 'UnitHimsenWearingSpareStationaryRecord.pas',
+  CommonData in '..\CommonData.pas',
+  UnitEngineMasterData in '..\VesselList\UnitEngineMasterData.pas',
+  UnitHimsenWearingSparePropulsionRecord in 'UnitHimsenWearingSparePropulsionRecord.pas';
 
 {$R *.res}
 

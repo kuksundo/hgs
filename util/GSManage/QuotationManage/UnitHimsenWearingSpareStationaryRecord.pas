@@ -5,7 +5,7 @@ interface
 uses
   Classes,
   SynCommons,
-  mORMot;
+  mORMot, CommonData;
 
 Type
   THimsenWearingSpareSRec = record
@@ -13,8 +13,10 @@ Type
     fEngineType,
     fTCModel,
     fRunningHour,
-    fCylCount
+    fCylCount,
+    fRatedRPM
     : RawUtf8;
+    fTierStep: integer;
   end;
 
   TSQLHimsenWearingSpareStationary = class(TSQLRecord)
@@ -28,9 +30,26 @@ Type
     fUsedAmount,//기본 사용 수량(n)     -> 최종 수량 계산식: n*cyl + z
     fSpareAmount,//추가 사용 수량(z)
     fPartUnit,
-    fCalcFormula,
+//    fCalcFormula,
+    fHRS3000Formula,
+    fHRS6000Formula,
+    fHRS9000Formula,
+    fHRS12000Formula,
+    fHRS15000Formula,
+    fHRS18000Formula,
+    fHRS21000Formula,
+    fHRS24000Formula,
+    fHRS27000Formula,
+    fHRS30000Formula,
+    fHRS33000Formula,
+    fHRS36000Formula,
+    fHRS39000Formula,
+    fHRS42000Formula,
+    fHRS45000Formula,
+    fHRS48000Formula,
     fAdaptedCylCount,  //5,6,7 형식으로 저장 됨
-    fTurboChargerModel // HPR3000;TPS48 형식으로 저장 됨
+    fTurboChargerModel, // HPR3000;TPS48 형식으로 저장 됨
+    fRatedRPM           //720RPM 또는 900RPM 형식으로 저장 됨
     : RawUTF8;
 
     fHRS3000ApplyNo,
@@ -65,9 +84,26 @@ Type
     property UsedAmount: RawUTF8 read fUsedAmount write fUsedAmount;
     property SpareAmount: RawUTF8 read fSpareAmount write fSpareAmount;
     property PartUnit: RawUTF8 read fPartUnit write fPartUnit;
-    property CalcFormula: RawUTF8 read fCalcFormula write fCalcFormula;
+//    property CalcFormula: RawUTF8 read fCalcFormula write fCalcFormula;
+    property HRS3000Formula: RawUTF8 read fHRS3000Formula write fHRS3000Formula;
+    property HRS6000Formula: RawUTF8 read fHRS6000Formula write fHRS6000Formula;
+    property HRS9000Formula: RawUTF8 read fHRS9000Formula write fHRS9000Formula;
+    property HRS12000Formula: RawUTF8 read fHRS12000Formula write fHRS12000Formula;
+    property HRS15000Formula: RawUTF8 read fHRS15000Formula write fHRS15000Formula;
+    property HRS18000Formula: RawUTF8 read fHRS18000Formula write fHRS18000Formula;
+    property HRS21000Formula: RawUTF8 read fHRS21000Formula write fHRS21000Formula;
+    property HRS24000Formula: RawUTF8 read fHRS24000Formula write fHRS24000Formula;
+    property HRS27000Formula: RawUTF8 read fHRS27000Formula write fHRS27000Formula;
+    property HRS30000Formula: RawUTF8 read fHRS30000Formula write fHRS30000Formula;
+    property HRS33000Formula: RawUTF8 read fHRS33000Formula write fHRS33000Formula;
+    property HRS36000Formula: RawUTF8 read fHRS36000Formula write fHRS36000Formula;
+    property HRS39000Formula: RawUTF8 read fHRS39000Formula write fHRS39000Formula;
+    property HRS42000Formula: RawUTF8 read fHRS42000Formula write fHRS42000Formula;
+    property HRS45000Formula: RawUTF8 read fHRS45000Formula write fHRS45000Formula;
+    property HRS48000Formula: RawUTF8 read fHRS48000Formula write fHRS48000Formula;
     property AdaptedCylCount: RawUTF8 read fAdaptedCylCount write fAdaptedCylCount;
     property TurboChargerModel: RawUTF8 read fTurboChargerModel write fTurboChargerModel;
+    property RatedRPM: RawUTF8 read fRatedRPM write fRatedRPM;
 
     property HRS3000ApplyNo: integer read fHRS3000ApplyNo write fHRS3000ApplyNo;
     property HRS6000ApplyNo: integer read fHRS6000ApplyNo write fHRS6000ApplyNo;
@@ -87,12 +123,23 @@ Type
     property HRS48000ApplyNo: integer read fHRS48000ApplyNo write fHRS48000ApplyNo;
   end;
 
+  TSQLHimsenWearingSpareStationaryTierII = class(TSQLHimsenWearingSpareStationary)
+
+  end;
+
+  TSQLHimsenWearingSpareStationaryTierIII = class(TSQLHimsenWearingSpareStationary)
+
+  end;
+
 procedure InitHimsenWearingSpareSClient(AExeName: string);
 function CreateHimsenWearingSpareSModel: TSQLModel;
 
-procedure AddHimsenWaringSpareSFromVariant(ADoc: variant);
+procedure AddHimsenWaringSpareSFromVariant(ADoc: variant; ATierStep: integer);
 procedure LoadHimsenWaringSpareSFromVariant(AHimsenWaringSpare:TSQLHimsenWearingSpareStationary; ADoc: variant);
-procedure AddOrUpdateHimsenWaringSpareS(AHimsenWaringSpare: TSQLHimsenWearingSpareStationary);
+procedure AddOrUpdateHimsenWaringSpareS(AHimsenWaringSpare: TSQLHimsenWearingSpareStationary;
+  ATierStep: integer);
+
+procedure DeleteEngineTypeSFromSearchRec(AHimsenWearingSpareParamRec: THimsenWearingSpareSRec);
 
 function GetHimsenWaringSpareSFromSearchRec(AHimsenWearingSpareParamRec: THimsenWearingSpareSRec): TSQLHimsenWearingSpareStationary;
 function GetVariantFromHimsenWearingSpareS(AHimsenWearingSpare:TSQLHimsenWearingSpareStationary): variant;
@@ -105,13 +152,16 @@ var
 
 implementation
 
-uses SysUtils, mORMotSQLite3, Forms, VarRecUtils;
+uses SysUtils, mORMotSQLite3, Forms, VarRecUtils,UnitFolderUtil;
 
 procedure InitHimsenWearingSpareSClient(AExeName: string);
 var
   LStr: string;
 begin
-  LStr := ChangeFileExt(AExeName,'_S.sqlite');
+//  LStr := ChangeFileExt(AExeName,'_S.sqlite');
+  LStr := GetSubFolderPath(ExtractFilePath(AExeName), 'db');
+  LStr := EnsureDirectoryExists(LStr);
+  LStr := LStr + ChangeFileExt(ExtractFileName(AExeName),'_S.sqlite');
   HimsenWaringSpareSModel := CreateHimsenWearingSpareSModel;
   g_HimsenWaringSpareSDB:= TSQLRestClientDB.Create(HimsenWaringSpareSModel, CreateHimsenWearingSpareSModel,
     LStr, TSQLRestServerDB);
@@ -120,19 +170,26 @@ end;
 
 function CreateHimsenWearingSpareSModel: TSQLModel;
 begin
-  result := TSQLModel.Create([TSQLHimsenWearingSpareStationary]);
+  result := TSQLModel.Create([TSQLHimsenWearingSpareStationary,
+    TSQLHimsenWearingSpareStationaryTierII,
+    TSQLHimsenWearingSpareStationaryTierIII]);
 end;
 
-procedure AddHimsenWaringSpareSFromVariant(ADoc: variant);
+procedure AddHimsenWaringSpareSFromVariant(ADoc: variant; ATierStep: integer);
 var
   LSQLHimsenWearingSpare: TSQLHimsenWearingSpareStationary;
 begin
-  LSQLHimsenWearingSpare := TSQLHimsenWearingSpareStationary.Create;
+  if TTierStep(ATierStep) = tsTierI then
+    LSQLHimsenWearingSpare := TSQLHimsenWearingSpareStationary.Create
+  else
+  if TTierStep(ATierStep) = tsTierII then
+    LSQLHimsenWearingSpare := TSQLHimsenWearingSpareStationary(TSQLHimsenWearingSpareStationaryTierII.Create);
+
   LSQLHimsenWearingSpare.IsUpdate := False;
 
   try
     LoadHimsenWaringSpareSFromVariant(LSQLHimsenWearingSpare, ADoc);
-    AddOrUpdateHimsenWaringSpareS(LSQLHimsenWearingSpare);
+    AddOrUpdateHimsenWaringSpareS(LSQLHimsenWearingSpare, ATierStep);
   finally
     FreeAndNil(LSQLHimsenWearingSpare);
   end;
@@ -154,9 +211,27 @@ begin
   AHimsenWaringSpare.UsedAmount := ADoc.UsedAmount;
   AHimsenWaringSpare.SpareAmount := ADoc.SpareAmount;
   AHimsenWaringSpare.PartUnit := ADoc.PartUnit;
-  AHimsenWaringSpare.CalcFormula := ADoc.CalcFormula;
+//  AHimsenWaringSpare.CalcFormula := ADoc.CalcFormula;
+  AHimsenWaringSpare.HRS3000Formula := ADoc.HRS3000Formula;
+  AHimsenWaringSpare.HRS6000Formula := ADoc.HRS6000Formula;
+  AHimsenWaringSpare.HRS9000Formula := ADoc.HRS9000Formula;
+  AHimsenWaringSpare.HRS12000Formula := ADoc.HRS12000Formula;
+  AHimsenWaringSpare.HRS15000Formula := ADoc.HRS15000Formula;
+  AHimsenWaringSpare.HRS18000Formula := ADoc.HRS18000Formula;
+  AHimsenWaringSpare.HRS21000Formula := ADoc.HRS21000Formula;
+  AHimsenWaringSpare.HRS24000Formula := ADoc.HRS24000Formula;
+  AHimsenWaringSpare.HRS27000Formula := ADoc.HRS27000Formula;
+  AHimsenWaringSpare.HRS30000Formula := ADoc.HRS30000Formula;
+  AHimsenWaringSpare.HRS33000Formula := ADoc.HRS33000Formula;
+  AHimsenWaringSpare.HRS36000Formula := ADoc.HRS36000Formula;
+  AHimsenWaringSpare.HRS39000Formula := ADoc.HRS39000Formula;
+  AHimsenWaringSpare.HRS42000Formula := ADoc.HRS42000Formula;
+  AHimsenWaringSpare.HRS45000Formula := ADoc.HRS45000Formula;
+  AHimsenWaringSpare.HRS48000Formula := ADoc.HRS48000Formula;
+
   AHimsenWaringSpare.AdaptedCylCount := ADoc.AdaptedCylCount;
   AHimsenWaringSpare.TurboChargerModel := ADoc.TurboChargerModel;
+  AHimsenWaringSpare.RatedRPM := ADoc.RatedRPM;
 
   AHimsenWaringSpare.HRS3000ApplyNo := ADoc.HRS3000ApplyNo;
   AHimsenWaringSpare.HRS6000ApplyNo := ADoc.HRS6000ApplyNo;
@@ -176,17 +251,36 @@ begin
   AHimsenWaringSpare.HRS48000ApplyNo := ADoc.HRS48000ApplyNo;
 end;
 
-procedure AddOrUpdateHimsenWaringSpareS(AHimsenWaringSpare: TSQLHimsenWearingSpareStationary);
+procedure AddOrUpdateHimsenWaringSpareS(AHimsenWaringSpare: TSQLHimsenWearingSpareStationary;
+  ATierStep: integer);
 begin
   if AHimsenWaringSpare.IsUpdate then
   begin
-    g_HimsenWaringSpareSDB.Update(AHimsenWaringSpare);
-//    ShowMessage('Task Update 완료');
+    if TTierStep(ATierStep) = tsTierI then
+      g_HimsenWaringSpareSDB.Update(AHimsenWaringSpare)
+    else
+    if TTierStep(ATierStep) = tsTierII then
+      g_HimsenWaringSpareSDB.Update(TSQLHimsenWearingSpareStationaryTierII(AHimsenWaringSpare));
   end
   else
   begin
-    g_HimsenWaringSpareSDB.Add(AHimsenWaringSpare, true);
-//    ShowMessage('Task Add 완료');
+    if TTierStep(ATierStep) = tsTierI then
+      g_HimsenWaringSpareSDB.Add(AHimsenWaringSpare, true)
+    else
+    if TTierStep(ATierStep) = tsTierII then
+      g_HimsenWaringSpareSDB.Add(TSQLHimsenWearingSpareStationaryTierII(AHimsenWaringSpare), true);
+  end;
+end;
+
+procedure DeleteEngineTypeSFromSearchRec(AHimsenWearingSpareParamRec: THimsenWearingSpareSRec);
+var
+  LSQL: TSQLHimsenWearingSpareStationary;
+begin
+  LSQL := GetHimsenWaringSpareSFromSearchRec(AHimsenWearingSpareParamRec);
+
+  if LSQL.IsUpdate then
+  begin
+    g_HimsenWaringSpareSDB.Delete(TSQLHimsenWearingSpareStationary, 'EngineType = ?', [AHimsenWearingSpareParamRec.fEngineType]);
   end;
 end;
 
@@ -232,14 +326,27 @@ begin
       LWhere := LWhere + 'TurboChargerModel LIKE ?) ';
     end;
 
-//    if AHimsenWearingSpareParamRec.fRunningHour <> '' then
-//    begin
+    if AHimsenWearingSpareParamRec.fRatedRPM <> '' then
+    begin
+      AddConstArray(ConstArray, ['*']);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + '(RatedRPM = ? ';
+
+      AddConstArray(ConstArray, ['%'+AHimsenWearingSpareParamRec.fRatedRPM+'%']);
+      if LWhere <> '' then
+        LWhere := LWhere + ' or ';
+      LWhere := LWhere + 'RatedRPM LIKE ?) ';
+    end;
+
+    if AHimsenWearingSpareParamRec.fRunningHour <> '' then
+    begin
 //      LRunhour := StrToIntDef(AHimsenWearingSpareParamRec.fRunningHour, 0);
-//      AddConstArray(ConstArray, [LRunhour]);
-//      if LWhere <> '' then
-//        LWhere := LWhere + ' and ';
-//      LWhere := LWhere + 'RunningHour LIKE ? ';
-//    end;
+      AddConstArray(ConstArray, [0]);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + ' HRS' + AHimsenWearingSpareParamRec.fRunningHour + 'ApplyNo <> ?';// +'RunningHour LIKE ? ';
+    end;
 
 //    if AHimsenWearingSpareParamRec.fCylCount <> '' then
 //    begin
@@ -255,18 +362,13 @@ begin
       LWhere := 'ID <> ? ';
     end;
 
-    Result := TSQLHimsenWearingSpareStationary.CreateAndFillPrepare(g_HimsenWaringSpareSDB, Lwhere, ConstArray);
+    case TTierStep(AHimsenWearingSpareParamRec.fTierStep) of
+      tsTierI: Result := TSQLHimsenWearingSpareStationary.CreateAndFillPrepare(g_HimsenWaringSpareSDB, Lwhere, ConstArray);
+      tsTierII: Result := TSQLHimsenWearingSpareStationary(
+        TSQLHimsenWearingSpareStationaryTierII.CreateAndFillPrepare(g_HimsenWaringSpareSDB, Lwhere, ConstArray));
+    end;
 
-    if Result.FillOne then
-    begin
-//      Result.FillRewind;
-      Result.IsUpdate := True;
-    end
-    else
-    begin
-      Result := TSQLHimsenWearingSpareStationary.Create;
-      Result.IsUpdate := False;
-    end
+    Result.IsUpdate := Result.FillOne;
   finally
     FinalizeConstArray(ConstArray);
   end;
@@ -287,9 +389,27 @@ begin
   Result.UsedAmount := AHimsenWearingSpare.UsedAmount;
   Result.SpareAmount := AHimsenWearingSpare.SpareAmount;
   Result.PartUnit := AHimsenWearingSpare.PartUnit;
-  Result.CalcFormula := AHimsenWearingSpare.CalcFormula;
+//  Result.CalcFormula := AHimsenWearingSpare.CalcFormula;
+  Result.HRS3000Formula := AHimsenWearingSpare.HRS3000Formula;
+  Result.HRS6000Formula := AHimsenWearingSpare.HRS6000Formula;
+  Result.HRS9000Formula := AHimsenWearingSpare.HRS9000Formula;
+  Result.HRS12000Formula := AHimsenWearingSpare.HRS12000Formula;
+  Result.HRS15000Formula := AHimsenWearingSpare.HRS15000Formula;
+  Result.HRS18000Formula := AHimsenWearingSpare.HRS18000Formula;
+  Result.HRS21000Formula := AHimsenWearingSpare.HRS21000Formula;
+  Result.HRS24000Formula := AHimsenWearingSpare.HRS24000Formula;
+  Result.HRS27000Formula := AHimsenWearingSpare.HRS27000Formula;
+  Result.HRS30000Formula := AHimsenWearingSpare.HRS30000Formula;
+  Result.HRS33000Formula := AHimsenWearingSpare.HRS33000Formula;
+  Result.HRS36000Formula := AHimsenWearingSpare.HRS36000Formula;
+  Result.HRS39000Formula := AHimsenWearingSpare.HRS39000Formula;
+  Result.HRS42000Formula := AHimsenWearingSpare.HRS42000Formula;
+  Result.HRS45000Formula := AHimsenWearingSpare.HRS45000Formula;
+  Result.HRS48000Formula := AHimsenWearingSpare.HRS48000Formula;
+
   Result.AdaptedCylCount := AHimsenWearingSpare.AdaptedCylCount;
   Result.TurboChargerModel := AHimsenWearingSpare.TurboChargerModel;
+  Result.RatedRPM := AHimsenWearingSpare.RatedRPM;
 
   Result.HRS3000ApplyNo := AHimsenWearingSpare.HRS3000ApplyNo;
   Result.HRS6000ApplyNo := AHimsenWearingSpare.HRS6000ApplyNo;
