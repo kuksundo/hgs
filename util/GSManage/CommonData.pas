@@ -2,7 +2,8 @@ unit CommonData;
 
 interface
 
-uses System.Classes, Outlook2010, Vcl.StdCtrls, FSMClass_Dic, FSMState;
+uses System.Classes, System.SysUtils, System.StrUtils, Outlook2010, Vcl.StdCtrls,
+  UnitEnumHelper;
 
 type
   TGUIDFileName = record
@@ -73,91 +74,67 @@ type
     : string;
   end;
 
-  TQueryDateType = (qdtNull, qdtInqRecv, qdtInvoiceIssue, qdtQTNInput,
-    qdtOrderInput, qdtFinal);
+  TTierStep = (tsNull, tsTierI, tsTierII, tsTierIII, tsFinal);
+  TTierSteps = set of TTierStep;
+                      //
   TElecProductType = (eptNull, eptEB, eptEC, eptEG, eptEM, eptER, eptFinal);
-  TGSDocType = (dtNull,
-              dtQuote2Cust4Material, dtQuote2Cust4Service, dtQuoteFromSubCon,
-              dtPOFromCustomer, dtPO2SubCon,
-              dtInvoice2Customer, dtInvoiceFromSubCon,
-              dtSRFromSubCon,
-              dtTaxBill2Customer, dtTaxBillFromSubCon,
-              dtCompanySelection, dtConfirmComplete, dtBudgetApproval,
-              dtContract, dtFinal);
-  TGSInvoiceItemType = (iitNull, iitServiceReport, iitWorkDay, iitTravellingDay,
-              iitMaterials, iitAirFare, iitAccommodation, iitTransportation,
-              iitMeal, iitEtc, iitFinal);
+  TElecProductTypes = set of TElecProductType;
+  TElecProductDetailType = (epdtNull, epdtACB, epdtVCB, epdtMCCB, epdtHIMAP_BC,
+    epdtHIMAP_F, epdtHIMAP_FI, epdtHIMAP_M, epdtHIMAP_T, epdtGenerator,
+    epdtBowThruster, epdtMSBD, epdtESBD, epdtACONIS, epdtHiWMS, epdtHiVDR, epdtA2KPMS,
+    epdtPMS, epdtBWTS, epdtStarterPanel, epdtFinal);
+  TElecProductDetailTypes = set of TElecProductDetailType;
 
   TCompanyType = (ctNull, ctNewCompany, ctMaker, ctOwner, ctAgent, ctCorporation, ctSubContractor, ctFinal);
-  TSalesProcess = (spNone, spQtnReqRecvFromCust, spQtnReq2SubCon, spQtnRecvFromSubCon, spQtnSend2Cust,
-    spSEAttendReqFromCust, spVslSchedReq2Cust, spSECanAvail2SubCon, spSEAvailRecvFromSubCon,
-    spSECanAttend2Cust, spSEAttendConfirmFromCust, spPOReq2Cust, spPORecvFromCust, spSEDispatchReq2SubCon,//13
-    spQtnInput, spQtnApproval, spOrderInput, spOrderApproval, spPORCreate, spPORCheck4HiPRO,//19
-    spShipInstruct, spDelivery, spAWBRecv, spAWBSend2Cust, spSRRecvFromSubCon, //24
-    spSRSend2Cust, spInvoiceRecvFromSubCon, spInvoiceSend2Cust, spInvoiceConfirmFromCust,//28
-    spOrderPriceModify, spModifiedOrderApproval, spSalesPriceConfirm,
-    spTaxBillReq2SubCon, spTaxBillIssue2Cust, spTaxBillRecvFromSubCon, spTaxBillSend2GeneralAffair, //35
-    spSaleReq2GeneralAffair, spFinal //37
-  );
-  TSalesProcessType = (sptNone, sptForeignCustOnlyService, sptDomesticCustOnlyService,
-    sptForeignCustOnlyMaterial,  sptDomesticCustOnlyMaterial,
-    sptForeignCustWithServiceNMaterial, sptDomesticCustWithServiceNMaterial,
-    sptForeignCustOnlyService4FieldService, sptDomesticCustOnlyService4FieldService,
-    sptForeignCustWithServiceNMaterial4FieldService,
-    sptDomesticCustWithServiceNMaterial4FieldService,
-    sptFinal);
-  TProcessDirection = (pdNone, pdToCustomer, pdFromCustomer, pdToSubCon, pdFromSubCon,
-    pdToHElec, pdFromHElec, pdToHGS, pdFromHGS, pdFinal);
-  TContainData4Mail = (cdmNone, cdmServiceReport,cdmQtn2Cust, cdmQtnFromSubCon,
-    cdmPoFromCust, cdmPo2SubCon,cdmInvoice2Cust, cdmInvoiceFromSubCon, cdmInvoiceConfirmFromCust,
-    cdmTaxBillFromSubCon, cdmTaxBill2Cust, cdmFinal
-  );
-  TEngineerAgency = (eaNone, eaSubCon, eaHGS, eaHELEC);//엔지니어 소속사
-  TCurrencyKind = (KW,USD,EUR);
+  TCompanyTypes = set of TCompanyType;
+  TBusinessArea = (baNull, baShip, baEngine, baElectric, baFinal);  //조선,엔진,전기전자
+  TBusinessAreas = set of TBusinessArea;
+  TCurrencyKind = (ckNone, ckKW, ckUSD, ckEUR);
+  TBusinessRegion = (brNone, brSouthEurope, brNorthEurope, brMiddleEast, brGreece,
+    brSingapore, brAmerica, brEastSouthAsia, brEastNorthAsia, brFinal);
+  TBusinessRegions = set of TBusinessRegion;
+  TEngineerKind = (ekNone, ekSuperIntendent, ekServiceEngineer, ekServiceEngineer_Elec, ekTechnician, ekFinal);
 
 const
-  R_QueryDateType : array[qdtNull..qdtFinal] of record
-    Description : string;
-    Value       : TQueryDateType;
-  end = ((Description : '';                        Value : qdtNull),
-         (Description : 'Inq 접수일 기준';         Value : qdtInqRecv),
-         (Description : 'Invoice 발행일 기준';     Value : qdtInvoiceIssue),
-         (Description : 'QTN 입력일 기준';         Value : qdtQTNInput),
-         (Description : '수주통보서 입력일 기준';  Value : qdtOrderInput),
-         (Description : '';                        Value : qdtFinal)
-         );
+  R_TierStep : array[Low(TTierStep)..High(TTierStep)] of string =
+    ('', 'Tier I', 'Tier II', 'Tier III', '');
 
   R_ElecProductType : array[eptNull..eptFinal] of record
     Description : string;
     Value       : TElecProductType;
-  end = ((Description : '';                   Value : eptNull),
-         (Description : '차단기';          Value : eptEB),
-         (Description : '선박자동화';      Value : eptEC),
-         (Description : '몰드변압기';      Value : eptEG),
-         (Description : '배전반';          Value : eptEM),
-         (Description : '발전기';          Value : eptER),
-         (Description : '';          Value : eptFinal)
+  end = ((Description : '';                 Value : eptNull),
+         (Description : '차단기';           Value : eptEB),
+         (Description : '선박자동화';       Value : eptEC),
+         (Description : '몰드변압기';       Value : eptEG),
+         (Description : '배전반';           Value : eptEM),
+         (Description : '발전기';           Value : eptER),
+         (Description : '';                 Value : eptFinal)
          );
 
-  R_GSDocType : array[dtNull..dtFinal] of record
+  R_ElecProductDetailType : array[epdtNull..epdtFinal] of record
     Description : string;
-    Value       : TGSDocType;
-  end = ((Description : '';                           Value : dtNull),
-         (Description : '부품 견적서(To 고객)';       Value : dtQuote2Cust4Material),
-         (Description : '서비스 견적서(To 고객)';     Value : dtQuote2Cust4Service),
-         (Description : '부품 견적서(From 협력사)';   Value : dtQuoteFromSubCon),
-         (Description : 'PO(From 고객)';              Value : dtPOFromCustomer),
-         (Description : 'PO(To 협력사)';              Value : dtPO2SubCon),
-         (Description : 'Invoice(To 고객)';           Value : dtInvoice2Customer),
-         (Description : 'Invoice(From 협력사)';       Value : dtInvoiceFromSubCon),
-         (Description : 'Service Report';             Value : dtSRFromSubCon),
-         (Description : '세금계산서(To 고객)';        Value : dtTaxBill2Customer),
-         (Description : '세금계산서(From 협력사)';    Value : dtTaxBillFromSubCon),
-         (Description : '업체선정품의서';             Value : dtCompanySelection),
-         (Description : '공사완료확인서';             Value : dtConfirmComplete),
-         (Description : '예산승인품의서';             Value : dtBudgetApproval),
-         (Description : '계약서';                     Value : dtContract),
-         (Description : '';                           Value : dtFinal)
+    Value       : TElecProductDetailType;
+  end = ((Description : '';             Value : epdtNull),
+         (Description : 'ACB';          Value : epdtACB),
+         (Description : 'VCB';          Value : epdtVCB),
+         (Description : 'MCCB';         Value : epdtMCCB),
+         (Description : 'HIMAP-BC(G)';  Value : epdtHIMAP_BC),
+         (Description : 'HIMAP-F';      Value : epdtHIMAP_F),
+         (Description : 'HIMAP-FI';     Value : epdtHIMAP_FI),
+         (Description : 'HIMAP-M';      Value : epdtHIMAP_M),
+         (Description : 'HIMAP-T';      Value : epdtHIMAP_T),
+         (Description : 'Generator';    Value : epdtGenerator),
+         (Description : 'Bow Thruster'; Value : epdtBowThruster),
+         (Description : 'MSBD';         Value : epdtMSBD),
+         (Description : 'ESBD';         Value : epdtESBD),
+         (Description : 'ACONIS';       Value : epdtACONIS),
+         (Description : 'HiWMS';       Value : epdtHiWMS),
+         (Description : 'A2K-PMS';       Value : epdtA2KPMS),
+         (Description : 'HiVDR';       Value : epdtHiVDR),
+         (Description : 'PMS';       Value : epdtPMS),
+         (Description : 'BWTS';       Value : epdtBWTS),
+         (Description : 'Starter Panel';       Value : epdtStarterPanel),
+         (Description : '';             Value : epdtFinal)
          );
 
   R_CompanyType : array[ctNull..ctFinal] of record
@@ -173,112 +150,35 @@ const
          (Description : '';                   Value : ctFinal)
          );
 
-  R_SalesProcess : array[spNone..spFinal] of record
+  R_BusinessArea : array[baNull..baFinal] of record
     Description : string;
-    Value       : TSalesProcess;
-  end = ((Description : '';                         Value : spNone),
-         (Description : '견적요청접수 <- 고객';     Value : spQtnReqRecvFromCust),
-         (Description : '견적요청 -> 협력사';       Value : spQtnReq2SubCon),
-         (Description : '젼적서입수 <- 협력사';     Value : spQtnRecvFromSubCon),
-         (Description : '견적서송부 -> 고객';       Value : spQtnSend2Cust),
-         (Description : 'SE파견요청접수 <- 고객';   Value : spSEAttendReqFromCust),
-         (Description : '선박스케쥴요청 -> 고객';   Value : spVslSchedReq2Cust),
-         (Description : 'SE파견가능문의 -> 협력사'; Value : spSECanAvail2SubCon),
-         (Description : 'SE파견가능확인 <- 협력사'; Value : spSEAvailRecvFromSubCon),
-         (Description : 'SE파견가능통보 -> 고객';   Value : spSECanAttend2Cust),
-         (Description : 'PO발행요청 -> 고객';       Value : spPOReq2Cust),
-         (Description : 'SE파견요청확인 <- 고객';   Value : spSEAttendConfirmFromCust),
-         (Description : 'PO입수 <- 고객';           Value : spPORecvFromCust),
-         (Description : 'SE파견요청 -> 협력사';     Value : spSEDispatchReq2SubCon),
-         (Description : 'QUOTATION입력 -> MAPS';    Value : spQtnInput),
-         (Description : 'QUOTATION승인 -> MAPS';    Value : spQtnApproval),
-         (Description : '수주통보서입력 -> MAPS';   Value : spOrderInput),
-         (Description : '수주통보서승인 -> MAPS';   Value : spOrderApproval),
-         (Description : 'POR 생성 -> MAPS(POR관리)';   Value : spPORCreate),
-         (Description : 'POR발행확인 -> Hi-PRO';    Value : spPORCheck4HiPRO),
-         (Description : '출하지시등록 -> MAPS';     Value : spShipInstruct),
-         (Description : '자재배송 -> 택배';         Value : spDelivery),
-         (Description : 'AWB입수 <- 택배';          Value : spAWBRecv),
-         (Description : 'AWB송부 -> 고객';          Value : spAWBSend2Cust),
-         (Description : 'SR입수 <- 협력사';         Value : spSRRecvFromSubCon),
-         (Description : 'SR송부 -> 고객';           Value : spSRSend2Cust),
-         (Description : 'Invoice입수 <- 협력사';    Value : spInvoiceRecvFromSubCon),
-         (Description : 'Invoice송부 -> 고객';      Value : spInvoiceSend2Cust),
-         (Description : 'Invoice확인 <- 고객';      Value : spInvoiceConfirmFromCust),
-         (Description : '수주통보서금액수정 -> MAPS';   Value : spOrderPriceModify),
-         (Description : '수주통보서재승인 -> MAPS';     Value : spModifiedOrderApproval),
-         (Description : '매출금액확인 -> MAPS(공사매출정보관리)';   Value : spSalesPriceConfirm),
-         (Description : '세금계산서발행요청 -> 협력사'; Value : spTaxBillReq2SubCon),
-         (Description : '세금계산서발행 -> 국내고객';   Value : spTaxBillIssue2Cust),
-         (Description : '세금계산서입수 <- 협력사'; Value : spTaxBillRecvFromSubCon),
-         (Description : '세금계산서전달 -> 담당자'; Value : spTaxBillSend2GeneralAffair),
-         (Description : '매출처리요청 -> 담당자';   Value : spSaleReq2GeneralAffair),
-         (Description : '작업완료';                 Value : spFinal));
+    Value       : TBusinessArea;
+  end = ((Description : '';           Value : baNull),
+         (Description : '조선';       Value : baShip),
+         (Description : '엔진';       Value : baEngine),
+         (Description : '전전';       Value : baElectric),
+         (Description : '';           Value : baFinal)
+         );
 
-  R_SalesProcessType : array[sptNone..sptFinal] of record
+  R_EngineerKind : array[ekNone..ekFinal] of record
     Description : string;
-    Value       : TSalesProcessType;
-  end = ((Description : '';                           Value : sptNone),
-         (Description : '유상용역-해외고객';          Value : sptForeignCustOnlyService),
-         (Description : '자재구매-해외고객';          Value : sptForeignCustOnlyMaterial),
-         (Description : '유상용역-국내고객';          Value : sptDomesticCustOnlyService),
-         (Description : '자재구매-국내고객';          Value : sptDomesticCustOnlyMaterial),
-         (Description : '유상용역/자재구매-해외고객'; Value : sptForeignCustWithServiceNMaterial),
-         (Description : '유상용역/자재구매-국내고객'; Value : sptDomesticCustWithServiceNMaterial),
-         (Description : '유상용역-해외고객(Field Service)';          Value : sptForeignCustOnlyService4FieldService),
-         (Description : '유상용역-국내고객(Field Service)';          Value : sptDomesticCustOnlyService4FieldService),
-         (Description : '유상용역/자재구매-해외고객(Field Service)'; Value : sptForeignCustWithServiceNMaterial4FieldService),
-         (Description : '유상용역/자재구매-국내고객(Field Service)'; Value : sptDomesticCustWithServiceNMaterial4FieldService),
-         (Description : ''; Value : sptFinal)
-  );
+    Value       : TEngineerKind;
+  end = ((Description : '';                       Value : ekNone),
+         (Description : 'SuperIntendent';         Value : ekSuperIntendent),
+         (Description : 'Service Engineer';       Value : ekServiceEngineer),
+         (Description : 'Service Engineer(Elec.)';Value : ekServiceEngineer_Elec),
+         (Description : 'Technician';             Value : ekTechnician),
+         (Description : '';                       Value : ekFinal)
+         );
 
-  R_ProcessDirection : array[pdNone..pdFinal] of record
+  R_CurrencyKind : array[ckNone..ckEUR] of record
     Description : string;
-    Value       : TProcessDirection;
-  end = ((Description : '';                 Value : pdNone),
-         (Description : 'To 고객';          Value : pdToCustomer),
-         (Description : 'From 고객';        Value : pdFromCustomer),
-         (Description : 'To 협력사';        Value : pdToSubCon),
-         (Description : 'From 협력사';      Value : pdFromSubCon),
-         (Description : 'To 현대일렉트릭';  Value : pdToHElec),
-         (Description : 'From 현대일렉트릭';Value : pdFromHElec),
-         (Description : 'To HGS';           Value : pdToHGS),
-         (Description : 'From HGS';         Value : pdToHGS),
-         (Description : '';                 Value : pdFinal)
-  );
-
-  R_ContainData4Mail : array[cdmNone..cdmFinal] of record
-    Description : string;
-    Value       : TContainData4Mail;
-  end = ((Description : '';                         Value : cdmNone),
-         (Description : 'Service Report';           Value : cdmServiceReport),
-         (Description : 'Quotation -> Customer';    Value : cdmQtn2Cust),
-         (Description : 'Quotation <- SubCon';      Value : cdmQtnFromSubCon),
-         (Description : 'PO <- Customer';           Value : cdmPoFromCust),
-         (Description : 'PO <- SubCon';             Value : cdmPo2SubCon),
-         (Description : 'Invoice -> Customer';      Value : cdmInvoice2Cust),
-         (Description : 'Invoice <- SubCon';        Value : cdmInvoiceFromSubCon),
-         (Description : 'InvoiceConfirm <- Customer';        Value : cdmInvoiceConfirmFromCust),
-         (Description : 'Tax Bill <- SubCon';       Value : cdmTaxBillFromSubCon),
-         (Description : 'Tax Bill -> Customer';     Value : cdmTaxBill2Cust),
-         (Description : 'Tax Bill -> Customer';     Value : cdmFinal)
-  );
-
-  R_GSInvoiceItemType : array[iitNull..iitFinal] of record
-    Description : string;
-    Value       : TGSInvoiceItemType;
-  end = ((Description : '';                         Value : iitNull),
-         (Description : 'Service Report';           Value : iitServiceReport),
-         (Description : 'Work Day';                 Value : iitWorkDay),
-         (Description : 'Trevelling Day';           Value : iitTravellingDay),
-         (Description : 'Materials';                Value : iitMaterials),
-         (Description : 'Ex(Airfare)';        Value : iitAirFare),
-         (Description : 'Ex(Accommodation)';  Value : iitAccommodation),
-         (Description : 'Ex(Transportation)'; Value : iitTransportation),
-         (Description : 'Ex(Meal)';           Value : iitMeal),
-         (Description : 'Ex(Etc)';            Value : iitEtc),
-         (Description : '';                         Value : iitFinal)
-  );
+    Value       : TCurrencyKind;
+  end = ((Description : '';             Value : ckNone),
+         (Description : 'KRW'; Value : ckKW),
+         (Description : 'USD'; Value : ckUSD),
+         (Description : 'EUR'; Value : ckEUR)
+         );
 
 //  gpSHARED_DATA_NAME = 'SharedData_{BCB1C40A-3B72-44FC-9E72-91E5FF498924}';
 //  SHARED_DATA_NAME = 'SharedData_{32EF1528-1D5E-48AE-B8AF-341309C303FA}';
@@ -286,6 +186,7 @@ const
 //  CONSUME_EVENT_NAME = SHARED_DATA_NAME + '_ConsumeEvent';
 //  PRODUCE_EVENT_NAME = SHARED_DATA_NAME + '_ProduceEvent';
 
+  FOLDER_NAME_4_TEMP_MSG_FILES = 'c:\temp\emailmsgs\';
   EMAIL_TOPIC_NAME = '/topic/emailtopic';
   FOLDER_LIST_FILE_NAME = 'FolderList';
   IPC_SERVER_NAME_4_OUTLOOK = 'Mail2CromisIPCServer';
@@ -297,8 +198,11 @@ const
   CMD_SEND_MAIL_ENTRYID = 'Send Mail Entry Id';
   CMD_SEND_MAIL_ENTRYID2 = 'Send Mail Entry Id2';
   CMD_SEND_FOLDER_STOREID = 'Send Folder Store Id';
+  CMD_SEND_MAIL_2_MSGFILE = 'Send Mail To Msg File';
+
   CMD_RESPONDE_MOVE_FOLDER_MAIL = 'Resonse for Move Mail to Folder';
   CMD_REQ_MAIL_VIEW = 'Request Mail View';
+  CMD_REQ_MAIL_VIEW_FROM_MSGFILE = 'Request Mail View From .msg file';
   CMD_REQ_MAILINFO_SEND = 'Request Mail-Info to Send';
   //메일리스트에서 전송, TaskID에 자동으로 들어감
   CMD_REQ_MAILINFO_SEND2 = 'Request Mail-Info to Send2';
@@ -307,6 +211,12 @@ const
   CMD_REQ_CREATE_MAIL = 'Request Create Mail';
   CMD_REQ_FORWARD_MAIL = 'Request Forward Mail';
   CMD_REQ_ADD_APPOINTMENT = 'Request Add Appointment';
+  //Remote Command
+  CMD_REQ_TASK_LIST = 'Request Task List';
+  CMD_REQ_TASK_DETAIL = 'Request Task Detail';
+  CMD_REQ_TASK_EAMIL_LIST = 'Request Task Email List';
+  CMD_REQ_TASK_EAMIL_CONTENT = 'Request Task Email Content';
+  CMD_EXECUTE_SAVE_TASK_DETAIL = 'Execute Save Task Detail';
 
 //  SALES_DIRECTOR_EMAIL_ADDR = 'shjeon@hyundai-gs.com';//매출처리담당자
   SALES_DIRECTOR_EMAIL_ADDR = 'seonyunshin@hyundai-gs.com';//매출처리담당자
@@ -331,40 +241,84 @@ const
   REGEX_SHIPNAME_PATTERN = '^[A-Za-z]+[A-Za-z0-9]+$';
   REGEX_ORDERNO_PATTERN = '^[A-Za-z]{3}[0-9]{1,7}$';
 
+  QUOTATION_MANAGE_EXE_NAME = 'QuotationManage.exe';
+
+function GetCylCountFromEngineModel(AEngineModel: string): string;
 procedure OLMsgFileRecordClear;
-function QueryDateType2String(AQueryDateType:TQueryDateType) : string;
-function String2QueryDateType(AQueryDateType:string): TQueryDateType;
-procedure QueryDateType2Combo(AComboBox:TComboBox);
+
+//function ShipProductType2String(AShipProductType:TShipProductType) : string;
+//function String2ShipProductType(AShipProductType:string): TShipProductType;
+//procedure ShipProductType2Combo(AComboBox:TComboBox);
+//function EngineProductType2String(AShipProductType:TShipProductType) : string;
+//function String2ShipProductType(AShipProductType:string): TShipProductType;
+//procedure ShipProductType2Combo(AComboBox:TComboBox);
 function ElecProductType2String(AElecProductType:TElecProductType) : string;
 function String2ElecProductType(AElecProductType:string): TElecProductType;
 procedure ElecProductType2Combo(AComboBox:TComboBox);
-function GSDocType2String(AGSDocType:TGSDocType) : string;
-function String2GSDocType(AGSDocType:string): TGSDocType;
-procedure GSDocType2Combo(AComboBox:TComboBox);
+function ElecProductDetailType2String(AElecProductDetailType:TElecProductDetailType) : string;
+function String2ElecProductDetailType(AElecProductDetailType:string): TElecProductDetailType;
+procedure ElecProductDetailType2Combo(AComboBox:TComboBox);
+function TElecProductDetailType_SetToInt(ss : TElecProductDetailTypes) : integer;
+function IntToTElecProductDetailType_Set(mask : integer) : TElecProductDetailTypes;
+function IsInFromInt2TElecProductDetailType(mask : integer; ss: TElecProductDetailType): Boolean;
+function IsInFromElecProductDetailTypes2TElecProductDetailType(mask : TElecProductDetailTypes; ss: TElecProductDetailType): Boolean;
+function IsInFromElecProductDetailTypes2TElecProductDetailTypes(mask : TElecProductDetailTypes; ss: TElecProductDetailTypes): Boolean;
+function GetElecProductDetailTypes2String(AElecProductDetailTypes: TElecProductDetailTypes): string;
+function GetElecProductDetailTypesFromCommaString(ACommaStr: string): TElecProductDetailTypes;
+
+//function GSInvoiceItemType2String(AGSInvoiceItemType:TGSInvoiceItemType) : string;
+//function String2GSInvoiceItemType(AGSInvoiceItemType:string): TGSInvoiceItemType;
+//procedure GSInvoiceItemType2Combo(AComboBox:TComboBox);
 function CompanyType2String(ACompanyType:TCompanyType) : string;
 function String2CompanyType(ACompanyType:string): TCompanyType;
 procedure CompanyType2Combo(AComboBox:TComboBox);
-function SalesProcess2String(ASalesProcess:TSalesProcess) : string;
-function String2SalesProcess(ASalesProcess:string): TSalesProcess;
-procedure SalesProcess2Combo(AComboBox:TComboBox);
-function SalesProcessType2String(ASalesProcessType:TSalesProcessType) : string;
-function String2SalesProcessType(ASalesProcessType:string): TSalesProcessType;
-procedure SalesProcessType2Combo(AComboBox:TComboBox);
-function ContainData4Mail2String(AContainData4Mail:TContainData4Mail) : string;
-function String2ContainData4Mail(AContainData4Mail:string): TContainData4Mail;
-procedure ContainData4Mail2Combo(AComboBox:TComboBox);
-function ProcessDirection2String(AProcessDirection:TProcessDirection) : string;
-function String2ProcessDirection(AProcessDirection:string): TProcessDirection;
-procedure ProcessDirection2Combo(AComboBox:TComboBox);
-procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
-function GSInvoiceItemType2String(AGSInvoiceItemType:TGSInvoiceItemType) : string;
-function String2GSInvoiceItemType(AGSInvoiceItemType:string): TGSInvoiceItemType;
-procedure GSInvoiceItemType2Combo(AComboBox:TComboBox);
+function TCompanyType_SetToInt(ss : TCompanyTypes) : integer;
+function IntToTCompanyType_Set(mask : integer) : TCompanyTypes;
+function IsInFromInt2TCompanyType(mask : integer; ss: TCompanyType): Boolean;
+function IsInFromCompanyTypes2TCompanyType(mask : TCompanyTypes; ss: TCompanyType): Boolean;
+function GetCompanyTypes2String(ACompanyTypes: TCompanyTypes): string;
+function String2TCompanyType_Set(AStr:string): TCompanyTypes;
+function HVCodes2TCompanyType_Set(ASepecialConfig:string): TCompanyTypes;
+function GetFirstCompanyTypeIndex(ss: TCompanyTypes) : integer;
+function TBusinessArea_SetToInt(ss : TBusinessAreas) : integer;
+function IntToTBusinessArea_Set(mask : integer) : TBusinessAreas;
+function GetBusinessAreasFromCommaString(ACommaStr:string): TBusinessAreas;
+function IsInFromInt2TBusinessArea(mask : integer; ss: TBusinessArea): Boolean;
+function IsInFromTBusinessAreas2TBusinessAreas(mask : TBusinessAreas; ss: TBusinessAreas): Boolean;
+function GetBusinessAreas2String(ABusinessAreas: TBusinessAreas): string;
+function BusinessArea2String(ABusinessArea:TBusinessArea) : string;
+function String2BusinessArea(ABusinessArea:string): TBusinessArea;
+
+function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
+function String2EngineerKind(AEngineerKind:string): TEngineerKind;
+procedure EngineerKind2Combo(AComboBox:TComboBox);
+function CurrencyKind2String(ACurrencyKind:TCurrencyKind) : string;
+function String2CurrencyKind(ACurrencyKind:string): TCurrencyKind;
+procedure CurrencyKind2Combo(AComboBox:TComboBox);
 
 var
   g_MyEmailInfo: TOLAccountInfo;
 
+  g_TierStep: TLabelledEnum<TTierStep>;
+
 implementation
+
+uses UnitStringUtil;
+
+function GetCylCountFromEngineModel(AEngineModel: string): string;
+begin
+  Result := '';
+
+  if POS('H', AEngineModel) >= 0 then
+  begin
+    Result := strToken(AEngineModel, 'H');
+  end
+  else
+  if POS('L', AEngineModel) >= 0 then
+  begin
+    Result := strToken(AEngineModel, 'L');
+  end;
+end;
 
 procedure OLMsgFileRecordClear;
 begin
@@ -385,35 +339,35 @@ begin
   FMailItem := nil;
 end;
 
-function QueryDateType2String(AQueryDateType:TQueryDateType) : string;
-begin
-  if AQueryDateType <= High(TQueryDateType) then
-    Result := R_QueryDateType[AQueryDateType].Description;
-end;
-
-function String2QueryDateType(AQueryDateType:string): TQueryDateType;
-var Li: TQueryDateType;
-begin
-  for Li := qdtNull to qdtFinal do
-  begin
-    if R_QueryDateType[Li].Description = AQueryDateType then
-    begin
-      Result := R_QueryDateType[Li].Value;
-      exit;
-    end;
-  end;
-end;
-
-procedure QueryDateType2Combo(AComboBox:TComboBox);
-var Li: TQueryDateType;
-begin
-  AComboBox.Clear;
-
-  for Li := qdtNull to Pred(qdtFinal) do
-  begin
-    AComboBox.Items.Add(R_QueryDateType[Li].Description);
-  end;
-end;
+//function ShipProductType2String(AShipProductType:TShipProductType) : string;
+//begin
+//  if AShipProductType <= High(TShipProductType) then
+//    Result := R_ShipProductType[AShipProductType].Description;
+//end;
+//
+//function String2ShipProductType(AShipProductType:string): TShipProductType;
+//var Li: TShipProductType;
+//begin
+//  for Li := shptNull to shptFinal do
+//  begin
+//    if R_ShipProductType[Li].Description = AShipProductType then
+//    begin
+//      Result := R_ShipProductType[Li].Value;
+//      exit;
+//    end;
+//  end;
+//end;
+//
+//procedure ShipProductType2Combo(AComboBox:TComboBox);
+//var Li: TShipProductType;
+//begin
+//  AComboBox.Clear;
+//
+//  for Li := shptNull to Pred(shptFinal) do
+//  begin
+//    AComboBox.Items.Add(R_ShipProductType[Li].Description);
+//  end;
+//end;
 
 function ElecProductType2String(AElecProductType:TElecProductType) : string;
 begin
@@ -445,33 +399,131 @@ begin
   end;
 end;
 
-function GSDocType2String(AGSDocType:TGSDocType) : string;
+function ElecProductDetailType2String(AElecProductDetailType:TElecProductDetailType) : string;
 begin
-  if AGSDocType <= High(TGSDocType) then
-    Result := R_GSDocType[AGSDocType].Description;
+  if AElecProductDetailType <= High(TElecProductDetailType) then
+    Result := R_ElecProductDetailType[AElecProductDetailType].Description;
 end;
 
-function String2GSDocType(AGSDocType:string): TGSDocType;
-var Li: TGSDocType;
+function String2ElecProductDetailType(AElecProductDetailType:string): TElecProductDetailType;
+var Li: TElecProductDetailType;
 begin
-  for Li := dtNull to dtFinal do
+  for Li := epdtNull to epdtFinal do
   begin
-    if R_GSDocType[Li].Description = AGSDocType then
+    if R_ElecProductDetailType[Li].Description = AElecProductDetailType then
     begin
-      Result := R_GSDocType[Li].Value;
+      Result := R_ElecProductDetailType[Li].Value;
       exit;
     end;
   end;
 end;
 
-procedure GSDocType2Combo(AComboBox:TComboBox);
-var Li: TGSDocType;
+procedure ElecProductDetailType2Combo(AComboBox:TComboBox);
+var Li: TElecProductDetailType;
 begin
   AComboBox.Clear;
 
-  for Li := dtNull to Pred(dtFinal) do
+  for Li := epdtNull to Pred(epdtFinal) do
   begin
-    AComboBox.Items.Add(R_GSDocType[Li].Description);
+    AComboBox.Items.Add(R_ElecProductDetailType[Li].Description);
+  end;
+end;
+
+function TElecProductDetailType_SetToInt(ss : TElecProductDetailTypes) : integer;
+var intset : TIntegerSet;
+    s : TElecProductDetailType;
+begin
+  intSet := [];
+  for s in ss do
+    include(intSet, ord(s));
+  result := integer(intSet);
+end;
+
+function IntToTElecProductDetailType_Set(mask : integer) : TElecProductDetailTypes;
+var intSet : TIntegerSet;
+    b : byte;
+begin
+  intSet := TIntegerSet(mask);
+  result := [];
+  for b in intSet do
+    include(result, TElecProductDetailType(b));
+end;
+
+function IsInFromInt2TElecProductDetailType(mask : integer; ss: TElecProductDetailType): Boolean;
+var intSet : TIntegerSet;
+    b : byte;
+begin
+  intSet := TIntegerSet(mask);
+
+  for b in intSet do
+  begin
+    Result := TElecProductDetailType(b) = ss;
+
+    if Result then
+      break;
+  end;
+end;
+
+function IsInFromElecProductDetailTypes2TElecProductDetailType(mask : TElecProductDetailTypes; ss: TElecProductDetailType): Boolean;
+var
+  i: integer;
+begin
+  i := TElecProductDetailType_SetToInt(mask);
+  Result := IsInFromInt2TElecProductDetailType(i, ss);
+end;
+
+function IsInFromElecProductDetailTypes2TElecProductDetailTypes(mask : TElecProductDetailTypes; ss: TElecProductDetailTypes): Boolean;
+var
+  intSet : TIntegerSet;
+  b : byte;
+  LBa, LBa2: TElecProductDetailType;
+begin
+  Result := False;
+
+  for LBa in ss do
+  begin
+    for LBa2 in mask do
+    begin
+      Result := LBa2 = LBa;
+
+      if Result then
+        exit;
+    end;
+  end;
+end;
+
+function GetElecProductDetailTypes2String(AElecProductDetailTypes: TElecProductDetailTypes): string;
+var
+  LCt: TElecProductDetailType;
+begin
+  Result := '';
+
+  for LCt in AElecProductDetailTypes do
+  begin
+    Result := Result + ElecProductDetailType2String(LCt) + ',';
+  end;
+
+  Delete(Result, Length(Result), 1); //마지막 ';' 삭제
+end;
+
+function GetElecProductDetailTypesFromCommaString(ACommaStr: string): TElecProductDetailTypes;
+var
+  LStrList: TStringList;
+  LElecProductDetailType: TElecProductDetailType;
+  i: integer;
+begin
+  Result := [];
+  LStrList := TStringList.Create;
+  try
+    LStrList.CommaText := ACommaStr;
+
+    for i := 0 to LStrList.Count - 1 do
+    begin
+      LElecProductDetailType := String2ElecProductDetailType(LStrList.Strings[i]);
+      Result := Result + [LElecProductDetailType];
+    end;
+  finally
+    LStrList.Free;
   end;
 end;
 
@@ -505,172 +557,314 @@ begin
   end;
 end;
 
-function SalesProcess2String(ASalesProcess:TSalesProcess) : string;
+function TCompanyType_SetToInt(ss : TCompanyTypes) : integer;
+var intset : TIntegerSet;
+    s : TCompanyType;
 begin
-  if ASalesProcess <= High(TSalesProcess) then
-    Result := R_SalesProcess[ASalesProcess].Description;
+  intSet := [];
+  for s in ss do
+    include(intSet, ord(s));
+  result := integer(intSet);
 end;
 
-function String2SalesProcess(ASalesProcess:string): TSalesProcess;
-var Li: TSalesProcess;
+function IntToTCompanyType_Set(mask : integer) : TCompanyTypes;
+var intSet : TIntegerSet;
+    b : byte;
 begin
-  for Li := spNone to spFinal do
+  intSet := TIntegerSet(mask);
+  result := [];
+  for b in intSet do
+    include(result, TCompanyType(b));
+end;
+
+function IsInFromInt2TCompanyType(mask : integer; ss: TCompanyType): Boolean;
+var intSet : TIntegerSet;
+    b : byte;
+begin
+  intSet := TIntegerSet(mask);
+
+  for b in intSet do
   begin
-    if R_SalesProcess[Li].Description = ASalesProcess then
-    begin
-      Result := R_SalesProcess[Li].Value;
-      exit;
-    end;
+    Result := TCompanyType(b) = ss;
+
+    if Result then
+      break;
   end;
 end;
 
-procedure SalesProcess2Combo(AComboBox:TComboBox);
+function IsInFromCompanyTypes2TCompanyType(mask : TCompanyTypes; ss: TCompanyType): Boolean;
 var
-  Li: TSalesProcess;
   i: integer;
 begin
-  i := AComboBox.ItemIndex;
-  AComboBox.Clear;
-
-  for Li := spNone to spFinal do
-  begin
-    AComboBox.Items.Add(R_SalesProcess[Li].Description);
-  end;
-
-  AComboBox.ItemIndex := i;
+  i := TCompanyType_SetToInt(mask);
+  Result := IsInFromInt2TCompanyType(i, ss);
 end;
 
-function SalesProcessType2String(ASalesProcessType:TSalesProcessType) : string;
-begin
-  if ASalesProcessType <= High(TSalesProcessType) then
-    Result := R_SalesProcessType[ASalesProcessType].Description;
-end;
-
-function String2SalesProcessType(ASalesProcessType:string): TSalesProcessType;
-var Li: TSalesProcessType;
-begin
-  for Li := sptNone to sptFinal do
-  begin
-    if R_SalesProcessType[Li].Description = ASalesProcessType then
-    begin
-      Result := R_SalesProcessType[Li].Value;
-      exit;
-    end;
-  end;
-end;
-
-procedure SalesProcessType2Combo(AComboBox:TComboBox);
-var Li: TSalesProcessType;
-begin
-  AComboBox.Clear;
-
-  for Li := sptNone to Pred(sptFinal) do
-  begin
-    AComboBox.Items.Add(R_SalesProcessType[Li].Description);
-  end;
-end;
-
-function ContainData4Mail2String(AContainData4Mail:TContainData4Mail) : string;
-begin
-  if AContainData4Mail <= High(TContainData4Mail) then
-    Result := R_ContainData4Mail[AContainData4Mail].Description;
-end;
-
-function String2ContainData4Mail(AContainData4Mail:string): TContainData4Mail;
-var Li: TContainData4Mail;
-begin
-  for Li := cdmNone to cdmFinal do
-  begin
-    if R_ContainData4Mail[Li].Description = AContainData4Mail then
-    begin
-      Result := R_ContainData4Mail[Li].Value;
-      exit;
-    end;
-  end;
-end;
-
-procedure ContainData4Mail2Combo(AComboBox:TComboBox);
-var Li: TContainData4Mail;
-begin
-  AComboBox.Clear;
-
-  for Li := cdmNone to Pred(cdmFinal) do
-  begin
-    AComboBox.Items.Add(R_ContainData4Mail[Li].Description);
-  end;
-end;
-
-function ProcessDirection2String(AProcessDirection:TProcessDirection) : string;
-begin
-  if AProcessDirection <= High(TProcessDirection) then
-    Result := R_ProcessDirection[AProcessDirection].Description;
-end;
-
-function String2ProcessDirection(AProcessDirection:string): TProcessDirection;
-var Li: TProcessDirection;
-begin
-  for Li := pdNone to pdFinal do
-  begin
-    if R_ProcessDirection[Li].Description = AProcessDirection then
-    begin
-      Result := R_ProcessDirection[Li].Value;
-      exit;
-    end;
-  end;
-end;
-
-procedure ProcessDirection2Combo(AComboBox:TComboBox);
-var Li: TProcessDirection;
-begin
-  AComboBox.Clear;
-
-  for Li := pdNone to Pred(pdFinal) do
-  begin
-    AComboBox.Items.Add(R_ProcessDirection[Li].Description);
-  end;
-end;
-
-procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
+function GetCompanyTypes2String(ACompanyTypes: TCompanyTypes): string;
 var
-  LIntArr: TIntegerArray;
+  LCt: TCompanyType;
+begin
+  Result := '';
+
+  for LCt in ACompanyTypes do
+  begin
+    Result := Result + CompanyType2String(LCt) + ';';
+  end;
+
+  Delete(Result, Length(Result), 1); //마지막 ';' 삭제
+end;
+
+function String2TCompanyType_Set(AStr:string): TCompanyTypes;
+var
+  LStr:string;
+begin
+  Result := [];
+
+  while true do
+  begin
+    if AStr = '' then
+      break;
+
+    LStr := StrToken(AStr, ';');
+    Result := Result + [String2CompanyType(LStr)];
+  end;
+end;
+
+function HVCodes2TCompanyType_Set(ASepecialConfig:string): TCompanyTypes;
+var
+  LStr: string;
   i: integer;
 begin
-  AList.Clear;
-  AList.Add('');
-  LIntArr := AFSMState.GetOutputs;
+  Result := [];
 
-  for i := Low(LIntArr) to High(LIntArr) do
-    AList.Add(SalesProcess2String(TSalesProcess(LIntArr[i])));
-end;
-
-function GSInvoiceItemType2String(AGSInvoiceItemType: TGSInvoiceItemType) : string;
-begin
-  if AGSInvoiceItemType <= High(TGSInvoiceItemType) then
-    Result := R_GSInvoiceItemType[AGSInvoiceItemType].Description;
-end;
-
-function String2GSInvoiceItemType(AGSInvoiceItemType: string): TGSInvoiceItemType;
-var Li: TGSInvoiceItemType;
-begin
-  for Li := iitNull to iitFinal do
+  for i := 1 to Length(ASepecialConfig) do
   begin
-    if R_GSInvoiceItemType[Li].Description = AGSInvoiceItemType then
+    LStr := LeftStr(ASepecialConfig, i);
+    if LStr <> '' then
     begin
-      Result := R_GSInvoiceItemType[Li].Value;
+      System.Delete(ASepecialConfig, 1, 1);
+//      Result := Result + [HVCode2CompanyType(LStr)];
+    end;
+  end;
+end;
+
+function GetFirstCompanyTypeIndex(ss: TCompanyTypes) : integer;
+var s : TCompanyType;
+begin
+  for s in ss do
+  begin
+    result := ord(s);
+    break;
+  end;
+end;
+
+function TBusinessArea_SetToInt(ss : TBusinessAreas) : integer;
+var intset : TIntegerSet;
+    s : TBusinessArea;
+begin
+//  intSet := [];
+//  for s in ss do
+//    include(intSet, ord(s));
+//  result := integer(intSet);
+  Result := SetToInt(ss, SizeOf(ss));
+end;
+
+function IntToTBusinessArea_Set(mask : integer) : TBusinessAreas;
+var intSet : TIntegerSet;
+    b : byte;
+begin
+  intSet := TIntegerSet(mask);
+  result := [];
+  for b in intSet do
+    include(result, TBusinessArea(b));
+end;
+
+function GetBusinessAreasFromCommaString(ACommaStr:string): TBusinessAreas;
+var
+  LStrList: TStringList;
+  LBusinessArea: TBusinessArea;
+  i: integer;
+begin
+  Result := [];
+  LStrList := TStringList.Create;
+  try
+    LStrList.CommaText := ACommaStr;
+
+    for i := 0 to LStrList.Count - 1 do
+    begin
+      LBusinessArea := String2BusinessArea(LStrList.Strings[i]);
+      Result := Result + [LBusinessArea];
+    end;
+  finally
+    LStrList.Free;
+  end;
+end;
+
+//mask안에 ss가 포함 되는지 확인
+function IsInFromInt2TBusinessArea(mask : integer; ss: TBusinessArea): Boolean;
+var intSet : TIntegerSet;
+    b : byte;
+begin
+  intSet := TIntegerSet(mask);
+
+  for b in intSet do
+  begin
+    Result := TBusinessArea(b) = ss;
+
+    if Result then
+      break;
+  end;
+end;
+
+//mask: DB의 내용, ss: 검색창에서 선택한 내용
+function IsInFromTBusinessAreas2TBusinessAreas(mask : TBusinessAreas; ss: TBusinessAreas): Boolean;
+var
+  intSet : TIntegerSet;
+  b : byte;
+  LBa, LBa2: TBusinessArea;
+begin
+//  i := TBusinessArea_SetToInt(mask);
+//  intSet := TIntegerSet(i);
+
+  Result := False;
+
+  for LBa in ss do
+  begin
+    for LBa2 in mask do
+    begin
+      Result := LBa2 = LBa;
+
+      if Result then
+        exit;
+    end;
+  end;
+end;
+
+function GetBusinessAreas2String(ABusinessAreas: TBusinessAreas): string;
+var
+  LBa: TBusinessArea;
+begin
+  Result := '';
+//  i := TBusinessArea_SetToInt(mask);
+//  intSet := TIntegerSet(i);
+  for LBa in ABusinessAreas do
+  begin
+    Result := Result + BusinessArea2String(LBa) + ',';
+  end;
+
+  Delete(Result, Length(Result), 1); //마지막 ',' 삭제
+end;
+
+function BusinessArea2String(ABusinessArea:TBusinessArea) : string;
+begin
+  if ABusinessArea <= High(TBusinessArea) then
+    Result := R_BusinessArea[ABusinessArea].Description;
+end;
+
+function String2BusinessArea(ABusinessArea:string): TBusinessArea;
+var Li: TBusinessArea;
+begin
+  for Li := baNull to baFinal do
+  begin
+    if R_BusinessArea[Li].Description = ABusinessArea then
+    begin
+      Result := R_BusinessArea[Li].Value;
       exit;
     end;
   end;
 end;
 
-procedure GSInvoiceItemType2Combo(AComboBox: TComboBox);
-var Li: TGSInvoiceItemType;
+//function GSInvoiceItemType2String(AGSInvoiceItemType: TGSInvoiceItemType) : string;
+//begin
+//  if AGSInvoiceItemType <= High(TGSInvoiceItemType) then
+//    Result := R_GSInvoiceItemType[AGSInvoiceItemType].Description;
+//end;
+//
+//function String2GSInvoiceItemType(AGSInvoiceItemType: string): TGSInvoiceItemType;
+//var Li: TGSInvoiceItemType;
+//begin
+//  for Li := iitNull to iitFinal do
+//  begin
+//    if R_GSInvoiceItemType[Li].Description = AGSInvoiceItemType then
+//    begin
+//      Result := R_GSInvoiceItemType[Li].Value;
+//      exit;
+//    end;
+//  end;
+//end;
+//
+//procedure GSInvoiceItemType2Combo(AComboBox: TComboBox);
+//var Li: TGSInvoiceItemType;
+//begin
+//  AComboBox.Clear;
+//
+//  for Li := iitNull to Pred(iitFinal) do
+//  begin
+//    AComboBox.Items.Add(R_GSInvoiceItemType[Li].Description);
+//  end;
+//end;
+
+function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
+begin
+  if AEngineerKind <= High(TEngineerKind) then
+    Result := R_EngineerKind[AEngineerKind].Description;
+end;
+
+function String2EngineerKind(AEngineerKind:string): TEngineerKind;
+var Li: TEngineerKind;
+begin
+  for Li := ekNone to ekFinal do
+  begin
+    if R_EngineerKind[Li].Description = AEngineerKind then
+    begin
+      Result := R_EngineerKind[Li].Value;
+      exit;
+    end;
+  end;
+end;
+
+procedure EngineerKind2Combo(AComboBox:TComboBox);
+var Li: TEngineerKind;
 begin
   AComboBox.Clear;
 
-  for Li := iitNull to Pred(iitFinal) do
+  for Li := ekNone to Pred(ekFinal) do
   begin
-    AComboBox.Items.Add(R_GSInvoiceItemType[Li].Description);
+    AComboBox.Items.Add(R_EngineerKind[Li].Description);
   end;
 end;
+
+function CurrencyKind2String(ACurrencyKind:TCurrencyKind) : string;
+begin
+  if ACurrencyKind <= High(TCurrencyKind) then
+    Result := R_CurrencyKind[ACurrencyKind].Description;
+end;
+
+function String2CurrencyKind(ACurrencyKind:string): TCurrencyKind;
+var Li: TCurrencyKind;
+begin
+  for Li := ckNone to ckEUR do
+  begin
+    if R_CurrencyKind[Li].Description = ACurrencyKind then
+    begin
+      Result := R_CurrencyKind[Li].Value;
+      exit;
+    end;
+  end;
+end;
+
+procedure CurrencyKind2Combo(AComboBox:TComboBox);
+var Li: TCurrencyKind;
+begin
+  AComboBox.Clear;
+
+  for Li := ckNone to ckEUR do
+  begin
+    AComboBox.Items.Add(R_CurrencyKind[Li].Description);
+  end;
+end;
+
+initialization
+  g_TierStep.InitArrayRecord(R_TierStep);
 
 end.

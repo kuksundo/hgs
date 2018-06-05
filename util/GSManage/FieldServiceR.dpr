@@ -27,7 +27,7 @@ uses
   UnitRegistryUtil in '..\..\common\UnitRegistryUtil.pas',
   UnitRegistrationClass in '..\..\common\UnitRegistrationClass.pas',
   UnitRegCodeConst in '..\..\common\UnitRegCodeConst.pas',
-  UnitHttpModule in 'UnitHttpModule.pas',
+  UnitHttpModule4RegServer in '..\RegCodeManager\UnitHttpModule4RegServer.pas',
   UnitRegCodeServerInterface in '..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   FrmRegistration in '..\..\common\FrmRegistration.pas' {RegistrationF},
   UnitMacroListClass in '..\MacroManagement\UnitMacroListClass.pas',
@@ -36,7 +36,14 @@ uses
   getIp in '..\..\common\getIp.pas',
   UnitConfigIniClass2 in '..\..\common\UnitConfigIniClass2.pas',
   FrmInqManageConfig in 'FrmInqManageConfig.pas' {ConfigF},
-  OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas';
+  OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas',
+  FrmFileList in 'InvoiceManage\FrmFileList.pas',
+  UnitVesselData in 'VesselList\UnitVesselData.pas',
+  UnitEngineMasterData in 'VesselList\UnitEngineMasterData.pas';
+
+const
+  IM_ROOT_NAME_4_WS = 'root';
+  IM_PORT_NAME_4_WS = '709';
 
 {$R *.res}
 
@@ -49,5 +56,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
   InquiryF.Caption := InquiryF.Caption + ' (For Field Service Team)';
+  InquiryF.TDTF.SetNetworkInfo(IM_ROOT_NAME_4_WS,IM_PORT_NAME_4_WS, Application.ExeName);
   Application.Run;
 end.

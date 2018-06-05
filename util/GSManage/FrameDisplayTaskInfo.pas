@@ -13,7 +13,7 @@ uses
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
   CommonData, UElecDataRecord, TaskForm, FSMClass_Dic, FSMState, Vcl.Menus,
   Vcl.ExtCtrls, UnitMakeReport, UnitTodoList, UnitTodoCollect, FrmInqManageConfig,
-  UnitIniConfigSetting;
+  UnitIniConfigSetting, UnitUserDataRecord, SBPro, NLDSideBar, UnitElecServiceData;
 
 type
   TDisplayTaskF = class(TFrame)
@@ -54,7 +54,6 @@ type
     InvoiceInputDate: TNxDateColumn;
     CustomerAddress: TNxMemoColumn;
     imagelist24x24: TImageList;
-    ImageList32x32: TImageList;
     ImageList16x16: TImageList;
     PopupMenu1: TPopupMenu;
     ShowTaskID1: TMenuItem;
@@ -114,6 +113,12 @@ type
     N19: TMenuItem;
     N20: TMenuItem;
     N21: TMenuItem;
+    ImageList32x32: TImageList;
+    JvLabel10: TJvLabel;
+    PICCB: TComboBox;
+    StatusBarPro1: TStatusBarPro;
+    N22: TMenuItem;
+    GetHullNoToClipboard1: TMenuItem;
     procedure btn_SearchClick(Sender: TObject);
     procedure ComboBox1DropDown(Sender: TObject);
     procedure rg_periodClick(Sender: TObject);
@@ -142,6 +147,12 @@ type
     procedure N16Click(Sender: TObject);
     procedure grid_ReqKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure N19Click(Sender: TObject);
+    procedure N18Click(Sender: TObject);
+    procedure N20Click(Sender: TObject);
+    procedure N21Click(Sender: TObject);
+    procedure PICCBChange(Sender: TObject);
+    procedure GetHullNoToClipboard1Click(Sender: TObject);
   private
     procedure ExecuteSearch(Key: Char);
 
@@ -169,45 +180,71 @@ type
     procedure ShowEmailIDFromGrid;
 
     procedure ProcessPasteEvent(ATxt: string);
+    function GetUserList: TStrings;
+    function GetUserListFromFile(AFileName: string): TStrings;
   public
     //메일을 이동시킬 폴더 리스트,
     //HGS Task/Send Folder Name 2 IPC 메뉴에 의해 OL으로 부터 수신함
-    FFolderListFromOL: TStringList;
+    FFolderListFromOL,
+    FTempJsonList,
+    FUserList: TStringList;//Remote에서 Task요청시 Result Json저장함
     FToDoCollect: TpjhToDoItemCollection;
     FSettings : TConfigSettings;
-    FIniFileName: string;
+    FIniFileName,
+    FMyIPAddress,
+    FRemoteIPAddress: string;
+    //CreateConstArray함수가 반드시 생성자에서 실행되어야 클래스 안에서 사용 가능함
+    //Parameter로 전달하면 안됨
+//    FConstArray: TConstArray;
+    FRootName,
+    FPortName,
+    FTransmissionKey: string;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
+    procedure SetNetworkInfo(ARootName, APortName, AKeyName: string);
+    function GetMyName(AEmail: string): string;
     procedure LoadConfigFromFile(AFileName: string = '');
     procedure LoadConfig2Form(AForm: TConfigF);
     procedure LoadConfigForm2Object(AForm: TConfigF);
     procedure SetConfig;
     procedure ApplyConfigChanged;
     function GetRecvEmailAddress(AMailType: integer): string;
+    procedure GetSearchCondRec(var ARec: TSearchCondRec);
+//    procedure GetWhereConstArr(ASearchCondRec: TSearchCondRec; var AWhere: string);// var AConstArr: TConstArray);
+    function GetIsRemote(var ARemoteAddr: string): Boolean;
+    procedure FillInUserList;
 
     function GetTask: TSQLGSTask;
     procedure DisplayTaskInfo2EditForm(const ATaskID: integer); overload;
-    procedure DisplayTaskInfo2Grid(AFrom,ATo: TDateTime; AQueryDate: TQueryDateType;
-      AHullNo, AShipName, ACustomer, AProdType, ASubject: string; ACurWork,
-      ABefAft, AWorkKind: integer; AQtnNo, AOrderNo, APoNo: string);
+    procedure DisplayTaskInfo2Grid(ASearchCondRec: TSearchCondRec; AFromRemote: Boolean = False);
     procedure LoadTaskVar2Grid(AVar: TSQLGSTask; AGrid: TNextGrid;
+      ARow: integer = -1);
+    procedure LoadGSTask2Grid(ATask: TSQLGSTask; AGrid: TNextGrid;
       ARow: integer = -1);
 
     procedure AddFolderListFromOL(AFolder: string);
 
     procedure ShowTaskFormFromGrid(ARow: integer);
-    procedure ShowTaskFormFromData(ARow: integer); overload;
-    procedure ShowTaskFormFromData(AIDList: TIDList; ARow: integer); overload;
+    procedure ShowTaskFormFromDB(ARow: integer); overload;
+    procedure ShowTaskFormFromDB(AIDList: TIDList; ARow: integer); overload;
     procedure ShowEmailListFormFromData(ARow: integer);
     procedure ShowTodoListFormFromData(ARow: integer);
     procedure ShowToDoListFromCollect(AToDoCollect: TpjhToDoItemCollection);
+
+    procedure SetUserNameNIPAddressFromRegServer;
+
+    //--> Remote Command Proess
+    procedure DisplayTaskInfo2GridFromJson(AJson: RawUTF8);
+    procedure ShowTaskFormFromJson(AJson: RawUTF8);
   end;
 
 implementation
 
-uses System.Rtti, UnitIPCModule, ClipBrd, System.RegularExpressions, UnitGSFileRecord;
+uses System.Rtti, UnitIPCModule, ClipBrd, System.RegularExpressions,
+  UnitGSFileRecord, UnitVariantJsonUtil, getIp, UnitBase64Util,
+  UnitHttpModule4InqManageServer, UnitStringUtil;
 
 {$R *.dfm}
 
@@ -218,7 +255,7 @@ end;
 
 procedure TDisplayTaskF.CurWorkCBDropDown(Sender: TObject);
 begin
-  SalesProcess2Combo(CurWorkCB);
+  g_SalesProcess.SetType2Combo(CurWorkCB);
 end;
 
 procedure TDisplayTaskF.LoadConfig2Form(AForm: TConfigF);
@@ -239,25 +276,78 @@ begin
     FSettings.MQServerIP := '127.0.0.1';
 end;
 
+procedure TDisplayTaskF.LoadGSTask2Grid(ATask: TSQLGSTask; AGrid: TNextGrid;
+  ARow: integer);
+var
+  LStrList: TStringList;
+  LFSMState: TFSMState;
+begin
+  if ARow = -1 then
+  begin
+    ARow := AGrid.AddRow;
+    AGrid.Row[ARow].Data := TIDList.Create;
+    TIDList(AGrid.Row[ARow].Data).TaskId := ATask.TaskID;
+  end;
+
+  with ATask, AGrid do
+  begin
+    CellByName['HullNo', ARow].AsString := HullNo;
+    CellByName['ShipName', ARow].AsString := ShipName;
+
+    if WorkSummary <> '' then
+      CellByName['Subject', ARow].AsString := WorkSummary
+    else
+      CellByName['Subject', ARow].AsString := EmailSubject;
+
+    CellByName['ProdType', ARow].AsString := ProductType;
+    CellByName['PONo', ARow].AsString := PO_No;
+    CellByName['QtnNo', ARow].AsString := QTN_No;
+    CellByName['OrderNo', ARow].AsString := Order_No;
+    CellByName['ReqCustomer', ARow].AsString := ShipOwner;
+    CellByName['Status', ARow].AsString := g_SalesProcess.ToString(CurrentWorkStatus);
+    CellByName['Email', ARow].AsInteger := NumOfEMails;
+
+    if NextWork > 0 then
+    begin
+      CellByName['NextProcess', ARow].AsString := g_SalesProcess.ToString(NextWork);
+    end
+    else
+    begin
+      LFSMState := g_FSMClass.GetState(Ord(SalesProcessType));
+      if Assigned(LFSMState) then
+      begin
+        LStrList := TStringList.Create;
+        try
+          SalesProcess2List(LStrList, LFSMState);
+          CellByName['NextProcess', ARow].AsString := g_SalesProcess.ToString(
+            LFSMState.GetOutput(CurrentWorkStatus));
+        finally
+          LStrList.Free;
+        end;
+      end;
+    end;
+
+//      CellByName['CustomerName', ARow].AsString := ReqCustomer;
+//      CellByName['CustomerAddress', ARow].AsString := CustomerAddress;
+
+    CellByName['QtnInputDate', ARow].AsDateTime := TimeLogToDateTime(QTNInputDate);
+    CellByName['OrderInputDate', ARow].AsDateTime := TimeLogToDateTime(OrderInputDate);
+    CellByName['RecvDate', ARow].AsDateTime := TimeLogToDateTime(InqRecvDate);
+    CellByName['InvoiceInputDate', ARow].AsDateTime := TimeLogToDateTime(InvoiceIssueDate);
+    TIDList(Row[ARow].Data).EmailId := EmailID;
+  end;
+end;
+
 procedure TDisplayTaskF.LoadTaskVar2Grid(AVar: TSQLGSTask; AGrid: TNextGrid;
   ARow: integer);
 var
   LIds: TIDDynArray;
   LSQLEmailMsg: TSQLEmailMsg;
   LSubject: string;
-  LStrList: TStringList;
-  LFSMState: TFSMState;
   LMailCount: integer;
 begin
   if not Assigned(AVar) then
     exit;
-
-  if ARow = -1 then
-  begin
-    ARow := AGrid.AddRow;
-    AGrid.Row[ARow].Data := TIDList.Create;
-    TIDList(AGrid.Row[ARow].Data).TaskId := AVar.ID;
-  end;
 
   AVar.EmailMsg.DestGet(g_ProjectDB, AVar.ID, LIds);
   LSQLEmailMsg:= TSQLEmailMsg.CreateAndFillPrepare(g_ProjectDB, TInt64DynArray(LIds));
@@ -276,55 +366,12 @@ begin
       Inc(LMailCount);
     end;
 
-    with AVar, AGrid do
-    begin
-      CellByName['HullNo', ARow].AsString := HullNo;
-      CellByName['ShipName', ARow].AsString := ShipName;
+    AVar.NumOfEMails := LMailCount;
+    AVar.EmailSubject := LSubject;
+    AVar.EmailID := LSQLEmailMsg.ID;
+    AVar.TaskID := AVar.ID;
 
-      if WorkSummary <> '' then
-        CellByName['Subject', ARow].AsString := WorkSummary
-      else
-        CellByName['Subject', ARow].AsString := LSubject;
-
-      CellByName['ProdType', ARow].AsString := ProductType;
-      CellByName['PONo', ARow].AsString := PO_No;
-      CellByName['QtnNo', ARow].AsString := QTN_No;
-      CellByName['OrderNo', ARow].AsString := Order_No;
-      CellByName['ReqCustomer', ARow].AsString := ShipOwner;
-      CellByName['Status', ARow].AsString := SalesProcess2String(
-        TSalesProcess(CurrentWorkStatus));
-      CellByName['Email', ARow].AsInteger := LMailCount;
-
-      if NextWork > 0 then
-      begin
-        CellByName['NextProcess', ARow].AsString := SalesProcess2String(
-          TSalesProcess(NextWork));
-      end
-      else
-      begin
-        LFSMState := g_FSMClass.GetState(Ord(SalesProcessType));
-        if Assigned(LFSMState) then
-        begin
-          LStrList := TStringList.Create;
-          try
-            SalesProcess2List(LStrList, LFSMState);
-            CellByName['NextProcess', ARow].AsString := SalesProcess2String(
-              TSalesProcess(LFSMState.GetOutput(CurrentWorkStatus)));
-          finally
-            LStrList.Free;
-          end;
-        end;
-      end;
-
-//      CellByName['CustomerName', ARow].AsString := ReqCustomer;
-//      CellByName['CustomerAddress', ARow].AsString := CustomerAddress;
-
-      CellByName['QtnInputDate', ARow].AsDateTime := TimeLogToDateTime(QTNInputDate);
-      CellByName['OrderInputDate', ARow].AsDateTime := TimeLogToDateTime(OrderInputDate);
-      CellByName['RecvDate', ARow].AsDateTime := TimeLogToDateTime(InqRecvDate);
-      CellByName['InvoiceInputDate', ARow].AsDateTime := TimeLogToDateTime(InvoiceIssueDate);
-      TIDList(Row[ARow].Data).EmailId := LSQLEmailMsg.ID;
-    end;
+    LoadGSTask2Grid(AVar, AGrid, ARow);
   finally
     FreeAndNil(LSQLEmailMsg);
   end;
@@ -446,6 +493,62 @@ begin
   end;
 end;
 
+procedure TDisplayTaskF.N18Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N19Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N20Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
+procedure TDisplayTaskF.N21Click(Sender: TObject);
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := GetTask;
+  try
+    SendCmd2IPC4CreateMail(nil, 0, TMenuItem(Sender).Tag, LTask,
+      FSettings,
+      GetRecvEmailAddress(TMenuItem(Sender).Tag));
+  finally
+    FreeAndNil(LTask);
+  end;
+end;
+
 procedure TDisplayTaskF.N4Click(Sender: TObject);
 var
   LRec: Doc_SubCon_Invoice_List_Rec;
@@ -455,6 +558,11 @@ begin
 //  LRec := Get_Doc_SubCon_Invoice_List_Rec;
 //  LWorksheet := MakeDocSubConInvoiceList;
 //  MakeDocSubConInvoiceList2(LWorkSheet, LRec, LRow);
+end;
+
+procedure TDisplayTaskF.PICCBChange(Sender: TObject);
+begin
+  GetIsRemote(FRemoteIPAddress);
 end;
 
 procedure TDisplayTaskF.ProcessPasteEvent(ATxt: string);
@@ -578,6 +686,11 @@ begin
   end;
 end;
 
+function TDisplayTaskF.GetMyName(AEmail: string): string;
+begin
+  Result := GetMyNameNIPAddressFromEmailAddress(AEmail);
+end;
+
 function TDisplayTaskF.GetRecvEmailAddress(AMailType: integer): string;
 begin
   case AMailType of
@@ -589,6 +702,42 @@ begin
     6: Result := PO_REQ_EMAIL_ADDR; //PO 요청
     7: Result := FSettings.ShippingReqEmailAddr;// SHIPPING_REQ_EMAIL_ADDR; //출하 요청
     8: Result := FSettings.FieldServiceReqEmailAddr;// FIELDSERVICE_REQ_EMAIL_ADDR; //필드서비스팀 요청
+  end;
+end;
+
+procedure TDisplayTaskF.GetSearchCondRec(var ARec: TSearchCondRec);
+var
+  LQueryDateType: TQueryDateType;
+begin
+  if ComboBox1.ItemIndex = -1 then
+    LQueryDateType := qdtNull
+  else
+    LQueryDateType := g_QueryDateType.ToType(ComboBox1.ItemIndex);
+
+  with ARec do
+  begin
+    FFrom := dt_Begin.Date;
+    FTo := dt_end.Date;
+    FQueryDate := LQueryDateType;
+    FHullNo := HullNoEdit.Text;
+    FShipName := ShipNameEdit.Text;
+    FCustomer := CustomerCombo.Text;
+    FProdType := ProductTypeCombo.Text;
+    FSubject := SubjectEdit.Text;
+    FCurWork :=  CurWorkCB.ItemIndex;
+    FBefAft :=  BefAftCB.ItemIndex;
+    FWorkKind :=  WorkKindCB.ItemIndex;
+    FQtnNo := QtnNoEdit.Text;
+    FOrderNo := OrderNoEdit.Text;
+    FPoNo := PONoEdit.Text;
+
+//    if PICCB.ItemIndex = -1 then
+//      PICCB.ItemIndex := 0;
+
+    if PICCB.ItemIndex <> -1 then
+      FRemoteIPAddress := PICCB.Items.ValueFromIndex[PICCB.ItemIndex]
+    else
+      FRemoteIPAddress := '';
   end;
 end;
 
@@ -617,6 +766,192 @@ begin
   else
     Result := -1;
 end;
+
+function TDisplayTaskF.GetUserList: TStrings;
+var
+  LSQLUserDetail: TSQLUserDetail;
+begin
+  Result := TStringList.Create;
+  LSQLUserDetail := GetUserDetails;
+
+  try
+    while LSQLUserDetail.FillOne do
+    begin
+      Result.Add(LSQLUserDetail.UserName + '=' + LSQLUserDetail.PCIPAddress);
+    end;
+  finally
+    LSQLUserDetail.Free;
+  end;
+end;
+
+function TDisplayTaskF.GetUserListFromFile(AFileName: string): TStrings;
+var
+  LStr: string;
+  LUtf8: RawUTF8;
+begin
+  if not FileExists(AFileName) then
+  begin
+    ShowMessage(AFileName + 'is not exists');
+    Result := nil;
+    exit;
+  end;
+
+  Result := TStringList.Create;
+  Result.LoadFromFile(AFileName);
+  LStr := Result.Text;
+  System.Delete(LStr, Length(LStr)-1, 2);
+  LUtf8 := StringToUTF8(LStr);
+  LStr := MakeBase64ToString(LUtf8);
+  Result.Text := LStr;
+end;
+
+//procedure TDisplayTaskF.GetWhereConstArr(ASearchCondRec: TSearchCondRec;
+//  var AWhere: string);// var AConstArr: TConstArray);
+//var
+//  LFrom, LTo: TTimeLog;
+//begin
+//  if ASearchCondRec.FQueryDate <> qdtNull then
+//  begin
+//    if ASearchCondRec.FFrom <= ASearchCondRec.FTo then
+//    begin
+//      LFrom := TimeLogFromDateTime(ASearchCondRec.FFrom);
+//      LTo := TimeLogFromDateTime(ASearchCondRec.FTo);
+//
+//      if ASearchCondRec.FQueryDate <> qdtNull then
+//      begin
+//        AddConstArray(FConstArray, [LFrom, LTo]);
+//        AWhere := GetSqlWhereFromQueryDate(ASearchCondRec.FQueryDate);
+//      end;
+//    end;
+//  end;
+//
+//  if ASearchCondRec.FHullNo <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FHullNo+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + 'HullNo LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FShipName <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FShipName+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' ShipName LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FCustomer <> '' then
+//  begin
+////      LSQLCustomer := TSQLCustomer.CreateAndFillPrepare(g_MasterDB,'CompanyName LIKE ?',['%'+ACustomer+'%']);
+////      LStr := '';
+////      try
+////        while LSQLCustomer.FillOne do
+////        begin
+////          AddConstArray(ConstArray, [LSQLCustomer.TaskID]);
+////
+////          if LStr <> '' then
+////            LStr := LStr + ' or ';
+////
+////          LStr := LStr + ' ID = ? ';
+////        end;
+////      finally
+////        if LStr <> '' then
+////        begin
+////          if LWhere <> '' then
+////            LWhere := LWhere + ' and ';
+////          LWhere :=  LWhere + '( ' + LStr + ')';
+////        end;
+////
+////        FreeAndNil(LSQLCustomer);
+////      end;
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FCustomer+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' ShipOwner LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FSubject <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FSubject+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' WorkSummary LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FProdType <> '' then
+//  begin
+//    AddConstArray(FConstArray, [ASearchCondRec.FProdType]);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' ProductType = ? ';
+//  end;
+//
+//  if ASearchCondRec.FCurWork > 0 then
+//  begin
+//    if ASearchCondRec.FWorkKind = 0 then //현재작업
+//    begin
+//      AddConstArray(FConstArray, [ASearchCondRec.FCurWork]);
+//    end
+//    else if ASearchCondRec.FWorkKind = 1 then
+//    begin
+//      AddConstArray(FConstArray, [ASearchCondRec.FCurWork-1]);
+//    end;
+//
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' CurrentWorkStatus ';
+//
+//    if (ASearchCondRec.FBefAft = -1) or (ASearchCondRec.FBefAft = 0) then
+//      AWhere := AWhere + '= ?'
+//    else
+//    if ASearchCondRec.FBefAft = 1 then//이전
+//      AWhere := AWhere + '< ?'
+//    else
+//    if ASearchCondRec.FBefAft = 2 then//이후
+//      AWhere := AWhere + '> ?';
+//  end;
+//
+//  if ASearchCondRec.FQtnNo <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FQtnNo+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' QTN_No LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FOrderNo <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FOrderNo+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' Order_No LIKE ? ';
+//  end;
+//
+//  if ASearchCondRec.FPoNo <> '' then
+//  begin
+//    AddConstArray(FConstArray, ['%'+ASearchCondRec.FPoNo+'%']);
+//    if AWhere <> '' then
+//      AWhere := AWhere + ' and ';
+//    AWhere := AWhere + ' PO_No LIKE ? ';
+//  end;
+//
+//  ASearchCondRec.FCurWork := Ord(spFinal);
+//  //완료되지 않은 모든 Task를 보여줌
+//  AddConstArray(FConstArray, [ASearchCondRec.FCurWork]);
+//
+//  if AWhere <> '' then
+//    AWhere := AWhere + ' and ';
+//
+//  if not DisplayFinalCheck.Checked then
+//  begin
+//    AWhere := AWhere + 'CurrentWorkStatus <> ?';
+//  end
+//  else
+//  begin
+//    AWhere := AWhere + 'CurrentWorkStatus <= ?';
+//  end;
+//end;
 
 function TDisplayTaskF.Get_Doc_Cust_Reg_Rec(ARow: integer): Doc_Cust_Reg_Rec;
 var
@@ -755,7 +1090,7 @@ begin
       Result.FProjCode := LTask.Order_No;
       Result.FNationPort := LTask.NationPort;
       Result.FWorkSummary := LTask.WorkSummary;
-      Result.FSubConPrice := LTask.SubConPrice;
+      Result.FSubConPrice := '';//LTask.SubConPrice;
     finally
       if Assigned(LTask) then
         FreeAndNil(LTask);
@@ -789,7 +1124,7 @@ begin
   if ARow = -1 then
     Exit;
 
-  ShowTaskFormFromData(ARow);
+  ShowTaskFormFromDB(ARow);
 end;
 
 procedure TDisplayTaskF.grid_ReqKeyDown(Sender: TObject; var Key: Word;
@@ -837,6 +1172,31 @@ end;
 procedure TDisplayTaskF.Invoice4Click(Sender: TObject);
 begin
   MakeInvoice(grid_Req.SelectedRow);
+end;
+
+procedure TDisplayTaskF.GetHullNoToClipboard1Click(Sender: TObject);
+begin
+  if grid_Req.SelectedRow = -1 then
+    exit;
+
+  Clipboard.AsText := grid_Req.CellsByName['ShipName',grid_Req.SelectedRow] + ' (' +
+    grid_Req.CellsByName['HullNo',grid_Req.SelectedRow] + ') - ' + grid_Req.CellsByName['OrderNo',grid_Req.SelectedRow];
+end;
+
+function TDisplayTaskF.GetIsRemote(var ARemoteAddr: string): Boolean;
+begin
+  Result := False;
+
+  if ARemoteAddr = '' then
+    ARemoteAddr := PICCB.Items.ValueFromIndex[PICCB.ItemIndex];
+
+  if ARemoteAddr <> '' then
+    Result := FMyIPAddress <> ARemoteAddr;
+
+  if Result then
+    StatusBarPro1.Panels[0].Text := 'Remote'
+  else
+    StatusBarPro1.Panels[0].Text := 'Local'
 end;
 
 procedure TDisplayTaskF.DisplayTaskInfo2EditForm(const ATaskID: integer);
@@ -892,7 +1252,7 @@ begin
   begin
     BeginUpdate;
     try
-      LTaskStatus := SalesProcess2String(TSalesProcess(TaskTab.AdvOfficeTabs[TaskTab.ActiveTabIndex].Tag));
+      LTaskStatus := g_SalesProcess.ToString(TaskTab.AdvOfficeTabs[TaskTab.ActiveTabIndex].Tag);
       if TaskTab.AdvOfficeTabs[TaskTab.ActiveTabIndex].Caption.Contains('대기') then
       begin
         LStr := 'NextProcess';
@@ -922,18 +1282,22 @@ end;
 
 procedure TDisplayTaskF.btn_SearchClick(Sender: TObject);
 var
-  LQueryDateType: TQueryDateType;
+  LSearchCondRec: TSearchCondRec;
+  LIsRemote: Boolean;
+  LUtf8, LResult: RawUTF8;
 begin
-  if ComboBox1.ItemIndex = -1 then
-    LQueryDateType := qdtNull
-  else
-    LQueryDateType := R_QueryDateType[TQueryDateType(ComboBox1.ItemIndex)].Value;
+  GetSearchCondRec(LSearchCondRec);
+  LIsRemote := GetIsRemote(LSearchCondRec.FRemoteIPAddress);
 
-  DisplayTaskInfo2Grid(dt_Begin.Date, dt_end.Date, LQueryDateType,
-    HullNoEdit.Text, ShipNameEdit.Text, CustomerCombo.Text,
-    ProductTypeCombo.Text, SubjectEdit.Text, CurWorkCB.ItemIndex,
-    BefAftCB.ItemIndex, WorkKindCB.ItemIndex, QtnNoEdit.Text, OrderNoEdit.Text,
-    PONoEdit.Text);
+  if LIsRemote then
+  begin
+    LUtf8 := RecordSaveJson(LSearchCondRec, TypeInfo(TSearchCondRec));
+    LResult := SendReq2InqManagerServer_Http(LSearchCondRec.FRemoteIPAddress, FPortName, FRootName, CMD_REQ_TASK_LIST, LUtf8);
+    LResult := MakeBase64ToUTF8(LResult);
+    DisplayTaskInfo2GridFromJson(LResult);
+  end
+  else
+    DisplayTaskInfo2Grid(LSearchCondRec, LIsRemote);
 end;
 
 procedure TDisplayTaskF.Button1Click(Sender: TObject);
@@ -944,10 +1308,13 @@ end;
 procedure TDisplayTaskF.ComboBox1DropDown(Sender: TObject);
 begin
   ComboBox1.Clear;
-  QueryDateType2Combo(ComboBox1);
+  g_QueryDateType.SetType2Combo(ComboBox1);
 end;
 
 constructor TDisplayTaskF.Create(AOwner: TComponent);
+var
+  i: integer;
+  LStr: string;
 begin
   inherited;
 
@@ -956,6 +1323,8 @@ begin
   FFolderListFromOL := TStringList.Create;
   if FileExists('.\'+FOLDER_LIST_FILE_NAME) then
     FFolderListFromOL.LoadFromFile('.\'+FOLDER_LIST_FILE_NAME);
+  FTempJsonList := TStringList.Create;
+  FUserList := TStringList.Create;
   FToDoCollect := TpjhToDoItemCollection.Create(TpjhTodoItem);
   InitTaskTab;
   ComboBox1DropDown(nil);
@@ -964,6 +1333,22 @@ begin
     FIniFileName := ChangeFileExt(Application.ExeName, '.ini');
 
   FSettings := TConfigSettings.create(FIniFileName);
+  GetLocalIP(-1, FUserList);
+  for i := 0 to FUserList.Count - 1 do
+  begin
+    LStr := FUserList.Strings[i];
+    LStr := strToken(LStr, '.');
+
+    if LStr = '10' then
+    begin
+      FMyIPAddress := FUserList.Strings[i];
+      FUserList.Clear;
+      Break;
+    end;
+
+  end;
+
+  StatusBarPro1.Panels[1].Text := 'IP = ' + FMyIPAddress;
 end;
 
 procedure TDisplayTaskF.DeleteTask1Click(Sender: TObject);
@@ -986,152 +1371,133 @@ begin
   FSettings.Free;
   FreeAndNil(FToDoCollect);
   FFolderListFromOL.Free;
+  FTempJsonList.Free;
+  FUserList.Free;
 
   inherited;
 end;
 
-procedure TDisplayTaskF.DisplayTaskInfo2Grid(AFrom, ATo: TDateTime; AQueryDate: TQueryDateType;
-  AHullNo, AShipName, ACustomer, AProdType, ASubject: string;
-  ACurWork, ABefAft, AWorkKind: integer; AQtnNo, AOrderNo, APoNo: string);
+procedure TDisplayTaskF.DisplayTaskInfo2Grid(ASearchCondRec: TSearchCondRec; AFromRemote: Boolean);
 var
   ConstArray: TConstArray;
   LWhere, LStr: string;
   LSQLGSTask: TSQLGSTask;
   LSQLCustomer: TSQLCustomer;
+  LUtf8: RawUTF8;
+  LV: variant;
   LFrom, LTo: TTimeLog;
 begin
   LWhere := '';
   ConstArray := CreateConstArray([]);
   try
-    if AQueryDate <> qdtNull then
+//    GetWhereConstArr(ASearchCondRec, LWhere);//, ConstArray);
+    if ASearchCondRec.FQueryDate <> qdtNull then
     begin
-      if AFrom <= ATo then
+      if ASearchCondRec.FFrom <= ASearchCondRec.FTo then
       begin
-        LFrom := TimeLogFromDateTime(AFrom);
-        LTo := TimeLogFromDateTime(ATo);
+        LFrom := TimeLogFromDateTime(ASearchCondRec.FFrom);
+        LTo := TimeLogFromDateTime(ASearchCondRec.FTo);
 
-        if AQueryDate <> qdtNull then
+        if ASearchCondRec.FQueryDate <> qdtNull then
         begin
           AddConstArray(ConstArray, [LFrom, LTo]);
-          LWhere := GetSqlWhereFromQueryDate(AQueryDate);
+          LWhere := GetSqlWhereFromQueryDate(ASearchCondRec.FQueryDate);
         end;
       end;
     end;
 
-    if AHullNo <> '' then
+    if ASearchCondRec.FHullNo <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+AHullNo+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FHullNo+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + 'HullNo LIKE ? ';
     end;
 
-    if AShipName <> '' then
+    if ASearchCondRec.FShipName <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+AShipName+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FShipName+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' ShipName LIKE ? ';
     end;
 
-    if ACustomer <> '' then
+    if ASearchCondRec.FCustomer <> '' then
     begin
-//      LSQLCustomer := TSQLCustomer.CreateAndFillPrepare(g_MasterDB,'CompanyName LIKE ?',['%'+ACustomer+'%']);
-//      LStr := '';
-//      try
-//        while LSQLCustomer.FillOne do
-//        begin
-//          AddConstArray(ConstArray, [LSQLCustomer.TaskID]);
-//
-//          if LStr <> '' then
-//            LStr := LStr + ' or ';
-//
-//          LStr := LStr + ' ID = ? ';
-//        end;
-//      finally
-//        if LStr <> '' then
-//        begin
-//          if LWhere <> '' then
-//            LWhere := LWhere + ' and ';
-//          LWhere :=  LWhere + '( ' + LStr + ')';
-//        end;
-//
-//        FreeAndNil(LSQLCustomer);
-//      end;
-      AddConstArray(ConstArray, ['%'+ACustomer+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FCustomer+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' ShipOwner LIKE ? ';
     end;
 
-    if ASubject <> '' then
+    if ASearchCondRec.FSubject <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+ASubject+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FSubject+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' WorkSummary LIKE ? ';
     end;
 
-    if AProdType <> '' then
+    if ASearchCondRec.FProdType <> '' then
     begin
-      AddConstArray(ConstArray, [AProdType]);
+      AddConstArray(ConstArray, [ASearchCondRec.FProdType]);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' ProductType = ? ';
     end;
 
-    if ACurWork > 0 then
+    if ASearchCondRec.FCurWork > 0 then
     begin
-      if AWorkKind = 0 then //현재작업
+      if ASearchCondRec.FWorkKind = 0 then //현재작업
       begin
-        AddConstArray(ConstArray, [ACurWork]);
+        AddConstArray(ConstArray, [ASearchCondRec.FCurWork]);
       end
-      else if AWorkKind = 1 then
+      else if ASearchCondRec.FWorkKind = 1 then
       begin
-        AddConstArray(ConstArray, [ACurWork-1]);
+        AddConstArray(ConstArray, [ASearchCondRec.FCurWork-1]);
       end;
 
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' CurrentWorkStatus ';
 
-      if (ABefAft = -1) or (ABefAft = 0) then
+      if (ASearchCondRec.FBefAft = -1) or (ASearchCondRec.FBefAft = 0) then
         LWhere := LWhere + '= ?'
       else
-      if ABefAft = 1 then//이전
+      if ASearchCondRec.FBefAft = 1 then//이전
         LWhere := LWhere + '< ?'
       else
-      if ABefAft = 2 then//이후
+      if ASearchCondRec.FBefAft = 2 then//이후
         LWhere := LWhere + '> ?';
     end;
 
-    if AQtnNo <> '' then
+    if ASearchCondRec.FQtnNo <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+AQtnNo+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FQtnNo+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' QTN_No LIKE ? ';
     end;
 
-    if AOrderNo <> '' then
+    if ASearchCondRec.FOrderNo <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+AOrderNo+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FOrderNo+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' Order_No LIKE ? ';
     end;
 
-    if APoNo <> '' then
+    if ASearchCondRec.FPoNo <> '' then
     begin
-      AddConstArray(ConstArray, ['%'+APoNo+'%']);
+      AddConstArray(ConstArray, ['%'+ASearchCondRec.FPoNo+'%']);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';
       LWhere := LWhere + ' PO_No LIKE ? ';
     end;
 
-    ACurWork := Ord(spFinal);
+    ASearchCondRec.FCurWork := Ord(spFinal);
     //완료되지 않은 모든 Task를 보여줌
-    AddConstArray(ConstArray, [ACurWork]);
+    AddConstArray(ConstArray, [ASearchCondRec.FCurWork]);
 
     if LWhere <> '' then
       LWhere := LWhere + ' and ';
@@ -1145,18 +1511,33 @@ begin
       LWhere := LWhere + 'CurrentWorkStatus <= ?';
     end;
 
-    LSQLGSTask := TSQLGSTask.CreateAndFillPrepare(g_ProjectDB, Lwhere, ConstArray); //ConstArray
+    LSQLGSTask := TSQLGSTask.CreateAndFillPrepare(g_ProjectDB, LWhere, ConstArray);
 
     try
-      grid_Req.ClearRows;
-
-      while LSQLGSTask.FillOne do
+      if AFromRemote then
       begin
-        grid_Req.BeginUpdate;
-        try
-          LoadTaskVar2Grid(LSQLGSTask, grid_Req);
-        finally
-          grid_Req.EndUpdate;
+        StatusBarPro1.Panels[0].Text := 'Remote';
+        FTempJsonList.Clear;
+        LUtf8 := MakeTaskList2JSONArray(LSQLGSTask);
+        FTempJsonList.Text := UTF8ToString(LUtf8);
+//        LStr := FTempJsonList.Text;
+//        System.Delete(LStr, Length(LStr)-1,2);
+//        LUtf8 := StringToUTF8(LStr);
+//        LUtf8 := MakeBase64ToUTF8(LUtf8);
+      end
+      else
+      begin
+        StatusBarPro1.Panels[0].Text := 'Local';
+        grid_Req.ClearRows;
+
+        while LSQLGSTask.FillOne do
+        begin
+          grid_Req.BeginUpdate;
+          try
+            LoadTaskVar2Grid(LSQLGSTask, grid_Req);
+          finally
+            grid_Req.EndUpdate;
+          end;
         end;
       end;
     finally
@@ -1164,6 +1545,31 @@ begin
     end;
   finally
     FinalizeConstArray(ConstArray);
+  end;
+end;
+
+procedure TDisplayTaskF.DisplayTaskInfo2GridFromJson(AJson: RawUTF8);
+var
+  LDocData: TDocVariantData;
+  LVar: variant;
+  i: integer;
+  LSQLGSTask: TSQLGSTask;
+begin//AJson : [] Task 배열 형식임
+  LSQLGSTask := TSQLGSTask.Create;
+  try
+    grid_Req.ClearRows;
+    LDocData.InitJSON(AJson);
+
+    for i := 0 to LDocData.Count - 1 do
+    begin
+      LVar := _JSON(LDocData.Value[i]);
+      LoadTaskFromVariant(LSQLGSTask, LVar);
+      LSQLGSTask.NumOfEMails := LVar.NumOfEMails;
+      LSQLGSTask.EmailSubject := LVar.EmailSubject;
+      LoadGSTask2Grid(LSQLGSTask, grid_Req);
+    end;
+  finally
+    LSQLGSTask.Free;
   end;
 end;
 
@@ -1178,7 +1584,28 @@ begin
     btn_SearchClick(nil);
 end;
 
-procedure TDisplayTaskF.ShowTaskFormFromData(AIDList: TIDList; ARow: integer);
+procedure TDisplayTaskF.FillInUserList;
+var
+  LStrList: TStrings;
+begin
+  if FSettings.RemoteAuthEnabled then
+  begin
+    LStrList := GetUserListFromFile(ChangeFileExt(Application.ExeName, '.ips'));
+
+    if Assigned(LStrList) then
+    begin
+      try
+        FUserList.Assign(LStrList);
+      finally
+        LStrList.Free;
+      end;
+    end;
+  end
+  else
+    FUserList.Add(GetMyName(g_MyEmailInfo.SmtpAddress));
+end;
+
+procedure TDisplayTaskF.ShowTaskFormFromDB(AIDList: TIDList; ARow: integer);
 var
   LTask: TSQLGSTask;
 begin
@@ -1192,14 +1619,27 @@ begin
   end;
 end;
 
-procedure TDisplayTaskF.ShowTaskFormFromData(ARow: integer);
+procedure TDisplayTaskF.ShowTaskFormFromDB(ARow: integer);
 var
   LIdList: TIDList;
+  LIsRemote: Boolean;
+  LUtf8: RawUTF8;
+  LIpAddr: string;
 begin
   if grid_Req.Row[ARow].Data <> nil then
   begin
     LIdList := TIDList(grid_Req.Row[ARow].Data);
-    ShowTaskFormFromData(LIdList,ARow);
+    LIsRemote := GetIsRemote(LIpAddr);
+
+    if LIsRemote then
+    begin
+      LUtf8 := ObjectToJson(LIdList);
+      LUtf8 := SendReq2InqManagerServer_Http(LIpAddr, FPortName, FRootName, CMD_REQ_TASK_DETAIL, LUtf8);
+      LUtf8 := MakeBase64ToUTF8(LUtf8);
+      ShowTaskFormFromJson(LUtf8);
+    end
+    else
+      ShowTaskFormFromDB(LIdList,ARow);
   end;
 end;
 
@@ -1221,6 +1661,15 @@ begin
   finally
     LTaskEditF.Free;
   end;
+end;
+
+procedure TDisplayTaskF.ShowTaskFormFromJson(AJson: RawUTF8);
+var
+  LV: variant;
+begin
+//  LV.Task, LV.Customer, LV.SubCon, LV.Material
+  LV := _JSON(AJson);
+  DisplayTaskInfo2EditFormFromVariant(LV, FRemoteIPAddress, FPortName, FRootName);
 end;
 
 procedure TDisplayTaskF.ShowTaskID1Click(Sender: TObject);
@@ -1312,6 +1761,20 @@ begin
   end;
 end;
 
+procedure TDisplayTaskF.SetNetworkInfo(ARootName, APortName, AKeyName: string);
+begin
+  FRootName := ARootName;
+  FPortName := APortName;
+  FTransmissionKey := AkeyName;
+end;
+
+procedure TDisplayTaskF.SetUserNameNIPAddressFromRegServer;
+var
+  LList: string;
+begin
+//  LList := GetUserNameNIPListFromProductCode('','');
+end;
+
 procedure TDisplayTaskF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
@@ -1348,7 +1811,7 @@ begin
 
   LTask := CreateOrGetLoadTask(LID);
   try
-    TTaskEditF.ShowEMailListFromTask(LTask);
+    TTaskEditF.ShowEMailListFromTask(LTask, '', '', '');
   finally
     FreeAndNil(LTask);
   end;

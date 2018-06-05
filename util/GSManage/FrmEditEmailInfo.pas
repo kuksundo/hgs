@@ -28,16 +28,18 @@ var
 
 implementation
 
+uses UnitElecServiceData;
+
 {$R *.dfm}
 
 procedure TEmailInfoF.ContainDataCBDropDown(Sender: TObject);
 begin
-  ContainData4Mail2Combo(ContainDataCB);
+  g_ContainData4Mail.SetType2Combo(ContainDataCB);
 end;
 
 procedure TEmailInfoF.EmailDirectionCBDropDown(Sender: TObject);
 begin
-  ProcessDirection2Combo(EmailDirectionCB);
+  g_ProcessDirection.SetType2Combo(EmailDirectionCB);
 end;
 
 procedure TEmailInfoF.FormCreate(Sender: TObject);

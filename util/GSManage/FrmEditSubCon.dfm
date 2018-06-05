@@ -366,7 +366,7 @@ object Form2: TForm2
       SortType = stAlphabetic
       Visible = False
     end
-    object CompanyType: TNxTextColumn
+    object CompanyTypes: TNxTextColumn
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

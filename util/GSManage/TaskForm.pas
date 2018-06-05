@@ -9,14 +9,13 @@ uses
   NxCustomGridControl, NxCustomGrid, NxGrid, AeroButtons, CurvyControls,
   CommonData, UElecDataRecord, Vcl.ImgList, AdvGlowButton, Vcl.ExtCtrls,
   FrmFileSelect, mORMot, SynCommons, UViewMailList, Vcl.Menus, FSMState,
-  DragDropFile, Clipbrd,
+  DragDropFile, Clipbrd, Generics.Collections,
   DragDrop, DropTarget, UnitMakeReport, DropSource, Vcl.Mask, JvExMask,
   JvToolEdit, JvBaseEdits, FSMClass_Dic, pjhComboBox, UnitTodoCollect, AdvEdit,
-  AdvEdBtn, UnitGSFileRecord;
+  AdvEdBtn, UnitGSFileRecord, FrmSubCompanyEdit;
 
 type
   TTaskEditF = class(TForm)
-    HullNoEdit: TEdit;
     ShipNameEdit: TEdit;
     PONoEdit: TEdit;
     QTNNoEdit: TEdit;
@@ -56,16 +55,6 @@ type
     N3: TMenuItem;
     N4: TMenuItem;
     N5: TMenuItem;
-    TabSheet2: TTabSheet;
-    JvLabel15: TJvLabel;
-    JvLabel16: TJvLabel;
-    SubCompanyCodeEdit: TEdit;
-    JvLabel17: TJvLabel;
-    SubManagerEdit: TEdit;
-    SubCompanyAddressMemo: TMemo;
-    JvLabel18: TJvLabel;
-    JvLabel19: TJvLabel;
-    SEEdit: TEdit;
     TabSheet3: TTabSheet;
     JvLabel13: TJvLabel;
     Panel3: TPanel;
@@ -93,8 +82,6 @@ type
     CustCompanyCodeEdit: TEdit;
     JvLabel22: TJvLabel;
     CustManagerEdit: TEdit;
-    JvLabel23: TJvLabel;
-    SubEmailEdit: TEdit;
     JvLabel24: TJvLabel;
     CustEmailEdit: TEdit;
     JvLabel25: TJvLabel;
@@ -120,9 +107,6 @@ type
     DeliveryChargeEdit: TEdit;
     CustAgentMemo: TMemo;
     JvLabel34: TJvLabel;
-    Label1: TLabel;
-    JvLabel35: TJvLabel;
-    SECountEdit: TEdit;
     JvLabel36: TJvLabel;
     WorkBeginPicker: TDateTimePicker;
     JvLabel37: TJvLabel;
@@ -136,16 +120,10 @@ type
     SalesProcTypeCB: TComboBox;
     JvLabel41: TJvLabel;
     CustCompanyTypeCB: TComboBox;
-    JvLabel42: TJvLabel;
-    SubPhonNumEdit: TEdit;
-    JvLabel43: TJvLabel;
-    SubFaxEdit: TEdit;
     JvLabel44: TJvLabel;
     CustPhonNumEdit: TEdit;
     JvLabel45: TJvLabel;
     CustFaxEdit: TEdit;
-    JvLabel46: TJvLabel;
-    PositionEdit: TEdit;
     CustPositionEdit: TEdit;
     JvLabel47: TJvLabel;
     DropEmptyTarget1: TDropEmptyTarget;
@@ -162,22 +140,14 @@ type
     N14: TMenuItem;
     Commercial1: TMenuItem;
     N15: TMenuItem;
-    JvLabel48: TJvLabel;
-    ServicePOEdit: TEdit;
     ShipOwnerEdit: TEdit;
     JvLabel49: TJvLabel;
     JvLabel50: TJvLabel;
     QtnIssuePicker: TDateTimePicker;
     JvLabel51: TJvLabel;
     CurWorkFinishPicker: TDateTimePicker;
-    JvLabel52: TJvLabel;
-    SubConInvoiceIssuePicker: TDateTimePicker;
-    JvLabel53: TJvLabel;
-    SRRecvDatePicker: TDateTimePicker;
     DataFormatAdapter2: TDataFormatAdapter;
     DropEmptySource1: TDropEmptySource;
-    JvLabel54: TJvLabel;
-    SubConPriceEdit: TEdit;
     JvLabel55: TJvLabel;
     NationEdit: TEdit;
     JvLabel57: TJvLabel;
@@ -213,7 +183,6 @@ type
     TermsPaymentCB: TComboBox;
     JvLabel66: TJvLabel;
     BaseProjectNoEdit: TEdit;
-    SubCompanyEdit: TAdvEditBtn;
     JvLabel67: TJvLabel;
     ChargeInPersonIdEdit: TEdit;
     Create1: TMenuItem;
@@ -224,11 +193,51 @@ type
     N22: TMenuItem;
     PO2: TMenuItem;
     Invoice2: TMenuItem;
-    Button4: TButton;
-    JvLabel68: TJvLabel;
-    SubConNationEdit: TEdit;
     N23: TMenuItem;
     N24: TMenuItem;
+    SubConTS: TTabSheet;
+    Panel1: TPanel;
+    AeroButton2: TAeroButton;
+    AeroButton3: TAeroButton;
+    SubConGrid: TNextGrid;
+    NxIncrementColumn1: TNxIncrementColumn;
+    OfficePhone: TNxTextColumn;
+    MobilePhone: TNxTextColumn;
+    EMail: TNxTextColumn;
+    Splitter1: TSplitter;
+    CompanyCode: TNxTextColumn;
+    ServicePO: TNxTextColumn;
+    ManagerName: TNxTextColumn;
+    Position: TNxTextColumn;
+    CompanyAddress: TNxTextColumn;
+    Nation: TNxTextColumn;
+    CompanyTypes: TNxTextColumn;
+    TaskID: TNxTextColumn;
+    FirstName: TNxTextColumn;
+    Surname: TNxTextColumn;
+    SECount: TNxTextColumn;
+    SubConPrice: TNxTextColumn;
+    CompanyName: TNxTextColumn;
+    SubConID: TNxTextColumn;
+    InvoiceItems: TNxMemoColumn;
+    UniqueSubConID: TNxTextColumn;
+    InvoiceFiles: TNxMemoColumn;
+    SubConInvoiceNo: TNxTextColumn;
+    Action: TNxTextColumn;
+    DataFormatAdapter3: TDataFormatAdapter;
+    PopupMenu2: TPopupMenu;
+    SaveCompanyinfoashgs1: TMenuItem;
+    SaveDialog1: TSaveDialog;
+    ManagerDepartmentEdit: TEdit;
+    BusinessAreas: TNxTextColumn;
+    ElecProductDetailTypes: TNxTextColumn;
+    ShipProductTypes: TNxTextColumn;
+    Engine2SProductTypes: TNxTextColumn;
+    Engine4SProductTypes: TNxTextColumn;
+    ElecProductTypes: TNxTextColumn;
+    HullNoEdit: TAdvEditBtn;
+    PopupMenu3: TPopupMenu;
+    Saveas1: TMenuItem;
     procedure AeroButton1Click(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -260,16 +269,26 @@ type
     procedure N20Click(Sender: TObject);
     procedure N21Click(Sender: TObject);
     procedure N22Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
-    procedure SubCompanyEditClickBtn(Sender: TObject);
     procedure N23Click(Sender: TObject);
     procedure N24Click(Sender: TObject);
+    procedure AeroButton2Click(Sender: TObject);
+    procedure SubConGridCellDblClick(Sender: TObject; ACol, ARow: Integer);
+    procedure AeroButton3Click(Sender: TObject);
+    procedure SubConGridMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure SaveCompanyinfoashgs1Click(Sender: TObject);
+    procedure JvLabel5Click(Sender: TObject);
+    procedure HullNoEditClickBtn(Sender: TObject);
+    procedure Saveas1Click(Sender: TObject);
+    procedure CurWorkCBChange(Sender: TObject);
   private
+    FTaskJson: String;
+
     function GetFileFromDropDataFormat(AFormat: TVirtualFileStreamDataFormat): TFileStream;
 
     function Get_Doc_Qtn_Rec: Doc_Qtn_Rec;
     function Get_Doc_Inv_Rec: Doc_Invoice_Rec;
-    function Get_Doc_ServiceOrder_Rec: Doc_ServiceOrder_Rec;
+    function Get_Doc_ServiceOrder_Rec(AIdx: integer = 0): Doc_ServiceOrder_Rec;
     function Get_Doc_Cust_Reg_Rec: Doc_Cust_Reg_Rec;
 
     //MAPS->QUOTATION관리->INQ.내용에 들어갈 내용을 Clipboard로 복사함
@@ -280,14 +299,20 @@ type
 
     procedure OnGetStream(Sender: TFileContentsStreamOnDemandClipboardFormat;
       Index: integer; out AStream: IStream);
+    procedure OnGetStream2(Sender: TFileContentsStreamOnDemandClipboardFormat;
+      Index: integer; out AStream: IStream);
+    function SaveCurrentTaskAndSelectedSubCon2File(ASubConID: TID) : string;
+    function MakeCompanyInfoFromGrid2JSON : string;
 
     procedure SQLGSFileRec2Grid(ARec: TSQLGSFileRec; AGrid: TNextGrid);
     procedure SQLGSFileCopy(ASrc: TSQLGSFile; out ADest: TSQLGSFile);
 
     procedure SaveCustomer2MasterCustomer(AMCustomer: TSQLMasterCustomer);
     procedure SaveCustEdit2MasterCustomer;
-    procedure SaveSubContractEdit2MasterSubContract(AMCustomer: TSQLMasterCustomer);
-    procedure SaveSubConEdit2MasterCustomer;
+
+    procedure SubContractorAdd;
+    function GetNextSalesProcess2String(ASalesProcess: string): string;
+
   public
     FTask,
     FEmailDisplayTask: TSQLGSTask;
@@ -298,8 +323,9 @@ type
     FSalesProcessList: TStringList;
     FFileContent: RawByteString;
     FToDoCollect: TpjhToDoItemCollection;
+    FRemoteIPAddress: string;
 
-    class procedure ShowEMailListFromTask(ATask: TSQLGSTask);
+    class procedure ShowEMailListFromTask(ATask: TSQLGSTask; ARemoteIPAddress, APort, ARoot: string);
     class procedure LoadEmailListFromTask(ATask: TSQLGSTask; AForm:TViewMailListF);
     procedure ShowDTIForm;
     procedure SPType2Combo(ACombo: TComboBox; AFSMState: TFSMState=nil);
@@ -311,40 +337,51 @@ type
 //    procedure LoadCustomer2
 
     procedure LoadTaskVar2Form(AVar: TSQLGSTask; AForm: TTaskEditF; AFSMClass: TFSMClass);
-    procedure LoadTaskForm2Var(AForm: TTaskEditF; out AVar: TSQLGSTask);
+    procedure LoadTaskForm2SQLGSTask(AForm: TTaskEditF; out AVar: TSQLGSTask);
     procedure LoadTaskEditForm2Grid(AEditForm: TTaskEditF; AGrid: TNextGrid;
       ARow: integer);
     procedure LoadGrid2TaskEditForm(AGrid: TNextGrid; ARow: integer;
       AEditForm: TTaskEditF);
 
+    procedure ShowSubConEditFormFromSubConGrid(ARow: integer);
+    procedure ShowSearchVesselForm;
+
     procedure LoadGSFiles2Form(AGSFile: TSQLGSFile; AForm: TTaskEditF);
+    procedure LoadGSFile2Form(AGSFile: TSQLGSFile; AForm: TTaskEditF);
     procedure LoadTaskForm2GSFiles(AForm: TTaskEditF; out AGSFile: TSQLGSFile);
     procedure LoadCustomer2Form(ACustomer: TSQLCustomer; AForm: TTaskEditF);
     procedure LoadTaskForm2Customer(AForm: TTaskEditF; ACustomer: TSQLCustomer;
       ATaskID: TID = 0);
     procedure LoadTaskForm2MasterCustomer(AForm: TTaskEditF; var ACustomer: TSQLMasterCustomer;
       ATaskID: TID);
-    procedure LoadTaskForm2MasterSubContractor(AForm: TTaskEditF; var ACustomer: TSQLMasterCustomer;
-      ATaskID: TID);
-    procedure LoadSubCon2Form(ASubCon: TSQLSubCon; AForm: TTaskEditF);
-    procedure LoadTaskForm2SubCon(AForm: TTaskEditF; ASubCon: TSQLSubCon;
-      ATaskID: TID = 0);
+    procedure LoadSubCon2Form(ASubCon: TSQLSubCon; AForm: TTaskEditF; ARow: integer = -1);
+    procedure LoadSubConList2Form(ASubConList: TObjectList<TSQLSubCon>; AForm: TTaskEditF);
+    //InvoiceManager로 부터 Drag-Drop하여 ADoc을 입력 받음
+    procedure LoadSubConFromVariant2Form(ADoc: variant; ADocIsFromInvoiceManage: Boolean;
+      ADocIsFromRemote: Boolean = false);
+    procedure SaveSubConFromForm(AForm: TTaskEditF; ATaskID: TID = 0);
+    procedure LoadSubConGrid2Var(ARow: integer; var ADoc: variant);
     procedure LoadMaterial4Project2Form(AMaterial: TSQLMaterial4Project; AForm: TTaskEditF);
     procedure LoadTaskForm2Material4Project(AForm: TTaskEditF;
       AMaterial: TSQLMaterial4Project; ATaskID: TID = 0);
   end;
 
   function DisplayTaskInfo2EditForm(var ATask: TSQLGSTask;
-      ASQLEmailMsg: TSQLEmailMsg; ADoc: variant; ADocIsFromInvoiceManage: Boolean = False): Boolean; overload;
+      ASQLEmailMsg: TSQLEmailMsg; ADoc: variant; ADocIsFromInvoiceManage: Boolean = False): Boolean;
+  function DisplayTaskInfo2EditFormFromVariant(ADoc: variant;
+    ARemoteIPAddress, APort, ARoot: string): Boolean;
 
 var
-  TaskEditF: TTaskEditF;
+//  TaskEditF: TTaskEditF;
+  g_RemoteIPAddress: string;
 
 implementation
 
 uses FrmInqManage, FrmDisplayTaskInfo, DragDropInternet, DragDropFormats,
+  UnitVariantJsonUtil,
   UnitIPCModule, UnitTodoList, FrmSearchCustomer, UnitDragUtil, UnitStringUtil,
-  DateUtils;
+  DateUtils, UnitHttpModule4InqManageServer, UnitBase64Util, FrmSearchVessel,
+  UnitElecServiceData;
 
 {$R *.dfm}
 
@@ -358,6 +395,7 @@ var
   LTask, LTask2: TSQLGSTask;
   LFiles: TSQLGSFile;
 //  LTaskIds: TIDDynArray;
+  LSubConList: TObjectList<TSQLSubCon>;
   i: integer;
   LID: TID;
 begin
@@ -372,8 +410,7 @@ begin
       else
         Caption := Caption + ' (New)';
 
-      LTaskEditF.FEmailDisplayTask := ATask;
-
+      //InvoiceManage로부터 오는 Json은 Task와 Customer에 대한 변경 내용이 없음
       if (not ADocIsFromInvoiceManage) and (ADoc <> null) then
         LoadTaskFromVariant(ATask, ADoc.Task);
 
@@ -384,12 +421,23 @@ begin
         LoadCustomerFromVariant(LCustomer, ADoc.Customer);
 
       LoadCustomer2Form(LCustomer, LTaskEditF);
-      LSubCon := GetSubConFromTask(LTask);
 
-      if ADoc <> null then
-        LoadSubConFromVariant(LSubCon, ADoc.SubCon);
+      LSubConList := TObjectList<TSQLSubCon>.Create;
+      try
+        GetSubConFromTaskIDWithInvoiceItems(LTask.ID, LSubConList);
+        LoadSubConList2Form(LSubConList, LTaskEditF);
 
-      LoadSubCon2Form(LSubCon, LTaskEditF);
+        if ADoc <> null then
+        begin
+          //ADocIsFromInvoiceManage = True인 경우 ADoc.InvoiceItem가 존재함
+          //InqManager에서 생성한 *.hgs 인 경우임 : ADoc.SubCon이 복수개([] 배열 형식임)
+          LoadSubConFromVariant2Form(ADoc, ADocIsFromInvoiceManage)//LoadSubConFromVariant(LSubCon, ADoc, ADocIsFromInvoiceManage)
+        end;
+      finally
+        LSubConList.Clear;
+        LSubConList.Free;
+      end;
+
       LMat4Proj := GetMaterial4ProjFromTask(LTask);
 
       if (not ADocIsFromInvoiceManage) and (ADoc <> null) then
@@ -403,7 +451,7 @@ begin
       if LTaskEditF.ShowModal = mrOK then
       begin
         Result := True;
-        LoadTaskForm2Var(LTaskEditF, LTask);
+        LoadTaskForm2SQLGSTask(LTaskEditF, LTask);
 
         //IPC를 통해서  Email을 수신한 경우
         if Assigned(ASQLEmailMsg) then
@@ -439,11 +487,10 @@ begin
           g_FileDB.Delete(TSQLGSFile, LTaskEditF.FSQLGSFiles.ID);
 
         LoadTaskForm2Customer(LTaskEditF, LCustomer, LTask.ID);
-        LoadTaskForm2SubCon(LTaskEditF, LSubCon, LTask.ID);
+        SaveSubConFromForm(LTaskEditF, LTask.ID);
         LoadTaskForm2Material4Project(LTaskEditF, LMat4Proj, LTask.ID);
 
         AddOrUpdateCustomer(LCustomer);
-        AddOrUpdateSubCon(LSubCon);
         AddOrUpdateMaterial4Project(LMat4Proj);
       end;
     end;//with
@@ -455,7 +502,114 @@ begin
     FreeAndNil(LCustomer);
     FreeAndNil(LSubCon);
     FreeAndNil(LMat4Proj);
+    FreeAndNil(LTaskEditF);
+  end;
+end;
 
+function DisplayTaskInfo2EditFormFromVariant(ADoc: variant;
+  ARemoteIPAddress, APort, ARoot: string): Boolean;
+var
+  LTask: TSQLGSTask;
+  LCustomer: TSQLCustomer;
+//  LGSFile: TSQLGSFile;
+  LSubCon: TSQLSubCon;
+  LMat4Proj: TSQLMaterial4Project;
+  LTaskEditF: TTaskEditF;
+  LDocData: TDocVariantData;
+  LVar, LDoc, LDoc2: variant;
+  LUtf8: RawUTF8;
+  i: integer;
+  LDynUtf8: TRawUTF8DynArray;
+  LDynArr: TDynArray;
+begin
+  LTaskEditF := TTaskEditF.Create(nil);
+  try
+    with LTaskEditF do
+    begin
+      FRemoteIPAddress := ARemoteIPAddress;
+      LTask := TSQLGSTask.Create;
+//      LGSFile := TSQLGSFile.Create;
+      LCustomer := TSQLCustomer.Create;
+      LSubCon := TSQLSubCon.Create;
+      LMat4Proj := TSQLMaterial4Project.Create;
+      try
+        LoadTaskFromVariant(LTask, ADoc.Task);
+        LoadTaskVar2Form(LTask, LTaskEditF, g_FSMClass);
+
+        if not Assigned(FSQLGSFiles) then
+          FSQLGSFiles := GetGSFilesFromID(-1)
+        else
+          FSQLGSFiles.DynArray('Files').Clear;
+
+        LoadGSFileFromVariant(FSQLGSFiles, ADoc.GSFile);
+        FSQLGSFiles.TaskID := LTask.TaskID;
+        LoadGSFile2Form(FSQLGSFiles, LTaskEditF);
+        LoadCustomerFromVariant(LCustomer, ADoc.Customer);
+        LoadCustomer2Form(LCustomer, LTaskEditF);
+        //ADoc.SubCon = [] 형식의 배열 임
+        LDocData.InitJSON(ADoc.SubCon);
+
+        for i := 0 to LDocData.Count - 1 do
+        begin
+          LVar := _JSON(LDocData.Value[i]);
+          LoadSubConFromVariant2Form(LVar, False, True);
+        end;
+
+        LoadMaterial4ProjectFromVariant(LMat4Proj, ADoc.Material);
+        LoadMaterial4Project2Form(LMat4Proj, LTaskEditF);
+
+        if ShowModal = mrOK then
+        begin
+          TDocVariant.New(LDoc);
+          TDocVariant.New(LDoc2);
+          //LTaskEditF 내용을 LTask 옮김
+          LoadTaskForm2SQLGSTask(LTaskEditF, LTask);
+          LUtf8 := LTask.GetJSONValues(true, true, soSelect);
+          LDoc.Task := _JSON(LUtf8);//Escape(\)가 제거됨
+          LDoc.Task.RowID := LTask.TaskID;
+          FSQLGSFiles.TaskID := LTask.TaskID;
+
+          if High(LTaskEditF.FSQLGSFiles.Files) >= 0 then
+          begin
+            LUtf8 := MakeGSFile2JSON(LTaskEditF.FSQLGSFiles);
+            LDoc.GSFile := _JSON(LUtf8);
+          end
+          else
+            LDoc.GSFile := _JSON('{"TaskID":' + IntToStr(FSQLGSFiles.TaskID) + ',"Files":[]}');
+
+          LoadTaskForm2Customer(LTaskEditF, LCustomer, LTask.TaskID);
+          LUtf8 := LCustomer.GetJSONValues(true, true, soSelect);
+          LDoc.Customer := _JSON(LUtf8);
+
+          LDynArr.Init(TypeInfo(TRawUTF8DynArray), LDynUtf8);
+          for i := 0 to SubConGrid.RowCount - 1 do
+          begin
+//            if SubConGrid.Row[i].Visible then
+//            begin
+              LDoc2 := _JSON('{}');
+              LoadSubConGrid2Var(i,LDoc2);
+              LDoc2.TaskID := LTask.TaskID;
+              LUtf8 := LDoc2;
+              LDynArr.Add(LUtf8);
+//            end;
+          end;
+          LUtf8 := LDynArr.SaveToJSON;
+          LDoc.SubCon := _JSON(LUtf8);
+
+          LoadTaskForm2Material4Project(LTaskEditF, LMat4Proj, LTask.TaskID);
+          LUtf8 := LMat4Proj.GetJSONValues(true, true, soSelect);
+          LDoc.Material := _JSON(LUtf8);
+          LUtf8 := LDoc;
+          SendReq2InqManagerServer_Http(ARemoteIPAddress, APort, ARoot, CMD_EXECUTE_SAVE_TASK_DETAIL, LUtf8);
+        end;
+      finally
+        FreeAndNil(LMat4Proj);
+        FreeAndNil(LSubCon);
+        FreeAndNil(LCustomer);
+        FreeAndNil(LTask);
+      end;
+    end;
+  finally
     FreeAndNil(LTaskEditF);
   end;
 end;
@@ -490,14 +644,98 @@ begin
   ModalResult := mrOK;
 end;
 
+procedure TTaskEditF.AeroButton2Click(Sender: TObject);
+begin
+  SubContractorAdd;
+end;
+
+procedure TTaskEditF.AeroButton3Click(Sender: TObject);
+var
+  LRow: integer;
+begin
+  LRow := SubConGrid.SelectedRow;
+
+  if LRow = -1 then
+    exit;
+
+  if MessageDlg('Aru you sure delete the selected item?.', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+  begin
+    SubConGrid.BeginUpdate;
+    try
+      SubConGrid.CellByName['Action', LRow].AsInteger := 2; //Delete Action
+      SubConGrid.Row[LRow].Visible := False;
+    finally
+      SubConGrid.EndUpdate;
+    end;
+  end;
+end;
+
 procedure TTaskEditF.AeroButton4Click(Sender: TObject);
 begin
-  ShowEMailListFromTask(FEmailDisplayTask);
+  ShowEMailListFromTask(FEmailDisplayTask, FRemoteIPAddress, InquiryF.TDTF.FPortName, InquiryF.TDTF.FRootName);
 end;
 
 procedure TTaskEditF.SalesProcTypeCBDropDown(Sender: TObject);
 begin
-  SalesProcessType2Combo(SalesProcTypeCB);
+  g_SalesProcessType.SetType2Combo(SalesProcTypeCB);
+end;
+
+procedure TTaskEditF.Saveas1Click(Sender: TObject);
+var
+  LFileName: string;
+  LRow: integer;
+begin
+  LRow := fileGrid.SelectedRow;
+
+  if LRow = -1 then
+    exit;
+
+  if Assigned(FSQLGSFiles) then
+  begin
+    if SaveDialog1.Execute then
+    begin
+      LFileName := SaveDialog1.FileName;
+      FileFromString(FSQLGSFiles.Files[LRow].fData,LFileName,True);
+    end;
+  end;
+end;
+
+procedure TTaskEditF.SaveCompanyinfoashgs1Click(Sender: TObject);
+var
+  LJSON,
+  LFileName: string;
+begin
+  LJSON := MakeCompanyInfoFromGrid2JSON;
+
+  if LJSON <> '' then
+  begin
+    LFileName := SubConGrid.CellsByName['CompanyName',SubConGrid.SelectedRow];
+    SaveDialog1.FileName := ChangeFileExt(LFileName, '.hgsreg');
+
+    if SaveDialog1.Execute then
+    begin
+      LFileName := SaveDialog1.FileName;
+      FileFromString(LJSON, LFileName, True);
+    end;
+  end;
+end;
+
+function TTaskEditF.SaveCurrentTaskAndSelectedSubCon2File(ASubConID: TID): string;
+var
+  LTask: TSQLGSTask;
+  LFileName, LStr: string;
+begin
+  Result := '';
+  LTask := GetLoadTask(FEmailDisplayTask.ID);
+  try
+    if LTask.IsUpdate then
+    begin
+      FTaskJson := MakeTaskInfoEmailAttached(LTask, LFileName, ASubConID);
+      Result := LFileName;
+    end;
+  finally
+    LTask.Free;
+  end;
 end;
 
 procedure TTaskEditF.SaveCustEdit2MasterCustomer;
@@ -530,32 +768,6 @@ begin
   end;
 end;
 
-procedure TTaskEditF.SaveSubConEdit2MasterCustomer;
-var
-  LCustomer: TSQLMasterCustomer;
-begin
-  LCustomer := GetMasterCustomerFromCompanyCodeNName(SubCompanyCodeEdit.Text, SubCompanyEdit.Text);
-  try
-    SaveSubContractEdit2MasterSubContract(LCustomer);
-  finally
-    FreeAndNil(LCustomer);
-  end;
-end;
-
-procedure TTaskEditF.SaveSubContractEdit2MasterSubContract(AMCustomer: TSQLMasterCustomer);
-begin
-  if AMCustomer.IsUpdate then
-  begin
-    if MessageDlg('협력사 정보가 이미 MasterDB에 존재합니다.' + #13#10 + '새로운 정보로 Update 하시겠습니까?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
-      g_MasterDB.Update(AMCustomer);
-  end
-  else
-  begin
-    LoadTaskForm2MasterSubContractor(Self,AMCustomer, Self.FTask.ID);
-    g_MasterDB.Add(AMCustomer, true);
-  end;
-end;
-
 procedure TTaskEditF.SelectMailBtnClick(Sender: TObject);
 begin
   ShowDTIForm;
@@ -581,9 +793,8 @@ begin
 
   if ASOR.FSubConName = '' then
   begin
-    ShowMessage('협력사 이름이 없습니다.');
-    SubCompanyEdit.Color := clRed;
-    SubCompanyEdit.SetFocus;
+    ShowMessage('협력사가 지정되지 않았습니다!');
+    PageControl1.TabIndex := 3;
     Result := False;
   end;
 end;
@@ -591,6 +802,11 @@ end;
 procedure TTaskEditF.Content2Clipboard(AContent: string);
 begin
   Clipboard.AsText := AContent;
+end;
+
+procedure TTaskEditF.CurWorkCBChange(Sender: TObject);
+begin
+  NextWorkCB.Text := GetNextSalesProcess2String(CurWorkCB.Text);
 end;
 
 procedure TTaskEditF.CurWorkCBDropDown(Sender: TObject);
@@ -678,7 +894,7 @@ begin
   try
     with LSearchCustomerF do
     begin
-      FCompanyType := ctNull;
+      FCompanyType := [ctNull];
 
       if ShowModal = mrOk then
       begin
@@ -686,7 +902,7 @@ begin
         begin
           CustomerNameCB.Text := NextGrid1.CellByName['CompanyName', NextGrid1.SelectedRow].AsString;
           CustCompanyCodeEdit.Text := NextGrid1.CellByName['CompanyCode', NextGrid1.SelectedRow].AsString;
-          CustCompanyTypeCB.Text := NextGrid1.CellByName['CompanyType', NextGrid1.SelectedRow].AsString;
+          CustCompanyTypeCB.Text := NextGrid1.CellByName['CompanyTypes', NextGrid1.SelectedRow].AsString;
           CustManagerEdit.Text := NextGrid1.CellByName['ManagerName', NextGrid1.SelectedRow].AsString;
           CustPositionEdit.Text := NextGrid1.CellByName['Position', NextGrid1.SelectedRow].AsString;
           CustEmailEdit.Text := NextGrid1.CellByName['EMail', NextGrid1.SelectedRow].AsString;
@@ -704,22 +920,11 @@ end;
 
 procedure TTaskEditF.Button3Click(Sender: TObject);
 begin
+  FToDoCollect.Clear;
   LoadToDoCollectFromTask(FEmailDisplayTask, FToDoCollect);
 
   Create_ToDoList_Frm(IntToStr(FEmailDisplayTask.ID), FToDoCollect, False,
     InsertOrUpdateToDoList2DB, DeleteToDoListFromDB);
-end;
-
-procedure TTaskEditF.Button4Click(Sender: TObject);
-begin
-  if (SubCompanyCodeEdit.Text = '') or (SubCompanyEdit.Text = '') then
-  begin
-    ShowMessage('회사이름 과 업체코드는 필수 입력 항목 입니다.');
-    exit;
-  end;
-
-  if MessageDlg('Are you sure save to MasterSubContractDB?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
-    SaveSubConEdit2MasterCustomer;
 end;
 
 procedure TTaskEditF.fileGridCellDblClick(Sender: TObject; ACol, ARow: Integer);
@@ -757,6 +962,7 @@ begin
       begin
         TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).
           FileNames.Add(FileGrid.CellByName['FileName',i].AsString);
+        break;
       end;
 
     DropEmptySource1.Execute;
@@ -768,13 +974,15 @@ begin
   FTask := nil;
   FSQLGSFiles := nil;
   FFSMState := nil;
+  g_RemoteIPAddress := '';
   (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
+  (DataFormatAdapter3.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream2;
   FToDoCollect := TpjhToDoItemCollection.Create(TpjhTodoItem);
   FOLMessagesFromDrop := TStringList.Create;
   FSalesProcessList := TStringList.Create;
   ElecProductType2Combo(ProductTypeCB);
 //  SalesProcess2Combo(CurWorkCB);
-  SalesProcessType2Combo(SalesProcTypeCB);
+  g_SalesProcessType.SetType2Combo(SalesProcTypeCB);
   CompanyType2Combo(CustCompanyTypeCB);
 
   PageControl1.ActivePageIndex := 0;
@@ -829,6 +1037,19 @@ begin
   end;
 end;
 
+function TTaskEditF.GetNextSalesProcess2String(ASalesProcess: string): string;
+var
+  LSalesProcess: TSalesProcess;
+begin
+  Result := '';
+
+  if ASalesProcess <> '' then
+  begin
+    LSalesProcess := g_SalesProcess.ToType(ASalesProcess);
+    Result := g_SalesProcess.ToString(LSalesProcess);
+  end;
+end;
+
 function TTaskEditF.GetQTN_InqContent: string;
 begin
   Result := GetQTNContent(FEmailDisplayTask);
@@ -880,25 +1101,33 @@ begin
   Result.FValidateDate := FormatDateTime('mmm.dd.yyyy', now+30);
 end;
 
-function TTaskEditF.Get_Doc_ServiceOrder_Rec: Doc_ServiceOrder_Rec;
+function TTaskEditF.Get_Doc_ServiceOrder_Rec(AIdx: integer): Doc_ServiceOrder_Rec;
 var
   LPeriod:string;
   LDays: integer;
 begin
-  Result.FSubConName := SubCompanyEdit.Text;
-  Result.FSubConManager := SubManagerEdit.Text;
-  Result.FSubConPhonNo := SubPhonNumEdit.Text;
-  Result.FSubConEmail := SubEmailEdit.Text;
+  if SubConGrid.RowCount = 0 then
+  begin
+    ShowMessage('협력사가 없습니다.');
+    exit;
+  end;
+
+  Result.FSubConName := SubConGrid.CellsByName['CompanyName', AIdx];
+  Result.FSubConManager := SubConGrid.CellsByName['ManagerName', AIdx];
+  Result.FSubConPhonNo := SubConGrid.CellsByName['OfficePhone', AIdx];
+  Result.FSubConEmail := SubConGrid.CellsByName['EMail', AIdx];
+  Result.FEngineerNo := SubConGrid.CellsByName['SECount', AIdx];
+  Result.FSubConPrice := SubConGrid.CellsByName['SubConPrice', AIdx];
   Result.FHullNo := HullNoEdit.Text;
   Result.FShipName := ShipNameEdit.Text;
   Result.FSubject := WorkSummaryEdit.Text;
   Result.FShipOwner := ShipOwnerEdit.Text;
 //  Result.FWorkDesc := WorkSummaryEdit.Text;
   Result.FProduceType := ProductTypeCB.Text;
-  if ServicePOEdit.Text = '' then
-    Result.FPONo2SubCon := OrderNOEdit.Text
-  else
-    Result.FPONo2SubCon := ServicePOEdit.Text;
+//  if ServicePOEdit.Text = '' then
+//    Result.FPONo2SubCon := OrderNOEdit.Text
+//  else
+    Result.FPONo2SubCon := SubConGrid.CellsByName['ServicePO', AIdx];
   Result.FOrderDate := FormatDateTime('dd.mmm.yyyy', now);
   Result.FWorkSch := '1.Place : ' + NationPortEdit.Text;
   LPeriod := FormatDateTime('yyyy.mm.dd', WorkBeginPicker.Date);
@@ -912,7 +1141,6 @@ begin
     Result.FWorkDays := IntToStr(LDays+1);
 
   Result.FWorkSch := Result.FWorkSch + #13#10 + '2.Period : ' + LPeriod;
-  Result.FEngineerNo := SECountEdit.Text;
   Result.FLocalAgent := CustAgentMemo.Text;
   Result.FLocalAgent := Result.FLocalAgent.Replace(#13,'');
 
@@ -920,7 +1148,12 @@ begin
   Result.FCustomer := CustomerNameCB.Text;
   Result.FNationPort := NationPortEdit.Text;
   Result.FWorkSummary := WorkSummaryEdit.Text;
-  Result.FSubConPrice := SubConPriceEdit.Text;
+  Result.FManagerDepartment := ManagerDepartmentEdit.Text;
+end;
+
+procedure TTaskEditF.HullNoEditClickBtn(Sender: TObject);
+begin
+  ShowSearchVesselForm;
 end;
 
 procedure TTaskEditF.INQInput1Click(Sender: TObject);
@@ -931,6 +1164,11 @@ begin
   Content2Clipboard(LStr);
 end;
 
+procedure TTaskEditF.JvLabel5Click(Sender: TObject);
+begin
+  FrmInqManage.InquiryF.TestRemoteTaskEmailList(FEmailDisplayTask);
+end;
+
 procedure TTaskEditF.LoadCustomer2Form(ACustomer: TSQLCustomer;
   AForm: TTaskEditF);
 begin
@@ -938,7 +1176,7 @@ begin
   begin
     CustomerNameCB.Text := ACustomer.CompanyName;
     CustCompanyCodeEdit.Text := ACustomer.CompanyCode;
-    CustCompanyTypeCB.ItemIndex := Ord(ACustomer.CompanyType);
+    CustCompanyTypeCB.ItemIndex := GetFirstCompanyTypeIndex(ACustomer.CompanyTypes);
     CustManagerEdit.Text := ACustomer.ManagerName;
     CustEmailEdit.Text := ACustomer.EMail;
     CustomerAddressMemo.Text := ACustomer.CompanyAddress;
@@ -1026,9 +1264,6 @@ begin
 end;
 
 procedure TTaskEditF.LoadGSFiles2Form(AGSFile: TSQLGSFile; AForm: TTaskEditF);
-var
-  LSQLGSFileRec: TSQLGSFileRec;
-  LRow: integer;
 begin
   with AForm do
   begin
@@ -1036,16 +1271,27 @@ begin
       FileGrid.BeginUpdate;
       FileGrid.ClearRows;
 
+      if AGSFile.IsUpdate then
+        AGSFile.FillRewind;
+
       while AGSFile.FillOne do
       begin
-        for LRow := Low(AGSFile.Files) to High(AGSFile.Files) do
-        begin
-          SQLGSFileRec2Grid(AGSFile.Files[LRow], FileGrid);
-        end;
+        LoadGSFile2Form(AGSFile, AForm);
       end;
     finally
       FileGrid.EndUpdate;
     end;
+  end;
+end;
+
+procedure TTaskEditF.LoadGSFile2Form(AGSFile: TSQLGSFile; AForm: TTaskEditF);
+var
+//  LSQLGSFileRec: TSQLGSFileRec;
+  LRow: integer;
+begin
+  for LRow := Low(AGSFile.Files) to High(AGSFile.Files) do
+  begin
+    SQLGSFileRec2Grid(AGSFile.Files[LRow], AForm.FileGrid);
   end;
 end;
 
@@ -1064,19 +1310,184 @@ begin
   end;
 end;
 
-procedure TTaskEditF.LoadSubCon2Form(ASubCon: TSQLSubCon; AForm: TTaskEditF);
+procedure TTaskEditF.LoadSubCon2Form(ASubCon: TSQLSubCon; AForm: TTaskEditF; ARow: integer);
+var
+  LRow: integer;
+  LIDList: TIDList4Invoice;
+  LDoc: TDocVariantData;
+
+  procedure AssignGridFromSubCon;
+  begin
+    SubConGrid.CellsByName['CompanyName', LRow] := ASubCon.CompanyName;
+    SubConGrid.CellsByName['CompanyCode', LRow] := ASubCon.CompanyCode;
+    SubConGrid.CellsByName['ManagerName', LRow] := ASubCon.ManagerName;
+    SubConGrid.CellsByName['EMail', LRow] := ASubCon.EMail;
+    SubConGrid.CellsByName['CompanyAddress', LRow] := ASubCon.CompanyAddress;
+    SubConGrid.CellsByName['Nation', LRow] := ASubCon.Nation;
+    SubConGrid.CellsByName['OfficePhone', LRow] := ASubCon.OfficePhone;
+    SubConGrid.CellsByName['MobilePhone', LRow] := ASubCon.MobilePhone;
+    SubConGrid.CellsByName['Position', LRow] := ASubCon.Position;
+    SubConGrid.CellsByName['ServicePO', LRow] := ASubCon.ServicePO;
+    SubConGrid.CellByName['TaskID', LRow].AsInteger := ASubCon.TaskID;
+    SubConGrid.CellByName['SubConID', LRow].AsInteger := ASubCon.SubConID;
+    SubConGrid.CellsByName['UniqueSubConID', LRow] := ASubCon.UniqueSubConID;
+    SubConGrid.CellByName['BusinessAreas', LRow].AsInteger := TBusinessArea_SetToInt(ASubCon.BusinessAreas);
+//    SubConGrid.CellByName['ShipProductTypes', ARow].AsInteger := ASubCon.ShipProductTypes;
+//    SubConGrid.CellByName['Engine2SProductTypes', ARow].AsInteger := ASubCon.Engine2SProductTypes;
+//    SubConGrid.CellsByName['Engine4SProductTypes', ARow] := ASubCon.Engine4SProductTypes;
+//    SubConGrid.CellsByName['ElecProductTypes', ARow] := ASubCon.ElecProductTypes;
+    SubConGrid.CellByName['ElecProductDetailTypes', LRow].AsInteger := TElecProductDetailType_SetToInt(ASubCon.ElecProductDetailTypes);
+    LDoc.InitJSON(ASubCon.InvoiceItems);
+    SubConGrid.CellsByName['InvoiceItems', LRow] := LDoc.ToJSON;
+    LDoc.InitJSON(ASubCon.InvoiceFiles);
+    SubConGrid.CellsByName['InvoiceFiles', LRow] := LDoc.ToJSON;
+  end;
 begin
   with AForm do
   begin
-    SubCompanyEdit.Text := ASubCon.CompanyName;
-    SubCompanyCodeEdit.Text := ASubCon.CompanyCode;
-    SubManagerEdit.Text := ASubCon.ManagerName;
-    SubEmailEdit.Text := ASubCon.EMail;
-    SubCompanyAddressMemo.Text := ASubCon.CompanyAddress;
-    SubPhonNumEdit.Text := ASubCon.OfficePhone;
-    SubFaxEdit.Text := ASubCon.MobilePhone;
-    PositionEdit.Text := ASubCon.Position;
-    ServicePOEdit.Text := ASubCon.ServicePO;
+    SubConGrid.BeginUpdate;
+    try
+      if ASubCon.IsUpdate then
+      begin
+        ASubCon.FillRewind;
+
+        while ASubCon.FillOne do
+        begin
+          if ARow <> -1 then
+            LRow := ARow
+          else
+            LRow := SubConGrid.AddRow();
+
+          AssignGridFromSubCon;
+        end;
+      end
+      else
+      begin
+        if ARow <> -1 then
+          LRow := ARow
+        else
+          LRow := SubConGrid.AddRow();
+
+        AssignGridFromSubCon;
+      end;
+    finally
+      SubConGrid.EndUpdate();
+    end;
+  end;
+end;
+
+procedure TTaskEditF.LoadSubConGrid2Var(ARow: integer; var ADoc: variant);
+var
+  LVar: Variant;
+  LStr: string;
+begin
+  LStr := SubConGrid.CellsByName['Action', ARow];
+  ADoc.Action := StrToIntDef(LStr, 0);
+
+  ADoc.CompanyName := SubConGrid.CellsByName['CompanyName', ARow];
+  ADoc.OfficePhone := SubConGrid.CellsByName['OfficePhone', ARow];
+  ADoc.MobilePhone := SubConGrid.CellsByName['MobilePhone', ARow];
+  ADoc.EMail := SubConGrid.CellsByName['EMail', ARow];
+  ADoc.CompanyCode := SubConGrid.CellsByName['CompanyCode', ARow];
+  ADoc.ServicePO := SubConGrid.CellsByName['ServicePO', ARow];
+  ADoc.ManagerName := SubConGrid.CellsByName['ManagerName', ARow];
+  ADoc.Position := SubConGrid.CellsByName['Position', ARow];
+  ADoc.CompanyAddress := SubConGrid.CellsByName['CompanyAddress', ARow];
+  ADoc.Nation := SubConGrid.CellsByName['Nation', ARow];
+  ADoc.CompanyTypes := TCompanyType_SetToInt(
+    String2TCompanyType_Set(SubConGrid.CellsByName['CompanyTypes', ARow]));
+  ADoc.FirstName := SubConGrid.CellsByName['FirstName', ARow];
+  ADoc.Surname := SubConGrid.CellsByName['Surname', ARow];
+  ADoc.SECount := SubConGrid.CellsByName['SECount', ARow];
+  ADoc.SubConPrice := SubConGrid.CellsByName['SubConPrice', ARow];
+  ADoc.TaskID := SubConGrid.CellsByName['TaskID', ARow];
+  ADoc.SubConID := SubConGrid.CellsByName['SubConID', ARow];
+  ADoc.UniqueSubConID := SubConGrid.CellsByName['UniqueSubConID', ARow];
+  ADoc.SubConInvoiceNo := SubConGrid.CellsByName['SubConInvoiceNo', ARow];
+  ADoc.BusinessAreas := SubConGrid.CellsByName['BusinessAreas', ARow];
+  ADoc.ShipProductTypes := SubConGrid.CellsByName['ShipProductTypes', ARow];
+  ADoc.Engine2SProductTypes := SubConGrid.CellsByName['Engine2SProductTypes', ARow];
+  ADoc.Engine4SProductTypes := SubConGrid.CellsByName['Engine4SProductTypes', ARow];
+  ADoc.ElecProductTypes := SubConGrid.CellsByName['ElecProductTypes', ARow];
+  ADoc.ElecProductDetailTypes := SubConGrid.CellsByName['ElecProductDetailTypes', ARow];
+  LVar := _JSON(SubConGrid.CellsByName['InvoiceItems', ARow]);
+//  ADoc.ItemID := LVar.ItemID;
+  ADoc.InvoiceItems := LVar;
+  LVar := _JSON(SubConGrid.CellsByName['InvoiceFiles', ARow]);
+  ADoc.InvoiceFiles := LVar;
+end;
+
+procedure TTaskEditF.LoadSubConList2Form(ASubConList: TObjectList<TSQLSubCon>;
+  AForm: TTaskEditF);
+var
+  i: integer;
+  LSubCon: TSQLSubCon;
+begin
+  for i := 0 to ASubConList.Count - 1 do
+  begin
+    LSubCon := ASubConList.Items[i];
+    LoadSubCon2Form(LSubCon, AForm);
+  end;
+end;
+
+procedure TTaskEditF.LoadSubConFromVariant2Form(ADoc: variant;
+  ADocIsFromInvoiceManage: Boolean; ADocIsFromRemote: Boolean);
+var//ADocIsFromInvoiceManage = True인 경우에는 SubCon이 한개이고 False인 경우에는 복수개임(ADoc.SubCon이 [] 배열 형식임)
+  LRawUtf8, LSubConCompanyCode: RawUTF8;
+  LSQLSubCon: TSQLSubCon;
+  LDoc, LDoc2: TDocVariantData;
+  LVar: variant;
+  i, LRow: integer;
+
+  procedure LoadSubCon2Form_;
+  var
+    Li: integer;
+  begin
+    LRow := -1;
+
+    for Li := 0 to SubConGrid.RowCount - 1 do
+    begin
+      if (SubConGrid.CellsByName['UniqueSubConID', Li] = LSQLSubCon.UniqueSubConID) and
+        (SubConGrid.CellsByName['CompanyCode', Li] = LSQLSubCon.CompanyCode) then
+      begin
+        LRow := Li;
+        break;
+      end;
+    end;
+
+    LoadSubCon2Form(LSQLSubCon, Self, LRow);
+  end;
+begin
+  if ADoc = null then
+    exit;
+
+  if ADocIsFromRemote then
+    LSQLSubCon := CreateSubConFromVariant2(ADoc)
+  else
+    LSQLSubCon := CreateSubConFromVariant(ADoc);
+
+  try
+    if ADocIsFromRemote then
+    begin
+      LoadSubCon2Form_;
+    end
+    else
+    if ADocIsFromInvoiceManage then
+    begin
+//      LDoc.InitJSON(ADoc);
+      LoadSubCon2Form_;
+    end
+    else
+    begin
+      LDoc.InitJSON(ADoc.SubCon);
+      for i := 0 to LDoc.Count - 1 do
+      begin
+        LVar := _JSON(LDoc.Value[i]);
+        LoadSubCon2Form_;
+      end;
+    end;
+  finally
+    LSQLSubCon.Free;
   end;
 end;
 
@@ -1109,7 +1520,7 @@ begin
     ACustomer.TaskID := ATaskID;
     ACustomer.CompanyName := CustomerNameCB.Text;
     ACustomer.CompanyCode := CustCompanyCodeEdit.Text;
-    ACustomer.CompanyType := TCompanyType(CustCompanyTypeCB.ItemIndex);
+    ACustomer.CompanyTypes := ACustomer.CompanyTypes + IntToTCompanyType_Set(CustCompanyTypeCB.ItemIndex);
     ACustomer.ManagerName := CustManagerEdit.Text;
     ACustomer.Position := CustPositionEdit.Text;
     ACustomer.OfficePhone := CustPhonNumEdit.Text;
@@ -1136,7 +1547,8 @@ begin
 //    ACustomer.TaskID := ATaskID;
     ACustomer.CompanyName := CustomerNameCB.Text;
     ACustomer.CompanyCode := CustCompanyCodeEdit.Text;
-    ACustomer.CompanyType := TCompanyType(CustCompanyTypeCB.ItemIndex);
+    if CustCompanyTypeCB.ItemIndex <> -1 then
+      ACustomer.CompanyTypes := ACustomer.CompanyTypes + IntToTCompanyType_Set(CustCompanyTypeCB.ItemIndex);
     ACustomer.ManagerName := CustManagerEdit.Text;
     ACustomer.Position := CustPositionEdit.Text;
     ACustomer.OfficePhone := CustPhonNumEdit.Text;
@@ -1146,25 +1558,6 @@ begin
     ACustomer.CompanyAddress := CustomerAddressMemo.Text;
 //    CustAgentMemo.Text := ACustomer.AgentInfo;
     ACustomer.Nation := NationEdit.Text;
-  end;
-end;
-
-procedure TTaskEditF.LoadTaskForm2MasterSubContractor(AForm: TTaskEditF;
-  var ACustomer: TSQLMasterCustomer; ATaskID: TID);
-begin
-  with AForm do
-  begin
-    ACustomer.CompanyName := SubCompanyEdit.Text;
-    ACustomer.CompanyCode := SubCompanyCodeEdit.Text;
-    ACustomer.CompanyType := ctSubContractor;
-    ACustomer.ManagerName := SubManagerEdit.Text;
-    ACustomer.Position := PositionEdit.Text;
-    ACustomer.OfficePhone := SubPhonNumEdit.Text;
-    ACustomer.MobilePhone := SubFaxEdit.Text;
-
-    ACustomer.EMail := SubEmailEdit.Text;
-    ACustomer.CompanyAddress := SubCompanyAddressMemo.Text;
-    ACustomer.Nation := SubConNationEdit.Text;
   end;
 end;
 
@@ -1184,32 +1577,149 @@ begin
   end;
 end;
 
-procedure TTaskEditF.LoadTaskForm2SubCon(AForm: TTaskEditF; ASubCon: TSQLSubCon;
-  ATaskID: TID);
-begin
-  with AForm do
-  begin
-    ASubCon.TaskID := ATaskID;
-    ASubCon.CompanyName := SubCompanyEdit.Text;
-    ASubCon.CompanyCode := SubCompanyCodeEdit.Text;
-    ASubCon.ManagerName := SubManagerEdit.Text;
-    ASubCon.EMail := SubEmailEdit.Text;
-    ASubCon.CompanyAddress := SubCompanyAddressMemo.Text;
-    ASubCon.OfficePhone := SubPhonNumEdit.Text;
-    ASubCon.MobilePhone := SubFaxEdit.Text;
-    ASubCon.Position := PositionEdit.Text;
+procedure TTaskEditF.SaveSubConFromForm(AForm: TTaskEditF; ATaskID: TID);
+var
+  i: integer;
+  LSubConID: TID;
+  LSubCon: TSQLSubCon;
+  LItemList: TObjectList<TSQLSubConInvoiceItem>;
+  LFileList: TObjectList<TSQLSubConInvoiceFile>;
+  LDocItem, LDocFile: variant;
+  LAction: integer;
+  LStr, LUniqueSubConID: string;
 
-    if ServicePOEdit.Text = '' then
-      ASubCon.ServicePO := OrderNOEdit.Text
-    else
-    ASubCon.ServicePO := ServicePOEdit.Text;
+  procedure LoadSubConFromGrid;
+  begin
+    LSubCon.TaskID := ATaskID;
+    LSubCon.CompanyName := SubConGrid.CellsByName['CompanyName', i];
+    LSubCon.CompanyCode := SubConGrid.CellsByName['CompanyCode', i];
+    LSubCon.ManagerName := SubConGrid.CellsByName['ManagerName', i];
+    LSubCon.EMail := SubConGrid.CellsByName['EMail', i];
+    LSubCon.CompanyAddress := SubConGrid.CellsByName['CompanyAddress', i];
+    LSubCon.OfficePhone := SubConGrid.CellsByName['OfficePhone', i];
+    LSubCon.MobilePhone := SubConGrid.CellsByName['MobilePhone', i];
+    LSubCon.Position := SubConGrid.CellsByName['Position', i];
+    LSubCon.Nation := SubConGrid.CellsByName['Nation', i];
+    LSubCon.ServicePO := SubConGrid.CellsByName['ServicePO', i];
+    LSubCon.SubConInvoiceNo := SubConGrid.CellsByName['SubConInvoiceNo', i];
+    LSubCon.UniqueSubConID := SubConGrid.CellsByName['UniqueSubConID', i];
+    LSubCon.BusinessAreas := IntToTBusinessArea_Set(SubConGrid.CellByName['BusinessAreas', i].AsInteger);
+//    LSubCon.ShipProductTypes := SubConGrid.CellsByName['ShipProductTypes', i];
+//    LSubCon.Engine2SProductTypes := SubConGrid.CellsByName['Engine2SProductTypes', i];
+//    LSubCon.Engine4SProductTypes := SubConGrid.CellsByName['Engine4SProductTypes', i];
+//    LSubCon.ElecProductTypes := SubConGrid.CellsByName['ElecProductTypes', i];
+    LSubCon.ElecProductDetailTypes := IntToTElecProductDetailType_Set(SubConGrid.CellByName['ElecProductDetailTypes', i].AsInteger);
+
+    if LSubCon.UniqueSubConID = '' then
+    begin
+      LStr := NewGUID;
+      LStr := StringReplace(LStr, '{', '', [rfReplaceAll]);
+      LStr := StringReplace(LStr, '}', '', [rfReplaceAll]);
+
+      LSubCon.UniqueSubConID := LStr;
+    end;
+
+    AddOrUpdateSubCon(LSubCon);
+
+    if not LSubCon.IsUpdate then
+    begin
+      LSubCon.IsUpdate := True;
+
+      LSubCon.SubConID := LSubCon.ID;
+      AddOrUpdateSubCon(LSubCon);
+    end;
+
+    LDocItem := _JSON(SubConGrid.CellsByName['InvoiceItems', i]);
+    LDocFile := _JSON(SubConGrid.CellsByName['InvoiceFiles', i]);
+
+    if (LAction = 0) or (LAction = 3) then
+      DeleteSubConInvoiceItemNFileFromUniqueSubConID(LSubCon.UniqueSubConID);
+
+    LoadSubConInvoiceItemListFromVariant(LDocItem, LItemList);
+    SaveSubConInvoiceItemList2DB(LItemList);
+    LoadSubConInvoiceFileListFromVariantWithSQLSubConInvoiceFile(LDocFile, LFileList);
+    SaveSubConInvoiceFileList2DB(LFileList);
+  end;
+begin
+  LItemList := TObjectList<TSQLSubConInvoiceItem>.Create;
+  LFileList := TObjectList<TSQLSubConInvoiceFile>.Create;
+  try
+    with AForm do
+    begin
+      for i := 0 to SubConGrid.RowCount - 1 do
+      begin
+        //Action이 없을 경우 Add or Update함
+        LAction := StrToIntDef(SubConGrid.CellsByName['Action', i],0);
+
+        case LAction of
+          0: begin
+//            LSubConID := StrToIntDef(SubConGrid.CellsByName['SubConID', i], -1);
+//            LSubCon := GetSubConFromSubConID(LSubConID);
+            LUniqueSubConID := SubConGrid.CellsByName['UniqueSubConID', i];
+            LSubCon := GetSubConFromUniqueSubConID(LUniqueSubConID);
+            try
+              LoadSubConFromGrid;
+            finally
+              LSubCon.Free;
+            end;
+          end;
+          1: begin //Add
+            LSubCon := TSQLSubCon.Create;
+            try
+              LoadSubConFromGrid;
+            finally
+              LSubCon.Free;
+            end;
+          end;
+          2: begin //Delete
+//            LSubConID := StrToIntDef(SubConGrid.CellsByName['SubConID', i], -1);
+//            LSubCon := GetSubConFromSubConID(LSubConID);
+            LUniqueSubConID := SubConGrid.CellsByName['UniqueSubConID', i];
+            LSubCon := GetSubConFromUniqueSubConID(LUniqueSubConID);
+            try
+              if LSubCon.IsUpdate then
+              begin
+                DeleteSubConFromSubConID(LSubCon.ID);
+                DeleteSubConInvoiceItemNFileFromUniqueSubConID(LUniqueSubConID);
+              end;
+            finally
+              LSubCon.Free;
+            end;
+          end;
+          3: begin //Update
+//            LSubConID := StrToIntDef(SubConGrid.CellsByName['SubConID', i], -1);
+//            LSubCon := GetSubConFromSubConID(LSubConID);
+            LUniqueSubConID := SubConGrid.CellsByName['UniqueSubConID', i];
+            LSubCon := GetSubConFromUniqueSubConID(LUniqueSubConID);
+            try
+              if LSubCon.IsUpdate then
+                LoadSubConFromGrid;
+            finally
+              LSubCon.Free;
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LFileList.Clear;
+    LFileList.Free;
+    LItemList.Clear;
+    LItemList.Free;
   end;
 end;
 
-procedure TTaskEditF.LoadTaskForm2Var(AForm: TTaskEditF; out AVar: TSQLGSTask);
+procedure TTaskEditF.LoadTaskForm2SQLGSTask(AForm: TTaskEditF; out AVar: TSQLGSTask);
+var
+//  LSubConsArr: TRawUtf8DynArray;
+  i: integer;
 begin
   with AForm do
   begin
+//    for i := 0 to SubConGrid.RowCount - 1 do
+//    begin
+//
+//    end;
     AVar.HullNo := HullNoEdit.Text;
     AVar.ShipName := ShipNameEdit.Text;
 //    AVar.ReqCustomer := CustomerNameEdit.Text;
@@ -1218,18 +1728,16 @@ begin
     AVar.Order_No := OrderNoEdit.Text;
     AVar.ProductType := ProductTypeCB.Text;
     Avar.WorkSummary := WorkSummaryEdit.Text;
-    AVar.SubConPrice := SubConPriceEdit.Text;
+//    AVar.SubConPrice := SubConPriceEdit.Text;
     Avar.NationPort := NationPortEdit.Text;
     Avar.EtcContent := EtcContentMemo.Text;
-    AVar.CurrentWorkStatus := Ord(String2SalesProcess(
-      CurWorkCB.Items.Strings[CurWorkCB.ItemIndex]));
-    AVar.NextWork := Ord(String2SalesProcess(
-      NextWorkCB.Items.Strings[NextWorkCB.ItemIndex]));
-    AVar.SalesProcessType := TSalesProcessType(SalesProcTypeCB.ItemIndex);
+    AVar.CurrentWorkStatus := CurWorkCB.ItemIndex;
+    AVar.NextWork := NextWorkCB.ItemIndex;
+    AVar.SalesProcessType := g_SalesProcessType.ToType(SalesProcTypeCB.ItemIndex);
     AVar.ShipOwner := ShipOwnerEdit.Text;
 //    AVar.CompanyType := TCompanyType(CustCompanyTypeCB.ItemIndex);
-    AVar.SEList := SEEdit.Text;
-    AVar.SECount := StrToIntDef(SECountEdit.Text,0);
+    AVar.SEList := '';//SEEdit.Text;
+//    AVar.SECount := StrToIntDef(SECountEdit.Text,0);
     AVar.SalesPrice := SalesPriceEdit.Text;
     AVar.ExchangeRate := ExchangeRateEdit.Text;
     AVar.ShippingNo := ShippingNoEdit.Text;
@@ -1249,8 +1757,8 @@ begin
     Avar.WorkBeginDate := TimeLogFromDateTime(WorkBeginPicker.Date);
     Avar.WorkEndDate := TimeLogFromDateTime(WorkEndPicker.Date);
     AVar.CurWorkFinishDate := TimeLogFromDateTime(CurWorkFinishPicker.Date);
-    AVar.SRRecvDate := TimeLogFromDateTime(SRRecvDatePicker.Date);
-    AVar.SubConInvoiceIssueDate := TimeLogFromDateTime(SubConInvoiceIssuePicker.Date);
+//    AVar.SRRecvDate := TimeLogFromDateTime(SRRecvDatePicker.Date);
+//    AVar.SubConInvoiceIssueDate := TimeLogFromDateTime(SubConInvoiceIssuePicker.Date);
     AVar.SalesReqDate := TimeLogFromDateTime(SalesReqPicker.Date);
     AVar.ShippingDate := TimeLogFromDateTime(ShippingDatePicker.Date);
   end;
@@ -1272,6 +1780,9 @@ begin
       AVar.UniqueTaskID := LStr;
     end;
 
+    FEmailDisplayTask := AVar;
+    FEmailDisplayTask.TaskID := AVar.TaskID;
+
     HullNoEdit.Text := AVar.HullNo;
     ShipNameEdit.Text := AVar.ShipName;
 //    CustomerNameEdit.Text := AVar.ReqCustomer;
@@ -1280,14 +1791,14 @@ begin
     OrderNoEdit.Text := AVar.Order_No;
     ProductTypeCB.ItemIndex := Ord(String2ElecProductType(AVar.ProductType));
     WorkSummaryEdit.Text := Avar.WorkSummary;
-    SubConPriceEdit.Text := AVar.SubConPrice;
+//    SubConPriceEdit.Text := AVar.SubConPrice;
 
     NationPortEdit.Text := Avar.NationPort;
     EtcContentMemo.Text := Avar.EtcContent;
     SalesProcTypeCB.ItemIndex := Ord(AVar.SalesProcessType);
     ShipOwnerEdit.Text := AVar.ShipOwner;
-    SEEdit.Text := AVar.SEList;
-    SECountEdit.Text := IntToStr(AVar.SECount);
+//    SEEdit.Text := AVar.SEList;
+//    SECountEdit.Text := IntToStr(AVar.SECount);
     SalesPriceEdit.Text := AVar.SalesPrice;
     ExchangeRateEdit.Text := AVar.ExchangeRate;
     ShippingNoEdit.Text := AVar.ShippingNo;
@@ -1298,19 +1809,23 @@ begin
     TermsPaymentCB.ItemIndex := AVar.TermsOfPayment;
     ChargeInPersonIdEdit.Text := AVar.ChargeInPersonId;
 //    CompanyTypeCB.ItemIndex := Ord(AVar.CompanyType);
+//    ManagerDepartmentEdit.Text :=
 
-    LFSMState := AFSMClass.GetState(Ord(AVar.SalesProcessType));
+    LFSMState := nil;
+
+    if Assigned(AFSMClass) then
+      LFSMState := AFSMClass.GetState(Ord(AVar.SalesProcessType));
 
     if Assigned(LFSMState) then
     begin
 //      SPType2Combo(CurWorkCB, LFSMState);
       SalesProcess2List(FSalesProcessList, LFSMState);
       CurWorkCB.Items.Assign(FSalesProcessList);
-      CurWorkCB.ItemIndex := FSalesProcessList.IndexOf(SalesProcess2String(
-        TSalesProcess(AVar.CurrentWorkStatus)));
+      CurWorkCB.ItemIndex := FSalesProcessList.IndexOf(g_SalesProcess.ToString(
+        AVar.CurrentWorkStatus));
       NextWorkCB.Items.Assign(FSalesProcessList);
-      NextWorkCB.ItemIndex := FSalesProcessList.IndexOf(SalesProcess2String(
-        TSalesProcess(AVar.NextWork)));
+      NextWorkCB.ItemIndex := FSalesProcessList.IndexOf(g_SalesProcess.ToString(
+        AVar.NextWork));
     end;
 
     QTNInputPicker.Date := TimeLogToDateTime(AVar.QTNInputDate);
@@ -1322,14 +1837,42 @@ begin
     WorkBeginPicker.Date := TimeLogToDateTime(Avar.WorkBeginDate);
     WorkEndPicker.Date := TimeLogToDateTime(Avar.WorkEndDate);
     CurWorkFinishPicker.Date := TimeLogToDateTime(AVar.CurWorkFinishDate);
-    SRRecvDatePicker.Date := TimeLogToDateTime(AVar.SRRecvDate);
-    SubConInvoiceIssuePicker.Date := TimeLogToDateTime(AVar.SubConInvoiceIssueDate);
+//    SRRecvDatePicker.Date := TimeLogToDateTime(AVar.SRRecvDate);
+//    SubConInvoiceIssuePicker.Date := TimeLogToDateTime(AVar.SubConInvoiceIssueDate);
     SalesReqPicker.Date := TimeLogToDateTime(AVar.SalesReqDate);
     ShippingDatePicker.Date := TimeLogToDateTime(AVar.ShippingDate);
 
     FSQLGSFiles := GetFilesFromTask(AVar);
     LoadGSFiles2Form(FSQLGSFiles, AForm);
   end;
+end;
+
+function TTaskEditF.MakeCompanyInfoFromGrid2JSON: string;
+var
+  LVar: variant;
+  LRaw: RawByteString;
+  LUtf8: RawUTF8;
+  LRow: integer;
+begin
+  LRow := SubConGrid.SelectedRow;
+
+  if LRow = -1 then
+    exit;
+
+  TDocVariant.New(LVar);
+
+  LVar.CompanyName := SubConGrid.CellsByName['CompanyName', LRow];
+  LVar.CompanyCode := SubConGrid.CellsByName['CompanyCode', LRow];
+  LVar.CompanyAddress := SubConGrid.CellsByName['CompanyAddress', LRow];
+  LVar.CompanyType := SubConGrid.CellsByName['CompanyType', LRow];
+  LVar.Nation := SubConGrid.CellsByName['Nation', LRow];
+  LVar.EMail := SubConGrid.CellsByName['EMail', LRow];
+
+  LUtf8 := LVar;
+  LRaw := LUtf8;
+  LRaw := SynLZCompress(LRaw);
+  LUtf8 := BinToBase64(LRaw);
+  Result := UTF8ToString(LUtf8);
 end;
 
 procedure TTaskEditF.N18Click(Sender: TObject);
@@ -1466,6 +2009,22 @@ begin
   end;
 end;
 
+procedure TTaskEditF.OnGetStream2(
+  Sender: TFileContentsStreamOnDemandClipboardFormat; Index: integer;
+  out AStream: IStream);
+var
+  LStream: TStringStream;
+begin
+  LStream := TStringStream.Create;
+  try
+    LStream.WriteString(FTaskJson);
+    AStream := nil;
+    AStream := TFixedStreamAdapter.Create(LStream, soOwned);
+  except
+    raise;
+  end;
+end;
+
 procedure TTaskEditF.ProductTypeCBDropDown(Sender: TObject);
 begin
   ElecProductType2Combo(ProductTypeCB);
@@ -1510,16 +2069,27 @@ begin
   end;
 end;
 
-class procedure TTaskEditF.ShowEMailListFromTask(ATask: TSQLGSTask);
+class procedure TTaskEditF.ShowEMailListFromTask(ATask: TSQLGSTask; ARemoteIPAddress, APort, ARoot: string);
 var
   LViewMailListF: TViewMailListF;
+  LUtf8: RawUTF8;
 begin
   LViewMailListF := TViewMailListF.Create(nil);
   try
     begin
       LViewMailListF.FTask := ATask;
 //      LViewMailListF.SetMoveFolderIndex; //모든 StoredID가 동일하여 효과 없음
-      LoadEmailListFromTask(ATask, LViewMailListF);
+      if ARemoteIPAddress = '' then
+        LoadEmailListFromTask(ATask, LViewMailListF)
+      else
+      begin
+        LViewMailListF.FRemoteIPAddress := ARemoteIPAddress;
+        LUtf8 := IntToStr(ATask.TaskID);
+        LUtf8 := SendReq2InqManagerServer_Http(ARemoteIPAddress, APort, ARoot,
+          CMD_REQ_TASK_EAMIL_LIST, LUtf8);
+        LUtf8 := MakeBase64ToUTF8(LUtf8);
+        ShowEmailListFromJson(LViewMailListF.grid_Mail, LUtf8);
+      end;
 
       if LViewMailListF.ShowModal = mrOK then
       begin
@@ -1549,6 +2119,8 @@ begin
     if AFileName <> '' then
       LFileSelectF.JvFilenameEdit1.FileName := AFileName;
 
+    g_GSDocType.SetType2Combo(LFileSelectF.ComboBox1);
+
     if LFileSelectF.ShowModal = mrOK then
     begin
       if LFileSelectF.JvFilenameEdit1.FileName = '' then
@@ -1566,8 +2138,9 @@ begin
             LDoc := StringFromFile(LFileSelectF.JvFilenameEdit1.FileName);
 
           LSQLGSFileRec.fData := LDoc;
-          LSQLGSFileRec.fGSDocType := String2GSDocType(LFileSelectF.ComboBox1.Text);
+          LSQLGSFileRec.fGSDocType := g_GSDocType.ToOrdinal(LFileSelectF.ComboBox1.Text);
           LSQLGSFileRec.fFilename := lfilename;
+          lsize := Length(LDoc);
 
           if not Assigned(FSQLGSFiles) then
             FSQLGSFiles := TSQLGSFile.Create;
@@ -1588,6 +2161,66 @@ begin
   end;
 end;
 
+procedure TTaskEditF.ShowSearchVesselForm;
+var
+  LSearchVesselF: TSearchVesselF;
+begin
+  LSearchVesselF := TSearchVesselF.Create(nil);
+  try
+    if LSearchVesselF.ShowModal = mrOK then
+    begin
+      if LSearchVesselF.VesselListGrid.SelectedRow <> -1 then
+      begin
+        HullNoEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['HullNo',LSearchVesselF.VesselListGrid.SelectedRow];
+        ShipNameEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['ShipName',LSearchVesselF.VesselListGrid.SelectedRow];
+//        ShipNameEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['ImoNo',LSearchVesselF.VesselListGrid.SelectedRow];
+      end;
+    end;
+  finally
+    LSearchVesselF.Free;
+  end;
+end;
+
+procedure TTaskEditF.ShowSubConEditFormFromSubConGrid(ARow: integer);
+//---ShowSubConEditFormFromSubConGrid()함수 실행 시점
+//1. TaskEditForm에서 SubConGrid를 더블 클릭시
+var 
+  LSubCompanyEditF: TSubCompanyEditF;
+  LSubConID, LItemID: TID;
+  LDoc: Variant;
+  LSubCon: TSQLSubCon;
+begin
+  LSubCompanyEditF := TSubCompanyEditF.Create(nil);
+  try
+    TDocVariant.New(LDoc);
+    LoadSubConGrid2Var(ARow,LDoc);
+    LSubCompanyEditF.LoadEditFormFromVar(LDoc);
+
+    if LSubCompanyEditF.ShowModal = mrOK then
+    begin
+      LSubCon := TSQLSubCon.Create;
+      try
+        LSubCon.TaskID := StrToIntDef(LDoc.TaskID, 0);
+        LSubCon.SubConID := StrToIntDef(LDoc.SubConID, 0);
+        LSubCon.UniqueSubConID := LDoc.UniqueSubConID;
+        LSubCompanyEditF.LoadEditForm2SQLSubCon(LSubCon);
+        LoadSubCon2Form(LSubCon, Self, ARow);
+        SubConGrid.CellByName['Action', ARow].AsInteger := 3; //Update Action
+      finally
+        LSubCon.Free;
+      end;
+//      LSubConID := StrToIntDef(LDoc.SubConID,0);
+//      LSubCon := GetSubConFromSubConID(LSubConID);
+//      LSubCompanyEditF.LoadEditForm2SQLSubCon(LSubCon);
+//
+//      //InvoiceItem은 저장하지 않음(Read-Only), InvoiceItem 편집은 InvoiceManager에서만 가능함
+//      AddOrUpdateSubCon(LSubCon);
+    end;
+  finally
+    LSubCompanyEditF.Free;
+  end;
+end;
+
 procedure TTaskEditF.SPType2Combo(ACombo: TComboBox; AFSMState: TFSMState);
 var
   LIntArr: TIntegerArray;
@@ -1604,7 +2237,7 @@ begin
   LIntArr := AFSMState.GetOutputs;
 
   for i := Low(LIntArr) to High(LIntArr) do
-    ACombo.Items.Add(SalesProcess2String(TSalesProcess(LIntArr[i])));
+    ACombo.Items.Add(g_SalesProcess.ToString(LIntArr[i]));
 end;
 
 procedure TTaskEditF.SQLGSFileCopy(ASrc: TSQLGSFile; out ADest: TSQLGSFile);
@@ -1631,37 +2264,81 @@ var
 begin
   LRow := AGrid.AddRow();
   AGrid.CellByName['FileName', LRow].AsString := ARec.fFilename;
-  AGrid.CellByName['DocType', LRow].AsString := GSDocType2String(ARec.fGSDocType);
+  AGrid.CellByName['DocType', LRow].AsString := g_GSDocType.ToString(ARec.fGSDocType);
 end;
 
-procedure TTaskEditF.SubCompanyEditClickBtn(Sender: TObject);
-var
-  LSearchCustomerF: TSearchCustomerF;
+procedure TTaskEditF.SubConGridCellDblClick(Sender: TObject; ACol,
+  ARow: Integer);
 begin
-  LSearchCustomerF := TSearchCustomerF.Create(nil);
-  try
-    with LSearchCustomerF do
-    begin
-      FCompanyType := ctSubContractor;
+  if ARow = -1 then
+    Exit;
 
-      if ShowModal = mrOk then
-      begin
-        if NextGrid1.SelectedRow <> -1 then
+  ShowSubConEditFormFromSubConGrid(ARow);
+end;
+
+procedure TTaskEditF.SubConGridMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  i: integer;
+  LSubConID: TID;
+  LFileName: string;
+begin
+  if not PtInRect(SubConGrid.GetRowRect(SubConGrid.SelectedRow), Point(X,Y)) then
+    exit;
+
+  if (DragDetectPlus(SubConGrid.Handle, Point(X,Y))) then
+  begin
+    if SubConGrid.SelectedRow = -1 then
+      exit;
+
+    LSubConID := StrToIntDef(SubConGrid.CellsByName['SubConID', SubConGrid.SelectedRow],-1);
+    TVirtualFileStreamDataFormat(DataFormatAdapter3.DataFormat).FileNames.Clear;
+    LFileName := SaveCurrentTaskAndSelectedSubCon2File(LSubConID);
+
+    if LFileName <> '' then
+      //파일 이름에 공란이 들어가면 OnGetStream 함수를 안 탐
+      TVirtualFileStreamDataFormat(DataFormatAdapter3.DataFormat).
+            FileNames.Add(LFileName);
+
+    DropEmptySource1.Execute;
+  end;
+end;
+
+procedure TTaskEditF.SubContractorAdd;
+var
+  LRow: integer;
+  LStr: string;
+  LSubCon: TSQLSubCon;
+//  LSubConID: TID;
+  LSubCompanyEditF: TSubCompanyEditF;
+begin
+  LSubCompanyEditF := TSubCompanyEditF.Create(nil);
+  try
+    if LSubCompanyEditF.ShowModal = mrOK then //Save Button 눌렀을때
+    begin
+      LSubCon := TSQLSubCon.Create;
+      try
+        if LSubCon.UniqueSubConID = '' then
         begin
-          SubCompanyEdit.Text := NextGrid1.CellByName['CompanyName', NextGrid1.SelectedRow].AsString;
-          SubCompanyCodeEdit.Text := NextGrid1.CellByName['CompanyCode', NextGrid1.SelectedRow].AsString;
-          SubManagerEdit.Text := NextGrid1.CellByName['ManagerName', NextGrid1.SelectedRow].AsString;
-          PositionEdit.Text := NextGrid1.CellByName['Position', NextGrid1.SelectedRow].AsString;
-          SubEmailEdit.Text := NextGrid1.CellByName['EMail', NextGrid1.SelectedRow].AsString;
-          SubConNationEdit.Text := NextGrid1.CellByName['Nation', NextGrid1.SelectedRow].AsString;
-          SubPhonNumEdit.Text := NextGrid1.CellByName['Officeno', NextGrid1.SelectedRow].AsString;
-          SubFaxEdit.Text := NextGrid1.CellByName['Mobileno', NextGrid1.SelectedRow].AsString;
-          SubCompanyAddressMemo.Text := NextGrid1.CellByName['CompanyAddress', NextGrid1.SelectedRow].AsString;
+          LStr := NewGUID;
+          LStr := StringReplace(LStr, '{', '', [rfReplaceAll]);
+          LStr := StringReplace(LStr, '}', '', [rfReplaceAll]);
+
+          LSubCon.UniqueSubConID := LStr;
         end;
+
+        LSubCompanyEditF.LoadEditForm2SQLSubCon(LSubCon);
+        LSubCon.TaskID := FEmailDisplayTask.ID;
+//        LSubCon := GetSubConFromSubConID(LSubConID);
+        LoadSubCon2Form(LSubCon, Self);
+        LRow := SubConGrid.LastAddedRow;
+        SubConGrid.CellByName['Action', LRow].AsInteger := 1; //Add Action
+      finally
+        LSubCon.Free;
       end;
     end;
   finally
-    LSearchCustomerF.Free;
+    LSubCompanyEditF.Free;
   end;
 end;
 

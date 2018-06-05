@@ -53,7 +53,7 @@ type
     ID: TNxTextColumn;
     ManagerName: TNxTextColumn;
     Nation: TNxTextColumn;
-    CompanyType: TNxTextColumn;
+    CompanyTypes: TNxTextColumn;
     procedure grid_SubConCellDblClick(Sender: TObject; ACol, ARow: Integer);
     procedure AeroButton1Click(Sender: TObject);
   private
@@ -156,7 +156,7 @@ begin
     CellByName['Position', LRow].AsString := Position;
     CellByName['ManagerName', LRow].AsString := ManagerName;
     CellByName['Nation', LRow].AsString := Nation;
-    CellByName['CompanyType', LRow].AsString := IntToStr(Ord(CompanyType));
+    CellByName['CompanyTypes', LRow].AsString := GetCompanyTypes2String(CompanyTypes);
     CellByName['ID', LRow].AsInteger := ID;
   end;
 end;

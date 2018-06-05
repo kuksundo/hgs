@@ -35,7 +35,6 @@ object FileSelectF: TFileSelectF
     Height = 24
     ImeName = 'Microsoft IME 2010'
     TabOrder = 0
-    OnDropDown = ComboBox1DropDown
   end
   object JvFilenameEdit1: TJvFilenameEdit
     Left = 130

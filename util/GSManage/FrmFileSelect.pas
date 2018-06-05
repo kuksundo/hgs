@@ -15,7 +15,6 @@ type
     JvFilenameEdit1: TJvFilenameEdit;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
-    procedure ComboBox1DropDown(Sender: TObject);
   private
     { Private declarations }
   public
@@ -27,13 +26,6 @@ var
 
 implementation
 
-uses CommonData;
-
 {$R *.dfm}
-
-procedure TFileSelectF.ComboBox1DropDown(Sender: TObject);
-begin
-  GSDocType2Combo(ComboBox1);
-end;
 
 end.

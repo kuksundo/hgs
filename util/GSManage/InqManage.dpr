@@ -23,10 +23,6 @@ uses
   UnitDateUtil in '..\..\common\UnitDateUtil.pas',
   UnitTodoCollect in 'UnitTodoCollect.pas',
   FrmSearchCustomer in 'FrmSearchCustomer.pas' {SearchCustomerF},
-  UnitRegistryUtil in '..\..\common\UnitRegistryUtil.pas',
-  UnitRegistrationClass in '..\..\common\UnitRegistrationClass.pas',
-  UnitRegCodeConst in '..\..\common\UnitRegCodeConst.pas',
-  UnitHttpModule in 'UnitHttpModule.pas',
   UnitRegCodeServerInterface in '..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   FrmRegistration in '..\..\common\FrmRegistration.pas' {RegistrationF},
   getIp in '..\..\common\getIp.pas',
@@ -42,13 +38,43 @@ uses
   UnitComboBoxUtil in '..\..\common\UnitComboBoxUtil.pas',
   UnitVesselMasterRecord in 'UnitVesselMasterRecord.pas',
   UnitMakeHgsDB in 'UnitMakeHgsDB.pas',
-  UnitMakeHimsenWaringSpareDB in 'QuotationManage\UnitMakeHimsenWaringSpareDB.pas';
+  UnitMakeHimsenWaringSpareDB in 'QuotationManage\UnitMakeHimsenWaringSpareDB.pas',
+  UnitInqManageWSInterface in 'UnitInqManageWSInterface.pas',
+  UnitUserDataRecord in 'UnitUserDataRecord.pas',
+  FrmSubCompanyEdit in 'FrmSubCompanyEdit.pas' {SubCompanyEditF},
+  UnitMakeMasterCustomerDB in 'UnitMakeMasterCustomerDB.pas',
+  UnitHttpModule4RegServer in '..\RegCodeManager\UnitHttpModule4RegServer.pas',
+  UnitCryptUtil in '..\..\common\UnitCryptUtil.pas',
+  UnitMustacheUtil in '..\..\common\UnitMustacheUtil.pas',
+  UnitHttpModule4InqManageServer in 'UnitHttpModule4InqManageServer.pas',
+  UnitHttpModule in 'UnitHttpModule.pas',
+  fFrmEditTariffItem in 'TariffManage\fFrmEditTariffItem.pas' {EditTariffItemF},
+  FrmDisplayTariff in 'TariffManage\FrmDisplayTariff.pas' {DisplayTariffF},
+  FrmEditTariff in 'TariffManage\FrmEditTariff.pas' {TariffEditF},
+  FrmEditVesselInfo in 'VesselList\FrmEditVesselInfo.pas' {EditVesselInfoF},
+  HtmlParserEx in '..\..\OpenSrc\htmlparser-master\HtmlParserEx.pas',
+  FrmHiMAPSelect in 'HiMAPManage\FrmHiMAPSelect.pas' {HiMAPSelectF},
+  frmHiMAPDetail in 'HiMAPManage\frmHiMAPDetail.pas' {HiMAPDetailF},
+  UnitHiMAPData in 'HiMAPManage\UnitHiMAPData.pas',
+  UnitMSBDData in 'VesselList\UnitMSBDData.pas',
+  UnitEngineMasterRecord in 'VesselList\UnitEngineMasterRecord.pas',
+  FrmFileList in 'InvoiceManage\FrmFileList.pas',
+  UnitGeneratorRecord in 'GeneratorManage\UnitGeneratorRecord.pas',
+  frmGeneratorDetail in 'GeneratorManage\frmGeneratorDetail.pas' {GeneratorDetailF},
+  FrameGSFileList in '..\..\common\Frames\FrameGSFileList.pas' {GSFileListFrame: TFrame},
+  UnitVesselData in 'VesselList\UnitVesselData.pas';
 
 {$R *.res}
+
+const
+  IM_ROOT_NAME_4_WS = 'root';
+  IM_PORT_NAME_4_WS = '708';
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
+  Application.CreateForm(TGeneratorDetailF, GeneratorDetailF);
+  InquiryF.TDTF.SetNetworkInfo(IM_ROOT_NAME_4_WS,IM_PORT_NAME_4_WS, Application.ExeName);
   Application.Run;
 end.

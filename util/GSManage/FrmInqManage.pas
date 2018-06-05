@@ -10,19 +10,34 @@ uses
   Vcl.StdCtrls, Vcl.ComCtrls, AdvGroupBox, AdvOfficeButtons, AeroButtons,
   JvExControls, JvLabel, CurvyControls, Vcl.ImgList, System.SyncObjs,
   OtlCommon, OtlComm, OtlTaskControl, OtlContainerObserver, otlTask,
-  Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
   CommonData, TaskForm, UElecDataRecord, System.Rtti,
   DragDropInternet,DropSource,DragDropFile,DragDropFormats, DragDrop, DropTarget,
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
   FrameDisplayTaskInfo, Vcl.Menus,
-  mORMotHttpClient, OLMailWSCallbackInterface, UnitRegistrationClass, UnitRegCodeConst,
-  UnitHttpModule, UnitRegCodeServerInterface, UnitRegistrationRecord,
-  thundax.lib.actions, UnitMAPSMacro;
+  mORMotHttpServer, mORMotWrappers, mORMotHttpClient, OLMailWSCallbackInterface,
+  UnitRegistrationClass, UnitRegCodeConst,
+  UnitHttpModule4RegServer, UnitRegCodeServerInterface, UnitRegistrationRecord,
+  thundax.lib.actions, UnitMAPSMacro, UnitInqManageWSInterface, UnitUserDataRecord,
+  Vcl.ExtCtrls, UnitElecServiceData;
 
 const
   WM_OLMSG_RESULT = WM_USER + 1;
 
 type
+  TServiceIM4WS = class(TInterfacedObject, IInqManageService)
+  private
+  protected
+    fConnected: array of IInqManageCallback;
+    FClientInfoList: TStringList;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure Join(const pseudo: string; const callback: IInqManageCallback);
+    procedure CallbackReleased(const callback: IInvokable; const interfaceName: RawUTF8);
+    function ServerExecute(const Acommand: RawUTF8): RawUTF8;
+  end;
+
   TWorker4OLMsg = class(TThread)
   private
     FDBMsgQueue: TOmniMessageQueue;
@@ -47,7 +62,6 @@ type
     TDTF: TDisplayTaskF;
     MAPS1: TMenuItem;
     QUOTATIONINPUT1: TMenuItem;
-    test1: TMenuItem;
     DropEmptySource1: TDropEmptySource;
     DataFormatAdapter2: TDataFormatAdapter;
     DataFormatAdapterTarget: TDataFormatAdapter;
@@ -55,6 +69,17 @@ type
     N1: TMenuItem;
     N2: TMenuItem;
     est1: TMenuItem;
+    Timer1: TTimer;
+    File1: TMenuItem;
+    OpenDialog1: TOpenDialog;
+    est2: TMenuItem;
+    ViewTariff1: TMenuItem;
+    EditTariff1: TMenuItem;
+    CreateNewTask1: TMenuItem;
+    N4: TMenuItem;
+    Close1: TMenuItem;
+    N5: TMenuItem;
+    ariff1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
@@ -70,13 +95,20 @@ type
     procedure TDTFShowTaskID1Click(Sender: TObject);
     procedure TDTFbtn_CloseClick(Sender: TObject);
     procedure QUOTATIONINPUT1Click(Sender: TObject);
-    procedure test1Click(Sender: TObject);
     procedure TDTFgrid_ReqMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure N2Click(Sender: TObject);
     procedure TDTFN16Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure est1Click(Sender: TObject);
+    procedure TDTFJvLabel8Click(Sender: TObject);
+    procedure est2Click(Sender: TObject);
+    procedure ViewTariff1Click(Sender: TObject);
+    procedure EditTariff1Click(Sender: TObject);
+    procedure Close1Click(Sender: TObject);
+    procedure CreateNewTask1Click(Sender: TObject);
   private
-    FIPCServer: TIPCServer;
+//    FIPCServer: TIPCServer;
 //    FHttpClientWebsocket: TSQLHttpClientWebsockets;
     FStopEvent    : TEvent;
     FDBMsgQueue: TOmniMessageQueue;
@@ -86,14 +118,28 @@ type
     FFileContent: RawByteString;
 //    FRegInfo: TRegistrationInfo;
 
+    //Websocket-b
+    FModel: TSQLModel;
+    FHTTPServer: TSQLHttpServer;
+    FRestServer: TSQLRestServer;
+    FServiceFactoryServer: TServiceFactoryServer;
+
+    FIpAddr: string;
+    FURL: string; //Server에서 Client에 Config Change Notify 하기 위한 Call Back URL
+    FIsServerActive,
+    FIsPJHPC,
+    FIsRunRestServer: Boolean;
+
+    FUserEmail,
+    FUserName: string;
+    FCommModes: TCommModes;
+    //Websocket-e
+
     procedure OnGetStream(Sender: TFileContentsStreamOnDemandClipboardFormat;
       Index: integer; out AStream: IStream);
 
-    procedure OnClientConnect(const Context: ICommContext);
-    procedure OnClientDisconnect(const Context: ICommContext);
-    procedure OnServerError(const Context: ICommContext; const Error: TServerError);
-    procedure OnExecuteRequest(const Context: ICommContext; const Request, Response: IMessageData);
     procedure DisplayOLMsg2Grid(const task: IOmniTaskControl; const msg: TOmniMessage);
+//    procedure DisplayTask2GridFromRemote();
 
     function CheckRegistration: Boolean;
 
@@ -104,9 +150,27 @@ type
     procedure ExecMethod(MethodName:string; const Args: array of TValue);
 
     function SaveCurrentTask2File(AFileName: string = '') : string;
+    procedure CreateNewTask;
+
+    //Websocket-b
+    procedure CreateHttpServer4WS(APort, ATransmissionKey: string;
+      aClient: TInterfacedClass; const aInterfaces: array of TGUID);
+    procedure DestroyHttpServer;
+    function SessionCreate(Sender: TSQLRestServer; Session: TAuthSession;
+                  Ctxt: TSQLRestServerURIContext): boolean;
+    function SessionClosed(Sender: TSQLRestServer; Session: TAuthSession;
+                  Ctxt: TSQLRestServerURIContext): boolean;
+    procedure InitNetwork;
+    function ServerExecuteFromClient(ACommand: RawUTF8): RawUTF8;
+    //Websocket-e
+
+    procedure TestRemoteTaskList;
+    procedure TestRemoteTaskDetail;
   public
     //Main or 단순 조회: Main := 0, 단순 조회 := 1
     FProgMode: integer;
+
+    procedure TestRemoteTaskEmailList(ATask: TSQLGSTask);
 
     procedure AsynDisplayOLMsg2Grid;//(AStopEvent: TEvent; AIPCMQFromOL: TOmniMessageQueue);
     procedure SendReqOLEmailInfo;
@@ -127,8 +191,10 @@ var
 
 implementation
 
-Uses System.DateUtils, OtlParallel, Clipbrd,
-  UnitIPCModule, FrmRegistration, Vcl.ogutil, UnitDragUtil, UnitVariantJsonUtil;
+Uses System.DateUtils, OtlParallel, Clipbrd, UViewMailList,
+  UnitIPCModule, FrmRegistration, Vcl.ogutil, UnitDragUtil, UnitVariantJsonUtil,
+  UnitMakeMasterCustomerDB, UnitBase64Util, UnitHttpModule4InqManageServer,
+  FrmEditTariff, UnitGSTariffRecord, FrmDisplayTariff;
 
 {$R *.dfm}
 
@@ -297,6 +363,69 @@ begin
 
 end;
 
+procedure TInquiryF.Close1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TInquiryF.CreateHttpServer4WS(APort, ATransmissionKey: string;
+  aClient: TInterfacedClass; const aInterfaces: array of TGUID);
+begin
+  if not Assigned(FRestServer) then
+  begin
+    // initialize a TObjectList-based database engine
+    FRestServer := TSQLRestServerFullMemory.CreateWithOwnModel([]);
+    // register our Interface service on the server side
+    FRestServer.CreateMissingTables;
+    FServiceFactoryServer := FRestServer.ServiceDefine(aClient, aInterfaces , sicShared);  //sicClientDriven
+    FServiceFactoryServer.SetOptions([], [optExecLockedPerInterface]). // thread-safe fConnected[]
+      ByPassAuthentication := true;
+  end;
+
+  if not Assigned(FHTTPServer) then
+  begin
+    // launch the HTTP server
+//    FPortName := APort;
+    FHTTPServer := TSQLHttpServer.Create(APort, [FRestServer], '+' , useBidirSocket);
+    FHTTPServer.WebSocketsEnable(FRestServer, ATransmissionKey);
+    FIsServerActive := True;
+  end;
+
+  FCommModes := FCommModes + [cmWebSocket];
+end;
+
+procedure TInquiryF.CreateNewTask;
+var
+  LTask: TSQLGSTask;
+begin
+  LTask := TSQLGSTask.Create;
+  try
+  if TaskForm.DisplayTaskInfo2EditForm(LTask, nil, null) then
+    TDTF.LoadTaskVar2Grid(LTask, TDTF.grid_Req);
+  finally
+    LTask.Free;
+  end;
+end;
+
+procedure TInquiryF.CreateNewTask1Click(Sender: TObject);
+begin
+  CreateNewTask;
+end;
+
+procedure TInquiryF.DestroyHttpServer;
+begin
+  if Assigned(FHTTPServer) then
+    FHTTPServer.Free;
+
+  if Assigned(FRestServer) then
+  begin
+    FRestServer.Free;
+  end;
+
+  if Assigned(FModel) then
+    FreeAndNil(FModel);
+end;
+
 procedure TInquiryF.DisplayOLMsg2Grid(const task: IOmniTaskControl;
   const msg: TOmniMessage);
 var
@@ -384,6 +513,27 @@ begin
   end;
 end;
 
+procedure TInquiryF.EditTariff1Click(Sender: TObject);
+begin
+  DisplayTariffEditF;
+end;
+
+procedure TInquiryF.est1Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+    if FileExists(OpenDialog1.FileName) then
+    begin
+      ImportMasterCustomerFromXlsFile(OpenDialog1.FileName);
+    end;
+  end;
+end;
+
+procedure TInquiryF.est2Click(Sender: TObject);
+begin
+  TestRemoteTaskDetail;
+end;
+
 procedure TInquiryF.ExecFunc(AFuncName: string);
 begin
   if AFuncName <> '' then
@@ -416,7 +566,7 @@ begin
     TIDList(TDTF.grid_Req.Row[i].Data).Free;
 
   FStopEvent.SetEvent;
-  FIPCServer.Stop;
+//  FIPCServer.Stop;
   g_IPCClient.DisconnectClient;
 end;
 
@@ -437,14 +587,14 @@ begin
 
   FProgMode := 0;
   SetCurrentDir(ExtractFilePath(Application.ExeName));
-  FIPCServer := TIPCServer.Create;
-  FIPCServer.OnServerError := OnServerError;
-  FIPCServer.OnClientConnect := OnClientConnect;
-  FIPCServer.OnExecuteRequest := OnExecuteRequest;
-  FIPCServer.OnClientDisconnect := OnClientDisconnect;
-
-  FIPCServer.ServerName := IPC_SERVER_NAME_4_INQMANAGE;
-  FIPCServer.Start;
+//  FIPCServer := TIPCServer.Create;
+//  FIPCServer.OnServerError := OnServerError;
+//  FIPCServer.OnClientConnect := OnClientConnect;
+//  FIPCServer.OnExecuteRequest := OnExecuteRequest;
+//  FIPCServer.OnClientDisconnect := OnClientDisconnect;
+//
+//  FIPCServer.ServerName := IPC_SERVER_NAME_4_INQMANAGE;
+//  FIPCServer.Start;
 
   (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
   FDBMsgQueue := TOmniMessageQueue.Create(1000);
@@ -453,8 +603,10 @@ begin
 
   Parallel.TaskConfig.OnMessage(WM_OLMSG_RESULT,DisplayOLMsg2Grid);
   FStopEvent := TEvent.Create;
-  UElecDataRecord.InitClient();
-  UnitRegistrationRecord.InitClient();
+  UElecDataRecord.InitClient((Application.ExeName));
+//  UnitRegistrationRecord.InitClient();
+  InitUserClient(Application.ExeName);
+  InitClient4GSTariff(Application.ExeName);
   AsynDisplayOLMsg2Grid();
   TDTF.rg_periodClick(nil);
   g_ExecuteFunction := ExecFunc;
@@ -469,11 +621,21 @@ begin
 //  if Assigned(FRegInfo) then
 //    FRegInfo.Free;
 
+  if FIsRunRestServer then
+    DestroyHttpServer;
+
   FStopEvent.SetEvent;
   FDBMsgQueue.Free;
   FIPCMQFromOL.Free;
-  FreeAndNil(FIPCServer);
+//  FreeAndNil(FIPCServer);
   FreeAndNil(FStopEvent);
+end;
+
+procedure TInquiryF.InitNetwork;
+begin
+  CreateHttpServer4WS(TDTF.FPortName, TDTF.FTransmissionKey, TServiceIM4WS, [IInqManageService]);
+  FIsRunRestServer := True;
+  TDTF.StatusBarPro1.Panels[2].Text := 'Port = ' + TDTF.FPortName;
 end;
 
 procedure TInquiryF.KeyIn_CompanyCode;
@@ -523,95 +685,85 @@ begin
   TDTF.SetConfig;
 end;
 
-procedure TInquiryF.OnClientConnect(const Context: ICommContext);
-begin
-
-end;
-
-procedure TInquiryF.OnClientDisconnect(const Context: ICommContext);
-begin
-
-end;
-
-procedure TInquiryF.OnExecuteRequest(const Context: ICommContext; const Request,
-  Response: IMessageData);
-begin
-  Parallel.Async(
-    procedure (const task: IOmniTask)
-    var
-      Command: AnsiString;
-      LocalCount: Integer;
-      LFileName: string;
-      LFileStream: TMemoryStream;
-      LStrList: TStringList;
-      rec    : TOLMsgFileRecord;
-      LOmniValue: TOmniValue;
-    begin
-      LStrList := TStringList.Create;
-      try
-        LStrList.Text := Request.Data.ReadUTF8String(CMD_LIST);
-        Command := LStrList.Values['Command'];
-
-        if Command = CMD_SEND_MAIL_ENTRYID then
-        begin
-          rec.FEntryId := LStrList.Values['EntryId'];
-          rec.FStoreId := LStrList.Values['StoreId'];
-          rec.FSender := LStrList.Values['Sender'];
-          rec.FReceiver := LStrList.Values['Receiver'];
-          rec.FReceiveDate := StrToDateTime(LStrList.Values['RecvDate']);
-          rec.FCarbonCopy := LStrList.Values['CC'];
-          rec.FBlindCC := LStrList.Values['BCC'];
-          rec.FSubject := LStrList.Values['Subject'];
-          LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
-          FIPCMQFromOL.Enqueue(TOmniMessage.Create(1, LOmniValue));
-
-          Response.ID := Format('Response nr. %d', [LocalCount]);
-          Response.Data.WriteDateTime('TDateTime', Now);
-        end
-        else
-        if Command = CMD_SEND_FOLDER_STOREID then
-        begin
-          rec.FEntryId := LStrList.Values['FolderPath'];
-          rec.FSender := LStrList.Values['FolderName'];
-          rec.FStoreId := LStrList.Values['StoreId'];
-          LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
-          FIPCMQFromOL.Enqueue(TOmniMessage.Create(2, LOmniValue));
-        end
-        else
-        if Command = 'SaveFile' then
-        begin
-          LFileName := Request.Data.ReadUnicodeString('FileName');
-          LFileStream := TMemoryStream.Create;
-          try
-            Request.Data.ReadStream('File', LFileStream);
-            LFileStream.SaveToFile('c:\private\'+LFileName);
-          finally
-            LFileStream.Free;
-          end;
-        end;
-      finally
-        LStrList.Free;
-      end;
-    end,
-
-    Parallel.TaskConfig.OnMessage(Self).OnTerminated(
-      procedure
-      begin
-      end
-    )
-  );
-end;
+//procedure TInquiryF.OnExecuteRequest(const Context: ICommContext; const Request,
+//  Response: IMessageData);
+//begin
+//  Parallel.Async(
+//    procedure (const task: IOmniTask)
+//    var
+//      Command: AnsiString;
+//      LocalCount: Integer;
+//      LFileName: string;
+//      LFileStream: TMemoryStream;
+//      LStrList: TStringList;
+//      rec    : TOLMsgFileRecord;
+//      LOmniValue: TOmniValue;
+//    begin
+//      LStrList := TStringList.Create;
+//      try
+//        LStrList.Text := Request.Data.ReadUTF8String(CMD_LIST);
+//        Command := LStrList.Values['Command'];
+//
+//        if Command = CMD_SEND_MAIL_ENTRYID then
+//        begin
+//          rec.FEntryId := LStrList.Values['EntryId'];
+//          rec.FStoreId := LStrList.Values['StoreId'];
+//          rec.FSender := LStrList.Values['Sender'];
+//          rec.FReceiver := LStrList.Values['Receiver'];
+//          rec.FReceiveDate := StrToDateTime(LStrList.Values['RecvDate']);
+//          rec.FCarbonCopy := LStrList.Values['CC'];
+//          rec.FBlindCC := LStrList.Values['BCC'];
+//          rec.FSubject := LStrList.Values['Subject'];
+//          LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
+//          FIPCMQFromOL.Enqueue(TOmniMessage.Create(1, LOmniValue));
+//
+//          Response.ID := Format('Response nr. %d', [LocalCount]);
+//          Response.Data.WriteDateTime('TDateTime', Now);
+//        end
+//        else
+//        if Command = CMD_SEND_FOLDER_STOREID then
+//        begin
+//          rec.FEntryId := LStrList.Values['FolderPath'];
+//          rec.FSender := LStrList.Values['FolderName'];
+//          rec.FStoreId := LStrList.Values['StoreId'];
+//          LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
+//          FIPCMQFromOL.Enqueue(TOmniMessage.Create(2, LOmniValue));
+//        end
+//        else
+//        if Command = 'SaveFile' then
+//        begin
+//          LFileName := Request.Data.ReadUnicodeString('FileName');
+//          LFileStream := TMemoryStream.Create;
+//          try
+//            Request.Data.ReadStream('File', LFileStream);
+//            LFileStream.SaveToFile('c:\private\'+LFileName);
+//          finally
+//            LFileStream.Free;
+//          end;
+//        end;
+//      finally
+//        LStrList.Free;
+//      end;
+//    end,
+//
+//    Parallel.TaskConfig.OnMessage(Self).OnTerminated(
+//      procedure
+//      begin
+//      end
+//    )
+//  );
+//end;
 
 procedure TInquiryF.OnGetStream(
   Sender: TFileContentsStreamOnDemandClipboardFormat; Index: integer;
   out AStream: IStream);
 var
-  Data: AnsiString;
-  i: integer;
-  SelIndex: integer;
-  Found: boolean;
+//  Data: AnsiString;
+//  i: integer;
+//  SelIndex: integer;
+//  Found: boolean;
   LStream: TStringStream;
-  LStr: string;
+//  LStr: string;
 begin
   LStream := TStringStream.Create;
   try
@@ -622,12 +774,6 @@ begin
   except
     raise;
   end;
-end;
-
-procedure TInquiryF.OnServerError(const Context: ICommContext;
-  const Error: TServerError);
-begin
-
 end;
 
 procedure TInquiryF.ProcessCommand(ARespond: string);
@@ -702,7 +848,7 @@ var
 //  LSubCon: TSQLSubCon;
 //  LMat4Proj: TSQLMaterial4Project;
 //  LV,LV2,LV3: variant;
-    LFileName, LStr: string;
+  LFileName, LStr: string;
 //    LTaskJson: RawByteString;
 //  LGuid: TGuid;
 begin
@@ -807,34 +953,34 @@ end;
 procedure TInquiryF.SendReqOLEmailInfo_CromisIPC;
 var
   LStrList: TStringList;
-  Request: IIPCData;
-  Result: IIPCData;
+//  Request: IIPCData;
+//  Result: IIPCData;
 begin
-  if g_IPCClient.IsConnected then
-  begin
-    LStrList := TStringList.Create;
-    try
-      LStrList.Add('ServerName='+IPC_SERVER_NAME_4_OUTLOOK);
-      LStrList.Add('Command='+CMD_REQ_MAILINFO_SEND);
-
-      Request := AcquireIPCData;
-      Request.ID := DateTimeToStr(Now);
-      Request.Data.WriteUTF8String(CMD_LIST,LStrList.Text);
-//      Result := g_IPCClient.ExecuteRequest(Request);
-      Result := g_IPCClient.ExecuteConnectedRequest(Request);
-
-      if g_IPCClient.AnswerValid then
-      begin
-      end;
-    finally
-      LStrList.Free;
-    end;
-  end
-  else
-  begin
-    ShowMessage('IPC is not connected : ' + IPC_SERVER_NAME_4_INQMANAGE);
-//    ShowMessage('Try Again');
-  end;
+//  if g_IPCClient.IsConnected then
+//  begin
+//    LStrList := TStringList.Create;
+//    try
+//      LStrList.Add('ServerName='+IPC_SERVER_NAME_4_OUTLOOK);
+//      LStrList.Add('Command='+CMD_REQ_MAILINFO_SEND);
+//
+//      Request := AcquireIPCData;
+//      Request.ID := DateTimeToStr(Now);
+//      Request.Data.WriteUTF8String(CMD_LIST,LStrList.Text);
+////      Result := g_IPCClient.ExecuteRequest(Request);
+//      Result := g_IPCClient.ExecuteConnectedRequest(Request);
+//
+//      if g_IPCClient.AnswerValid then
+//      begin
+//      end;
+//    finally
+//      LStrList.Free;
+//    end;
+//  end
+//  else
+//  begin
+//    ShowMessage('IPC is not connected : ' + IPC_SERVER_NAME_4_INQMANAGE);
+////    ShowMessage('Try Again');
+//  end;
 end;
 
 procedure TInquiryF.SendReqOLEmailInfo_WS;
@@ -870,6 +1016,94 @@ begin
   finally
     Client.Free;
   end;
+end;
+
+function TInquiryF.ServerExecuteFromClient(ACommand: RawUTF8): RawUTF8;
+var
+  LOmniValue: TOmniValue;
+  Command, LJson: String;
+  LStrList: TStringList;
+  LVarArr: TVariantDynArray;
+  LSearchCondRec: TSearchCondRec;
+  LTask: TSQLGSTask;
+  LVar: Variant;
+  i, LTaskId: integer;
+  LRaw: RawByteString;
+  LUtf8: RawUTF8;
+  LFileName: string;
+begin
+  LJson := MakeBase64ToString(ACommand);
+  LStrList := TStringList.Create;
+  try
+    LStrList.Text := LJson;
+    Command := LStrList.Values['Command'];
+
+    if Command = CMD_REQ_TASK_LIST then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      RecordLoadJson(LSearchCondRec, LJson, TypeInfo(TSearchCondRec));
+      TDTF.DisplayTaskInfo2Grid(LSearchCondRec, True);
+      LJson := TDTF.FTempJsonList.Text;
+      System.Delete(LJson, Length(LJson)-1,2);
+      Result := StringToUTF8(LJson);
+      Result := MakeRawUTF8ToBin64(Result);
+    end
+    else
+    if Command = CMD_REQ_TASK_DETAIL then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      LVar := _JSON(LJson);
+      LTask:= CreateOrGetLoadTask(LVar.TaskId);
+      Result := MakeTaskDetail2JSON(LTask);
+      Result := MakeRawUTF8ToBin64(Result);
+    end
+    else
+    if Command = CMD_REQ_TASK_EAMIL_LIST then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      LTaskId := StrToIntDef(LJson, 0);
+      Result := MakeTaskEmailList2JSON(LTaskId);
+      Result := MakeRawUTF8ToBin64(Result);
+    end
+    else
+    if Command = CMD_REQ_TASK_EAMIL_CONTENT then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      Result := SendReqOLEmail2MagFile(LJson);  //file path + name이 반환됨
+      LFileName := Utf8ToString(Result);
+
+      if FileExists(LFileName) then
+      begin
+        LRaw := StringFromFile(LFileName);
+        Result := MakeRawUTF8ToBin64(LRaw);
+        System.SysUtils.DeleteFile(LFileName);
+      end;
+    end
+    else
+    if Command = CMD_EXECUTE_SAVE_TASK_DETAIL then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      LVar := _JSON(LJson);
+      if SaveTaskInfo2DBFromJson(LVar) then
+        Result := 'TRUE'
+      else
+        Result := 'FALSE';
+    end;
+  finally
+    LStrList.Free;
+  end;
+end;
+
+function TInquiryF.SessionClosed(Sender: TSQLRestServer; Session: TAuthSession;
+  Ctxt: TSQLRestServerURIContext): boolean;
+begin
+
+end;
+
+function TInquiryF.SessionCreate(Sender: TSQLRestServer; Session: TAuthSession;
+  Ctxt: TSQLRestServerURIContext): boolean;
+begin
+
 end;
 
 procedure TInquiryF.TDTFbtn_CloseClick(Sender: TObject);
@@ -942,6 +1176,11 @@ begin
 //  FIPCMQFromOL.Enqueue(TOmniMessage.Create(1, LOmniValue));
 end;
 
+procedure TInquiryF.TDTFJvLabel8Click(Sender: TObject);
+begin
+  TestRemoteTaskList
+end;
+
 procedure TInquiryF.TDTFN16Click(Sender: TObject);
 begin
   TDTF.N16Click(Sender);
@@ -959,14 +1198,75 @@ begin
 
 end;
 
-procedure TInquiryF.test1Click(Sender: TObject);
+procedure TInquiryF.TestRemoteTaskDetail;
+var
+  LUtf8, LResult: RawUTF8;
+  LIdList: TIDList;
 begin
-  SaveCurrentTask2File;
-  ProcessTaskJson(FTaskJson);
-//  KeyIn_Content;
-//  Macro_MouseMove(808,279);
-//  Macro_MouseLClick;
-//  Sel_CurrencyKind(3);
+  LIdList := TIDList(TDTF.grid_Req.Row[TDTF.grid_Req.SelectedRow].Data);
+  LUtf8 := ObjectToJson(LIdList);
+  LUtf8 := MakeCommand4InqManagerServer(CMD_REQ_TASK_DETAIL, LUtf8);
+  LUtf8 := ServerExecuteFromClient(LUtf8);
+  LUtf8 := MakeBase64ToUTF8(LUtf8);
+  TDTF.ShowTaskFormFromJson(LUtf8);
+end;
+
+procedure TInquiryF.TestRemoteTaskEmailList(ATask: TSQLGSTask);
+var
+  LViewMailListF: TViewMailListF;
+  LUtf8: RawUTF8;
+begin
+  LViewMailListF := TViewMailListF.Create(nil);
+  try
+    begin
+      LViewMailListF.FTask := ATask;
+      LUtf8 := IntToStr(ATask.TaskID);
+      LUtf8 := MakeCommand4InqManagerServer(CMD_REQ_TASK_EAMIL_LIST, LUtf8);
+      LUtf8 := ServerExecuteFromClient(LUtf8);
+      LUtf8 := MakeBase64ToUTF8(LUtf8);
+      ShowEmailListFromJson(LViewMailListF.grid_Mail, LUtf8);
+
+      if LViewMailListF.ShowModal = mrOK then
+      begin
+      end;
+    end;
+  finally
+    LViewMailListF.Free;
+  end;
+end;
+
+procedure TInquiryF.TestRemoteTaskList;
+var
+  LSearchCondRec: TSearchCondRec;
+  LUtf8, LResult: RawUTF8;
+begin
+  TDTF.GetSearchCondRec(LSearchCondRec);
+  LUtf8 := RecordSaveJson(LSearchCondRec, TypeInfo(TSearchCondRec));
+  LResult := MakeCommand4InqManagerServer(CMD_REQ_TASK_LIST, LUtf8);
+  LResult := ServerExecuteFromClient(LResult);
+  LResult := MakeBase64ToUTF8(LResult);
+  TDTF.DisplayTaskInfo2GridFromJson(LResult);
+end;
+
+procedure TInquiryF.Timer1Timer(Sender: TObject);
+begin
+  Timer1.Enabled := False;
+
+  if TDTF.FSettings.WSEnabled then
+    InitNetwork;
+//  TDTF.FUserList.Add(TDTF.GetMyName(g_MyEmailInfo.SmtpAddress)+'='+g_MyEmailInfo.SmtpAddress);
+  TDTF.FillInUserList;
+  TDTF.PICCB.Items.Assign(TDTF.FUserList);
+  TDTF.PICCB.ItemIndex := -1;
+end;
+
+procedure TInquiryF.ViewTariff1Click(Sender: TObject);
+var
+  LDoc: variant;
+begin
+  LDoc := LoadGSTariff2VariantFromCompanyCodeNYear('0001056374', YearOf(now));
+  //LDoc: [] 배열 형식임
+  DisplayTariff(LDoc);
 end;
 
 { TWorker4OLMsg }
@@ -1026,6 +1326,42 @@ end;
 procedure TOLMailCallback.ClientExecute(const command, msg: string);
 begin
 
+end;
+
+{ TServiceIM4WS }
+
+procedure TServiceIM4WS.CallbackReleased(const callback: IInvokable;
+  const interfaceName: RawUTF8);
+begin
+
+end;
+
+constructor TServiceIM4WS.Create;
+begin
+  FClientInfoList :=  TStringList.Create;
+end;
+
+destructor TServiceIM4WS.Destroy;
+var
+  i: integer;
+begin
+//  for i := 0 to FClientInfoList.Count - 1 do
+//    TClientInfo(FClientInfoList.Objects[i]).Free;
+
+  FClientInfoList.Free;
+
+  inherited;
+end;
+
+procedure TServiceIM4WS.Join(const pseudo: string;
+  const callback: IInqManageCallback);
+begin
+
+end;
+
+function TServiceIM4WS.ServerExecute(const Acommand: RawUTF8): RawUTF8;
+begin
+  Result := InquiryF.ServerExecuteFromClient(ACommand);
 end;
 
 end.

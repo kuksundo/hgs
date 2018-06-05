@@ -37,9 +37,20 @@ uses
   UnitConfigIniClass2 in '..\..\common\UnitConfigIniClass2.pas',
   FrmInqManageConfig in 'FrmInqManageConfig.pas' {ConfigF},
   OLMailWSCallbackInterface in '..\OutLookAddIn\OLMail4InqManage\OLMailWSCallbackInterface.pas',
-  FrmEditProduct in '..\RegCodeManager\FrmEditProduct.pas' {ProdEditF};
+  FrmEditProduct in '..\RegCodeManager\FrmEditProduct.pas' {ProdEditF},
+  UnitHttpModule4RegServer in '..\RegCodeManager\UnitHttpModule4RegServer.pas',
+  fFrmEditTariffItem in 'TariffManage\fFrmEditTariffItem.pas' {EditTariffItemF},
+  FrmDisplayTariff in 'TariffManage\FrmDisplayTariff.pas' {DisplayTariffF},
+  FrmEditTariff in 'TariffManage\FrmEditTariff.pas' {TariffEditF},
+  FrmFileList in 'InvoiceManage\FrmFileList.pas',
+  UnitVesselData in 'VesselList\UnitVesselData.pas',
+  UnitEngineMasterData in 'VesselList\UnitEngineMasterData.pas';
 
 {$R *.res}
+
+const
+  IM_ROOT_NAME_4_WS = 'root';
+  IM_PORT_NAME_4_WS = '708';
 
 begin
   {$IfDef USE_REGCODE}
@@ -49,6 +60,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TInquiryF, InquiryF);
-  Application.CreateForm(TProdEditF, ProdEditF);
+  InquiryF.TDTF.SetNetworkInfo(IM_ROOT_NAME_4_WS,IM_PORT_NAME_4_WS, Application.ExeName);
   Application.Run;
 end.

@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, JvExControls, JvComCtrls,
   AdvGroupBox, Vcl.ComCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.Mask, JvExMask, JvToolEdit;
+  Vcl.Mask, JvExMask, JvToolEdit, AdvOfficeButtons, AdvGlowButton,
+  AdvOfficeSelectors;
 
 type
   TConfigF = class(TForm)
@@ -60,6 +61,26 @@ type
     Edit12: TEdit;
     Label19: TLabel;
     Edit13: TEdit;
+    TabSheet3: TTabSheet;
+    WSSocketEnableCB: TAdvGroupBox;
+    Label20: TLabel;
+    WSPortEdit: TEdit;
+    RemoteAuthEnableCB: TCheckBox;
+    TabSheet4: TTabSheet;
+    LowAlarmGroup: TAdvGroupBox;
+    Label22: TLabel;
+    Label24: TLabel;
+    Label31: TLabel;
+    Label37: TLabel;
+    AdvGroupBox5: TAdvGroupBox;
+    MinAlarmSoundEdit: TJvFilenameEdit;
+    MinAlarmEdit: TEdit;
+    MinAlarmColorSelector: TAdvOfficeColorSelector;
+    MinAlarmSoundCB: TCheckBox;
+    MinAlarmDeadBandEdit: TEdit;
+    MinAlarmDelayEdit: TEdit;
+    MinAlarmBlinkCB: TAdvOfficeCheckBox;
+    MinAlarmNeedAckCB: TAdvOfficeCheckBox;
   private
     { Private declarations }
   public

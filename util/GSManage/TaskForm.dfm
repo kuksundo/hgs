@@ -3,7 +3,7 @@ object TaskEditF: TTaskEditF
   Top = 0
   Caption = 'Task Edit Form'
   ClientHeight = 666
-  ClientWidth = 604
+  ClientWidth = 607
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -146,6 +146,7 @@ object TaskEditF: TTaskEditF
     ParentFont = False
     RoundedFrame = 3
     Transparent = True
+    OnClick = JvLabel5Click
     HotTrackFont.Charset = ANSI_CHARSET
     HotTrackFont.Color = clWindowText
     HotTrackFont.Height = -13
@@ -422,15 +423,6 @@ object TaskEditF: TTaskEditF
     HotTrackFont.Name = #47569#51008' '#44256#46357
     HotTrackFont.Style = []
   end
-  object HullNoEdit: TEdit
-    Left = 111
-    Top = 45
-    Width = 218
-    Height = 24
-    Alignment = taCenter
-    ImeName = 'Microsoft IME 2010'
-    TabOrder = 0
-  end
   object ShipNameEdit: TEdit
     Left = 111
     Top = 80
@@ -438,7 +430,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 1
+    TabOrder = 0
   end
   object PONoEdit: TEdit
     Left = 441
@@ -447,7 +439,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 2
+    TabOrder = 1
   end
   object QTNNoEdit: TEdit
     Left = 441
@@ -456,7 +448,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 3
+    TabOrder = 2
   end
   object OrderNoEdit: TEdit
     Left = 441
@@ -465,7 +457,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 4
+    TabOrder = 3
   end
   object QTNInputPicker: TDateTimePicker
     Left = 309
@@ -475,7 +467,7 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 5
+    TabOrder = 4
   end
   object OrderInputPicker: TDateTimePicker
     Left = 311
@@ -485,7 +477,7 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 6
+    TabOrder = 5
   end
   object InvoiceIssuePicker: TDateTimePicker
     Left = 509
@@ -495,7 +487,7 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 7
+    TabOrder = 6
   end
   object InqRecvPicker: TDateTimePicker
     Left = 114
@@ -505,7 +497,7 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 8
+    TabOrder = 7
   end
   object ProductTypeCB: TComboBox
     Left = 112
@@ -514,23 +506,27 @@ object TaskEditF: TTaskEditF
     Height = 24
     Style = csDropDownList
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 9
+    TabOrder = 8
     OnDropDown = ProductTypeCBDropDown
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 269
-    Width = 604
+    Width = 607
     Height = 397
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     Align = alBottom
-    TabOrder = 10
+    TabOrder = 9
     TabWidth = 120
     object TabSheet5: TTabSheet
       Caption = #51652#54665#54788#54889
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
-        596
+        599
         366)
       object JvLabel36: TJvLabel
         AlignWithMargins = True
@@ -775,6 +771,7 @@ object TaskEditF: TTaskEditF
         Style = csDropDownList
         ImeName = 'Microsoft IME 2010'
         TabOrder = 3
+        OnChange = CurWorkCBChange
         OnDropDown = CurWorkCBDropDown
       end
       object SalesProcTypeCB: TComboBox
@@ -805,7 +802,6 @@ object TaskEditF: TTaskEditF
         Style = csDropDownList
         ImeName = 'Microsoft IME 2010'
         TabOrder = 6
-        OnDropDown = CurWorkCBDropDown
       end
       object Button3: TButton
         Left = 400
@@ -826,6 +822,10 @@ object TaskEditF: TTaskEditF
     object TabSheet3: TTabSheet
       Caption = #52392#48512#54028#51068
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object JvLabel13: TJvLabel
         AlignWithMargins = True
         Left = 3
@@ -860,20 +860,20 @@ object TaskEditF: TTaskEditF
       object Panel3: TPanel
         Left = 98
         Top = 0
-        Width = 498
+        Width = 501
         Height = 366
         Align = alClient
         TabOrder = 0
         object Panel2: TPanel
           Left = 1
           Top = 327
-          Width = 496
+          Width = 499
           Height = 38
           Align = alBottom
           TabOrder = 0
           object AdvGlowButton6: TAdvGlowButton
             AlignWithMargins = True
-            Left = 367
+            Left = 370
             Top = 4
             Width = 125
             Height = 30
@@ -955,7 +955,7 @@ object TaskEditF: TTaskEditF
         object fileGrid: TNextGrid
           Left = 1
           Top = 1
-          Width = 496
+          Width = 499
           Height = 326
           Margins.Left = 40
           Margins.Top = 0
@@ -964,6 +964,7 @@ object TaskEditF: TTaskEditF
           Align = alClient
           Caption = ''
           Options = [goGrid, goHeader, goSelectFullRow]
+          PopupMenu = PopupMenu3
           SelectionColor = 12615680
           TabOrder = 1
           TabStop = True
@@ -990,7 +991,7 @@ object TaskEditF: TTaskEditF
             Width = 32
           end
           object FileName: TNxTextColumn
-            DefaultWidth = 342
+            DefaultWidth = 345
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -1007,7 +1008,7 @@ object TaskEditF: TTaskEditF
             ParentFont = False
             Position = 1
             SortType = stAlphabetic
-            Width = 342
+            Width = 345
           end
           object FileSize: TNxTextColumn
             Font.Charset = ANSI_CHARSET
@@ -1072,8 +1073,12 @@ object TaskEditF: TTaskEditF
     end
     object TabSheet1: TTabSheet
       Caption = #44256#44061#51221#48372
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
-        596
+        599
         366)
       object JvLabel12: TJvLabel
         AlignWithMargins = True
@@ -1473,7 +1478,7 @@ object TaskEditF: TTaskEditF
       end
       object Button1: TButton
         Left = 533
-        Top = 8
+        Top = 9
         Width = 56
         Height = 28
         Caption = 'Save MS'
@@ -1499,634 +1504,571 @@ object TaskEditF: TTaskEditF
         TabOrder = 12
       end
     end
-    object TabSheet2: TTabSheet
-      Caption = #54801#47141#49324#51221#48372
-      ImageIndex = 1
-      DesignSize = (
-        596
-        366)
-      object JvLabel15: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 4
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #54924#49324#51060#47492
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
+    object SubConTS: TTabSheet
+      Caption = #54801#47141#49324
+      ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 185
+        Width = 599
+        Height = 6
+        Cursor = crVSplit
+        Align = alTop
+        ExplicitTop = 137
       end
-      object JvLabel16: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 35
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #50629#52404#53076#46300
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel17: TJvLabel
-        AlignWithMargins = True
-        Left = 8
-        Top = 253
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #54924#49324#51452#49548
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel18: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 66
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #45812#45817#51088
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel19: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 97
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = 'S/E'
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel23: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 187
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #51060#47700#51068#51452#49548
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object Label1: TLabel
-        Left = 496
-        Top = 101
-        Width = 94
-        Height = 13
-        Caption = #44396#48516#51088' : '#49464#48120#53084#47200
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
-      object JvLabel35: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 125
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #48169#49440#51064#50896#49688
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel42: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 218
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #49324#47924#49892#51204#54868
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel43: TJvLabel
-        AlignWithMargins = True
-        Left = 283
-        Top = 218
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = 'Mobile(Fax)'
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel46: TJvLabel
-        AlignWithMargins = True
-        Left = 266
-        Top = 67
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #51649#50948
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel48: TJvLabel
-        AlignWithMargins = True
-        Left = 266
-        Top = 36
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = 'Service P.O.'
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel52: TJvLabel
-        AlignWithMargins = True
-        Left = 266
-        Top = 157
-        Width = 136
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #54801#47141#49324' Invoice '#48156#54665#51068
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel53: TJvLabel
-        AlignWithMargins = True
-        Left = 11
-        Top = 157
-        Width = 136
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = 'Service Report '#51217#49688#51068
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel54: TJvLabel
-        AlignWithMargins = True
-        Left = 187
-        Top = 126
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #44204#51201#44552#50529
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object JvLabel68: TJvLabel
-        AlignWithMargins = True
-        Left = 281
-        Top = 186
-        Width = 100
-        Height = 25
-        Alignment = taCenter
-        AutoSize = False
-        Caption = #44397#44032
-        Color = 14671839
-        FrameColor = clGrayText
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = #47569#51008' '#44256#46357
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-        RoundedFrame = 3
-        Transparent = True
-        HotTrackFont.Charset = ANSI_CHARSET
-        HotTrackFont.Color = clWindowText
-        HotTrackFont.Height = -13
-        HotTrackFont.Name = #47569#51008' '#44256#46357
-        HotTrackFont.Style = []
-      end
-      object SubCompanyCodeEdit: TEdit
-        Left = 114
-        Top = 36
-        Width = 146
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 599
+        Height = 33
+        Align = alTop
         TabOrder = 0
+        object AeroButton2: TAeroButton
+          Left = 409
+          Top = 1
+          Width = 100
+          Height = 31
+          ImageIndex = 1
+          Images = ImageList16x16
+          Version = '1.0.0.1'
+          Align = alRight
+          Caption = 'Add'
+          TabOrder = 0
+          OnClick = AeroButton2Click
+        end
+        object AeroButton3: TAeroButton
+          Left = 509
+          Top = 1
+          Width = 89
+          Height = 31
+          ImageIndex = 2
+          Images = ImageList16x16
+          Version = '1.0.0.1'
+          Align = alRight
+          Caption = 'Delete'
+          TabOrder = 1
+          OnClick = AeroButton3Click
+        end
       end
-      object SubManagerEdit: TEdit
-        Left = 114
-        Top = 67
-        Width = 146
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
+      object SubConGrid: TNextGrid
+        Left = 0
+        Top = 33
+        Width = 599
+        Height = 152
+        Margins.Left = 40
+        Margins.Top = 0
+        Touch.InteractiveGestures = [igPan, igPressAndTap]
+        Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+        Align = alTop
+        Caption = ''
+        Color = clWhite
+        HeaderSize = 35
+        Options = [goGrid, goHeader, goSelectFullRow]
+        RowSize = 20
+        PopupMenu = PopupMenu2
+        SelectionColor = 12615680
         TabOrder = 1
-      end
-      object SubCompanyAddressMemo: TMemo
-        Left = 114
-        Top = 248
-        Width = 394
-        Height = 115
-        Anchors = [akLeft, akTop, akBottom]
-        BevelInner = bvNone
-        BevelKind = bkFlat
-        ImeMode = imSHanguel
-        ImeName = 'Microsoft IME 2010'
-        ScrollBars = ssVertical
-        TabOrder = 2
-      end
-      object SEEdit: TEdit
-        Left = 114
-        Top = 98
-        Width = 375
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 3
-      end
-      object SubEmailEdit: TEdit
-        Left = 114
-        Top = 188
-        Width = 163
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 4
-      end
-      object SECountEdit: TEdit
-        Left = 114
-        Top = 126
-        Width = 47
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 5
-      end
-      object SubPhonNumEdit: TEdit
-        Left = 114
-        Top = 219
-        Width = 146
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 6
-      end
-      object SubFaxEdit: TEdit
-        Left = 386
-        Top = 219
-        Width = 146
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 7
-      end
-      object PositionEdit: TEdit
-        Left = 371
-        Top = 68
-        Width = 187
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 8
-      end
-      object ServicePOEdit: TEdit
-        Left = 372
-        Top = 37
-        Width = 186
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 9
-      end
-      object SubConInvoiceIssuePicker: TDateTimePicker
-        Left = 408
-        Top = 157
-        Width = 89
-        Height = 24
-        Date = 42843.827708518520000000
-        Time = 42843.827708518520000000
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 10
-      end
-      object SRRecvDatePicker: TDateTimePicker
-        Left = 153
-        Top = 157
-        Width = 89
-        Height = 24
-        Date = 42843.827708518520000000
-        Time = 42843.827708518520000000
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 11
-      end
-      object SubConPriceEdit: TEdit
-        Left = 290
-        Top = 127
-        Width = 199
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 12
-      end
-      object SubCompanyEdit: TAdvEditBtn
-        Left = 114
-        Top = 6
-        Width = 385
-        Height = 24
-        EmptyTextStyle = []
-        Flat = False
-        LabelFont.Charset = DEFAULT_CHARSET
-        LabelFont.Color = clWindowText
-        LabelFont.Height = -11
-        LabelFont.Name = 'Tahoma'
-        LabelFont.Style = []
-        Lookup.Font.Charset = DEFAULT_CHARSET
-        Lookup.Font.Color = clWindowText
-        Lookup.Font.Height = -11
-        Lookup.Font.Name = 'Arial'
-        Lookup.Font.Style = []
-        Lookup.Separator = ';'
-        Color = clWindow
-        ImeName = 'Microsoft IME 2010'
-        ReadOnly = False
-        TabOrder = 13
-        Text = ''
-        Visible = True
-        Version = '1.3.5.0'
-        ButtonStyle = bsButton
-        ButtonWidth = 20
-        Etched = False
-        Glyph.Data = {
-          36030000424D3603000000000000360000002800000010000000100000000100
-          1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FF4D74AB234179C5ABA7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFF4173AF008EEC009AF41F4B80FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFF2F6EB22BA7
-          F516C0FF00A0F3568BC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFEFFFF2974BB68C4F86BD4FF279CE66696C8FFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3D8FD5A4E3FEB5EEFF4CAA
-          E7669DD2FFFFFFFFFFFFFFFFFFFFFFFFFEFEFEA188898A6A6A93736E866567B0
-          9595BAA8B1359EE8BDF5FF77C4EF63A1DAFFFFFFFFFFFFFFFFFFFFFFFFD7CDCD
-          7E5857DFD3CBFFFFF7FFFFE7FFFEDBD6BB9E90584D817B8E1794E46BB5E9FFFF
-          FFFFFFFFFFFFFFFFFFFFEDE9E9886565FFFFFFFFFFFFFDF8E8FAF2DCF8EDCFFF
-          F1CFF6DEBA9F5945C0C7D5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA38889F6EFEA
-          FFFFFFFEFBF5FBF7E8F9F4DAF5EBCCE6CEACF3DAB8E2BD99AB8B8EFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFF937674FFFFFFFDFBF1FCF8EEFAF3E1FCF5E3F7F0D7F0
-          DFC1E7C9A9F0D1ABA87E75F8F6F6FFFFFFFFFFFFFFFFFFFFFFFF997D7AFFFFFC
-          F9F2E1FAF3DEFAF7E5FAF1DCF1DFC0EDD9BAECD8B9EDCAA5AF8679EDE8E9FFFF
-          FFFFFFFFFFFFFFFFFFFF9C807BFFFFEBF9EED5FAF1D7F9F2DAF2E3C6FEFBF9FF
-          FFF0EFDFC0E9C69EB0857BF5F2F3FFFFFFFFFFFFFFFFFFFFFFFFAF9596F7EAC8
-          F9EBCCEFDCBEF4E4C7F0E1C5FDFCECFAF5DDEFDCBCDFB087B59A9AFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFDED4D7BA998CFDECC4EDD4B0E5CAA8EFDBBFF2E3C4F2
-          DEBCEABF93BB8E7DE7DFE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCEBFC5
-          BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
-          B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        OnClickBtn = SubCompanyEditClickBtn
-      end
-      object Button4: TButton
-        Left = 505
-        Top = 3
-        Width = 56
-        Height = 28
-        Caption = 'Save MS'
-        TabOrder = 14
-        OnClick = Button4Click
-      end
-      object SubConNationEdit: TEdit
-        Left = 387
-        Top = 187
-        Width = 146
-        Height = 24
-        Alignment = taCenter
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 15
+        TabStop = True
+        OnCellDblClick = SubConGridCellDblClick
+        OnMouseDown = SubConGridMouseDown
+        object NxIncrementColumn1: TNxIncrementColumn
+          Alignment = taCenter
+          DefaultWidth = 32
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = []
+          Header.Caption = 'No'
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 0
+          SortType = stAlphabetic
+          Width = 32
+        end
+        object CompanyName: TNxTextColumn
+          DefaultWidth = 200
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Caption = #54924#49324#47749
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 1
+          SortType = stAlphabetic
+          Width = 200
+        end
+        object OfficePhone: TNxTextColumn
+          Alignment = taCenter
+          DefaultWidth = 100
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Caption = #54924#49324#51204#54868
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 2
+          SortType = stAlphabetic
+          Width = 100
+        end
+        object MobilePhone: TNxTextColumn
+          Alignment = taCenter
+          DefaultWidth = 100
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Caption = #55092#45824#51204#54868
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 3
+          SortType = stAlphabetic
+          Width = 100
+        end
+        object EMail: TNxTextColumn
+          Alignment = taCenter
+          DefaultWidth = 150
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Caption = 'EMail'
+          Header.Alignment = taCenter
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 4
+          SortType = stAlphabetic
+          Width = 150
+        end
+        object CompanyCode: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 5
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object ServicePO: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 6
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object ManagerName: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 7
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Position: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 8
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object CompanyAddress: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 9
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Nation: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 10
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object CompanyTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 11
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object TaskID: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 12
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object SubConID: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 13
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object FirstName: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 14
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Surname: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 15
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object SECount: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 16
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object SubConPrice: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 17
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object InvoiceItems: TNxMemoColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 18
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object InvoiceFiles: TNxMemoColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 19
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object UniqueSubConID: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 20
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object SubConInvoiceNo: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 21
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object BusinessAreas: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 22
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object ShipProductTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 23
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Engine2SProductTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 24
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Engine4SProductTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 25
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object ElecProductTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 26
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object ElecProductDetailTypes: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 27
+          SortType = stAlphabetic
+          Visible = False
+        end
+        object Action: TNxTextColumn
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Tahoma'
+          Header.Font.Style = []
+          ParentFont = False
+          Position = 28
+          SortType = stAlphabetic
+          Visible = False
+        end
       end
     end
     object TabSheet4: TTabSheet
       Caption = #51088#51116#51221#48372
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
-        596
+        599
         366)
       object JvLabel25: TJvLabel
         AlignWithMargins = True
@@ -2429,6 +2371,10 @@ object TaskEditF: TTaskEditF
     object TabSheet6: TTabSheet
       Caption = #49688#53685#51221#48372
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object JvLabel56: TJvLabel
         AlignWithMargins = True
         Left = 16
@@ -2854,19 +2800,28 @@ object TaskEditF: TTaskEditF
         ReadOnly = True
         TabOrder = 9
       end
+      object ManagerDepartmentEdit: TEdit
+        Left = 24
+        Top = 216
+        Width = 121
+        Height = 24
+        ImeName = 'Microsoft IME 2010'
+        TabOrder = 10
+        Visible = False
+      end
     end
   end
   object CurvyPanel1: TCurvyPanel
     AlignWithMargins = True
     Left = 0
     Top = 3
-    Width = 604
+    Width = 607
     Height = 36
     Margins.Left = 0
     Margins.Right = 0
     Align = alTop
     Rounding = 4
-    TabOrder = 11
+    TabOrder = 10
     object JvLabel14: TJvLabel
       Left = 10
       Top = 9
@@ -2890,7 +2845,7 @@ object TaskEditF: TTaskEditF
     end
     object btn_Close: TAeroButton
       AlignWithMargins = True
-      Left = 537
+      Left = 540
       Top = 3
       Width = 64
       Height = 30
@@ -2904,7 +2859,7 @@ object TaskEditF: TTaskEditF
     end
     object AeroButton1: TAeroButton
       AlignWithMargins = True
-      Left = 456
+      Left = 459
       Top = 3
       Width = 75
       Height = 30
@@ -2917,7 +2872,7 @@ object TaskEditF: TTaskEditF
     end
     object SelectMailBtn: TAeroButton
       AlignWithMargins = True
-      Left = 124
+      Left = 127
       Top = 3
       Width = 125
       Height = 30
@@ -2929,7 +2884,7 @@ object TaskEditF: TTaskEditF
     end
     object CancelMailSelectBtn: TAeroButton
       AlignWithMargins = True
-      Left = 255
+      Left = 258
       Top = 3
       Width = 114
       Height = 30
@@ -2942,7 +2897,7 @@ object TaskEditF: TTaskEditF
     end
     object AeroButton4: TAeroButton
       AlignWithMargins = True
-      Left = 375
+      Left = 378
       Top = 3
       Width = 75
       Height = 30
@@ -2962,7 +2917,7 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 12
+    TabOrder = 11
   end
   object WorkSummaryEdit: TEdit
     Left = 112
@@ -2971,7 +2926,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 13
+    TabOrder = 12
   end
   object NationPortEdit: TEdit
     Left = 441
@@ -2980,7 +2935,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 14
+    TabOrder = 13
   end
   object ShipOwnerEdit: TEdit
     Left = 114
@@ -2989,7 +2944,7 @@ object TaskEditF: TTaskEditF
     Height = 24
     Alignment = taCenter
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 15
+    TabOrder = 14
   end
   object QtnIssuePicker: TDateTimePicker
     Left = 509
@@ -2999,14 +2954,72 @@ object TaskEditF: TTaskEditF
     Date = 42843.827708518520000000
     Time = 42843.827708518520000000
     ImeName = 'Microsoft IME 2010'
+    TabOrder = 15
+  end
+  object HullNoEdit: TAdvEditBtn
+    Left = 114
+    Top = 47
+    Width = 215
+    Height = 24
+    EditAlign = eaCenter
+    EmptyTextStyle = []
+    Flat = False
+    LabelFont.Charset = DEFAULT_CHARSET
+    LabelFont.Color = clWindowText
+    LabelFont.Height = -11
+    LabelFont.Name = 'Tahoma'
+    LabelFont.Style = []
+    Lookup.Font.Charset = DEFAULT_CHARSET
+    Lookup.Font.Color = clWindowText
+    Lookup.Font.Height = -11
+    Lookup.Font.Name = 'Arial'
+    Lookup.Font.Style = []
+    Lookup.Separator = ';'
+    Color = clWindow
+    ImeName = 'Microsoft IME 2010'
+    ReadOnly = False
     TabOrder = 16
+    Text = ''
+    Visible = True
+    Version = '1.3.5.0'
+    ButtonStyle = bsButton
+    ButtonWidth = 20
+    Etched = False
+    Glyph.Data = {
+      36030000424D3603000000000000360000002800000010000000100000000100
+      1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FF4D74AB234179C5ABA7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF4173AF008EEC009AF41F4B80FFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFF2F6EB22BA7
+      F516C0FF00A0F3568BC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFEFFFF2974BB68C4F86BD4FF279CE66696C8FFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3D8FD5A4E3FEB5EEFF4CAA
+      E7669DD2FFFFFFFFFFFFFFFFFFFFFFFFFEFEFEA188898A6A6A93736E866567B0
+      9595BAA8B1359EE8BDF5FF77C4EF63A1DAFFFFFFFFFFFFFFFFFFFFFFFFD7CDCD
+      7E5857DFD3CBFFFFF7FFFFE7FFFEDBD6BB9E90584D817B8E1794E46BB5E9FFFF
+      FFFFFFFFFFFFFFFFFFFFEDE9E9886565FFFFFFFFFFFFFDF8E8FAF2DCF8EDCFFF
+      F1CFF6DEBA9F5945C0C7D5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA38889F6EFEA
+      FFFFFFFEFBF5FBF7E8F9F4DAF5EBCCE6CEACF3DAB8E2BD99AB8B8EFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFF937674FFFFFFFDFBF1FCF8EEFAF3E1FCF5E3F7F0D7F0
+      DFC1E7C9A9F0D1ABA87E75F8F6F6FFFFFFFFFFFFFFFFFFFFFFFF997D7AFFFFFC
+      F9F2E1FAF3DEFAF7E5FAF1DCF1DFC0EDD9BAECD8B9EDCAA5AF8679EDE8E9FFFF
+      FFFFFFFFFFFFFFFFFFFF9C807BFFFFEBF9EED5FAF1D7F9F2DAF2E3C6FEFBF9FF
+      FFF0EFDFC0E9C69EB0857BF5F2F3FFFFFFFFFFFFFFFFFFFFFFFFAF9596F7EAC8
+      F9EBCCEFDCBEF4E4C7F0E1C5FDFCECFAF5DDEFDCBCDFB087B59A9AFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFDED4D7BA998CFDECC4EDD4B0E5CAA8EFDBBFF2E3C4F2
+      DEBCEABF93BB8E7DE7DFE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCEBFC5
+      BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
+      B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+    OnClickBtn = HullNoEditClickBtn
   end
   object ImageList16x16: TImageList
     ColorDepth = cd32Bit
     Left = 11
     Top = 8
     Bitmap = {
-      494C010130009800280410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101300098007C0410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4893,26 +4906,26 @@ object TaskEditF: TTaskEditF
     OnDrop = DropEmptyTarget1Drop
     Target = fileGrid
     Left = 12
-    Top = 500
+    Top = 588
   end
   object DataFormatAdapterTarget: TDataFormatAdapter
     DragDropComponent = DropEmptyTarget1
     DataFormatName = 'TVirtualFileStreamDataFormat'
-    Left = 48
-    Top = 500
+    Left = 40
+    Top = 588
   end
   object DataFormatAdapter1: TDataFormatAdapter
     DragDropComponent = DropEmptyTarget1
     DataFormatName = 'TFileDataFormat'
-    Left = 82
-    Top = 500
+    Left = 74
+    Top = 588
   end
   object Imglist16x16: TImageList
     ColorDepth = cd32Bit
     Left = 48
     Top = 8
     Bitmap = {
-      494C010110001400FC0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010110001400500110001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5583,11 +5596,37 @@ object TaskEditF: TTaskEditF
     DragDropComponent = DropEmptySource1
     DataFormatName = 'TVirtualFileStreamDataFormat'
     Left = 44
-    Top = 579
+    Top = 619
   end
   object DropEmptySource1: TDropEmptySource
     DragTypes = [dtCopy, dtMove]
     Left = 12
-    Top = 579
+    Top = 619
+  end
+  object DataFormatAdapter3: TDataFormatAdapter
+    DragDropComponent = DropEmptySource1
+    DataFormatName = 'TVirtualFileStreamDataFormat'
+    Left = 76
+    Top = 623
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 120
+    Top = 11
+    object SaveCompanyinfoashgs1: TMenuItem
+      Caption = 'Save Company info to *.hgsreg'
+      OnClick = SaveCompanyinfoashgs1Click
+    end
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 12
+    Top = 552
+  end
+  object PopupMenu3: TPopupMenu
+    Left = 120
+    Top = 40
+    object Saveas1: TMenuItem
+      Caption = 'Save as ...'
+      OnClick = Saveas1Click
+    end
   end
 end

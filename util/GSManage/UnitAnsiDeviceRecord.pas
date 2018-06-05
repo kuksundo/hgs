@@ -43,7 +43,7 @@ type
   end;
 
 function CreateAnsiDeviceModel: TSQLModel;
-procedure InitAnsiDeviceClient();
+procedure InitAnsiDeviceClient(AExeName: string);
 
 function GetAnsiDeviceFromDeviceNo(const ADeviceNo: string): TSQLAnsiDeviceRecord;
 function GetAnsiDeviceFromSearchRec(AAnsiDeviceNoSearchRec: TAnsiDeviceNoSearchRec): TSQLAnsiDeviceRecord;
@@ -61,18 +61,20 @@ var
 
 implementation
 
-uses SysUtils, mORMotSQLite3, VarRecUtils, Vcl.Dialogs;
+uses SysUtils, mORMotSQLite3, VarRecUtils, Vcl.Dialogs, Forms, UnitFolderUtil;
 
 function CreateAnsiDeviceModel: TSQLModel;
 begin
   result := TSQLModel.Create([TSQLAnsiDeviceRecord]);
 end;
 
-procedure InitAnsiDeviceClient();
+procedure InitAnsiDeviceClient(AExeName: string);
 var
   LStr: string;
 begin
-  LStr := 'AnsiDeviceData.sqlite';
+  LStr := GetSubFolderPath(ExtractFilePath(AExeName), 'db');
+  LStr := EnsureDirectoryExists(LStr);
+  LStr := LStr + 'AnsiDeviceData.sqlite';
   AnsiDeviceModel:= CreateAnsiDeviceModel;
   g_AnsiDeviceDB:= TSQLRestClientDB.Create(AnsiDeviceModel, CreateAnsiDeviceModel,
     LStr, TSQLRestServerDB);
