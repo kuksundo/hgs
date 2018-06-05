@@ -4,13 +4,15 @@ interface
 
 uses Windows, Classes, SysUtils, WinSock, IpHlpApi, IpTypes, IdTCPClient;
 
-function GetLocalIP(AIndex: integer; AStrings: TStrings=nil) : string;
+function GetLocalIP(AIndex: integer = -1; AStrings: TStrings=nil) : string;
 function GetLocalIPList : TStrings;
 procedure RetrieveLocalAdapterInformation(strings: TStrings);
 function CheckTCP_PortOpen(ipAddressStr: Ansistring; dwPort: Word): Boolean;
 function IsPortActive(AHost : string; APort : Word): boolean;
 
 implementation
+
+uses UnitStringUtil;
 
 function RemoveNonIp(AString: string): string;
 var
@@ -25,7 +27,7 @@ end;
 // returns ISP assigned IP
 //AIndex = -1 이면 모든 어댑터 IP를 AStrings로 반환함
 //AIndex = 0 이면 첫번째 어댑터 IP를 반환함
-function GetLocalIP(AIndex: integer; AStrings: TStrings=nil) : string;
+function GetLocalIP(AIndex: integer = -1; AStrings: TStrings=nil) : string;
 type
     TaPInAddr = array [0..10] of PInAddr;
     PaPInAddr = ^TaPInAddr;
@@ -50,11 +52,12 @@ begin
 
     while pptr^[I] <> nil do
     begin
-      result:=StrPas(inet_ntoa(pptr^[I]^));
+      Result:=StrPas(inet_ntoa(pptr^[I]^));
 
       if AIndex = -1 then
       begin
-        AStrings.Add(Result);
+        if Assigned(AStrings) then
+          AStrings.Add(Result);
       end;
 
       if (AIndex = I) then

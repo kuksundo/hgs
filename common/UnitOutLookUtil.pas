@@ -2,7 +2,7 @@ unit UnitOutLookUtil;
 
 interface
 
-uses ComObj, Variants, SysUtils, Dialogs, ActiveX, Vcl.ComCtrls;
+uses Windows, ComObj, Variants, SysUtils, Dialogs, ActiveX, Vcl.ComCtrls, Outlook2010;
 
 const
   olAppointmentItem = 1;
@@ -76,6 +76,7 @@ procedure GetOutLook;
 procedure SetAppointment2LV(ALV: TListView; AFolder: OLEVariant);
 procedure SetContact2LV(ALV: TListView; AFolder: OLEVariant);
 function GetOLHandle(const OutlookApp: TOutlookApplication): HWND;
+function GetMailItemFromMsgFile(AFileName: string): OleVariant;
 
 var
   g_OutLook: OLEVariant;
@@ -532,6 +533,20 @@ begin
     IWindow.GetWindow(Result);
     IWindow := nil;
   end;
+end;
+
+function GetMailItemFromMsgFile(AFileName: string): OleVariant;
+var
+  Outlook, Namespace, Appointment, Calendar, CalendarFiltered: OleVariant;
+begin
+  try
+   Outlook := GetActiveOleObject('outlook.application');
+  except
+   Outlook := CreateOleObject('outlook.application');
+  end;
+
+  Result := Outlook.CreateItemFromTemplate(AFileName);
+  outlook := UnAssigned;
 end;
 
 end.

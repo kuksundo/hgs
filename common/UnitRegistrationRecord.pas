@@ -8,6 +8,40 @@ uses
   ,UnitRegCodeConst;
 
 type
+  TSQLProductManage = class(TSQLRecord)
+  private
+    fProductCode: RawUTF8;
+    fProductName: RawUTF8;
+    FAppName: RawUTF8;
+    FSrcPath: RawUTF8;
+    FExeImage: RawUTF8; //base64
+    FLastSerialNo: Longint;
+    FFileMajorVersion, FFileMinorVersion,
+    FFileRevisionNo, FFileBuildNo,
+    FProductMajorVersion, FProductMinorVersion,
+    FProductRevisionNo, FProductBuildNo: Word;
+    FRegDate : TDateTime;
+  public
+    FIsUpdate: Boolean;
+    property IsUpdate: Boolean read FIsUpdate write FIsUpdate;
+  published
+    property ProductCode: RawUTF8 read fProductCode write fProductCode;
+    property ProductName: RawUTF8 read fProductName write fProductName;
+    property AppName: RawUTF8 read FAppName write FAppName;
+    property SrcPath: RawUTF8 read FSrcPath write FSrcPath;
+    property ExeImage: RawUTF8 read FExeImage write FExeImage;
+    property LastSerialNo: Longint read FLastSerialNo write FLastSerialNo;
+    property FileMajorVersion: Word read FFileMajorVersion write FFileMajorVersion;
+    property FileMinorVersion: Word read FFileMinorVersion write FFileMinorVersion;
+    property FileRevisionNo: Word read FFileRevisionNo write FFileRevisionNo;
+    property FileBuildNo: Word read FFileBuildNo write FFileBuildNo;
+    property ProductMajorVersion: Word read FProductMajorVersion write FProductMajorVersion;
+    property ProductMinorVersion: Word read FProductMinorVersion write FProductMinorVersion;
+    property ProductRevisionNo: Word read FProductRevisionNo write FProductRevisionNo;
+    property ProductBuildNo: Word  read FProductBuildNo write FProductBuildNo;
+    property RegDate: TDateTime read FRegDate write FRegDate;
+  end;
+
   TSQLRegCodeManage = class(TSQLRecord)
   private
     fProductCode: string;
@@ -50,6 +84,7 @@ type
     FIPAddress : string;
   public
     FIsUpdate: Boolean;
+    property IsUpdate: Boolean read FIsUpdate write FIsUpdate;
   published
     property TaskID: TID read fTaskID write fTaskID;
     property ProductCode: string read fProductCode write fProductCode;
@@ -93,6 +128,8 @@ type
   end;
 
 function CreateRegCodeManageModel: TSQLModel;
+function CreateProductManageModel: TSQLModel;
+
 procedure InitClient();
 procedure AssignSQLRegCodeManageFromJSON(var ARegCodeManage: TSQLRegCodeManage; AJson: RawUTF8);
 
@@ -100,20 +137,34 @@ function GetTSQLRegCodeManageFromTaskID(AID: TID): TSQLRegCodeManage;
 function GetTSQLRegCodeManageFromIPAddr(AIpAddr: string): TSQLRegCodeManage;
 function GetTSQLRegCodeManageFromEmail(AEmail: string): TSQLRegCodeManage;
 function GetTSQLRegCodeManageFromSerialNo(ASerialNo: Longint): TSQLRegCodeManage;
-function GetNextSerialNo: integer;
+function GetTSQLRegCodeManageFromProductCode(AProductCode: string): TSQLRegCodeManage;
+function GetTSQLRegCodeManageFromProductCodeNSerialNo(AProductCode: string; ASerialNo: Longint): TSQLRegCodeManage;
+function GetTSQLRegCodeManageFromProductCodeNIPAddr(AProductCode, AIpAddr: string): TSQLRegCodeManage;
+
+function GetTSQLProductManageFromTaskID(AID: TID): TSQLProductManage;
+function GetTSQLProductManageFromProductCode(AProductCode: string): TSQLProductManage;
+function GetNextSerialNoFromSQLProductManage(AProductCode: string): integer;
+procedure SetSQLProductManageLastSerialNo(AProductCode: string);
 
 var
-  RegCodeManageModel: TSQLModel;
-  g_RegCodeManageDB: TSQLRestClientURI;
+  RegCodeManageModel,
+  ProductManageModel: TSQLModel;
+  g_RegCodeManageDB,
+  g_ProductManageDB: TSQLRestClientURI;
 
 implementation
 
 uses SysUtils, Forms, mORMotSQLite3, FrmRegistration,
-  UnitHttpModule, UnitRegistrationClass;
+  UnitHttpModule4RegServer, UnitRegistrationClass;
 
 function CreateRegCodeManageModel: TSQLModel;
 begin
   Result := TSQLModel.Create([TSQLRegCodeManage]);
+end;
+
+function CreateProductManageModel: TSQLModel;
+begin
+  Result := TSQLModel.Create([TSQLProductManage]);
 end;
 
 procedure InitClient();
@@ -125,6 +176,12 @@ begin
   g_RegCodeManageDB:= TSQLRestClientDB.Create(RegCodeManageModel, CreateRegCodeManageModel,
     LStr, TSQLRestServerDB);
   TSQLRestClientDB(g_RegCodeManageDB).Server.CreateMissingTables;
+
+  LStr := LStr.Replace('.db3', '_Product.db3');
+  ProductManageModel:= CreateProductManageModel;
+  g_ProductManageDB:= TSQLRestClientDB.Create(ProductManageModel, CreateProductManageModel,
+    LStr, TSQLRestServerDB);
+  TSQLRestClientDB(g_ProductManageDB).Server.CreateMissingTables;
 end;
 
 procedure AssignSQLRegCodeManageFromJSON(var ARegCodeManage: TSQLRegCodeManage; AJson: RawUTF8);
@@ -222,29 +279,106 @@ begin
   end;
 end;
 
-function GetNextSerialNo: integer;
-var
-  LSQLRegCodeManage: TSQLRegCodeManage;
+function GetTSQLRegCodeManageFromProductCode(AProductCode: string): TSQLRegCodeManage;
 begin
-  LSQLRegCodeManage := TSQLRegCodeManage.CreateAndFillPrepare(g_RegCodeManageDB, '');
+  Result := TSQLRegCodeManage.CreateAndFillPrepare(g_RegCodeManageDB, 'ProductCode = ?', [AProductCode]);
+
+  if Result.FillOne then
+  begin
+    Result.IsUpdate := True;
+  end;
+end;
+
+function GetTSQLRegCodeManageFromProductCodeNSerialNo(AProductCode: string; ASerialNo: Longint): TSQLRegCodeManage;
+begin
+  Result := TSQLRegCodeManage.CreateAndFillPrepare(g_RegCodeManageDB, 'ProductCode = ? and SerialNo = ?', [AProductCode, ASerialNo]);
+
+  if Result.FillOne then
+  begin
+    Result.IsUpdate := True;
+  end;
+end;
+
+function GetTSQLRegCodeManageFromProductCodeNIPAddr(AProductCode, AIpAddr: string): TSQLRegCodeManage;
+begin
+  Result := TSQLRegCodeManage.CreateAndFillPrepare(g_RegCodeManageDB, 'ProductCode = ? and IPAddress = ?', [AProductCode, AIpAddr]);
+
+  if Result.FillOne then
+  begin
+    Result.IsUpdate := True;
+  end;
+end;
+
+function GetTSQLProductManageFromTaskID(AID: TID): TSQLProductManage;
+begin
+  Result := TSQLProductManage.CreateAndFillPrepare(g_ProductManageDB, 'ID = ?', [AID]);
+
+  if Result.FillOne then
+  begin
+    Result.FIsUpdate := True;
+  end;
+end;
+
+function GetTSQLProductManageFromProductCode(AProductCode: string): TSQLProductManage;
+begin
+  Result := TSQLProductManage.CreateAndFillPrepare(g_ProductManageDB, 'ProductCode = ?', [AProductCode]);
+
+  if Result.FillOne then
+  begin
+    Result.FIsUpdate := True;
+  end;
+end;
+
+function GetNextSerialNoFromSQLProductManage(AProductCode: string): integer;
+var
+  LSQLProductManage: TSQLProductManage;
+  LSeqialNo: Integer;
+begin
+  LSQLProductManage := TSQLProductManage.CreateAndFillPrepare(g_ProductManageDB, 'ProductCode = ?', [AProductCode]);
   Result := 0;
   try
-    while LSQLRegCodeManage.FillOne do
+    while LSQLProductManage.FillOne do
     begin
-      if LSQLRegCodeManage.SerialNo > Result then
+      LSeqialNo := LSQLProductManage.LastSerialNo;
+
+      if LSeqialNo > Result then
       begin
-        Result := LSQLRegCodeManage.SerialNo;
+        Result := LSeqialNo;
       end;
     end;
   finally
-    FreeAndNil(LSQLRegCodeManage);
+    FreeAndNil(LSQLProductManage);
+  end;
+end;
+
+procedure SetSQLProductManageLastSerialNo(AProductCode: string);
+var
+  LSQLProductManage: TSQLProductManage;
+  LSerialNo: Integer;
+begin
+  LSQLProductManage := TSQLProductManage.CreateAndFillPrepare(g_ProductManageDB, 'ProductCode = ?', [AProductCode]);
+  try
+    if LSQLProductManage.FillOne then
+    begin
+      LSerialNo := LSQLProductManage.LastSerialNo;
+      Inc(LSerialNo);
+      LSQLProductManage.LastSerialNo := LSerialNo;
+      g_ProductManageDB.Update(LSQLProductManage);
+    end;
+  finally
+    FreeAndNil(LSQLProductManage);
   end;
 end;
 
 initialization
-  InitClient;
+  g_RegCodeManageDB := nil;
+  g_ProductManageDB := nil;
 
 finalization
-  FreeAndNil(g_RegCodeManageDB);
+  if Assigned(g_RegCodeManageDB) then
+    FreeAndNil(g_RegCodeManageDB);
+
+  if Assigned(g_ProductManageDB) then
+    FreeAndNil(g_ProductManageDB);
 
 end.

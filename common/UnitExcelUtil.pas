@@ -2,16 +2,20 @@ UNIT UnitExcelUtil;
 
 interface
 
-uses SysUtils, StdCtrls,Classes, Graphics, Db, DBTables, Grids, DBGrids, ComObj,
-    Variants, Dialogs, Forms, Excel2000;
+uses SysUtils, StdCtrls,Classes, Graphics, Grids, ComObj,
+    Variants, Dialogs, Forms, Excel2000, NxColumnClasses, NxColumns, NxGrid;
 
 procedure GridToExcel (GenericStringGrid :TStringGrid ; XLApp :TExcelApplication);
-procedure Database2Excel(DbQuery: TQuery);
+procedure NextGridToExcel(ANextGrid :TNextGrid; ASheetName: string = '');
+//procedure Database2Excel(DbQuery: TQuery);
 //procedure ExcelToStrGrid(sFileName: String; svGrid: TStringGrid);
 //procedure DataSetToExcelFile(const Dataset: TDataset;const Filename: string);
 procedure ChangePasswdXLFile(FName,FName2,Passwd: string);
 function GetActiveExcelOleObject(AVisible: boolean) : Variant;
 function PutValInExcel(excSheet : Variant; const sName, sValue : string; Mess : boolean; var iRow, iCol : integer): boolean;
+function GetLastRowNumFromExcel(AWorksheet: OleVariant): integer;
+function GetLastColNumFromExcel(AWorksheet: OleVariant): integer;
+procedure SetExcelCellRangeBorder(ARange: ExcelRange);
 
 implementation
 
@@ -70,53 +74,163 @@ begin
   end;
 end;
 
-procedure Database2Excel(DbQuery: TQuery);
-var XApp:Variant;
-    sheet:Variant;
-    r,c:Integer;
-    row,col:Integer;
-    filName:Integer;
-    q:Integer;
+procedure NextGridToExcel(ANextGrid :TNextGrid; ASheetName: string = '');
+var
+  XLApp :TExcelApplication;
+  WorkBk : _WorkBook; //  Define a WorkBook
+  WorkSheet : _WorkSheet; //  Define a WorkSheet
+  I, J, K, R, C, C2 : Integer;
+  IIndex : OleVariant;
+  LRange: ExcelRange;
+  TabGrid : Variant;
+  LStr: string;
+  LChar: Char;
 begin
-  XApp:=CreateOleObject('Excel.Application');
-  XApp.Visible:=true;
-  XApp.WorkBooks.Add(-4167);
-  XApp.WorkBooks[1].WorkSheets[1].Name:='Sheet1';
-  sheet:=XApp.WorkBooks[1].WorkSheets['Sheet1'];
+  if ANextGrid.RowCount = 0 then
+    exit;
 
-  for filName:=0 to DbQuery.FieldCount-1 do
+  if ANextGrid.Cells[0,1] <> '' then
   begin
-    q:=filName+1;
-    sheet.Cells[1,q]:=DbQuery.Fields[filName].FieldName;
-  end;
+    IIndex := 1;
+    R := ANextGrid.RowCount;
+    C := ANextGrid.Columns.VisibleCount;
+    // Create the Variant Array
+    TabGrid := VarArrayCreate([0,(R - 1),0,(C - 1)],VarOleStr);
+    C2 := ANextGrid.Columns.Count;
+    I := 0;
+    //  Define the loop for filling in the Variant
+    repeat
+      K := 0;
+      for J := 0 to (C2 - 1) do
+      begin
+        if ANextGrid.Columns.Item[J].Visible then
+        begin
+          TabGrid[I,K] := ANextGrid.Cells[J,I];
+          Inc(K);
+        end;
+      end;
+      Inc(I,1);
+    until I > (R - 1);
 
-  for r:=0 to DbQuery.RecordCount-1 do
-  begin
-    for c:=0 to DbQuery.FieldCount-1 do
+//    LCID := GetUserDefaultLCID;
+    // Connect to the server TExcelApplication
+    XLApp := TExcelApplication.Create(nil);
+//    XLApp.ConnectKind := ckNewInstance;
+    // Add WorkBooks to the ExcelApplication
+    XLApp.WorkBooks.Add(xlWBatWorkSheet,0);
+    // Select the first WorkBook
+    WorkBk := XLApp.WorkBooks.Item[IIndex];
+    // Define the first WorkSheet
+    WorkSheet := WorkBk.WorkSheets.Get_Item(1) as _WorkSheet;
+    //Columng 제목 표시
+    LChar := 'A';
+    for i := 0 to C2 - 1 do
     begin
-      row:=r+2;
-      col:=c+1;
-      sheet.Cells[row,col]:=DbQuery.Fields[c].AsString;
+      if ANextGrid.Columns.Item[i].Visible then
+      begin
+        LRange := Worksheet.Range[LChar+'1',LChar+'1'];
+        LRange.Value := ANextGrid.Columns.Item[i].Header.Caption;
+        LRange.Interior.Color := clLtGray;//clGreen;
+        SetExcelCellRangeBorder(LRange);
+        case LChar of
+          'A': LRange.ColumnWidth := 5;
+          'B': LRange.ColumnWidth := 13;
+          'C': LRange.ColumnWidth := 30;
+          'D': LRange.ColumnWidth := 13;
+          'E': LRange.ColumnWidth := 13;
+          'F': LRange.ColumnWidth := 13;
+          'G': LRange.ColumnWidth := 13;
+          'H': LRange.ColumnWidth := 13;
+          'I': LRange.ColumnWidth := 45;
+          'J': LRange.ColumnWidth := 31;
+          'K': LRange.ColumnWidth := 13;
+          'L': LRange.ColumnWidth := 45;
+          'M': LRange.ColumnWidth := 30;
+          'N': LRange.ColumnWidth := 13;
+        end;
+
+//        with Worksheet.Range[LChar+'1',LChar+'1'].Borders do
+//        begin
+//          LineStyle := xlContinuous;
+//          Weight := xlThin;
+//        end;
+        LChar := Chr(Succ(Ord(LChar)));
+      end;
     end;
 
-    DbQuery.Next;
+    // Assign the Delphi Variant Matrix to the Variant associated with the WorkSheet
+    Worksheet.Range['A2',Worksheet.Cells.Item[R+1,C]].Value := TabGrid;
+    // Customise the WorkSheet
+    if ASheetName = '' then
+      ASheetName := 'Customers';
+    WorkSheet.Name := ASheetName;
+//    Worksheet.Columns.Font.Bold := True;
+    Worksheet.Columns.HorizontalAlignment := xlRight;
+//    WorkSheet.Columns.ColumnWidth := 30;
+    // Customise the first entire Column
+    WorkSheet.Range['A' + IntToStr(2),'A' + IntToStr(R+1)].Font.Color := clBlue;
+    LChar := Chr(Pred(Ord(LChar)));
+    LRange := WorkSheet.Range['A' + IntToStr(1),LChar + IntToStr(R+1)];
+    LRange.HorizontalAlignment := xlHAlignCenter;//xlHAlignLeft;
+    SetExcelCellRangeBorder(LRange);
+//    WorkSheet.Range['A' + IntToStr(2),'A' + IntToStr(R+1)].ColumnWidth := 5;
+    // Show Excel
+    XLApp.Visible[0] := True;
+    // Disconnect the Server
+    XLApp.Disconnect;
+    // Unassign the Delphi Variant Matrix
+    TabGrid := Unassigned;
   end;
-
-  XApp.WorkSheets['Sheet1'].Range['A1:AA1'].Font.Bold:=True;
-  XApp.WorkSheets['Sheet1'].Range['A1:K1'].Borders.LineStyle :=13;
-  XApp.WorkSheets['Sheet1'].Range['A2:K'+inttostr(DbQuery.RecordCount-1)].Borders.LineStyle :=1;
-  XApp.WorkSheets['Sheet1'].Columns[1].ColumnWidth:=16;
-  XApp.WorkSheets['Sheet1'].Columns[2].ColumnWidth:=7;
-  XApp.WorkSheets['Sheet1'].Columns[3].ColumnWidth:=19;
-  XApp.WorkSheets['Sheet1'].Columns[4].ColumnWidth:=9;
-  XApp.WorkSheets['Sheet1'].Columns[5].ColumnWidth:=9;
-  XApp.WorkSheets['Sheet1'].Columns[6].ColumnWidth:=9;
-  XApp.WorkSheets['Sheet1'].Columns[7].ColumnWidth:=46;
-  XApp.WorkSheets['Sheet1'].Columns[8].ColumnWidth:=9;
-  XApp.WorkSheets['Sheet1'].Columns[9].ColumnWidth:=7;
-  XApp.WorkSheets['Sheet1'].Columns[10].ColumnWidth:=6;
-  XApp.WorkSheets['Sheet1'].Columns[11].ColumnWidth:=13;
 end;
+
+
+//procedure Database2Excel(DbQuery: TQuery);
+//var XApp:Variant;
+//    sheet:Variant;
+//    r,c:Integer;
+//    row,col:Integer;
+//    filName:Integer;
+//    q:Integer;
+//begin
+//  XApp:=CreateOleObject('Excel.Application');
+//  XApp.Visible:=true;
+//  XApp.WorkBooks.Add(-4167);
+//  XApp.WorkBooks[1].WorkSheets[1].Name:='Sheet1';
+//  sheet:=XApp.WorkBooks[1].WorkSheets['Sheet1'];
+//
+//  for filName:=0 to DbQuery.FieldCount-1 do
+//  begin
+//    q:=filName+1;
+//    sheet.Cells[1,q]:=DbQuery.Fields[filName].FieldName;
+//  end;
+//
+//  for r:=0 to DbQuery.RecordCount-1 do
+//  begin
+//    for c:=0 to DbQuery.FieldCount-1 do
+//    begin
+//      row:=r+2;
+//      col:=c+1;
+//      sheet.Cells[row,col]:=DbQuery.Fields[c].AsString;
+//    end;
+//
+//    DbQuery.Next;
+//  end;
+//
+//  XApp.WorkSheets['Sheet1'].Range['A1:AA1'].Font.Bold:=True;
+//  XApp.WorkSheets['Sheet1'].Range['A1:K1'].Borders.LineStyle :=13;
+//  XApp.WorkSheets['Sheet1'].Range['A2:K'+inttostr(DbQuery.RecordCount-1)].Borders.LineStyle :=1;
+//  XApp.WorkSheets['Sheet1'].Columns[1].ColumnWidth:=16;
+//  XApp.WorkSheets['Sheet1'].Columns[2].ColumnWidth:=7;
+//  XApp.WorkSheets['Sheet1'].Columns[3].ColumnWidth:=19;
+//  XApp.WorkSheets['Sheet1'].Columns[4].ColumnWidth:=9;
+//  XApp.WorkSheets['Sheet1'].Columns[5].ColumnWidth:=9;
+//  XApp.WorkSheets['Sheet1'].Columns[6].ColumnWidth:=9;
+//  XApp.WorkSheets['Sheet1'].Columns[7].ColumnWidth:=46;
+//  XApp.WorkSheets['Sheet1'].Columns[8].ColumnWidth:=9;
+//  XApp.WorkSheets['Sheet1'].Columns[9].ColumnWidth:=7;
+//  XApp.WorkSheets['Sheet1'].Columns[10].ColumnWidth:=6;
+//  XApp.WorkSheets['Sheet1'].Columns[11].ColumnWidth:=13;
+//end;
 
 //FXlsChoose는 일반 디자인 폼이며
 //Listbox, Panel, Bitbtn 두개 ModalResult 값은 아래 코딩 보면 아실듯....
@@ -378,6 +492,33 @@ begin
   except
      on E: Exception do ShowMessage(E.Message);
   end;
+end;
+
+function GetLastRowNumFromExcel(AWorksheet: OleVariant): integer;
+var
+  LRange: OleVariant;
+begin
+  Result := AWorkSheet.Cells.SpecialCells(xlCellTypeLastCell, EmptyParam).Row;
+end;
+
+function GetLastColNumFromExcel(AWorksheet: OleVariant): integer;
+begin
+  Result := AWorkSheet.Cells.SpecialCells(xlCellTypeLastCell, EmptyParam).Column;
+end;
+
+procedure SetExcelCellRangeBorder(ARange: ExcelRange);
+begin
+  ARange.Borders[xlDiagonalDown].LineStyle := xlNone;
+  ARange.Borders[xlDiagonalUp].LineStyle := xlNone;
+  ARange.Borders[xlEdgeLeft].LineStyle := xlContinuous;
+  ARange.Borders[xlEdgeTop].LineStyle := xlContinuous;
+  ARange.Borders[xlEdgeBottom].LineStyle := xlContinuous;
+  ARange.Borders[xlEdgeRight].LineStyle := xlContinuous;
+  ARange.Borders[xlInsideVertical].LineStyle := xlContinuous;
+  ARange.Borders[xlInsideHorizontal].LineStyle := xlContinuous;
+  ARange.Borders.Weight := xlThin;
+
+//  ARange.BorderAround(xlContinuous, xlThin,1, clFuchsia);
 end;
 
 end.

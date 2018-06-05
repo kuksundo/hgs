@@ -3,7 +3,7 @@ unit UnitStringUtil;
 interface
 
 uses Windows, sysutils, classes, Forms, shellapi, Graphics, math, MMSystem,
-    JclStringConversions, TlHelp32, StrUtils;
+    JclStringConversions, TlHelp32, StrUtils, Comobj;
 
 function strToken(var S: String; Seperator: Char): String;
 function ExtractText(const Str: string; const Delim1, Delim2: string): string;
@@ -14,6 +14,10 @@ function PosRev(SubStr,s : string; IgnoreCase : boolean = false) : integer;
 function ExtractRelativePathBaseApplication(AApplicationPath, AFileNameWithPath: string): string;
 function InsertSymbols(s: string; c: Char; Position: Integer = 1): string;
 function AddThousandSeparator(S: string; Chr: Char): string;
+function IsValidGUID(const AGUID: string): boolean;
+function StringToCharSet(const AStr: string): TSysCharSet;
+function CharSetToString(const AChars: TSysCharSet): string;
+function CharSetToInt(const AChars: TSysCharSet): integer;
 
 function NewGUID: string;
 
@@ -161,4 +165,67 @@ begin
   end;
 end;
 
+function IsValidGUID(const AGUID: string): boolean;
+var
+  Lres: HResult;
+  lg: TGuid;
+begin
+  Result := True;
+  try
+
+  except
+    on E: Exception do
+      Result := False;
+  end;
+
+  if Result then
+  begin
+    try
+      OleCheck(Lres);
+    except
+      on E: Exception do
+        Result := False;
+    end;
+  end;
+end;
+
+function StringToCharSet(const AStr: string): TSysCharSet;
+var
+  CP: PAnsiChar;
+  LStr: AnsiString;
+begin
+  Result := [];
+
+  if AStr = '' then
+    exit;
+
+  LStr := AStr;
+  CP := PAnsiChar(LStr);
+
+  while CP^ <> #0 do
+  begin
+    Include(Result, CP^);
+    Inc(CP);
+  end;
+end;
+
+function CharSetToString(const AChars: TSysCharSet): string;
+var
+  i: integer;
+begin
+  Result := '';
+  for i := 0 to 255 do
+    if Chr(i) in AChars then
+      Result := Result + Chr(i);
+end;
+
+function CharSetToInt(const AChars: TSysCharSet): integer;
+var
+  i: integer;
+begin
+  Result := 0;
+  for i := 0 to 255 do
+    if Chr(i) in AChars then
+      Result := Result + i;
+end;
 end.

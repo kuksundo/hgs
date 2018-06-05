@@ -1,8 +1,10 @@
 unit UnitCryptUtil;
+{Unit 荤侩 矫 USE_SYN_CRYPT 肚绰 USE_INDY_CRYPT 甫 Define 秦具 窃}
 
 interface
 
-uses System.SysUtils;
+uses System.Classes, System.SysUtils, IdGlobal, IdHash, IdHashMessageDigest,
+  IdHashSha, Bcrypt, SCrypt;
 
 const DEFAULT_ENCRYPT_KEY = '{3E61902F-AAD1-41FF-8495-9B6C129E3368}';
 
@@ -14,8 +16,35 @@ function DecryptStr(const S: String; Key: Word): String;
 // will crypt A..Z, a..z, 0..9 characters by rotating
 //Any characters other than A..Z, a..z, 0..9 will stay unchanged
 function Crypt_ROT13(const s: string): string;
+{$IFDEF USE_SYN_CRYPT}
 function EncryptString_Syn(ATextToEncrypt: string; AKey: string = DEFAULT_ENCRYPT_KEY): string;
 function DecryptString_Syn(AEncryptedString: string; AKey: string = DEFAULT_ENCRYPT_KEY): string;
+function GetSHA256HashStringFromSyn(AStr: string): string;
+function CheckSHA256HashStringFromSyn(AOriginalStr, AHashedStr: string): Boolean;
+function GetPBKDF2SHA256HashStringFromSyn(AStr: string): string;
+{$ENDIF}
+
+{$IFDEF USE_INDY_CRYPT}
+function GetMD5HashStringFromIndy(AStr: string): string;
+//AHashedStr: Hash 贸府等 String
+//AOriginalStr: Hash 贸府 救等 String
+function CheckMD5HashStringFromIndy(AOriginalStr, AHashedStr: string): Boolean;
+function GetSHA256HashStringFromIndy(AStr: string): string;
+//AHashedStr: Hash 贸府等 String
+//AOriginalStr: Hash 贸府 救等 String
+function CheckSHA256HashStringFromIndy(AOriginalStr, AHashedStr: string): Boolean;
+function GetSHA256HashFileFromIndy(AFileName: string): string;
+{$ENDIF}
+
+{$IFDEF USE_BCRYPT}
+function GetHashStringFromBCrypt(AStr: string): string;
+function CheckHashStringFromBCrypt(AOriginalStr, AHashedStr: string): Boolean;
+{$ENDIF}
+
+{$IFDEF USE_SCRYPT}
+function GetHashStringFromSCrypt(AStr: string): string;
+function CheckHashStringFromSCrypt(AOriginalStr, AHashedStr: string): Boolean;
+{$ENDIF}
 
 implementation
 
@@ -79,6 +108,7 @@ begin
     end;
 end;
 
+{$IFDEF USE_SYN_CRYPT}
 function EncryptString_Syn(ATextToEncrypt: string; AKey: string = DEFAULT_ENCRYPT_KEY): string;
 var
   key : TSHA256Digest;
@@ -114,5 +144,115 @@ begin
     aes.Free;
   end;
 end;
+
+function GetSHA256HashStringFromSyn(AStr: string): string;
+begin
+  Result := SHA256(AStr);
+end;
+
+function CheckSHA256HashStringFromSyn(AOriginalStr, AHashedStr: string): Boolean;
+var
+  LStr: string;
+begin
+  LStr := GetSHA256HashStringFromSyn(AOriginalStr);
+  Result := SameText(LStr, AHashedStr);
+end;
+
+function GetPBKDF2SHA256HashStringFromSyn(AStr: string): string;
+begin
+//  Result := PBKDF2_HMAC_SHA512(AStr, '{8AB69903-A2CC-43E2-A5FA-999166CE9F12}',
+//    3, );
+end;
+
+{$ENDIF}
+
+{$IFDEF USE_INDY_CRYPT}
+function GetMD5HashStringFromIndy(AStr: string): string;
+begin
+  with TIdHashMessageDigest5.Create do
+    Result := HashStringAsHex(AStr);
+end;
+
+function CheckMD5HashStringFromIndy(AOriginalStr, AHashedStr: string): Boolean;
+var
+  LStr: string;
+begin
+  LStr := GetMD5HashStringFromIndy(AOriginalStr);
+  Result := SameText(LStr, AHashedStr);
+end;
+
+function GetSHA256HashStringFromIndy(AStr: string): string;
+var
+  LSha: TIdHashSHA256;
+begin
+//  if TIdHashSHA256.IsAvailable then
+//  begin
+    LSha := TIdHashSHA256.Create;
+    try
+      Result := LSha.HashStringAsHex(AStr);
+    finally
+      LSha.Free;
+    end;
+//  end;
+end;
+
+function CheckSHA256HashStringFromIndy(AOriginalStr, AHashedStr: string): Boolean;
+var
+  LStr: string;
+begin
+  LStr := GetSHA256HashStringFromIndy(AOriginalStr);
+  Result := SameText(LStr, AHashedStr);
+end;
+
+function GetSHA256HashFileFromIndy(AFileName: string): string;
+var
+  LSha: TIdHashSHA256;
+  fs: TFileStream;
+begin
+  if TIdHashSHA256.IsAvailable then
+  begin
+    LSha := TIdHashSHA256.Create;
+    try
+      fs := TFileStream.Create(AFileName, fmOpenRead);
+      try
+        Result := LSha.HashStreamAsHex(fs);
+      finally
+        fs.Free;
+      end;
+    finally
+
+    end;
+  end;
+end;
+{$ENDIF}
+
+{$IFDEF USE_BCRYPT}
+function GetHashStringFromBCrypt(AStr: string): string;
+begin
+  Result := TBCrypt.HashPassword(AStr);
+end;
+
+function CheckHashStringFromBCrypt(AOriginalStr, AHashedStr: string): Boolean;
+var
+	rehashNeeded: Boolean;
+begin
+  Result := TBCrypt.CheckPassword(AOriginalStr, AHashedStr, {out}rehashNeeded);
+end;
+{$ENDIF}
+
+{$IFDEF USE_SCRYPT}
+function GetHashStringFromSCrypt(AStr: string): string;
+begin
+  Result := TSCrypt.HashPassword(AStr);
+end;
+
+function CheckHashStringFromSCrypt(AOriginalStr, AHashedStr: string): Boolean;
+var
+	rehashNeeded: Boolean;
+begin
+  Result := TSCrypt.CheckPassword(AOriginalStr, AHashedStr, rehashNeeded);
+end;
+
+{$ENDIF}
 
 end.

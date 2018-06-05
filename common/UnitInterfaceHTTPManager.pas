@@ -83,6 +83,9 @@ end;
 
 destructor TmORMotHTTPClient.Destroy;
 begin
+  if Assigned(FModel) then
+    FModel.Free;
+
   FHTTPClient.Free;
 
   inherited;

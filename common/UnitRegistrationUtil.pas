@@ -2,6 +2,8 @@ unit UnitRegistrationUtil;
 
 interface
 
+{$DEFINE USE_REGCODE}
+
 uses
   SynCommons, Winapi.Windows,
   mORMot, OnGuard, OgUtil, Registry
@@ -11,20 +13,20 @@ type
   TCheckRegMethod = (crmHTTP, crmIIF);
   TCheckRegMethods = set of TCheckRegMethod;
 
-function CheckRegistration(ACRMs: TCheckRegMethods=[crmHTTP]): Boolean;
-function CheckRegistrationUsingHTTP: Boolean;
+function CheckRegistration(AProdCode: string; ACRMs: TCheckRegMethods=[crmHTTP]): Boolean;
+function CheckRegistrationUsingHTTP(AProdCode: string): Boolean;
 function CheckRegistrationUsingIIF: Boolean;
 
 implementation
 
-uses SysUtils, Forms, mORMotSQLite3, FrmRegistration,
-  UnitHttpModule, UnitRegistrationClass, UnitRegistrationRecord, GetIP;
+uses SysUtils, Forms, mORMotSQLite3, FrmRegistration, UnitBase64Util,
+  UnitHttpModule4RegServer, UnitRegistrationClass, UnitRegistrationRecord, GetIP;
 
-function CheckRegistration(ACRMs: TCheckRegMethods): Boolean;
+function CheckRegistration(AProdCode: string; ACRMs: TCheckRegMethods): Boolean;
 begin
   if crmHTTP in ACRMs then
   begin
-    Result := CheckRegistrationUsingHTTP;
+    Result := CheckRegistrationUsingHTTP(AProdCode);
   end;
 
   if crmIIF in ACRMs then
@@ -33,16 +35,17 @@ begin
   end;
 end;
 
-function CheckRegistrationUsingHTTP: Boolean;
+function CheckRegistrationUsingHTTP(AProdCode: string): Boolean;
 var
   LCustomerInfo,
   LCustomerInfo2: RawUTF8;
   LDoc: variant;
   LResult: integer;
   LRegInfo: TRegistrationInfo;
-  LStr: string;
+  LStr, LSerialCode: string;
 begin
   Result := False;
+  LSerialCode := '';
 
   LRegInfo := TRegistrationInfo.Create(nil);
   try
@@ -50,15 +53,14 @@ begin
     LRegInfo.RegCodeRecord.RegKey := LRegInfo.RegCodeRecord.RegKey + ChangeFileExt(LStr, '');
     LRegInfo.RegCodeRecord.AppName := LStr;
     LRegInfo.RegCodeRecord.IsUseMachineId := True;
-    LRegInfo.GetProcessorInfo;
 
     LStr := ChangeFileExt(ExtractFileName(Application.ExeName), DEFAULT_SERIAL_FILE_EXT);
 
     if FileExists(LStr) then
     begin
-      LStr := StringFromFile(LStr);
-      LStr := StringReplace(LStr, #13#10, '', [rfReplaceAll]);
-      LRegInfo.RegCodeRecord.SerialCode := LStr;
+      LSerialCode := StringFromFile(LStr);
+      LSerialCode := StringReplace(LSerialCode, #13#10, '', [rfReplaceAll]);
+      LRegInfo.RegCodeRecord.SerialCode := LSerialCode;
       LRegInfo.RegCodeRecord.RegCode := LRegInfo.GenerateRegOrUsageCode;
     end;
 
@@ -66,6 +68,15 @@ begin
       LRegInfo.RegCodeRecord.IPAddress := GetLocalIP(0);
 
     LResult := TRegistrationF.IsRegistrationValidFromRegistry(LRegInfo);
+
+    if LSerialCode <> '' then
+    begin
+      LRegInfo.RegCodeRecord.SerialCode := LSerialCode;
+      LRegInfo.RegCodeRecord.RegCode := LRegInfo.GenerateRegOrUsageCode;
+    end;
+
+    LRegInfo.RegCodeRecord.ProductCode := AProdCode;
+    LRegInfo.GetProcessorInfo;
 
     if LResult = 4 then //ExpireDate
     begin
@@ -131,7 +142,9 @@ begin
         begin
           AssignSQLRegCodeManageFromJSON(LRegInfo.FRegCodeRecord, LCustomerInfo2);
           LRegInfo.SaveToRegistry;
-
+          LCustomerInfo := LRegInfo.RegCodeRecord.GetJSONValues(True, True, soSelect);
+          LCustomerInfo := MakeRawUTF8ToBin64(LCustomerInfo);
+          SendConfirmRegInfo_HTTP(LCustomerInfo);
   //        if TCodeType.ctDate in LRegInfo.RegCodeRecord.CodeTypes then
   //          LRegInfo.RegCodeRecord.CodeTypes := [];
   //        LRegInfo.LoadFromRegistry;
@@ -166,7 +179,7 @@ begin
 
 end;
 
-initialization
-  CheckRegistration;
+//initialization
+//  CheckRegistration;
 
 end.
