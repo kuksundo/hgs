@@ -20,7 +20,33 @@ uses
   FrmDisplayAnsiDeviceDesc in '..\FrmDisplayAnsiDeviceDesc.pas' {AnsiDeviceDescF},
   UnitAnsiDeviceRecord in '..\UnitAnsiDeviceRecord.pas',
   UnitMakeAnsiDeviceDB in '..\UnitMakeAnsiDeviceDB.pas',
-  FrmAnsiDeviceNoList in '..\FrmAnsiDeviceNoList.pas' {AnsiDeviceNoF};
+  FrmAnsiDeviceNoList in '..\FrmAnsiDeviceNoList.pas' {AnsiDeviceNoF},
+  FrmEditVesselInfo in 'FrmEditVesselInfo.pas' {EditVesselInfoF},
+  HtmlParserEx in '..\..\..\OpenSrc\htmlparser-master\HtmlParserEx.pas',
+  UnitNationRecord in 'UnitNationRecord.pas',
+  UnitNationData in 'UnitNationData.pas',
+  FrmViewNationCode in 'FrmViewNationCode.pas' {ViewNationCodeF},
+  FrmViewFlag in 'FrmViewFlag.pas' {FlagViewF},
+  UnitEngineMasterRecord in 'UnitEngineMasterRecord.pas',
+  FrmViewEngineMaster in 'FrmViewEngineMaster.pas' {ViewEngineMasterF},
+  FrmVesselAdvancedSearch in 'FrmVesselAdvancedSearch.pas' {VesselAdvancedSearchF},
+  UnitElecMasterRecord in 'UnitElecMasterRecord.pas',
+  frmGeneratorDetail in '..\GeneratorManage\frmGeneratorDetail.pas' {GeneratorDetailF},
+  UnitGeneratorRecord in '..\GeneratorManage\UnitGeneratorRecord.pas',
+  UnitVariantFormUtil in '..\..\..\common\UnitVariantFormUtil.pas',
+  UnitRttiUtil in '..\..\..\common\UnitRttiUtil.pas',
+  frmViewGeneratorMaster in '..\GeneratorManage\frmViewGeneratorMaster.pas' {ViewGenMasterF},
+  UnitVesselData in 'UnitVesselData.pas',
+  FrameDragDropOutlook in '..\..\..\common\Frames\FrameDragDropOutlook.pas' {DragOutlookFrame: TFrame},
+  UnitCBData in 'UnitCBData.pas',
+  UnitEnumHelper in '..\..\..\common\UnitEnumHelper.pas',
+  FrameGSFileList in '..\..\..\common\Frames\FrameGSFileList.pas',
+  UnitSimpleGenericEnum in '..\..\..\common\UnitSimpleGenericEnum.pas',
+  UnitCBRecord in 'UnitCBRecord.pas',
+  UnitElecServiceData in '..\UnitElecServiceData.pas',
+  UnitEngineMasterData in 'UnitEngineMasterData.pas',
+  UnitElecMasterData in 'UnitElecMasterData.pas',
+  UnitBaseRecord in '..\..\..\common\UnitBaseRecord.pas';
 
 {$R *.res}
 
@@ -28,5 +54,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TVesselListF, VesselListF);
+  Application.CreateForm(TViewGenMasterF, ViewGenMasterF);
   Application.Run;
 end.
