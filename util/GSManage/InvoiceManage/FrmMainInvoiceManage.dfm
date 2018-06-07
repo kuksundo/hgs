@@ -12,6 +12,7 @@ object InvoiceManageF: TInvoiceManageF
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -1081,7 +1082,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 16
     Top = 208
     Bitmap = {
-      494C0101010070001C0318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000340318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1392,7 +1393,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010300C800480420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010300C800600420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1933,7 +1934,7 @@ object InvoiceManageF: TInvoiceManageF
     Left = 104
     Top = 208
     Bitmap = {
-      494C0101020054022C0310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402440310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -2121,12 +2122,30 @@ object InvoiceManageF: TInvoiceManageF
         Caption = 'Open'
         OnClick = Open1Click
       end
-      object N1: TMenuItem
+      object N2: TMenuItem
         Caption = '-'
       end
       object Close1: TMenuItem
         Caption = 'Close'
         OnClick = Close1Click
+      end
+    end
+    object Company1: TMenuItem
+      Caption = 'Company'
+      object RegisterCompanyFromFile1: TMenuItem
+        Caption = 'Register Company From File'
+        OnClick = RegisterCompanyFromFile1Click
+      end
+      object ClearCompanyToDB1: TMenuItem
+        Caption = 'Clear Company To DB'
+        OnClick = ClearCompanyToDB1Click
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object ShowRegisteredCompanyInfo1: TMenuItem
+        Caption = 'Show Registered Company Info'
+        OnClick = ShowRegisteredCompanyInfo1Click
       end
     end
   end

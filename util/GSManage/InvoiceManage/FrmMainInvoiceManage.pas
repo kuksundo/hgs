@@ -68,7 +68,6 @@ type
     File1: TMenuItem;
     New1: TMenuItem;
     Open1: TMenuItem;
-    N1: TMenuItem;
     Close1: TMenuItem;
     OpenDialog1: TOpenDialog;
     PopupMenu1: TPopupMenu;
@@ -76,6 +75,12 @@ type
     Delete1: TMenuItem;
     Documents1: TMenuItem;
     CreateInvoice1: TMenuItem;
+    RegisterCompanyFromFile1: TMenuItem;
+    N2: TMenuItem;
+    ClearCompanyToDB1: TMenuItem;
+    Company1: TMenuItem;
+    N1: TMenuItem;
+    ShowRegisteredCompanyInfo1: TMenuItem;
 
     procedure btn_SearchClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -94,6 +99,9 @@ type
     procedure ShipNameEditKeyPress(Sender: TObject; var Key: Char);
     procedure OrderNoEditKeyPress(Sender: TObject; var Key: Char);
     procedure SubjectEditKeyPress(Sender: TObject; var Key: Char);
+    procedure RegisterCompanyFromFile1Click(Sender: TObject);
+    procedure ClearCompanyToDB1Click(Sender: TObject);
+    procedure ShowRegisteredCompanyInfo1Click(Sender: TObject);
   private
     FStopEvent    : TEvent;
     FAsyncMQ: TOmniMessageQueue;
@@ -106,11 +114,14 @@ type
 
     function GetSqlWhereFromQueryDate(AQueryDate: TQueryDateType): string;
     function ProcessInvoiceTaskJson(AJson: String): Boolean;
+    function ProcessCompanyRegJson(AJson: String): Boolean;
+    function VerifyCompanyFromCodeIfRegistered(ACompanyCode: string): Boolean;
     function GetTaskIdFromGrid(ARow: integer): TID;
     function SaveCurrentTask2File(AFileName: string = '') : string;
     function GetTask: TSQLInvoiceTask;
 
     procedure ExecuteSearch(Key: Char);
+    procedure ShowRegisteredCompanyInfo;
   public
     procedure DisplayTaskInfo2Grid(AFrom,ATo: TDateTime; AQueryDate: TQueryDateType;
       AHullNo, AShipName, ASubject, AOrderNo: string);
@@ -191,7 +202,6 @@ begin
       end
     )
   );
-
 end;
 
 procedure TInvoiceManageF.btn_CloseClick(Sender: TObject);
@@ -210,6 +220,11 @@ begin
 
   DisplayTaskInfo2Grid(dt_Begin.Date, dt_end.Date, LQueryDateType,
     HullNoEdit.Text, ShipNameEdit.Text, SubjectEdit.Text, OrderNoEdit.Text);
+end;
+
+procedure TInvoiceManageF.ClearCompanyToDB1Click(Sender: TObject);
+begin
+  DeleteCompany4InvoiceFromCode('');
 end;
 
 procedure TInvoiceManageF.Close1Click(Sender: TObject);
@@ -348,6 +363,7 @@ begin
       LStr := StringFromFile(LFileName);
       rec.FSubject := LStr;
       LOmniValue := TOmniValue.FromRecord<TOLMsgFileRecord>(rec);
+
       FAsyncMQ.Enqueue(TOmniMessage.Create(1, LOmniValue));
       exit;
     end;
@@ -399,6 +415,7 @@ end;
 procedure TInvoiceManageF.FormCreate(Sender: TObject);
 begin
   InitClient4InvoiceManage;
+
   FAsyncMQ := TOmniMessageQueue.Create(1000);
   FStopEvent := TEvent.Create;
   (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
@@ -438,8 +455,8 @@ end;
 
 procedure TInvoiceManageF.grid_ReqCellDblClick(Sender: TObject; ACol,
   ARow: Integer);
-var
-  LTask: TSQLInvoiceTask;
+//var
+//  LTask: TSQLInvoiceTask;
 begin
   if ARow = -1 then
     Exit;
@@ -472,8 +489,8 @@ end;
 
 procedure TInvoiceManageF.LoadTaskVar2Grid(AVar: TSQLInvoiceTask; AGrid: TNextGrid;
   ARow: integer);
-var
-  LIds: TIDDynArray;
+//var
+//  LIds: TIDDynArray;
 begin
   if not Assigned(AVar) then
     exit;
@@ -537,6 +554,38 @@ begin
   ExecuteSearch(Key);
 end;
 
+function TInvoiceManageF.ProcessCompanyRegJson(AJson: String): Boolean;
+var
+  LVar: variant;
+  LSQLCompany: TSQLCompany;
+  LCompanyCode: string;
+  LUTF8: RawUTF8;
+  LRaw: RawByteString;
+begin
+  if AJson <> '' then
+  begin
+    LRaw := Base64ToBin(StringToUTF8(AJson));
+    LRaw := SynLZDecompress(LRaw);
+    LUTF8 := LRaw;
+    LVar := _JSON(LUTF8);
+
+    LCompanyCode := LVar.CompanyCode;
+    LSQLCompany := GetCompanyFromCode4InvoiceTask(LCompanyCode);
+    try
+      LSQLCompany.CompanyName := LVar.CompanyName;
+      LSQLCompany.CompanyCode := LVar.CompanyCode;
+      LSQLCompany.CompanyAddress := LVar.CompanyAddress;
+      LSQLCompany.CompanyTypes := IntToTCompanyType_Set(StrToIntDef(LVar.CompanyType, 0));
+      LSQLCompany.Nation := LVar.Nation;
+      LSQLCompany.EMail := LVar.EMail;
+
+      AddOrUpdateCompany4Invoice(LSQLCompany);
+    finally
+      LSQLCompany.Free;
+    end;
+  end;
+end;
+
 function TInvoiceManageF.ProcessInvoiceTaskJson(AJson: String): Boolean;
 var
   LDoc: variant;
@@ -544,6 +593,7 @@ var
   LUTF8: RawUTF8;
   LRaw: RawByteString;
   LRow: integer;
+  LCompanyCode, LCompanyName: string;
 begin
   if AJson <> '' then
   begin
@@ -555,10 +605,39 @@ begin
 //    LUTF8 := AnsiToUTF8(LRaw);
     LDoc := _JSON(LUTF8);
     //InqManage.exe에서 만들어진 *.hgs 파일인 경우
-    Result := LDoc.TaskJsonDragSign = TASK_JSON_DRAG_SIGNATURE;
+    try
+      Result := LDoc.TaskJsonDragSign = TASK_JSON_DRAG_SIGNATURE;
+
+      if Result then
+      begin
+        GetCompanyCodeFromSubConArray(LDoc, LCompanyCode, LCompanyName);
+      end;
+    except
+    end;
+
+    if not Result then
+    begin
+      //InvoiceManage.exe에서 만들어진 *.hgs 파일인 경우
+      try
+        Result := LDoc.InvoiceTaskJsonDragSign = INVOICETASK_JSON_DRAG_SIGNATURE;
+
+        if Result then
+        begin
+          LCompanyCode := LDoc.Task.SubConCompanyCode;
+          LCompanyName := LDoc.Task.SubConCompanyName;
+        end;
+      except
+      end;
+    end;
 
     if Result then
     begin
+      if not VerifyCompanyFromCodeIfRegistered(LCompanyCode) then
+      begin
+        ShowMessage('This file is not for company name : ' + LCompanyName);
+        exit;
+      end;
+
       LTask := GetInvoiceTaskFromUniqueID(LDoc.Task.UniqueTaskID);
       try
         if FrmInvoiceEdit.DisplayInvoiceTaskInfo2EditForm(LTask, LDoc) then
@@ -574,7 +653,7 @@ begin
       end;
     end
     else
-      ShowMessage('Signature is not correct');
+      ShowMessage('From InqManageR Signature is not correct');
   end
   else
   begin
@@ -590,6 +669,22 @@ begin
     finally
       if Assigned(LTask) then
         FreeAndNil(LTask);
+    end;
+  end;
+end;
+
+procedure TInvoiceManageF.RegisterCompanyFromFile1Click(Sender: TObject);
+var
+  LStr: string;
+begin
+  OpenDialog1.Filter := 'HGS Reg file(*.hgsreg)|*.hgsreg|All Files(*.*)|*.*';
+
+  if OpenDialog1.Execute then
+  begin
+    if FileExists(OpenDialog1.FileName) then
+    begin
+      LStr := StringFromFile(OpenDialog1.FileName);
+      ProcessCompanyRegJson(LStr);
     end;
   end;
 end;
@@ -640,9 +735,46 @@ begin
   end;
 end;
 
+procedure TInvoiceManageF.ShowRegisteredCompanyInfo;
+var
+  LSQLCompany: TSQLCompany;
+  LStr: string;
+begin
+  LSQLCompany := GetCompanyFromCode4InvoiceTask('ALL');
+  try
+    LStr := 'Company Name : ' + LSQLCompany.CompanyName + #10#13;
+    LStr := LStr + 'Company Code : ' + LSQLCompany.CompanyCode + #10#13;
+    LStr := LStr + 'Company Address : ' + LSQLCompany.CompanyAddress + #10#13;
+    LStr := LStr + 'Email Address : ' + LSQLCompany.EMail + #10#13;
+    LStr := LStr + 'Nation : ' + LSQLCompany.Nation;
+
+    ShowMessage(LStr);
+  finally
+    LSQLCompany.Free;
+  end;
+end;
+
+procedure TInvoiceManageF.ShowRegisteredCompanyInfo1Click(Sender: TObject);
+begin
+  ShowRegisteredCompanyInfo;
+end;
+
 procedure TInvoiceManageF.SubjectEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
+end;
+
+function TInvoiceManageF.VerifyCompanyFromCodeIfRegistered(
+  ACompanyCode: string): Boolean;
+var
+  LSQLCompany: TSQLCompany;
+begin
+  LSQLCompany := GetCompanyFromCode4InvoiceTask(ACompanyCode);
+  try
+    Result := LSQLCompany.IsUpdate;
+  finally
+    LSQLCompany.Free;
+  end;
 end;
 
 end.

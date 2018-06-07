@@ -56,8 +56,6 @@ type
       AGrid: TNextGrid);
   public
     FInvoiceFiles_: TSQLInvoiceFile;
-//    FSQLInvoiceItem_: TSQLInvoiceItem;
-    FItemType: TGSInvoiceItemType;
     FItemID, FTaskID: TID;
 
     procedure LoadFiles2Grid(AIDList: TIDList4Invoice);
@@ -231,7 +229,7 @@ var
   LSQLInvoiceFileRec: TSQLInvoiceFileRec;
   LRow: integer;
 begin
-  FItemType := AIDList.ItemType;
+//  FItemType := AIDList.InvoiceItemType;
   FTaskID := AIDList.TaskId;
 
   FileGrid.BeginUpdate;
@@ -307,10 +305,8 @@ begin
     if AFileName <> '' then
       LFileSelectF.JvFilenameEdit1.FileName := AFileName;
 
-//    LFileSelectF.ComboBox1.Text := GSInvoiceItemType2String(FItemType);
     LFileSelectF.ComboBox1.Visible := False;
     LFileSelectF.Label1.Visible := False;
-//    LFileSelectF.ComboBox1.Enabled := False;
 
     if LFileSelectF.ShowModal = mrOK then
     begin

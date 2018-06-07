@@ -1,4 +1,4 @@
-unit FrmInvoiceEdit;
+Ôªøunit FrmInvoiceEdit;
 
 interface
 
@@ -10,7 +10,7 @@ uses
   JvToolEdit, JvBaseEdits, AdvEdit, AdvEdBtn, pjhComboBox, NxColumnClasses,
   NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid, NxEdit,
   AdvGlowButton, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls, JvExControls, JvLabel,
-  UElecDataRecord, SynCommons, CommonData, mORMot, UnitMakeReport;
+  UElecDataRecord, SynCommons, CommonData, mORMot, UnitMakeReport, UnitElecServiceData;
 
 type
   TInvoiceTaskEditF = class(TForm)
@@ -106,7 +106,6 @@ type
     NxIncrementColumn1: TNxIncrementColumn;
     AUnit: TNxTextColumn;
     UnitPrice: TNxTextColumn;
-    TotalPrice: TNxTextColumn;
     Attachments: TNxButtonColumn;
     ItemType: TNxComboBoxColumn;
     Qty: TNxTextColumn;
@@ -114,12 +113,8 @@ type
     AddItem1: TMenuItem;
     Add1: TMenuItem;
     Delete1: TMenuItem;
-    JvLabel59: TJvLabel;
-    SalesPriceEdit: TJvCalcEdit;
     JvLabel60: TJvLabel;
     ExchangeRateEdit: TEdit;
-    JvLabel61: TJvLabel;
-    CurrencyKindCB: TComboBox;
     ItemDesc: TNxTextColumn;
     PopupMenu2: TPopupMenu;
     Doc1: TMenuItem;
@@ -134,6 +129,16 @@ type
     ExchangeRate: TNxTextColumn;
     Document1: TMenuItem;
     Create1: TMenuItem;
+    JvLabel61: TJvLabel;
+    CurrencyKindCB: TComboBox;
+    EngineerKind: TNxTextColumn;
+    TotalPrice: TNxButtonColumn;
+    JvLabel59: TJvLabel;
+    SalesPriceEdit: TJvCalcEdit;
+    Button1: TButton;
+    UniqueItemID: TNxTextColumn;
+    UniqueSubConIDEdit: TEdit;
+    ItemAction: TNxTextColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
@@ -145,11 +150,19 @@ type
     procedure InvoiceEnglish1Click(Sender: TObject);
     procedure AeroButton2Click(Sender: TObject);
     procedure AeroButton3Click(Sender: TObject);
+    procedure Create1Click(Sender: TObject);
+    procedure TotalPriceButtonClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure InvoiceGridAfterEdit(Sender: TObject; ACol, ARow: Integer;
+      Value: WideString);
   private
     function GetSQLInvoiceItem(AGrid: TNextGrid; ARow: integer; var AInvoiceItem: TSQLInvoiceItem): Boolean;
     procedure GetInvoiceItemFromGrid2StrList(AGrid: TNextGrid; var AList: TStringList);
+    procedure GetInvoiceItemFromObjList2StrList(AItemList: TObjectList<TSQLInvoiceItem>; var AList: TStringList);
     procedure ClearTIDList4Grid(AGrid: TNextGrid);
     function Get_Doc_Inv_Rec: Doc_Invoice_Rec;
+    procedure CalcInvoice2Var;
+    function GetTotalPrice: integer;
   public
 //    FSQLInvoiceFiles: TSQLInvoiceFile;
 //    FSQLInvoiceItem: TSQLInvoiceItem;
@@ -159,10 +172,10 @@ type
     procedure LoadInvoiceTask2Form(ATask: TSQLInvoiceTask;
       AForm: TInvoiceTaskEditF; ADoc: variant);
     procedure LoadForm2InvoiceTask(AForm: TInvoiceTaskEditF; out ATask: TSQLInvoiceTask);
-    function LoadForm2InvoiceItem(AForm: TInvoiceTaskEditF): Boolean;
+    function SaveInvoiceItemFromForm(AForm: TInvoiceTaskEditF): Boolean;
     procedure LoadInvoiceTask2Grid(ATask: TSQLInvoiceTask; AGrid: TNextGrid;
       ARow: integer);
-    //AIsFromDoc : DB∞° æ∆¥— ∆ƒ¿œ∑Œ ∫Œ≈Õ ∑ŒµÂ«‘
+    //AIsFromDoc : DBÍ∞Ä ÏïÑÎãå ÌååÏùºÎ°ú Î∂ÄÌÑ∞ Î°úÎìúÌï®
     procedure LoadInvoiceItem2Form(AInvoiceItem: TSQLInvoiceItem;
       AForm: TInvoiceTaskEditF; AIsFromDoc: Boolean = False);
     procedure LoadInvoiceItem2Grid(AInvoiceItem: TSQLInvoiceItem;
@@ -181,8 +194,9 @@ type
 
     procedure UpdateInvoiceFileFromGrid(AGrid: TNextGrid; AItem: TSQLInvoiceItem);
     procedure UpdateInvoiceFileFromGridRow(AGrid: TNextGrid; ARow: integer; AItem: TSQLInvoiceItem);
-    procedure AddInvoiceFileFromGrid(AGrid: TNextGrid; AItem: TSQLInvoiceItem);
+    procedure AddInvoiceFileFromGrid(AGrid: TNextGrid; ARow: integer; AItem: TSQLInvoiceItem);
     procedure UpdateInvoiceItemFromGrid(AGrid: TNextGrid; AIndex: Integer; AIDList: TIDList4Invoice);
+    procedure DeleteNAddInvoiceItemNFileFromGrid(AGrid: TNextGrid; AIndex: Integer; AIDList: TIDList4Invoice);
     procedure AddInvoiceItemFromGrid(AGrid: TNextGrid; AIndex: Integer; ATaskID: TID);
     procedure DeleteInvoiceItemFromGrid(AIDList: TIDList4Invoice);
     procedure UpdateTaskID2InvoiceGrid(ATaskID: TID; AGrid: TNextGrid);
@@ -215,6 +229,7 @@ var
   LItem: TSQLInvoiceItem;
   i: integer;
   LID: TID;
+  LIsFromInvoiceManage: Boolean;
 begin
   LTaskEditF := TInvoiceTaskEditF.Create(nil);
   try
@@ -228,12 +243,10 @@ begin
         Caption := Caption + ' (New)';
 
       if ADoc <> null then
-      begin
-        LoadInvoiceTaskFromVariant(ATask, ADoc.Task);
+      begin //*.hgs ÌååÏùº DragDropÎêú Í≤ΩÏö∞
+        LIsFromInvoiceManage := LoadInvoiceTaskFromVariant(ATask, ADoc);
 
-//        //InvoiceManage.exeø°º≠ ∏∏µÈæÓ¡¯ *.hgs ∆ƒ¿œ¿Œ ∞ÊøÏ
-//        //InvoiceItem π◊ InvoiceFileµµ ∆˜«‘µ 
-//        if ADoc.InvoiceTaskJsonDragSign = INVOICETASK_JSON_DRAG_SIGNATURE then
+//        if LIsFromInvoiceManage then
 //        begin
 //          LoadInvoiceItemFromVariant(
 //          LoadInvoiceFileFromVariant
@@ -248,15 +261,15 @@ begin
         LoadForm2InvoiceTask(LTaskEditF, ATask);
         AddOrUpdateInvoiceTask(ATask);
 
-        //Ω≈±‘ Task¿œ ∞ÊøÏ TaskID∞° DBø° ADD »ƒø° ª˝º∫µ 
+        //Ïã†Í∑ú TaskÏùº Í≤ΩÏö∞ TaskIDÍ∞Ä DBÏóê ADD ÌõÑÏóê ÏÉùÏÑ±Îê®
         if not ATask.IsUpdate then
           UpdateTaskID2InvoiceGrid(ATask.ID, LTaskEditF.InvoiceGrid);
 
-        if LoadForm2InvoiceItem(LTaskEditF) then
+        if SaveInvoiceItemFromForm(LTaskEditF) then
         begin
 //          UpdateInvoiceFileFromGrid(LTaskEditF.InvoiceGrid, LItem);
         end
-        else//Item¿Ã 0∞≥ ¿Œ ∞ÊøÏ
+        else//ItemÏù¥ 0Í∞ú Ïù∏ Í≤ΩÏö∞
 //        if LItem.IsUpdate then
         begin
 //          g_InvoiceItemDB.Delete(TSQLInvoiceItem, 'TaskID = ?', [LItem.TaskID]);
@@ -274,24 +287,26 @@ begin
   InvoiceItemAdd;
 end;
 
-procedure TInvoiceTaskEditF.AddInvoiceFileFromGrid(AGrid: TNextGrid;
+procedure TInvoiceTaskEditF.AddInvoiceFileFromGrid(AGrid: TNextGrid; ARow: integer;
   AItem: TSQLInvoiceItem);
 var
-  i: integer;
+//  i: integer;
   LIDList: TIDList4Invoice;
   LSQLInvoiceFile, LAddInvoiceFile: TSQLInvoiceFile;
 begin
-  for i := 0 to AGrid.RowCount - 1 do
-  begin
-    LIDList := TIDList4Invoice(AGrid.Row[i].Data);
+//  for i := 0 to AGrid.RowCount - 1 do
+//  begin
+    LIDList := TIDList4Invoice(AGrid.Row[ARow].Data);
     LSQLInvoiceFile := GetFilesFromInvoiceIDList(LIDList);
     try
       if not LSQLInvoiceFile.FillOne then
       begin
-        LAddInvoiceFile := TSQLInvoiceFile(TIDList4Invoice(AGrid.Row[i].Data).fInvoiceFile.CreateCopy);
+        LAddInvoiceFile := TSQLInvoiceFile(TIDList4Invoice(AGrid.Row[ARow].Data).fInvoiceFile.CreateCopy);
         try
           LAddInvoiceFile.TaskID := LIDList.TaskId;
           LAddInvoiceFile.ItemID := LIDList.ItemId;
+          LAddInvoiceFile.UniqueItemID := LIDList.UniqueItemID;
+          LAddInvoiceFile.UniqueSubConID := LIDList.UniqueSubConID;
           LAddInvoiceFile.FIsUpdate := False;
 
           AddOrUpdateInvoiceFiles(LAddInvoiceFile);
@@ -302,7 +317,7 @@ begin
     finally
       FreeAndNil(LSQLInvoiceFile);
     end;
-  end;
+//  end;
 end;
 
 procedure TInvoiceTaskEditF.AddInvoiceItemFromGrid(AGrid: TNextGrid;
@@ -322,7 +337,7 @@ begin
       UpdateItemID2InvoiceGrid(LInvoiceItem.ID, LInvoiceItem.UniqueItemID,
         AGrid, AIndex);
 
-    AddInvoiceFileFromGrid(AGrid, LInvoiceItem);
+    AddInvoiceFileFromGrid(AGrid, AIndex, LInvoiceItem);
   finally
     FreeAndNil(LInvoiceItem);
   end;
@@ -348,6 +363,7 @@ begin
       begin
         LUpdateInvoiceFile.TaskID := LIDList.TaskId;
         LUpdateInvoiceFile.ItemID := LIDList.ItemId;
+        LUpdateInvoiceFile.UniqueSubConID := LIDList.UniqueSubConID;
       end;
 
       AddOrUpdateInvoiceFiles(LUpdateInvoiceFile);
@@ -375,9 +391,16 @@ begin
     begin
       LUpdateInvoiceFile.TaskID := LIDList.TaskId;
       LUpdateInvoiceFile.ItemID := LIDList.ItemId;
+      LUpdateInvoiceFile.UniqueSubConID := LIDList.UniqueSubConID;
       TIDList4Invoice(AGrid.Row[ARow].Data).TaskId := LIDList.TaskId;
       TIDList4Invoice(AGrid.Row[ARow].Data).ItemId := LIDList.ItemId;
     end;
+
+//    if LUpdateInvoiceFile.UniqueItemID = '' then
+//      LUpdateInvoiceFile.UniqueItemID := NewGUID;
+
+    if LUpdateInvoiceFile.UniqueInvoiceFileID = '' then
+      LUpdateInvoiceFile.UniqueInvoiceFileID := NewGUID;
 
     AddOrUpdateInvoiceFiles(LUpdateInvoiceFile);
   finally
@@ -405,6 +428,52 @@ begin
   ModalResult := mrCancel;
 end;
 
+procedure TInvoiceTaskEditF.Button1Click(Sender: TObject);
+begin
+  GetTotalPrice;
+end;
+
+procedure TInvoiceTaskEditF.CalcInvoice2Var;
+var
+  LRec: Doc_Invoice_Rec;
+  LStrList: TStringList;
+  LStr: string;
+  i: integer;
+  LDoc: Variant;
+  LItemList: TObjectList<TSQLInvoiceItem>;
+begin
+  LRec := Get_Doc_Inv_Rec;
+  GetInvoiceItemFromGrid2StrList(InvoiceGrid, LRec.FInvoiceItemList);
+
+  if Assigned(LRec.FInvoiceItemList) then
+  begin
+    TDocVariant.New(LDoc);
+    LItemList := TObjectList<TSQLInvoiceItem>.Create;
+    LStrList := TStringList.Create;
+
+    try
+      for i := 0 to LRec.FInvoiceItemList.Count - 1 do
+      begin
+        LStr := LRec.FInvoiceItemList.Strings[i];
+        GetInvoiceItem2Var(LStr, LDoc);
+        AddInvoiceItemFromVar2ItemList(LDoc, LItemList);
+      end;
+
+      GetInvoiceItemFromObjList2StrList(LItemList, LStrList);
+
+      LRec.FInvoiceItemList.Clear;
+      LRec.FInvoiceItemList.Assign(LStrList);
+
+      MakeSubConInvoice(SubCompanyNameEdit.Text, LRec);
+    finally
+      LItemList.Clear;
+      LItemList.Free;
+      LStrList.Free;
+      LRec.FInvoiceItemList.Free;
+    end;
+  end;
+end;
+
 procedure TInvoiceTaskEditF.ClearTIDList4Grid(AGrid: TNextGrid);
 var
   i: integer;
@@ -414,6 +483,11 @@ begin
     TIDList4Invoice(AGrid.Row[i].Data).InvoiceFile.Free;
     TIDList4Invoice(AGrid.Row[i].Data).Free;
   end;
+end;
+
+procedure TInvoiceTaskEditF.Create1Click(Sender: TObject);
+begin
+  CalcInvoice2Var;
 end;
 
 procedure TInvoiceTaskEditF.Delete1Click(Sender: TObject);
@@ -427,10 +501,18 @@ begin
   DeleteInvoiceItemFromID(AIDList.ItemId);
 end;
 
+procedure TInvoiceTaskEditF.DeleteNAddInvoiceItemNFileFromGrid(AGrid: TNextGrid;
+  AIndex: Integer; AIDList: TIDList4Invoice);
+begin
+  DeleteInvoiceItemFromGrid(AIDList);
+  AddInvoiceItemFromGrid(AGrid, AIndex, AIDList.TaskID);
+end;
+
 procedure TInvoiceTaskEditF.FormCreate(Sender: TObject);
 begin
-  DOC_DIR := ExtractFilePath(Application.ExeName) + '..\æÁΩƒ\';
+  DOC_DIR := ExtractFilePath(Application.ExeName) + 'ÏñëÏãù\';
   InvoiceGrid.DoubleBuffered := False;
+  CurrencyKind2Combo(CurrencyKindCB);
 //  FSQLInvoiceFiles := nil;
 end;
 
@@ -455,12 +537,48 @@ begin
 
   for i := 0 to AGrid.RowCount - 1 do
   begin
-    LStr := AGrid.CellByName['ItemType', i].AsString + ';';
+    if TIDList4Invoice(AGrid.Row[i].Data).UniqueItemID <> '' then
+      LStr := TIDList4Invoice(AGrid.Row[i].Data).UniqueItemID
+    else
+      LStr := NewGUID;
+
+    LStr := StringReplace(LStr, '{', '', [rfReplaceAll]);
+    LStr := StringReplace(LStr, '}', '', [rfReplaceAll]);
+    LStr := LStr + ';';
+    LStr := LStr + TIDList4Invoice(AGrid.Row[i].Data).UniqueSubConID + ';';
+    LStr := LStr + AGrid.CellByName['ItemType', i].AsString + ';';
     LStr := LStr + AGrid.CellByName['ItemDesc', i].AsString + ';';
     LStr := LStr + AGrid.CellByName['Qty', i].AsString + ';';
     LStr := LStr + AGrid.CellByName['AUnit', i].AsString + ';';
     LStr := LStr + AGrid.CellByName['UnitPrice', i].AsString + ';';
-    LStr := LStr + AGrid.CellByName['TotalPrice', i].AsString;
+    LStr := LStr + AGrid.CellByName['ExchangeRate', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['TotalPrice', i].AsString + ';';
+    LStr := LStr + AGrid.CellByName['EngineerKind', i].AsString;
+
+    AList.Add(LStr);
+  end;
+end;
+
+procedure TInvoiceTaskEditF.GetInvoiceItemFromObjList2StrList(
+  AItemList: TObjectList<TSQLInvoiceItem>; var AList: TStringList);
+var
+  i: integer;
+  LStr: string;
+  LItem: TSQLInvoiceItem;
+begin
+  for i := 0 to AItemList.Count - 1 do
+  begin
+    LItem := AItemList.Items[i];
+
+    LStr := LItem.UniqueItemID + ';';
+    LStr := LStr + GSInvoiceItemType2String(LItem.InvoiceItemType) + ';';
+    LStr := LStr + LItem.InvoiceItemDesc + ';';
+    LStr := LStr + LItem.Qty + ';';
+    LStr := LStr + LItem.fUnit + ';';
+    LStr := LStr + LItem.UnitPrice + ';';
+    LStr := LStr + LItem.ExchangeRate + ';';
+    LStr := LStr + LItem.TotalPrice + ';';
+    LStr := LStr + EngineerKind2String(LItem.EngineerKind);
 
     AList.Add(LStr);
   end;
@@ -477,12 +595,31 @@ begin
   else
     AInvoiceItem.UniqueItemID := NewGUID;
 
-  AInvoiceItem.ItemDesc := AGrid.CellByName['ItemDesc', ARow].AsString;
+  AInvoiceItem.UniqueSubConID := TIDList4Invoice(AGrid.Row[ARow].Data).UniqueSubConID;
+  AInvoiceItem.InvoiceItemDesc := AGrid.CellByName['ItemDesc', ARow].AsString;
   AInvoiceItem.Qty := AGrid.CellByName['Qty', ARow].AsString;
   AInvoiceItem.fUnit := AGrid.CellByName['AUnit', ARow].AsString;
   AInvoiceItem.UnitPrice := AGrid.CellByName['UnitPrice', ARow].AsString;
+  AInvoiceItem.ExchangeRate := AGrid.CellByName['ExchangeRate', ARow].AsString;
   AInvoiceItem.TotalPrice := AGrid.CellByName['TotalPrice', ARow].AsString;
   AInvoiceItem.InvoiceItemType := String2GSInvoiceItemType(AGrid.CellByName['ItemType', ARow].AsString);
+  AInvoiceItem.EngineerKind := String2EngineerKind(AGrid.CellByName['EngineerKind', ARow].AsString);
+//  AInvoiceItem.UniqueItemID := AGrid.CellByName['UniqueItemID', ARow].AsString;
+
+//  if AInvoiceItem.UniqueItemID = '' then
+//    AInvoiceItem.UniqueItemID := NewGUID;
+end;
+
+function TInvoiceTaskEditF.GetTotalPrice: integer;
+var
+  i, LPrice: integer;
+begin
+  for i := 0 to InvoiceGrid.RowCount - 1 do
+  begin
+    LPrice := LPrice + InvoiceGrid.CellByName['TotalPrice', i].AsInteger;
+  end;
+
+  SalesPriceEdit.Value := LPrice;
 end;
 
 function TInvoiceTaskEditF.Get_Doc_Inv_Rec: Doc_Invoice_Rec;
@@ -493,12 +630,13 @@ begin
   Result.FHullNo := HullNoEdit.Text;
   Result.FShipName := ShipNameEdit.Text;
   Result.FSubject := SubjectEdit.Text;
-  Result.FPONo := PONoEdit.Text;
-
+  Result.FPONo := ServicePOEdit.Text;
+  Result.FOnboardDate := AttendSchedulePicker.Date;
+  Result.FTotalPrice := '‚Ç©' + system.SysUtils.FormatFloat('###,###,##0', SalesPriceEdit.Value);
   Result.FInvoiceItemList := TStringList.Create;
 end;
 
-function TInvoiceTaskEditF.LoadForm2InvoiceItem(AForm: TInvoiceTaskEditF): Boolean;
+function TInvoiceTaskEditF.SaveInvoiceItemFromForm(AForm: TInvoiceTaskEditF): Boolean;
 var
   i: integer;
   LIDList: TIDList4Invoice;
@@ -510,9 +648,10 @@ begin
     LIDList := TIDList4Invoice(AForm.InvoiceGrid.Row[i].Data);
 
     case LIDList.ItemAction of
-      0:  UpdateInvoiceItemFromGrid(AForm.InvoiceGrid, i, LIDList);//Update
+      0:  DeleteNAddInvoiceItemNFileFromGrid(AForm.InvoiceGrid, i, LIDList);//Delete and Add
       1:  AddInvoiceItemFromGrid(AForm.InvoiceGrid, i, LIDList.fTaskId);//Add
       2:  DeleteInvoiceItemFromGrid(LIDList);//Delete
+      3:  UpdateInvoiceItemFromGrid(AForm.InvoiceGrid, i, LIDList);//Update
     end;
   end;
 end;
@@ -523,13 +662,14 @@ begin
   ATask.HullNo := HullNoEdit.Text;
   ATask.ShipName := ShipNameEdit.Text;
   ATask.Order_No := OrderNoEdit.Text;
+  ATask.PO_No := PONoEdit.Text;
   ATask.WorkSummary := SubjectEdit.Text;
   ATask.ShipOwner := ShipOwnerEdit.Text;
   ATask.NationPort := NationPortEdit.Text;
   ATask.EtcContent := EtcContentMemo.Text;
   ATask.InvoicePrice := SalesPriceEdit.Text;
   ATask.ExchangeRate := ExchangeRateEdit.Text;
-//  ATask.CurrencyKind := CurrencyKindCB.Text;
+  ATask.CurrencyKind := String2CurrencyKind(CurrencyKindCB.Text);
   ATask.CustCompanyName := CustomerNameEdit.Text;
   ATask.CustCompanyCode := CustCompanyCodeEdit.Text;
   ATask.CustManagerName := CustManagerEdit.Text;
@@ -543,13 +683,14 @@ begin
 
   ATask.SubConCompanyName := SubCompanyNameEdit.Text;
   ATask.SubConCompanyCode := SubCompanyCodeEdit.Text;
-//  ServicePOEdit.Text := ATask.Order_No;
+  ATask.SubConInvoiceNo := ServicePOEdit.Text;
   ATask.SubConManagerName := SubManagerEdit.Text;
   ATask.SubConPosition := SubPositionEdit.Text;
   ATask.SubConEMail := SubEmailEdit.Text;
   ATask.SubConOfficePhone := SubPhonNumEdit.Text;
   ATask.SubConMobilePhone := SubFaxEdit.Text;
   ATask.SubConCompanyAddress := SubCompanyAddressMemo.Text;
+  ATask.UniqueSubConID := UniqueSubConIDEdit.Text;
 
   ATask.AttendScheduled := TimeLogFromDateTime(AttendSchedulePicker.DateTime);
   ATask.InqRecvDate := TimeLogFromDateTime(InqRecvPicker.DateTime);
@@ -662,6 +803,8 @@ end;
 procedure TInvoiceTaskEditF.LoadInvoiceItem2Form(AInvoiceItem: TSQLInvoiceItem;
   AForm: TInvoiceTaskEditF; AIsFromDoc: Boolean);
 begin
+  //InvoiceGridÏóêÏÑú ÎçîÎ∏îÌÅ¥Î¶≠ Ìïú Í≤ΩÏö∞ = AIsFromDoc : False
+  //*.hgs ÏùÑ InvoiceGridÏóê Drop Ìïú Í≤ΩÏö∞ = AIsFromDOc : True;
   InvoiceGrid.BeginUpdate;
   try
     if AIsFromDoc then
@@ -706,25 +849,29 @@ begin
       begin
         LRow := AddRow;
         CellByName['ItemType', LRow].AsString := GSInvoiceItemType2String(InvoiceItemType);
-        CellByName['ItemDesc', LRow].AsString := ItemDesc;
+        CellByName['ItemDesc', LRow].AsString := InvoiceItemDesc;
         CellByName['Qty', LRow].AsString := Qty;
         CellByName['AUnit', LRow].AsString := fUnit;
         CellByName['UnitPrice', LRow].AsString := UnitPrice;
+        CellByName['ExchangeRate', LRow].AsString := ExchangeRate;
         CellByName['TotalPrice', LRow].AsString := TotalPrice;
+        CellByName['EngineerKind', LRow].AsString := EngineerKind2String(EngineerKind);
+        CellByName['UniqueItemID', LRow].AsString := UniqueItemID;
 
         InvoiceGrid.Row[LRow].Data := TIDList4Invoice.Create;
         TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile := TSQLInvoiceFile.Create;
-        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).TaskId := AInvoiceItem.TaskID;
-        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemID := AInvoiceItem.ItemID;
-        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueItemID := AInvoiceItem.UniqueItemID;
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).TaskId := TaskID;
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemID := ItemID;
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueItemID := UniqueItemID;
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueSubConID := UniqueSubConID;
 
-//        if AInvoiceItem.IsUpdate then
-//          LAction := 0//Update
-//        else
-//          LAction := 1;//Add
-//
-//        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := LAction;
-        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemType := InvoiceItemType;
+        if AIsFromDoc then
+          LAction := 0//Delete and Add
+        else
+          LAction := -1;//No action(Add ÎòêÎäî Delete Î≤ÑÌäº ÎàåÎ†ÄÏùÑ Í≤ΩÏö∞ÏóêÎßå ActionÏù¥ ÌïÑÏöîÌï®
+
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := LAction;
+        TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceItemType := InvoiceItemType;
 
         if not AIsFromDoc then
         begin
@@ -749,7 +896,7 @@ var
   LItemList: TObjectList<TSQLInvoiceItem>;
   LFileList: TObjectList<TSQLInvoiceFile>;
   i: integer;
-begin
+begin //*.hgs ÏùÑ InvoiceGridÏóê Drop Ìïú Í≤ΩÏö∞
   if ADoc.InvoiceTaskJsonDragSign <> INVOICETASK_JSON_DRAG_SIGNATURE then
     exit;
 
@@ -759,7 +906,7 @@ begin
     LoadInvoiceItemListFromVariant(ADoc.InvoiceItem, LItemList);
     LoadInvoiceItemList2Form(LItemList, AForm);
 
-    LoadInvoiceFileListFromVariant(ADoc.InvoiceFile, LFileList);
+    LoadInvoiceFileListFromVariantWithSQLInvoiceFile(ADoc.InvoiceFile, LFileList);
     LoadInvoiceFileList2Form(LFileList, AForm);
   finally
 //    for i := 0 to LItemList.Count - 1 do
@@ -795,6 +942,7 @@ begin
   HullNoEdit.Text := ATask.HullNo;
   ShipNameEdit.Text := ATask.ShipName;
   OrderNoEdit.Text := ATask.Order_No;
+  PONoEdit.Text := ATask.PO_No;
   SubjectEdit.Text := ATask.WorkSummary;
   ShipOwnerEdit.Text := ATask.ShipOwner;
   NationPortEdit.Text := ATask.NationPort;
@@ -815,15 +963,16 @@ begin
 
   SubCompanyNameEdit.Text := ATask.SubConCompanyName;
   SubCompanyCodeEdit.Text := ATask.SubConCompanyCode;
-  ServicePOEdit.Text := ATask.Order_No;
+  ServicePOEdit.Text := ATask.SubConInvoiceNo;
   SubManagerEdit.Text := ATask.SubConManagerName;
   SubPositionEdit.Text := ATask.SubConPosition;
   SubEmailEdit.Text := ATask.SubConEMail;
   SubPhonNumEdit.Text := ATask.SubConOfficePhone;
   SubFaxEdit.Text := ATask.SubConMobilePhone;
   SubCompanyAddressMemo.Text := ATask.SubConCompanyAddress;
+  UniqueSubConIDEdit.Text := ATask.UniqueSubConID;
 
-//  CurrencyKindCB.Text := ATask.CurrencyKind;
+  CurrencyKindCB.ItemIndex := Ord(ATask.CurrencyKind);
   AttendSchedulePicker.DateTime := TimeLogToDateTime(ATask.AttendScheduled);
   InqRecvPicker.DateTime := TimeLogToDateTime(ATask.InqRecvDate);
 //  InvoiceIssuePicker.DateTime := TimeLogToDateTime(ATask.InvoiceIssueDate);
@@ -841,8 +990,8 @@ begin
       FreeAndNil(LInvoiceItem);
     end;
   end
-  else
-  begin
+  else //InvoiceManage.exeÏóêÏÑú ÎßåÎì§Ïñ¥ÏßÑ *.hgs ÌååÏùºÏù∏ Í≤ΩÏö∞
+  begin//InvoiceItem Î∞è InvoiceFileÎèÑ Ìè¨Ìï®Îê®
     LoadInvoiceItemFromVar2Form(ADoc, AForm);
   end;
 end;
@@ -877,6 +1026,13 @@ begin
   MakeDocInvoice(LRec);
 end;
 
+procedure TInvoiceTaskEditF.InvoiceGridAfterEdit(Sender: TObject; ACol,
+  ARow: Integer; Value: WideString);
+begin
+  if InvoiceGrid.CellByName['ItemAction', ARow].AsString <> 'ADD' then
+    TIDList4Invoice(InvoiceGrid.Row[ARow].Data).ItemAction := 3; //Update
+end;
+
 procedure TInvoiceTaskEditF.InvoiceItemAdd;
 var
   LRow: integer;
@@ -885,13 +1041,19 @@ begin
   LRow := InvoiceGrid.AddRow;
   InvoiceGrid.Row[LRow].Data := TIDList4Invoice.Create;
   TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile := TSQLInvoiceFile.Create;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueItemID := NewGUID;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueSubConID := UniqueSubConIDEdit.Text;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceFile.UniqueInvoiceFileID := NewGUID;
   TIDList4Invoice(InvoiceGrid.Row[LRow].Data).TaskId := FInvoiceTask.ID;
   TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId := -1;
   TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemAction := 1; //Add
-  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemType := iitWorkDay;
+  TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceItemType := iitWork_Week_N;
   InvoiceGrid.CellByName['ItemType', LRow].AsString :=
-    GSInvoiceItemType2String(iitWorkDay);
+    GSInvoiceItemType2String(iitWork_Week_N);
   InvoiceGrid.CellByName['AUnit', LRow].AsString := 'Day';
+  InvoiceGrid.CellByName['EngineerKind', LRow].AsString := EngineerKind2String(ekServiceEngineer);
+  InvoiceGrid.CellByName['UniqueItemID', LRow].AsString := NewGUID;
+  InvoiceGrid.CellByName['ItemAction', LRow].AsString := 'ADD';
 
   if ExchangeRateEdit.Text <> '' then
     InvoiceGrid.CellByName['ExchangeRate', LRow].AsString := ExchangeRateEdit.Text
@@ -909,7 +1071,7 @@ begin
   if LRow = -1 then
     exit;
 
-  if MessageDlg('º±≈√«— Invoice Item¿ª ªË¡¶ «œΩ√∞⁄Ω¿¥œ±Ó?', mtConfirmation, [mbYes, mbNo],0) = mrNo then
+  if MessageDlg('ÏÑ†ÌÉùÌïú Invoice ItemÏùÑ ÏÇ≠Ï†ú ÌïòÏãúÍ≤†ÏäµÎãàÍπå?', mtConfirmation, [mbYes, mbNo],0) = mrNo then
     exit;
 
 //  LID := TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemId;
@@ -959,12 +1121,12 @@ begin
     LStr := TNxComboBox(TNxComboBoxColumn(InvoiceGrid.ColumnByName['ItemType']).Editor).Text;
     LItemType := String2GSInvoiceItemType(LStr);
 
-    if (LItemType = iitWorkDay) or (LItemType = iitTravellingDay) then
+    if (LItemType = iitWork_Week_N) or (LItemType = iitWork_Holiday_N) then
       InvoiceGrid.CellByName['AUnit', LRow].AsString := 'Day'
     else
       InvoiceGrid.CellByName['AUnit', LRow].AsString := 'Set';
 
-    TIDList4Invoice(InvoiceGrid.Row[LRow].Data).ItemType := LItemType;
+    TIDList4Invoice(InvoiceGrid.Row[LRow].Data).InvoiceItemType := LItemType;
   end;
 end;
 
@@ -992,12 +1154,36 @@ begin
 
         LSQLInvoiceFile := TSQLInvoiceFile(LFileListF.FInvoiceFiles_.CreateCopy);
         TIDList4Invoice(InvoiceGrid.Row[LRow].Data).fInvoiceFile := LSQLInvoiceFile;
+        LSQLInvoiceFile.UniqueItemID := TIDList4Invoice(InvoiceGrid.Row[LRow].Data).UniqueItemID;
         LoadInvoiceFileCount2Grid(LSQLInvoiceFile, InvoiceGrid, LRow);
       end;
     finally
       LFileListF.Free;
     end;
   end;
+end;
+
+procedure TInvoiceTaskEditF.TotalPriceButtonClick(Sender: TObject);
+var
+  LRow, LNumOfWorker, LQty, LUnitPrice: integer;
+  LGSInvoiceItemType: TGSInvoiceItemType;
+begin
+  LRow := InvoiceGrid.SelectedRow;
+  LGSInvoiceItemType := String2GSInvoiceItemType(InvoiceGrid.CellsByName['ItemType', LRow]);
+  LNumOfWorker := 1;
+
+  if (LGSInvoiceItemType = iitWork_Week_N) or (LGSInvoiceItemType = iitWork_Week_OT) or
+     (LGSInvoiceItemType = iitWork_Holiday_N) or (LGSInvoiceItemType = iitWork_Holiday_OT) or
+     (LGSInvoiceItemType = iitTravellingHours)then
+  begin
+    LNumOfWorker := StrToIntDef(InvoiceGrid.CellsByName['ItemDesc', LRow],1);
+  end;
+
+  LQty := StrToIntDef(InvoiceGrid.CellsByName['Qty', LRow],1);
+  LUnitPrice := StrToIntDef(InvoiceGrid.CellsByName['UnitPrice', LRow],1);
+  TNxButtonColumn(InvoiceGrid.ColumnByName['TotalPrice']).Editor.Text :=
+    IntToStr(LNumOfWorker*LQty*LUnitPrice);
+
 end;
 
 procedure TInvoiceTaskEditF.UpdateInvoiceItemFromGrid(AGrid: TNextGrid;
@@ -1015,7 +1201,7 @@ begin
       AddOrUpdateInvoiceItem(LInvoiceItem);
       UpdateInvoiceFileFromGridRow(AGrid, AIndex, LInvoiceItem);
     end
-    else//Task¥¬ Update¿Ã¡ˆ∏∏ InvoiceItem¿∫ √ﬂ∞° µ… ºˆ ¿÷¿Ω
+    else//TaskÎäî UpdateÏù¥ÏßÄÎßå InvoiceItemÏùÄ Ï∂îÍ∞Ä Îê† Ïàò ÏûàÏùå
     begin
       AddInvoiceItemFromGrid(AGrid, AIndex, AIDList.TaskId);
     end;
