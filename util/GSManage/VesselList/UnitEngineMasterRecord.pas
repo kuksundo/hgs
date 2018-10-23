@@ -113,9 +113,7 @@ var
   LStr: string;
 begin
   if AEngineMasterDBName = '' then
-    AEngineMasterDBName := ChangeFileExt(ExtractFilePath(Application.ExeName),'.sqlite')
-  else
-    AEngineMasterDBName := AEngineMasterDBName;
+    AEngineMasterDBName := ChangeFileExt(ExtractFilePath(Application.ExeName),'.sqlite');
 
   LStr := GetSubFolderPath(ExtractFilePath(Application.ExeName), 'db');
   LStr := LStr + AEngineMasterDBName;

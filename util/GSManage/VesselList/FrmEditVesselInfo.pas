@@ -104,7 +104,14 @@ var
   LEditVesselInfoF: TEditVesselInfoF;
   LSQLVesselMaster: TSQLVesselMaster;
 begin
-  LSQLVesselMaster := GetVesselMasterFromIMONo(AImoNo);
+  if AImoNo <> '' then
+    LSQLVesselMaster := GetVesselMasterFromIMONo(AImoNo)
+  else
+  if AHullNo <> '' then
+    LSQLVesselMaster := GetVesselMasterFromHullNo(AHullNo)
+  else
+  if AShipName <> '' then
+    LSQLVesselMaster := GetVesselMasterFromShipName(AShipName);
 
   if LSQLVesselMaster.IsUpdate then
   begin
@@ -210,7 +217,7 @@ begin
 
     DeliveryDate := TimeLogFromDateTime(DeliveryDatePicker.Date);
     LastDryDockDate := TimeLogFromDateTime(LastDockDatePicker.Date);
-    LastDryDockDate := TimeLogFromDateTime(SpecialDueDatePicker.Date);
+    SpecialSurveyDueDate := TimeLogFromDateTime(SpecialDueDatePicker.Date);
     DockingSurveyDueDate := TimeLogFromDateTime(DockDueDatePicker.Date);
     UpdatedDate := TimeLogFromDateTime(now);
     InstalledProductTypes := GetInstalledProductFromCheckBox;

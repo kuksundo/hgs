@@ -12,9 +12,10 @@ type
     vsInCasualtyOrRepairing, vsLauched, vsKeelLaid, vsUnderConstruction,
     vsLaidUp, vsOnOrder, vsCancelled, vsTotalLoss, vsFinal);
 
-  TShipProductType = (shptNull, shptME, shptGE, shptCB, shptTR, shptGEN, shptSWBD, shptMOTOR,
+  TShipProductType = (shptNull, shptME, shptGE, shptCB, shptTR, shptGEN, shptAMS,
+  shptSWBD, shptMOTOR,
 //KF23     KF25      KF21      KH2S      KD21           KF27  (Usage)
-  shptSCR, shptBWTS, shptFGSS, shptCOPT, shptPROPELLER, shptEGR, shptFinal);
+  shptSCR, shptBWTS, shptFGSS, shptCOPT, shptPROPELLER, shptEGR, shptVDR, shptFinal);
   TShipProductTypes = Set of TShipProductType;
 
 const
@@ -29,12 +30,13 @@ const
 
   R_ShipProductType : array[Low(TShipProductType)..High(TShipProductType)] of string =
          ('',
-         'ME',
-         'GE',
-         'CB',
-         'TR',
-         'GEN',
-         'SWBD',
+         'Main Engine',
+         'Generator Engine',
+         'Circuit Breaker',
+         'Transformer',
+         'Generator',
+         'AMS',
+         'Switch Board',
          'MOTOR',
          'SCR',
          'BWTS',
@@ -42,6 +44,27 @@ const
          'COPT',
          'PROPELLER',
          'EGR',
+         'VDR',
+         ''
+         );
+
+  R_ShipProductCode : array[Low(TShipProductType)..High(TShipProductType)] of string =
+         ('',
+         'ME',
+         'GE',
+         'CB',
+         'TR',
+         'AT',
+         'AMS',
+         'SB',
+         'MOTOR',
+         'SCR',
+         'BWTS',
+         'FGSS',
+         'COPT',
+         'PROPELLER',
+         'EGR',
+         'VDR',
          ''
          );
 
@@ -53,6 +76,7 @@ var
   g_VesselQueryDateType: TLabelledEnum<TVesselQueryDateType>;
   g_VesselStatus: TLabelledEnum<TVesselStatus>;
   g_ShipProductType: TLabelledEnum<TShipProductType>;
+  g_ShipProductCode: TLabelledEnum<TShipProductType>;
 
 implementation
 
@@ -101,6 +125,7 @@ initialization
   g_VesselQueryDateType.InitArrayRecord(R_VesselQueryDateType);
   g_VesselStatus.InitArrayRecord(R_VesselStatus);
   g_ShipProductType.InitArrayRecord(R_ShipProductType);
+  g_ShipProductCode.InitArrayRecord(R_ShipProductCode);
 
 finalization
 

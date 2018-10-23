@@ -11,7 +11,8 @@ uses
   UnitHimsenWearingSpareStationaryRecord in 'UnitHimsenWearingSpareStationaryRecord.pas',
   CommonData in '..\CommonData.pas',
   UnitEngineMasterData in '..\VesselList\UnitEngineMasterData.pas',
-  UnitHimsenWearingSparePropulsionRecord in 'UnitHimsenWearingSparePropulsionRecord.pas';
+  UnitHimsenWearingSparePropulsionRecord in 'UnitHimsenWearingSparePropulsionRecord.pas',
+  UnitMakeHimsenWaringSpareDB in 'UnitMakeHimsenWaringSpareDB.pas';
 
 {$R *.res}
 

@@ -3,7 +3,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
   Top = 0
   Caption = 'Quotation for Himsen Spare Parts'
   ClientHeight = 704
-  ClientWidth = 1078
+  ClientWidth = 1088
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,26 +12,27 @@ object HimsenWearSpareQF: THimsenWearSpareQF
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 102
-    Width = 1078
+    Top = 130
+    Width = 1088
     Height = 6
     Cursor = crVSplit
     Align = alTop
+    ExplicitTop = 102
     ExplicitWidth = 1047
   end
   object CurvyPanel1: TCurvyPanel
     AlignWithMargins = True
     Left = 0
     Top = 0
-    Width = 1078
-    Height = 102
+    Width = 1088
+    Height = 130
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -177,12 +178,12 @@ object HimsenWearSpareQF: THimsenWearSpareQF
     object JvLabel1: TJvLabel
       AlignWithMargins = True
       Left = 352
-      Top = 71
+      Top = 99
       Width = 80
       Height = 25
       Alignment = taCenter
       AutoSize = False
-      Caption = 'Hull No'
+      Caption = 'Governor'
       Color = 14671839
       FrameColor = clGrayText
       Font.Charset = ANSI_CHARSET
@@ -228,11 +229,65 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       HotTrackFont.Name = #47569#51008' '#44256#46357
       HotTrackFont.Style = []
     end
+    object JvLabel4: TJvLabel
+      AlignWithMargins = True
+      Left = 94
+      Top = 101
+      Width = 80
+      Height = 25
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Bearing'
+      Color = 14671839
+      FrameColor = clGrayText
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #47569#51008' '#44256#46357
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      RoundedFrame = 3
+      Transparent = True
+      HotTrackFont.Charset = ANSI_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -13
+      HotTrackFont.Name = #47569#51008' '#44256#46357
+      HotTrackFont.Style = []
+    end
+    object JvLabel8: TJvLabel
+      AlignWithMargins = True
+      Left = 352
+      Top = 68
+      Width = 80
+      Height = 25
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Hull No'
+      Color = 14671839
+      FrameColor = clGrayText
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #47569#51008' '#44256#46357
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      RoundedFrame = 3
+      Transparent = True
+      HotTrackFont.Charset = ANSI_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -13
+      HotTrackFont.Name = #47569#51008' '#44256#46357
+      HotTrackFont.Style = []
+    end
     object Panel1: TPanel
-      Left = 873
+      Left = 883
       Top = 0
       Width = 205
-      Height = 102
+      Height = 130
       Align = alRight
       TabOrder = 0
       object btn_Search: TAeroButton
@@ -240,7 +295,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
         Left = 3
         Top = 4
         Width = 62
-        Height = 94
+        Height = 122
         ImageIndex = 2
         Images = ImageList32x32
         ImagePos = ipTop
@@ -255,7 +310,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
         Left = 139
         Top = 4
         Width = 62
-        Height = 94
+        Height = 122
         ImageIndex = 0
         Images = ImageList32x32
         ImagePos = ipTop
@@ -270,7 +325,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
         Left = 71
         Top = 4
         Width = 62
-        Height = 94
+        Height = 122
         ImageIndex = 1
         Images = ImageList32x32
         ImagePos = ipTop
@@ -330,16 +385,6 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       TabOrder = 3
       OnDropDown = RunHourCBDropDown
     end
-    object HullNoEdit: TEdit
-      Left = 435
-      Top = 73
-      Width = 112
-      Height = 21
-      Alignment = taCenter
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 4
-    end
     object RatedRPMEdit: TEdit
       Left = 434
       Top = 43
@@ -348,18 +393,17 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Alignment = taCenter
       CharCase = ecUpperCase
       ImeName = 'Microsoft IME 2010'
-      TabOrder = 5
+      TabOrder = 4
     end
     object TierRG: TAdvOfficeRadioGroup
       Left = 553
-      Top = 56
+      Top = 60
       Width = 232
       Height = 40
       CaptionPosition = cpTopCenter
       Version = '1.3.8.5'
-      Caption = 'Select Tier'
       ParentBackground = False
-      TabOrder = 6
+      TabOrder = 5
       Columns = 3
       ItemIndex = 0
       Items.Strings = (
@@ -370,14 +414,15 @@ object HimsenWearSpareQF: THimsenWearSpareQF
     end
     object UsageRG: TAdvOfficeRadioGroup
       Left = 552
-      Top = 3
+      Top = 12
       Width = 233
       Height = 40
+      Margins.Top = 0
+      Margins.Bottom = 0
       CaptionPosition = cpTopCenter
       Version = '1.3.8.5'
-      Caption = 'Select Usage'
       ParentBackground = False
-      TabOrder = 7
+      TabOrder = 6
       Columns = 3
       ItemIndex = 0
       Items.Strings = (
@@ -392,23 +437,81 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Width = 65
       Height = 21
       ImeName = 'Microsoft IME 2010'
-      TabOrder = 8
+      TabOrder = 7
       Visible = False
     end
     object CylCountEdit: TEdit
-      Left = 437
+      Left = 436
       Top = 12
       Width = 109
       Height = 21
       Alignment = taCenter
       ImeName = 'Microsoft IME 2010'
+      TabOrder = 8
+    end
+    object MainBearingMakerCB: TComboBox
+      Left = 177
+      Top = 101
+      Width = 171
+      Height = 24
+      Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ImeName = 'Microsoft IME 2010'
+      ParentFont = False
       TabOrder = 9
+      OnDropDown = MainBearingMakerCBDropDown
+    end
+    object RetrofitCheck: TCheckBox
+      Left = 552
+      Top = 104
+      Width = 65
+      Height = 17
+      Caption = 'Retrofit'
+      TabOrder = 10
+    end
+    object GovernorCB: TComboBox
+      Left = 434
+      Top = 101
+      Width = 113
+      Height = 24
+      Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ImeName = 'Microsoft IME 2010'
+      ParentFont = False
+      TabOrder = 11
+      OnDropDown = MainBearingMakerCBDropDown
+    end
+    object HullNoEdit: TEdit
+      Left = 435
+      Top = 72
+      Width = 112
+      Height = 21
+      Alignment = taCenter
+      CharCase = ecUpperCase
+      ImeName = 'Microsoft IME 2010'
+      TabOrder = 12
+    end
+    object PORCheck: TCheckBox
+      Left = 623
+      Top = 105
+      Width = 42
+      Height = 17
+      Caption = 'POR'
+      TabOrder = 13
     end
   end
   object TaskTab: TAdvOfficeTabSet
     Left = 0
-    Top = 108
-    Width = 1078
+    Top = 136
+    Width = 1088
     Height = 27
     AdvOfficeTabs = <
       item
@@ -752,9 +855,9 @@ object HimsenWearSpareQF: THimsenWearSpareQF
   end
   object WearingPartGrid: TNextGrid
     Left = 0
-    Top = 135
-    Width = 1078
-    Height = 549
+    Top = 163
+    Width = 1088
+    Height = 521
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
     Align = alClient
@@ -786,6 +889,27 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       SortType = stAlphabetic
       Width = 30
     end
+    object PORIssue: TNxCheckBoxColumn
+      Alignment = taCenter
+      DefaultWidth = 30
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Header.Caption = 'POR'
+      Header.Alignment = taCenter
+      Header.Font.Charset = DEFAULT_CHARSET
+      Header.Font.Color = clWindowText
+      Header.Font.Height = -11
+      Header.Font.Name = 'Tahoma'
+      Header.Font.Style = []
+      Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing]
+      ParentFont = False
+      Position = 1
+      SortType = stBoolean
+      Width = 30
+    end
     object MSDesc: TNxTextColumn
       DefaultWidth = 200
       Font.Charset = DEFAULT_CHARSET
@@ -801,7 +925,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 1
+      Position = 2
       SortType = stAlphabetic
       Width = 200
     end
@@ -820,7 +944,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 2
+      Position = 3
       SortType = stAlphabetic
       Width = 300
     end
@@ -840,7 +964,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 3
+      Position = 4
       SortType = stAlphabetic
       Width = 100
     end
@@ -860,7 +984,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 4
+      Position = 5
       SortType = stAlphabetic
       Width = 100
     end
@@ -880,7 +1004,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 5
+      Position = 6
       SortType = stAlphabetic
       Width = 100
     end
@@ -899,7 +1023,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 6
+      Position = 7
       SortType = stAlphabetic
     end
     object PartUnit: TNxTextColumn
@@ -918,7 +1042,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 7
+      Position = 8
       SortType = stAlphabetic
       Width = 40
     end
@@ -938,7 +1062,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 8
+      Position = 9
       SortType = stAlphabetic
       Width = 100
     end
@@ -957,7 +1081,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 9
+      Position = 10
       SortType = stAlphabetic
       Visible = False
     end
@@ -977,7 +1101,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 10
+      Position = 11
       SortType = stAlphabetic
       Visible = False
       Width = 150
@@ -997,7 +1121,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 11
+      Position = 12
       SortType = stAlphabetic
       Visible = False
     end
@@ -1015,7 +1139,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 12
+      Position = 13
       SortType = stAlphabetic
       Visible = False
     end
@@ -1031,7 +1155,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 13
+      Position = 14
       SortType = stAlphabetic
       Visible = False
     end
@@ -1051,7 +1175,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 14
+      Position = 15
       SortType = stAlphabetic
       Visible = False
       Width = 40
@@ -1068,7 +1192,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 15
+      Position = 16
       SortType = stAlphabetic
       Visible = False
     end
@@ -1084,7 +1208,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
       Header.Font.Name = 'Tahoma'
       Header.Font.Style = []
       ParentFont = False
-      Position = 16
+      Position = 17
       SortType = stAlphabetic
       Visible = False
     end
@@ -1092,23 +1216,19 @@ object HimsenWearSpareQF: THimsenWearSpareQF
   object StatusBarPro1: TStatusBarPro
     Left = 0
     Top = 684
-    Width = 1078
+    Width = 1088
     Height = 20
     Panels = <>
     SimplePanel = False
   end
   object MainMenu1: TMainMenu
     Left = 16
-    Top = 168
+    Top = 248
     object ImportWearingSpareFromXls1: TMenuItem
       Caption = 'File'
       object ImportWearingSpareMFromXls2: TMenuItem
-        Caption = 'Import Wearing Spare Marine From Xls'
+        Caption = 'Import Wearing Spare From Xls'
         OnClick = ImportWearingSpareMFromXls2Click
-      end
-      object ImportWearingSpareSFromXls2: TMenuItem
-        Caption = 'Import Wearing Spare Stationary From Xls'
-        OnClick = ImportWearingSpareSFromXls2Click
       end
       object N1: TMenuItem
         Caption = '-'
@@ -1129,7 +1249,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
   object OpenDialog1: TOpenDialog
     Filter = 'Excel Files|*.xls;*.xlsx|All Files|*.*'
     Left = 56
-    Top = 176
+    Top = 248
   end
   object imagelist24x24: TImageList
     ColorDepth = cd32Bit
@@ -1139,7 +1259,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000580318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000780318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1450,7 +1570,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010400C8009C0420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010400C800BC0420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2519,7 +2639,7 @@ object HimsenWearSpareQF: THimsenWearSpareQF
     Left = 96
     Top = 208
     Bitmap = {
-      494C010102005402680310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402880310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E

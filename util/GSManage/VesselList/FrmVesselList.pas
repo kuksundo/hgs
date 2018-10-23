@@ -11,9 +11,14 @@ uses
   Vcl.ImgList, Vcl.Menus, UnitVesselMasterRecord, CommonData, SynCommons, mORMot,
   AdvSmoothSplashScreen, UnitNationRecord, JvBaseDlg, JvSelectDirectory,
   pjhComboBox, UnitEngineMasterRecord, AdvSmoothPanel, AdvSmoothExpanderPanel,
-  UnitGeneratorRecord, UnitVesselData, UnitCBData, UnitEngineMasterData;
+  UnitGeneratorRecord, UnitVesselData, UnitCBData, UnitEngineMasterData,
+  UnitCommonWSInterface;
 
 type
+  TVesselListService = class(TService4CommonWS)
+    function ServerExecute(const Acommand: RawUTF8): RawUTF8; override;
+  end;
+
   TVesselListF = class(TForm)
     imagelist24x24: TImageList;
     ImageList16x16: TImageList;
@@ -193,7 +198,9 @@ type
     procedure GetVesselListFromAdvanced2Grid;
     procedure GetVesselListFromVariant2Grid(ADoc: Variant);
     procedure GetVesselSearchParam2Rec(var AVesselSearchParamRec: TVesselSearchParamRec);
-    procedure GetVesselList2Grid;
+    procedure GetVesselList2Grid(AIsFromRemote: Boolean = False);
+    procedure GetVesselListFromLocal(AVesselSearchParamRec: TVesselSearchParamRec);
+    procedure GetVesselListFromRemote(AVesselSearchParamRec: TVesselSearchParamRec);
     procedure ExecuteSearch(Key: Char);
     procedure FillInTechManagerCountryCombo;
   public
@@ -201,6 +208,7 @@ type
     FIsVesselSearchMode: Boolean;
 
     procedure GetVesselInfoFromText(AText: string; var ADoc: variant);
+    function ServerExecuteFromClient(ACommand: RawUTF8): RawUTF8;
   end;
 
 var
@@ -211,7 +219,7 @@ implementation
 uses frmHiMAPDetail, UnitHiMAPRecord, FrmHiMAPSelect, UnitMakeHgsDB,
   UnitMakeAnsiDeviceDB, UnitAnsiDeviceRecord, FrmAnsiDeviceNoList, HtmlParserEx,
   UnitStringUtil, FrmEditVesselInfo, UnitExcelUtil, FrmViewNationCode,
-  FrmViewEngineMaster, FrmVesselAdvancedSearch, frmGeneratorDetail;
+  FrmViewEngineMaster, FrmVesselAdvancedSearch, frmGeneratorDetail, UnitBase64Util;
 
 {$R *.dfm}
 
@@ -327,7 +335,8 @@ begin
   dt_begin.Date := now;
   dt_end.Date := Now;
 
-  if ExtractFileName(Application.ExeName) <> 'VesselList.exe' then
+  if (ExtractFileName(Application.ExeName) <> 'VesselList.exe') and
+    (ExtractFileName(Application.ExeName) <> 'VesselListeR.exe') then
   begin
     ImportFromFile1.Visible := False;
     ImportVesselDeliveryDateFromXlsFile1.Visible := False;
@@ -725,7 +734,7 @@ begin
   end;
 end;
 
-procedure TVesselListF.GetVesselList2Grid;
+procedure TVesselListF.GetVesselList2Grid(AIsFromRemote: Boolean);
 var
   LSQLVesselMaster: TSQLVesselMaster;
   LVesselSearchParamRec: TVesselSearchParamRec;
@@ -735,27 +744,11 @@ begin
   try
     VesselListGrid.ClearRows;
     GetVesselSearchParam2Rec(LVesselSearchParamRec);
-    LSQLVesselMaster := GetVesselMasterFromSearchRec(LVesselSearchParamRec);
-    try
-      if LSQLVesselMaster.IsUpdate then
-      begin
-        DestroyList4VesselMaster;
 
-  //      LDoc := GetVariantFromVesselMaster(LSQLVesselMaster);
-  //      GetVesselListFromVariant2Grid(LDoc);
-        LSQLVesselMaster.FillRewind;
-
-        while LSQLVesselMaster.FillOne do
-        begin
-          LDoc := GetVariantFromVesselMaster(LSQLVesselMaster);
-          GetVesselListFromVariant2Grid(LDoc);
-        end;//while
-
-        StatusBarPro1.Panels[1].Text := IntToStr(VesselListGrid.RowCount);
-      end;
-    finally
-      LSQLVesselMaster.Free;
-    end;
+    if AIsFromRemote then
+      GetVesselListFromRemote(LVesselSearchParamRec)
+    else
+      GetVesselListFromLocal(LVesselSearchParamRec);
   finally
     VesselListGrid.EndUpdate;
   end;
@@ -794,6 +787,39 @@ begin
   finally
     VesselListGrid.EndUpdate;
   end;
+end;
+
+procedure TVesselListF.GetVesselListFromLocal(AVesselSearchParamRec: TVesselSearchParamRec);
+var
+  LSQLVesselMaster: TSQLVesselMaster;
+  LDoc: Variant;
+begin
+  LSQLVesselMaster := GetVesselMasterFromSearchRec(AVesselSearchParamRec);
+  try
+    if LSQLVesselMaster.IsUpdate then
+    begin
+      DestroyList4VesselMaster;
+
+//      LDoc := GetVariantFromVesselMaster(LSQLVesselMaster);
+//      GetVesselListFromVariant2Grid(LDoc);
+      LSQLVesselMaster.FillRewind;
+
+      while LSQLVesselMaster.FillOne do
+      begin
+        LDoc := GetVariantFromVesselMaster(LSQLVesselMaster);
+        GetVesselListFromVariant2Grid(LDoc);
+      end;//while
+
+      StatusBarPro1.Panels[1].Text := IntToStr(VesselListGrid.RowCount);
+    end;
+  finally
+    LSQLVesselMaster.Free;
+  end;
+end;
+
+procedure TVesselListF.GetVesselListFromRemote(AVesselSearchParamRec: TVesselSearchParamRec);
+begin
+
 end;
 
 procedure TVesselListF.GetVesselListFromVariant2Grid(ADoc: Variant);
@@ -858,15 +884,15 @@ begin
   if shptEGR in LShipProductTypes then
     VesselListGrid.CellByName['EGRRate', LRow].AsInteger := 1;
 
-  if ADoc.DeliveryDate <> 0 then
+  if ADoc.DeliveryDate > 127489752310 then
     VesselListGrid.CellsByName['DeliveryDate', LRow] := DateToStr(TimeLogToDateTime(ADoc.DeliveryDate));
-  if ADoc.LastDryDockDate <> 0 then
+  if ADoc.LastDryDockDate > 127489752310 then
     VesselListGrid.CellsByName['LastDryDockDate', LRow] := DateToStr(TimeLogToDateTime(ADoc.LastDryDockDate));
-  if ADoc.SpecialSurveyDueDate <> 0 then
+  if ADoc.SpecialSurveyDueDate > 127489752310 then
     VesselListGrid.CellsByName['SpecialSurveyDueDate', LRow] := DateToStr(TimeLogToDateTime(ADoc.SpecialSurveyDueDate));
-  if ADoc.DockingSurveyDueDate <> 0 then
+  if ADoc.DockingSurveyDueDate > 127489752310 then
     VesselListGrid.CellsByName['DockingSurveyDueDate', LRow] := DateToStr(TimeLogToDateTime(ADoc.DockingSurveyDueDate));
-  if ADoc.UpdatedDate <> 0 then
+  if ADoc.UpdatedDate > 127489752310 then
     VesselListGrid.CellsByName['UpdatedDate', LRow] := DateToStr(TimeLogToDateTime(ADoc.UpdatedDate));
 end;
 
@@ -1124,6 +1150,38 @@ begin
   end;
 end;
 
+function TVesselListF.ServerExecuteFromClient(ACommand: RawUTF8): RawUTF8;
+var
+  LCommand, LJson: String;
+  LStrList: TStringList;
+  LVesselSearchParamRec: TVesselSearchParamRec;
+begin
+  LJson := MakeBase64ToString(ACommand);
+  LStrList := TStringList.Create;
+  try
+    LStrList.Text := LJson;
+    LCommand := LStrList.Values['Command'];
+
+    if LCommand = CMD_REQ_VESSEL_LIST then
+    begin
+      LJson := LStrList.Values['Parameter'];
+      RecordLoadJson(LVesselSearchParamRec, LJson, TypeInfo(TVesselSearchParamRec));
+//      TDTF.DisplayTaskInfo2Grid(LSearchCondRec, True);
+//      LJson := TDTF.FTempJsonList.Text;
+      System.Delete(LJson, Length(LJson)-1,2);
+      Result := StringToUTF8(LJson);
+      Result := MakeRawUTF8ToBin64(Result);
+    end
+    else
+    if LCommand = '' then
+    begin
+
+    end;
+  finally
+    LStrList.Free;
+  end;
+end;
+
 procedure TVesselListF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
@@ -1185,7 +1243,8 @@ begin
 
     if CreateVesselInfoEditFormFromDB(LIMONo, LHullNo, LShipName) = mrOK then
     begin
-//      GetVesselList2Grid;
+      GetVesselList2Grid;
+      VesselListGrid.ScrollToRow(ARow);
     end;
 //  end;
 end;
@@ -1252,6 +1311,13 @@ begin
   else
     ShowVesselInfoEditFormFromGrid(ARow);
 //  ShowHiMAPEditFormFromGrid(ARow);
+end;
+
+{ TVesselListService }
+
+function TVesselListService.ServerExecute(const Acommand: RawUTF8): RawUTF8;
+begin
+  Result := VesselListF.ServerExecuteFromClient(ACommand);
 end;
 
 end.

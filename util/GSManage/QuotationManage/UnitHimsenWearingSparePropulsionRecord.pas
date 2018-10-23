@@ -93,7 +93,7 @@ var
 
 implementation
 
-uses SysUtils, mORMotSQLite3, Forms, VarRecUtils, UnitFolderUtil;
+uses SysUtils, mORMotSQLite3, Forms, VarRecUtils, UnitFolderUtil, UnitRttiUtil;
 
 procedure InitHimsenWearingSparePClient(AExeName: string);
 var
@@ -140,25 +140,27 @@ begin
   if ADoc = null then
     exit;
 
-  AHimsenWaringSpare.EngineType := ADoc.EngineType;
-  AHimsenWaringSpare.MSNo := ADoc.MSNo;
-  AHimsenWaringSpare.MSDesc := ADoc.MSDesc;
-  AHimsenWaringSpare.PartNo := ADoc.PartNo;
-  AHimsenWaringSpare.PartDesc := ADoc.PartDesc;
-  AHimsenWaringSpare.SectionNo := ADoc.SectionNo;
-  AHimsenWaringSpare.PlateNo := ADoc.PlateNo;
-  AHimsenWaringSpare.DrawingNo := ADoc.DrawingNo;
-  AHimsenWaringSpare.UsedAmount := ADoc.UsedAmount;
-  AHimsenWaringSpare.SpareAmount := ADoc.SpareAmount;
-  AHimsenWaringSpare.PartUnit := ADoc.PartUnit;
-  AHimsenWaringSpare.HRS4000Formula := ADoc.HRS4000Formula;
+  LoadRecordPropertyFromVariant(AHimsenWaringSpare, ADoc);
 
-  AHimsenWaringSpare.AdaptedCylCount := ADoc.AdaptedCylCount;
-  AHimsenWaringSpare.TurboChargerModel := ADoc.TurboChargerModel;
-  AHimsenWaringSpare.RatedRPM := ADoc.RatedRPM;
-
-  AHimsenWaringSpare.HRS4000ApplyNo := ADoc.HRS4000ApplyNo;
-  AHimsenWaringSpare.HRS100000ApplyNo := ADoc.HRS100000ApplyNo;
+//  AHimsenWaringSpare.EngineType := ADoc.EngineType;
+//  AHimsenWaringSpare.MSNo := ADoc.MSNo;
+//  AHimsenWaringSpare.MSDesc := ADoc.MSDesc;
+//  AHimsenWaringSpare.PartNo := ADoc.PartNo;
+//  AHimsenWaringSpare.PartDesc := ADoc.PartDesc;
+//  AHimsenWaringSpare.SectionNo := ADoc.SectionNo;
+//  AHimsenWaringSpare.PlateNo := ADoc.PlateNo;
+//  AHimsenWaringSpare.DrawingNo := ADoc.DrawingNo;
+//  AHimsenWaringSpare.UsedAmount := ADoc.UsedAmount;
+//  AHimsenWaringSpare.SpareAmount := ADoc.SpareAmount;
+//  AHimsenWaringSpare.PartUnit := ADoc.PartUnit;
+//  AHimsenWaringSpare.HRS4000Formula := ADoc.HRS4000Formula;
+//
+//  AHimsenWaringSpare.AdaptedCylCount := ADoc.AdaptedCylCount;
+//  AHimsenWaringSpare.TurboChargerModel := ADoc.TurboChargerModel;
+//  AHimsenWaringSpare.RatedRPM := ADoc.RatedRPM;
+//
+//  AHimsenWaringSpare.HRS4000ApplyNo := ADoc.HRS4000ApplyNo;
+//  AHimsenWaringSpare.HRS100000ApplyNo := ADoc.HRS100000ApplyNo;
 end;
 
 procedure AddOrUpdateHimsenWearingSpareP(AHimsenWaringSpare: TSQLHimsenWearingSparePropulsion;
@@ -290,26 +292,28 @@ function GetVariantFromHimsenWearingSpareP(AHimsenWearingSpare:TSQLHimsenWearing
 begin
   TDocVariant.New(Result);
 
-  Result.EngineType := AHimsenWearingSpare.EngineType;
-  Result.MSNo := AHimsenWearingSpare.MSNo;
-  Result.MSDesc := AHimsenWearingSpare.MSDesc;
-  Result.PartNo := AHimsenWearingSpare.PartNo;
-  Result.PartDesc := AHimsenWearingSpare.PartDesc;
-  Result.SectionNo := AHimsenWearingSpare.SectionNo;
-  Result.PlateNo := AHimsenWearingSpare.PlateNo;
-  Result.DrawingNo := AHimsenWearingSpare.DrawingNo;
-  Result.UsedAmount := AHimsenWearingSpare.UsedAmount;
-  Result.SpareAmount := AHimsenWearingSpare.SpareAmount;
-  Result.PartUnit := AHimsenWearingSpare.PartUnit;
-//  Result.CalcFormula := AHimsenWearingSpare.CalcFormula;
-  Result.HRS4000Formula := AHimsenWearingSpare.HRS4000Formula;
+  LoadRecordPropertyToVariant(AHimsenWearingSpare, Result);
 
-  Result.AdaptedCylCount := AHimsenWearingSpare.AdaptedCylCount;
-  Result.TurboChargerModel := AHimsenWearingSpare.TurboChargerModel;
-  Result.RatedRPM := AHimsenWearingSpare.RatedRPM;
-
-  Result.HRS4000ApplyNo := AHimsenWearingSpare.HRS4000ApplyNo;
-  Result.HRS100000ApplyNo := AHimsenWearingSpare.HRS100000ApplyNo;
+//  Result.EngineType := AHimsenWearingSpare.EngineType;
+//  Result.MSNo := AHimsenWearingSpare.MSNo;
+//  Result.MSDesc := AHimsenWearingSpare.MSDesc;
+//  Result.PartNo := AHimsenWearingSpare.PartNo;
+//  Result.PartDesc := AHimsenWearingSpare.PartDesc;
+//  Result.SectionNo := AHimsenWearingSpare.SectionNo;
+//  Result.PlateNo := AHimsenWearingSpare.PlateNo;
+//  Result.DrawingNo := AHimsenWearingSpare.DrawingNo;
+//  Result.UsedAmount := AHimsenWearingSpare.UsedAmount;
+//  Result.SpareAmount := AHimsenWearingSpare.SpareAmount;
+//  Result.PartUnit := AHimsenWearingSpare.PartUnit;
+////  Result.CalcFormula := AHimsenWearingSpare.CalcFormula;
+//  Result.HRS4000Formula := AHimsenWearingSpare.HRS4000Formula;
+//
+//  Result.AdaptedCylCount := AHimsenWearingSpare.AdaptedCylCount;
+//  Result.TurboChargerModel := AHimsenWearingSpare.TurboChargerModel;
+//  Result.RatedRPM := AHimsenWearingSpare.RatedRPM;
+//
+//  Result.HRS4000ApplyNo := AHimsenWearingSpare.HRS4000ApplyNo;
+//  Result.HRS100000ApplyNo := AHimsenWearingSpare.HRS100000ApplyNo;
 end;
 
 procedure GetRunHour2List4M(var AList: TStrings);

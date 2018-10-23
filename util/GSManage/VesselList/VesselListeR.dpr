@@ -1,8 +1,9 @@
-program VesselList;
+program VesselListeR;
 
 uses
   Vcl.Forms,
   SynSqlite3Static,
+  UnitRegistrationUtil,
   frmHiMAPDetail in '..\HiMAPManage\frmHiMAPDetail.pas' {HiMAPDetailF},
   UnitHiMAPData in '..\HiMAPManage\UnitHiMAPData.pas',
   FrmVesselList in 'FrmVesselList.pas' {VesselListF},
@@ -46,15 +47,19 @@ uses
   UnitElecServiceData in '..\UnitElecServiceData.pas',
   UnitEngineMasterData in 'UnitEngineMasterData.pas',
   UnitElecMasterData in 'UnitElecMasterData.pas',
-  UnitBaseRecord in '..\..\..\common\UnitBaseRecord.pas',
-  UnitHttpModule4CommonWS in '..\..\..\common\UnitHttpModule4CommonWS.pas',
-  UnitCommonWSInterface in '..\..\..\common\UnitCommonWSInterface.pas';
+  UnitBaseRecord in '..\..\..\common\UnitBaseRecord.pas';
 
 {$R *.res}
 
 begin
+  {$IfDef USE_REGCODE}
+    //UnitCryptUtil.EncryptString_Syn('{2EEB6881-265A-4E7D-991C-AA482DD61897}, True')
+    CheckRegistration('+i8e6Gb1DKq6bNpKWCeIvmI0e50L1YW1G5nJmUUwGUYnQwVHMiJZW9/Z6XK7iBiVcIPylSIwUVWCSoQdcAcn4g==', [crmHTTP]);
+  {$EndIf USE_REGCODE}
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TVesselListF, VesselListF);
+  Application.CreateForm(TViewGenMasterF, ViewGenMasterF);
   Application.Run;
 end.

@@ -52,7 +52,6 @@ type
     TCModelCB: TComboBox;
     RunHourCB: TComboBox;
     JvLabel1: TJvLabel;
-    HullNoEdit: TEdit;
     SectionNo: TNxTextColumn;
     UsedAmount: TNxTextColumn;
     CalcFormula: TNxTextColumn;
@@ -60,7 +59,6 @@ type
     PartUnit: TNxTextColumn;
     Amount: TNxTextColumn;
     TCModel: TNxTextColumn;
-    ImportWearingSpareSFromXls2: TMenuItem;
     DB1: TMenuItem;
     DeleteEngine1: TMenuItem;
     SplashScreen1: TAdvSmoothSplashScreen;
@@ -70,6 +68,14 @@ type
     UsageRG: TAdvOfficeRadioGroup;
     EngineModelEdit: TEdit;
     CylCountEdit: TEdit;
+    JvLabel4: TJvLabel;
+    MainBearingMakerCB: TComboBox;
+    RetrofitCheck: TCheckBox;
+    PORIssue: TNxCheckBoxColumn;
+    GovernorCB: TComboBox;
+    JvLabel8: TJvLabel;
+    HullNoEdit: TEdit;
+    PORCheck: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ImportWearingSpareMFromXls2Click(Sender: TObject);
@@ -77,12 +83,12 @@ type
     procedure btn_CloseClick(Sender: TObject);
     procedure btn_SearchClick(Sender: TObject);
     procedure AeroButton1Click(Sender: TObject);
-    procedure ImportWearingSpareSFromXls2Click(Sender: TObject);
     procedure RunHourCBDropDown(Sender: TObject);
     procedure DeleteEngine1Click(Sender: TObject);
     procedure EngTypeCBDropDown(Sender: TObject);
     procedure EngTypeCBSelect(Sender: TObject);
     procedure TCModelCBDropDown(Sender: TObject);
+    procedure MainBearingMakerCBDropDown(Sender: TObject);
   private
     FCommandLine: TQuotationManageParameter;
 
@@ -103,6 +109,8 @@ type
     procedure FillInEngineTypeCombo;
     procedure FillInUsageRG(AUsage: string);
     procedure FillInTierRG(ATier: string);
+
+    procedure ClearOption4DeleteDB;
   public
     FRunHourList: TStringList;
   end;
@@ -133,6 +141,16 @@ end;
 procedure THimsenWearSpareQF.btn_SearchClick(Sender: TObject);
 begin
   GetHimsenWearingSpare2Grid;
+end;
+
+procedure THimsenWearSpareQF.ClearOption4DeleteDB;
+begin
+  TCModelCB.ItemIndex := -1;
+  RunHourCB.ItemIndex := -1;
+  MainBearingMakerCB.ItemIndex := -1;
+  CylCountEdit.Text := '';
+  RatedRPMEdit.Text := '';
+  HullNoEdit.Text := '';
 end;
 
 procedure THimsenWearSpareQF.Close1Click(Sender: TObject);
@@ -175,6 +193,7 @@ procedure THimsenWearSpareQF.DeleteEngine1Click(Sender: TObject);
 var
   LHimsenWearingSpareParamMRec: THimsenWearingSpareMRec;
   LHimsenWearingSpareParamSRec: THimsenWearingSpareSRec;
+  LHimsenWearingSparePRec: THimsenWearingSparePRec;
 begin
   if EngTypeCB.ItemIndex = -1 then
     ShowMessage('Select Engine Type first for delete')
@@ -182,6 +201,8 @@ begin
   begin
     if MessageDlg('Are you sure to delete the engine type(' + EngTypeCB.Text +')', mtConfirmation, [mbYes, mbNo],0) = mrNo then
       exit;
+
+    ClearOption4DeleteDB;
 
     if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
     begin
@@ -205,6 +226,18 @@ begin
       finally
         SplashScreen1.Hide;
       end;
+    end
+    else
+    if TEngineUsage(UsageRG.ItemIndex+1) = euPropulsion then
+    begin
+      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Delete Data from QuotationManage_P.sqlite!';
+      SplashScreen1.Show;
+      try
+        GetHimsenWearingSparePFromSearchRec(LHimsenWearingSparePRec);
+        DeleteEngineTypePFromSearchRec(LHimsenWearingSparePRec);
+      finally
+        SplashScreen1.Hide;
+      end;
     end;
   end;
 end;
@@ -218,8 +251,13 @@ procedure THimsenWearSpareQF.EngTypeCBSelect(Sender: TObject);
 var
   LUsage: string;
 begin
-  LUsage := GetEngineUsageChar(UsageRG.ItemIndex + 1);
-  EngineModelEdit.Text := GetEngTypeFromModel(EngTypeCB.Text, LUsage);
+  if TTierStep(TierRG.ItemIndex+1) = tsTierI then
+  begin
+    LUsage := GetEngineUsageChar(UsageRG.ItemIndex + 1);
+    EngineModelEdit.Text := GetEngTypeFromModel(EngTypeCB.Text, LUsage);
+  end
+  else
+    EngineModelEdit.Text := EngTypeCB.Text;
 end;
 
 procedure THimsenWearSpareQF.ExecuteSearch(Key: Char);
@@ -234,7 +272,7 @@ procedure THimsenWearSpareQF.FillInEngineTypeCombo;
 //  g_EngineTier2: TLabelledEnum<TEngineModel_TierII>;
 //  g_EngineTier3: TLabelledEnum<TEngineModel_TierIII>;
 begin
-  EngTypeCB.Clear;
+//  EngTypeCB.Clear;
 
   case TierRG.ItemIndex of
     0: begin
@@ -323,6 +361,12 @@ begin
 
   if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
   begin
+    if RetrofitCheck.Checked then
+    begin
+      LCalcNo := StrToIntDef(ADoc.RetrofitApplyNo,0);
+      LFormula := ADoc.RetrofitFormula;
+    end
+    else
     if LRunHour = '4000' then
     begin
       LCalcNo := StrToIntDef(ADoc.HRS4000ApplyNo,0);
@@ -422,6 +466,12 @@ begin
   else
   if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
   begin
+    if RetrofitCheck.Checked then
+    begin
+      LCalcNo := StrToIntDef(ADoc.RetrofitApplyNo,0);
+      LFormula := ADoc.RetrofitFormula;
+    end
+    else
     if LRunHour = '3000' then
     begin
       LCalcNo := StrToIntDef(ADoc.HRS3000ApplyNo,0);
@@ -552,15 +602,29 @@ begin
     GetHimsenWearingSpareM2Grid
   else
   if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
-    GetHimsenWearingSpareS2Grid;
+    GetHimsenWearingSpareS2Grid
+  else
+  if TEngineUsage(UsageRG.ItemIndex+1) = euPropulsion then
+  begin
+    WearingPartGrid.ClearRows;
+    ShowMessage('No Data!');
+  end;
 end;
 
 procedure THimsenWearSpareQF.GetHimsenWearingSpareFromVariant2Grid(ADoc: Variant);
 var
   LRow: integer;
+  LPOR: Boolean;
 begin
+  LPOR := ADoc.PORIssue = '1';
+
+  if PORCheck.Checked then
+    if not LPOR then
+      exit;
+
   LRow := WearingPartGrid.AddRow;
 
+  WearingPartGrid.CellByName['PORIssue', LRow].AsBoolean := LPOR;
   WearingPartGrid.CellsByName['MSDesc', LRow] := ADoc.MSDesc;
   WearingPartGrid.CellsByName['PartNo', LRow] := ADoc.PartNo;
   WearingPartGrid.CellsByName['PartDesc', LRow] := ADoc.PartDesc;
@@ -589,8 +653,9 @@ begin
 
     if LSQLHimsenWearingSpareMaster.IsUpdate then
     begin
-      LDoc := GetVariantFromHimsenWearingSpareM(LSQLHimsenWearingSpareMaster);
-      GetHimsenWearingSpareFromVariant2Grid(LDoc);
+      LSQLHimsenWearingSpareMaster.FillRewind;
+//      LDoc := GetVariantFromHimsenWearingSpareM(LSQLHimsenWearingSpareMaster);
+//      GetHimsenWearingSpareFromVariant2Grid(LDoc);
 
       while LSQLHimsenWearingSpareMaster.FillOne do
       begin
@@ -613,6 +678,11 @@ begin
   AHimsenWearingSpareParamRec.fRunningHour := RunHourCB.Text;
   AHimsenWearingSpareParamRec.fCylCount := CylCountEdit.Text;
   AHimsenWearingSpareParamRec.fRatedRPM := RatedRPMEdit.Text;
+  AHimsenWearingSpareParamRec.fMainBearingMaker := MainBearingMakerCB.Text;
+  AHimsenWearingSpareParamRec.fGovernorType := GovernorCB.Text;
+//  AHimsenWearingSpareParamRec.fFuelKind := MainBearingMakerCB.Text;
+  AHimsenWearingSpareParamRec.fPORIssue := PORCheck.Checked;
+  AHimsenWearingSpareParamRec.fRetrofit := RetrofitCheck.Checked;
 end;
 
 procedure THimsenWearSpareQF.GetHimsenWearingSpareS2Grid;
@@ -629,8 +699,9 @@ begin
 
     if LSQLHimsenWearingSpareMaster.IsUpdate then
     begin
-      LDoc := GetVariantFromHimsenWearingSpareS(LSQLHimsenWearingSpareMaster);
-      GetHimsenWearingSpareFromVariant2Grid(LDoc);
+      LSQLHimsenWearingSpareMaster.FillRewind;
+//      LDoc := GetVariantFromHimsenWearingSpareS(LSQLHimsenWearingSpareMaster);
+//      GetHimsenWearingSpareFromVariant2Grid(LDoc);
 
       while LSQLHimsenWearingSpareMaster.FillOne do
       begin
@@ -653,52 +724,57 @@ begin
   AHimsenWearingSpareParamRec.fRunningHour := RunHourCB.Text;
   AHimsenWearingSpareParamRec.fCylCount := CylCountEdit.Text;
   AHimsenWearingSpareParamRec.fRatedRPM := RatedRPMEdit.Text;
+  AHimsenWearingSpareParamRec.fMainBearingMaker := MainBearingMakerCB.Text;
 end;
 
 procedure THimsenWearSpareQF.ImportWearingSpareMFromXls2Click(Sender: TObject);
 var
   LHimsenWearingSpareParamRec: THimsenWearingSpareMRec;
+  LEngineType: string;
 begin
   if OpenDialog1.Execute then
   begin
     if FileExists(OpenDialog1.FileName) then
     begin
-      SplashScreen1.BeginUpdate;
-      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Importing Data from xls...';
-      SplashScreen1.EndUpdate;
-      SplashScreen1.Show;
+//      SplashScreen1.BeginUpdate;
+//      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Importing Data from xls...';
+//      SplashScreen1.EndUpdate;
+//      SplashScreen1.Show;
       try
 //        GetHimsenWearingSpareMParam2Rec(LHimsenWearingSpareParamRec);
-        ImportHimsenWearingSpareMFromXlsFile(OpenDialog1.FileName, HullNoEdit.Text, TierRG.ItemIndex+1);
+        if TTierStep(TierRG.ItemIndex+1) = tsTierI then
+          LEngineType := EngineModelEdit.Text
+        else
+        if TTierStep(TierRG.ItemIndex+1) = tsTierII then
+          LEngineType := EngineModelEdit.Text
+        else
+        if TTierStep(TierRG.ItemIndex+1) = tsTierIII then
+          LEngineType := EngineModelEdit.Text;
+
+        if TEngineUsage(UsageRG.ItemIndex+1) = euMarine then
+        begin
+//          if TTierStep(TierRG.ItemIndex+1) = tsTierIII then
+            ImportHimsenWearingSpareFromXlsFile(OpenDialog1.FileName, LEngineType, TierRG.ItemIndex+1, Ord(euMarine));
+//          else
+//            ImportHimsenWearingSpareMFromXlsFile(OpenDialog1.FileName, LEngineType, TierRG.ItemIndex+1);
+        end
+        else
+        if TEngineUsage(UsageRG.ItemIndex+1) = euStatinoary then
+          ImportHimsenWearingSpareSFromXlsFile(OpenDialog1.FileName, LEngineType, TierRG.ItemIndex+1);
+//        else
+//        if TEngineUsage(UsageRG.ItemIndex+1) = euPropulsion then
+
         GetHimsenWearingSpare2Grid;
       finally
-        SplashScreen1.Hide;
+//        SplashScreen1.Hide;
       end;
     end;
   end;
 end;
 
-procedure THimsenWearSpareQF.ImportWearingSpareSFromXls2Click(Sender: TObject);
-var
-  LHimsenWearingSpareParamRec: THimsenWearingSpareSRec;
+procedure THimsenWearSpareQF.MainBearingMakerCBDropDown(Sender: TObject);
 begin
-  if OpenDialog1.Execute then
-  begin
-    if FileExists(OpenDialog1.FileName) then
-    begin
-      SplashScreen1.BeginUpdate;
-      SplashScreen1.BasicProgramInfo.ProgramVersion.Text := 'Importing Data from xls...';
-      SplashScreen1.EndUpdate;
-      SplashScreen1.Show;
-      try
-//        GetHimsenWearingSpareSParam2Rec(LHimsenWearingSpareParamRec);
-        ImportHimsenWearingSpareSFromXlsFile(OpenDialog1.FileName, HullNoEdit.Text, TierRG.ItemIndex+1);
-        GetHimsenWearingSpare2Grid;
-      finally
-        SplashScreen1.Hide;
-      end;
-    end;
-  end;
+  g_MainBearingMaker.SetType2Combo(MainBearingMakerCB)
 end;
 
 procedure THimsenWearSpareQF.MakeHimsenWearPartQuotation;
@@ -810,7 +886,7 @@ end;
 
 procedure THimsenWearSpareQF.TCModelCBDropDown(Sender: TObject);
 begin
-  TCModelCB.Clear;
+//  TCModelCB.Clear;
 
   if TTierStep(TierRG.ItemIndex+1) = tsTierI then
     g_TCModelTier1.SetType2Combo(TCModelCB)

@@ -5,6 +5,20 @@ interface
 uses System.Classes, UnitEnumHelper;
 
 type
+  THimsenWearingSpareRec = record
+    fHullNo,
+    fEngineType,
+    fTCModel,
+    fRunningHour,
+    fCylCount,
+    fRatedRPM,
+    fMainBearingMaker
+    : string;
+    fTierStep,
+    fUsage: integer;
+    fIsRetrofit: Boolean;
+  end;
+
   TEngineMasterQueryDateType = (emdtNull, emdtProductDeliveryDate, emdtShipDeliveryDate,
     emdtWarrantyDueDate, emdtFinal);
 
@@ -26,9 +40,10 @@ type
     tt1TPS44, tt1TPS48, tt1TPS52, tt1TPS57, tt1TPS61, tt1TPL67, tt1Final);
   TTCModel_TierII = (tt2Null, tt2ST3, tt2ST4, tt2ST5, tt2ST6, tt2ST7, tt2A130,
     tt2A135, tt2A140, tt2A145, tt2A150, tt2A155, tt2TPL65, tt2TPL67, tt2Final);
-  TTCModel_TierIII = (tt3Null, tt3Final);
+  TTCModel_TierIII = (tt3Null, tt3ST7, tt3A150, tt3A155, tt3Final);
 
   TEngineUsage = (euNull, euMarine, euStatinoary, euPropulsion, euFinal);
+  TMainBearingMaker = (mmbNull, mbmMiba, mbmDaido, mbmFinal);
 
 const
   R_EngineMasterQueryDateType : array[Low(TEngineMasterQueryDateType)..High(TEngineMasterQueryDateType)] of string =
@@ -129,6 +144,9 @@ const
   R_TCModel_TierIII : array[Low(TTCModel_TierIII)..High(TTCModel_TierIII)] of string =
   (
     '',
+    'ST7',
+    'A150',
+    'A155',
     ''
   );
 
@@ -141,7 +159,16 @@ const
     ''
   );
 
+  R_MainBearingMaker : array[Low(TMainBearingMaker)..High(TMainBearingMaker)] of string =
+  (
+    '',
+    'Miba',
+    'Daido',
+    ''
+  );
+
 function GetEngineUsageChar(AIndex: integer): string;
+procedure EngineProductType2List(AList:TStrings);
 
 var
   g_EngineMasterQueryDateType: TLabelledEnum<TEngineMasterQueryDateType>;
@@ -155,6 +182,7 @@ var
   g_TCModelTier2: TLabelledEnum<TTCModel_TierII>;
   g_TCModelTier3: TLabelledEnum<TTCModel_TierIII>;
   g_EngineUsage: TLabelledEnum<TEngineUsage>;
+  g_MainBearingMaker: TLabelledEnum<TMainBearingMaker>;
 
 implementation
 
@@ -167,6 +195,17 @@ begin
   end;
 end;
 
+procedure EngineProductType2List(AList:TStrings);
+var Li: TEngineProductType;
+begin
+  AList.Clear;
+
+  for Li := Succ(Low(TEngineProductType)) to Pred(High(TEngineProductType)) do
+  begin
+    AList.Add(R_EngineProductType[Li]);
+  end;
+end;
+
 initialization
   g_EngineMasterQueryDateType.InitArrayRecord(R_EngineMasterQueryDateType);
   g_EngineProductType.InitArrayRecord(R_EngineProductType);
@@ -174,11 +213,12 @@ initialization
   g_Engine4SProductType.InitArrayRecord(R_Engine4SProductType);
   g_EngineTier1.InitArrayRecord(R_EngineModel_TierI);
   g_EngineTier2.InitArrayRecord(R_EngineModel_TierII);
-  g_EngineTier3.InitArrayRecord(R_EngineModel_TierII);
+  g_EngineTier3.InitArrayRecord(R_EngineModel_TierIII);
   g_TCModelTier1.InitArrayRecord(R_TCModel_TierI);
   g_TCModelTier2.InitArrayRecord(R_TCModel_TierII);
   g_TCModelTier3.InitArrayRecord(R_TCModel_TierIII);
   g_EngineUsage.InitArrayRecord(R_EngineUsage);
+  g_MainBearingMaker.InitArrayRecord(R_MainBearingMaker);
 
 finalization
 

@@ -1,9 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{7EDD292A-2E61-4BCD-9925-3FD0A5FCE119}</ProjectGuid>
+        <ProjectGuid>{68BD9FE4-5359-45F4-BB99-86E18538E1B0}</ProjectGuid>
         <ProjectVersion>15.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>QuotationManage.dpr</MainSource>
+        <MainSource>VesselListeR.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -70,12 +70,13 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Debugger_RunParams>/m9H21/32 /aM /c9 /i2</Debugger_RunParams>
-        <DCC_UnitSearchPath>E:\pjh\project\common\mORMot;E:\pjh\project\common\mORMot\SQLite3;E:\pjh\project\common\mORMot\SQLite3\sqlite3obj;E:\pjh\project\common\GpDelphiUnit\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_ExeOutput>..\bin</DCC_ExeOutput>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_Define>USE_SYN_CRYPT;USE_REGCODE;$(DCC_Define)</DCC_Define>
+        <Debugger_RunParams>/m9H21/32 /aM /c9</Debugger_RunParams>
+        <DCC_UnitSearchPath>E:\pjh\project\common\mORMot\SQLite3\sqlite3obj;E:\pjh\project\common\TSmBios\Common;E:\pjh\project\util\HiMECS\Application\Source\Common;E:\pjh\project\util\RegCodeManager;E:\pjh\project\util\GSManage;E:\pjh\project\util\RegCodeManager\Common;E:\pjh\project\OpenSrc\bcrypt-for-delphi-master;E:\pjh\project\OpenSrc\scrypt-for-delphi-master;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>e:\pjh\dcu\win32</DCC_DcuOutput>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_ExeOutput>..\bin</DCC_ExeOutput>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -88,19 +89,94 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="FrmQuotationManage.pas">
-            <Form>HimsenWearSpareQF</Form>
+        <DCCReference Include="..\HiMAPManage\frmHiMAPDetail.pas">
+            <Form>HiMAPDetailF</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UnitHimsenWearingSpareMarineRecord.pas"/>
+        <DCCReference Include="..\HiMAPManage\UnitHiMAPData.pas"/>
+        <DCCReference Include="FrmVesselList.pas">
+            <Form>VesselListF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="..\..\..\common\openarr\source\VarRecUtils.pas"/>
-        <DCCReference Include="..\..\..\common\UnitStringUtil.pas"/>
-        <DCCReference Include="..\..\..\common\UnitExcelUtil.pas"/>
-        <DCCReference Include="UnitHimsenWearingSpareStationaryRecord.pas"/>
+        <DCCReference Include="..\UnitVesselMasterRecord.pas"/>
         <DCCReference Include="..\CommonData.pas"/>
-        <DCCReference Include="..\VesselList\UnitEngineMasterData.pas"/>
-        <DCCReference Include="UnitHimsenWearingSparePropulsionRecord.pas"/>
-        <DCCReference Include="UnitMakeHimsenWaringSpareDB.pas"/>
+        <DCCReference Include="..\UnitMakeHgsDB.pas"/>
+        <DCCReference Include="..\..\..\common\UnitLogUtil.pas"/>
+        <DCCReference Include="..\UnitHiMAPRecord.pas"/>
+        <DCCReference Include="..\HiMAPManage\FrmHiMAPSelect.pas">
+            <Form>HiMAPSelectF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitMSBDData.pas"/>
+        <DCCReference Include="..\..\..\common\UnitStringUtil.pas"/>
+        <DCCReference Include="..\FrmFileSelect.pas">
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\UnitGSFileRecord.pas"/>
+        <DCCReference Include="..\FrmDisplayAnsiDeviceDesc.pas">
+            <Form>AnsiDeviceDescF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\UnitAnsiDeviceRecord.pas"/>
+        <DCCReference Include="..\UnitMakeAnsiDeviceDB.pas"/>
+        <DCCReference Include="..\FrmAnsiDeviceNoList.pas">
+            <Form>AnsiDeviceNoF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FrmEditVesselInfo.pas">
+            <Form>EditVesselInfoF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\..\..\OpenSrc\htmlparser-master\HtmlParserEx.pas"/>
+        <DCCReference Include="UnitNationRecord.pas"/>
+        <DCCReference Include="UnitNationData.pas"/>
+        <DCCReference Include="FrmViewNationCode.pas">
+            <Form>ViewNationCodeF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FrmViewFlag.pas">
+            <Form>FlagViewF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitEngineMasterRecord.pas"/>
+        <DCCReference Include="FrmViewEngineMaster.pas">
+            <Form>ViewEngineMasterF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FrmVesselAdvancedSearch.pas">
+            <Form>VesselAdvancedSearchF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitElecMasterRecord.pas"/>
+        <DCCReference Include="..\GeneratorManage\frmGeneratorDetail.pas">
+            <Form>GeneratorDetailF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\GeneratorManage\UnitGeneratorRecord.pas"/>
+        <DCCReference Include="..\..\..\common\UnitVariantFormUtil.pas"/>
+        <DCCReference Include="..\..\..\common\UnitRttiUtil.pas"/>
+        <DCCReference Include="..\GeneratorManage\frmViewGeneratorMaster.pas">
+            <Form>ViewGenMasterF</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitVesselData.pas"/>
+        <DCCReference Include="..\..\..\common\Frames\FrameDragDropOutlook.pas">
+            <Form>DragOutlookFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="UnitCBData.pas"/>
+        <DCCReference Include="..\..\..\common\UnitEnumHelper.pas"/>
+        <DCCReference Include="..\..\..\common\Frames\FrameGSFileList.pas">
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\..\..\common\UnitSimpleGenericEnum.pas"/>
+        <DCCReference Include="UnitCBRecord.pas"/>
+        <DCCReference Include="..\UnitElecServiceData.pas"/>
+        <DCCReference Include="UnitEngineMasterData.pas"/>
+        <DCCReference Include="UnitElecMasterData.pas"/>
+        <DCCReference Include="..\..\..\common\UnitBaseRecord.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -169,7 +245,7 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Source>
-                    <Source Name="MainSource">QuotationManage.dpr</Source>
+                    <Source Name="MainSource">VesselListeR.dpr</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k190.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
