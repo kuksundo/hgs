@@ -113,6 +113,7 @@ begin
 
   FStomp.SetUserName(FUserId); //pjh
   FStomp.SetPassword(FPasswd); //pjh
+  FStomp.SetHeartBeat(5000,5000);
   FStomp.Connect(FHostIP);
 
   if AIsSubscribe then

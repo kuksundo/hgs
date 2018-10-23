@@ -2,7 +2,7 @@ unit UnitSystemUtil;
 
 interface
 
-uses Psapi, Windows, tlhelp32, SysUtils;
+uses Classes, Psapi, Windows, tlhelp32, SysUtils;
 
 {Ex:
   if (AnsiLowerCase(ExtractFileName(GetTheParentProcessFileName)) <> 'explorer.exe') and
@@ -14,6 +14,7 @@ uses Psapi, Windows, tlhelp32, SysUtils;
 }
 function GetTheParentProcessFileName(): String;
 function KillTask(ExeFileName: string): Integer;
+procedure EnumComPorts(const Ports: TStringList);
 
 implementation
 
@@ -92,4 +93,34 @@ begin
   CloseHandle(FSnapshotHandle);
 end;
 
+//장치관리자의 COM1설명 문자 읽어 오기
+procedure EnumComPorts(const Ports: TStringList);
+var
+  nInd:  Integer;
+begin  { EnumComPorts }
+  with  TRegistry.Create(KEY_READ)  do
+  begin
+    try
+     RootKey := HKEY_LOCAL_MACHINE;
+     if OpenKey('hardware\devicemap\serialcomm', False) then
+       try
+         Ports.BeginUpdate();
+         try
+           GetValueNames(Ports);
+           for  nInd := Ports.Count - 1  downto  0  do
+             Ports.Strings[nInd] := ReadString(Ports.Strings[nInd]);
+           Ports.Sort()
+         finally
+           Ports.EndUpdate()
+         end { try-finally }
+       finally
+         CloseKey()
+       end { try-finally }
+     else
+       Ports.Clear()
+    finally
+     Free()
+    end { try-finally }
+  end;
+end { EnumComPorts };
 end.

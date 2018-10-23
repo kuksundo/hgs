@@ -57,6 +57,7 @@ Type
     function ToOrdinal(AType: string): integer; overload;
     Function GetTypeLabels(ASkipNull: Boolean = False): TStrings;
     procedure SetType2Combo(ACombo: TComboBox);
+    procedure SetType2List(AList: TStringList);
   End;
 
 function SetToInt(const ASet; const ASize: integer): integer;
@@ -117,7 +118,21 @@ var
 begin
   LStrList := GetTypeLabels;
   try
+    ACombo.Clear;
     ACombo.Items := LStrList;
+  finally
+    LStrList.Free;
+  end;
+end;
+
+procedure TLabelledEnum<T>.SetType2List(AList: TStringList);
+var
+  LStrList: TStrings;
+begin
+  LStrList := GetTypeLabels;
+  try
+    AList.Clear;
+    AList.AddStrings(LStrList);
   finally
     LStrList.Free;
   end;
@@ -134,7 +149,7 @@ function TLabelledEnum<T>.ToOrdinal(AType: string): integer;
 var
   LEnumGeneric: TEnumGeneric<T>;
 begin
-  ToOrdinal(ToType(AType));
+  Result := ToOrdinal(ToType(AType));
 end;
 
 function TLabelledEnum<T>.ToString(AType: integer): string;

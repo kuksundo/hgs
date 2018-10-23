@@ -3,7 +3,7 @@ UNIT UnitExcelUtil;
 interface
 
 uses SysUtils, StdCtrls,Classes, Graphics, Grids, ComObj,
-    Variants, Dialogs, Forms, Excel2000, NxColumnClasses, NxColumns, NxGrid;
+    Variants, Dialogs, Forms, Excel2010, NxColumnClasses, NxColumns, NxGrid;
 
 procedure GridToExcel (GenericStringGrid :TStringGrid ; XLApp :TExcelApplication);
 procedure NextGridToExcel(ANextGrid :TNextGrid; ASheetName: string = '');
@@ -16,6 +16,7 @@ function PutValInExcel(excSheet : Variant; const sName, sValue : string; Mess : 
 function GetLastRowNumFromExcel(AWorksheet: OleVariant): integer;
 function GetLastColNumFromExcel(AWorksheet: OleVariant): integer;
 procedure SetExcelCellRangeBorder(ARange: ExcelRange);
+function GetExcelVersion(XLApp :TExcelApplication): string;
 
 implementation
 
@@ -55,7 +56,7 @@ begin
     // Define the first WorkSheet
     WorkSheet := WorkBk.WorkSheets.Get_Item(1) as _WorkSheet;
     // Assign the Delphi Variant Matrix to the Variant associated with the WorkSheet
-    Worksheet.Range['A1',Worksheet.Cells.Item[R,C]].Value := TabGrid;
+    Worksheet.Range['A1',Worksheet.Cells.Item[R,C]].Value2 := TabGrid;
     // Customise the WorkSheet
     WorkSheet.Name := 'Customers';
     Worksheet.Columns.Font.Bold := True;
@@ -85,11 +86,13 @@ var
   TabGrid : Variant;
   LStr: string;
   LChar: Char;
+  LVersion: string;
+  LLength: integer;
 begin
   if ANextGrid.RowCount = 0 then
     exit;
 
-  if ANextGrid.Cells[0,1] <> '' then
+  if ANextGrid.Cells[0,0] <> '' then
   begin
     IIndex := 1;
     R := ANextGrid.RowCount;
@@ -105,8 +108,13 @@ begin
       begin
         if ANextGrid.Columns.Item[J].Visible then
         begin
-          TabGrid[I,K] := ANextGrid.Cells[J,I];
+          LStr := ANextGrid.Cells[J,I];
+          TabGrid[I,K] := LStr;
           Inc(K);
+          LLength := Length(LStr);
+          //Cell 내용이 가장 긴 것 저장함
+          if ANextGrid.Columns.Item[J].Tag < LLength then
+             ANextGrid.Columns.Item[J].Tag := LLength;
         end;
       end;
       Inc(I,1);
@@ -115,6 +123,7 @@ begin
 //    LCID := GetUserDefaultLCID;
     // Connect to the server TExcelApplication
     XLApp := TExcelApplication.Create(nil);
+    LVersion := GetExcelVersion(XLApp);
 //    XLApp.ConnectKind := ckNewInstance;
     // Add WorkBooks to the ExcelApplication
     XLApp.WorkBooks.Add(xlWBatWorkSheet,0);
@@ -129,25 +138,10 @@ begin
       if ANextGrid.Columns.Item[i].Visible then
       begin
         LRange := Worksheet.Range[LChar+'1',LChar+'1'];
-        LRange.Value := ANextGrid.Columns.Item[i].Header.Caption;
+        LRange.Value2 := ANextGrid.Columns.Item[i].Header.Caption;
         LRange.Interior.Color := clLtGray;//clGreen;
         SetExcelCellRangeBorder(LRange);
-        case LChar of
-          'A': LRange.ColumnWidth := 5;
-          'B': LRange.ColumnWidth := 13;
-          'C': LRange.ColumnWidth := 30;
-          'D': LRange.ColumnWidth := 13;
-          'E': LRange.ColumnWidth := 13;
-          'F': LRange.ColumnWidth := 13;
-          'G': LRange.ColumnWidth := 13;
-          'H': LRange.ColumnWidth := 13;
-          'I': LRange.ColumnWidth := 45;
-          'J': LRange.ColumnWidth := 31;
-          'K': LRange.ColumnWidth := 13;
-          'L': LRange.ColumnWidth := 45;
-          'M': LRange.ColumnWidth := 30;
-          'N': LRange.ColumnWidth := 13;
-        end;
+        LRange.ColumnWidth := ANextGrid.Columns.Item[i].Tag + 3;
 
 //        with Worksheet.Range[LChar+'1',LChar+'1'].Borders do
 //        begin
@@ -159,7 +153,7 @@ begin
     end;
 
     // Assign the Delphi Variant Matrix to the Variant associated with the WorkSheet
-    Worksheet.Range['A2',Worksheet.Cells.Item[R+1,C]].Value := TabGrid;
+    Worksheet.Range['A2',Worksheet.Cells.Item[R+1,C]].Value2 := TabGrid;
     // Customise the WorkSheet
     if ASheetName = '' then
       ASheetName := 'Customers';
@@ -172,7 +166,11 @@ begin
     LChar := Chr(Pred(Ord(LChar)));
     LRange := WorkSheet.Range['A' + IntToStr(1),LChar + IntToStr(R+1)];
     LRange.HorizontalAlignment := xlHAlignCenter;//xlHAlignLeft;
-    SetExcelCellRangeBorder(LRange);
+
+    if LVersion = '2010' then
+      SetExcelCellRangeBorder(LRange)
+    else
+      ShowMessage('Excel Version is ' + LVersion);
 //    WorkSheet.Range['A' + IntToStr(2),'A' + IntToStr(R+1)].ColumnWidth := 5;
     // Show Excel
     XLApp.Visible[0] := True;
@@ -519,6 +517,25 @@ begin
   ARange.Borders.Weight := xlThin;
 
 //  ARange.BorderAround(xlContinuous, xlThin,1, clFuchsia);
+end;
+
+function GetExcelVersion(XLApp :TExcelApplication): string;
+var
+  LVersion: integer;
+begin
+  Result := XLApp.Version[0];
+  LVersion := Round(StrToFloat(Result));
+  case LVersion of
+    7: Result := '1995';
+    8: Result := '1997';
+    9: Result := '2000';
+    10: Result := 'XP';
+    11: Result := '2003';
+    12: Result := '2007';
+    14: Result := '2010';
+    15: Result := '2013';
+    16: Result := '2016';
+  end;
 end;
 
 end.

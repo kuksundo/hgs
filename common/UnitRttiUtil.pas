@@ -2,7 +2,7 @@ unit UnitRttiUtil;
 
 interface
 
-uses SysUtils,Classes, Rtti,TypInfo,
+uses SysUtils,Classes, Rtti, TypInfo,
   SynCommons;
 
 function GetValue(var aValue : TValue) : String;

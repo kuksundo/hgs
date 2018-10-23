@@ -6,7 +6,7 @@ uses SynLog, mORMot, SynCommons, System.SysUtils;
 
 procedure InitSynLog;
 procedure DoLog(Amsg: string; ALogDate: Boolean = False;
-  AMsgLevel: TSynLogInfo = sllInfo);
+  AMsgLevel: TSynLogInfo = sllEnter);
 
 implementation
 
@@ -20,8 +20,9 @@ var
 procedure InitSynLog;
 begin
   with TSynLog.Family do begin
-    Level := LOG_VERBOSE;
+//    Level := LOG_VERBOSE;
 //    Level := [sllException,sllExceptionOS];
+    Level := [sllEnter];
 //    EchoToConsole := LOG_VERBOSE; // log all events to the console
 //    PerThreadLog := true;
 //    PerThreadLog := ptOneFilePerThread;
@@ -33,18 +34,18 @@ begin
     NoEnvironmentVariable := True;
     ArchiveAfterDays := 1; // archive after one day
 //    ArchivePath := '\\Remote\WKS2302\Archive\Logs'; // or any path
-    DestinationPath := 'C:\Logs';
+    DestinationPath := 'C:\Temp\Logs';
 //    EchoCustom := aMyClass.Echo; // register third-party logger
 //    NoFile := true; // ensure TSynLog won't use the default log file
     RotateFileCount := 5;    // will maintain a set of up to 5 files
-//    RotateFileSizeKB := 20*1024; // rotate by 20 MB logs
-    RotateFileDailyAtHour := 0; // rotate at 11:00 PM
+    RotateFileSizeKB := 1024;//20*1024; // rotate by 20 MB logs
+    RotateFileDailyAtHour := 0; //23;  rotate at 11:00 PM
 //    FileExistsAction := acAppend;
   end;
 end;
 
 procedure DoLog(Amsg: string; ALogDate: Boolean = False;
-  AMsgLevel: TSynLogInfo = sllInfo);
+  AMsgLevel: TSynLogInfo = sllEnter);
 var
   ILog: ISynLog;
 begin

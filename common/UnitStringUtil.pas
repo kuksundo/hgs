@@ -5,6 +5,15 @@ interface
 uses Windows, sysutils, classes, Forms, shellapi, Graphics, math, MMSystem,
     JclStringConversions, TlHelp32, StrUtils, Comobj;
 
+const
+  OneKB = 1024;
+  OneMB = OneKB * OneKB;
+  OneGB = OneKB * OneMB;
+  OneTB = Int64(OneKB) * OneGB;
+
+type
+  TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);
+
 function strToken(var S: String; Seperator: Char): String;
 function ExtractText(const Str: string; const Delim1, Delim2: string): string;
 function strTokenCount(S: String; Seperator: Char): Integer;
@@ -18,8 +27,11 @@ function IsValidGUID(const AGUID: string): boolean;
 function StringToCharSet(const AStr: string): TSysCharSet;
 function CharSetToString(const AChars: TSysCharSet): string;
 function CharSetToInt(const AChars: TSysCharSet): integer;
+function InsertSeperator(var AStr: string; ASep: String = '-'): string;
+function DeleteSeperator(var AStr: string): string;
 
 function NewGUID: string;
+function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
 
 implementation
 
@@ -228,4 +240,62 @@ begin
     if Chr(i) in AChars then
       Result := Result + i;
 end;
+
+function InsertSeperator(var AStr: string; ASep: String = '-'): string;
+begin
+  // Insert spaces in the release code string for easier reading
+  System.Insert(ASep, AStr, 13);
+  System.Insert(ASep, AStr, 09);
+  System.Insert(ASep, AStr, 05);
+
+  Result := AStr;
+end;
+
+function DeleteSeperator(var AStr: string): string;
+begin
+  // Remove spaces from the Release code
+  while pos(' ', AStr) > 0 do
+    System.Delete(AStr, pos(' ', AStr), 1);
+
+  // Remove '-' from the Release code
+  while pos('-', AStr) > 0 do
+    System.Delete(AStr, pos('-', AStr), 1);
+
+  Result := AStr;
+end;
+
+function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
+begin
+  if Format = bsfDefault then begin
+    if Bytes < OneKB then begin
+      Format := bsfBytes;
+    end
+    else if Bytes < OneMB then begin
+      Format := bsfKB;
+    end
+    else if Bytes < OneGB then begin
+      Format := bsfMB;
+    end
+    else if Bytes < OneTB then begin
+      Format := bsfGB;
+    end
+    else begin
+      Format := bsfTB;
+    end;
+  end;
+
+  case Format of
+  bsfBytes:
+    Result := SysUtils.Format('%d bytes', [Bytes]);
+  bsfKB:
+    Result := SysUtils.Format('%.1n KB', [Bytes / OneKB]);
+  bsfMB:
+    Result := SysUtils.Format('%.1n MB', [Bytes / OneMB]);
+  bsfGB:
+    Result := SysUtils.Format('%.1n GB', [Bytes / OneGB]);
+  bsfTB:
+    Result := SysUtils.Format('%.1n TB', [Bytes / OneTB]);
+  end;
+end;
+
 end.
