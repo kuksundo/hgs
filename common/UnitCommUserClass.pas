@@ -47,6 +47,10 @@ type
 //    property AlarmDBDriver: string read FAlarmDBDriver write FAlarmDBDriver;
   end;
 
+const
+  RCS_REMOTEDEBUG_IP = '10.22.42.132';
+  RCS_REMOTEDEBUG_PORT = '8091';
+
 implementation
 
 { TCommUser }

@@ -1,4 +1,4 @@
-unit UnitEmailUtil;
+unit UnitEmailMsgFileUtil;
 
 interface
 

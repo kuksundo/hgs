@@ -10,7 +10,7 @@ unit UnitConfigIniClass2;
 
 interface
 
-uses SysUtils, Vcl.Controls, Forms, Rtti, TypInfo, IniPersist;
+uses SysUtils, Vcl.Controls, Forms, Rtti, TypInfo, IniPersist, AdvGroupBox;
 
 type
   TINIConfigBase = class (TObject)
@@ -73,7 +73,7 @@ var
   LControl: TControl;
 
   i, LTagNo: integer;
-  LStr: string;
+  LStr, s: string;
 begin
   ctx := TRttiContext.Create;
   ctx2 := TRttiContext.Create;
@@ -92,6 +92,13 @@ begin
       objType := ctx.GetType(LControl.ClassInfo);
 
       Prop := nil;
+
+      if LStr = 'TAdvGroupBox' then  //TAdvGroupBox일 경우
+      begin
+        objType := ctx.GetType(TAdvGroupBox(LControl).CheckBox.ClassInfo);
+        LStr := 'Checked';
+      end;
+
       Prop := objType.GetProperty(LStr);
 
       if Assigned(Prop) then
@@ -106,7 +113,10 @@ begin
             begin
               Value := Prop2.GetValue(ASettings);
 //              Data := TIniPersist.GetValue(Value);
-              Prop.SetValue(LControl, Value);
+              if LControl.ClassType = TAdvGroupBox then
+                Prop.SetValue(TAdvGroupBox(LControl).CheckBox, Value)
+              else
+                Prop.SetValue(LControl, Value);
               break;
             end;
           end;
@@ -140,7 +150,7 @@ begin
     for i := 0 to AForm.ComponentCount - 1 do
     begin
       LControl := TControl(AForm.Components[i]);
-      LStr := LControl.Hint; //Caption 또는 Text 또는 Value
+      LStr := LControl.Hint; //Caption 또는 Text 또는 Value 또는 Checked
       LTagNo := LControl.Tag;
 
       if LStr = '' then
@@ -149,6 +159,13 @@ begin
       objType := ctx.GetType(LControl.ClassInfo);
 
       Prop := nil;
+
+      if (LStr = 'TAdvGroupBox') then  //TAdvGroupBox일 경우
+      begin
+        objType := ctx.GetType(TAdvGroupBox(LControl).CheckBox.ClassInfo);
+        LStr := 'Checked';
+      end;
+
       Prop := objType.GetProperty(LStr);
 
       if Assigned(Prop) then
@@ -161,9 +178,11 @@ begin
           begin
             if IniValue.TagNo = LTagNo then
             begin
-              Value := Prop.GetValue(LControl);
-//              Data := TIniPersist.GetValue(Value);
-//              TIniPersist.SetValue(Data, Value, Prop2.PropertyType.TypeKind);
+              if LControl.ClassType = TAdvGroupBox then
+                Value := Prop.GetValue(TAdvGroupBox(LControl).CheckBox)
+              else
+                Value := Prop.GetValue(LControl);
+
               Prop2.SetValue(ASettings, Value);
               break;
             end;
