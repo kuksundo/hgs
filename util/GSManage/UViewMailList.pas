@@ -9,7 +9,11 @@ uses
   Vcl.StdCtrls, Vcl.ToolWin, Vcl.ActnCtrls, Vcl.ExtCtrls, NxColumnClasses,
   NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   AdvOfficeTabSet, System.Rtti, DateUtils,
-  CommonData, DragDrop, DropTarget, UElecDataRecord, SynCommons, mORMot,
+  CommonData, DragDrop, DropTarget,
+  {$IFDEF GAMANAGER} UnitGAMasterRecord,
+  {$ELSE}UElecDataRecord,
+  {$ENDIF}
+  SynCommons, mORMot,
   Vcl.Menus, FrmEditEmailInfo;
 
 type
@@ -176,9 +180,14 @@ var
 
 implementation
 
-uses ShellApi, TaskForm, SynMustache, UnitMakeReport, UnitStringUtil, UnitIPCModule,
-  DragDropInternet, FrmInqManage, UnitHttpModule4InqManageServer, UnitBase64Util,
-  UnitElecServiceData;
+uses ShellApi, SynMustache, UnitStringUtil, UnitIPCModule,
+  DragDropInternet, UnitHttpModule4InqManageServer,
+  {$IFDEF GAMANAGER}
+    FrmGATaskEdit, UnitGAMakeReport, FrmGAManage, UnitGAServiceData,
+  {$ELSE}
+    TaskForm, UnitMakeReport, FrmInqManage, UnitElecServiceData,
+  {$ENDIF}
+  UnitBase64Util;
 
 {$R *.dfm}
 

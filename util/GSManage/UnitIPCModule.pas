@@ -5,8 +5,11 @@ interface
 uses System.Classes, Dialogs, System.Rtti,
   NxColumnClasses, NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   Cromis.Comm.Custom, Cromis.Comm.IPC, Cromis.Threading, Cromis.AnyValue,
-  CommonData, SynCommons, mORMot, DateUtils, System.SysUtils, UElecDataRecord,
+  CommonData, SynCommons, mORMot, DateUtils, System.SysUtils,
   mORMotHttpClient, OLMailWSCallbackInterface, Winapi.ActiveX, UnitIniConfigSetting,
+  {$IFDEF GAMANAGER} UnitGAMasterRecord,
+  {$ELSE} UElecDataRecord,
+  {$ENDIF}
   UnitInqManageWSInterface;
 
 //AMailType = 1: invoice 价何, 2: 概免贸府夸没, 3: 流捧涝夸没
@@ -59,8 +62,13 @@ procedure ShowEmailListFromJson(AGrid: TNextGrid; AJson: RawUTF8);
 
 implementation
 
-uses UnitMakeReport, SynMustache, UnitStringUtil, TaskForm, UnitVariantJsonUtil, UnitElecServiceData;
-
+uses SynMustache,
+  {$IFDEF GAMANAGER}
+  FrmGATaskEdit, UnitGAVarJsonUtil, UnitGAServiceData, UnitGAMakeReport,
+  {$ELSE}
+  TaskForm, UnitVariantJsonUtil, UnitElecServiceData, UnitMakeReport,
+  {$ENDIF}
+  UnitStringUtil;
 procedure SendCmd2IPC4ReplyMail(AEntryId, AStoreId: string; AMailType: integer; ATask: TSQLGSTask;
   ASettings: TConfigSettings);
 begin
@@ -910,7 +918,11 @@ begin
     end;
 
     try
+    {$IFDEF GAMANAGER}
+      FrmGATaskEdit.DisplayTaskInfo2EditForm(LTask, nil, LDoc, LIsFromInvoiceManage);
+    {$ELSE}
       TaskForm.DisplayTaskInfo2EditForm(LTask, nil, LDoc, LIsFromInvoiceManage);
+    {$ENDIF}
     finally
       FreeAndNil(LTask);
     end;

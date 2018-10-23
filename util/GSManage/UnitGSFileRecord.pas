@@ -15,6 +15,7 @@ uses
   TSQLGSFileRec = Packed Record
     fFilename: RawUTF8;
     fGSDocType: integer;//TGSDocType;
+    fFileSize: integer;
     fData: RawByteString;
   end;
 
@@ -46,9 +47,12 @@ uses
   end;
 
 procedure InitGSFileClient(AExeName: string = '');
+procedure InitGSFileClient2(ADBName: string = '');
 function CreateFilesModel: TSQLModel;
+procedure DestroyGSFile;
 
 function GetGSFilesFromID(const AID: TID): TSQLGSFile;
+function GetGSFiles: TSQLGSFile;
 procedure AddOrUpdateGSFiles(ASQLGSFile: TSQLGSFile);
 procedure DeleteGSFilesFromID(const AID: TID);
 
@@ -58,7 +62,7 @@ var
 
 implementation
 
-uses mORMotSQLite3, UnitFolderUtil;
+uses mORMotSQLite3, UnitFolderUtil, Forms;
 
 procedure InitGSFileClient(AExeName: string);
 var
@@ -75,10 +79,38 @@ begin
   TSQLRestClientDB(g_FileDB).Server.CreateMissingTables;
 end;
 
+procedure InitGSFileClient2(ADBName: string = '');
+var
+  LStr: string;
+begin
+  if Assigned(g_FileDB) then
+    FreeAndNil(g_FileDB);
+  if Assigned(FileModel) then
+    FreeAndNil(FileModel);
+
+  if ADBName = '' then
+    ADBName := ChangeFileExt(ExtractFilePath(Application.ExeName),'.sqlite');
+
+  LStr := GetSubFolderPath(ExtractFilePath(Application.ExeName), 'db');
+  LStr := LStr + ADBName;
+  FileModel:= CreateFilesModel;
+  g_FileDB:= TSQLRestClientDB.Create(FileModel, CreateFilesModel,
+    LStr, TSQLRestServerDB);
+  TSQLRestClientDB(g_FileDB).Server.CreateMissingTables;
+end;
+
 function CreateFilesModel: TSQLModel;
 begin
   result := TSQLModel.Create([TSQLGSFile]);
 end;
+
+procedure DestroyGSFile;
+begin
+  if Assigned(g_FileDB) then
+    FreeAndNil(g_FileDB);
+  if Assigned(FileModel) then
+    FreeAndNil(FileModel);
+end;
 
 function GetGSFilesFromID(const AID: TID): TSQLGSFile;
 begin
@@ -87,6 +119,12 @@ begin
 
   if not Result.IsUpdate then
     Result.fTaskID := AID;
+end;
+
+function GetGSFiles: TSQLGSFile;
+begin
+  Result := TSQLGSFile.CreateAndFillPrepare(g_FileDB, 'TaskID <> ?', [-1]);
+  Result.IsUpdate := Result.FillOne;
 end;
 
 procedure AddOrUpdateGSFiles(ASQLGSFile: TSQLGSFile);
@@ -111,9 +149,6 @@ end;
 initialization
 
 finalization
-  if Assigned(g_FileDB) then
-    FreeAndNil(g_FileDB);
-  if Assigned(FileModel) then
-    FreeAndNil(FileModel);
-
+  DestroyGSFile;
+
 end.

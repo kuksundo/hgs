@@ -2,7 +2,7 @@ unit UnitElecServiceData;
 
 interface
 
-uses System.Classes, UnitEnumHelper, FSMClass_Dic, FSMState;
+uses System.Classes, UnitEnumHelper, FSMClass_Dic, FSMState, Vcl.StdCtrls;
 
 type
   TQueryDateType = (qdtNull, qdtInqRecv, qdtInvoiceIssue, qdtQTNInput,
@@ -15,6 +15,8 @@ type
     FCurWork, FBefAft, FWorkKind: integer;
     FQtnNo, FOrderNo, FPoNo, FRemoteIPAddress: string
   end;
+
+  TEngineerKind = (ekNone, ekSuperIntendent, ekServiceEngineer, ekServiceEngineer_Elec, ekTechnician, ekFinal);
 
   TGSDocType = (dtNull,
               dtQuote2Cust4Material, dtQuote2Cust4Service, dtQuoteFromSubCon,
@@ -65,6 +67,17 @@ const
   R_QueryDateType : array[Low(TQueryDateType)..High(TQueryDateType)] of string =
     ('', 'Inq 접수일 기준', 'Invoice 발행일 기준', 'QTN 입력일 기준',
       '수주통보서 입력일 기준', '');
+
+  R_EngineerKind : array[ekNone..ekFinal] of record
+    Description : string;
+    Value       : TEngineerKind;
+  end = ((Description : '';                       Value : ekNone),
+         (Description : 'SuperIntendent';         Value : ekSuperIntendent),
+         (Description : 'Service Engineer';       Value : ekServiceEngineer),
+         (Description : 'Service Engineer(Elec.)';Value : ekServiceEngineer_Elec),
+         (Description : 'Technician';             Value : ekTechnician),
+         (Description : '';                       Value : ekFinal)
+         );
 
   R_GSDocType : array[Low(TGSDocType)..High(TGSDocType)] of string =
     ('', '부품 견적서(To 고객)', '서비스 견적서(To 고객)', '부품 견적서(From 협력사)',
@@ -145,9 +158,42 @@ var
   g_GSInvoiceItemType: TLabelledEnum<TGSInvoiceItemType>;
   g_CalcInvoiceMethod: TLabelledEnum<TCalcInvoiceMethod>;
 
+function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
+function String2EngineerKind(AEngineerKind:string): TEngineerKind;
+procedure EngineerKind2Combo(AComboBox:TComboBox);
 procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
 
 implementation
+
+function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
+begin
+  if AEngineerKind <= High(TEngineerKind) then
+    Result := R_EngineerKind[AEngineerKind].Description;
+end;
+
+function String2EngineerKind(AEngineerKind:string): TEngineerKind;
+var Li: TEngineerKind;
+begin
+  for Li := ekNone to ekFinal do
+  begin
+    if R_EngineerKind[Li].Description = AEngineerKind then
+    begin
+      Result := R_EngineerKind[Li].Value;
+      exit;
+    end;
+  end;
+end;
+
+procedure EngineerKind2Combo(AComboBox:TComboBox);
+var Li: TEngineerKind;
+begin
+  AComboBox.Clear;
+
+  for Li := ekNone to Pred(ekFinal) do
+  begin
+    AComboBox.Items.Add(R_EngineerKind[Li].Description);
+  end;
+end;
 
 procedure SalesProcess2List(AList: TStringList; AFSMState: TFSMState);
 var

@@ -253,6 +253,8 @@ type
     procedure AdvGlowButton6Click(Sender: TObject);
     procedure DropEmptyTarget1Drop(Sender: TObject; ShiftState: TShiftState;
       APoint: TPoint; var Effect: Integer);
+    procedure DropEmptyTarget1Drop2(Sender: TObject; ShiftState: TShiftState;
+      APoint: TPoint; var Effect: Integer);
     procedure oCustomer1Click(Sender: TObject);
     procedure English2Click(Sender: TObject);
     procedure ServiceOrder1Click(Sender: TObject);
@@ -333,6 +335,8 @@ type
     //Drag를 윈도우 탐색기에서 하면 AFromOutLook=Fase,
     //Outlook 첨부 파일에서 하면 AFromOutLook=True임
     procedure ShowFileSelectF(AFileName: string = ''; AFromOutLook: Boolean = False);
+    procedure ShowFileSelectF2(AFileName: string = ''; AFromOutLook: Boolean = False);
+
     procedure LoadCustomerFromCompanycode(ACompanyCode: string);
 //    procedure LoadCustomer2
 
@@ -861,6 +865,33 @@ begin
   end;
 end;
 
+procedure TTaskEditF.DropEmptyTarget1Drop2(Sender: TObject;
+  ShiftState: TShiftState; APoint: TPoint; var Effect: Integer);
+var
+  i: integer;
+  LFileName: string;
+  LFromOutlook: Boolean;
+  LTargetStream: TStream;
+begin
+  LFileName := '';
+  // 윈도우 탐색기에서 Drag 했을 경우
+  if TFileDataFormat(DataFormatAdapter1.DataFormat).Files.Count > 0 then
+    LFileName := (DataFormatAdapter1.DataFormat as TFileDataFormat).Files.Text;
+
+  // OutLook에서 첨부파일을 Drag 했을 경우
+  if (TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat).FileNames.Count > 0) then
+  begin
+    LFileName := TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat).FileNames.Text;
+    LFromOutlook := True;
+  end;
+
+  if LFileName <> '' then
+  begin
+    LFileName.Replace('"','');
+    ShowFileSelectF2(LFileName, LFromOutlook);
+  end;
+end;
+
 procedure TTaskEditF.English2Click(Sender: TObject);
 var
   LRec: Doc_Invoice_Rec;
@@ -957,13 +988,16 @@ begin
     (DragDetectPlus(FileGrid.Handle, Point(X,Y))) then
   begin
     TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).FileNames.Clear;
+
     for i := 0 to FileGrid.RowCount - 1 do
+    begin
       if (FileGrid.Row[i].Selected) then
       begin
         TVirtualFileStreamDataFormat(DataFormatAdapter2.DataFormat).
           FileNames.Add(FileGrid.CellByName['FileName',i].AsString);
-        break;
+//        break;
       end;
+    end;
 
     DropEmptySource1.Execute;
   end;
@@ -1974,6 +2008,7 @@ begin
     Found := False;
 
     for i := 0 to FileGrid.RowCount-1 do
+    begin
       if (FileGrid.Row[i].Selected) then
       begin
         if (SelIndex = Index) then
@@ -1987,6 +2022,8 @@ begin
         end;
         inc(SelIndex);
       end;
+    end;
+
     if (not Found) then
       exit;
 
@@ -2157,6 +2194,90 @@ begin
       end;
     end;
   finally
+    LFileSelectF.Free;
+  end;
+end;
+
+procedure TTaskEditF.ShowFileSelectF2(AFileName: string; AFromOutLook: Boolean);
+var
+  li,LRow : integer;
+  lfilename : String;
+  lExt : String;
+  lSize : int64;
+  LFileSelectF: TFileSelectF;
+  LSQLGSFileRec: TSQLGSFileRec;
+  LDoc: RawByteString;
+  i: integer;
+  LFileNameList: TStringList;
+  LTargetStream: TStream;
+begin
+  LFileSelectF := TFileSelectF.Create(nil);
+  LFileNameList := TStringList.Create;
+  try
+    //Drag 했을 경우 AFileName <> ''이고
+    //Task Edit 화면에서 추가 버튼을 눌렀을 경우 AFileName = ''임
+    if AFileName <> '' then
+    begin
+      LFileNameList.Text := AFileName;
+      LFileSelectF.JvFilenameEdit1.FileName := AFileName;
+    end;
+
+    g_GSDocType.SetType2Combo(LFileSelectF.ComboBox1);
+
+    if LFileSelectF.ShowModal = mrOK then
+    begin
+      if LFileSelectF.JvFilenameEdit1.FileName = '' then
+        exit;
+
+      with fileGrid do
+      begin
+        BeginUpdate;
+        try
+          for li := 0 to LFileNameList.Count - 1 do
+          begin
+            LFileName := LFileNameList.Strings[li];
+
+            if AFromOutLook then
+            begin
+              LTargetStream := GetStreamFromDropDataFormat2(TVirtualFileStreamDataFormat(DataFormatAdapterTarget.DataFormat),li);
+              try
+                if not Assigned(LTargetStream) then
+                  ShowMessage('Not Assigned');
+
+                LDoc := StreamToRawByteString(LTargetStream);
+              finally
+                if Assigned(LTargetStream) then
+                  LTargetStream.Free;
+              end;
+            end
+            else
+              LDoc := StringFromFile(LFileName);
+
+            LFileName := ExtractFileName(LFileName);
+
+            LSQLGSFileRec.fData := LDoc;
+            LSQLGSFileRec.fGSDocType := g_GSDocType.ToOrdinal(LFileSelectF.ComboBox1.Text);
+            LSQLGSFileRec.fFilename := LFileName;
+            lsize := Length(LDoc);
+
+            if not Assigned(FSQLGSFiles) then
+              FSQLGSFiles := TSQLGSFile.Create;
+
+            i := FSQLGSFiles.DynArray('Files').Add(LSQLGSFileRec);
+            LRow := AddRow;
+            CellByName['FileName',LRow].AsString := LFileName;
+            CellByName['FileSize',LRow].AsString := IntToStr(lsize);
+            CellByName['FilePath',LRow].AsString := ExtractFilePath(LFileName);
+            CellByName['DocType',LRow].AsString := LFileSelectF.ComboBox1.Text;
+          end;
+
+        finally
+          EndUpdate;
+        end;
+      end;
+    end;
+  finally
+    LFileNameList.Free;
     LFileSelectF.Free;
   end;
 end;

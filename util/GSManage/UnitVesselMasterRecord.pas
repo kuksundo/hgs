@@ -388,6 +388,7 @@ var
   LSQLVesselMaster: TSQLVesselMaster;
 begin
   LSQLVesselMaster := GetVesselMasterFromIMONo(ADoc.IMONo);
+//  LSQLVesselMaster := GetVesselMasterFromHullNo(ADoc.HullNo);
   try
 //    if not LSQLVesselMaster.IsUpdate then
 //    begin

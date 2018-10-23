@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, AdvGroupBox,
-  AdvOfficeButtons, Vcl.ExtCtrls, Vcl.Buttons;
+  AdvOfficeButtons, Vcl.ExtCtrls, Vcl.Buttons, CommonData;
 
 type
   TSelectProductTypeF = class(TForm)
@@ -16,23 +16,23 @@ type
   private
     { Private declarations }
   public
-    procedure LoadProductType2CheckGrpFromCommaStr(ACommaStr: string);
+    procedure LoadProductType2CheckGrpFromCommaStr(ABusinessAreas: TBusinessAreas; ACommaStr: string);
     function GetCommaStrFromProductTypeGrp : string;
-    procedure FillInProductTypesGrp;
+    procedure FillInProductTypesGrp(ABusinessAreas: TBusinessAreas);
   end;
 
-function EditProductType(AProductList: string): string;
+function EditProductType(ABusinessAreas: TBusinessAreas; AProductList: string): string;
 
 var
   SelectProductTypeF: TSelectProductTypeF;
 
 implementation
 
-uses CommonData;
+uses UnitVesselData, UnitEngineMasterData;
 
 {$R *.dfm}
 
-function EditProductType(AProductList: string): string;
+function EditProductType(ABusinessAreas: TBusinessAreas; AProductList: string): string;
 var
   LSelectProductTypeF: TSelectProductTypeF;
 begin//AProductList: 콤마로 분리된 Product list임
@@ -40,7 +40,7 @@ begin//AProductList: 콤마로 분리된 Product list임
   try
     with LSelectProductTypeF do
     begin
-      LoadProductType2CheckGrpFromCommaStr( AProductList);
+      LoadProductType2CheckGrpFromCommaStr(ABusinessAreas, AProductList);
 
       if ShowModal = mrOK then
       begin
@@ -54,14 +54,34 @@ begin//AProductList: 콤마로 분리된 Product list임
   end;
 end;
 
-procedure TSelectProductTypeF.FillInProductTypesGrp;
+procedure TSelectProductTypeF.FillInProductTypesGrp(ABusinessAreas: TBusinessAreas);
 var
   i: TElecProductDetailType;
 begin
   ProductTypesGrp.Items.Clear;
 
-  for i := Succ(epdtNull) to Pred(epdtFinal) do
-    ProductTypesGrp.Items.Add(R_ElecProductDetailType[i].Description);
+  if ABusinessAreas = [] then
+  begin
+    ShipProductType2List(ProductTypesGrp.Items);
+  end
+  else
+  begin
+    if baShip in ABusinessAreas then
+    begin
+      ShipProductType2List(ProductTypesGrp.Items);
+    end;
+
+    if baEngine in ABusinessAreas then
+    begin
+      EngineProductType2List(ProductTypesGrp.Items);
+    end;
+
+    if baElectric in ABusinessAreas then
+    begin
+      for i := Succ(epdtNull) to Pred(epdtFinal) do
+        ProductTypesGrp.Items.Add(R_ElecProductDetailType[i].Description);
+    end;
+  end;
 end;
 
 function TSelectProductTypeF.GetCommaStrFromProductTypeGrp: string;
@@ -82,12 +102,12 @@ begin
 end;
 
 procedure TSelectProductTypeF.LoadProductType2CheckGrpFromCommaStr(
-  ACommaStr: string);
+  ABusinessAreas: TBusinessAreas; ACommaStr: string);
 var
   LStrList: TStringList;
   i,j: integer;
 begin
-  FillInProductTypesGrp;
+  FillInProductTypesGrp(ABusinessAreas);
 
   LStrList := TStringList.Create;
   try

@@ -7,7 +7,12 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, AdvEdit,
   AdvEdBtn, JvExControls, JvLabel, Vcl.ExtCtrls, Generics.Collections,
   SynCommons, mORMot,
-  FrmSearchCustomer, CommonData, UElecDataRecord, AeroButtons, NxColumnClasses,
+  FrmSearchCustomer, CommonData, AeroButtons, NxColumnClasses,
+  {$IFDEF GAMANAGER}
+  UnitGAMasterRecord,
+  {$ELSE}
+  UElecDataRecord,
+  {$ENDIF}
   NxColumns, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
   Vcl.Mask, JvExMask, JvToolEdit, JvBaseEdits, AdvGroupBox, AdvOfficeButtons;
 
@@ -80,11 +85,15 @@ type
     JvLabel2: TJvLabel;
     JvLabel3: TJvLabel;
     ProductTypesEdit: TAdvEditBtn;
+    JvLabel4: TJvLabel;
+    CompanyTypeGrp: TAdvOfficeCheckGroup;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure SubCompanyEditClickBtn(Sender: TObject);
     procedure Button4Click(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure AttachmentsButtonClick(Sender: TObject);
     procedure ProductTypesEditClickBtn(Sender: TObject);
+    procedure btn_CloseClick(Sender: TObject);
   private
     procedure ClearTIDList4Grid;
     procedure ShowFileListForm;
@@ -94,6 +103,8 @@ type
       AIsFromDoc: Boolean = False);
     procedure LoadInvoiceFileCount2Grid(AInvoiceFiles: TSQLInvoiceFile;
       AGrid: TNextGrid; ARow: integer);
+    procedure SetCompanyTypes2Grp;
+    function GetCompanyTypesFromGrp: TCompanyTypes;
   public
     FTask: TSQLGSTask;
 
@@ -118,8 +129,11 @@ var
 
 implementation
 
-uses UnitVariantJsonUtil, FrmFileList, FrmSelectProductType, UnitAdvComponentUtil,
-  UnitElecServiceData;
+uses FrmFileList, FrmSelectProductType,
+  {$IFDEF GAMANAGER} UnitGAServiceData, UnitGAVarJsonUtil,
+  {$ELSE} UnitElecServiceData, UnitVariantJsonUtil,
+  {$ENDIF}
+  UnitAdvComponentUtil, UnitGSTriffData;
 
 {$R *.dfm}
 
@@ -173,6 +187,12 @@ end;
 procedure TSubCompanyEditF.AttachmentsButtonClick(Sender: TObject);
 begin
   ShowFileListForm;
+end;
+
+procedure TSubCompanyEditF.btn_CloseClick(Sender: TObject);
+begin
+  ModalResult := mrClose;
+  Close;
 end;
 
 procedure TSubCompanyEditF.Button4Click(Sender: TObject);
@@ -277,7 +297,7 @@ begin
     InvoiceGrid.CellsByName['UnitPrice',LRow] := LVar.UnitPrice;
     InvoiceGrid.CellsByName['ExchangeRate',LRow] := LVar.ExchangeRate;
     InvoiceGrid.CellsByName['TotalPrice',LRow] := LVar.TotalPrice;
-    InvoiceGrid.CellsByName['EngineerKind',LRow] := EngineerKind2String(TEngineerKind(LVar.EngineerKind));
+    InvoiceGrid.CellsByName['EngineerKind',LRow] := GSEngineerType2String(TGSEngineerType(LVar.GSEngineerType));
     InvoiceGrid.CellsByName['UniqueItemID',LRow] := LVar.UniqueItemID;
 
     InvoiceGrid.Row[LRow].Data := TIDList4Invoice.Create;
@@ -352,7 +372,7 @@ procedure TSubCompanyEditF.LoadTaskForm2MasterSubContractor(
 begin
   ACustomer.CompanyName := SubCompanyEdit.Text;
   ACustomer.CompanyCode := SubCompanyCodeEdit.Text;
-  ACustomer.CompanyTypes := [ctSubContractor];
+  ACustomer.CompanyTypes := GetCompanyTypesFromGrp; //[ctSubContractor];
   ACustomer.ManagerName := SubManagerEdit.Text;
   ACustomer.Position := PositionEdit.Text;
   ACustomer.OfficePhone := SubPhonNumEdit.Text;
@@ -373,8 +393,10 @@ end;
 procedure TSubCompanyEditF.ProductTypesEditClickBtn(Sender: TObject);
 var
   LStr: string;
+  LBusinessAreas: TBusinessAreas;
 begin
-  LStr := EditProductType(ProductTypesEdit.Text);
+  LBusinessAreas := GetBusinessAreasFromGrpComponent(BusinessAreaGrp);
+  LStr := EditProductType(LBusinessAreas, ProductTypesEdit.Text);
 
   if LStr <> 'No Change' then
     ProductTypesEdit.Text := LStr;
@@ -391,9 +413,47 @@ begin
   end;
 end;
 
+procedure TSubCompanyEditF.FormCreate(Sender: TObject);
+begin
+  if not Assigned(g_MasterDB) then
+  {$IFDEF GAMANAGER}
+    InitCompanyMasterClient(Application.ExeName);
+  {$ELSE}
+    InitMasterClient(Application.ExeName);
+  {$ENDIF}
+
+  SetCompanyTypes2Grp;
+end;
+
 procedure TSubCompanyEditF.FormDestroy(Sender: TObject);
 begin
   ClearTIDList4Grid;
+end;
+
+function TSubCompanyEditF.GetCompanyTypesFromGrp: TCompanyTypes;
+begin
+  Result := [];
+
+  if CompanyTypeGrp.Checked[0] then
+    Result := Result + [ctNewCompany];
+
+  if CompanyTypeGrp.Checked[1] then
+    Result := Result + [ctMaker];
+
+  if CompanyTypeGrp.Checked[2] then
+    Result := Result + [ctOwner];
+
+  if CompanyTypeGrp.Checked[3] then
+    Result := Result + [ctAgent];
+
+  if CompanyTypeGrp.Checked[4] then
+    Result := Result + [ctCorporation];
+
+  if CompanyTypeGrp.Checked[5] then
+    Result := Result + [ctSubContractor];
+
+  if Result = [] then
+    Result := [ctSubContractor];
 end;
 
 procedure TSubCompanyEditF.LoadEditForm2SQLSubCon(var ASubCon: TSQLSubCon);
@@ -427,7 +487,7 @@ var
     LDoc.UnitPrice := InvoiceGrid.CellsByName['UnitPrice', ARow];
     LDoc.ExchangeRate := InvoiceGrid.CellsByName['ExchangeRate', ARow];
     LDoc.TotalPrice := InvoiceGrid.CellsByName['TotalPrice', ARow];
-    LDoc.EngineerKind := Ord(String2EngineerKind(InvoiceGrid.CellsByName['EngineerKind', ARow]));
+    LDoc.EngineerKind := Ord(String2GSEngineerType(InvoiceGrid.CellsByName['EngineerKind', ARow]));
     LDoc.UniqueItemID := InvoiceGrid.CellsByName['UniqueItemID', ARow];
     LDoc.UniqueSubConID := UniqueSubConIDEdit.Text;
     LDoc.TaskID := LIDList4Invoice.TaskId;
@@ -510,7 +570,7 @@ procedure TSubCompanyEditF.SaveSubConEdit2MasterCustomer;
 var
   LCustomer: TSQLMasterCustomer;
 begin
-  LCustomer := GetMasterCustomerFromCompanyCodeNName(SubCompanyCodeEdit.Text, SubCompanyEdit.Text, [ctSubContractor]);
+  LCustomer := GetMasterCustomerFromCompanyCodeNName(SubCompanyCodeEdit.Text, SubCompanyEdit.Text, GetCompanyTypesFromGrp);
   try
     SaveSubContractEdit2MasterSubContract(LCustomer);
   finally
@@ -534,6 +594,13 @@ begin
     LoadTaskForm2MasterSubContractor(AMCustomer, Self.FTask.ID);
     g_MasterDB.Add(AMCustomer, true);
   end;
+end;
+
+procedure TSubCompanyEditF.SetCompanyTypes2Grp;
+var Li: TCompanyType;
+begin
+  for Li := Succ(ctNull) to Pred(ctFinal) do
+    CompanyTypeGrp.Items.Add(R_CompanyType[Li].Description);
 end;
 
 procedure TSubCompanyEditF.ShowFileListForm;
@@ -580,7 +647,7 @@ begin
   try
     with LSearchCustomerF do
     begin
-      FCompanyType := [ctSubContractor];
+      FCompanyType := GetCompanyTypesFromGrp;
 
       if ShowModal = mrOk then
       begin
@@ -597,6 +664,7 @@ begin
           SubCompanyAddressMemo.Text := NextGrid1.CellByName['CompanyAddress', NextGrid1.SelectedRow].AsString;
 
           SetBusinessAreasGrpFromTBusinessAreas(Self.BusinessAreaGrp, GetBusinessAreasFromCommaString(NextGrid1.CellByName['BusinessAreas', NextGrid1.SelectedRow].AsString));
+          SetCompanyTypesGrpFromTCompanyTypes(Self.CompanyTypeGrp, GetCompanyTypesFromCommaString(NextGrid1.CellByName['CompanyTypes', NextGrid1.SelectedRow].AsString));
         //  UniqueSubConIDEdit.Text := ADoc.ShipProductTypes;
         //  UniqueSubConIDEdit.Text := ADoc.Engine2SProductTypes;
         //  UniqueSubConIDEdit.Text := ADoc.Engine4SProductTypes;

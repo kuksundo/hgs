@@ -2,7 +2,7 @@ unit UnitHttpModule4InqManageServer;
 
 interface
 
-uses System.SysUtils, System.Classes, UnitInterfaceHTTPManager, UnitInqManageWSInterface,
+uses System.SysUtils, System.Classes, UnitInterfaceHTTPManager, UnitCommonWSInterface,
   mORMot, SynCommons, UnitHttpModule;
 
 function MakeCommand4InqManagerServer(ACommand, AParam: RawUTF8): RawUTF8;
@@ -35,16 +35,16 @@ end;
 
 function SendReq2InqManagerServer_Http(AIpAddress, APort, ARoot: string; ACommand, AParam: RawUTF8): RawUTF8;
 var
-  I: IInqManageService;
+  I: ICommonWSService;
   LCommand: RawUTF8;
 begin        //RCS_ROOT_NAME, RCS_DEFAULT_IP, RCS_PORT_NAME
   if HttpStart(ARoot, AIpAddress, APort) then
   begin
     try
-      g_HTTPClient.FHTTPClient.ServiceRegister([TypeInfo(IInqManageService)], sicShared); //sicClientDriven
+      g_HTTPClient.FHTTPClient.ServiceRegister([TypeInfo(ICommonWSService)], sicShared); //sicClientDriven
 
       try
-        I := g_HTTPClient.FHTTPClient.Service<IInqManageService>;
+        I := g_HTTPClient.FHTTPClient.Service<ICommonWSService>;
       except
         on E: Exception do
         begin

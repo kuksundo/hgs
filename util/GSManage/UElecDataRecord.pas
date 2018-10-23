@@ -862,7 +862,7 @@ var
 begin
   LStr := GetSubFolderPath(ExtractFilePath(AExeName), 'db');
   LStr := EnsureDirectoryExists(LStr);
-  LStr := LStr + 'GSMaster.sqlite';//ChangeFileExt(ExtractFileName(AExeName),'.db3');
+  LStr := LStr + 'CompanyMaster.sqlite';//ChangeFileExt(ExtractFileName(AExeName),'.db3');
 
   MasterModel := CreateMasterModel;
   g_MasterDB:= TSQLRestClientDB.Create(MasterModel, CreateMasterModel,

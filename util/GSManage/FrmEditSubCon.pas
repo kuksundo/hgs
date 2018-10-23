@@ -7,7 +7,10 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, AeroButtons, JvExControls,
   JvLabel, CurvyControls, Vcl.ExtCtrls, NxColumnClasses, NxColumns,
   NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid,
-  UElecDataRecord, CommonData, VarRecUtils;
+  {$IFDEF GAMANAGER} UnitGAMasterRecord,
+  {$ELSE} UElecDataRecord,
+  {$ENDIF}
+  CommonData, VarRecUtils;
 
 type
   TForm2 = class(TForm)

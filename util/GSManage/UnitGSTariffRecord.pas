@@ -68,7 +68,11 @@ var
 
 implementation
 
-uses SysUtils, mORMotSQLite3, Forms, VarRecUtils, UnitVariantJsonUtil, UnitFolderUtil;
+uses SysUtils, mORMotSQLite3, Forms, VarRecUtils,
+  {$IFDEF GAMANAGER} UnitGAVarJsonUtil,
+  {$ELSE} UnitVariantJsonUtil,
+  {$ENDIF}
+  UnitFolderUtil;
 
 procedure InitClient4GSTariff(AExeName: string);
 var

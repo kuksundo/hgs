@@ -5,8 +5,13 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, NxScrollControl, NxCustomGridControl,
-  NxCustomGrid, NxGrid, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls, UElecDataRecord,
+  NxCustomGrid, NxGrid, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls,
   NxColumns, NxColumnClasses, CommonData, AdvGroupBox, AdvOfficeButtons,
+  {$IFDEF GAMANAGER}
+  UnitGAMasterRecord,
+  {$ELSE}
+  UElecDataRecord,
+  {$ENDIF}
   AdvEdit, AdvEdBtn;
 
 type
@@ -159,6 +164,13 @@ end;
 procedure TSearchCustomerF.FormCreate(Sender: TObject);
 begin
   NextGrid1.DoubleBuffered := False;
+
+  if not Assigned(g_MasterDB) then
+  {$IFDEF GAMANAGER}
+    InitCompanyMasterClient(Application.ExeName);
+  {$ELSE}
+    InitMasterClient(Application.ExeName);
+  {$ENDIF}
 end;
 
 procedure TSearchCustomerF.NextGrid1CellDblClick(Sender: TObject; ACol,
@@ -168,8 +180,17 @@ begin
 end;
 
 procedure TSearchCustomerF.ProductTypesEditClickBtn(Sender: TObject);
+var
+  LBusinessAreas: TBusinessAreas;
 begin
-  ProductTypesEdit.Text := EditProductType(ProductTypesEdit.Text);
+  if BusinessAreaGrp.Checked[0] then
+    LBusinessAreas := [baShip];
+  if BusinessAreaGrp.Checked[1] then
+    LBusinessAreas := LBusinessAreas + [baEngine];
+  if BusinessAreaGrp.Checked[2] then
+    LBusinessAreas := LBusinessAreas + [baElectric];
+
+  ProductTypesEdit.Text := EditProductType(LBusinessAreas, ProductTypesEdit.Text);
 end;
 
 end.
