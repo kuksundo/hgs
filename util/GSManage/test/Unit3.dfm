@@ -13,6 +13,8 @@ object Form3: TForm3
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
@@ -22,6 +24,7 @@ object Form3: TForm3
     Height = 41
     Caption = 'Client1'
     TabOrder = 0
+    TabStop = False
     OnClick = Button1Click
   end
   object Button2: TButton
@@ -31,6 +34,7 @@ object Form3: TForm3
     Height = 41
     Caption = 'Client2'
     TabOrder = 1
+    TabStop = False
     OnClick = Button2Click
   end
   object Button3: TButton
@@ -40,6 +44,7 @@ object Form3: TForm3
     Height = 41
     Caption = 'VariantDynArray'
     TabOrder = 2
+    TabStop = False
     OnClick = Button3Click
   end
   object Button4: TButton
@@ -49,6 +54,7 @@ object Form3: TForm3
     Height = 41
     Caption = 'EncryptAES'
     TabOrder = 3
+    TabStop = False
     OnClick = Button4Click
   end
   object Button5: TButton
@@ -58,6 +64,7 @@ object Form3: TForm3
     Height = 41
     Caption = 'DecryptAES'
     TabOrder = 4
+    TabStop = False
     OnClick = Button5Click
   end
   object edtTextToEncrypt: TEdit
@@ -65,6 +72,7 @@ object Form3: TForm3
     Top = 152
     Width = 201
     Height = 21
+    Enabled = False
     ImeName = 'Microsoft IME 2010'
     TabOrder = 5
   end
@@ -73,6 +81,7 @@ object Form3: TForm3
     Top = 179
     Width = 201
     Height = 21
+    Enabled = False
     ImeName = 'Microsoft IME 2010'
     TabOrder = 6
   end
@@ -81,7 +90,48 @@ object Form3: TForm3
     Top = 206
     Width = 201
     Height = 21
+    Enabled = False
     ImeName = 'Microsoft IME 2010'
     TabOrder = 7
+  end
+  object Button6: TButton
+    Left = 222
+    Top = 8
+    Width = 97
+    Height = 41
+    Caption = 'Execute FuncName'
+    TabOrder = 8
+    TabStop = False
+    OnClick = Button6Click
+  end
+  object Button7: TButton
+    Left = 224
+    Top = 64
+    Width = 89
+    Height = 41
+    Caption = 'Vk -> char'
+    TabOrder = 9
+    TabStop = False
+    OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 319
+    Top = 64
+    Width = 89
+    Height = 41
+    Caption = 'char -> vk'
+    TabOrder = 10
+    TabStop = False
+    OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 230
+    Top = 149
+    Width = 89
+    Height = 41
+    Caption = 'Excel Test'
+    TabOrder = 11
+    TabStop = False
+    OnClick = Button9Click
   end
 end

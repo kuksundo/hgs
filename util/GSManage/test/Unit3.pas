@@ -18,6 +18,10 @@ type
     edtTextToEncrypt: TEdit;
     edtCrypted: TEdit;
     edtDecrypted: TEdit;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button2Click(Sender: TObject);
@@ -25,10 +29,17 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Button9Click(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure SayHi;
+    function GetSum(X,Y:Integer): Integer;
   end;
 
 const
@@ -40,6 +51,8 @@ var
 
 implementation
 
+uses RTTI, UnitExcelUtil;
+
 {$R *.dfm}
 
 const
@@ -49,6 +62,26 @@ const
   CMD_LIST = 'CommandList';
   CMD_SEND_MAIL_ENTRYID = 'Send Mail Entry Id';
   CMD_REQ_MAIL_VIEW = 'Request Mail View';
+
+procedure ExecMethod(AClassInstance: TObject; MethodName:string; const Args: array of TValue);
+var
+ R : TRttiContext;
+ T : TRttiType;
+ M : TRttiMethod;
+// C : TForm3;
+begin
+  T := R.GetType(TForm3);
+//  C := TForm3.Create(nil);
+//  try
+    for M in t.GetMethods do
+      if (m.Parent = t) and (m.Name = MethodName)then
+      begin
+          M.Invoke(AClassInstance,Args);
+      end;
+//  finally
+//    C.Free;
+//  end;
+end;
 
 procedure TForm3.Button1Click(Sender: TObject);
 var
@@ -188,6 +221,50 @@ begin
   end;
 end;
 
+procedure TForm3.Button6Click(Sender: TObject);
+begin
+  ExecMethod(Self,'SayHi',[]);
+  ExecMethod(Self,'GetSum',[10,20]);
+end;
+
+procedure TForm3.Button7Click(Sender: TObject);
+begin
+  Button7.Caption := Char(VK_DOWN);
+end;
+
+procedure TForm3.Button8Click(Sender: TObject);
+var
+  i: smallint;
+  b: byte;
+begin
+  i := VKKeyScanEx(Char(VK_DOWN), GetKeyboardLayout(0));
+  b := i;
+  Button8.Caption := IntToStr(Ord(Char(VK_DOWN)));
+end;
+
+procedure TForm3.Button9Click(Sender: TObject);
+var
+  LExcel: OleVariant;
+  LWorkBook: OleVariant;
+  LRange: OleVariant;
+  LWorksheet: OleVariant;
+begin
+  LExcel := GetActiveExcelOleObject(True);
+  LWorkBook := LExcel.Workbooks.Open('e:\INVOICE(¿µ¹®).xlsx');
+  LExcel.Visible := true;
+  LWorksheet := LExcel.ActiveSheet;
+
+//  LRange := LWorkSheet.Rows[27].Select;
+  LRange := LWorksheet.range['A27:M27'];
+  LRange.Copy;
+  LRange := LWorksheet.range['A28:M28'];
+  LRange.Insert;
+  LRange := LWorkSheet.Rows[28];
+  LRange.RowHeight := 25;
+//  LExcel.CutCopyMode := False;
+//  LRange.Paste;
+end;
+
 procedure TForm3.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FreeAndNil(g_IPCClient);
@@ -198,6 +275,32 @@ begin
   g_IPCClient := TIPCClient.Create;
   g_IPCClient.ServerName := IPC_SERVER_NAME_4_OUTLOOK;
   g_IPCClient.ConnectClient;
+end;
+
+procedure TForm3.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Button8.Caption := IntToStr(Ord('('));
+end;
+
+procedure TForm3.FormKeyPress(Sender: TObject; var Key: Char);
+var
+  i: smallint;
+  b: byte;
+begin
+  i := VKKeyScanEx(Key, GetKeyboardLayout(0));
+  b := i;
+  Button8.Caption := IntToStr(b);
+end;
+
+function TForm3.GetSum(X, Y: Integer): Integer;
+begin
+   ShowMessage(IntToStr(X + Y));
+end;
+
+procedure TForm3.SayHi;
+begin
+  ShowMessage('Hi');
 end;
 
 end.
