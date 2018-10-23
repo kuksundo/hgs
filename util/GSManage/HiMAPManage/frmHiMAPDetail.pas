@@ -155,7 +155,7 @@ var
 implementation
 
 uses WinApi.ShellApi, UnitMSBDData, UnitStringUtil, FrmFileSelect,
-  DragDropFile, UnitDragUtil;
+  DragDropFile, UnitDragUtil, CommonData, UnitElecServiceData;
 
 {$R *.dfm}
 
@@ -785,6 +785,9 @@ begin
     //Task Edit 화면에서 추가 버튼을 눌렀을 경우 AFileName = ''임
     if AFileName <> '' then
       LFileSelectF.JvFilenameEdit1.FileName := AFileName;
+
+//    GSDocType2Combo(LFileSelectF.ComboBox1);
+    g_GSDocType.SetType2Combo(LFileSelectF.ComboBox1);
 
     if LFileSelectF.ShowModal = mrOK then
     begin

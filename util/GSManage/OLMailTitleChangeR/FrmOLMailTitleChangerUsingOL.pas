@@ -225,13 +225,10 @@ procedure TOLMailTitleChangeF.FormCreate(Sender: TObject);
 begin
   (DataFormatAdapter2.DataFormat as TVirtualFileStreamDataFormat).OnGetStream := OnGetStream;
   FIPList := TStringList.Create;
-  FIPList.Add('10.22.41.188');
-  FIPList.Add('10.22.41.189');
-  FIPList.Add('10.22.41.65');
-  FIPList.Add('10.22.41.87');
-  FIPList.Add('10.22.41.160');
-  FIPList.Add('10.22.41.81');
-  FIPList.Add('10.0.2.15');
+  FIPList.Add('10.22.42.132');
+  FIPList.Add('10.22.42.131');
+  FIPList.Add('10.22.42.130');
+  FIPList.Add('10.22.42.128');
   FMyIP := GetLocalIP(0);
 
   if FIPList.IndexOf(FMyIP) = -1 then
@@ -317,6 +314,9 @@ begin
   begin
     LMail := GetMailItemFromMsgFile(LFileName);
     LMail.Subject := ASubject;
+//    LMail.AutoForwarded := True;
+//    if LMail.AlternateRecipientAllowed then
+//      ShowMessage(BoolToStr(LMail.AlternateRecipientAllowed));
     LMail.SaveAs(LFileName);
     FFileContent := StringFromFile(LFileName);
     LUtf8 := MakeRawByteStringToBin64(FFileContent);

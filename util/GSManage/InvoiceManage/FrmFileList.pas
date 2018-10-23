@@ -5,11 +5,17 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Winapi.Activex, WinApi.ShellAPI,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UnitDM, AdvGlowButton, Vcl.ExtCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, AdvGlowButton, Vcl.ExtCtrls,
   NxColumnClasses, NxColumns, NxScrollControl, NxCustomGridControl,
   NxCustomGrid, NxGrid, JvExControls, JvLabel, Vcl.ImgList, FrmFileSelect,
   DragDropInternet,DropSource,DragDropFile,DragDropFormats, DragDrop, DropTarget,
-  mORMot, SynCommons, SynSqlite3Static, CommonData, UElecDataRecord;
+  mORMot, SynCommons, SynSqlite3Static,
+  {$IFDEF GAMANAGER}
+  UnitGAMasterRecord,
+  {$ELSE}
+  UElecDataRecord,
+  {$ENDIF}
+  CommonData;
 
 type
   TFileListF = class(TForm)

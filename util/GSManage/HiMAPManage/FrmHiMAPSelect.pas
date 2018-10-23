@@ -64,7 +64,7 @@ type
     procedure SetVisible4Himap(AVisible: Boolean);
   end;
 
-  function CreateHiMAPSelectForm(AImoNo, AHullNo, AShipName: string): integer;
+function CreateHiMAPSelectForm(AImoNo, AHullNo, AShipName: string): integer;
 
 var
   HiMAPSelectF: THiMAPSelectF;
