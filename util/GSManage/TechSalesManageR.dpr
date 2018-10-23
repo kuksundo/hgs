@@ -60,7 +60,8 @@ const
 
 begin
   {$IfDef USE_REGCODE}
-    CheckRegistration('{3FA22544-6EA0-4CC6-9DCA-D16FFCBBF75D}', [crmHTTP]); //를 MD5로 변환한 값임
+    //UnitCryptUtil.EncryptString_Syn('{3FA22544-6EA0-4CC6-9DCA-D16FFCBBF75D}', True)
+    CheckRegistration('R7cln9Z8xXFT3feBTTlos+NfoWMvWqZ4FuTyRZEZdb7cmrswv40EETwKj9JUA58NYLUKFMRXR4O3bheJ83XHJg==', [crmHTTP]); //를 MD5로 변환한 값임
   {$EndIf USE_REGCODE}
 
   Application.Initialize;

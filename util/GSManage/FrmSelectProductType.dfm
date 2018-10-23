@@ -11,6 +11,7 @@ object SelectProductTypeF: TSelectProductTypeF
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -20,9 +21,6 @@ object SelectProductTypeF: TSelectProductTypeF
     Height = 41
     Align = alBottom
     TabOrder = 0
-    ExplicitLeft = 232
-    ExplicitTop = 152
-    ExplicitWidth = 185
     object BitBtn1: TBitBtn
       Left = 506
       Top = 1
@@ -50,9 +48,6 @@ object SelectProductTypeF: TSelectProductTypeF
       ModalResult = 1
       NumGlyphs = 2
       TabOrder = 0
-      ExplicitLeft = 368
-      ExplicitTop = 6
-      ExplicitHeight = 32
     end
     object BitBtn2: TBitBtn
       Left = 1
@@ -82,9 +77,6 @@ object SelectProductTypeF: TSelectProductTypeF
       ModalResult = 2
       NumGlyphs = 2
       TabOrder = 1
-      ExplicitLeft = 67
-      ExplicitTop = 6
-      ExplicitHeight = 32
     end
   end
   object ProductTypesGrp: TAdvOfficeCheckGroup
@@ -98,9 +90,5 @@ object SelectProductTypeF: TSelectProductTypeF
     TabOrder = 1
     Columns = 3
     Ellipsis = False
-    ExplicitLeft = 114
-    ExplicitTop = 65
-    ExplicitWidth = 189
-    ExplicitHeight = 35
   end
 end

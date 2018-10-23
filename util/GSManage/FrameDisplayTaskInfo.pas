@@ -11,9 +11,14 @@ uses
   CurvyControls, System.SyncObjs, DateUtils,
   OtlCommon, OtlComm, OtlTaskControl, OtlContainerObserver, otlTask, OtlParallel,
   mORMot, SynCommons, SynSqlite3Static, VarRecUtils,
-  CommonData, UElecDataRecord, TaskForm, FSMClass_Dic, FSMState, Vcl.Menus,
-  Vcl.ExtCtrls, UnitMakeReport, UnitTodoList, UnitTodoCollect, FrmInqManageConfig,
-  UnitIniConfigSetting, UnitUserDataRecord, SBPro, NLDSideBar, UnitElecServiceData;
+  CommonData, FSMClass_Dic, FSMState, Vcl.Menus,
+  Vcl.ExtCtrls, UnitTodoList, UnitTodoCollect, FrmInqManageConfig,
+  {$IFDEF GAMANAGER}
+  UnitGAMasterRecord, FrmGATaskEdit, UnitGAServiceData, UnitGAMakeReport,
+  {$ELSE}
+  UElecDataRecord, TaskForm, UnitElecServiceData, UnitMakeReport,
+  {$ENDIF}
+  UnitIniConfigSetting, UnitUserDataRecord, SBPro, NLDSideBar;
 
 type
   TDisplayTaskF = class(TFrame)
@@ -243,7 +248,10 @@ type
 implementation
 
 uses System.Rtti, UnitIPCModule, ClipBrd, System.RegularExpressions,
-  UnitGSFileRecord, UnitVariantJsonUtil, getIp, UnitBase64Util,
+  UnitGSFileRecord, getIp, UnitBase64Util,
+  {$IFDEF GAMANAGER} UnitGAVarJsonUtil,
+  {$ELSE} UnitVariantJsonUtil,
+  {$ENDIF}
   UnitHttpModule4InqManageServer, UnitStringUtil;
 
 {$R *.dfm}
@@ -1205,7 +1213,11 @@ var
 begin
   LTask:= CreateOrGetLoadTask(ATaskID);
   try
+  {$IFDEF GAMANAGER}
+    FrmGATaskEdit.DisplayTaskInfo2EditForm(LTask,nil,null);
+  {$ELSE}
     TaskForm.DisplayTaskInfo2EditForm(LTask,nil,null);
+  {$ENDIF}
   finally
     FreeAndNil(LTask);
   end;
@@ -1611,7 +1623,11 @@ var
 begin
   LTask:= CreateOrGetLoadTask(AIDList.fTaskId);
   try
+  {$IFDEF GAMANAGER}
+    FrmGATaskEdit.DisplayTaskInfo2EditForm(LTask,nil,null);
+  {$ELSE}
     TaskForm.DisplayTaskInfo2EditForm(LTask,nil,null);
+  {$ENDIF}
     LoadTaskVar2Grid(LTask, grid_Req, ARow);
   finally
     if Assigned(LTask) then

@@ -93,7 +93,6 @@ type
   TBusinessRegion = (brNone, brSouthEurope, brNorthEurope, brMiddleEast, brGreece,
     brSingapore, brAmerica, brEastSouthAsia, brEastNorthAsia, brFinal);
   TBusinessRegions = set of TBusinessRegion;
-  TEngineerKind = (ekNone, ekSuperIntendent, ekServiceEngineer, ekServiceEngineer_Elec, ekTechnician, ekFinal);
 
 const
   R_TierStep : array[Low(TTierStep)..High(TTierStep)] of string =
@@ -160,17 +159,6 @@ const
          (Description : '';           Value : baFinal)
          );
 
-  R_EngineerKind : array[ekNone..ekFinal] of record
-    Description : string;
-    Value       : TEngineerKind;
-  end = ((Description : '';                       Value : ekNone),
-         (Description : 'SuperIntendent';         Value : ekSuperIntendent),
-         (Description : 'Service Engineer';       Value : ekServiceEngineer),
-         (Description : 'Service Engineer(Elec.)';Value : ekServiceEngineer_Elec),
-         (Description : 'Technician';             Value : ekTechnician),
-         (Description : '';                       Value : ekFinal)
-         );
-
   R_CurrencyKind : array[ckNone..ckEUR] of record
     Description : string;
     Value       : TCurrencyKind;
@@ -217,6 +205,7 @@ const
   CMD_REQ_TASK_EAMIL_LIST = 'Request Task Email List';
   CMD_REQ_TASK_EAMIL_CONTENT = 'Request Task Email Content';
   CMD_EXECUTE_SAVE_TASK_DETAIL = 'Execute Save Task Detail';
+  CMD_REQ_VESSEL_LIST = 'Request Vessel List';
 
 //  SALES_DIRECTOR_EMAIL_ADDR = 'shjeon@hyundai-gs.com';//매출처리담당자
   SALES_DIRECTOR_EMAIL_ADDR = 'seonyunshin@hyundai-gs.com';//매출처리담당자
@@ -277,6 +266,7 @@ function IntToTCompanyType_Set(mask : integer) : TCompanyTypes;
 function IsInFromInt2TCompanyType(mask : integer; ss: TCompanyType): Boolean;
 function IsInFromCompanyTypes2TCompanyType(mask : TCompanyTypes; ss: TCompanyType): Boolean;
 function GetCompanyTypes2String(ACompanyTypes: TCompanyTypes): string;
+function GetCompanyTypesFromCommaString(ACommaStr:string): TCompanyTypes;
 function String2TCompanyType_Set(AStr:string): TCompanyTypes;
 function HVCodes2TCompanyType_Set(ASepecialConfig:string): TCompanyTypes;
 function GetFirstCompanyTypeIndex(ss: TCompanyTypes) : integer;
@@ -289,9 +279,6 @@ function GetBusinessAreas2String(ABusinessAreas: TBusinessAreas): string;
 function BusinessArea2String(ABusinessArea:TBusinessArea) : string;
 function String2BusinessArea(ABusinessArea:string): TBusinessArea;
 
-function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
-function String2EngineerKind(AEngineerKind:string): TEngineerKind;
-procedure EngineerKind2Combo(AComboBox:TComboBox);
 function CurrencyKind2String(ACurrencyKind:TCurrencyKind) : string;
 function String2CurrencyKind(ACurrencyKind:string): TCurrencyKind;
 procedure CurrencyKind2Combo(AComboBox:TComboBox);
@@ -614,6 +601,28 @@ begin
   Delete(Result, Length(Result), 1); //마지막 ';' 삭제
 end;
 
+function GetCompanyTypesFromCommaString(ACommaStr:string): TCompanyTypes;
+var
+  LStrList: TStringList;
+  LCompanyType: TCompanyType;
+  i: integer;
+begin
+  Result := [];
+  LStrList := TStringList.Create;
+  try
+    ACommaStr := StringReplace(ACommaStr, ';', ',',  [rfReplaceAll]);
+    LStrList.CommaText := ACommaStr;
+
+    for i := 0 to LStrList.Count - 1 do
+    begin
+      LCompanyType := String2CompanyType(LStrList.Strings[i]);
+      Result := Result + [LCompanyType];
+    end;
+  finally
+    LStrList.Free;
+  end;
+end;
+
 function String2TCompanyType_Set(AStr:string): TCompanyTypes;
 var
   LStr:string;
@@ -688,6 +697,7 @@ begin
   Result := [];
   LStrList := TStringList.Create;
   try
+    ACommaStr := StringReplace(ACommaStr, ';', ',',  [rfReplaceAll]);
     LStrList.CommaText := ACommaStr;
 
     for i := 0 to LStrList.Count - 1 do
@@ -803,36 +813,6 @@ end;
 //    AComboBox.Items.Add(R_GSInvoiceItemType[Li].Description);
 //  end;
 //end;
-
-function EngineerKind2String(AEngineerKind:TEngineerKind) : string;
-begin
-  if AEngineerKind <= High(TEngineerKind) then
-    Result := R_EngineerKind[AEngineerKind].Description;
-end;
-
-function String2EngineerKind(AEngineerKind:string): TEngineerKind;
-var Li: TEngineerKind;
-begin
-  for Li := ekNone to ekFinal do
-  begin
-    if R_EngineerKind[Li].Description = AEngineerKind then
-    begin
-      Result := R_EngineerKind[Li].Value;
-      exit;
-    end;
-  end;
-end;
-
-procedure EngineerKind2Combo(AComboBox:TComboBox);
-var Li: TEngineerKind;
-begin
-  AComboBox.Clear;
-
-  for Li := ekNone to Pred(ekFinal) do
-  begin
-    AComboBox.Items.Add(R_EngineerKind[Li].Description);
-  end;
-end;
 
 function CurrencyKind2String(ACurrencyKind:TCurrencyKind) : string;
 begin

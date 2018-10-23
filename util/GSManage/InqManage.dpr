@@ -47,7 +47,7 @@ uses
   UnitCryptUtil in '..\..\common\UnitCryptUtil.pas',
   UnitMustacheUtil in '..\..\common\UnitMustacheUtil.pas',
   UnitHttpModule4InqManageServer in 'UnitHttpModule4InqManageServer.pas',
-  UnitHttpModule in 'UnitHttpModule.pas',
+  UnitHttpModule in '..\..\common\UnitHttpModule.pas',
   fFrmEditTariffItem in 'TariffManage\fFrmEditTariffItem.pas' {EditTariffItemF},
   FrmDisplayTariff in 'TariffManage\FrmDisplayTariff.pas' {DisplayTariffF},
   FrmEditTariff in 'TariffManage\FrmEditTariff.pas' {TariffEditF},

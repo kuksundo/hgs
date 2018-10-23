@@ -49,7 +49,8 @@ const
 
 begin
   {$IFDEF USE_REGCODE}
-    CheckRegistration('{2D1970CA-90FA-44C0-8120-F847C648AA34}', [crmHTTP]);
+    //UnitCryptUtil.EncryptString_Syn('{2D1970CA-90FA-44C0-8120-F847C648AA34}, True')
+    CheckRegistration('/Xcpm0JBkEsZASQYyQZsSOXp0oyq63H+hJhNpfiOsYfDfcPJijpNT+EhsaDoHes/Ph9McHk7c1Hx7TeETWNG3g==', [crmHTTP]);
   {$ENDIF USE_REGCODE}
 
   Application.Initialize;

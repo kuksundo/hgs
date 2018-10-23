@@ -2,7 +2,7 @@ object EmailInfoF: TEmailInfoF
   Left = 0
   Top = 0
   Caption = 'Email Info Edit'
-  ClientHeight = 271
+  ClientHeight = 266
   ClientWidth = 477
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

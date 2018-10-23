@@ -514,17 +514,13 @@ object TaskEditF: TTaskEditF
     Top = 269
     Width = 607
     Height = 397
-    ActivePage = TabSheet1
+    ActivePage = TabSheet5
     Align = alBottom
     TabOrder = 9
     TabWidth = 120
     object TabSheet5: TTabSheet
       Caption = #51652#54665#54788#54889
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         599
         366)
@@ -822,10 +818,6 @@ object TaskEditF: TTaskEditF
     object TabSheet3: TTabSheet
       Caption = #52392#48512#54028#51068
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object JvLabel13: TJvLabel
         AlignWithMargins = True
         Left = 3
@@ -963,7 +955,7 @@ object TaskEditF: TTaskEditF
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Align = alClient
           Caption = ''
-          Options = [goGrid, goHeader, goSelectFullRow]
+          Options = [goGrid, goHeader, goMultiSelect, goSelectFullRow]
           PopupMenu = PopupMenu3
           SelectionColor = 12615680
           TabOrder = 1
@@ -1073,10 +1065,6 @@ object TaskEditF: TTaskEditF
     end
     object TabSheet1: TTabSheet
       Caption = #44256#44061#51221#48372
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         599
         366)
@@ -1507,10 +1495,6 @@ object TaskEditF: TTaskEditF
     object SubConTS: TTabSheet
       Caption = #54801#47141#49324
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 185
@@ -2063,10 +2047,6 @@ object TaskEditF: TTaskEditF
     object TabSheet4: TTabSheet
       Caption = #51088#51116#51221#48372
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         599
         366)
@@ -2371,10 +2351,6 @@ object TaskEditF: TTaskEditF
     object TabSheet6: TTabSheet
       Caption = #49688#53685#51221#48372
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object JvLabel56: TJvLabel
         AlignWithMargins = True
         Left = 16
@@ -3019,7 +2995,7 @@ object TaskEditF: TTaskEditF
     Left = 11
     Top = 8
     Bitmap = {
-      494C0101300098007C0410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010130009800840410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4903,7 +4879,7 @@ object TaskEditF: TTaskEditF
   end
   object DropEmptyTarget1: TDropEmptyTarget
     DragTypes = [dtCopy, dtLink]
-    OnDrop = DropEmptyTarget1Drop
+    OnDrop = DropEmptyTarget1Drop2
     Target = fileGrid
     Left = 12
     Top = 588
@@ -4925,7 +4901,7 @@ object TaskEditF: TTaskEditF
     Left = 48
     Top = 8
     Bitmap = {
-      494C010110001400500110001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010110001400580110001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

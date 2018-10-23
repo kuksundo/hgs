@@ -12,12 +12,13 @@ object SubCompanyEditF: TSubCompanyEditF
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 393
+    Top = 417
     Width = 937
     Height = 5
     Cursor = crVSplit
@@ -56,19 +57,18 @@ object SubCompanyEditF: TSubCompanyEditF
       Version = '1.0.0.1'
       Align = alRight
       Caption = #45803#44592
-      ModalResult = 2
+      ModalResult = 8
       TabOrder = 1
+      OnClick = btn_CloseClick
     end
   end
   object Panel2: TPanel
     Left = 0
-    Top = 398
+    Top = 422
     Width = 937
-    Height = 446
+    Height = 422
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 362
-    ExplicitHeight = 482
     object Panel4: TPanel
       Left = 1
       Top = 1
@@ -154,7 +154,7 @@ object SubCompanyEditF: TSubCompanyEditF
       Left = 1
       Top = 42
       Width = 935
-      Height = 403
+      Height = 379
       Margins.Left = 40
       Margins.Top = 0
       Touch.InteractiveGestures = [igPan, igPressAndTap]
@@ -174,7 +174,6 @@ object SubCompanyEditF: TSubCompanyEditF
       SelectionColor = 12615680
       TabOrder = 1
       TabStop = True
-      ExplicitHeight = 439
       object NxIncrementColumn1: TNxIncrementColumn
         Alignment = taCenter
         DefaultWidth = 32
@@ -406,7 +405,7 @@ object SubCompanyEditF: TSubCompanyEditF
     Left = 0
     Top = 49
     Width = 937
-    Height = 344
+    Height = 368
     Align = alTop
     TabOrder = 2
     object JvLabel15: TJvLabel
@@ -465,8 +464,8 @@ object SubCompanyEditF: TSubCompanyEditF
     end
     object JvLabel48: TJvLabel
       AlignWithMargins = True
-      Left = 266
-      Top = 37
+      Left = 538
+      Top = 283
       Width = 100
       Height = 25
       Alignment = taCenter
@@ -923,8 +922,8 @@ object SubCompanyEditF: TSubCompanyEditF
     end
     object JvLabel2: TJvLabel
       AlignWithMargins = True
-      Left = 8
-      Top = 69
+      Left = 266
+      Top = 40
       Width = 100
       Height = 25
       Alignment = taCenter
@@ -957,6 +956,33 @@ object SubCompanyEditF: TSubCompanyEditF
       Alignment = taCenter
       AutoSize = False
       Caption = #52712#44553#51228#54408
+      Color = 14671839
+      FrameColor = clGrayText
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #47569#51008' '#44256#46357
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      RoundedFrame = 3
+      Transparent = True
+      HotTrackFont.Charset = ANSI_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -13
+      HotTrackFont.Name = #47569#51008' '#44256#46357
+      HotTrackFont.Style = []
+    end
+    object JvLabel4: TJvLabel
+      AlignWithMargins = True
+      Left = 8
+      Top = 69
+      Width = 100
+      Height = 25
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #54924#49324#44396#48516
       Color = 14671839
       FrameColor = clGrayText
       Font.Charset = ANSI_CHARSET
@@ -1051,8 +1077,8 @@ object SubCompanyEditF: TSubCompanyEditF
       TabOrder = 2
     end
     object ServicePOEdit: TEdit
-      Left = 372
-      Top = 38
+      Left = 644
+      Top = 284
       Width = 186
       Height = 21
       Alignment = taCenter
@@ -1212,8 +1238,8 @@ object SubCompanyEditF: TSubCompanyEditF
       Visible = False
     end
     object BusinessAreaGrp: TAdvOfficeCheckGroup
-      Left = 114
-      Top = 65
+      Left = 372
+      Top = 32
       Width = 189
       Height = 35
       Version = '1.3.8.5'
@@ -1282,6 +1308,17 @@ object SubCompanyEditF: TSubCompanyEditF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
         B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
       OnClickBtn = ProductTypesEditClickBtn
+    end
+    object CompanyTypeGrp: TAdvOfficeCheckGroup
+      Left = 114
+      Top = 66
+      Width = 447
+      Height = 35
+      Version = '1.3.8.5'
+      ParentBackground = False
+      TabOrder = 22
+      Columns = 6
+      Ellipsis = False
     end
   end
 end

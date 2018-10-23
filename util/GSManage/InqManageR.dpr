@@ -27,7 +27,7 @@ uses
   UnitRegistryUtil in '..\..\common\UnitRegistryUtil.pas',
   UnitRegistrationClass in '..\..\common\UnitRegistrationClass.pas',
   UnitRegCodeConst in '..\..\common\UnitRegCodeConst.pas',
-  UnitHttpModule in 'UnitHttpModule.pas',
+  UnitHttpModule in '..\..\common\UnitHttpModule.pas',
   UnitRegCodeServerInterface in '..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   FrmRegistration in '..\..\common\FrmRegistration.pas' {RegistrationF},
   UnitMacroListClass in '..\MacroManagement\UnitMacroListClass.pas',
@@ -54,7 +54,8 @@ const
 
 begin
   {$IfDef USE_REGCODE}
-    CheckRegistration('{563EBFC1-922F-4605-95C9-7725946BA209}', [crmHTTP]);
+    //UnitCryptUtil.EncryptString_Syn('{563EBFC1-922F-4605-95C9-7725946BA209}, True')
+    CheckRegistration('8kztiufWMb+gO3xEugUv7qkoSvyGOTUamlvXC+xl1vCIMNN8/IrLlVmk/ESf9Y9Yo/7b3qj8nkgiCngVJ1ThzQ==', [crmHTTP]);
   {$EndIf USE_REGCODE}
 
   Application.Initialize;
