@@ -1430,13 +1430,13 @@ begin
 //    else
 //      LWhere := LWhere + 'CompanyType <> ? ';
 
-//    if AElecProductDetailTypes <> [] then
-//    begin
-//      AddConstArray(ConstArray, [TElecProductDetailType_SetToInt(AElecProductDetailTypes)]);
-//      if LWhere <> '' then
-//        LWhere := LWhere + ' and ';
-//      LWhere := LWhere + 'ElecProductDetailTypes = ? ';
-//    end;
+    if AElecProductDetailTypes <> [] then
+    begin
+      AddConstArray(ConstArray, [TElecProductDetailType_SetToInt(AElecProductDetailTypes)]);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + 'ElecProductDetailTypes = ? ';
+    end;
 
     Result := TSQLMasterCustomer.CreateAndFillPrepare(g_MasterDB, Lwhere, ConstArray);
 
