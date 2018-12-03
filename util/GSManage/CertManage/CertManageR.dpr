@@ -55,7 +55,9 @@ uses
   UnitHttpModule4RegServer in '..\..\RegCodeManager\UnitHttpModule4RegServer.pas',
   UnitRegCodeServerInterface in '..\..\RegCodeManager\Common\UnitRegCodeServerInterface.pas',
   UnitFormUtil in '..\..\..\common\UnitFormUtil.pas',
-  UElecDataRecord in '..\UElecDataRecord.pas';
+  UElecDataRecord in '..\UElecDataRecord.pas',
+  UnitGSFileData in '..\UnitGSFileData.pas',
+  FrmGSFileList in '..\FrmGSFileList.pas';
 
 {$R *.res}
 

@@ -41,28 +41,102 @@ type
     JvLabel1: TJvLabel;
     VDRSerialNoEdit: TEdit;
     VDRConfig: TNxTextColumn;
+    Attachments: TNxButtonColumn;
+    Files: TNxTextColumn;
     procedure SearchButtonClick(Sender: TObject);
     procedure VDRListGridCellDblClick(Sender: TObject; ACol, ARow: Integer);
     procedure HullNoEditKeyPress(Sender: TObject; var Key: Char);
     procedure ShipNameEditKeyPress(Sender: TObject; var Key: Char);
     procedure ImoNoEditKeyPress(Sender: TObject; var Key: Char);
     procedure VDRSerialNoEditKeyPress(Sender: TObject; var Key: Char);
+    procedure AttachmentsButtonClick(Sender: TObject);
   private
     procedure ExecuteSearch(Key: Char);
+    procedure ShowFileListForm;
   public
     procedure GetVDRListFromVariant2Grid(ADoc: Variant);
     procedure GetVDRSearchParam2Rec(var AVDRSearchParamRec: TVDRSearchParamRec);
     procedure GetVDRList2Grid;
   end;
 
+function CreateSearchVDRFrom(AVDRSerialNo, AImoNo, AHullNo, AShipName: string): TVDRSearchParamRec;
+
 var
   SearchVDRF: TSearchVDRF;
 
 implementation
 
-uses CommonData, UnitHGSVDRData, UnitFolderUtil, SynCommons;
+uses CommonData, UnitHGSVDRData, UnitFolderUtil, SynCommons,
+  UnitVariantJsonUtil, FrmGSFileList, UnitGSFileData;
 
 {$R *.dfm}
+
+function CreateSearchVDRFrom(AVDRSerialNo, AImoNo, AHullNo, AShipName: string): TVDRSearchParamRec;
+var
+  LSearchVDRF: TSearchVDRF;
+begin
+  LSearchVDRF := TSearchVDRF.Create(nil);
+  try
+    LSearchVDRF.VDRSerialNoEdit.Text := AVDRSerialNo;
+
+    if AImoNo <> '' then
+      LSearchVDRF.ImoNoEdit.Text := AImoNo
+    else
+    if AHullNo <> '' then
+      LSearchVDRF.HullNoEdit.Text := AHullNo
+    else
+    if AShipName <> '' then
+      LSearchVDRF.ShipNameEdit.Text := AShipName;
+
+    if (LSearchVDRF.ImoNoEdit.Text <> '') or (AHullNo <> '')
+                                          or (AShipName <> '') then
+      LSearchVDRF.SearchButtonClick(nil);
+
+    if LSearchVDRF.ShowModal = mrOK then
+    begin
+      if LSearchVDRF.VDRListGrid.SelectedRow <> -1 then
+      begin
+        Result := Default(TVDRSearchParamRec);
+        Result.fVDRSerialNo := LSearchVDRF.VDRListGrid.CellsByName['VDRSerialNo',LSearchVDRF.VDRListGrid.SelectedRow];
+        Result.fVDRType := LSearchVDRF.VDRListGrid.CellsByName['VDRType',LSearchVDRF.VDRListGrid.SelectedRow];
+        Result.fVDRConfig := LSearchVDRF.VDRListGrid.CellsByName['VDRConfig',LSearchVDRF.VDRListGrid.SelectedRow];
+
+        if AHullNo = '' then
+          Result.fHullNo := LSearchVDRF.VDRListGrid.CellsByName['HullNo',LSearchVDRF.VDRListGrid.SelectedRow];
+
+        if AShipName = '' then
+          Result.fShipName := LSearchVDRF.VDRListGrid.CellsByName['ShipName',LSearchVDRF.VDRListGrid.SelectedRow];
+
+        if AImoNo = '' then
+          Result.fIMONo := LSearchVDRF.VDRListGrid.CellsByName['ImoNo',LSearchVDRF.VDRListGrid.SelectedRow];
+      end;
+    end;
+  finally
+    LSearchVDRF.Free;
+//    DisplayEditPosition;
+  end;
+end;
+
+procedure TSearchVDRF.AttachmentsButtonClick(Sender: TObject);
+var
+  LGSFileRecsJson, LImoNo:string;
+  LFileCount: integer;
+begin
+  if VDRListGrid.SelectedRow <> -1 then
+  begin
+    LGSFileRecsJson := VDRListGrid.CellsByName['Files', VDRListGrid.SelectedRow];
+    LImoNo := VDRListGrid.CellsByName['IMONo', VDRListGrid.SelectedRow];
+
+    LFileCount := CreateGSFileListFormFromJSON(LGSFileRecsJson);
+
+    if LFileCount <> -1 then
+    begin//LGSFileRecsJson에 변경된 file list가 [{},{}] 형식으로 반환 됨
+      VDRListGrid.CellsByName['Files', VDRListGrid.SelectedRow] := LGSFileRecsJson;
+      TNxButtonColumn(VDRListGrid.ColumnByName['Attachments']).Editor.Text := IntToStr(LFileCount);
+      UpdateHGSVDRAttachments(LImoNo, LGSFileRecsJson);
+    end;
+  end;
+end;
 
 procedure TSearchVDRF.ExecuteSearch(Key: Char);
 begin
@@ -79,8 +153,8 @@ var
 begin
   if not Assigned(g_HGSVDRDB) then
   begin
-    LStr := GetSubFolderPath(ExtractFilePath(Application.ExeName), 'db');
-    InitHGSVDRClient(LStr+'VDRList.sqlite');
+//    LStr := GetSubFolderPath(ExtractFilePath(Application.ExeName), 'db');
+    InitHGSVDRClient('HGSVDRList.sqlite');
   end;
 
   VDRListGrid.BeginUpdate;
@@ -88,17 +162,23 @@ begin
     VDRListGrid.ClearRows;
     GetVDRSearchParam2Rec(LVDRSearchParamRec);
     LSQLHGSVDRRecord := GetHGSVDRRecordFromSearchRec(LVDRSearchParamRec);
-
-    if LSQLHGSVDRRecord.IsUpdate then
-    begin
-      LDoc := GetVariantFromHGSVDRRecord(LSQLHGSVDRRecord);
-      GetVDRListFromVariant2Grid(LDoc);
-
-      while LSQLHGSVDRRecord.FillOne do
+    try
+      if LSQLHGSVDRRecord.IsUpdate then
       begin
-        LDoc := GetVariantFromHGSVDRRecord(LSQLHGSVDRRecord);
-        GetVDRListFromVariant2Grid(LDoc);
-      end;//while
+  //      LDoc := GetVariantFromHGSVDRRecord(LSQLHGSVDRRecord);
+  //      GetVDRListFromVariant2Grid(LDoc);
+        LSQLHGSVDRRecord.FillRewind;
+
+        while LSQLHGSVDRRecord.FillOne do
+        begin
+          LDoc := GetVariantFromHGSVDRRecord(LSQLHGSVDRRecord);
+          LDoc.Attachments := MakeGSFileRecs2JSON(LSQLHGSVDRRecord.Attachments);
+          LDoc.FileCount := High(LSQLHGSVDRRecord.Attachments) + 1;
+          GetVDRListFromVariant2Grid(LDoc);
+        end;//while
+      end;
+    finally
+      LSQLHGSVDRRecord.Free;
     end;
   finally
     VDRListGrid.EndUpdate;
@@ -123,6 +203,8 @@ begin
   VDRListGrid.CellsByName['VDRType', LRow] := ADoc.VDRType;
   VDRListGrid.CellsByName['VCSType', LRow] := ADoc.VCSType;
   VDRListGrid.CellsByName['CapsuleType', LRow] := ADoc.CapsuleType;
+  VDRListGrid.CellsByName['Attachments', LRow] := ADoc.FileCount;
+  VDRListGrid.CellsByName['Files', LRow] := ADoc.Attachments;
 
   VDRListGrid.CellsByName['Remark', LRow] := ADoc.Remark;
   VDRListGrid.CellsByName['VDRConfig', LRow] := ADoc.VDRConfig;
@@ -158,6 +240,10 @@ end;
 procedure TSearchVDRF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
+end;
+
+procedure TSearchVDRF.ShowFileListForm;
+begin
 end;
 
 procedure TSearchVDRF.VDRListGridCellDblClick(Sender: TObject; ACol,

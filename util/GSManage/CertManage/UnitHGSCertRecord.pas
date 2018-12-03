@@ -412,6 +412,14 @@ begin
       LWhere := LWhere + 'ShipName LIKE ? ';
     end;
 
+    if ACertSearchParamRec.fHullNo <> '' then
+    begin
+      AddConstArray(ConstArray, ['%'+ACertSearchParamRec.fHullNo+'%']);
+      if LWhere <> '' then
+        LWhere := LWhere + ' and ';
+      LWhere := LWhere + 'HullNo LIKE ? ';
+    end;
+
     if ACertSearchParamRec.fIMONo <> '' then
     begin
       AddConstArray(ConstArray, ['%'+ACertSearchParamRec.fIMONo+'%']);

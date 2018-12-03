@@ -3,7 +3,7 @@ object CertManageF: TCertManageF
   Top = 0
   Caption = 'Cert ManageR'
   ClientHeight = 790
-  ClientWidth = 1223
+  ClientWidth = 1559
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object CertManageF: TCertManageF
   object Splitter1: TSplitter
     Left = 0
     Top = 111
-    Width = 1223
+    Width = 1559
     Height = 6
     Cursor = crVSplit
     Align = alTop
@@ -31,7 +31,7 @@ object CertManageF: TCertManageF
     AlignWithMargins = True
     Left = 0
     Top = 0
-    Width = 1223
+    Width = 1559
     Height = 111
     Margins.Left = 0
     Margins.Top = 0
@@ -40,232 +40,13 @@ object CertManageF: TCertManageF
     Align = alTop
     Rounding = 4
     TabOrder = 0
-    object JvLabel5: TJvLabel
-      AlignWithMargins = True
-      Left = 358
-      Top = 13
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Company Name'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel6: TJvLabel
-      AlignWithMargins = True
-      Left = 358
-      Top = 45
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Trained Subject'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel7: TJvLabel
-      AlignWithMargins = True
-      Left = 650
-      Top = 13
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Trainee Name'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel3: TJvLabel
-      AlignWithMargins = True
-      Left = 650
-      Top = 44
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Trained Course'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel1: TJvLabel
-      AlignWithMargins = True
-      Left = 650
-      Top = 77
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Product Type'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel4: TJvLabel
-      AlignWithMargins = True
-      Left = 358
-      Top = 76
-      Width = 110
-      Height = 25
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Cert No.'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object JvLabel2: TJvLabel
-      AlignWithMargins = True
-      Left = 8
-      Top = 14
-      Width = 80
-      Height = 85
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Period'
-      Color = 14671839
-      FrameColor = clGrayText
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = [fsBold]
-      Layout = tlCenter
-      ParentColor = False
-      ParentFont = False
-      RoundedFrame = 3
-      Transparent = True
-      HotTrackFont.Charset = ANSI_CHARSET
-      HotTrackFont.Color = clWindowText
-      HotTrackFont.Height = -13
-      HotTrackFont.Name = #47569#51008' '#44256#46357
-      HotTrackFont.Style = []
-    end
-    object TraineeNameEdit: TEdit
-      Left = 763
-      Top = 13
-      Width = 170
-      Height = 21
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 0
-      OnKeyPress = TraineeNameEditKeyPress
-    end
-    object CompanyNameEdit: TEdit
-      Left = 470
-      Top = 13
-      Width = 170
-      Height = 21
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 1
-      OnKeyPress = CompanyNameEditKeyPress
-    end
-    object SubjectEdit: TEdit
-      Left = 470
-      Top = 45
-      Width = 170
-      Height = 21
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 2
-      OnKeyPress = SubjectEditKeyPress
-    end
     object Panel1: TPanel
-      Left = 1018
+      Left = 1354
       Top = 0
       Width = 205
       Height = 111
       Align = alRight
-      TabOrder = 3
+      TabOrder = 0
       object btn_Search: TAeroButton
         AlignWithMargins = True
         Left = 3
@@ -313,42 +94,14 @@ object CertManageF: TCertManageF
         OnClick = AeroButton1Click
       end
     end
-    object CourseEdit: TEdit
-      Left = 763
-      Top = 45
-      Width = 170
-      Height = 21
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 4
-      OnKeyPress = CourseEditKeyPress
-    end
-    object ProdTypeCB: TComboBox
-      Left = 763
-      Top = 78
-      Width = 170
-      Height = 21
-      Style = csDropDownList
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 5
-    end
-    object CertNoEdit: TEdit
-      Left = 470
-      Top = 78
-      Width = 170
-      Height = 21
-      CharCase = ecUpperCase
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 6
-      OnKeyPress = CertNoEditKeyPress
-    end
     object GroupBox1: TGroupBox
-      Left = 936
-      Top = 11
-      Width = 79
-      Height = 84
+      Left = 1272
+      Top = 0
+      Width = 82
+      Height = 111
+      Align = alRight
       Caption = 'Cert Type'
-      TabOrder = 7
+      TabOrder = 1
       object EducationCheck: TCheckBox
         Left = 3
         Top = 19
@@ -380,11 +133,731 @@ object CertManageF: TCertManageF
         TabOrder = 2
       end
     end
+    object Panel3: TPanel
+      Left = 0
+      Top = 0
+      Width = 352
+      Height = 111
+      Align = alLeft
+      TabOrder = 2
+      object JvLabel2: TJvLabel
+        AlignWithMargins = True
+        Left = 4
+        Top = 4
+        Width = 80
+        Height = 103
+        Align = alLeft
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Period'
+        Color = 14671839
+        FrameColor = clGrayText
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = #47569#51008' '#44256#46357
+        Font.Style = [fsBold]
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
+        RoundedFrame = 3
+        Transparent = True
+        HotTrackFont.Charset = ANSI_CHARSET
+        HotTrackFont.Color = clWindowText
+        HotTrackFont.Height = -13
+        HotTrackFont.Name = #47569#51008' '#44256#46357
+        HotTrackFont.Style = []
+        ExplicitLeft = -6
+        ExplicitTop = 8
+        ExplicitHeight = 92
+      end
+      object PeriodPanel: TCurvyPanel
+        AlignWithMargins = True
+        Left = 87
+        Top = 4
+        Width = 261
+        Height = 103
+        Margins.Left = 0
+        Align = alLeft
+        Rounding = 4
+        TabOrder = 0
+        object Label4: TLabel
+          Left = 124
+          Top = 60
+          Width = 8
+          Height = 13
+          Caption = '~'
+        end
+        object rg_period: TAdvOfficeRadioGroup
+          AlignWithMargins = True
+          Left = 3
+          Top = 26
+          Width = 255
+          Height = 35
+          BorderStyle = bsNone
+          Version = '1.3.8.5'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          OnClick = rg_periodClick
+          Columns = 4
+          ItemIndex = 3
+          Items.Strings = (
+            '1Year'
+            '2Year'
+            '5Year'
+            'Select')
+          ButtonVertAlign = tlCenter
+          Ellipsis = False
+        end
+        object dt_begin: TDateTimePicker
+          Left = 5
+          Top = 57
+          Width = 113
+          Height = 25
+          Date = 41527.710435775480000000
+          Time = 41527.710435775480000000
+          Enabled = False
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 1
+        end
+        object dt_end: TDateTimePicker
+          Left = 136
+          Top = 56
+          Width = 113
+          Height = 25
+          Date = 41527.710435775480000000
+          Time = 41527.710435775480000000
+          Enabled = False
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 2
+        end
+        object ComboBox1: TComboBox
+          Left = 3
+          Top = 5
+          Width = 255
+          Height = 25
+          Style = csDropDownList
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = []
+          ImeName = 'Microsoft IME 2010'
+          ParentFont = False
+          TabOrder = 3
+        end
+      end
+    end
+    object Panel4: TPanel
+      Left = 352
+      Top = 0
+      Width = 920
+      Height = 111
+      Align = alClient
+      TabOrder = 3
+      object Panel2: TPanel
+        Left = 1
+        Top = 1
+        Width = 918
+        Height = 38
+        Align = alTop
+        TabOrder = 0
+        object JvLabel1: TJvLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 8
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Product Type'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel5: TJvLabel
+          AlignWithMargins = True
+          Left = 295
+          Top = 8
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Company Name'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel4: TJvLabel
+          AlignWithMargins = True
+          Left = 604
+          Top = 8
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Cert No.'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object ProdTypeCB: TComboBox
+          Left = 119
+          Top = 11
+          Width = 170
+          Height = 21
+          Style = csDropDownList
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 0
+        end
+        object CertNoEdit: TEdit
+          Left = 715
+          Top = 10
+          Width = 198
+          Height = 21
+          CharCase = ecUpperCase
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 1
+          OnKeyPress = CertNoEditKeyPress
+        end
+        object CompanyNameEdit: TAdvEditBtn
+          Tag = 3
+          Left = 411
+          Top = 9
+          Width = 190
+          Height = 24
+          EmptyTextStyle = []
+          Flat = False
+          LabelFont.Charset = DEFAULT_CHARSET
+          LabelFont.Color = clWindowText
+          LabelFont.Height = -11
+          LabelFont.Name = 'Tahoma'
+          LabelFont.Style = []
+          Lookup.Font.Charset = DEFAULT_CHARSET
+          Lookup.Font.Color = clWindowText
+          Lookup.Font.Height = -11
+          Lookup.Font.Name = 'Arial'
+          Lookup.Font.Style = []
+          Lookup.Separator = ';'
+          Color = clWindow
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ImeName = 'Microsoft IME 2010'
+          ParentFont = False
+          ReadOnly = False
+          TabOrder = 2
+          Text = ''
+          Visible = True
+          Version = '1.3.5.0'
+          ButtonStyle = bsButton
+          ButtonWidth = 20
+          Etched = False
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FF4D74AB234179C5ABA7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFF4173AF008EEC009AF41F4B80FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFF2F6EB22BA7
+            F516C0FF00A0F3568BC3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFEFFFF2974BB68C4F86BD4FF279CE66696C8FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3D8FD5A4E3FEB5EEFF4CAA
+            E7669DD2FFFFFFFFFFFFFFFFFFFFFFFFFEFEFEA188898A6A6A93736E866567B0
+            9595BAA8B1359EE8BDF5FF77C4EF63A1DAFFFFFFFFFFFFFFFFFFFFFFFFD7CDCD
+            7E5857DFD3CBFFFFF7FFFFE7FFFEDBD6BB9E90584D817B8E1794E46BB5E9FFFF
+            FFFFFFFFFFFFFFFFFFFFEDE9E9886565FFFFFFFFFFFFFDF8E8FAF2DCF8EDCFFF
+            F1CFF6DEBA9F5945C0C7D5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA38889F6EFEA
+            FFFFFFFEFBF5FBF7E8F9F4DAF5EBCCE6CEACF3DAB8E2BD99AB8B8EFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFF937674FFFFFFFDFBF1FCF8EEFAF3E1FCF5E3F7F0D7F0
+            DFC1E7C9A9F0D1ABA87E75F8F6F6FFFFFFFFFFFFFFFFFFFFFFFF997D7AFFFFFC
+            F9F2E1FAF3DEFAF7E5FAF1DCF1DFC0EDD9BAECD8B9EDCAA5AF8679EDE8E9FFFF
+            FFFFFFFFFFFFFFFFFFFF9C807BFFFFEBF9EED5FAF1D7F9F2DAF2E3C6FEFBF9FF
+            FFF0EFDFC0E9C69EB0857BF5F2F3FFFFFFFFFFFFFFFFFFFFFFFFAF9596F7EAC8
+            F9EBCCEFDCBEF4E4C7F0E1C5FDFCECFAF5DDEFDCBCDFB087B59A9AFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFDED4D7BA998CFDECC4EDD4B0E5CAA8EFDBBFF2E3C4F2
+            DEBCEABF93BB8E7DE7DFE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCEBFC5
+            BE9A8DE6C7A5EFCBA3ECC8A2E8BE94DCAA86BE9585DFD6D7FFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9E4E6C9B3B4B99C93C3A097BF9F96CC
+            B9B7F1EEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          OnClickBtn = CompanyNameEditClickBtn
+        end
+      end
+      object EducationPanel: TPanel
+        Left = 1
+        Top = 39
+        Width = 918
+        Height = 33
+        Align = alTop
+        TabOrder = 1
+        object JvLabel6: TJvLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Trained Subject'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel3: TJvLabel
+          AlignWithMargins = True
+          Left = 295
+          Top = 6
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Trained Course'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel7: TJvLabel
+          AlignWithMargins = True
+          Left = 604
+          Top = 6
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Trainee Name'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object TraineeNameEdit: TEdit
+          Left = 715
+          Top = 8
+          Width = 198
+          Height = 21
+          CharCase = ecUpperCase
+          ImeName = 'Microsoft IME 2010'
+          TabOrder = 0
+          OnKeyPress = TraineeNameEditKeyPress
+        end
+        object SubjectEdit: TNxButtonEdit
+          Tag = 7
+          Left = 119
+          Top = 4
+          Width = 170
+          Height = 24
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnButtonDown = SubjectEditButtonDown
+          ButtonCaption = '<<'
+          ButtonGlyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000000000000000000000000000000000003F3C398C8482
+            6562602D2B292C2829312D2D383635FFFFFFFFFFFF3835358A84813533312120
+            1F2221212C2829302E2E272323BAB7B075716C1310101110101A1A183C3835FF
+            FFFFFFFFFF474444EBE6E4332F2E110F0F1716152F2D2B333131504B48CFC8CA
+            BABAB556504E514B494B4645494443FFFFFFFFFFFF6B675FBEBCBAA5A09E514D
+            494C4746494643312E2C76716FCCCCC8EFEDED8E88837F7B776F69664E4B46FF
+            FFFFFFFFFF716D66AFAAA6F5F5F3857F7B736D6B615C5946424183807EBAB5B2
+            E8E8E686827E6C68646863614B4646FFFFFFFFFFFF64635EABA6A0E0E0DE746D
+            6B67625D625D5B5E5D5DB3B2AFABA5A0F9FBFB9E9A98746F6C716C69575352FF
+            FFFFFFFFFF625F5CADA8A3F5F5F5807B78736D69635D5B9E9D9DB5B3B3888280
+            F9F7F7B5ADAB716C69716C685A56558B8887AFAEAC5D5B58A6A29DF3F3F3827E
+            79736F6B514C4A9291918481803935353834322F2B2A2521213D3A386F69685B
+            56552A28276F68684D47441515140B090A0B0A0B0C0B0C3C3C3CBCBABA8B8682
+            EBE8E8F1F1F3E0DAD77C7775645F61645D5C2927266F6966575151EFEDEBF9F9
+            F5D7D3CFE9E2DA969494D2D0CF736F69D7D7D5DAD5D7C5C1BE716C6B5F5B595F
+            58572826256B6663524F4DE6E6E4CECCCCBAB5B4A59E9BB2B2B1DFDEDE645D5B
+            D5D1CFE9EBEDE2E2DE7B777766615F6B6362262323595451494542FDFDFBEBED
+            EDE0E0DC97918ECCCCCCFFFFFF817D7AE8E2E0C3C3C07F787555514F59565440
+            3D3B332F2FB7AFAB7F7B77A39D9D8C898697918F53504FFFFFFFFFFFFFC3C1C1
+            A09B9B5B5755AAA6A37873703D3938FFFFFFFFFFFF9D9A98F5F5EB524E4D312E
+            2E52504E767474FFFFFFFFFFFFFFFFFFFFFFFF6966629B98975E59572E2B28FF
+            FFFFFFFFFF5651508C8B863C3838464444FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF6D6867FFFFFFF3EDEBA29D9AFFFFFFFFFFFFAAA5A5FFFFFFF1EBE66965
+            63FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6A6865A5A2A08B87845E5956FF
+            FFFFFFFFFF625E5C9C9997726E6E53514EFFFFFFFFFFFFFFFFFF}
+          ButtonWidth = 30
+          TransparentColor = clNone
+        end
+        object CourseEdit: TNxButtonEdit
+          Tag = 8
+          Left = 411
+          Top = 6
+          Width = 190
+          Height = 24
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnButtonClick = CourseEditButtonClick
+          ButtonCaption = '<<'
+          ButtonGlyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000000000000000000000000000000000003F3C398C8482
+            6562602D2B292C2829312D2D383635FFFFFFFFFFFF3835358A84813533312120
+            1F2221212C2829302E2E272323BAB7B075716C1310101110101A1A183C3835FF
+            FFFFFFFFFF474444EBE6E4332F2E110F0F1716152F2D2B333131504B48CFC8CA
+            BABAB556504E514B494B4645494443FFFFFFFFFFFF6B675FBEBCBAA5A09E514D
+            494C4746494643312E2C76716FCCCCC8EFEDED8E88837F7B776F69664E4B46FF
+            FFFFFFFFFF716D66AFAAA6F5F5F3857F7B736D6B615C5946424183807EBAB5B2
+            E8E8E686827E6C68646863614B4646FFFFFFFFFFFF64635EABA6A0E0E0DE746D
+            6B67625D625D5B5E5D5DB3B2AFABA5A0F9FBFB9E9A98746F6C716C69575352FF
+            FFFFFFFFFF625F5CADA8A3F5F5F5807B78736D69635D5B9E9D9DB5B3B3888280
+            F9F7F7B5ADAB716C69716C685A56558B8887AFAEAC5D5B58A6A29DF3F3F3827E
+            79736F6B514C4A9291918481803935353834322F2B2A2521213D3A386F69685B
+            56552A28276F68684D47441515140B090A0B0A0B0C0B0C3C3C3CBCBABA8B8682
+            EBE8E8F1F1F3E0DAD77C7775645F61645D5C2927266F6966575151EFEDEBF9F9
+            F5D7D3CFE9E2DA969494D2D0CF736F69D7D7D5DAD5D7C5C1BE716C6B5F5B595F
+            58572826256B6663524F4DE6E6E4CECCCCBAB5B4A59E9BB2B2B1DFDEDE645D5B
+            D5D1CFE9EBEDE2E2DE7B777766615F6B6362262323595451494542FDFDFBEBED
+            EDE0E0DC97918ECCCCCCFFFFFF817D7AE8E2E0C3C3C07F787555514F59565440
+            3D3B332F2FB7AFAB7F7B77A39D9D8C898697918F53504FFFFFFFFFFFFFC3C1C1
+            A09B9B5B5755AAA6A37873703D3938FFFFFFFFFFFF9D9A98F5F5EB524E4D312E
+            2E52504E767474FFFFFFFFFFFFFFFFFFFFFFFF6966629B98975E59572E2B28FF
+            FFFFFFFFFF5651508C8B863C3838464444FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF6D6867FFFFFFF3EDEBA29D9AFFFFFFFFFFFFAAA5A5FFFFFFF1EBE66965
+            63FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6A6865A5A2A08B87845E5956FF
+            FFFFFFFFFF625E5C9C9997726E6E53514EFFFFFFFFFFFFFFFFFF}
+          ButtonWidth = 30
+          TransparentColor = clNone
+        end
+      end
+      object Panel5: TPanel
+        Left = 1
+        Top = 72
+        Width = 918
+        Height = 38
+        Align = alClient
+        TabOrder = 2
+        object JvLabel23: TJvLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 6
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'IMO No.'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          Margin = 5
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel19: TJvLabel
+          AlignWithMargins = True
+          Left = 295
+          Top = 6
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Ship Name'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          Margin = 5
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object JvLabel21: TJvLabel
+          AlignWithMargins = True
+          Left = 604
+          Top = 7
+          Width = 110
+          Height = 25
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Hull No.'
+          Color = 14671839
+          FrameColor = clGrayText
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = #47569#51008' '#44256#46357
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          Margin = 5
+          ParentColor = False
+          ParentFont = False
+          RoundedFrame = 3
+          Transparent = True
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -13
+          HotTrackFont.Name = #47569#51008' '#44256#46357
+          HotTrackFont.Style = []
+        end
+        object IMONoEdit: TNxButtonEdit
+          Tag = 14
+          Left = 119
+          Top = 7
+          Width = 170
+          Height = 24
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          OnKeyPress = IMONoEditKeyPress
+          OnButtonClick = IMONoEditButtonClick
+          ButtonCaption = '<<'
+          ButtonGlyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000000000000000000000000000000000003F3C398C8482
+            6562602D2B292C2829312D2D383635FFFFFFFFFFFF3835358A84813533312120
+            1F2221212C2829302E2E272323BAB7B075716C1310101110101A1A183C3835FF
+            FFFFFFFFFF474444EBE6E4332F2E110F0F1716152F2D2B333131504B48CFC8CA
+            BABAB556504E514B494B4645494443FFFFFFFFFFFF6B675FBEBCBAA5A09E514D
+            494C4746494643312E2C76716FCCCCC8EFEDED8E88837F7B776F69664E4B46FF
+            FFFFFFFFFF716D66AFAAA6F5F5F3857F7B736D6B615C5946424183807EBAB5B2
+            E8E8E686827E6C68646863614B4646FFFFFFFFFFFF64635EABA6A0E0E0DE746D
+            6B67625D625D5B5E5D5DB3B2AFABA5A0F9FBFB9E9A98746F6C716C69575352FF
+            FFFFFFFFFF625F5CADA8A3F5F5F5807B78736D69635D5B9E9D9DB5B3B3888280
+            F9F7F7B5ADAB716C69716C685A56558B8887AFAEAC5D5B58A6A29DF3F3F3827E
+            79736F6B514C4A9291918481803935353834322F2B2A2521213D3A386F69685B
+            56552A28276F68684D47441515140B090A0B0A0B0C0B0C3C3C3CBCBABA8B8682
+            EBE8E8F1F1F3E0DAD77C7775645F61645D5C2927266F6966575151EFEDEBF9F9
+            F5D7D3CFE9E2DA969494D2D0CF736F69D7D7D5DAD5D7C5C1BE716C6B5F5B595F
+            58572826256B6663524F4DE6E6E4CECCCCBAB5B4A59E9BB2B2B1DFDEDE645D5B
+            D5D1CFE9EBEDE2E2DE7B777766615F6B6362262323595451494542FDFDFBEBED
+            EDE0E0DC97918ECCCCCCFFFFFF817D7AE8E2E0C3C3C07F787555514F59565440
+            3D3B332F2FB7AFAB7F7B77A39D9D8C898697918F53504FFFFFFFFFFFFFC3C1C1
+            A09B9B5B5755AAA6A37873703D3938FFFFFFFFFFFF9D9A98F5F5EB524E4D312E
+            2E52504E767474FFFFFFFFFFFFFFFFFFFFFFFF6966629B98975E59572E2B28FF
+            FFFFFFFFFF5651508C8B863C3838464444FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF6D6867FFFFFFF3EDEBA29D9AFFFFFFFFFFFFAAA5A5FFFFFFF1EBE66965
+            63FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6A6865A5A2A08B87845E5956FF
+            FFFFFFFFFF625E5C9C9997726E6E53514EFFFFFFFFFFFFFFFFFF}
+          ButtonWidth = 30
+          TransparentColor = clNone
+        end
+        object ShipNameEdit: TNxButtonEdit
+          Tag = 15
+          Left = 411
+          Top = 7
+          Width = 190
+          Height = 24
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnKeyPress = ShipNameEditKeyPress
+          OnButtonClick = ShipNameEditButtonClick
+          ButtonCaption = '<<'
+          ButtonGlyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000000000000000000000000000000000003F3C398C8482
+            6562602D2B292C2829312D2D383635FFFFFFFFFFFF3835358A84813533312120
+            1F2221212C2829302E2E272323BAB7B075716C1310101110101A1A183C3835FF
+            FFFFFFFFFF474444EBE6E4332F2E110F0F1716152F2D2B333131504B48CFC8CA
+            BABAB556504E514B494B4645494443FFFFFFFFFFFF6B675FBEBCBAA5A09E514D
+            494C4746494643312E2C76716FCCCCC8EFEDED8E88837F7B776F69664E4B46FF
+            FFFFFFFFFF716D66AFAAA6F5F5F3857F7B736D6B615C5946424183807EBAB5B2
+            E8E8E686827E6C68646863614B4646FFFFFFFFFFFF64635EABA6A0E0E0DE746D
+            6B67625D625D5B5E5D5DB3B2AFABA5A0F9FBFB9E9A98746F6C716C69575352FF
+            FFFFFFFFFF625F5CADA8A3F5F5F5807B78736D69635D5B9E9D9DB5B3B3888280
+            F9F7F7B5ADAB716C69716C685A56558B8887AFAEAC5D5B58A6A29DF3F3F3827E
+            79736F6B514C4A9291918481803935353834322F2B2A2521213D3A386F69685B
+            56552A28276F68684D47441515140B090A0B0A0B0C0B0C3C3C3CBCBABA8B8682
+            EBE8E8F1F1F3E0DAD77C7775645F61645D5C2927266F6966575151EFEDEBF9F9
+            F5D7D3CFE9E2DA969494D2D0CF736F69D7D7D5DAD5D7C5C1BE716C6B5F5B595F
+            58572826256B6663524F4DE6E6E4CECCCCBAB5B4A59E9BB2B2B1DFDEDE645D5B
+            D5D1CFE9EBEDE2E2DE7B777766615F6B6362262323595451494542FDFDFBEBED
+            EDE0E0DC97918ECCCCCCFFFFFF817D7AE8E2E0C3C3C07F787555514F59565440
+            3D3B332F2FB7AFAB7F7B77A39D9D8C898697918F53504FFFFFFFFFFFFFC3C1C1
+            A09B9B5B5755AAA6A37873703D3938FFFFFFFFFFFF9D9A98F5F5EB524E4D312E
+            2E52504E767474FFFFFFFFFFFFFFFFFFFFFFFF6966629B98975E59572E2B28FF
+            FFFFFFFFFF5651508C8B863C3838464444FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF6D6867FFFFFFF3EDEBA29D9AFFFFFFFFFFFFAAA5A5FFFFFFF1EBE66965
+            63FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6A6865A5A2A08B87845E5956FF
+            FFFFFFFFFF625E5C9C9997726E6E53514EFFFFFFFFFFFFFFFFFF}
+          ButtonWidth = 30
+          TransparentColor = clNone
+        end
+        object HullNoEdit: TNxButtonEdit
+          Tag = 16
+          Left = 715
+          Top = 7
+          Width = 198
+          Height = 24
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnKeyPress = HullNoEditKeyPress
+          OnButtonClick = HullNoEditButtonClick
+          ButtonCaption = '<<'
+          ButtonGlyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000000000000000000000000000000000003F3C398C8482
+            6562602D2B292C2829312D2D383635FFFFFFFFFFFF3835358A84813533312120
+            1F2221212C2829302E2E272323BAB7B075716C1310101110101A1A183C3835FF
+            FFFFFFFFFF474444EBE6E4332F2E110F0F1716152F2D2B333131504B48CFC8CA
+            BABAB556504E514B494B4645494443FFFFFFFFFFFF6B675FBEBCBAA5A09E514D
+            494C4746494643312E2C76716FCCCCC8EFEDED8E88837F7B776F69664E4B46FF
+            FFFFFFFFFF716D66AFAAA6F5F5F3857F7B736D6B615C5946424183807EBAB5B2
+            E8E8E686827E6C68646863614B4646FFFFFFFFFFFF64635EABA6A0E0E0DE746D
+            6B67625D625D5B5E5D5DB3B2AFABA5A0F9FBFB9E9A98746F6C716C69575352FF
+            FFFFFFFFFF625F5CADA8A3F5F5F5807B78736D69635D5B9E9D9DB5B3B3888280
+            F9F7F7B5ADAB716C69716C685A56558B8887AFAEAC5D5B58A6A29DF3F3F3827E
+            79736F6B514C4A9291918481803935353834322F2B2A2521213D3A386F69685B
+            56552A28276F68684D47441515140B090A0B0A0B0C0B0C3C3C3CBCBABA8B8682
+            EBE8E8F1F1F3E0DAD77C7775645F61645D5C2927266F6966575151EFEDEBF9F9
+            F5D7D3CFE9E2DA969494D2D0CF736F69D7D7D5DAD5D7C5C1BE716C6B5F5B595F
+            58572826256B6663524F4DE6E6E4CECCCCBAB5B4A59E9BB2B2B1DFDEDE645D5B
+            D5D1CFE9EBEDE2E2DE7B777766615F6B6362262323595451494542FDFDFBEBED
+            EDE0E0DC97918ECCCCCCFFFFFF817D7AE8E2E0C3C3C07F787555514F59565440
+            3D3B332F2FB7AFAB7F7B77A39D9D8C898697918F53504FFFFFFFFFFFFFC3C1C1
+            A09B9B5B5755AAA6A37873703D3938FFFFFFFFFFFF9D9A98F5F5EB524E4D312E
+            2E52504E767474FFFFFFFFFFFFFFFFFFFFFFFF6966629B98975E59572E2B28FF
+            FFFFFFFFFF5651508C8B863C3838464444FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF6D6867FFFFFFF3EDEBA29D9AFFFFFFFFFFFFAAA5A5FFFFFFF1EBE66965
+            63FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6A6865A5A2A08B87845E5956FF
+            FFFFFFFFFF625E5C9C9997726E6E53514EFFFFFFFFFFFFFFFFFF}
+          ButtonWidth = 30
+          TransparentColor = clNone
+        end
+      end
+    end
   end
   object TaskTab: TAdvOfficeTabSet
     Left = 0
     Top = 117
-    Width = 1223
+    Width = 1559
     Height = 27
     AdvOfficeTabs = <
       item
@@ -729,7 +1202,7 @@ object CertManageF: TCertManageF
   object StatusBarPro1: TStatusBarPro
     Left = 0
     Top = 770
-    Width = 1223
+    Width = 1559
     Height = 20
     Panels = <
       item
@@ -750,7 +1223,7 @@ object CertManageF: TCertManageF
   object CertListGrid: TNextGrid
     Left = 0
     Top = 144
-    Width = 1223
+    Width = 1559
     Height = 626
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
@@ -1370,87 +1843,6 @@ object CertManageF: TCertManageF
       SortType = stAlphabetic
     end
   end
-  object PeriodPanel: TCurvyPanel
-    AlignWithMargins = True
-    Left = 91
-    Top = 14
-    Width = 261
-    Height = 85
-    Margins.Left = 0
-    Rounding = 4
-    TabOrder = 4
-    object Label4: TLabel
-      Left = 124
-      Top = 60
-      Width = 8
-      Height = 13
-      Caption = '~'
-    end
-    object rg_period: TAdvOfficeRadioGroup
-      AlignWithMargins = True
-      Left = 3
-      Top = 26
-      Width = 255
-      Height = 35
-      BorderStyle = bsNone
-      Version = '1.3.8.5'
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = []
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 0
-      OnClick = rg_periodClick
-      Columns = 4
-      ItemIndex = 3
-      Items.Strings = (
-        '1Year'
-        '2Year'
-        '5Year'
-        'Select')
-      ButtonVertAlign = tlCenter
-      Ellipsis = False
-    end
-    object dt_begin: TDateTimePicker
-      Left = 5
-      Top = 57
-      Width = 113
-      Height = 25
-      Date = 41527.710435775480000000
-      Time = 41527.710435775480000000
-      Enabled = False
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 1
-    end
-    object dt_end: TDateTimePicker
-      Left = 136
-      Top = 56
-      Width = 113
-      Height = 25
-      Date = 41527.710435775480000000
-      Time = 41527.710435775480000000
-      Enabled = False
-      ImeName = 'Microsoft IME 2010'
-      TabOrder = 2
-    end
-    object ComboBox1: TComboBox
-      Left = 3
-      Top = 5
-      Width = 255
-      Height = 25
-      Style = csDropDownList
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = #47569#51008' '#44256#46357
-      Font.Style = []
-      ImeName = 'Microsoft IME 2010'
-      ParentFont = False
-      TabOrder = 3
-    end
-  end
   object imagelist24x24: TImageList
     ColorDepth = cd32Bit
     DrawingStyle = dsTransparent
@@ -1459,7 +1851,7 @@ object CertManageF: TCertManageF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000A80318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000B80318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -1769,7 +2161,7 @@ object CertManageF: TCertManageF
     Left = 96
     Top = 208
     Bitmap = {
-      494C010102005402B80310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402C80310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -1989,7 +2381,7 @@ object CertManageF: TCertManageF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010400C8000C0520002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010400C8001C0520002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

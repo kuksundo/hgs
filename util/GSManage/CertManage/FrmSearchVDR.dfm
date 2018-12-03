@@ -572,5 +572,30 @@ object SearchVDRF: TSearchVDRF
       Position = 16
       SortType = stAlphabetic
     end
+    object Attachments: TNxButtonColumn
+      Alignment = taCenter
+      Header.Caption = 'Attachments'
+      Header.Alignment = taCenter
+      Header.Font.Charset = DEFAULT_CHARSET
+      Header.Font.Color = clWindowText
+      Header.Font.Height = -11
+      Header.Font.Name = 'Tahoma'
+      Header.Font.Style = []
+      Options = [coCanClick, coCanInput, coCanSort, coEditing, coPublicUsing, coShowTextFitHint]
+      Position = 17
+      SortType = stAlphabetic
+      OnButtonClick = AttachmentsButtonClick
+    end
+    object Files: TNxTextColumn
+      Header.Caption = 'Files'
+      Header.Font.Charset = DEFAULT_CHARSET
+      Header.Font.Color = clWindowText
+      Header.Font.Height = -11
+      Header.Font.Name = 'Tahoma'
+      Header.Font.Style = []
+      Position = 18
+      SortType = stAlphabetic
+      Visible = False
+    end
   end
 end

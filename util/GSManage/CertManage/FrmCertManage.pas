@@ -10,24 +10,16 @@ uses
   AdvOfficeTabSet, Vcl.StdCtrls, AeroButtons, Vcl.ComCtrls, JvExControls,
   JvLabel, CurvyControls,
   UnitVesselData, UnitHGSCertRecord, UnitHGSCertData, AdvGroupBox,
-  AdvOfficeButtons;
+  AdvOfficeButtons, NxEdit, AdvEdit, AdvEdBtn;
 
 type
   TCertManageF = class(TForm)
     Splitter1: TSplitter;
     CurvyPanel1: TCurvyPanel;
-    JvLabel5: TJvLabel;
-    JvLabel6: TJvLabel;
-    JvLabel7: TJvLabel;
-    JvLabel3: TJvLabel;
-    TraineeNameEdit: TEdit;
-    CompanyNameEdit: TEdit;
-    SubjectEdit: TEdit;
     Panel1: TPanel;
     btn_Search: TAeroButton;
     btn_Close: TAeroButton;
     AeroButton1: TAeroButton;
-    CourseEdit: TEdit;
     TaskTab: TAdvOfficeTabSet;
     StatusBarPro1: TStatusBarPro;
     CertListGrid: TNextGrid;
@@ -58,17 +50,6 @@ type
     SplashScreen1: TAdvSmoothSplashScreen;
     Timer1: TTimer;
     JvSelectDirectory1: TJvSelectDirectory;
-    JvLabel1: TJvLabel;
-    ProdTypeCB: TComboBox;
-    JvLabel4: TJvLabel;
-    CertNoEdit: TEdit;
-    PeriodPanel: TCurvyPanel;
-    Label4: TLabel;
-    rg_period: TAdvOfficeRadioGroup;
-    dt_begin: TDateTimePicker;
-    dt_end: TDateTimePicker;
-    ComboBox1: TComboBox;
-    JvLabel2: TJvLabel;
     CertFileDBPath: TNxTextColumn;
     CertFileDBName: TNxTextColumn;
     UpdateDate: TNxTextColumn;
@@ -103,6 +84,36 @@ type
     OrderNo: TNxTextColumn;
     SalesAmount: TNxTextColumn;
     N4: TMenuItem;
+    Panel3: TPanel;
+    JvLabel2: TJvLabel;
+    PeriodPanel: TCurvyPanel;
+    Label4: TLabel;
+    rg_period: TAdvOfficeRadioGroup;
+    dt_begin: TDateTimePicker;
+    dt_end: TDateTimePicker;
+    ComboBox1: TComboBox;
+    Panel4: TPanel;
+    Panel2: TPanel;
+    JvLabel1: TJvLabel;
+    JvLabel5: TJvLabel;
+    JvLabel4: TJvLabel;
+    ProdTypeCB: TComboBox;
+    CertNoEdit: TEdit;
+    CompanyNameEdit: TAdvEditBtn;
+    EducationPanel: TPanel;
+    JvLabel6: TJvLabel;
+    JvLabel3: TJvLabel;
+    JvLabel7: TJvLabel;
+    TraineeNameEdit: TEdit;
+    SubjectEdit: TNxButtonEdit;
+    CourseEdit: TNxButtonEdit;
+    Panel5: TPanel;
+    JvLabel23: TJvLabel;
+    IMONoEdit: TNxButtonEdit;
+    JvLabel19: TJvLabel;
+    ShipNameEdit: TNxButtonEdit;
+    JvLabel21: TJvLabel;
+    HullNoEdit: TNxButtonEdit;
     procedure FormCreate(Sender: TObject);
     procedure btn_CloseClick(Sender: TObject);
     procedure btn_SearchClick(Sender: TObject);
@@ -124,6 +135,15 @@ type
     procedure CreateCertDocument2Click(Sender: TObject);
     procedure CreateAPTCert1Click(Sender: TObject);
     procedure CreateAPTApprovalCert1Click(Sender: TObject);
+    procedure CompanyNameEditClickBtn(Sender: TObject);
+    procedure SubjectEditButtonDown(Sender: TObject);
+    procedure IMONoEditButtonClick(Sender: TObject);
+    procedure ShipNameEditButtonClick(Sender: TObject);
+    procedure HullNoEditButtonClick(Sender: TObject);
+    procedure CourseEditButtonClick(Sender: TObject);
+    procedure IMONoEditKeyPress(Sender: TObject; var Key: Char);
+    procedure ShipNameEditKeyPress(Sender: TObject; var Key: Char);
+    procedure HullNoEditKeyPress(Sender: TObject; var Key: Char);
   private
     procedure ShowCertEditFormFromGrid(ARow: integer; AAttachPageView: Boolean=false);
     procedure GetCertList2Grid(AIsFromRemote: Boolean = False);
@@ -135,6 +155,7 @@ type
     procedure ExecuteSearch(Key: Char);
     procedure MakeCertXls(ARow: integer);
     procedure ShowCertNoFormat;
+    procedure ShowSearchVesselForm(Sender: TObject);
   public
     { Public declarations }
   end;
@@ -145,7 +166,8 @@ var
 implementation
 
 uses UnitEnumHelper, SynCommons, FrmCertEdit, UnitExcelUtil, UnitMakeXls,
-  FrmCertNoFormat, UnitHGSVDRRecord;
+  FrmCertNoFormat, UnitHGSVDRRecord, FrmSearchCustomer, CommonData,
+  FrmCourseManage, FrmSearchVessel;
 
 {$R *.dfm}
 
@@ -202,9 +224,43 @@ begin
   Close;
 end;
 
+procedure TCertManageF.CompanyNameEditClickBtn(Sender: TObject);
+var
+  LSearchCustomerF: TSearchCustomerF;
+begin
+  LSearchCustomerF := TSearchCustomerF.Create(nil);
+  try
+    with LSearchCustomerF do
+    begin
+      FCompanyType := [ctAgent];
+
+      if ShowModal = mrOk then
+      begin
+        if NextGrid1.SelectedRow <> -1 then
+        begin
+          Self.CompanyNameEdit.Text := NextGrid1.CellByName['CompanyName', NextGrid1.SelectedRow].AsString;
+        end;
+      end;
+    end;
+  finally
+    LSearchCustomerF.Free;
+  end;
+end;
+
 procedure TCertManageF.CompanyNameEditKeyPress(Sender: TObject; var Key: Char);
 begin
   ExecuteSearch(Key);
+end;
+
+procedure TCertManageF.CourseEditButtonClick(Sender: TObject);
+var
+  LSubject, LCourseName: string;
+begin
+  if CreateCourseManageForm(LSubject, LCourseName) = mrOK then
+  begin
+    SubjectEdit.Text := LSubject;
+    CourseEdit.Text := LCourseName;
+  end;
 end;
 
 procedure TCertManageF.CourseEditKeyPress(Sender: TObject; var Key: Char);
@@ -396,6 +452,9 @@ begin
   ACertSearchParamRec.fCompanyName := CompanyNameEdit.Text;
   ACertSearchParamRec.fTrainedSubject := SubjectEdit.Text;
   ACertSearchParamRec.fTrainedCourse := CourseEdit.Text;
+  ACertSearchParamRec.fIMONo := IMONoEdit.Text;
+  ACertSearchParamRec.fShipName := ShipNameEdit.Text;
+  ACertSearchParamRec.fHullNo := HullNoEdit.Text;
 
   if not(EducationCheck.Checked and APTServiceCheck.Checked and APTApprovalCheck.Checked) then
   begin
@@ -413,6 +472,26 @@ begin
     ACertSearchParamRec.fProductType := g_ShipProductType.ToType(0)
   else
     ACertSearchParamRec.fProductType := g_ShipProductType.ToType(ProdTypeCB.ItemIndex);
+end;
+
+procedure TCertManageF.HullNoEditButtonClick(Sender: TObject);
+begin
+  ShowSearchVesselForm(Sender);
+end;
+
+procedure TCertManageF.HullNoEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
+end;
+
+procedure TCertManageF.IMONoEditButtonClick(Sender: TObject);
+begin
+  ShowSearchVesselForm(Sender);
+end;
+
+procedure TCertManageF.IMONoEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
 end;
 
 procedure TCertManageF.ImportGeneratorMasterFromXlsFile1Click(Sender: TObject);
@@ -562,6 +641,16 @@ begin
   CertListGrid.ColumnByName['APTServiceDate'].Visible := LBool;
 end;
 
+procedure TCertManageF.ShipNameEditButtonClick(Sender: TObject);
+begin
+  ShowSearchVesselForm(Sender);
+end;
+
+procedure TCertManageF.ShipNameEditKeyPress(Sender: TObject; var Key: Char);
+begin
+  ExecuteSearch(Key);
+end;
+
 procedure TCertManageF.ShowCertEditFormFromGrid(ARow: integer; AAttachPageView: Boolean);
 var
   LCertNo: string;
@@ -578,6 +667,50 @@ end;
 procedure TCertManageF.ShowCertNoFormat;
 begin
   CreateCertNoFormat;
+end;
+
+procedure TCertManageF.ShowSearchVesselForm(Sender: TObject);
+var
+  LSearchVesselF: TSearchVesselF;
+begin
+  LSearchVesselF := TSearchVesselF.Create(nil);
+  try
+    if TNxButtonEdit(Sender).Name = 'IMONoEdit' then
+      LSearchVesselF.ImoNoEdit.Text := Self.IMONoEdit.Text
+    else
+    if TNxButtonEdit(Sender).Name = 'ShipNameEdit' then
+      LSearchVesselF.ShipNameEdit.Text := Self.ShipNameEdit.Text
+    else
+    if TNxButtonEdit(Sender).Name = 'HullNoEdit' then
+      LSearchVesselF.HullNoEdit.Text := Self.HullNoEdit.Text;
+
+    if (Self.IMONoEdit.Text <> '') or (Self.ShipNameEdit.Text <> '')
+                                      or (Self.HullNoEdit.Text <> '') then
+      LSearchVesselF.SearchButtonClick(nil);
+
+    if LSearchVesselF.ShowModal = mrOK then
+    begin
+      if LSearchVesselF.VesselListGrid.SelectedRow <> -1 then
+      begin
+        HullNoEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['HullNo',LSearchVesselF.VesselListGrid.SelectedRow];
+        ShipNameEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['ShipName',LSearchVesselF.VesselListGrid.SelectedRow];
+        ImoNoEdit.Text := LSearchVesselF.VesselListGrid.CellsByName['ImoNo',LSearchVesselF.VesselListGrid.SelectedRow];
+      end;
+    end;
+  finally
+    LSearchVesselF.Free;
+  end;
+end;
+
+procedure TCertManageF.SubjectEditButtonDown(Sender: TObject);
+var
+  LSubject, LCourseName: string;
+begin
+  if CreateCourseManageForm(LSubject, LCourseName) = mrOK then
+  begin
+    SubjectEdit.Text := LSubject;
+    CourseEdit.Text := LCourseName;
+  end;
 end;
 
 procedure TCertManageF.SubjectEditKeyPress(Sender: TObject; var Key: Char);

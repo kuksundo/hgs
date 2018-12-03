@@ -17,6 +17,8 @@ uses
 const
   ATR_FILENAME = 'ANNUAL_TEST_REPORT.pjh';
   COC_FILENAME = 'Certificate_of_compliance_with_field.pjh';
+  EDU_FILENAME = 'Education_Cert.pjh';
+  PROD_APPROVAL_FILENAME = 'APT_Approval_Certificate.pjh';
   VDRConfigFileName = 'VDRConfig.ini';
 type
   TCertEditF = class(TForm)
@@ -142,6 +144,7 @@ type
     FActiveControl: TWinControl;
     FPrevInactiveColor: TColor;
     FDisableEditPosition: Boolean;
+    FTempFileList: TStringList;
 
     procedure GetCertDetailFromCertRecord(ASQLHGSCertRecord: TSQLHGSCertRecord);
     procedure GetCertFileList2FileGrid(const AFileDBName: string);
@@ -168,6 +171,7 @@ type
     procedure MakeCertXls;
     procedure MakeCertDoc(ACertType: integer; AIsSaveFile: Boolean=False; AIsWordClose: Boolean=False);
     procedure MakeZip4APTDoc(AShowCompletionMsg: Boolean=false);
+    function CheckIfExistATRFileFromDB(AImoNo: string; var AFilName: string):Boolean;
   end;
 
 function CreateCertEditFormFromDB(ACertNo: string; ACertType: THGSCertType=hctNull; AAttachPageView: Boolean=false): integer;
@@ -182,7 +186,7 @@ uses SynCommons, UnitVesselData,  DragDropInternet, DragDropFormats, DateUtils,
   UnitFolderUtil, UnitExcelUtil,
   UnitStringUtil, UnitHGSCurriculumData, FrmCourseManage,
   UnitMSWordUtil, FrmSearchCustomer, CommonData, FrmSearchVessel, FrmSearchVDR,
-  SynZip, UnitFormUtil;//, Excel2000;
+  SynZip, UnitFormUtil, UnitGSFileData;
 
 {$R *.dfm}
 
@@ -231,12 +235,19 @@ begin
         if LCertEditF.LoadCertDetail2CertRecordFromForm(LSQLHGSCertRecord) then
         begin
           AddOrUpdateHGSCert(LSQLHGSCertRecord);
-          LSQLHGSCertRecord.NextSerialNo := LCertEditF.GetSerialNoFromCertNo(LSQLHGSCertRecord.CertNo, LYear);
-          AddOrUpdateNextHGSSerial(LYear, Ord(LSQLHGSCertRecord.ProductType),
-            Ord(LSQLHGSCertRecord.CertType), StrToIntDef(LSQLHGSCertRecord.NextSerialNo, 0));
-          LCertEditF.SaveGSFile2DB;
 
-          ShowMessage('Data Save Is OK!');
+          if not LSQLHGSCertRecord.IsUpdate then
+          begin
+            LSQLHGSCertRecord.NextSerialNo := LCertEditF.GetSerialNoFromCertNo(LSQLHGSCertRecord.CertNo, LYear);
+            AddOrUpdateNextHGSSerial(LYear, Ord(LSQLHGSCertRecord.ProductType),
+              Ord(LSQLHGSCertRecord.CertType), StrToIntDef(LSQLHGSCertRecord.NextSerialNo, 0));
+            LCertEditF.SaveGSFile2DB;
+
+            ShowMessage('Data Save(Add) Is OK!');
+          end
+          else
+            ShowMessage('Data Save(Update) Is OK!');
+
         end;
       end
       else
@@ -390,6 +401,50 @@ end;
 procedure TCertEditF.CheckBox1Click(Sender: TObject);
 begin
   CertNoButtonEdit.Enabled := CheckBox1.Checked;
+end;
+
+function TCertEditF.CheckIfExistATRFileFromDB(AImoNo: string; var AFilName: string): Boolean;
+var
+  LSQLHGSVDRRecord: TSQLHGSVDRRecord;
+  LSQLGSFileRec: TSQLGSFileRec;
+  LDocData: TDocVariantData;
+  LVar: Variant;
+  LJsonFileList, LStr: string;
+  LUtf8: RawUTF8;
+  i: integer;
+begin
+  Result := False;
+
+  if not Assigned(g_HGSVDRDB) then
+    InitHGSVDRClient('HGSVDRList.sqlite');
+
+  LSQLHGSVDRRecord := GetHGSVDRFromIMONo(AImoNo);
+  try
+    if LSQLHGSVDRRecord.IsUpdate then
+    begin
+//      LDoc := GetVariantFromHGSVDRRecord(LSQLHGSVDRRecord);
+      LJsonFileList := MakeGSFileRecs2JSON(LSQLHGSVDRRecord.Attachments);
+//      LDoc.FileCount := High(LSQLHGSVDRRecord.Attachments) + 1;
+      LDocData.InitJSON(LJsonFileList);
+      for i := 0 to LDocData.Count - 1 do
+      begin
+        LVar := _JSON(LDocData.Value[i]);
+        LUtf8 := LVar;
+        RecordLoadJson(LSQLGSFileRec, LUtf8, TypeInfo(TSQLGSFileRec));
+
+        if (LSQLGSFileRec.fData <> '') then//(LSQLGSFileRec.fFilename = ATR_FILENAME) and
+        begin
+          AFilName := 'C:\Temp\'+LSQLGSFileRec.fFilename;
+          FTempFileList.Add(AFilName);
+          FileFromString(LSQLGSFileRec.fData, AFilName, True);
+          Result := True;
+          Break;
+        end;
+      end;
+    end;
+  finally
+    LSQLHGSVDRRecord.Free;
+  end;
 end;
 
 function TCertEditF.CheckQRCodeIsValid: Boolean;
@@ -636,15 +691,30 @@ begin
   g_HGSCertType.SetType2Combo(CertTypeCB);
   InitHGSSerialClient('HGSSerial.sqlite');
   FGSFileDBName := '';
+  FTempFileList := TStringList.Create;
 
 //  Screen.OnActiveControlChange := ScreenActiveControlChange;
 end;
 
 procedure TCertEditF.FormDestroy(Sender: TObject);
+var
+  i: integer;
 begin
 //  Screen.OnActiveControlChange := nil;
   DestroyHGSSerial;
   DestroyGSFile;
+
+  try
+    for i := 0 to FTempFileList.Count - 1 do
+    begin
+      try
+        DeleteFile(FTempFileList.Strings[i]);
+      except
+      end;
+    end;
+  finally
+    FTempFileList.Free;
+  end;
 end;
 
 function TCertEditF.GetTempATRFileName: string;
@@ -953,12 +1023,25 @@ begin
   QRCodeFrame1.CopyBitmapToClipboard;
 
   case ACertType of
-    1: LStr2 := 'Education_Cert.docx';
+    1: LStr2 := EDU_FILENAME;
     2: begin
-      LStr2 := ATR_FILENAME;
+      if IMONoEdit.Text = '' then
+      begin
+        ShowMessage('Please select IMO no!');
+        exit;
+      end;
+
+      if CheckIfExistATRFileFromDB(IMONoEdit.Text, LStr2) then
+      begin
+        LStr := ExtractFilePath(LStr2);
+        LStr2 := ExtractFileName(LStr2);
+      end
+      else
+        LStr2 := ATR_FILENAME;
+
       LStr3 := COC_FILENAME;
     end;
-    3: LStr2 := 'APT_Approval_Certificate.docx';
+    3: LStr2 := PROD_APPROVAL_FILENAME;
   end;
 
   LStr := LStr+LStr2;
@@ -975,11 +1058,11 @@ begin
   case ACertType of
     1: begin
       Word_StringReplace2(WordApp, 'Cert_No', CertNoButtonEdit.Text, [wrfReplaceAll]);
-      Word_StringReplace2(WordApp, 'T_Course', TrainedSubjectEdit.Text, [wrfReplaceAll]);
+      Word_StringReplace2(WordApp, 'T_Course', TrainedCourseEdit.Text, [wrfReplaceAll]);
       Word_StringReplace2(WordApp, 'T_Name', TraineeNameEdit.Text, [wrfReplaceAll]);
       Word_StringReplace2(WordApp, 'C_Name', SubCompanyEdit.Text, [wrfReplaceAll]);
       LStr := FormatDateTime('mmm.dd', TrainedBeginDatePicker.Date) + ' ~ ' +
-        FormatDateTime('mmm.dd,yyyy', TrainedEndDatePicker.Date);
+        FormatDateTime('mmm.dd, yyyy', TrainedEndDatePicker.Date);
       Word_StringReplace2(WordApp, 'T_Period', LStr, [wrfReplaceAll]);
       Word_StringReplace2(WordApp, 'T_Subject', TrainedSubjectEdit.Text, [wrfReplaceAll]);
       LStr := FormatDateTime('mmm, yyyy',UntilValidityDatePicker.Date);
@@ -1287,45 +1370,20 @@ end;
 
 procedure TCertEditF.ShowSearchVDRForm;
 var
-  LSearchVDRF: TSearchVDRF;
+  LVDRSearchParamRec: TVDRSearchParamRec;
 begin
-  LSearchVDRF := TSearchVDRF.Create(nil);
-  try
-    LSearchVDRF.VDRSerialNoEdit.Text := Self.VDRSerialNoEdit.Text;
+  LVDRSearchParamRec := CreateSearchVDRFrom(VDRSerialNoEdit.Text, ImoNoEdit.Text,
+    HullNoEdit.Text, ShipNameEdit.Text);
 
-    if Self.ImoNoEdit.Text <> '' then
-      LSearchVDRF.ImoNoEdit.Text := Self.ImoNoEdit.Text
-    else
-    if Self.HullNoEdit.Text <> '' then
-      LSearchVDRF.HullNoEdit.Text := Self.HullNoEdit.Text
-    else
-    if Self.ShipNameEdit.Text <> '' then
-      LSearchVDRF.ShipNameEdit.Text := Self.ShipNameEdit.Text;
+  if LVDRSearchParamRec.fVDRSerialNo <> '' then
+  begin
+    VDRSerialNoEdit.Text := LVDRSearchParamRec.fVDRSerialNo;
+    VDRConfigMemo.Text := LVDRSearchParamRec.fVDRConfig;
 
-    if (LSearchVDRF.ImoNoEdit.Text <> '') or (Self.HullNoEdit.Text <> '')
-                                          or (Self.ShipNameEdit.Text <> '') then
-      LSearchVDRF.SearchButtonClick(nil);
+    if ImoNoEdit.Text = '' then
+      ImoNoEdit.Text := LVDRSearchParamRec.fIMONo;
 
-    if LSearchVDRF.ShowModal = mrOK then
-    begin
-      if LSearchVDRF.VDRListGrid.SelectedRow <> -1 then
-      begin
-        VDRSerialNoEdit.Text := LSearchVDRF.VDRListGrid.CellsByName['VDRSerialNo',LSearchVDRF.VDRListGrid.SelectedRow];
-        VDRTypeEdit.Text := LSearchVDRF.VDRListGrid.CellsByName['VDRType',LSearchVDRF.VDRListGrid.SelectedRow];
-        VDRConfigMemo.Text := LSearchVDRF.VDRListGrid.CellsByName['VDRConfig',LSearchVDRF.VDRListGrid.SelectedRow];
-
-        if HullNoEdit.Text = '' then
-          HullNoEdit.Text := LSearchVDRF.VDRListGrid.CellsByName['HullNo',LSearchVDRF.VDRListGrid.SelectedRow];
-
-        if ShipNameEdit.Text = '' then
-          ShipNameEdit.Text := LSearchVDRF.VDRListGrid.CellsByName['ShipName',LSearchVDRF.VDRListGrid.SelectedRow];
-
-        if ImoNoEdit.Text = '' then
-          ImoNoEdit.Text := LSearchVDRF.VDRListGrid.CellsByName['ImoNo',LSearchVDRF.VDRListGrid.SelectedRow];
-      end;
-    end;
-  finally
-    LSearchVDRF.Free;
+    VDRTypeEdit.Text := LVDRSearchParamRec.fVDRType;
     DisplayEditPosition;
   end;
 end;
@@ -1340,10 +1398,20 @@ begin
       LSearchVesselF.ImoNoEdit.Text := Self.IMONoEdit.Text
     else
     if TNxButtonEdit(Sender).Name = 'ShipNameEdit' then
-      LSearchVesselF.ShipNameEdit.Text := Self.ShipNameEdit.Text
+    begin
+      if Self.IMONoEdit.Text <> '' then
+        LSearchVesselF.ImoNoEdit.Text := Self.IMONoEdit.Text;
+
+      LSearchVesselF.ShipNameEdit.Text := Self.ShipNameEdit.Text;
+    end
     else
     if TNxButtonEdit(Sender).Name = 'HullNoEdit' then
+    begin
+      if Self.IMONoEdit.Text <> '' then
+        LSearchVesselF.ImoNoEdit.Text := Self.IMONoEdit.Text;
+
       LSearchVesselF.HullNoEdit.Text := Self.HullNoEdit.Text;
+    end;
 
     if (Self.IMONoEdit.Text <> '') or (Self.ShipNameEdit.Text <> '')
                                       or (Self.HullNoEdit.Text <> '') then

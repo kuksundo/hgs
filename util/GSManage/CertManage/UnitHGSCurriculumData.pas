@@ -5,7 +5,7 @@ interface
 uses System.Classes, UnitEnumHelper;
 
 type
-  TAcademyCourseLevel = (aclNull, aclBasic, aclAdvanced, aclSpecial,
+  TAcademyCourseLevel = (aclNull, aclBasic, aclAdvanced, aclExpert,
     aclFinal);
   TAcademyActivityLevel = (aalNull, aalIntroduction, aalOperation, aalCommissioning,
     aalMaintenance, aalOptimization, aalTroubleShooting, aalFinal);
@@ -16,7 +16,7 @@ const
   R_AcademyCourseLevel : array[Low(TAcademyCourseLevel)..High(TAcademyCourseLevel)] of string =
     ('', 'B', 'A', 'S', '');
   R_AcademyCourseLevelDesc : array[Low(TAcademyCourseLevel)..High(TAcademyCourseLevel)] of string =
-    ('', 'Basic', 'Advanced', 'Special', '');
+    ('', 'Basic', 'Advanced', 'Expert', '');
   R_AcademyActivityLevel : array[Low(TAcademyActivityLevel)..High(TAcademyActivityLevel)] of string =
     ('', 'A', 'B', 'C', 'D', 'E', 'F', '');
   R_AcademyActivityLevelDesc : array[Low(TAcademyActivityLevel)..High(TAcademyActivityLevel)] of string =
