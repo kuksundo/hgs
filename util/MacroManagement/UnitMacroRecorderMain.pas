@@ -15,7 +15,8 @@ uses
   OtlComm,
   OtlCommon,
   SynCommons, mORMot, thundax.lib.actions,
-  UnitMacroListClass, UnitNextGridFrame, Vcl.Buttons, Vcl.ToolWin, UnitAction;
+  UnitMacroListClass, UnitNextGridFrame, Vcl.Buttons, Vcl.ToolWin, UnitAction,
+  ralarm;
 
 type
   TMacroManageF = class(TForm)
@@ -72,6 +73,11 @@ type
     SpeedButton6: TSpeedButton;
     SpeedButton7: TSpeedButton;
     SpeedButton8: TSpeedButton;
+    BeginTimeCheck: TCheckBox;
+    BeginTimePicker: TDateTimePicker;
+    Label10: TLabel;
+    Edit2: TEdit;
+    AlarmFromTo1: TAlarmFromTo;
     procedure FormCreate(Sender: TObject);
     procedure HotKeyManager1HotKeyPressed(HotKey: Cardinal; Index: Word);
     procedure FormDestroy(Sender: TObject);
@@ -101,6 +107,9 @@ type
     procedure SpeedButton6Click(Sender: TObject);
     procedure SpeedButton7Click(Sender: TObject);
     procedure SpeedButton8Click(Sender: TObject);
+    procedure BeginTimeCheckClick(Sender: TObject);
+    procedure BeginTimePickerChange(Sender: TObject);
+    procedure AlarmFromTo1AlarmBegin(Sender: TObject);
   private
     FMacroCancelToken: IOmniCancellationToken;
     FMacroStepQueue    : TOmniMessageQueue;
@@ -369,6 +378,11 @@ begin
 //  AddMacroName(MacroNameEdit.Text);
 end;
 
+procedure TMacroManageF.AlarmFromTo1AlarmBegin(Sender: TObject);
+begin
+  PlayMacro;
+end;
+
 procedure TMacroManageF.AssignActionData2Form(ASrcActColl,
   ADestActColl: TActionCollection; var ADestActList: TActionList);
 var
@@ -384,6 +398,21 @@ begin
   begin
     TfrmActions.AddAction2List(ADestActList, ASrcActColl.Item[i].ActionItem);
   end;
+end;
+
+procedure TMacroManageF.BeginTimeCheckClick(Sender: TObject);
+begin
+  BeginTimePicker.Enabled := BeginTimeCheck.Checked;
+
+  if BeginTimeCheck.Checked then
+    AlarmFromTo1.AlarmTimeBegin := FormatDateTime('hh:nn:ss', BeginTimePicker.Time);
+
+  AlarmFromTo1.ActiveBegin := BeginTimeCheck.Checked;
+end;
+
+procedure TMacroManageF.BeginTimePickerChange(Sender: TObject);
+begin
+  AlarmFromTo1.AlarmTimeBegin := FormatDateTime('hh:nn:ss', BeginTimePicker.Time);
 end;
 
 procedure TMacroManageF.btnSequenceClick(Sender: TObject);
@@ -757,7 +786,7 @@ begin
         task.Invoke(
           procedure begin
             btnSequence.Enabled := true;
-            ShowMessage('Macro Stopped!');
+            //ShowMessage('Macro Stopped!');
           end
         );
       end
@@ -772,7 +801,7 @@ begin
       begin
         LActionList := TMacroManagement(FMacroManageList.Items[i]).FActionList;
         LTimes := TMacroManagement(FMacroManageList.Items[i]).IterateCount;
-        ShowMessage(TMacroManagement(FMacroManageList.Items[i]).MacroName+':'+IntToStr(i));
+        //ShowMessage(TMacroManagement(FMacroManageList.Items[i]).MacroName+':'+IntToStr(i));
         if Assigned(LActionList) then
           PlaySequence(LActionList,LTimes);
 

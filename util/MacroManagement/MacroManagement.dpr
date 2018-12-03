@@ -8,7 +8,8 @@ uses
   UnitNextGridFrame in '..\..\common\Frames\UnitNextGridFrame.pas' {Frame1: TFrame},
   pjhBaseCollect in '..\..\common\pjhBaseCollect.pas',
   UnitMacroListClass in 'UnitMacroListClass.pas',
-  UnitNameEdit in 'UnitNameEdit.pas' {NameEditF};
+  UnitNameEdit in 'UnitNameEdit.pas' {NameEditF},
+  ralarm in '..\..\..\vcl\ralarm\ralarm.pas';
 
 {$R *.res}
 

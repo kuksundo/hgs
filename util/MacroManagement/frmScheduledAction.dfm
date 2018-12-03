@@ -3,9 +3,9 @@ object frmActions: TfrmActions
   Top = 579
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'Thundax Macro Actions v1.1'
-  ClientHeight = 305
-  ClientWidth = 610
+  Caption = 'Scheduled Macro Actions'
+  ClientHeight = 252
+  ClientWidth = 601
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -58,7 +58,7 @@ object frmActions: TfrmActions
   TextHeight = 13
   object Label1: TLabel
     Left = 386
-    Top = 52
+    Top = 75
     Width = 39
     Height = 13
     Caption = 'Actions:'
@@ -67,7 +67,7 @@ object frmActions: TfrmActions
     Left = 8
     Top = 8
     Width = 105
-    Height = 33
+    Height = 56
     Caption = 'Play sequence'
     Glyph.Data = {
       F6060000424DF606000000000000360000002800000018000000180000000100
@@ -137,7 +137,7 @@ object frmActions: TfrmActions
   end
   object btnDelete: TSpeedButton
     Left = 281
-    Top = 47
+    Top = 70
     Width = 23
     Height = 22
     Glyph.Data = {
@@ -171,7 +171,7 @@ object frmActions: TfrmActions
   end
   object btnUp: TSpeedButton
     Left = 281
-    Top = 68
+    Top = 91
     Width = 23
     Height = 22
     Glyph.Data = {
@@ -205,7 +205,7 @@ object frmActions: TfrmActions
   end
   object btnDown: TSpeedButton
     Left = 281
-    Top = 89
+    Top = 112
     Width = 23
     Height = 22
     Glyph.Data = {
@@ -262,7 +262,7 @@ object frmActions: TfrmActions
     Left = 112
     Top = 8
     Width = 63
-    Height = 33
+    Height = 56
     Caption = 'Stop'
     Glyph.Data = {
       06080000424D060800000000000036000000280000001A000000190000000100
@@ -332,16 +332,16 @@ object frmActions: TfrmActions
       FFFFFFFFFFFFFFFF0000}
     OnClick = btnStopClick
   end
-  object Label11: TLabel
-    Left = 310
-    Top = 85
-    Width = 69
+  object Label10: TLabel
+    Left = 377
+    Top = 47
+    Width = 58
     Height = 13
-    Caption = 'Custom Desc: '
+    Caption = #45224#51008' '#49884#44036' :'
   end
   object btnAddAction: TButton
     Left = 305
-    Top = 47
+    Top = 70
     Width = 75
     Height = 25
     Caption = 'Add Action'
@@ -351,7 +351,7 @@ object frmActions: TfrmActions
   end
   object ComboBox1: TComboBox
     Left = 431
-    Top = 49
+    Top = 72
     Width = 163
     Height = 21
     Style = csDropDownList
@@ -366,21 +366,17 @@ object frmActions: TfrmActions
       'Mouse Right Double Click'
       'Press special key'
       'Type message'
-      'Wait (ms)'
-      'Dynamic message'
-      'Execute Function')
+      'Wait (s)')
   end
   object PageControl1: TPageControl
-    Left = 304
-    Top = 117
+    Left = 305
+    Top = 101
     Width = 289
     Height = 131
     ActivePage = TabSheet1
     TabOrder = 2
     object TabSheet1: TTabSheet
       Caption = 'Mouse Position'
-      ExplicitLeft = 5
-      ExplicitTop = 18
       object Label2: TLabel
         Left = 16
         Top = 4
@@ -402,7 +398,6 @@ object frmActions: TfrmActions
         Height = 21
         ImeName = 'Microsoft IME 2010'
         TabOrder = 0
-        OnKeyDown = edtXKeyDown
       end
       object edtY: TEdit
         Left = 95
@@ -429,13 +424,6 @@ object frmActions: TfrmActions
         Width = 51
         Height = 13
         Caption = 'Free Text:'
-      end
-      object Label10: TLabel
-        Left = 3
-        Top = 73
-        Width = 54
-        Height = 13
-        Caption = 'Grid Index:'
       end
       object cmbStrokes: TComboBox
         Left = 72
@@ -480,14 +468,6 @@ object frmActions: TfrmActions
         ImeName = 'Microsoft IME 2010'
         TabOrder = 1
       end
-      object edtIndex: TEdit
-        Left = 72
-        Top = 70
-        Width = 41
-        Height = 21
-        ImeName = 'Microsoft IME 2010'
-        TabOrder = 2
-      end
     end
     object TabSheet3: TTabSheet
       Caption = 'Waiting'
@@ -495,12 +475,12 @@ object frmActions: TfrmActions
       object Label8: TLabel
         Left = 5
         Top = 27
-        Width = 62
+        Width = 42
         Height = 13
-        Caption = 'Time (mSec):'
+        Caption = 'Time (s):'
       end
       object edtTime: TSpinEdit
-        Left = 70
+        Left = 53
         Top = 24
         Width = 121
         Height = 22
@@ -522,59 +502,53 @@ object frmActions: TfrmActions
   end
   object ListBox1: TListBox
     Left = 8
-    Top = 47
+    Top = 70
     Width = 272
-    Height = 202
+    Height = 162
     Style = lbOwnerDrawFixed
     ImeName = 'Microsoft IME 2010'
     TabOrder = 4
     OnDrawItem = ListBox1DrawItem
   end
-  object Panel1: TPanel
-    Left = 0
-    Top = 264
-    Width = 610
-    Height = 41
-    Align = alBottom
-    TabOrder = 5
-    ExplicitTop = 210
-    ExplicitWidth = 601
-    object BitBtn1: TBitBtn
-      Left = 112
-      Top = 2
-      Width = 75
-      Height = 39
-      Kind = bkCancel
-      NumGlyphs = 2
-      TabOrder = 0
-    end
-    object BitBtn2: TBitBtn
-      Left = 350
-      Top = 1
-      Width = 75
-      Height = 39
-      Kind = bkOK
-      NumGlyphs = 2
-      TabOrder = 1
-    end
-  end
-  object CustomDescEdit: TEdit
-    Left = 382
-    Top = 82
-    Width = 211
+  object BeginTimePicker: TDateTimePicker
+    Left = 261
+    Top = 43
+    Width = 97
     Height = 21
+    Date = 43411.750000000000000000
+    Time = 43411.750000000000000000
     ImeName = 'Microsoft IME 2010'
+    Kind = dtkTime
+    TabOrder = 5
+    OnChange = BeginTimePickerChange
+  end
+  object BeginTimeCheck: TCheckBox
+    Left = 186
+    Top = 44
+    Width = 71
+    Height = 17
+    Caption = #49892#54665#49884#44033' :'
     TabOrder = 6
+    OnClick = BeginTimeCheckClick
+  end
+  object Edit1: TEdit
+    Left = 438
+    Top = 42
+    Width = 129
+    Height = 21
+    Alignment = taCenter
+    ImeName = 'Microsoft IME 2010'
+    TabOrder = 7
   end
   object Timer1: TTimer
     Interval = 50
     OnTimer = Timer1Timer
     Left = 122
-    Top = 104
+    Top = 127
   end
   object MainMenu1: TMainMenu
     Left = 168
-    Top = 104
+    Top = 127
     object File1: TMenuItem
       Caption = 'File'
       object Load1: TMenuItem
@@ -584,5 +558,14 @@ object frmActions: TfrmActions
         Caption = 'Save'
       end
     end
+  end
+  object AlarmFromTo1: TAlarmFromTo
+    Interval = 1000
+    ShowObjectBegin = Edit1
+    OnAlarmBegin = AlarmFromTo1AlarmBegin
+    BeginRepeatCount = 0
+    EndRepeatCount = 0
+    Left = 120
+    Top = 159
   end
 end

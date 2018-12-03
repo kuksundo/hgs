@@ -31,6 +31,13 @@ object MacroManageF: TMacroManageF
       Height = 16
       Caption = #47588#53356#47196' '#51060#47492' : '
     end
+    object Label10: TLabel
+      Left = 264
+      Top = 211
+      Width = 73
+      Height = 16
+      Caption = #45224#51008' '#49884#44036' :'
+    end
     object Panel4: TPanel
       Left = 1
       Top = 1
@@ -713,6 +720,36 @@ object MacroManageF: TMacroManageF
         end
       end
     end
+    object BeginTimeCheck: TCheckBox
+      Left = 40
+      Top = 208
+      Width = 79
+      Height = 17
+      Caption = #49892#54665#49884#44033' :'
+      TabOrder = 4
+      OnClick = BeginTimeCheckClick
+    end
+    object BeginTimePicker: TDateTimePicker
+      Left = 125
+      Top = 206
+      Width = 120
+      Height = 21
+      Date = 43411.750000000000000000
+      Time = 43411.750000000000000000
+      ImeName = 'Microsoft IME 2010'
+      Kind = dtkTime
+      TabOrder = 5
+      OnChange = BeginTimePickerChange
+    end
+    object Edit2: TEdit
+      Left = 343
+      Top = 208
+      Width = 129
+      Height = 24
+      Alignment = taCenter
+      ImeName = 'Microsoft IME 2010'
+      TabOrder = 6
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -976,7 +1013,7 @@ object MacroManageF: TMacroManageF
         Left = 19
         Top = 87
         Bitmap = {
-          494C0101150018009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+          494C010115001800A40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
           0000000000003600000028000000400000006000000001002000000000000060
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
@@ -1931,11 +1968,11 @@ object MacroManageF: TMacroManageF
   object HotKeyManager1: THotKeyManager
     OnHotKeyPressed = HotKeyManager1HotKeyPressed
     Left = 24
-    Top = 176
+    Top = 112
   end
   object MainMenu1: TMainMenu
     Left = 112
-    Top = 176
+    Top = 112
     object File1: TMenuItem
       Caption = 'File'
     end
@@ -1960,16 +1997,16 @@ object MacroManageF: TMacroManageF
   end
   object PopupMenu1: TPopupMenu
     Left = 160
-    Top = 177
+    Top = 113
     object AddRow1: TMenuItem
       Caption = 'Add Row'
     end
   end
   object ImageList1: TImageList
     Left = 67
-    Top = 175
+    Top = 111
     Bitmap = {
-      494C010115001800940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101150018009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2770,10 +2807,19 @@ object MacroManageF: TMacroManageF
   end
   object OpenDialog1: TOpenDialog
     Left = 192
-    Top = 176
+    Top = 112
   end
   object SaveDialog1: TSaveDialog
     Left = 224
-    Top = 176
+    Top = 112
+  end
+  object AlarmFromTo1: TAlarmFromTo
+    Interval = 1000
+    ShowObjectBegin = Edit2
+    OnAlarmBegin = AlarmFromTo1AlarmBegin
+    BeginRepeatCount = 0
+    EndRepeatCount = 0
+    Left = 264
+    Top = 111
   end
 end

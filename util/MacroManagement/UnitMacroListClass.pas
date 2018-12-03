@@ -25,7 +25,8 @@ type
   TActionItem = class(TSynAutoCreateFields)
   private
     FActionCode,
-    FActionDesc: string;
+    FActionDesc,
+    FCustomDesc: string;
     FActionType: TActionType;
     FXPos, FYPos, FWaitSec, FGridIndex: integer;
     FInputText: string;
@@ -34,6 +35,7 @@ type
   published
     property ActionCode: string read FActionCode write FActionCode;
     property ActionDesc: string read FActionDesc write FActionDesc;
+    property CustomDesc: string read FCustomDesc write FCustomDesc;
     property ActionType: TActionType read FActionType write FActionType;
     property XPos: integer read FXPos write FXPos;
     property YPos: integer read FYPos write FYPos;
