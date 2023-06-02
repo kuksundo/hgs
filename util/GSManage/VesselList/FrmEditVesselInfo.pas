@@ -156,6 +156,8 @@ function TEditVesselInfoF.GetInstalledProductFromCheckBox: TShipProductTypes;
 var
   i: integer;
 begin
+  Result := [];
+
   for i := 0 to InstalledProductGrp.Items.Count - 1 do
   begin
     if InstalledProductGrp.Checked[i] then
@@ -175,7 +177,7 @@ begin
     ClassEdit.Text := SClass1;
     ShipTypeEdit.Text := ShipType;
     ShipTypeDescEdit.Text := ShipTypeDesc;
-    ShipOwnerEdit.Text := OwnerName;
+    ShipOwnerEdit.Text := GroupOwnerName;
     TechManagerCountryEdit.Text := TechManagerCountry;
     TechManagerEdit.Text := TechManagerName;
     OperatorEdit.Text := OperatorName;
@@ -206,7 +208,7 @@ begin
     SClass1 := ClassEdit.Text;
     ShipType := ShipTypeEdit.Text;
     ShipTypeDesc := ShipTypeDescEdit.Text;
-    OwnerName := ShipOwnerEdit.Text;
+    GroupOwnerName := ShipOwnerEdit.Text;
     TechManagerCountry := TechManagerCountryEdit.Text;
     TechManagerName := TechManagerEdit.Text;
     OperatorName := OperatorEdit.Text;
