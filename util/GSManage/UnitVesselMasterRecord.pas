@@ -8,6 +8,9 @@ uses
   mORMot,
   CommonData, UnitVesselData;
 
+const
+  HGS_VESSELMASTER_DB_NAME = 'VesselList.sqlite';
+
 type
   TVesselSearchParamRec = record
     fHullNo,
@@ -68,22 +71,54 @@ type
 
   TSQLVesselMaster = class(TSQLVesselBase)
   private
+    fVesselSanction,  //vessel sanction
+    fInstalledLocation,//ÇØ»ó, À°»ó
     fSocietyClass1,
     fSocietyClass2,
     fShipType,
     fShipTypeDesc,
-    fOwnerID,
-    fOwnerName,
-    fOwnerCountry,
+    fCargoSize,
+
+    fGroupOwnerSanction,
+    fGroupOwnerID,
+    fGroupOwnerName,
+    fGroupOwnerCountry,
+
+    fRegOwnerSanction,
+    fRegOwnerID,//Reg. Owner
+    fRegOwnerName,
+    fRegOwnerCountry,
+
+    fTechManagerSanction,
     fTechManagerCountry,
     fTechManagerID,
     fTechManagerName,
+
+    fOperatorSanction,
     fOperatorID,
     fOperatorName,
     fOperatorCountry,
+
+    fBuyingCompanySanction,
     fBuyingCompanyCountry,
     fBuyingCompanyID,
     fBuyingCompanyName,
+
+    fShipManagerSanction,
+    fShipManagerCountry,
+    fShipManagerID,
+    fShipManagerName,
+
+    fDocCompanySanction,
+    fDocCompanyCountry,
+    fDocCompanyID,
+    fDocCompanyName,
+
+    fBareOwnerSanction,
+    fBareOwnerID,
+    fBareOwnerName,
+    fBareOwnerCountry,
+
     fVesselStatus
     : RawUTF8;
 
@@ -92,33 +127,70 @@ type
     fDeliveryDate,
     fLastDryDockDate: TTimeLog;
 
-    fSpecialSurveyDue,
-    fDockingSurveyDue,
-    fGuaranteePeriod: TTimeLog;
+    fSpecialSurveyDue1,
+    fDockingSurveyDue1,
+    fSpecialSurveyDue2,
+    fDockingSurveyDue2,
+    fGuaranteePeriod
+    : TTimeLog;
   published
-    property SClass1: RawUTF8 read fSocietyClass1 write fSocietyClass1;
-    property SClass2: RawUTF8 read fSocietyClass2 write fSocietyClass2;
-    property ShipType: RawUTF8 read fShipType write fShipType;
+    property VesselSanction: RawUTF8 read fVesselSanction write fVesselSanction;
+    property InstalledLocation: RawUTF8 read fInstalledLocation write fInstalledLocation;
+    property ShipType: RawUTF8 read fShipType write fShipType;
     property ShipTypeDesc: RawUTF8 read fShipTypeDesc write fShipTypeDesc;
-    property OwnerID: RawUTF8 read fOwnerID write fOwnerID;
-    property OwnerName: RawUTF8 read fOwnerName write fOwnerName;
-    property OwnerCountry: RawUTF8 read fOwnerCountry write fOwnerCountry;
+    property CargoSize: RawUTF8 read fCargoSize write fCargoSize;
+
+    property GroupOwnerSanction: RawUTF8 read fGroupOwnerSanction write fGroupOwnerSanction;
+    property GroupOwnerID: RawUTF8 read fGroupOwnerID write fGroupOwnerID;
+    property GroupOwnerName: RawUTF8 read fGroupOwnerName write fGroupOwnerName;
+    property GroupOwnerCountry: RawUTF8 read fGroupOwnerCountry write fGroupOwnerCountry;
+
+    property RegOwnerSanction: RawUTF8 read fRegOwnerSanction write fRegOwnerSanction;
+    property RegOwnerID: RawUTF8 read fRegOwnerID write fRegOwnerID;
+    property RegOwnerName: RawUTF8 read fRegOwnerName write fRegOwnerName;
+    property RegOwnerCountry: RawUTF8 read fRegOwnerCountry write fRegOwnerCountry;
+
+    property TechManagerSanction: RawUTF8 read fTechManagerSanction write fTechManagerSanction;
     property TechManagerCountry: RawUTF8 read fTechManagerCountry write fTechManagerCountry;
     property TechManagerID: RawUTF8 read fTechManagerID write fTechManagerID;
     property TechManagerName: RawUTF8 read fTechManagerName write fTechManagerName;
+
+    property OperatorSanction: RawUTF8 read fOperatorSanction write fOperatorSanction;
     property OperatorID: RawUTF8 read fOperatorID write fOperatorID;
     property OperatorName: RawUTF8 read fOperatorName write fOperatorName;
     property OperatorCountry: RawUTF8 read fOperatorCountry write fOperatorCountry;
+
+    property BuyingCompanySanction: RawUTF8 read fBuyingCompanySanction write fBuyingCompanySanction;
     property BuyingCompanyCountry: RawUTF8 read fBuyingCompanyCountry write fBuyingCompanyCountry;
     property BuyingCompanyID: RawUTF8 read fBuyingCompanyID write fBuyingCompanyID;
     property BuyingCompanyName: RawUTF8 read fBuyingCompanyName write fBuyingCompanyName;
+
+    property ShipManagerSanction: RawUTF8 read fShipManagerSanction write fShipManagerSanction;
+    property ShipManagerCountry: RawUTF8 read fShipManagerCountry write fShipManagerCountry;
+    property ShipManagerID: RawUTF8 read fShipManagerID write fShipManagerID;
+    property ShipManagerName: RawUTF8 read fShipManagerName write fShipManagerName;
+
+    property DocCompanySanction: RawUTF8 read fDocCompanySanction write fDocCompanySanction;
+    property DocCompanyCountry: RawUTF8 read fDocCompanyCountry write fDocCompanyCountry;
+    property DocCompanyID: RawUTF8 read fDocCompanyID write fDocCompanyID;
+    property DocCompanyName: RawUTF8 read fDocCompanyName write fDocCompanyName;
+
+    property BareOwnerSanction: RawUTF8 read fBareOwnerSanction write fBareOwnerSanction;
+    property BareOwnerID: RawUTF8 read fBareOwnerID write fBareOwnerID;
+    property BareOwnerName: RawUTF8 read fBareOwnerName write fBareOwnerName;
+    property BareOwnerCountry: RawUTF8 read fBareOwnerCountry write fBareOwnerCountry;
+
     property VesselStatus: RawUTF8 read fVesselStatus write fVesselStatus;
     property InstalledProductTypes: TShipProductTypes read fInstalledProductTypes write fInstalledProductTypes;
 
     property DeliveryDate: TTimeLog read fDeliveryDate write fDeliveryDate;
+    property SClass1: RawUTF8 read fSocietyClass1 write fSocietyClass1;
     property LastDryDockDate: TTimeLog read fLastDryDockDate write fLastDryDockDate;
-    property SpecialSurveyDueDate: TTimeLog read fSpecialSurveyDue write fSpecialSurveyDue;
-    property DockingSurveyDueDate: TTimeLog read fDockingSurveyDue write fDockingSurveyDue;
+    property SpecialSurveyDueDate: TTimeLog read fSpecialSurveyDue1 write fSpecialSurveyDue1;
+    property DockingSurveyDueDate: TTimeLog read fDockingSurveyDue1 write fDockingSurveyDue1;
+    property SClass2: RawUTF8 read fSocietyClass2 write fSocietyClass2;
+    property SpecialSurveyDueDate2: TTimeLog read fSpecialSurveyDue2 write fSpecialSurveyDue2;
+    property DockingSurveyDueDate2: TTimeLog read fDockingSurveyDue2 write fDockingSurveyDue2;
     property GuaranteePeriod: TTimeLog read fGuaranteePeriod write fGuaranteePeriod;
   end;
 
@@ -205,7 +277,7 @@ var
 implementation
 
 uses SysUtils, mORMotSQLite3, Forms, VarRecUtils, Vcl.Dialogs, UnitStringUtil,
-  UnitFolderUtil;
+  UnitFolderUtil, UnitRttiUtil, UnitmORMotUtil;
 
 procedure InitVesselMasterClient(AVesselMasterDBName: string = '');
 var
@@ -618,8 +690,8 @@ begin
   Result.SClass1 := AVesselMaster.SClass1;
   Result.SClass2 := AVesselMaster.SClass2;
   Result.ShipType := AVesselMaster.ShipType;
-  Result.OwnerID := AVesselMaster.OwnerID;
-  Result.OwnerName := AVesselMaster.OwnerName;
+  Result.OwnerID := AVesselMaster.GroupOwnerID;
+  Result.OwnerName := AVesselMaster.GroupOwnerName;
   Result.TechManagerCountry := AVesselMaster.TechManagerCountry;
   Result.TechManagerID := AVesselMaster.TechManagerID;
   Result.TechManagerName := AVesselMaster.TechManagerName;
@@ -641,59 +713,43 @@ begin
 end;
 
 procedure LoadVesselMasterFromVariant(AVesselMaster:TSQLVesselMaster; ADoc: variant);
-var
-  LStr: string;
-
-  function GetDateFromStr(AStr: string): TTimeLog;
-  var
-    Ly, Lm, Ld: word;
-  begin
-    Result := 0;
-
-    if (AStr <> '') and (Pos('-', AStr) <> 0)then
-    begin
-      Ly := StrToIntDef(strToken(AStr, '-'),0);
-      if Ly <> 0 then
-      begin
-        Lm := StrToIntDef(strToken(AStr, '-'),0);
-        Ld := StrToIntDef(strToken(AStr, '-'),0);
-        Result := TimeLogFromDateTime(EncodeDate(Ly, Lm, Ld));
-      end;
-    end;
-  end;
+//var
+//  LStr: string;
 begin
   if ADoc = null then
     exit;
 
-  AVesselMaster.HullNo := ADoc.HullNo;
-  AVesselMaster.ShipName := ADoc.ShipName;
-  AVesselMaster.IMONo := ADoc.IMONo;
-  AVesselMaster.ShipBuilderID := ADoc.ShipBuilderID;
-  AVesselMaster.ShipBuilderName := ADoc.ShipBuilderName;
-  AVesselMaster.SClass1 := ADoc.SClass1;
-  AVesselMaster.SClass2 := ADoc.SClass2;
-  AVesselMaster.ShipType := ADoc.ShipType;
-  AVesselMaster.OwnerID := ADoc.OwnerID;
-  AVesselMaster.OwnerName := ADoc.OwnerName;
-  AVesselMaster.TechManagerCountry := ADoc.TechManagerCountry;
-  AVesselMaster.TechManagerID := ADoc.TechManagerID;
-  AVesselMaster.TechManagerName := ADoc.TechManagerName;
-  AVesselMaster.OperatorID := ADoc.OperatorID;
-  AVesselMaster.OperatorName := ADoc.OperatorName;
-  AVesselMaster.BuyingCompanyCountry := ADoc.BuyingCompanyCountry;
-  AVesselMaster.BuyingCompanyID := ADoc.BuyingCompanyID;
-  AVesselMaster.BuyingCompanyName := ADoc.BuyingCompanyName;
-  AVesselMaster.VesselStatus := ADoc.VesselStatus;
+  LoadRecordPropertyFromVariant(AVesselMaster, ADoc);
 
-  AVesselMaster.ShipTypeDesc := ADoc.ShipTypeDesc;
-  LStr := ADoc.DeliveryDate;
-  AVesselMaster.DeliveryDate := GetDateFromStr(LStr);
-  LStr := ADoc.SpecialSurveyDueDate;
-  AVesselMaster.LastDryDockDate := GetDateFromStr(LStr);
-  LStr := ADoc.SpecialSurveyDueDate;
-  AVesselMaster.SpecialSurveyDueDate := GetDateFromStr(LStr);
-  LStr := ADoc.DockingSurveyDueDate;
-  AVesselMaster.DockingSurveyDueDate := GetDateFromStr(LStr);
+//  AVesselMaster.HullNo := ADoc.HullNo;
+//  AVesselMaster.ShipName := ADoc.ShipName;
+//  AVesselMaster.IMONo := ADoc.IMONo;
+//  AVesselMaster.ShipBuilderID := ADoc.ShipBuilderID;
+//  AVesselMaster.ShipBuilderName := ADoc.ShipBuilderName;
+//  AVesselMaster.SClass1 := ADoc.SClass1;
+//  AVesselMaster.SClass2 := ADoc.SClass2;
+//  AVesselMaster.ShipType := ADoc.ShipType;
+//  AVesselMaster.OwnerID := ADoc.OwnerID;
+//  AVesselMaster.OwnerName := ADoc.OwnerName;
+//  AVesselMaster.TechManagerCountry := ADoc.TechManagerCountry;
+//  AVesselMaster.TechManagerID := ADoc.TechManagerID;
+//  AVesselMaster.TechManagerName := ADoc.TechManagerName;
+//  AVesselMaster.OperatorID := ADoc.OperatorID;
+//  AVesselMaster.OperatorName := ADoc.OperatorName;
+//  AVesselMaster.BuyingCompanyCountry := ADoc.BuyingCompanyCountry;
+//  AVesselMaster.BuyingCompanyID := ADoc.BuyingCompanyID;
+//  AVesselMaster.BuyingCompanyName := ADoc.BuyingCompanyName;
+//  AVesselMaster.VesselStatus := ADoc.VesselStatus;
+//
+//  AVesselMaster.ShipTypeDesc := ADoc.ShipTypeDesc;
+//  LStr := ADoc.DeliveryDate;
+//  AVesselMaster.DeliveryDate := GetDateFromStr(LStr);
+//  LStr := ADoc.SpecialSurveyDueDate;
+//  AVesselMaster.LastDryDockDate := GetDateFromStr(LStr);
+//  LStr := ADoc.SpecialSurveyDueDate;
+//  AVesselMaster.SpecialSurveyDueDate := GetDateFromStr(LStr);
+//  LStr := ADoc.DockingSurveyDueDate;
+//  AVesselMaster.DockingSurveyDueDate := GetDateFromStr(LStr);
 //  AVesselMaster.UpdatedDate := GetDateFromStr(LStr);
 
 //  if ADoc.SpecialSurveyDueDate <> null then
@@ -955,9 +1011,9 @@ begin
     ASQLVesselMaster.ShipTypeDesc := ASQLVesselInfo4SeaWeb.ShipTypeDesc;
 
   if ASQLVesselInfo4SeaWeb.OwnerName <> '' then
-    ASQLVesselMaster.OwnerName := ASQLVesselInfo4SeaWeb.OwnerName;
+    ASQLVesselMaster.GroupOwnerName := ASQLVesselInfo4SeaWeb.OwnerName;
   if ASQLVesselInfo4SeaWeb.OwnerCountry <> '' then
-    ASQLVesselMaster.OwnerCountry := ASQLVesselInfo4SeaWeb.OwnerCountry;
+    ASQLVesselMaster.GroupOwnerCountry := ASQLVesselInfo4SeaWeb.OwnerCountry;
   if ASQLVesselInfo4SeaWeb.OperatorName <> '' then
     ASQLVesselMaster.OperatorName := ASQLVesselInfo4SeaWeb.OperatorName;
   if ASQLVesselInfo4SeaWeb.OperatorCountry <> '' then
@@ -991,9 +1047,9 @@ begin
   if ASQLVesselInfo4SeaWeb.ShipBuilderName <> '' then
     ASQLVesselMaster.ShipBuilderName := ASQLVesselInfo4SeaWeb.ShipBuilderName;
   if ASQLVesselInfo4SeaWeb.OwnerName <> '' then
-    ASQLVesselMaster.OwnerName := ASQLVesselInfo4SeaWeb.OwnerName;
+    ASQLVesselMaster.GroupOwnerName := ASQLVesselInfo4SeaWeb.OwnerName;
   if ASQLVesselInfo4SeaWeb.OwnerCountry <> '' then
-    ASQLVesselMaster.OwnerCountry := ASQLVesselInfo4SeaWeb.OwnerCountry;
+    ASQLVesselMaster.GroupOwnerCountry := ASQLVesselInfo4SeaWeb.OwnerCountry;
   if ASQLVesselInfo4SeaWeb.OperatorName <> '' then
     ASQLVesselMaster.OperatorName := ASQLVesselInfo4SeaWeb.OperatorName;
   if ASQLVesselInfo4SeaWeb.OperatorCountry <> '' then

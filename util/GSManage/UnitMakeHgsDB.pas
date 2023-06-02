@@ -7,6 +7,8 @@ uses Sysutils, Dialogs, Classes, UnitExcelUtil, Syncommons, Forms,
   UnitVesselData;
 
 procedure ImportVesselMasterFromXlsFile(AFileName: string);
+procedure ImportVesselMasterFromMapsExportedXlsFile(AFileName: string);
+procedure ImportVesselMasterFromMapsExportedXlsFile2(AFileName: string);
 procedure ImportVesselDeliveryFromXlsFile(AFileName: string);
 procedure ImportVesselGuaranteePerionNDeliveryDateFromXlsFile(AFileName: string);
 procedure ImportNationListFromXlsFile(AFileName: string);
@@ -22,7 +24,7 @@ procedure RemoveGEFromInstalledProductInVesselMaster;
 implementation
 
 uses FrmVesselList, UnitNationRecord, UnitEngineMasterRecord, UnitGeneratorRecord,
-  UnitEngineMasterData;//, Vcl.Imaging.PngImage;
+  UnitEngineMasterData, UnitmORMotUtil;
 
 procedure ImportVesselMasterFromXlsFile(AFileName: string);
 var
@@ -39,7 +41,6 @@ begin
     ShowMessage('File(' + AFileName + ')이 존재하지 않습니다');
     exit;
   end;
-
 
   LExcel := GetActiveExcelOleObject(True);
   LWorkBook := LExcel.Workbooks.Open(AFileName);
@@ -114,6 +115,254 @@ begin
 
     Inc(LIdx);
     LRange := LWorksheet.range[LStr+IntToStr(LIdx)];
+  end;
+
+  VesselListF.SplashScreen1.Hide;
+  LWorkBook.Close;
+  LExcel.Quit;
+end;
+
+procedure ImportVesselMasterFromMapsExportedXlsFile2(AFileName: string);
+const
+  VesselListDBColumnAry : array[0..49] of string =
+    ('VesselSanction', 'InstalledLocation', 'HullNo', 'ShipName', 'IMONo', 'ShipType', 'CargoSize', //6
+     'GroupOwnerSanction', 'GroupOwnerCountry', 'GroupOwnerID',//9
+     'GroupOwnerName', 'TechManagerSanction', 'TechManagerCountry', 'TechManagerID', 'TechManagerName',//14
+     'OperatorSanction', 'OperatorCountry', 'OperatorID',//17
+     'OperatorName', 'BuyingCompanySanction',//19
+     'BuyingCompanyCountry', 'BuyingCompanyID', 'BuyingCompanyName',//22
+     'ShipManagerSanction', 'ShipManagerCountry','ShipManagerID', 'ShipManagerName',//26
+     'DocCompanySanction', 'DocCompCountry','DocCompID', 'DocCompanyName.',//30
+     'RegOwnerSanction', 'RegOwnerCountry','RegOwnerID', 'RegOwnerName',//34
+     'BareOwnerSanction', 'BareOwnerCountry','BareOwnerID', 'BareOwnerName',//38
+     'ShipBuilderID',//39
+     'ShipBuilderName', 'VesselStatus', 'DeliveryDate', 'SClass1', 'SpecialSurveyDueDate',//44
+     'DockingSurveyDueDate', 'SClass2', 'SpecialSurveyDueDate2', 'DockingSurveyDueDate2', 'UpdatedDate');//49
+var
+  LCsvFile: string;
+  LDoc: Variant;
+  LCSVDynUtf8: TRawUTF8DynArray;
+  LCSVDynArr: TDynArray;
+  LCSVUtf8: RawUTF8;
+  LStrList: TStringList;
+  i,j,LLastRow: integer;
+begin
+//  XlsStrFindAndReplaceAll(AFileName, ',', '|');
+  LCsvFile := XlsSave2CSV(AFileName);
+
+  if LCsvFile = '' then
+    exit;
+
+  LStrList := TStringList.Create;
+  try
+    TDocVariant.New(LDoc, [dvoReturnNullForUnknownProperty]);
+    LCSVDynArr.Init(TypeInfo(TRawUTF8DynArray), LCSVDynUtf8);
+
+    LStrList.LoadFromFile(LCsvFile);
+//    LStrList.Text := StringReplace(LStrList.Text, ',', '|', [rfReplaceAll, rfIgnoreCase]);
+    LLastRow := LStrList.Count;
+
+    for i := 1 to LLastRow - 1 do
+    begin
+      VesselListF.SplashScreen1.BeginUpdate;
+      VesselListF.SplashScreen1.BasicProgramInfo.ProgramName.Text := 'Importing Data from xls...(' + IntToStr(i+1) + '/' + IntToStr(LLastRow) + ')';
+      VesselListF.SplashScreen1.ProgressBar.Position := (i+1)/LLastRow*100;
+      VesselListF.SplashScreen1.EndUpdate;
+      VesselListF.SplashScreen1.Show;
+
+      LCSVUtf8 := StringToUTF8(LStrList.Strings[i]);
+      CSVToRawUTF8DynArray(PUTF8Char(LCSVUtf8),LCSVDynUtf8,'|', False,True);
+
+      for j := Low(LCSVDynUtf8) to High(LCSVDynUtf8) do
+        if VesselListDBColumnAry[j] <> '' then
+          TDocVariantData(LDoc).Value[VesselListDBColumnAry[j]] := LCSVDynUtf8[j];
+
+      LDoc.ShipTypeDesc := '';
+      LDoc.UpdatedDate := TimeLogFromDateTime(now);
+
+      if LDoc.IMONo <> '' then
+        AddOrUpdateVesselMasterFromVariant(LDoc);
+
+      LCSVDynArr.Clear;
+    end;
+  finally
+    LStrList.Free;
+    VesselListF.SplashScreen1.Hide;
+  end;
+end;
+
+procedure ImportVesselMasterFromMapsExportedXlsFile(AFileName: string);
+const
+  VesselListDBColumnAry : array[0..49] of string =
+    ('VesselSanction', 'InstalledLocation', 'HullNo', 'ShipName', 'IMONo', 'ShipType', 'CargoSize',
+     'GroupOwnerSanction', 'GroupOwnerCountry', 'GroupOwnerID',
+     'GroupOwnerName', 'TechManagerSanction', 'TechManagerCountry', 'TechManagerID', 'TechManagerName',
+     'OperatorSanction', 'OperatorCountry', 'OperatorID',
+     'OperatorName', 'BuyingCompanySanction',
+     'BuyingCompanyCountry', 'BuyingCompanyID', 'BuyingCompanyName',
+     'ShipManagerSanction', 'ShipManagerCountry','ShipManagerID', 'ShipManagerName',
+     'DocCompanySanction', 'DocCompCountry','DocCompID', 'DocCompanyName.',
+     'RegOwnerSanction', 'RegOwnerCountry','RegOwnerID', 'RegOwnerName',
+     'BareOwnerSanction', 'BareOwnerCountry','BareOwnerID', 'BareOwnerName',
+     'ShipBuilderID',
+     'ShipBuilderName', 'VesselStatus', 'DeliveryDate', 'SClass1', 'SpecialSurveyDueDate',
+     'DockingSurveyDueDate', 'SClass2', 'SpecialSurveyDueDate2', 'DockingSurveyDueDate2', 'UpdatedDate');
+
+  VesselListExcelColumnAry : array[0..49] of string =
+    ('Vessel Sanction', '설치위치', '호선번호', '호선명', 'IMO No.', '선종', '선형',
+     'Group Owner Sacntion', 'Group Owner Country', 'Group Owner ID',
+     'Group Owner', 'Tech. Manager Sanction', 'Tech. Manager Country', 'Tech. Manager ID', 'Tech. Manager',
+     'Operator Sanction', 'Operator Country', 'Operator ID',
+     'Operator', 'Buying Co. Sanction',
+     'Buying Company Country', 'Buying Company ID', 'Buying Company',
+     'Ship Manager Sanction', 'Ship Manager Country','Ship Manager ID', 'Ship Manager',
+     'Doc. Company Sanction', 'Doc. Comp. Country','Doc. Comp. ID', 'Doc. Comp.',
+     'Reg. Owner Sanction', 'Reg. Owner Country','Reg. Owner ID', 'Reg. Owner',
+     'Bare. Owner Sanction', 'Bare. Owner Country','Bare. Owner ID', 'Bare. Owner',
+     '조선소 ID',
+     '조선소명', '상태', '선박인도일', '선급1', 'Special Survey Due 1',
+     'Docking Survey Due 1', '선급2', 'Special Survey Due 2', 'Docking Survey Due 2', 'UpdatedDate');
+var
+  LExcel: OleVariant;
+  LWorkBook: OleVariant;
+  LRange: OleVariant;
+  LWorksheet: OleVariant;
+  LStr, LStr2, LColNoChar: string;
+  i, LCol, LRow, LLastRow, LLastColumn: integer;
+  LDoc: Variant;
+  LExcelColumnList, LDBColumnIndexList: TStringList;
+
+  procedure BuildColumnIndexList;
+  var
+    Li: integer;
+    LColChar: string;
+  begin
+    LColChar := 'A';
+
+    for Li := 1 to LLastColumn do
+    begin
+      LRange := LWorksheet.range[LColChar+'1'];
+      LStr2 := LRange.FormulaR1C1;
+      LCol := LExcelColumnList.IndexOf(LStr2);
+
+      if LCol <> -1 then
+      begin
+        LColNoChar := GetExcelColumnAlphabetByInt(LCol+1);
+        LDBColumnIndexList.AddObject(LColNoChar, TObject(LCol));
+      end;
+
+      LColChar := GetIncXLColumn(LColChar);
+    end;
+  end;
+begin
+  if not FileExists(AFileName) then
+  begin
+    ShowMessage('File(' + AFileName + ')이 존재하지 않습니다');
+    exit;
+  end;
+
+  LExcel := GetActiveExcelOleObject(True);
+  LWorkBook := LExcel.Workbooks.Open(AFileName);
+//  LExcel.Visible := true;
+  LWorksheet := LExcel.ActiveSheet;
+  LLastRow := GetLastRowNumFromExcel(LWorkSheet);
+  LLastColumn := GetLastColNumFromExcel(LWorkSheet);
+  TDocVariant.New(LDoc, [dvoReturnNullForUnknownProperty]);
+
+  LStr := 'A';
+//  LRow := 2;
+
+  LExcelColumnList := TStringList.Create;
+  LDBColumnIndexList := TStringList.Create;
+
+  try
+    for i := Low(VesselListExcelColumnAry) to High(VesselListExcelColumnAry) do
+      LExcelColumnList.Add(VesselListExcelColumnAry[i]);
+
+    BuildColumnIndexList();
+
+//    while LRange.FormulaR1C1 <> '' do
+    for LRow := 2 to LLastRow do
+    begin
+      VesselListF.SplashScreen1.BeginUpdate;
+      VesselListF.SplashScreen1.BasicProgramInfo.ProgramName.Text := 'Importing Data from xls...(' + IntToStr(LRow) + '/' + IntToStr(LLastRow) + ')';
+      VesselListF.SplashScreen1.ProgressBar.Position := LRow/LLastRow*100;
+      VesselListF.SplashScreen1.EndUpdate;
+      VesselListF.SplashScreen1.Show;
+
+//      LColNoChar := '';
+
+      for i := 0 to LDBColumnIndexList.Count - 1 do
+      begin
+        LColNoChar := LDBColumnIndexList.Strings[i];
+        LRange := LWorksheet.range[LColNoChar+IntToStr(LRow)];
+        LCol := Integer(LDBColumnIndexList.Objects[i]);
+
+        if VesselListDBColumnAry[LCol] <> '' then
+          TDocVariantData(LDoc).Value[VesselListDBColumnAry[LCol]] := LRange.FormulaR1C1;
+      end;//for
+
+//      LRange := LWorksheet.range['B'+IntToStr(LIdx)];
+//      LDoc.HullNo := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['C'+IntToStr(LIdx)];
+//      LDoc.ShipName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['D'+IntToStr(LIdx)];
+//      LDoc.IMONo := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['E'+IntToStr(LIdx)];
+//      LDoc.ShipType := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['F'+IntToStr(LIdx)];
+//      LDoc.OwnerID := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['G'+IntToStr(LIdx)];
+//      LDoc.OwnerName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['H'+IntToStr(LIdx)];
+//      LDoc.TechManagerCountry := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['I'+IntToStr(LIdx)];
+//      LDoc.TechManagerID := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['J'+IntToStr(LIdx)];
+//      LDoc.TechManagerName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['K'+IntToStr(LIdx)];
+//      LDoc.OperatorID := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['L'+IntToStr(LIdx)];
+//      LDoc.OperatorName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['M'+IntToStr(LIdx)];
+//      LDoc.BuyingCompanyCountry := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['N'+IntToStr(LIdx)];
+//      LDoc.BuyingCompanyID := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['O'+IntToStr(LIdx)];
+//      LDoc.BuyingCompanyName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['P'+IntToStr(LIdx)];
+//      LDoc.ShipBuilderID := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['Q'+IntToStr(LIdx)];
+//      LDoc.ShipBuilderName := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['R'+IntToStr(LIdx)];
+//      LDoc.VesselStatus := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['S'+IntToStr(LIdx)];
+//      LStr2 := LRange.Value;
+//      LDoc.DeliveryDate := GetTimeLogFromStr(LStr2);
+//      LRange := LWorksheet.range['T'+IntToStr(LIdx)];
+//      LDoc.SClass1 := LRange.FormulaR1C1;
+//      LRange := LWorksheet.range['U'+IntToStr(LIdx)];
+//      LStr2 := LRange.Value;
+//      LDoc.SpecialSurveyDueDate := GetTimeLogFromStr(LStr2);
+//      LRange := LWorksheet.range['V'+IntToStr(LIdx)];
+//      LStr2 := LRange.Value;
+//      LDoc.DockingSurveyDueDate := GetTimeLogFromStr(LStr2);
+//      LRange := LWorksheet.range['W'+IntToStr(LIdx)];
+//      LDoc.SClass2 := LRange.FormulaR1C1;
+
+      LDoc.ShipTypeDesc := '';
+      LDoc.UpdatedDate := TimeLogFromDateTime(now);
+
+      //    if (LDoc.VesselStatus <> '') and (LDoc.VesselStatus <> 'Broken Up') then
+      if LDoc.IMONo <> '' then
+        AddOrUpdateVesselMasterFromVariant(LDoc);
+
+//      Inc(LRow);
+//      LRange := LWorksheet.range['A'+IntToStr(LRow)];
+    end;//for
+  finally
+    LExcelColumnList.Free;
+    LDBColumnIndexList.Free;
   end;
 
   VesselListF.SplashScreen1.Hide;
