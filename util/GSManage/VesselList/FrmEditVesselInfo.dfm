@@ -2,7 +2,7 @@ object EditVesselInfoF: TEditVesselInfoF
   Left = 0
   Top = 0
   Caption = 'Edit Vessel Info.'
-  ClientHeight = 530
+  ClientHeight = 545
   ClientWidth = 925
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -53,17 +53,18 @@ object EditVesselInfoF: TEditVesselInfoF
   end
   object Panel3: TPanel
     Left = 0
-    Top = 489
+    Top = 504
     Width = 925
     Height = 41
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 489
   end
   object AdvOfficePager1: TAdvOfficePager
     Left = 0
     Top = 41
     Width = 925
-    Height = 448
+    Height = 463
     Align = alClient
     ActivePage = AdvOfficePager11
     ButtonSettings.CloseButtonPicture.Data = {
@@ -351,13 +352,14 @@ object EditVesselInfoF: TEditVesselInfoF
     ButtonSettings.ClosedListButtonHint = 'Closed Pages'
     ShowShortCutHints = False
     TabOrder = 2
+    ExplicitHeight = 448
     NextPictureChanged = False
     PrevPictureChanged = False
     object AdvOfficePager11: TAdvOfficePage
       Left = 1
       Top = 26
       Width = 923
-      Height = 420
+      Height = 435
       Caption = 'Vessel Info'
       PageAppearance.BorderColor = 14922381
       PageAppearance.Color = 16445929
@@ -1148,9 +1150,9 @@ object EditVesselInfoF: TEditVesselInfoF
       end
       object InstalledProductGrp: TAdvOfficeCheckGroup
         Left = 463
-        Top = 172
+        Top = 169
         Width = 438
-        Height = 87
+        Height = 97
         Version = '1.3.8.5'
         Caption = '9. Installed Product'
         ParentBackground = False
@@ -1184,7 +1186,7 @@ object EditVesselInfoF: TEditVesselInfoF
       Left = 1
       Top = 26
       Width = 923
-      Height = 420
+      Height = 435
       Caption = 'Attachments'
       PageAppearance.BorderColor = 14922381
       PageAppearance.Color = 16445929
@@ -1247,7 +1249,7 @@ object EditVesselInfoF: TEditVesselInfoF
         Left = 5
         Top = 5
         Width = 92
-        Height = 410
+        Height = 425
         Align = alLeft
         Alignment = taCenter
         AutoSize = False
@@ -1277,16 +1279,18 @@ object EditVesselInfoF: TEditVesselInfoF
         Left = 100
         Top = 2
         Width = 821
-        Height = 416
+        Height = 431
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 416
         object Panel4: TPanel
           Left = 1
-          Top = 377
+          Top = 392
           Width = 819
           Height = 38
           Align = alBottom
           TabOrder = 0
+          ExplicitTop = 377
           object AdvGlowButton6: TAdvGlowButton
             AlignWithMargins = True
             Left = 690
@@ -1370,7 +1374,7 @@ object EditVesselInfoF: TEditVesselInfoF
           Left = 1
           Top = 1
           Width = 819
-          Height = 376
+          Height = 391
           Margins.Left = 40
           Margins.Top = 0
           Touch.InteractiveGestures = [igPan, igPressAndTap]
@@ -1381,6 +1385,7 @@ object EditVesselInfoF: TEditVesselInfoF
           SelectionColor = 12615680
           TabOrder = 1
           TabStop = True
+          ExplicitHeight = 376
           object NxIncrementColumn3: TNxIncrementColumn
             Alignment = taCenter
             DefaultWidth = 32
@@ -1486,7 +1491,7 @@ object EditVesselInfoF: TEditVesselInfoF
       Left = 1
       Top = 26
       Width = 923
-      Height = 420
+      Height = 435
       Caption = 'Engine'
       PageAppearance.BorderColor = 14922381
       PageAppearance.Color = 16445929
@@ -1549,7 +1554,7 @@ object EditVesselInfoF: TEditVesselInfoF
       Left = 1
       Top = 26
       Width = 923
-      Height = 420
+      Height = 435
       Caption = 'Electric'
       PageAppearance.BorderColor = 14922381
       PageAppearance.Color = 16445929
@@ -1614,7 +1619,7 @@ object EditVesselInfoF: TEditVesselInfoF
     Left = 155
     Top = 8
     Bitmap = {
-      494C010130009800280410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010130009800300410001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000D0000000010020000000000000D0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3342,7 +3347,7 @@ object EditVesselInfoF: TEditVesselInfoF
     Left = 184
     Top = 8
     Bitmap = {
-      494C010110001400FC0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010110001400040110001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4012,6 +4017,7 @@ object EditVesselInfoF: TEditVesselInfoF
   object DropEmptyTarget1: TDropEmptyTarget
     DragTypes = [dtCopy, dtLink]
     Target = fileGrid
+    WinTarget = 0
     Left = 218
     Top = 2
   end

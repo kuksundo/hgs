@@ -1,8 +1,8 @@
-unit UnitVesselData;
+unit UnitVesselData2;
 
 interface
 
-uses System.Classes, UnitEnumHelper, UnitRttiUtil;
+uses System.Classes, UnitEnumHelper, UnitRttiUtil2;
 
 type
   TVesselQueryDateType = (vqdtNull, vqdtDockingSurveyDate, vqdtSpecialSurveyDate,

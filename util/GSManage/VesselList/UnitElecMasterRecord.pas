@@ -261,7 +261,7 @@ begin
 
     if AElecSearchParamRec.ProductType <> '' then
     begin
-      LElecProductType := String2ElecProductType(AElecSearchParamRec.ProductType);
+      LElecProductType := g_ElecProductType.ToType(AElecSearchParamRec.ProductType);
       AddConstArray(ConstArray, [Ord(LElecProductType)]);
       if LWhere <> '' then
         LWhere := LWhere + ' and ';

@@ -2044,7 +2044,7 @@ object VesselListF: TVesselListF
     Left = 16
     Top = 208
     Bitmap = {
-      494C010101007000800318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010101007000AC0318001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000005C43
@@ -2354,7 +2354,7 @@ object VesselListF: TVesselListF
     Left = 96
     Top = 208
     Bitmap = {
-      494C010102005402900310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102005402BC0310001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000000505052E101010521717
       17611D1D1D6C1F1D1E6D272425792523257825232578262425791F1E1E6E1E1E
@@ -2498,6 +2498,18 @@ object VesselListF: TVesselListF
     Top = 256
     object File1: TMenuItem
       Caption = 'File'
+      object ImportVessellistFromMAPSExportedXlsFile1: TMenuItem
+        Caption = 'Import Vessel list From MAPS Exported Xls File'
+        object FromXls1: TMenuItem
+          Caption = 'From Xls'
+          Enabled = False
+          OnClick = FromXls1Click
+        end
+        object FromCSV1: TMenuItem
+          Caption = 'From CSV'
+          OnClick = FromCSV1Click
+        end
+      end
       object ImportFromFile1: TMenuItem
         Caption = 'Import Vessel list From Xls File'
         OnClick = ImportFromFile1Click
@@ -2541,6 +2553,10 @@ object VesselListF: TVesselListF
       object ImportGeneratorMasterFromXlsFile1: TMenuItem
         Caption = 'Import Generator Master From Xls File'
         OnClick = ImportGeneratorMasterFromXlsFile1Click
+      end
+      object ImportCustomerListfromMAPSxlsFile1: TMenuItem
+        Caption = 'Import MasterCustomer from MAPS xls File'
+        OnClick = ImportCustomerListfromMAPSxlsFile1Click
       end
       object N2: TMenuItem
         Caption = '-'
@@ -2669,7 +2685,7 @@ object VesselListF: TVesselListF
     Left = 56
     Top = 208
     Bitmap = {
-      494C01010400C800E40420002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010400C800100520002000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

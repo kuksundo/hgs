@@ -12,7 +12,7 @@ uses
   AdvSmoothSplashScreen, UnitNationRecord, JvBaseDlg, JvSelectDirectory,
   pjhComboBox, UnitEngineMasterRecord, AdvSmoothPanel, AdvSmoothExpanderPanel,
   UnitGeneratorRecord, UnitVesselData, UnitCBData, UnitEngineMasterData,
-  UnitCommonWSInterface;
+  UnitCommonWSInterface, UnitElecMasterData;
 
 type
   TVesselListService = class(TService4CommonWS)
@@ -146,6 +146,11 @@ type
     COPTRate: TNxRateColumn;
     PROPRate: TNxRateColumn;
     EGRRate: TNxRateColumn;
+    ImportVessellistFromMAPSExportedXlsFile1: TMenuItem;
+    ImportCustomerListfromMAPSxlsFile1: TMenuItem;
+    FromXls1: TMenuItem;
+    FromCSV1: TMenuItem;
+
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ImportFromFile1Click(Sender: TObject);
@@ -188,7 +193,11 @@ type
       Sender: TObject);
     procedure RemoveGEFromInstalledProductInVesselMaster1Click(Sender: TObject);
     procedure JvLabel4DblClick(Sender: TObject);
+    procedure ImportCustomerListfromMAPSxlsFile1Click(Sender: TObject);
+    procedure FromXls1Click(Sender: TObject);
+    procedure FromCSV1Click(Sender: TObject);
   private
+    procedure InitEnum;
     procedure DestroyList4VesselMaster;
     procedure ShowHiMAPEditFormFromGrid(ARow: integer);
     procedure ShowVesselInfoEditFormFromGrid(ARow: integer);
@@ -216,10 +225,13 @@ var
 
 implementation
 
-uses frmHiMAPDetail, UnitHiMAPRecord, FrmHiMAPSelect, UnitMakeHgsDB,
-  UnitMakeAnsiDeviceDB, UnitAnsiDeviceRecord, FrmAnsiDeviceNoList, HtmlParserEx,
-  UnitStringUtil, FrmEditVesselInfo, UnitExcelUtil, FrmViewNationCode,
-  FrmViewEngineMaster, FrmVesselAdvancedSearch, frmGeneratorDetail, UnitBase64Util;
+uses
+  FrmEditVesselInfo, FrmHiMAPSelect, frmHiMAPDetail, FrmViewNationCode,
+  FrmAnsiDeviceNoList, FrmViewEngineMaster, FrmVesselAdvancedSearch, frmGeneratorDetail,
+  UnitHiMAPRecord, UnitMakeHgsDB,
+  UnitMakeAnsiDeviceDB, UnitAnsiDeviceRecord, HtmlParserEx,
+  UnitStringUtil, UnitExcelUtil, UnitMakeMasterCustomerDB,
+  UnitBase64Util;
 
 {$R *.dfm}
 
@@ -359,11 +371,41 @@ begin
   begin
     VesselListGrid.PopupMenu := PopupMenu1;
   end;
+
+  InitEnum;
 end;
 
 procedure TVesselListF.FormDestroy(Sender: TObject);
 begin
   DestroyList4VesselMaster;
+end;
+
+procedure TVesselListF.FromCSV1Click(Sender: TObject);
+begin
+  ShowMessage('Xls파일을 csv 파일로 변환 후 Import 함.' + #13#10 +
+    'csv 변환 시 회사명에 ","가 포함된 경우 오류가 발생하므로 excel csv Delimeter를 "," => "|" 로 변경해 주어야 함.' + #13#10 +
+    '변경 방법 : "제어판->국가 및 언어->추가설정->목록 구분 기호"를 "|"로 변경 적용할 것');
+
+  if OpenDialog1.Execute then
+  begin
+    if FileExists(OpenDialog1.FileName) then
+    begin
+      ImportVesselMasterFromMapsExportedXlsFile2(OpenDialog1.FileName);
+      GetVesselList2Grid;
+    end;
+  end;
+end;
+
+procedure TVesselListF.FromXls1Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+    if FileExists(OpenDialog1.FileName) then
+    begin
+      ImportVesselMasterFromMapsExportedXlsFile(OpenDialog1.FileName);
+      GetVesselList2Grid;
+    end;
+  end;
 end;
 
 procedure TVesselListF.GetVesselInfoFromText(AText: string; var ADoc: variant);
@@ -968,6 +1010,18 @@ begin
   end;
 end;
 
+procedure TVesselListF.ImportCustomerListfromMAPSxlsFile1Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+    if FileExists(OpenDialog1.FileName) then
+    begin
+      ImportCustomerMasterFromMapsExportedXlsFile(OpenDialog1.FileName, 'CustomerMaster.sqlite', SplashScreen1);
+      ShowMessage('Import completed sucessfully!');;
+    end;
+  end;
+end;
+
 procedure TVesselListF.ImportEngineMasterFromXls1Click(Sender: TObject);
 begin
   if OpenDialog1.Execute then
@@ -1068,6 +1122,12 @@ begin
       GetVesselList2Grid;
     end;
   end;
+end;
+
+procedure TVesselListF.InitEnum;
+begin
+  g_ElecProductType.InitArrayRecord(R_ElecProductType);
+  g_VesselStatus.InitArrayRecord(R_VesselStatus);
 end;
 
 procedure TVesselListF.JvLabel4DblClick(Sender: TObject);
