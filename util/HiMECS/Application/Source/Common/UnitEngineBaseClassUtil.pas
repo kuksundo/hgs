@@ -9,7 +9,9 @@ uses
   NxScrollControl, NxInspector, EngineBaseClass_Old, EngineBaseClass, EngineConst;
 
   function AddItemsToInspector(AInspector: TNextInspector; ANxItemClass: TNxItemClass;
-              ABaseIndex: integer; AName, ACaption, AValue: string):TNxPropertyItem;
+              AParentNode: TNxPropertyItem; AName, ACaption, AValue: string):TNxPropertyItem;overload;
+  function AddItemsToInspector(AInspector: TNextInspector; ANxItemClass: TNxItemClass;
+              ABaseIndex: integer; AName, ACaption, AValue: string):TNxPropertyItem;overload;
 
   procedure EngineInfoInspector2Class(AInspector: TNextInspector;
     AClass: TICEngine; AIsObjClear: Boolean=false);
@@ -28,7 +30,7 @@ uses
   procedure SetBasicEngineInfoItem(AInspector: TNextInspector);
   procedure InitEngineInfoItem(AInspector: TNextInspector);
   function AddNullComponentToInspector(AClass: TICEngine;
-    AInspector: TNextInspector; APartName: string): TNxPropertyItem;
+    AInspector: TNextInspector; APartName: string; AKind: integer): TNxPropertyItem;
   procedure SetInpectorToClassValue(ANx: TNxPropertyItem; AObj: TICEnginePartItem);
 
 implementation
@@ -37,7 +39,28 @@ implementation
 //ACaption: 왼쪽 Text
 //AValue: 오른쪽 Text
 function AddItemsToInspector(AInspector: TNextInspector; ANxItemClass: TNxItemClass;
-            ABaseIndex: integer; AName, ACaption, AValue: string):TNxPropertyItem;
+            AParentNode: TNxPropertyItem; AName, ACaption, AValue: string):TNxPropertyItem;
+begin
+  Result := nil;
+  Result := AInspector.Items.AddChild(AParentNode, ANxItemClass);
+
+  if Result <> nil then
+  begin
+    if AName <> '' then
+      Result.Name := AName;
+
+    if ACaption <> '' then
+      Result.Caption := ACaption;
+
+    if AValue <> '' then
+      Result.AsString := AValue;
+  end;
+
+  AInspector.Invalidate;
+end;
+
+function AddItemsToInspector(AInspector: TNextInspector; ANxItemClass: TNxItemClass;
+  ABaseIndex: integer; AName, ACaption, AValue: string):TNxPropertyItem;overload;
 begin
   Result := nil;
   Result := AInspector.Items.AddChild(AInspector.Items[ABaseIndex], ANxItemClass);
@@ -60,19 +83,65 @@ end;
 procedure EngineInfoInspector2Class(AInspector: TNextInspector;
   AClass: TICEngine; AIsObjClear: Boolean);
 var
-  i,j,k:integer;
+  i:integer;
   LICEnginePartItem: TICEnginePartItem;
+  LICEngineComponentItem: TICEngineComponentItem;
   LPropertyItem, LPropertyItem2: TNxPropertyItem;
+
+  procedure SetPropertyItem2Class(AProperty: TNxPropertyItem);
+  var
+    j, LParentIdx: integer;
+    LPropertyItem3: TNxPropertyItem;
+  begin
+    if AProperty.Tag = 1 then //Component
+    begin
+      if AIsObjClear then
+        LICEngineComponentItem := AClass.ICEngineComponentCollect.Add
+      else
+        LICEngineComponentItem := TICEngineComponentItem(AInspector.Items[i].ObjectReference);
+
+      LICEngineComponentItem.ComponentName := AProperty.Caption;
+
+      for j := 0 to AProperty.Count - 1 do
+      begin
+        LPropertyItem3 := AProperty.Item[j];
+        SetPropertyItem2Class(LPropertyItem3);
+      end;
+    end
+    else
+    if AProperty.Tag = 2 then //Part
+    begin
+      if AIsObjClear then
+        LICEnginePartItem := AClass.ICEnginePartCollect.Add
+      else
+        LICEnginePartItem := TICEnginePartItem(AInspector.Items[i].ObjectReference);
+
+      LParentIdx := AProperty.ParentItem.NodeIndex;
+
+      if Assigned(AInspector.Items[LParentIdx].ObjectReference) then
+        LICEnginePartItem.ComponentIndex :=
+          TICEngineComponentItem(AInspector.Items[LParentIdx].ObjectReference).Index
+      else
+        LICEnginePartItem.ComponentIndex := -1;
+      //컴포넌트 각 Part root Item을 가져옴
+      SetInpectorToClassValue(AProperty,LICEnginePartItem);
+    end;
+  end;
 begin
   if AIsObjClear then
+  begin
+    AClass.ICEngineComponentCollect.Clear;
+    AClass.ICEnginePartCollect.Clear;
     AClass.Clear;
+  end;
 
   AClass.CylinderCount := AInspector.items.ItemByName['CylinderCount'].AsInteger;
   AClass.Bore := AInspector.items.ItemByName['Bore'].AsInteger;
   AClass.Stroke := AInspector.items.ItemByName['Stroke'].AsInteger;
   AClass.FuelType := String2FuelType(AInspector.items.ItemByName['FuelType'].AsString);
   AClass.CylinderConfiguration := String2CylinderConfiguration(AInspector.items.ItemByName['CylinderConfiguration'].AsString);
-  AClass.RatedSpeed := AInspector.items.ItemByName['Speed'].AsInteger;
+  AClass.RatedSpeed := AInspector.items.ItemByName['MCR'].AsInteger;
+  AClass.BMEP := AInspector.items.ItemByName['BMEP'].AsFloat;
   AClass.SFOC := AInspector.items.ItemByName['SFOC'].AsInteger;
   AClass.Frequency := AInspector.items.ItemByName['Frequency'].AsFloat;
   AClass.RatedPower_Engine := AInspector.items.ItemByName['Eng_kW'].AsFloat;
@@ -92,20 +161,14 @@ begin
   AClass.EVO := AInspector.items.ItemByName['EVO'].AsInteger;
   AClass.EVC := AInspector.items.ItemByName['EVC'].AsInteger;
 
-  j := 4;
+//  j := 4;
   LPropertyItem := AInspector.items.ItemByName['FComponents'];
-  k := LPropertyItem.NodeIndex + 1;
+//  k := LPropertyItem.NodeIndex + 1;
 
   for i := 0 to LPropertyItem.Count - 1 do
   begin
-    if AIsObjClear then
-      LICEnginePartItem := AClass.ICEnginePartCollect.Add
-    else
-      LICEnginePartItem := AClass.ICEnginePartCollect.Items[i];
-
-    //컴포넌트 각 Part root Item을 가져옴
     LPropertyItem2 := LPropertyItem.Item[i];
-    SetInpectorToClassValue(LPropertyItem2,LICEnginePartItem);
+    SetPropertyItem2Class(LPropertyItem2);
 
 //    LICEnginePartItem.PartName :=
 //                            AInspector.Items[i*j+k].Caption;
@@ -161,6 +224,8 @@ var
   i,j,LNodeIndex,LLastIndex: integer;
   LPropertyItem: TNxPropertyItem;
   LComboItem: TNxComboBoxItem;
+  LICEnginePartItem: TICEnginePartItem;
+  LICEngineComponentItem: TICEngineComponentItem;
   LStrList: TStringList;
 begin
   AInspector.BeginUpdate;
@@ -183,9 +248,10 @@ begin
     LPropertyItem.Expanded := False;
     LPropertyItem.ReadOnly := True;
 
-    AddItemsToInspector(AInspector, TNxTextItem, 1, 'Speed', 'Speed', IntToStr(AClass.RatedSpeed));
+    AddItemsToInspector(AInspector, TNxTextItem, 1, 'MCR', 'MCR(rpm)', IntToStr(AClass.RatedSpeed));
+    AddItemsToInspector(AInspector, TNxTextItem, 1, 'BMEP', 'BMEP(bar)', FloatToStr(AClass.BMEP));
     AddItemsToInspector(AInspector, TNxTextItem, 1, 'SFOC', 'SFOC(g/kWh)', FloatToStr(AClass.SFOC));
-    AddItemsToInspector(AInspector, TNxTextItem, 1, 'Frequency', 'Frequency', FloatToStr(AClass.Frequency));
+    AddItemsToInspector(AInspector, TNxTextItem, 1, 'Frequency', 'Frequency(Hz)', FloatToStr(AClass.Frequency));
     AddItemsToInspector(AInspector, TNxTextItem, 1, 'Eng_kW', 'Eng.kW', FloatToStr(AClass.RatedPower_Engine));
     LPropertyItem := AddItemsToInspector(AInspector, TNxTextItem, 1, 'Gen_kW', 'Gen.kW', FloatToStr(AClass.RatedPower_Generator));
 
@@ -231,10 +297,35 @@ begin
     begin
       AInspector.Items[LNodeIndex].Clear;
 
+      for i := 0 to AClass.ICEngineComponentCollect.Count - 1 do
+      begin
+        LICEngineComponentItem := AClass.ICEngineComponentCollect.Items[i];
+
+        LPropertyItem := AddItemsToInspector(AInspector, TNxTextItem, LNodeIndex, 'Components'+IntToStr(i),
+                          LICEngineComponentItem.ComponentName,'');
+        LPropertyItem.Tag := 1; //Component인지 알기 위해 사용됨
+        LPropertyItem.ObjectReference := LICEngineComponentItem;
+        LICEngineComponentItem.FNxPropertyItem := LPropertyItem;
+      end;
+
       for i := 0 to AClass.ICEnginePartCollect.Count - 1 do
       begin
-        LPropertyItem := AddItemsToInspector(AInspector, TNxButtonItem, LNodeIndex, 'Components'+IntToStr(i),
-                          AClass.ICEnginePartCollect.Items[i].PartName,'');
+        LICEnginePartItem := AClass.ICEnginePartCollect.Items[i];
+
+        if LICEnginePartItem.ComponentIndex = -1 then
+          LPropertyItem := AddItemsToInspector(AInspector, TNxButtonItem, LNodeIndex, 'Parts'+IntToStr(i),
+                          LICEnginePartItem.PartName,'')
+        else
+        begin
+          LICEngineComponentItem := AClass.ICEngineComponentCollect.Items[LICEnginePartItem.ComponentIndex];
+          LPropertyItem := AddItemsToInspector(AInspector, TNxButtonItem,
+            LICEngineComponentItem.FNxPropertyItem, 'Parts'+IntToStr(i),
+            LICEnginePartItem.PartName,'');
+        end;
+
+        LPropertyItem.Tag := 2; //Part인지 알기 위해 사용됨
+        LPropertyItem.ObjectReference := LICEnginePartItem;
+        LICEnginePartItem.FNxPropertyItem := LPropertyItem;
         TNxButtonItem(LPropertyItem).ButtonCaption := '...';
         TNxButtonItem(LPropertyItem).OnButtonClick := AEvent;
         LPropertyItem.Expanded := False;
@@ -383,8 +474,8 @@ begin
   AClass.RatedSpeed := AInspector.items.ItemByName['Speed'].AsInteger;
   AClass.SFOC := AInspector.items.ItemByName['SFOC'].AsInteger;
   AClass.Frequency := AInspector.items.ItemByName['Frequency'].AsFloat;
-  AClass.RatedPower_Engine := AInspector.items.ItemByName['Eng_kW'].AsFloat;
-  AClass.RatedPower_Generator := AInspector.items.ItemByName['Gen_kW'].AsFloat;
+  AClass.RatedPower_Engine := AInspector.items.ItemByName['Engine.Output'].AsFloat;
+  AClass.RatedPower_Generator := AInspector.items.ItemByName['Gen.Output'].AsFloat;
 
   AClass.Dimension_A := AInspector.items.ItemByName['A'].AsFloat;
   AClass.Dimension_B := AInspector.items.ItemByName['B'].AsFloat;
@@ -550,25 +641,18 @@ begin
 end;
 
 function AddNullComponentToInspector(AClass: TICEngine;
-    AInspector: TNextInspector; APartName: string): TNxPropertyItem;
+    AInspector: TNextInspector; APartName: string; AKind: integer): TNxPropertyItem;
 var
   LStrList: TStringList;
   LNodeIndex: integer;
   LICEnginePartItem: TICEnginePartItem;
-//  LPropertyItem: TNxPropertyItem;
-  j: integer;
+  LICEngineComponentItem: TICEngineComponentItem;
   LStr, LValue: string;
-begin
-  LNodeIndex := AInspector.Items.ItemByName['FComponents'].NodeIndex;
-  if LNodeIndex > -1 then
-  begin
-    LICEnginePartItem := AClass.ICEnginePartCollect.Add;
-    Result := AddItemsToInspector(AInspector, TNxButtonItem, LNodeIndex, 'Components'+IntToStr(AClass.ICEnginePartCollect.Count),
-                      APartName,'');
-    TNxButtonItem(Result).ButtonCaption := '...';
-    LStrList := nil;
-    LStrList := GetPropertyNameValueList(LICEnginePartItem);
 
+  procedure AddDefaultProperty;
+  var
+    j: integer;
+  begin
     if Assigned(LStrList) then
     begin
       try
@@ -589,6 +673,43 @@ begin
       finally
         LStrList.Free;
       end;
+    end;
+  end;
+begin
+  LStrList := nil;
+  LNodeIndex := AInspector.SelectedIndex;//AInspector.Items.ItemByName['FComponents'].NodeIndex;
+
+  if LNodeIndex > -1 then
+  begin
+    if AKind = 0 then //Component인 경우
+    begin
+      LICEngineComponentItem := AClass.ICEngineComponentCollect.Add;
+      Result := AddItemsToInspector(AInspector, TNxTextItem, LNodeIndex,
+        'Components'+IntToStr(AClass.ICEngineComponentCollect.Count), APartName,'');
+      Result.Tag := 1; //Component인지 알기 위해 사용됨
+      LICEngineComponentItem.FNxPropertyItem := Result;
+      Result.ObjectReference := LICEngineComponentItem;
+//      LStrList := GetPropertyNameValueList(LICEngineComponentItem);
+    end
+    else
+    if AKind = 1 then //Part인 경우
+    begin
+      LICEnginePartItem := AClass.ICEnginePartCollect.Add;
+      Result := AddItemsToInspector(AInspector, TNxButtonItem, LNodeIndex,
+        'Parts'+IntToStr(AClass.ICEnginePartCollect.Count), APartName,'');
+      Result.Tag := 2; //Part인지 알기 위해 사용됨
+      Result.ObjectReference := LICEnginePartItem;
+      LICEnginePartItem.FNxPropertyItem := Result;
+
+      if Assigned(AInspector.Items[LNodeIndex].ObjectReference) then
+        LICEnginePartItem.ComponentIndex :=
+          TICEngineComponentItem(AInspector.Items[LNodeIndex].ObjectReference).Index
+      else
+        LICEnginePartItem.ComponentIndex := -1;
+
+      LStrList := GetPropertyNameValueList(LICEnginePartItem);
+      TNxButtonItem(Result).ButtonCaption := '...';
+      AddDefaultProperty;
     end;
   end;
 end;

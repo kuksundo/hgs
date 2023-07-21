@@ -7,7 +7,7 @@ uses Windows, Classes, StdCtrls, System.SysUtils,
 
 type
   TCylinderConfiguration = (ccInline, ccVtype);
-  TEngineUsage = (euMainEngine, euAuxEngine, euGenSet, euPropulse);
+//  TEngineUsage = (euMainEngine, euAuxEngine, euGenSet, euPropulse);
   TFuelType = (ftOil, ftGas, ftDF, ftCR);
   EEngineBasePersist = class(Exception);
 

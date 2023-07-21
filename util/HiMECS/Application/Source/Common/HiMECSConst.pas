@@ -77,9 +77,9 @@ type
                       //      9        10          11                 12
                       pcMainBearing, pcEtc, pcCombustionSystem, pcControlSystem,
                       //      13             14           15          16          17
-                      pcEngineStructure, pcKnocking, pcIgnition, pcInjection, pcGenerator,
+                      pcEngineStructure, pcKnocking, pcIgnition, pcMPSystem, pcGenerator,
                       //      18           19           20
-                      pcGasSystem, pcAlarmSystem, pcAvat2Param);
+                      pcGasSystem, pcAlarmSystem, pcAvat2Param, pcCompAirSystem, pcSFSystem);
 
   //ParameterSource 추가시 TIPCClientAll.CreateIPCClient 함수에 추가된 ParameterSource도 추가할 것.
   //                       UnitFrameIPCMonitorAll에도 관련 변수 추가 할 것.
@@ -129,7 +129,7 @@ type
   TActuatorKind = (actkNull, actk2WayValve, actk3WayValve, actk3To2WayValve, actkMotor, actkGovernor, actkFinal);
   TEngParamFilterKind = (epfknull, epfkSensor, epfkModbus, epfkAlarm, efkActuator, efkCommand, epfkFinal);
   TEngParamFilterKinds = set of TEngParamFilterKind;
-  THiMECSDocType = (hdtNull, hdtDrawing, hdtOpManual, hdtMtManual, hdtFinal);
+  THiMECSDocType = (hdtNull, hdtDrawing, hdtOpManual, hdtMtManual, hdtSvcLetter, hdtFinal);
   TEngParamListItemKind = (eplikNull, eplikModbus, eplikSensorType, eplikFinal);
 
   RDragFormatParam = record
@@ -248,11 +248,13 @@ const
          (Description : 'Engine Structure';     Value : pcEngineStructure),
          (Description : 'Knocking System';      Value : pcKnocking),
          (Description : 'Ignition System';   Value : pcIgnition),
-         (Description : 'Injection System';   Value : pcInjection),
+         (Description : 'MP System';   Value : pcMPSystem),
          (Description : 'Generator';   Value : pcGenerator),
          (Description : 'Gas System';   Value : pcGasSystem),
          (Description : 'Alarm System';   Value : pcAlarmSystem),
-         (Description : 'Avat2 Parameter';   Value : pcAvat2Param)
+         (Description : 'Avat2 Parameter';   Value : pcAvat2Param),
+         (Description : 'Compressed Air System';   Value : pcCompAirSystem),
+         (Description : 'Second Fuel';   Value : pcSFSystem)
          );
 
   ParameterSourceCOUNT = integer(High(TParameterSource))+1;
@@ -423,6 +425,7 @@ const
   function String2ParameterCatetory(AParameterCatetory:string): TParameterCategory;
   procedure ParameterCatetory2Combo(AComboBox:TComboBox);
   procedure ParameterCatetory2Strings(AStrings: TStrings);
+  function GetParamCatetoryFromDesc(AFuncCode, ADesc: string): TParameterCategory;
 
   function ParameterSource2String(AParameterSource:TParameterSource) : string;
   function String2ParameterSource(AParameterSource:string): TParameterSource;
@@ -469,6 +472,7 @@ const
   procedure InitAlarmPriorityNames;
 
   function SetStr2EngParamFilterKinds(ASetStr: string): TEngParamFilterKinds;
+  function GetSensorTypeFromDesc(AFuncCode, ADesc, AUnit: string);
 
 var
   FAlarmSetTypeNames: TAlarmSetTypeNames;
@@ -723,6 +727,97 @@ begin
   begin
     AStrings.Add(R_ParameterCatetory[Li].Description);
   end;
+end;
+
+function GetParamCatetoryFromDesc(AFuncCode, ADesc: string): TParameterCategory;
+var
+  LDesc: string;
+begin
+  LDesc := UpperCase(ADesc);
+
+  if (Pos('ENGINE LOAD', LDesc) > 0) or (Pos('ACTUAL LOAD', LDesc) > 0) or
+     (Pos('SET POWER', LDesc) > 0) or (Pos('INJECTION TIMING', LDesc) > 0) or
+     (Pos('INJECTION DURATION', LDesc) > 0) or (Pos('GLOBAL TIMING', LDesc) > 0) or
+     (Pos('GLOBAL DURATION', LDesc) > 0) or (Pos('ENGINE TORQUE', LDesc) > 0) or
+     (Pos('LOAD OPERATION', LDesc) > 0) or (Pos('MSS ', LDesc) > 0) or
+     (Pos('LOAD REDUCTION ', LDesc) > 0) then
+    Result := pcControlSystem
+  else
+  if (Pos('FVT ', LDesc) > 0) or (Pos('SF ', LDesc) > 0) or (Pos('HP PUMP', LDesc) > 0) or
+    (Pos('HPP ', LDesc) > 0) or (Pos('MISFIRE', LDesc) > 0) or (Pos('PT87', LDesc) > 0) or
+    (Pos('INERT ', LDesc) > 0) or (Pos('PURGING VALVE', LDesc) > 0) or
+    (Pos('LFSS ', LDesc) > 0) then
+    Result := pcSFSystem
+  else
+  if (Pos('COMBUSTION', LDesc) > 0) or (Pos('IMEP ', LDesc) > 0) or
+    (Pos('PMAX ', LDesc) > 0) then
+    Result := pcCombustionSystem
+  else
+  if (Pos('CHARGE AIR', LDesc) > 0) or (Pos('INTAKE AIR', LDesc) > 0) or
+    (Pos('AIR BYPASS', LDesc) > 0) or (Pos('AIR BY-PASS', LDesc) > 0) or
+    (Pos('WASTEGATE', LDesc) > 0) or (Pos('WG VALVE', LDesc) > 0) or
+    (Pos('LAMDA', LDesc) > 0)then
+    Result := pcCAirSystem
+  else
+  if (Pos('EXHAUST GAS', LDesc) > 0) or (Pos('RUPTURE ', LDesc) > 0) or
+    (Pos('EXH. GAS', LDesc) > 0) or (Pos('EXHAUST VENTING', LDesc) > 0)then
+    Result := pcExhSystem
+  else
+  if (Pos('MAIN BEARING', LDesc) > 0) or (Pos('CONROD BEARING', LDesc) > 0) or
+    (Pos('CYLINDER LINER', LDesc) > 0) then
+    Result := pcMainBearing
+  else
+  if (Pos('LT WATER', LDesc) > 0) or (Pos('HT WATER', LDesc) > 0) or
+    (Pos('HT CW', LDesc) > 0) or (Pos('LT CW', LDesc) > 0) or
+    (Pos('CW PRE-HEATER', LDesc) > 0) or (Pos('LT COOLING WATER', LDesc) > 0) or
+    (Pos('HT COOLING WATER', LDesc) > 0) then
+    Result := pcCWSystem
+  else
+  if (Pos('CONTROL AIR', LDesc) > 0) or (Pos('STARTING AIR', LDesc) > 0) or
+    (Pos('SLOW TURNING', LDesc) > 0) or (Pos('DVT', LDesc) > 0) or
+    (Pos('STOP VALVE', LDesc) > 0) then
+    Result := pcCompAirSystem
+  else
+  if (Pos('FUEL OIL', LDesc) > 0) or (Pos('NOZZLE COOLING OIL', LDesc) > 0) or
+    (Pos('OIL MIST', LDesc) > 0) or (Pos('FUEL SHARING', LDesc) > 0) or
+    (Pos('MAIN FO', LDesc) > 0) or (Pos('DIESEL FUEL', LDesc) > 0) then
+    Result := pcFOSystem
+  else
+  if Pos('SPEED', LDesc) > 0 then
+    Result := pcSpeed
+  else
+  if (Pos('LUBE OIL', LDesc) > 0) or (Pos('CRANKCASE PRESSURE', LDesc) > 0) or
+    (Pos('LO LEAKAGE', LDesc) > 0) or (Pos('PRELUBRI', LDesc) > 0) then
+    Result := pcLOSystem
+  else
+  if (Pos('HOURS', LDesc) > 0) or (Pos('MCP INTERNAL', LDesc) > 0) or
+    (Pos('ACP INTERNAL', LDesc) > 0) then
+    Result := pcEtc
+  else
+  if (Pos('GAS INJECTION', LDesc) > 0) or
+    (Pos('GAS ADMISSION', LDesc) > 0) or (Pos('IGNITION', LDesc) > 0) or
+    (Pos('SIC ', LDesc) > 0) then
+    Result := pcGasSystem
+  else
+  if (Pos('KNOCK', LDesc) > 0) or (Pos('CYLINDER VIBRATION', LDesc) > 0) then
+    Result := pcKnocking
+  else
+  if (Pos('PILOT FUEL', LDesc) > 0) or (Pos('', LDesc) > 0) then
+    Result := pcMPSystem
+  else
+  if (Pos('REAMINING', LDesc) > 0) or (Pos('FUEL MODE', LDesc) > 0) or
+    (Pos('STATE', LDesc) > 0) then
+    Result := pcEngineStatus
+  else
+  if (Pos('EMERGENCY', LDesc) > 0) or (Pos('SHUTDOWN', LDesc) > 0) or
+    (Pos('SAFETY VALVE', LDesc) > 0) then
+    Result := pcEngineShutdown
+  else
+  if (Pos('BLOCK ', LDesc) > 0) or (Pos('TEST MODE', LDesc) > 0) or
+    (Pos('ENGINE START FAILURE', LDesc) > 0) or (Pos('ENGINE STOP FAILURE', LDesc) > 0) then
+    Result := pcReadyToStart
+  else
+    Result := pcEtc;
 end;
 
 function S7Area2String(AS7Area:TS7Area) : string;
@@ -1038,6 +1133,78 @@ begin
   finally
     LStrList.Free;
   end;
+end;
+
+function GetSensorTypeFromDesc(AFuncCode, ADesc, AUnit: string);
+var
+  LDesc, LUnit: string;
+    stDI, stDO, stConfig,
+    stCalculated, stParam, stMeasurand, stCommand, stActuator, stVoltage,
+    stSolValve, stControlValve, stPump, stFan, stRelay, stAlarm
+begin
+  LDesc := UpperCase(ADesc);
+  LUnit := UpperCase(AUnit);
+
+  if AFuncCode = '4' then//Analog
+  begin
+    if (Pos('SPEED', LDesc) > 0) then
+      Result := stPickup
+    else
+    if (Pos('PRESSURE', LDesc) > 0) or (Pos('BAR', LUnit) > 0) then
+    begin
+      if (Pos('CYLINDER COMBUSTION', LDesc) > 0) then
+        Result := stmA
+      else
+      if (Pos('CRANKCASE', LDesc) > 0) then
+        Result := stmA
+      else
+        Result := stmA
+    end
+    else
+    if (Pos('TEMPERATURE', LDesc) > 0) then
+    begin
+      if (Pos('EXHAUST', LDesc) > 0) or (Pos('EXH.', LDesc) > 0) then
+        Result := stTC
+      else
+        Result := stRTD;
+    end
+    else
+    if (Pos('V', LUnit) > 0) then
+      Result := stVoltage
+    else
+    if (Pos('OIL MIST', LDesc) > 0) or (Pos('', LDesc) > 0) then
+      Result := stmA
+    else
+    if (Pos('KNM', LUnit) > 0) then
+      Result := stmA
+    else
+    if ((Pos('CONTROL', LDesc) > 0) and (Pos('%', LUnit) > 0)) or
+      ((Pos('SET VALUE', LDesc) > 0) and (Pos('%', LUnit) > 0)) or
+      ((Pos('POSITION', LDesc) > 0) and (Pos('%', LUnit) > 0)) or
+      ((Pos('VALVE', LDesc) > 0) and (Pos('MA', LUnit) > 0)) or
+      ((Pos('COMMAND', LDesc) > 0) and (Pos('MA', LUnit) > 0)) then
+      Result := stCommand
+    else
+    if (Pos('HOURS', LDesc) > 0) or (Pos('LAMDA ', LDesc) > 0) or
+      (Pos('IMEP', LDesc) > 0) or
+      (((Pos('COMBUSTION', LDesc) > 0) and (Pos('°', LUnit) > 0))) or
+      (((Pos('RETARDATION', LDesc) > 0) and (Pos('°', LUnit) > 0))) or
+      (((Pos('TIMING OFFSET', LDesc) > 0) and (Pos('°', LUnit) > 0))) or
+      (((Pos('WORKING CYCLE', LDesc) > 0) and (Pos('KJ', LUnit) > 0))) or
+      (((Pos('DURATION', LDesc) > 0) and (Pos('°', LUnit) > 0))) then
+      Result := stCalculated
+    else
+    if (Pos('KNOCK INTENSITY', LDesc) > 0) then
+      Result := stMeasurand
+    else
+      Result := stCalculated
+  end
+  else if AFuncCode = '2' then//Digital
+  begin
+
+  end;
+
+
 end;
 
 initialization

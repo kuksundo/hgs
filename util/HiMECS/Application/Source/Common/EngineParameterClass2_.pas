@@ -1,4 +1,4 @@
-unit EngineParameterClass;
+unit EngineParameterClass2;
 {
   TEngineParameterItem 추가 시 수정해야 하는 내용 >--
     1) TEngineParameterItemRecord.AssignToParamItem 함수에 내용 추가
@@ -9,13 +9,13 @@ unit EngineParameterClass;
 }
 interface
 
-uses classes, System.Variants, SynCommons, System.SysUtils, mORMot, Generics.Legacy,
-  UnitEngineParamConst, BaseConfigCollect, HiMECSConst, UnitEngineMasterData,
-  UnitEngineParamRecord, UnitMultiStateRecord, UnitpjhTypes, SortCollections;
+uses classes, System.SysUtils, Generics.Legacy,
+  UnitEngineParamConst, JHP.BaseConfigCollect, HiMECSConst, UnitEngineMasterData,
+  UnitEngineParamRecord2, UnitMultiStateRecord2, UnitpjhTypes,
+  mormot.core.base, mormot.core.data,mormot.core.variants,mormot.rest.sqlite3,
+  mormot.orm.core, mormot.core.buffers, mormot.core.rtti;
 
 type
-  TEngParamListItemKind = (eplikNull, eplikModbus, eplikSensorType, eplikFinal);
-
   TEngineParameterCollect = class;
   TEngineParameterItem = class;
 
@@ -98,22 +98,15 @@ type
     FFCode: TpjhString10;
     FFUnit: TpjhString20;
     FScale: TpjhString10;
+    FMinMaxType: TValueType; //mmtInteger, mmtReal
     FAlarm: Boolean;
     FRadixPosition: integer; //Binary data일 경우 32Bit내 Index를 저장함.
-
     FDisplayUnit: Boolean; //단위 표시 유무
     FDisplayThousandSeperator: Boolean;//1000 단위 구분자(,) 표시 유무
-    FAlarmEnable: Boolean;
-    FAlarmSuppress,//Suppress
-    FDigitalAlarmValue,//Digital Type 알람 설정 값
-
     FDisplayFormat: TpjhString20;
 
-    FMinMaxType: TValueType; //mmtInteger, mmtReal
     FSensorType: TSensorType;
     FParameterCatetory: TParameterCategory;
-    FParameterCatetory4AVAT2: TParameterCategory4AVAT2;
-    FParameterSubCatetory4AVAT2: TParameterSubCategory4AVAT2;
     FParameterType: TParameterType;
     FParameterSource: TParameterSource;
     FDFAlarmKind: TDFAlarmKind; //알람 발생했을 경우 어떤 알람인지 구분함
@@ -122,7 +115,9 @@ type
     FAlarmKind4AVAT2: TAlarmKind4AVAT2;
     FAlarmLimit4AVAT2: TAlarmLimit4AVAT2;
     //==================================================
+    FSelectFaultValue: integer;//0:not used, 1: original, 2: this
     FAlarmPriority: TAlarmPriority;//(apCritical, apWarning, apAdvisory, apLog)
+    FAlarmEnable: Boolean;
 
     FMinAlarmEnable: Boolean; //아래 변수들 사용 여부
     FMaxAlarmEnable: Boolean; //
@@ -154,11 +149,6 @@ type
     FMinFaultSoundFilename: TpjhString100;
     FMaxFaultSoundFilename: TpjhString100;
 
-    FMinAlarmNeedAck: Boolean; //알람 해제시 ACK 필요 여부
-    FMaxAlarmNeedAck: Boolean;
-    FMinFaultNeedAck: Boolean;
-    FMaxFaultNeedAck: Boolean;
-
     FFormulaValueList: TpjhString200; //Item간 계산 식(=''이면 Raw Item)
 
     //=====================//for Graph (Watch 폼에서
@@ -178,24 +168,13 @@ type
     FIsDisplayTrendAlarm: Boolean;
     FIsDisplayTrendFault: Boolean;
 
+    FAllowUserLevelWatchList: THiMECSUserLevel; //watch list에서 파일 오픈시 허용 가능한 레벨
     FIsAverageValue: Boolean;//Watch Save시에 평균값 저장 여부
     FFExcelRange: TpjhString100;//엑셀 보고서 위치 정보(Sensor Route에 Drag할떄는 EngParamDBName이 전달 됨)
 
     //TEngineParameterClass에는 없음, WatchList 파일을 선별적으로 Load할때 쓰임
     //아래 변수를 레코드 맨 마지막에 선언하면 SendCopy 시에 에러 남.(20120706)
     FProjectFileName: TpjhString100;
-    FAllowUserLevelWatchList: THiMECSUserLevel; //watch list에서 파일 오픈시 허용 가능한 레벨
-    FSelectFaultValue: integer;//0:not used, 1: original, 2: this
-
-    //===================//ECU Panel Info
-    FPanelName: TPanelKind4AVAT2;
-    FTBName: TTBKind4AVAT2;
-    FTBNo,
-    FDrawingNo,
-    FManualNo: TpjhString100;
-
-    FIsSaveItem: Boolean;
-
     //==========Form State
     FFormWidth,
     FFormHeight,
@@ -216,6 +195,23 @@ type
     FMultiStateItemCount: integer;
     FMultiStateValues: array[0..2000] of char;//Json 형식의 Values {"TagName":"","Address":""...}
 
+{    FXAxisIData: TpjhString200;
+    FXAxisILength: integer;
+    FYAxisIData: TpjhString200;
+    FYAxisILength: integer;
+    FZAxisIData: TpjhString200;
+    FZAxisILength: integer;
+    FValueIData: TpjhString200;
+    FValueILength: integer;
+    FXAxisFData: TpjhString200;
+    FXAxisFLength: integer;
+    FYAxisFData: TpjhString200;
+    FYAxisFLength: integer;
+    FZAxisFData: TpjhString200;
+    FZAxisFLength: integer;
+    FValueFData: TpjhString200;
+    FValueFLength: integer;
+}
     procedure AssignToParamItem(var AEPItem: TEngineParameterItem);
     procedure AssignToMatrixItem(var AMItem: TMatrixItem);
     procedure AssignTo(var AEPItemRecord:TEngineParameterItemRecord);
@@ -259,44 +255,24 @@ type
     FBorderShow: Boolean;
     FFactoryName: string;
   public
-    FDBName: string;
-
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
-
     procedure Assign(Source: TPersistent); override;
-
-    function LoadFromFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; override;
-    function SaveToFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; override;
-
     function LoadFromJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; override;
     function SaveToJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; override;
-
     function LoadFromJSONArray(AJsonArray: RawUTF8; AIsAdd: Boolean=False): integer;
     function LoadFromJSONArrayOfMultiState(AJsonArray: RawUTF8; AIsAdd: Boolean=False): integer;
-
-    function LoadFromSqliteFile(ADBFileName: string): integer; override;
-    function SaveToSqliteFile(ADBFileName: string; AItemIndex: integer=-1): integer; override;
-    function LoadFromSqliteFile4Secure(ADBFileName: string): integer; override;
-    function SaveToSqliteFile4Secure(ADBFileName: string; AItemIndex: integer=-1): integer; override;
-
+    function LoadFromSqliteFile(ADBFileName: string): integer;
+    function SaveToSqliteFile(ADBFileName: string; AItemIndex: integer=-1): integer;
+    function LoadFromSqliteFile4Secure(ADBFileName: string): integer;
+    function SaveToSqliteFile4Secure(ADBFileName: string; AItemIndex: integer=-1): integer;
     procedure AssignEngParamRecFromEngParamItem(AItem: TEngineParameterItem; ARecord: TEngineParamRecord);
     procedure AssignEngParamItemFromEngParamRec(ARecord: TEngineParamRecord; AItem: TEngineParameterItem);
-
-    class function SaveEngParamCollect2DB(ADBFileName: string;
-      AEngParamColl: TEngineParameterCollect; AIsOnlyModbus: Boolean=True): integer;
-    class function LoadFromExcelFile(AFileName: string; AEngParamColl: TEngineParameterCollect): integer;
-    class function SaveToExcelFile(AFileName: string; AEngParamColl: TEngineParameterCollect): integer;
-    class function GetVarArrayFromEPColl4Excel(AEngParamColl: TEngineParameterCollect;
-      ARowCount, AColCount: integer): variant;
-    class function CheckPropertyNameNExcelColumn(AFileName: string;
-      AEngParamColl: TEngineParameterCollect): boolean;
 
     //EngineParameterItem과 MultiStateItem을 연결하기 위해 동일한 TagName에 대한 각 Item의 Index를 상호 저장함
     procedure SetCollectItemIndex4XRef;
     function GetItemIndex(AEPItem: TEngineParameterItem): integer; overload;
     function GetItemIndex(ATagName: string): integer; overload;
-    function GetItemFromTagName(ATagName: string): TEngineParameterItem;
     function GetMultiStateItemCount(ATagName: string): integer;
     function GetMultiStateItemValues2JsonArray(ATagName: string): string;
 
@@ -339,18 +315,15 @@ type
     constructor Create(ACollection: TCollection); override;
     procedure Assign(Source: TPersistent); override;
     procedure AssignTo(var ARecord: TEngineParameterItemRecord);
-    procedure AssignFrom(ASource: TEngineParameterItem);
     function IsMatrixData: Boolean;
 
 {$I EngineParameter.inc}
   end;
 
-  TEngineParameterCollect = class(TSortableCollection)
+  TEngineParameterCollect = class(TCollection)
   private
     function GetItem(Index: Integer): TEngineParameterItem;
     procedure SetItem(Index: Integer; const Value: TEngineParameterItem);
-
-    function Compare(Item1, Item2 : TCollectionItem) : integer; override;
   public
     FEngProjNo: string;
     FEngNo: string;
@@ -358,14 +331,9 @@ type
 
     function AddEngineParameterItem(ASource: TEngineParameterItem): TEngineParameterItem;
     procedure AddEngineParameterCollect(ASource: TEngineParameterCollect);
-    procedure UpdateEngineParameterCollectByTagName(ADest: TEngineParameterCollect);
-    procedure UpdateTagNameFromAddress4Collect(ADest: TEngineParameterCollect; ACheckDesc: Boolean=False);
     function GetUniqueParamSourceName(AIdx: integer): string;
     function GetItemIndexFromAddress(AFCode,AAddress: string): integer;
     function GetItemFromParamNo(AParamNo: string): TEngineParameterItem;
-
-    //Items[i].FIsHideItem을 모두 False로 만듦(TreeView에 표시하게 만듦)
-    procedure ClearHideItems;
 
     function  Add: TEngineParameterItem;
     function Insert(Index: Integer): TEngineParameterItem;
@@ -374,17 +342,6 @@ type
     property EngProjNo: string read FEngProjNo  write FEngProjNo;
     property EngNo: string read FEngNo  write FEngNo;
     property PowerOn: Boolean read FPowerOn  write FPowerOn;
-  end;
-
-  TEngineParameterSortByAddress = class(TSortableCollection)
-  protected
-    function Compare(Item1, Item2 : TCollectionItem) : integer; override;
-
-    function GetItem(Index: Integer): TEngineParameterItem;
-    procedure SetItem(Index: Integer; const Value: TEngineParameterItem);
-  public
-    function Add: TEngineParameterItem;
-    property Items[Index: Integer]: TEngineParameterItem read GetItem  write SetItem; default;
   end;
 
   PMatrixItem = ^TMatrixItem;
@@ -529,7 +486,7 @@ type
 
 implementation
 
-uses UnitRttiUtil, UnitStringUtil, UnitEncryptedRegInfo, UnitExcelUtil;
+uses UnitRttiUtil2, UnitStringUtil, UnitEncryptedRegInfo2;
 
 { TEngineParameter }
 
@@ -537,8 +494,8 @@ procedure TEngineParameter.Assign(Source: TPersistent);
 var
   i: integer;
 begin
-  if Source is TEngineParameter then
-  begin
+//  if Source is TEngineParameter then
+//  begin
     if Assigned(EngineParameterCollect) then
     begin
       EngineParameterCollect.Clear;
@@ -567,9 +524,9 @@ begin
     FormTop := TEngineParameter(Source).FormTop;
     FormLeft := TEngineParameter(Source).FormLeft;
     FormState := TEngineParameter(Source).FormState;
-  end
-  else
-    inherited;
+//  end
+//  else
+//    inherited;
 end;
 
 constructor TEngineParameter.Create(AOwner: TComponent);
@@ -602,19 +559,6 @@ begin
       Break;
     end;
   end;
-end;
-
-function TEngineParameter.GetItemFromTagName(
-  ATagName: string): TEngineParameterItem;
-var
-  i: integer;
-begin
-  Result := nil;
-
-  i := GetItemIndex(ATagName);
-
-  if i <> -1  then
-    Result := EngineParameterCollect.Items[i];
 end;
 
 function TEngineParameter.GetItemIndex(ATagName: string): integer;
@@ -676,89 +620,6 @@ begin
   end;
 
   Result := LDynArr.SaveToJSON();
-end;
-
-class function TEngineParameter.GetVarArrayFromEPColl4Excel(
-  AEngParamColl: TEngineParameterCollect; ARowCount, AColCount: integer): variant;
-var
-  LPropNameValueList: TStringList;
-  LValue: string;
-  i,j: integer;
-begin
-  Result := VarArrayCreate([0,(ARowCount - 1),0,(AColCount - 1)], VarOleStr);
-
-  for i := 0 to AEngParamColl.Count - 1 do
-  begin
-    LPropNameValueList := GetPropertyNameValueList(AEngParamColl.Items[i], True);
-
-    for j := 0 to LPropNameValueList.Count - 1 do
-    begin
-      LValue := LPropNameValueList.ValueFromIndex[j];
-      Result[i,j] := LValue;
-    end;
-  end;
-end;
-
-class function TEngineParameter.LoadFromExcelFile(AFileName: string;
-  AEngParamColl: TEngineParameterCollect): integer;
-var
-  LExcel: OleVariant;
-  LWorkBook: OleVariant;
-  LRange: OleVariant;
-  LWorksheet: OleVariant;
-  xlRowCount, xlColCount: integer;
-  LPropNameList: TStringList;
-begin
-  if FileExists(AFileName) then
-  begin
-    LExcel := GetActiveExcelOleObject(True);
-
-    try
-      LExcel.Visible := False;
-      LWorkBook := LExcel.Workbooks.Open(AFileName);
-      LWorksheet := LWorkBook.WorkSheets[1];
-
-      xlRowCount := LWorksheet.UsedRange.Rows.Count;
-      xlColCount := LWorksheet.UsedRange.Columns.Count;
-
-      LPropNameList := GetPropertyNameValueList(AEngParamColl.Items[0], True);
-      //Excel의 Header와 EngineParam Property가 일치하는 지 검사
-      if CheckExcelColumnHeaderFromList(LWorksheet, LPropNameList) then
-      begin
-
-      end;
-    finally
-      if Assigned(LPropNameList) then
-        FreeAndNil(LPropNameList);
-
-      LWorkBook.Saved := True; //Prevent Prompt
-      LWorkBook.Close;
-      LWorkBook := UnAssigned;
-      LExcel.Quit;
-      LExcel := UnAssigned;
-    end;
-  end;
-end;
-
-function TEngineParameter.LoadFromFile(AFileName, APassPhrase: string;
-  AIsEncrypt: Boolean): integer;
-var
-  LExt: string;
-begin
-  LExt := ExtractFileExt(AFileName);
-
-  LExt := UpperCase(LExt);
-
-  if LExt = '.PARAM' then
-    LoadFromJSONFile(AFileName, APassPhrase, AIsEncrypt)
-  else
-  if (LExt = '.DB') or (LExt = '.DB3') or (LExt = '.SQLITE') then
-  begin
-    if AIsEncrypt then
-      LoadFromSqliteFile4Secure(AFileName)
-    else
-      LoadFromSqliteFile(AFileName);
-  end;
 end;
 
 function TEngineParameter.LoadFromJSONArray(AJsonArray: RawUTF8;
@@ -840,37 +701,14 @@ end;
 function TEngineParameter.LoadFromSqliteFile(ADBFileName: string): integer;
 var
   LEngParamList: RawUtf8;
-  LSrcDB: TSQLRestClientURI;
-  LSrcModel: TSQLModel;
-  LEngineParamRecord: TEngineParamRecord;
-  LIsNewDB: Boolean;
 begin
   Result := -1;
 
-  if FDBName <> '' then
-  begin
-    LSrcDB := InitEngineParamClient2(ADBFileName, LSrcModel);
-    LIsNewDB := True;
-  end
-  else
-  begin
-    InitEngineParamClient(ADBFileName);
-    LSrcDB := g_EngineParamDB;
-    LIsNewDB := False;
-  end;
-
-  //  case AEngParamKind of
-//    eplikModbus: LEngParamList := GetEngParamList2JSONArrayFromAddress;
-//    else
-      LEngParamList := GetEngParamList2JSONArrayFromSensorType(LSrcDB);
-//  end;
-
+  InitEngineParamClient(ADBFileName);
+  LEngParamList := GetEngParamList2JSONArrayFromSensorType;
   LoadFromJSONArray(LEngParamList);
   LEngParamList := GetEngineMultiStateList2JSONArrayFromSqlite;
   LoadFromJSONArrayOfMultiState(LEngParamList);
-
-  if LIsNewDB then
-    DestroyEngineParamClient(LSrcDB, LSrcModel);
 
   Result := 1;
 end;
@@ -880,14 +718,10 @@ function TEngineParameter.LoadFromSqliteFile4Secure(
 begin
   InitEngineParamClient(ADBFileName);
 
-  try
-    Result := CompareProcessorInfoBetweenReginfo(g_EngineParamDB);
+  Result := CompareProcessorInfoBetweenReginfo(g_EngineParamDB);
 
-    if Result = 1 then
-      Result := LoadFromSqliteFile(ADBFileName);
-  finally
-    DestroyEngineParamClient;
-  end;
+  if Result = 1 then
+    Result := LoadFromSqliteFile(ADBFileName);
 end;
 
 procedure TEngineParameter.MatrixPublished2Public;
@@ -915,46 +749,11 @@ procedure TEngineParameter.AssignEngParamRecFromEngParamItem(
   AItem: TEngineParameterItem; ARecord: TEngineParamRecord);
 var
   LDoc: variant;
-//  LUtf8: RawUTF8;
+  LUtf8: RawUTF8;
 begin
   TDocVariant.New(LDoc);
   LoadRecordPropertyToVariant(AItem, LDoc);
   LoadEngParamRecFromVariant(ARecord, LDoc);
-end;
-
-class function TEngineParameter.CheckPropertyNameNExcelColumn(AFileName: string;
-  AEngParamColl: TEngineParameterCollect): boolean;
-var
-  LPropNameList: TStringList;
-  LExcel: OleVariant;
-  LWorkBook: OleVariant;
-  LRange: OleVariant;
-  LWorksheet: OleVariant;
-begin
-  Result := False;
-
-  if FileExists(AFileName) then
-  begin
-    LExcel := GetActiveExcelOleObject(True);
-
-    try
-      LExcel.Visible := False;
-      LWorkBook := LExcel.Workbooks.Open(AFileName);
-      LWorksheet := LWorkBook.WorkSheets[1];
-
-      LPropNameList := GetPropertyNameValueList(AEngParamColl.Items[0], True);
-      Result := CheckExcelColumnHeaderFromList(LWorksheet, LPropNameList);
-    finally
-      if Assigned(LPropNameList) then
-        FreeAndNil(LPropNameList);
-
-      LWorkBook.Saved := True; //Prevent Prompt
-      LWorkBook.Close;
-      LWorkBook := UnAssigned;
-      LExcel.Quit;
-      LExcel := UnAssigned;
-    end;
-  end;
 end;
 
 function TEngineParameter.ComparePublicMatrix(
@@ -1244,108 +1043,6 @@ begin
     Result := 50;
 end;
 
-class function TEngineParameter.SaveEngParamCollect2DB(ADBFileName: string;
-  AEngParamColl: TEngineParameterCollect; AIsOnlyModbus: Boolean): integer;
-var
-  LEngineParamRecord: TEngineParamRecord;
-  LEngineParamDB: TSQLRestClientURI;
-  LEngineParamModel: TSQLModel;
-  LTempUpdate: Boolean;
-  i: integer;
-  LDoc: variant;
-begin
-  LEngineParamModel := nil;
-  LEngineParamDB := InitEngineParamClient2(ADBFileName, LEngineParamModel);
-  TDocVariant.New(LDoc);
-  try
-    LEngineParamRecord := TEngineParamRecord.Create;
-
-    for i := 0 to AEngParamColl.Count - 1 do
-    begin
-      if AIsOnlyModbus then
-        if AEngParamColl.Items[i].Address = '' then
-          Continue;
-
-      LoadRecordPropertyToVariant(AEngParamColl.Items[i], LDoc);
-      LoadEngParamRecFromVariant(LEngineParamRecord, LDoc);
-      AddOrUpdatedEngParamRec(LEngineParamRecord, LEngineParamDB);
-    end;//for
-  finally
-    DestroyEngineParamClient(LEngineParamDB, LEngineParamModel);
-  end;
-end;
-
-class function TEngineParameter.SaveToExcelFile(AFileName: string;
-  AEngParamColl: TEngineParameterCollect): integer;
-var
-  LPropNameList: TStringList;
-  LExcel: OleVariant;
-  LWorkBook: OleVariant;
-  LRange: OleVariant;
-  LWorksheet: OleVariant;
-  LIsCreated: Boolean;
-  LValueAry: variant;
-  LColCount, LRowCount: integer;
-begin
-  LPropNameList := nil;
-  LExcel := GetActiveExcelOleObject(True);
-  LExcel.Visible := False;
-  LIsCreated := not FileExists(AFileName);
-
-  if LIsCreated then
-  begin
-    LWorkBook := LExcel.WorkBooks.Add();
-//    LWorkBook := LExcel.ActiveWorkBook;
-    LWorksheet := LWorkBook.WorkSheets.Add();
-    LPropNameList := GetPropertyNameValueList(AEngParamColl.Items[0], True);
-    SetExcelColumnHeaderFromList(LWorksheet, LPropNameList);
-  end
-  else
-  begin
-    LWorkBook := LExcel.Workbooks.Open(AFileName);
-    LWorksheet := LWorkBook.WorkSheets[1];
-  end;
-
-  try
-    LRowCount := AEngParamColl.Count;
-    LColCount := GetPropertyCount(AEngParamColl.Items[AEngParamColl.Count-1]);
-    LValueAry := TEngineParameter.GetVarArrayFromEPColl4Excel(AEngParamColl, LRowCount, LColCount);
-    LWorksheet.Range['A2',LWorksheet.Cells.Item[LRowCount+1,LColCount]].Value2 := LValueAry;
-
-    LWorkBook.SaveAs(AFileName);  //Overwrite 해야 모든 Function Code별 Data가 저장됨
-  finally
-    if Assigned(LPropNameList) then
-      FreeAndNil(LPropNameList);
-
-    LWorkBook.Saved := True; //Prevent Prompt
-    LWorkBook.Close;
-    LWorkBook := UnAssigned;
-    LExcel.Quit;
-    LExcel := UnAssigned;
-  end;
-end;
-
-function TEngineParameter.SaveToFile(AFileName, APassPhrase: string;
-  AIsEncrypt: Boolean): integer;
-var
-  LExt: string;
-begin
-  LExt := ExtractFileExt(AFileName);
-
-  LExt := UpperCase(LExt);
-
-  if LExt = 'PARAM' then
-    SaveToJSONFile(AFileName, APassPhrase, AIsEncrypt)
-  else
-  if (LExt = 'DB') or (LExt = 'DB3') or (LExt = 'SQLITE') then
-  begin
-    if AIsEncrypt then
-      SaveToSqliteFile4Secure(AFileName)
-    else
-      SaveToSqliteFile(AFileName);
-  end;
-end;
-
 function TEngineParameter.SaveToJSONFile(AFileName, APassPhrase: string;
   AIsEncrypt: Boolean): integer;
 begin
@@ -1355,7 +1052,7 @@ end;
 function TEngineParameter.SaveToSqliteFile(ADBFileName: string; AItemIndex: integer): integer;
 var
   LEngineParamRecord: TEngineParamRecord;
-  LEngineParamDB: TSQLRestClientURI;
+  LEngineParamDB: TRestClientDB;
   LEngineParamModel: TSQLModel;
   LTempUpdate: Boolean;
 begin
@@ -1527,30 +1224,6 @@ begin
 //  end;
 end;
 
-procedure TEngineParameterCollect.ClearHideItems;
-var
-  i: integer;
-begin
-  for i := 0 to Count - 1 do
-  begin
-    if Items[i].FIsHideItem then
-    begin
-      Items[i].FIsHideItem := False;
-    end;
-  end;
-end;
-
-function TEngineParameterCollect.Compare(Item1,
-  Item2: TCollectionItem): integer;
-begin
-  if TEngineParameterItem(item1).Address < TEngineParameterItem(item2).Address then
-    Result := -1
-  else if TEngineParameterItem(item1).Address > TEngineParameterItem(item2).Address then
-    Result := 1
-  else
-    Result := 0;
-end;
-
 function TEngineParameterCollect.GetItem(Index: Integer): TEngineParameterItem;
 begin
   Result := TEngineParameterItem(inherited Items[Index]);
@@ -1605,68 +1278,6 @@ procedure TEngineParameterCollect.SetItem(Index: Integer;
   const Value: TEngineParameterItem);
 begin
   Items[Index].Assign(Value);
-end;
-
-procedure TEngineParameterCollect.UpdateEngineParameterCollectByTagName(
-  ADest: TEngineParameterCollect);
-var
-  i, j: integer;
-begin
-  for i := 0 to ADest.Count - 1 do
-  begin
-    if ADest.Items[i].TagName = '' then
-      continue;
-
-    for j := 0 to Count - 1 do
-    begin
-      if Items[j].TagName = ADest.Items[i].TagName then
-      begin
-        ADest.Items[i].Assign(Items[j]);
-        Break;
-      end;
-    end;
-  end;
-end;
-
-procedure TEngineParameterCollect.UpdateTagNameFromAddress4Collect(
-  ADest: TEngineParameterCollect; ACheckDesc: Boolean);
-var
-  i, j: integer;
-  LIsAllowChange: Boolean;
-begin
-  for i := 0 to ADest.Count - 1 do
-  begin
-    if ADest.Items[i].Address = '' then
-      continue;
-
-    for j := 0 to Count - 1 do
-    begin
-      if Items[i].Address = '' then
-        continue;
-
-      LIsAllowChange := False;
-
-      if (Items[j].FCode = ADest.Items[i].FCode) and (Items[j].Address = ADest.Items[i].Address) then
-      begin
-        if ACheckDesc then
-        begin
-          if Items[j].Description = ADest.Items[i].Description then
-            LIsAllowChange := True;
-        end
-        else
-          LIsAllowChange := True;
-
-        if LIsAllowChange then
-        begin
-          ADest.Items[i].TagName := Items[j].TagName;
-          ADest.Items[i].Description := Items[j].Description;
-          ADest.Items[i].Description_Eng := Items[j].Description_Eng;
-          ADest.Items[i].Description_Kor := Items[j].Description_Kor;
-          Break;
-        end;
-      end;
-    end;
-  end;
 end;
 
 { TMatrixCollect }
@@ -2442,11 +2053,6 @@ begin
     inherited;
 end;
 
-procedure TEngineParameterItem.AssignFrom(ASource: TEngineParameterItem);
-begin
-
-end;
-
 procedure TEngineParameterItem.AssignTo(
   var ARecord: TEngineParameterItemRecord);
 var
@@ -2894,37 +2500,6 @@ end;
 //    Result := LDocData.Count;
 //  end;
 //end;
-
-
-{ TEngineParameterSortByAddress }
-
-function TEngineParameterSortByAddress.Add: TEngineParameterItem;
-begin
-  Result := TEngineParameterItem(inherited Add);
-end;
-
-function TEngineParameterSortByAddress.Compare(Item1,
-  Item2: TCollectionItem): integer;
-begin
-  if TEngineParameterItem(item1).Address < TEngineParameterItem(item2).Address then
-    Result := -1
-  else if TEngineParameterItem(item1).Address > TEngineParameterItem(item2).Address then
-    Result := 1
-  else
-    Result := 0;
-end;
-
-function TEngineParameterSortByAddress.GetItem(
-  Index: Integer): TEngineParameterItem;
-begin
-  Result := TEngineParameterItem(inherited Items[Index]);
-end;
-
-procedure TEngineParameterSortByAddress.SetItem(Index: Integer;
-  const Value: TEngineParameterItem);
-begin
-  Items[Index].Assign(Value);
-end;
 
 end.
 

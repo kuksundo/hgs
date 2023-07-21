@@ -2,29 +2,44 @@ unit BaseConfigCollect;
 
 interface
 
-uses Winapi.Windows, AsyncCalls, AsyncCallsHelper, classes, SysUtils, Forms, Registry,
-      SynCommons, mORMot;
+uses Winapi.Windows, classes, SysUtils, Forms, Registry,//, AsyncCalls, AsyncCallsHelper
+  SynCommons, mORMot, UnitRttiUtil, UnitStreamUtil;
 
 type
-  TpjhBase = class(TPersistent)
+  TpjhBase = class(TPersistent)//TSQLRecord
   public
-    function LoadFromFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
-    function SaveToFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
+    procedure Assign(ASource: TPersistent); virtual;
+
+    function LoadFromFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;virtual;
+    function SaveToFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;virtual;
     procedure LoadFromFile_Thread(AApplication: TApplication; AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False);
     procedure SaveToFile_Thread(AApplication: TApplication; AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False);
     function LoadFromJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
     function SaveToJSONFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
+    function LoadFromJSONFile2(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
+    function SaveToJSONFile2(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer; virtual;
+    function LoadFromSqliteFile(ADBFileName: string): integer; virtual;
+    function SaveToSqliteFile(ADBFileName: string; AItemIndex: integer=-1): integer; virtual;
+    function LoadFromSqliteFile4Secure(ADBFileName: string): integer; virtual;
+    function SaveToSqliteFile4Secure(ADBFileName: string; AItemIndex: integer=-1): integer; virtual;
     function LoadFromStream(AStream: TStream; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
     function SaveToStream(AStream: TStream; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
-    procedure LoadFromRegistry(RootKey: HKEY; const Key, Name: string; APassPhrase: string=''; AIsEncrypt: Boolean=False);overload;
-    procedure SaveToRegistry(RootKey: HKEY; const Key, Name: string; APassPhrase: string=''; AIsEncrypt: Boolean=False);overload;
+    function LoadFromRegistry(RootKey: HKEY; const Key, Name: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): Boolean;overload;
+    function SaveToRegistry(RootKey: HKEY; const Key, Name: string; APassPhrase: string=''; AIsEncrypt: Boolean=False):Boolean; overload;
+    function LoadFromString(AString: RawByteString; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
+//    function SaveToString(AStream: TStream; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
+
+    function StreamToRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
+    function StreamFromRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
+    function AsHashString: string;
+    function CheckHashString(AHashedStr: string): Boolean;
   end;
 
 implementation
 
-uses JvgXMLSerializer_Encrypt, UnitEncrypt;
+uses JvgXMLSerializer_Encrypt, UnitEncrypt, UnitCryptUtil;
 
-function StreamToRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
+function TpjhBase.StreamToRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
 var
   Reg: TRegistry;
   Buf: Pointer;
@@ -61,7 +76,7 @@ begin
   end;
 end;
 
-function StreamFromRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
+function TpjhBase.StreamFromRegistry(Stream: TStream; RootKey: HKEY; const Key, Name: string): Boolean;
 var
   Reg: TRegistry;
   Buf: Pointer;
@@ -96,6 +111,29 @@ begin
   end;
 end;
 
+function TpjhBase.AsHashString: string;
+begin
+  Result := ObjectToJSON(Self);
+  Result := GetSHA256HashStringFromSyn(Result);
+end;
+
+procedure TpjhBase.Assign(ASource: TPersistent);
+var
+  LDoc: variant;
+begin
+  TDocVariant.New(LDoc);
+  LoadRecordPropertyToVariant(ASource, LDoc);
+  LoadRecordPropertyFromVariant(Self, LDoc);
+end;
+
+function TpjhBase.CheckHashString(AHashedStr: string): Boolean;
+var
+  LOriginalStr: string;
+begin
+  LOriginalStr := ObjectToJSON(Self);
+  Result := CheckSHA256HashStringFromSyn(LOriginalStr, AHashedStr);
+end;
+
 function TpjhBase.LoadFromFile(AFileName: string; APassPhrase: string=''; AIsEncrypt: Boolean=False): integer;
 var
   LTJvgXMLSerializer_Encrypt: TJvgXMLSerializer_Encrypt;
@@ -117,9 +155,9 @@ end;
 procedure TpjhBase.LoadFromFile_Thread(AApplication: TApplication; AFileName, APassPhrase: string;
   AIsEncrypt: Boolean);
 begin
-  AsyncHelper.MaxThreads := 2 * System.CPUCount;
-  AsyncHelper.AddTask(TAsyncCalls.Invoke<string, string, Boolean>(LoadFromFile, AFileName, APassPhrase, AIsEncrypt));
-  while NOT AsyncHelper.AllFinished do AApplication.ProcessMessages;
+//  AsyncHelper.MaxThreads := 2 * System.CPUCount;
+//  AsyncHelper.AddTask(TAsyncCalls.Invoke<string, string, Boolean>(LoadFromFile, AFileName, APassPhrase, AIsEncrypt));
+//  while NOT AsyncHelper.AllFinished do AApplication.ProcessMessages;
 end;
 
 function TpjhBase.LoadFromJSONFile(AFileName, APassPhrase: string;
@@ -131,6 +169,7 @@ var
   Fs: TFileStream;
   LMemStream: TMemoryStream;
 begin
+  Result := -1;
   LStrList := TStringList.Create;
   try
     if AIsEncrypt then
@@ -154,50 +193,98 @@ begin
 
     SetLength(LString, Length(LStrList.Text));
     LString := StringToUTF8(LStrList.Text);
-    JSONToObject(Self, PUTF8Char(LString), LValid);
+    JSONToObject(Self, PUTF8Char(LString), LValid, nil, [j2oIgnoreUnknownProperty]);
+    Result := 0;
   finally
     LStrList.Free;
   end;
 end;
 
-procedure TpjhBase.LoadFromRegistry(RootKey: HKEY; const Key, Name: string;
-  APassPhrase: string; AIsEncrypt: Boolean);
+function TpjhBase.LoadFromJSONFile2(AFileName, APassPhrase: string;
+  AIsEncrypt: Boolean): integer;
+var
+  LStrList: TStringList;
+  LValid: Boolean;
+  LRaw: RawByteString;
+  LString: RawUTF8;
+  Fs: TFileStream;
+  LMemStream: TMemoryStream;
+begin
+  Result := -1;
+
+  LStrList := TStringList.Create;
+  try
+    if AIsEncrypt then
+    begin
+      LRaw := StringFromFile(AFileName);
+      LRaw := DecryptString_Syn2(LRaw, APassPhrase);
+      LStrList.Text := UTF8ToString(LRaw);
+    end
+    else
+    begin
+      LStrList.LoadFromFile(AFileName);
+    end;
+
+    SetLength(LString, Length(LStrList.Text));
+    LString := StringToUTF8(LStrList.Text);
+    JSONToObject(Self, PUTF8Char(LString), LValid, nil, [j2oIgnoreUnknownProperty]);
+    Result := 0;
+  finally
+    LStrList.Free;
+  end;
+end;
+
+function TpjhBase.LoadFromRegistry(RootKey: HKEY; const Key, Name: string;
+  APassPhrase: string; AIsEncrypt: Boolean): Boolean;
 var
   LStrList: TStringList;
   LValid: Boolean;
   LString: RawUTF8;
   LMemStream, LMemStream2: TMemoryStream;
 begin
+  Result := False;
   LStrList := TStringList.Create;
   LMemStream2 := TMemoryStream.Create;
   try
-    StreamFromRegistry(LMemStream2, RootKey, Key, Name);
-
-    if AIsEncrypt then
+    if StreamFromRegistry(LMemStream2, RootKey, Key, Name) then
     begin
-      LMemStream := TMemoryStream.Create;
-      try
-        LMemStream2.Position := 0;
-        DecryptStream(LMemStream2, LMemStream, APassphrase);
-        LMemStream.Position := 0;
-        LStrList.LoadFromStream(LMemStream);
-      finally
-        LMemStream.Free;
+      if AIsEncrypt then
+      begin
+        LMemStream := TMemoryStream.Create;
+        try
+          LMemStream2.Position := 0;
+          DecryptStream(LMemStream2, LMemStream, APassphrase);
+          LMemStream.Position := 0;
+          LStrList.LoadFromStream(LMemStream);
+        finally
+          LMemStream.Free;
+        end;
+
+      end
+      else
+      begin
+        LStrList.LoadFromStream(LMemStream2);
       end;
 
-    end
-    else
-    begin
-      LStrList.LoadFromStream(LMemStream2);
+      SetLength(LString, Length(LStrList.Text));
+      LString := AnsiString(LStrList.Text);
+      JSONToObject(Self, Pointer(LString), LValid, nil, [j2oIgnoreUnknownProperty]);
+      Result := True;
     end;
-
-    SetLength(LString, Length(LStrList.Text));
-    LString := AnsiString(LStrList.Text);
-    JSONToObject(Self, Pointer(LString), LValid);
   finally
     LStrList.Free;
     LMemStream2.Free;
   end;
+end;
+
+function TpjhBase.LoadFromSqliteFile(ADBFileName: string): integer;
+begin
+
+end;
+
+function TpjhBase.LoadFromSqliteFile4Secure(ADBFileName: string): integer;
+begin
+
 end;
 
 function TpjhBase.LoadFromStream(AStream: TStream; APassPhrase: string;
@@ -208,6 +295,8 @@ var
   LString: RawUTF8;
   LMemStream: TMemoryStream;
 begin
+  Result := -1;
+
   LStrList := TStringList.Create;
   try
     if AIsEncrypt then
@@ -229,8 +318,67 @@ begin
 
     SetLength(LString, Length(LStrList.Text));
     LString := AnsiString(LStrList.Text);
-    JSONToObject(Self, Pointer(LString), LValid);
+    JSONToObject(Self, Pointer(LString), LValid, nil, [j2oIgnoreUnknownProperty]);
+
+    if LValid then
+      Result := 0;
   finally
+    LStrList.Free;
+  end;
+end;
+
+function TpjhBase.LoadFromString(AString: RawByteString; APassPhrase: string;
+  AIsEncrypt: Boolean): integer;
+var
+  LStrList: TStringList;
+  LValid: Boolean;
+  LString: RawByteString;
+  LMemStream: TMemoryStream;
+//  LSrcStream: TFileStream;
+  LSrcStream: TStringStream;
+begin
+  Result := -1;
+
+  LStrList := TStringList.Create;
+  LSrcStream := TStringStream.Create('');
+//  LSrcStream := TFileStream.Create('E:\pjh\project\util\HiMECS\Application\Bin\Log\Host\HiMECS.irf2', fmOpenRead);
+  try
+//     if LSrcStream.Size>0 then
+//     begin
+//      SetLength(LString, LSrcStream.Size);
+//      LSrcStream.Read(Pointer(LString)^, LSrcStream.Size);
+//     end;
+//    LString := StringToAnsi7(AString);
+    LSrcStream.Write(AString[1], ByteLength(AString));
+//    WriteString2Stream(AString, LSrcStream);
+//    LSrcStream.Write(AString[1], ByteLength(AString));
+    LSrcStream.Position := 0;
+//    LString := StreamToRawByteString(LSrcStream);
+
+    if AIsEncrypt then
+    begin
+      LMemStream := TMemoryStream.Create;
+      try
+        DecryptStream(LSrcStream, LMemStream, APassphrase);
+        LMemStream.Position := 0;
+        LStrList.LoadFromStream(LMemStream);
+      finally
+        LMemStream.Free;
+      end;
+    end
+    else
+    begin
+      LStrList.LoadFromStream(LSrcStream);
+    end;
+
+    SetLength(LString, Length(LStrList.Text));
+    LString := AnsiString(LStrList.Text);
+    JSONToObject(Self, Pointer(LString), LValid, nil, [j2oIgnoreUnknownProperty]);
+
+    if LValid then
+      Result := 0;
+  finally
+    LSrcStream.Free;
     LStrList.Free;
   end;
 end;
@@ -256,9 +404,9 @@ end;
 procedure TpjhBase.SaveToFile_Thread(AApplication: TApplication; AFileName,
   APassPhrase: string; AIsEncrypt: Boolean);
 begin
-  AsyncHelper.MaxThreads := 2 * System.CPUCount;
-  AsyncHelper.AddTask(TAsyncCalls.Invoke<string, string, Boolean>(SaveToFile, AFileName, APassPhrase, AIsEncrypt));
-  while NOT AsyncHelper.AllFinished do AApplication.ProcessMessages;
+//  AsyncHelper.MaxThreads := 2 * System.CPUCount;
+//  AsyncHelper.AddTask(TAsyncCalls.Invoke<string, string, Boolean>(SaveToFile, AFileName, APassPhrase, AIsEncrypt));
+//  while NOT AsyncHelper.AllFinished do AApplication.ProcessMessages;
 end;
 
 function TpjhBase.SaveToJSONFile(AFileName, APassPhrase: string;
@@ -294,8 +442,35 @@ begin
   end;
 end;
 
-procedure TpjhBase.SaveToRegistry(RootKey: HKEY; const Key, Name: string;
-  APassPhrase: string; AIsEncrypt: Boolean);
+function TpjhBase.SaveToJSONFile2(AFileName, APassPhrase: string;
+  AIsEncrypt: Boolean): integer;
+var
+  LStrList: TStringList;
+  LMemStream: TMemoryStream;
+  Fs: TFileStream;
+  LStr: RawUTF8;
+begin
+  LStr := ObjectToJSON(Self);
+
+  if AIsEncrypt then
+  begin
+    LStr := EncryptString_Syn2(LStr, APassPhrase);
+    FileFromString(LStr, AFileName);
+  end
+  else
+  begin
+    LStrList := TStringList.Create;
+    try
+      LStrList.Add(UTF8ToString(LStr));
+      LStrList.SaveToFile(AFileName);
+    finally
+      LStrList.Free;
+    end;
+  end;
+end;
+
+function TpjhBase.SaveToRegistry(RootKey: HKEY; const Key, Name: string;
+  APassPhrase: string; AIsEncrypt: Boolean): Boolean;
 var
   LStrList: TStringList;
   LMemStream, LMemStream2: TMemoryStream;
@@ -315,7 +490,7 @@ begin
       else
         LStrList.SaveToStream(LMemStream2);
 
-      StreamToRegistry(LMemStream2, RootKey, Key, Name);
+      Result := StreamToRegistry(LMemStream2, RootKey, Key, Name);
     finally
       LMemStream2.Free;
       LMemStream.Free;
@@ -323,6 +498,18 @@ begin
   finally
     LStrList.Free;
   end;
+end;
+
+function TpjhBase.SaveToSqliteFile(ADBFileName: string;
+  AItemIndex: integer): integer;
+begin
+
+end;
+
+function TpjhBase.SaveToSqliteFile4Secure(ADBFileName: string;
+  AItemIndex: integer): integer;
+begin
+
 end;
 
 function TpjhBase.SaveToStream(AStream: TStream; APassPhrase: string;
@@ -354,3 +541,5 @@ begin
 end;
 
 end.
+
+

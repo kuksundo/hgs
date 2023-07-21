@@ -3,7 +3,7 @@ unit ProjectFileClass;
 interface
 
 uses classes, BaseConfigCollect, HiMECSConst, HiMECSConfigCollect,
-  HiMECSMonitorListClass, AutoRunClass;
+  HiMECSMonitorListClass, AutoRunClass, mORMot;
 
 type
   TProjectFileCollect = class;
@@ -18,7 +18,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
     procedure Clear;
-    procedure Assign(Source: TPersistent); override;
+    procedure Assign(Source: TPersistent);
   published
     property ProjectFileCollect: TProjectFileCollect read FProjectFileCollect write FProjectFileCollect;
     property ProjectDescript: string read FProjectDescript write FProjectDescript;
@@ -37,6 +37,7 @@ type
     FOptionFileEncrypt: Boolean;//Engine Parameter file Encryption
     FRunListFileEncrypt: Boolean;//Run List file Encryption
     FMonitorFileEncrypt: Boolean;//Monitor file Encryption
+    FIsDisplayOnTab: Boolean;//Parameter 창에 표시하지 않고 상단 탭에 Project Name 표시
 
     FHiMECSConfig: THiMECSConfig;
     FHiMECSMonitor: THiMECSMonitorList;
@@ -58,6 +59,7 @@ type
     property OptionFileEncrypt: Boolean read FOptionFileEncrypt write FOptionFileEncrypt;
     property RunListFileEncrypt: Boolean read FRunListFileEncrypt write FRunListFileEncrypt;
     property MonitorFileEncrypt: Boolean read FMonitorFileEncrypt write FMonitorFileEncrypt;
+    property IsDisplayOnTab: Boolean read FIsDisplayOnTab write FIsDisplayOnTab;
   end;
 
   TProjectFileCollect = class(TCollection)

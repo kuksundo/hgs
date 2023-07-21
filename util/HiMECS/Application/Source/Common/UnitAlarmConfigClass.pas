@@ -2,7 +2,7 @@ unit UnitAlarmConfigClass;
 
 interface
 
-uses classes, SysUtils, INIPersist, HiMECSConst, EngineParameterClass;
+uses classes, SysUtils, INIPersist, HiMECSConst, EngineParameterClass, BaseConfigCollect;
 
 type
   TAlarmConfigCollect = class;
@@ -10,11 +10,12 @@ type
   TAlarmConfigEPCollect = class;   //Alarm Config용 Engine Parameter Collect
   TAlarmConfigEPItem = class;
 
-  TAlarmConfig = class(TINIPersist)
+  TAlarmConfig = class(TpjhBase)
   private
     FAlarmConfigCollect: TAlarmConfigCollect;
     FAlarmDBDriver,
-    FAlarmDBFileName: string;
+    FAlarmDBFileName,
+    FModbusDBFileName: string;
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -25,6 +26,7 @@ type
     [JSON2Component('AlarmItemFileEdit')]
     property AlarmDBDriver: string read FAlarmDBDriver write FAlarmDBDriver;
     property AlarmDBFileName: string read FAlarmDBFileName write FAlarmDBFileName;
+    property ModbusDBFileName: string read FModbusDBFileName write FModbusDBFileName;
   end;
 
   //HITEMS_ALARM_CONFIG 테이블과 동일 해야 함
@@ -128,7 +130,7 @@ type
     FIsAnalog: Boolean;
 
     FSensorType: TSensorType;
-    FParameterCatetory: TParameterCatetory;
+    FParameterCategory: TParameterCategory;
     FParameterType: TParameterType;
     FParameterSource: TParameterSource;
   published
@@ -139,7 +141,7 @@ type
     property FFUnit: string read FUnit write FUnit;
     property IsAnalog: Boolean read FIsAnalog write FIsAnalog;
     property SensorType: TSensorType read FSensorType write FSensorType;
-    property ParameterCatetory: TParameterCatetory read FParameterCatetory write FParameterCatetory;
+    property ParameterCatetory: TParameterCategory read FParameterCategory write FParameterCategory;
     property ParameterType: TParameterType read FParameterType write FParameterType;
     property ParameterSource: TParameterSource read FParameterSource write FParameterSource;
   end;
@@ -231,7 +233,7 @@ begin
       begin
         FTagName := AEP.Items[i].TagName;
         FDescription := AEP.Items[i].Description;
-        FUnit := AEP.Items[i].FFUnit;
+        FUnit := AEP.Items[i].FUnit;
         FProjNo := AEP.Items[i].ProjNo; //공사번호
         FEngNo := AEP.Items[i].EngNo;
       end;

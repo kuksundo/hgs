@@ -6,8 +6,8 @@ unit HiMECSConfigCollect;
 
 interface
 
-uses classes, SysUtils, BaseConfigCollect, EngineParameterClass,
-  ProjectBaseClass, EngineBaseClass, HiMECSManualClass;
+uses classes, SysUtils, BaseConfigCollect, EngineParameterClass, mORMot, SynCommons,
+  ProjectBaseClass, EngineBaseClass, HiMECSManualClass, UnitRttiUtil;
 
 type
   THiMECSConfigCollect = class;
@@ -20,6 +20,7 @@ type
     FMenuFileName,
     FEngineInfoFileName,
     FParamFileName,
+    FSensorRouteFileName,//값이 '' 이면 DomSensorTypes2.DefaultSensorRouteDBFileName이 사용됨
     FProjectInfoFileName,
     FUserFileName,
     FManualInfoFileName
@@ -35,7 +36,7 @@ type
     FUseMonLauncher: Boolean; //true = HiMECS_MON_LAUNCHER.exe를 이용하여 Montor list 로드함
     FUseCommLauncher: Boolean; //true = HiMECS_COMM_LAUNCHER.exe를 이용하여 AutoRun list 로드함
     FEngParamEncrypt: Boolean;//Engine Parameter file Encryption
-    FEngParamFileFormat: integer; //0: XML, 1: JSON
+    FEngParamFileFormat: integer; //0: XML, 1: JSON , 2: Sqlite
 
     //for Update config
     FUpdateProtocol: integer;//0=HTTP. 1=HTTPS, 2=FTP, 3=Network File
@@ -62,12 +63,13 @@ type
     property ProjectInfo: TVesselInfo read FProjectInfo write FProjectInfo;
     property EngineInfo: TICEngine read FEngineInfo write FEngineInfo;
     property ManualInfo: THiMECSManualInfo read FManualInfo write FManualInfo;
+//    property HiMECSConfigCollect: THiMECSConfigCollect read FHiMECSConfigCollect write FHiMECSConfigCollect;
   published
-    property HiMECSConfigCollect: THiMECSConfigCollect read FHiMECSConfigCollect write FHiMECSConfigCollect;
     property ProjectItemName: string read FProjectItemName write FProjectItemName;
     property MenuFileName: string read FMenuFileName write FMenuFileName;
     property EngineInfoFileName: string read FEngineInfoFileName write FEngineInfoFileName;
     property ParamFileName: string read FParamFileName write FParamFileName;
+    property SensorRouteFileName: string read FSensorRouteFileName write FSensorRouteFileName;
     property ProjectInfoFileName: string read FProjectInfoFileName write FProjectInfoFileName;
     property UserFileName: string read FUserFileName write FUserFileName;
     property ManualInfoFileName: string read FManualInfoFileName write FManualInfoFileName;
@@ -78,6 +80,7 @@ type
     property ExesPath: string read FExesPath write FExesPath;
     property BplsPath: string read FBplsPath write FBplsPath;
     property LogPath: string read FLogPath write FLogPath;
+
     property ExtAppInMDI: Boolean read FExtAppInMDI write FExtAppInMDI;
     property UseMonLauncher: Boolean read FUseMonLauncher write FUseMonLauncher;
     property UseCommLauncher: Boolean read FUseCommLauncher write FUseCommLauncher;
@@ -136,7 +139,7 @@ end;
 
 procedure THiMECSConfig.Clear;
 begin
-  HiMECSConfigCollect.Clear;
+//  HiMECSConfigCollect.Clear;
 {  MenuFileName := '';
   HiMECSFormPath := '';
   ConfigPath := '';

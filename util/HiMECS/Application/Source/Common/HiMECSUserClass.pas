@@ -39,6 +39,9 @@ type
     FRegisterDate,
     FExpirationDate: TDate;
 
+    FIsPreventOnVM: Boolean;//Virtual Machine에서 실행 금지
+    FIsIgnoreMachineID: Boolean;//MachindID 비교 금지
+
   published
     property Name: string read FName write FName;
     property SurName: string read FSurName write FSurName;
@@ -51,6 +54,8 @@ type
 
     property UserLevel: THiMECSUserLevel read FUserLevel write FUserLevel;
     property UserCategory: THiMECSUserCategory read FUserCategory write FUserCategory;
+    property IsPreventOnVM: Boolean read FIsPreventOnVM write FIsPreventOnVM;
+    property IsIgnoreMachineID: Boolean read FIsIgnoreMachineID write FIsIgnoreMachineID;
 
     property RegisterDate: TDate read FRegisterDate write FRegisterDate;
     property ExpirationDate: TDate read FExpirationDate write FExpirationDate;

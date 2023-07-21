@@ -2,13 +2,75 @@ unit EngineBaseClass;
 
 interface
 
-uses classes, SysUtils, math, BaseConfigCollect, EngineConst, IPC_MEXA7000_Const;
+uses classes, SysUtils, math, Generics.Legacy, BaseConfigCollect, EngineConst, IPC_MEXA7000_Const,
+  UnitEngineMasterData;
 
 type
-  TICEnginePartCollect = class;
-  TICEnginePartItem = class;
-  TEngineLoadTableCollect = class;
-  TEngineLoadTableItem = class;
+  TICEngineComponentItem = class(TCollectionItem)
+  private
+    FMS_NO: string;
+    FComponentName: string;
+    FMaker: string;
+    FType: string;
+    FSerialNo: string;
+
+    FDrawingNo: string; //도며번호
+    FManualFileName: string; //상대경로 메뉴얼 파일 이름
+    FManualPage: string; //Manual 내 Page 번호(E:\pjh\project\common\WindowUtil.pas의 OpenPDF 함수 이용할 것)
+  public
+    FNxPropertyItem: Pointer;//Component Item이 저장되는 Inspector Property를 저장함
+  published
+    property MS_NO: string read FMS_NO write FMS_NO;
+    property ComponentName: string read FComponentName write FComponentName;
+    property Maker: string read FMaker write FMaker;
+    property FFType: string read FType write FType;
+    property SerialNo: string read FSerialNo write FSerialNo;
+
+    property DrawingNo: string read FDrawingNo write FDrawingNo;
+    property ManualFileName: string read FManualFileName write FManualFileName;
+    property ManualPage: string read FManualPage write FManualPage;
+  end;
+
+  TICEngineComponentCollect<T: TICEngineComponentItem> = class(Generics.Legacy.TCollection<T>)
+  end;
+
+  TICEnginePartItem = class(TCollectionItem)
+  private
+    FMS_NO: string;
+    FPartName: string;
+    FMaker: string;
+    FType: string;
+    FSerialNo: string;
+
+    FBank: string; //A or B Bank
+    FCylNo: string;//Cylinder No.
+    FCycle: string;//Intake or Exhaust
+    FSide: string; //Exh Side or Cam Side
+
+    FManualFileName: string; //상대경로 메뉴얼 파일 이름
+    FManualPage: string; //Manual 내 Page 번호(E:\pjh\project\common\WindowUtil.pas의 OpenPDF 함수 이용할 것)
+    FComponentIndex: integer; //TICEngineComponentCollect의 index : sub item으로 표시하기 위함
+  public
+    FNxPropertyItem: Pointer;//Part Item이 저장되는 Inspector Property를 저장함
+  published
+    property MS_NO: string read FMS_NO write FMS_NO;
+    property PartName: string read FPartName write FPartName;
+    property Maker: string read FMaker write FMaker;
+    property FFType: string read FType write FType;
+    property SerialNo: string read FSerialNo write FSerialNo;
+
+    property ManualFileName: string read FManualFileName write FManualFileName;
+    property ManualPage: string read FManualPage write FManualPage;
+    property ComponentIndex: integer read FComponentIndex write FComponentIndex;
+
+    property Bank: string read FBank write FBank;
+    property CylNo: string read FCylNo write FCylNo;
+    property Cycle: string read FCycle write FCycle;
+    property Side: string read FSide write FSide;
+  end;
+
+  TICEnginePartCollect<T: TICEnginePartItem> = class(Generics.Legacy.TCollection<T>)
+  end;
 
   IGasEngineInterface = interface ['{29ECCBD5-E904-4482-A68F-1E53540DCFD0}']
     function GetGasFlow: double;
@@ -23,6 +85,24 @@ type
     property GasPress: double read GetGasPress write SetGasPress;
   end;
 
+  TEngineLoadTableItem = class(TCollectionItem)
+  private
+    FEngineLoad: integer; //(%)
+    FEngineOutput: double;//(kW)
+    FGenEfficiency: double;//(%/100)
+    FGenOutput: double;//(kW)
+  published
+    property EngineLoad: integer read FEngineLoad write FEngineLoad;
+    property EngineOutput: double read FEngineOutput write FEngineOutput;
+    property GenEfficiency: double read FGenEfficiency write FGenEfficiency;
+    property GenOutput: double read FGenOutput write FGenOutput;
+  end;
+
+  TEngineLoadTableCollect<T: TEngineLoadTableItem> = class(Generics.Legacy.TCollection<T>)
+  public
+    function GetGenEfficiency(ALoad: Double): double;//Get Generator Effiency from table
+  end;
+
   IDieselEngineInterface = interface ['{ABFAD293-8012-4C3D-8C40-A2B8F270D1B6}']
 //    function GetGasFlow: double;
 //    procedure SetGasFlow(Value: double);
@@ -32,7 +112,8 @@ type
 
   TICEngine = class(TpjhBase)
   private
-    FICEnginePartCollect: TICEnginePartCollect;
+    FICEngineComponentCollect: TICEngineComponentCollect<TICEngineComponentItem>;
+    FICEnginePartCollect: TICEnginePartCollect<TICEnginePartItem>;
 
     //Engine Spec.
     FBore: integer;  //mm
@@ -65,7 +146,7 @@ type
     FEngineWeight,
     FGenSetWeight: Double;//ton
 
-{    FTurboCharger,
+    FTurboCharger,
     FGovernor,
     FChargeAirCooler,
     FLTWaterPump,
@@ -80,16 +161,17 @@ type
     FFOValve,
     FFONozzle,
     FECU: string;
-}
+
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
     procedure Clear;
     function GetEngineType: string;
     procedure SetEngineType(ACount, ABore, AStroke, AFuelType, ACylConf: integer);
-
+    procedure DeleteComponentOrPart(AKind: integer; AIdx: integer);
   published
-    property ICEnginePartCollect: TICEnginePartCollect read FICEnginePartCollect write FICEnginePartCollect;
+    property ICEngineComponentCollect: TICEngineComponentCollect<TICEngineComponentItem> read FICEngineComponentCollect write FICEngineComponentCollect;
+    property ICEnginePartCollect: TICEnginePartCollect<TICEnginePartItem> read FICEnginePartCollect write FICEnginePartCollect;
 
     property Bore: integer read FBore write FBore;
     property Stroke: integer read FStroke write FStroke;
@@ -119,47 +201,6 @@ type
     property ProjectNo: string read FProjectNo write FProjectNo;
     property EngineNo: string read FEngineNo write FEngineNo;
     property Tier: string read FTier write FTier;
-  end;
-
-  TICEnginePartItem = class(TCollectionItem)
-  private
-    FMS_NO: string;
-    FPartName: string;
-    FMaker: string;
-    FType: string;
-    FSerialNo: string;
-
-    FBank: string; //A or B Bank
-    FCylNo: string;//Cylinder No.
-    FCycle: string;//Intake or Exhaust
-    FSide: string; //Exh Side or Cam Side
-
-    FManualFileName: string; //상대경로 메뉴얼 파일 이름
-    FManualPage: string; //Manual 내 Page 번호(E:\pjh\project\common\WindowUtil.pas의 OpenPDF 함수 이용할 것)
-  published
-    property MS_NO: string read FMS_NO write FMS_NO;
-    property PartName: string read FPartName write FPartName;
-    property Maker: string read FMaker write FMaker;
-    property FFType: string read FType write FType;
-    property SerialNo: string read FSerialNo write FSerialNo;
-
-    property ManualFileName: string read FManualFileName write FManualFileName;
-    property ManualPage: string read FManualPage write FManualPage;
-
-    property Bank: string read FBank write FBank;
-    property CylNo: string read FCylNo write FCylNo;
-    property Cycle: string read FCycle write FCycle;
-    property Side: string read FSide write FSide;
-  end;
-
-  TICEnginePartCollect = class(TCollection)
-  private
-    function GetItem(Index: Integer): TICEnginePartItem;
-    procedure SetItem(Index: Integer; const Value: TICEnginePartItem);
-  public
-    function  Add: TICEnginePartItem;
-    function Insert(Index: Integer): TICEnginePartItem;
-    property Items[Index: Integer]: TICEnginePartItem read GetItem  write SetItem; default;
   end;
 
 //  TDieselEngine = class(TICEngine, IDieselEngineInterface)
@@ -193,7 +234,7 @@ type
 
   TEngineMonitoringData = class(TpjhBase)
   private
-    FELMCollect: TEngineLoadTableCollect;
+    FELMCollect: TEngineLoadTableCollect<TEngineLoadTableItem>;
     FFooter: string;
     FHeader: string;  //Engine Type
     FFileName: string;
@@ -208,11 +249,12 @@ type
     FCylinderCount: integer;
     FMCR: integer;
     FRatedPower: Double; //(kW)
-    FGeneratorOutput: Double; //Measured(kW/h)
+    FGeneratorOutput: Double; //Measured(kW)
     FEngineSpeed: integer; //Measured(rpm)
     FGasFlow: double;  //Gas Flow(m³/h)
     FGasTemp,
     FGasPress: double;
+    FDisplacementVolume: double;
 
     //=====Ambient=====
     FIntakeAirTemp: double;//Intake Air Temp.
@@ -284,6 +326,8 @@ type
     FBHP: double; //Brake Horse Power
     FBMEP: double;//Brake Mean Effective Press.
     FBMEP2: double;//Brake Mean Effective Press.
+    FBMEP3: double;//Brake Mean Effective Press.(Unit:Pa)
+    FWorkJulePerCycle: double;
     FLamda: double; //Lamda Ratio
     FLamda_Calculated: double; //Lamda Ratio by MEXA7000
     FLamda_Measured: double; //Lamda Ratio by MT210
@@ -299,6 +343,7 @@ type
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
     procedure AddDefautProperties;
+    procedure Default_Calc;
     procedure Clear;
 
     procedure Efficiency_Calc;
@@ -317,10 +362,11 @@ type
     procedure AirFlow_Calc(AMEXA7000_2: TEventData_MEXA7000_2); //Air Flow
     procedure Lamda_Calc; //Lamda Ratio
     procedure Brettschneider_Calc; //Lamda Ratio(Brettschneidr equation)
+    procedure DisplacementVolume_Calc;
   published
     property Header: string read FHeader write FHeader;
     property FileName: string read FFileName write FFileName;
-    property ELMCollect: TEngineLoadTableCollect read FELMCollect write FELMCollect;
+    property ELMCollect: TEngineLoadTableCollect<TEngineLoadTableItem> read FELMCollect write FELMCollect;
     property Footer: string read FFooter write FFooter;
 
     property Bore: integer read FBore write FBore;
@@ -385,47 +431,62 @@ type
     property CloseTCPClient: Boolean read FCloseTCPClient write FCloseTCPClient;
     property TCCount: integer read FTCCount write FTCCount;
 
-    property ExhTempAvg: double read FGasPress write FGasPress;           //Average of Exh. Temp.
-    property EngineOutput: Double read FGasPress write FGasPress;         //Calculated(kW/h)
-    property EngineLoad: double read FGasPress write FGasPress;           //Current Engine Load(%)
-    property GenEfficiency: double read FGasPress write FGasPress;        //Generator Efficiency at current Load(%/100)
-    property BHP: double read FGasPress write FGasPress;                  //Brake Horse Power
-    property BMEP: double read FGasPress write FGasPress;                 //Brake Mean Effective Press.
-    property BMEP2: double read FGasPress write FGasPress;                //Brake Mean Effective Press.
-    property Lamda: double read FGasPress write FGasPress;                //Lamda Ratio
-    property Lamda_Calculated: double read FGasPress write FGasPress;     //Lamda Ratio by MEXA7000
-    property Lamda_Measured: double read FGasPress write FGasPress;       //Lamda Ratio by MT210
-    property Lamda_Brettschneider: double read FGasPress write FGasPress; //Lamda(Brettschneider equation) - Normalized Air/Fuel balance
-    property AFRatio: double read FGasPress write FGasPress;              //Air Fuel Ratio
-    property AFRatio_Calculated: double read FGasPress write FGasPress;   //Air Fuel Ratio (Calculated by emission data)
-    property AFRatio_Measured: double read FGasPress write FGasPress;     //Air Fuel Ratio (Measured by MT210)
-    property WasteGatePosition: double read FGasPress write FGasPress;    //Waste Gate Position
-    property ThrottlePosition: double read FGasPress write FGasPress;     //Throttle Valve Position
+    property ExhTempAvg: double read FExhTempAvg write FExhTempAvg;           //Average of Exh. Temp.
+    property EngineOutput: Double read FEngineOutput write FEngineOutput;         //Calculated(kW/h)
+    property EngineLoad: double read FEngineLoad write FEngineLoad;           //Current Engine Load(%)
+    property GenEfficiency: double read FGenEfficiency write FGenEfficiency;        //Generator Efficiency at current Load(%/100)
+    property BHP: double read FBHP write FBHP;                  //Brake Horse Power
+    property BMEP: double read FBMEP write FBMEP;                 //Brake Mean Effective Press.
+    property BMEP2: double read FBMEP2 write FBMEP2;                //Brake Mean Effective Press.
+    property Lamda: double read FLamda write FLamda;                //Lamda Ratio
+    property Lamda_Calculated: double read FLamda_Calculated write FLamda_Calculated;     //Lamda Ratio by MEXA7000
+    property Lamda_Measured: double read FLamda_Measured write FLamda_Measured;       //Lamda Ratio by MT210
+    property Lamda_Brettschneider: double read FLamda_Brettschneider write FLamda_Brettschneider; //Lamda(Brettschneider equation) - Normalized Air/Fuel balance
+    property AFRatio: double read FAFRatio write FAFRatio;              //Air Fuel Ratio
+    property AFRatio_Calculated: double read FAFRatio_Calculated write FAFRatio_Calculated;   //Air Fuel Ratio (Calculated by emission data)
+    property AFRatio_Measured: double read FAFRatio_Measured write FAFRatio_Measured;     //Air Fuel Ratio (Measured by MT210)
+    property WasteGatePosition: double read FWasteGatePosition write FWasteGatePosition;    //Waste Gate Position
+    property ThrottlePosition: double read FThrottlePosition write FThrottlePosition;     //Throttle Valve Position
   end;
 
-  TEngineLoadTableItem = class(TCollectionItem)
+  TEngineISOConversion = class(TpjhBase)
   private
-    FEngineLoad: integer; //(%)
-    FEngineOutput: double;//(kW)
-    FGenEfficiency: double;//(%/100)
-    FGenOutput: double;//(kW)
-  published
-    property EngineLoad: integer read FEngineLoad write FEngineLoad;
-    property EngineOutput: double read FEngineOutput write FEngineOutput;
-    property GenEfficiency: double read FGenEfficiency write FGenEfficiency;
-    property GenOutput: double read FGenOutput write FGenOutput;
-  end;
+    //실 계측값
+    FEngineLoadPercent: double;
+    FEngineSpeed: double;
+    FPmax_Avg: double;
+    FCAPress: double;
+    FTCSpeed: integer;
+    FExhGasTempTCInlet: integer;
+    FExhGasTempTCOutlet: integer;
+    FExhGasTempAvg: integer;
+    FBaseDurationGA: double;
+    FFuelModeApplied: integer;
+    FCATemp: double;
+    FAirTempTCInlet: double;
 
-  TEngineLoadTableCollect = class(TCollection)
-  private
-    function GetItem(Index: Integer): TEngineLoadTableItem;
-    procedure SetItem(Index: Integer; const Value: TEngineLoadTableItem);
-  public
-    function  Add: TEngineLoadTableItem;
-    function Insert(Index: Integer): TEngineLoadTableItem;
-    property Items[Index: Integer]: TEngineLoadTableItem read GetItem  write SetItem; default;
+    //ISO 변환 Factor
+    FDev_CATemp: integer;
+    FDev_AirTempTCInlet: integer;
 
-    function GetGenEfficiency(ALoad: Double): double;//Get Generator Effiency from table
+{$I EngineISO.inc}
+    //EngineISO.inc 파일에 published 키워드 선언 되어 있음
+
+    property EngineLoadPercent: double read FEngineLoadPercent write FEngineLoadPercent;
+    property EngineSpeed: double read FEngineSpeed write FEngineSpeed;
+    property Pmax_Avg: double read FPmax_Avg write FPmax_Avg;
+    property CAPress: double read FCAPress write FCAPress;
+    property TCSpeed: integer read FTCSpeed write FTCSpeed;
+    property ExhGasTempTCInlet: integer read FExhGasTempTCInlet write FExhGasTempTCInlet;
+    property ExhGasTempTCOutlet: integer read FExhGasTempTCOutlet write FExhGasTempTCOutlet;
+    property ExhGasTempAvg: integer read FExhGasTempAvg write FExhGasTempAvg;
+    property BaseDurationGA: double read FBaseDurationGA write FBaseDurationGA;
+    property FuelModeApplied: integer read FFuelModeApplied write FFuelModeApplied;
+    property CATemp: double read FCATemp write FCATemp;
+    property AirTempTCInlet: double read FAirTempTCInlet write FAirTempTCInlet;
+
+    property Dev_CATemp: integer read FDev_CATemp write FDev_CATemp;
+    property Dev_AirTempTCInlet: integer read FDev_AirTempTCInlet write FDev_AirTempTCInlet;
   end;
 
 implementation
@@ -461,14 +522,25 @@ end;
 
 constructor TICEngine.Create(AOwner: TComponent);
 begin
-  FICEnginePartCollect := TICEnginePartCollect.Create(TICEnginePartItem);
+  FICEnginePartCollect := TICEnginePartCollect<TICEnginePartItem>.Create;
+  FICEngineComponentCollect := TICEngineComponentCollect<TICEngineComponentItem>.Create;
+end;
+
+procedure TICEngine.DeleteComponentOrPart(AKind, AIdx: integer);
+begin
+  if AKind = 1 then //Component
+    ICEngineComponentCollect.Delete(AIdx)
+  else
+  if AKind = 2 then //Part
+    ICEnginePartCollect.Delete(AIdx);
 end;
 
 destructor TICEngine.Destroy;
 begin
-  inherited Destroy;
-
+  FICEngineComponentCollect.Free;
   FICEnginePartCollect.Free;
+
+  inherited Destroy;
 end;
 
 function TICEngine.GetEngineType: string;
@@ -487,28 +559,6 @@ begin
   Stroke := AStroke;
   FuelType := TFuelType(AFuelType);
   CylinderConfiguration := TCylinderConfiguration(ACylConf);
-end;
-
-{ TICEnginePartCollect }
-
-function TICEnginePartCollect.Add: TICEnginePartItem;
-begin
-  Result := TICEnginePartItem(inherited Add);
-end;
-
-function TICEnginePartCollect.GetItem(Index: Integer): TICEnginePartItem;
-begin
-  Result := TICEnginePartItem(inherited Items[Index]);
-end;
-
-function TICEnginePartCollect.Insert(Index: Integer): TICEnginePartItem;
-begin
-  Result := TICEnginePartItem(inherited Insert(Index));
-end;
-
-procedure TICEnginePartCollect.SetItem(Index: Integer; const Value: TICEnginePartItem);
-begin
-  Items[Index].Assign(Value);
 end;
 
 { TEngineMonitoringData }
@@ -582,6 +632,8 @@ begin
     //FBMEP := 1200*FEngineOutput/(FEngineMonitoringData.CylinderCount*38.48451)/FEngineMonitoringData.MCR;
     FBMEP := 1200 * FEngineOutput/(CylinderCount*(PiOn4 * Power(Bore, 2) * Stroke)/1000)/ MCR;
 //    BMEP.Value := FBMEP;
+    FWorkJulePerCycle := (FEngineOutput * 120 * 1000)/FEngineSpeed;
+    FBMEP3 := FWorkJulePerCycle/FDisplacementVolume;
   except on Exception do
   end;
 end;
@@ -603,7 +655,13 @@ end;
 
 constructor TEngineMonitoringData.Create(AOwner: TComponent);
 begin
-  FELMCollect := TEngineLoadTableCollect.Create(TICEnginePartItem);
+  FELMCollect := TEngineLoadTableCollect<TEngineLoadTableItem>.Create;
+  Default_Calc;
+end;
+
+procedure TEngineMonitoringData.Default_Calc;
+begin
+  DisplacementVolume_Calc;
 end;
 
 destructor TEngineMonitoringData.Destroy;
@@ -611,6 +669,11 @@ begin
   inherited;
 
   FELMCollect.Free;
+end;
+
+procedure TEngineMonitoringData.DisplacementVolume_Calc;
+begin
+  FDisplacementVolume :=PiOn4 * Power(Bore, 2) * Stroke * FCylinderCount;
 end;
 
 procedure TEngineMonitoringData.DWCFE_Calc(ACO_L, ACO2: double);
@@ -886,14 +949,8 @@ begin
 end;
 
 { TEngineLoadTableCollect }
-
-function TEngineLoadTableCollect.Add: TEngineLoadTableItem;
-begin
-
-end;
-
 //Engine 출력이 ALoad(kW) 일때 발전기 효율 값 반환
-function TEngineLoadTableCollect.GetGenEfficiency(ALoad: Double): double;
+function TEngineLoadTableCollect<T>.GetGenEfficiency(ALoad: Double): double;
 var
   Li: integer;
   LOutput: double;
@@ -909,22 +966,6 @@ begin
       break;
     end;
   end;
-end;
-
-function TEngineLoadTableCollect.GetItem(Index: Integer): TEngineLoadTableItem;
-begin
-
-end;
-
-function TEngineLoadTableCollect.Insert(Index: Integer): TEngineLoadTableItem;
-begin
-
-end;
-
-procedure TEngineLoadTableCollect.SetItem(Index: Integer;
-  const Value: TEngineLoadTableItem);
-begin
-
 end;
 
 end.

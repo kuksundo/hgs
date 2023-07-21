@@ -2,12 +2,42 @@ unit MenuBaseClass;
 
 interface
 
-uses classes, SysUtils, Menus, Vcl.ComCtrls,
-  HiMECSConst, BaseConfigCollect;
+uses classes, SysUtils, Menus, Vcl.ComCtrls, Rtti,
+  HiMECSConst, BaseConfigCollect, UnitpjhTypes;
 
 type
   THiMECSMenuCollect = class;
   THiMECSMenuItem = class;
+
+  THiMECSMenuRecord = record
+    FDLLName: TpjhString50;
+    FEventName: TpjhString50;
+    FFuncName: TpjhString50;
+    FCaption: TpjhString100;
+    FHint: TpjhString100;
+    FExeName: TpjhString50;
+    FImageListName: TpjhString50;
+    //FSubMenuIndex가 -1이 아닌 경우 ,로 분리되는 Index 나열, ''이면 Submenu 없음
+    FNestedSubMenuIndex: TpjhString50;
+
+    FDLLFuncIndex,
+    FParentMenuIndex,
+    FMenuIndex,
+    FSubMenuIndex: integer; //-1:메인헤드 0:레벨1, 1: 레벨2
+
+    //TTreeNode property
+    FLevelIndex,
+    FNodeIndex,
+    FAbsoluteIndex: integer;
+
+    FImageIndex: integer;
+    FUserLevel: THiMECSUserLevel;
+    FUserCategory: THiMECSUserCategory;
+
+    procedure AssignTo(var AMenuItemRecord: THiMECSMenuRecord);
+    procedure AssignToHiMECSMenuItem(AHiMECSMenuItem: THiMECSMenuItem);
+    procedure AssignFromHiMECSMenuItem(AHiMECSMenuItem: THiMECSMenuItem);
+  end;
 
   TMenuBase = class(TpjhBase)
   private
@@ -52,6 +82,7 @@ type
     FUserLevel: THiMECSUserLevel;
     FUserCategory: THiMECSUserCategory;
   public
+    procedure AssignTo(var AMenuItemRecord: THiMECSMenuRecord);
   published
     property UserLevel: THiMECSUserLevel read FUserLevel write FUserLevel;
     property UserCategory: THiMECSUserCategory read FUserCategory write FUserCategory;
@@ -86,6 +117,8 @@ type
   end;
 
 implementation
+
+uses SynCommons, UnitRttiUtil;
 
 { THiMECSMenuCollect }
 
@@ -333,6 +366,40 @@ begin
     LNode := ATreeView.Items.Item[i];
     SortItem(LNode);
   end;
+end;
+
+procedure THiMECSMenuRecord.AssignFromHiMECSMenuItem(
+  AHiMECSMenuItem: THiMECSMenuItem);
+var
+  LDoc: variant;
+begin
+//  LDoc := GetVariantFromProperty(AHiMECSMenuItem);
+//  LoadRecordFieldFromVariant(TypeInfo(THiMECSMenuRecord), Self, LDoc);
+end;
+
+procedure THiMECSMenuRecord.AssignTo(var AMenuItemRecord: THiMECSMenuRecord);
+begin
+  RecordCopy(AMenuItemRecord, Self, TypeInfo(THiMECSMenuRecord));
+end;
+
+procedure THiMECSMenuRecord.AssignToHiMECSMenuItem(AHiMECSMenuItem: THiMECSMenuItem);
+var
+  LDoc: variant;
+begin
+  TDocVariant.New(LDoc);
+  LDoc := TRecordHlpr<THiMECSMenuRecord>.ToVariant(Self);
+  LoadRecordPropertyFromVariant(AHiMECSMenuItem, LDoc, True);
+end;
+
+{ THiMECSMenuItem }
+
+procedure THiMECSMenuItem.AssignTo(var AMenuItemRecord: THiMECSMenuRecord);
+var
+  LRecord: THiMECSMenuRecord;
+  LJson: string;
+begin
+  LJson := ObjectToJson(Self);
+  TRecordHlpr<THiMECSMenuRecord>.FromJson(LJson, AMenuItemRecord, True);
 end;
 
 end.

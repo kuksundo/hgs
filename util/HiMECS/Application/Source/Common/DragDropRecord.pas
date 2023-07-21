@@ -3,6 +3,7 @@ unit DragDropRecord;
 interface
 
 uses
+  System.Types,
   DragDrop,
   DragDropFormats,
   DropTarget,
@@ -26,6 +27,7 @@ type
   TEngineParameterClipboardFormat = class(TCustomSimpleClipboardFormat)
   private
     FGotData: boolean;
+    FDataKind: integer;//1: SensorRouteData
     FEPD: TEngineParameter_DragDrop;
   protected
     function ReadData(Value: pointer; Size: integer): boolean; override;
@@ -37,6 +39,7 @@ type
     procedure Clear; override;
     function HasData: boolean; override;
     property EPD: TEngineParameter_DragDrop read FEPD write SetEPD;
+    property DataKind: integer read FDataKind write FDataKind;
   end;
 
   // TEngineParameterDataFormat defines our custom data format.
@@ -45,6 +48,7 @@ type
   TEngineParameterDataFormat = class(TCustomDataFormat)
   private
     FEPD: TEngineParameter_DragDrop;
+    FDataKind: integer;//1: SensorRouteData
     FGotData: boolean;
   protected
     class procedure RegisterCompatibleFormats; override;
@@ -56,6 +60,7 @@ type
     function HasData: boolean; override;
     function NeedsData: boolean; override;
     property EPD: TEngineParameter_DragDrop read FEPD write SetEPD;
+    property DataKind: integer read FDataKind write FDataKind;
   end;
 
 const
@@ -127,7 +132,7 @@ begin
   Result := True;
 
   if (Source is TEngineParameterClipboardFormat) then
-    FEPD := TEngineParameterClipboardFormat(Source).EPD
+    EPD := TEngineParameterClipboardFormat(Source).EPD
   else
     Result := inherited Assign(Source);
 
