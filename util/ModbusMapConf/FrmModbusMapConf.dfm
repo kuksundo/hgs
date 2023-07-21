@@ -89,7 +89,7 @@ object Form1: TForm1
         end
         object Button4: TButton
           Left = 166
-          Top = 54
+          Top = 57
           Width = 129
           Height = 25
           Caption = 'Calc Absolute Index'
@@ -124,12 +124,13 @@ object Form1: TForm1
           OnClick = Button7Click
         end
         object Button8: TButton
-          Left = 354
-          Top = 55
+          Left = 355
+          Top = 58
           Width = 116
           Height = 25
           Caption = 'Save To Sqlite'
           TabOrder = 9
+          OnClick = Button8Click
         end
       end
       object Panel2: TPanel
@@ -493,6 +494,43 @@ object Form1: TForm1
                 ImageIndex = 21
                 Style = tbsSeparator
               end
+              object JvLabel8: TJvLabel
+                AlignWithMargins = True
+                Left = 645
+                Top = 0
+                Width = 120
+                Height = 22
+                Alignment = taCenter
+                AutoSize = False
+                Caption = 'ParamNo Filter'
+                Color = 14671839
+                FrameColor = clGrayText
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = #47569#51008' '#44256#46357
+                Font.Style = [fsBold]
+                Layout = tlCenter
+                Margin = 5
+                ParentColor = False
+                ParentFont = False
+                RoundedFrame = 3
+                Transparent = True
+                HotTrackFont.Charset = ANSI_CHARSET
+                HotTrackFont.Color = clWindowText
+                HotTrackFont.Height = -13
+                HotTrackFont.Name = #47569#51008' '#44256#46357
+                HotTrackFont.Style = []
+              end
+              object ParamNoFilterEdit: TEdit
+                Left = 765
+                Top = 0
+                Width = 121
+                Height = 22
+                ImeName = 'Microsoft IME 2010'
+                TabOrder = 1
+                OnChange = ParamNoFilterEditChange
+              end
             end
           end
           object Panel4: TPanel
@@ -504,37 +542,32 @@ object Form1: TForm1
             BevelWidth = 2
             Caption = 'Panel4'
             TabOrder = 1
-            object NextGrid1: TNextGrid
+            object NextGrid1: TNextGrid6
               Left = 2
               Top = 2
               Width = 1057
               Height = 459
               Align = alClient
-              AppearanceOptions = [aoHintMarks, aoIndicateSortedColumn]
-              BiDiMode = bdLeftToRight
-              Caption = ''
-              EnableVisualStyles = False
-              FooterSize = 1
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              Options = [goGrid, goHeader, goMultiSelect, goSecondClickEdit, goSelectFullRow]
-              RowSize = 23
-              ParentBiDiMode = False
-              ParentFont = False
+              ParentColor = False
               PopupMenu = PopupMenu1
-              SlideSize = 60
               TabOrder = 0
-              TabStop = True
-              WantReturns = True
-              WantTabs = True
+              OnKeyDown = NextGrid1KeyDown
+              OnMouseDown = NextGrid1MouseDown
+              OnMouseMove = NextGrid1MouseMove
+              ActiveView = NxReportGridView61
+              ActiveViewIndex = 0
+              Filtered = True
+              MultiSelect = True
+              ScrollBars = [sbHorizontal, sbVertical]
+              SelectFullRow = True
+              UserDefinedColorPalette.GeometryHoverColor = clBlack
               OnCellDblClick = NextGrid1CellDblClick
               OnEditEnter = NextGrid1EditEnter
               OnEditExit = NextGrid1EditExit
-              OnKeyDown = NextGrid1KeyDown
-              OnMouseMove = NextGrid1MouseMove
+              FitOptions = [foColumn, foRow]
+              object NxReportGridView61: TNxReportGridView6
+                GridLines = True
+              end
             end
           end
         end
@@ -564,8 +597,18 @@ object Form1: TForm1
         OnClick = FileAppend1Click
       end
       object FileOpenFromExcel1: TMenuItem
-        Caption = 'File Open From Excel'
+        Caption = 'Open From Excel'
         OnClick = FileOpenFromExcel1Click
+      end
+      object OpenFromExcelofMap1: TMenuItem
+        Caption = 'Open From Excel of Modbus RawData'
+        Hint = 'HiMECS-DF-A2-NG AVAT Modbus Data'#47484' Excel'#47196' '#48512#53552' Grid'#47196' Loiad'#54632
+        OnClick = OpenFromExcelofMap1Click
+      end
+      object OpenFromExcelofDFA2LM1: TMenuItem
+        Caption = 'Open From Excel of DF-A2-LM'
+        Hint = 'HiMECS-DF-A2-LM AVAT Modbus Data'#47484' Excel'#47196' '#48512#53552' Grid'#47196' Loiad'#54632
+        OnClick = OpenFromExcelofDFA2LM1Click
       end
       object ConvertTagtoAddress1: TMenuItem
         Caption = 'Convert Tag to Address'
@@ -591,13 +634,82 @@ object Form1: TForm1
         Caption = 'Clear ClipBoard List'
         OnClick = ClearClipBoard1Click
       end
+      object N13: TMenuItem
+        Caption = '-'
+      end
+      object CopyFieldsFromGridIndex1: TMenuItem
+        Caption = 'Copy Fields From Grid Index'
+        Hint = #51077#47141#48155#51008' Index'#51004' Fields'#47484' '#49440#53469#46108' Fields'#50640' '#48373#49324#54632
+        OnClick = CopyFieldsFromGridIndex1Click
+      end
+      object N14: TMenuItem
+        Caption = '-'
+      end
+      object ResetCellColorFromLevelIndex1: TMenuItem
+        Caption = 'Reset Cell Color From LevelIndex'
+        OnClick = ResetCellColorFromLevelIndex1Click
+      end
+      object ResetCellColorFromLevelIndex2: TMenuItem
+        Caption = 'Set Cell Color From LevelIndex'
+        Hint = #49888#44508' '#52628#44032#51064' '#44221#50864' 1, Dummy Field'#47484' '#49688#51221#54620' '#44221#50864' 2,  '#44592#51316' '#51452#49548#51032' Filed'#44032' '#48320#44221' '#46104#50632#51012' '#44221#50864' 3'
+        OnClick = ResetCellColorFromLevelIndex2Click
+      end
+      object SetCellColorFromAddress1: TMenuItem
+        Caption = 'Set Cell Color From Address+FCode'
+        Hint = 'Address'#50752' FCode'#47484' '#48708#44368#54616#50668' '#50724#47492#49692#52264' '#51064#51648' '#54869#51064#54632', '#50500#45768#47732' Cell Color '#48320#44221#54632
+        OnClick = SetCellColorFromAddress1Click
+      end
+    end
+    object ool1: TMenuItem
+      Caption = 'Tool'
+      object AdjustDummyFieldFromDBbyAddress1: TMenuItem
+        Caption = 'Adjust Dummy Field From DB by Address'
+        Hint = 
+          #54788#51116' Load'#46108' data'#50752' '#51069#50612#50728' DB'#51032' Address'#47484' '#44592#51456#51004#47196' Desc'#47484' '#48708#44368#54616#50668'  FEngineParamter' +
+          #51032' TagName'#51060' dummy'#51064' '#44221#50864#50640#47564' Update'#54632
+        OnClick = AdjustDummyFieldFromDBbyAddress1Click
+      end
+      object CompareDescFromDBbyAddress1: TMenuItem
+        Caption = 'Adjust Fields From DB by Address except dummy'
+        Hint = 
+          #54788#51116' Load'#46108' data'#50752' '#51069#50612#50728' DB'#51032' Address'#47484' '#44592#51456#51004#47196' Desc'#47484' '#48708#44368#54616#50668' '#52264#51060#51216#51012' FEnginePara' +
+          'mter'#50640' Update'#54632
+        OnClick = CompareDescFromDBbyAddress1Click
+      end
+      object AddDummy2Grid1: TMenuItem
+        Caption = 'Add Dummy 2 Grid'
+        Hint = #54788#51116' Load'#46108' Data'#51032' Address(10'#51652#49688')'#47484' '#48708#44368#54616#50668' Dummy'#47484' Grid'#50640' '#52628#44032#54632
+        OnClick = AddDummy2Grid1Click
+      end
+      object SetParameterCatetorybyDersc1: TMenuItem
+        Caption = 'Set ParameterCatetory by Desc'
+        Hint = 'Description'#51012' '#54876#50857#54616#50668' ParameterCatetory '#49444#51221' '#48143' Grid'#50640' '#52628#44032
+        OnClick = SetParameterCatetorybyDersc1Click
+      end
+      object N15: TMenuItem
+        Caption = '-'
+      end
+      object UpdateFieldsFromDBMapDBModbusTagNameDescFieldUpdate1: TMenuItem
+        Caption = 'Update Fields From DB'
+        Hint = 
+          #54788#51116' Open'#46108' '#51088#47308#47484' '#49440#53469#54620' '#44592#51316' DB'#50752' '#48708#44368#54616#50668' Modbus '#51452#49548#44032' '#44057#51008' '#44221#50864' TagName'#44284' Desc'#47484' '#51228#50808#54620 +
+          ' '#45208#47672#51648' Field'#47484' Update'#54632
+        OnClick = UpdateFieldsFromDBMapDBModbusTagNameDescFieldUpdate1Click
+      end
+      object CreateEPItemincfile1: TMenuItem
+        Caption = 'Create EPItem.inc file'
+        Hint = 
+          'TEngineParameterItem.Assign'#50640#49436' '#49549#46020' '#54693#49345#51012' '#50948#54644' Code'#47484' '#51088#46041' '#49373#49457#54632'. MainUnit.p' +
+          'as'#51032' EngParamTV'#50640#49436' '#44160#49353#54624#46412' '#50896#48376' EngParam'#51012' '#48373#49324#54624#46412' '#49324#50857#46120
+        OnClick = CreateEPItemincfile1Click
+      end
     end
   end
   object ImageList1: TImageList
-    Left = 75
-    Top = 159
+    Left = 35
+    Top = 191
     Bitmap = {
-      494C010115001800780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101150018002C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1412,6 +1524,13 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Left = 200
     Top = 152
+    object Properties1: TMenuItem
+      Caption = 'Properties'
+      OnClick = Properties1Click
+    end
+    object N12: TMenuItem
+      Caption = '-'
+    end
     object N2: TMenuItem
       Caption = #52395#48264#51704' '#51460#51032' '#54788#51116#50676' '#44050' '#47784#46160' '#44057#44172
       OnClick = N2Click
@@ -1437,6 +1556,12 @@ object Form1: TForm1
     end
     object N5: TMenuItem
       Caption = '-'
+    end
+    object CopyFieldsFromTagName1: TMenuItem
+      Caption = 'Copy Fields From Grid Index'
+      Hint = #51077#47141#48155#51008' Index'#51004' Fields'#47484' '#49440#53469#46108' Fields'#50640' '#48373#49324#54632
+      Visible = False
+      OnClick = CopyFieldsFromTagName1Click
     end
     object SetAlarmEnable1: TMenuItem
       Caption = 'Set AlarmEnable'
@@ -1477,15 +1602,9 @@ object Form1: TForm1
       end
     end
   end
-  object OraSession1: TOraSession
-    Options.Direct = True
-    HomeName = 'TBACS'
-    Left = 248
-    Top = 152
-  end
-  object OraQuery1: TOraQuery
-    Session = OraSession1
-    Left = 288
-    Top = 152
+  object EngParamSource: TDropTextSource
+    DragTypes = [dtCopy]
+    Left = 16
+    Top = 213
   end
 end

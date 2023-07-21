@@ -7,7 +7,8 @@ uses
   Dialogs, StdCtrls, NxColumns, NxColumnClasses, ImgList, NxEdit, ComCtrls,
   ToolWin, NxScrollControl, NxCustomGridControl, NxCustomGrid, NxGrid, NxCells,
   ExtCtrls, Menus, NxClasses, EngineParameterClass, SynCommons,
-  HiMECSConst, ClipBrd, Data.DB, MemDS, DBAccess, Ora, ComObj, OleCtrls, OraCall;//, superobject
+  HiMECSConst, ClipBrd, Data.DB, MemDS, DBAccess, Ora, ComObj, OleCtrls, OraCall,
+  UnitEnumHelper, UnitEngineParamRecord, UnitEngineParamConst;//, superobject
 
 type
   TClipBrdGridData = record
@@ -105,6 +106,7 @@ type
     SaveToCSV1: TMenuItem;
     N10: TMenuItem;
     Button7: TButton;
+    Button8: TButton;
     procedure Close1Click(Sender: TObject);
     procedure btnLeftAlignmentClick(Sender: TObject);
     procedure btnCenterAlignmentClick(Sender: TObject);
@@ -172,7 +174,7 @@ type
 
     procedure Data2XML;
     procedure MakeGridData2Parameter; //Modbus Map txt File을 읽어서 수정할때 쓰임
-    procedure MakeGridData2Parameter2;//JSON File 을 읽어서 수정할때 쓰임
+    procedure MakeGridData2Parameter2(AIsSqlite: Boolean = False);//JSON File 을 읽어서 수정할때 쓰임
     procedure ConvertToBase(AType, AAddrIndex: integer);
     function GetSelectedRow2Text: string;
     function GetSelectedRow2List: TStringList;
@@ -184,9 +186,10 @@ type
     procedure XMLFile_Open;
     procedure JSONFile_Open;
     procedure JSONFile_S7_Open;
-    procedure AddGridColumn4Parameter;
+    procedure Sqlite_Open;
+    procedure AddGridColumn4Parameter(AIsSqlite: Boolean = False);
     procedure AddGridColumn4TxtFile;
-    procedure AddParameter2Grid;
+    procedure AddParameter2Grid(AIsSqlite: Boolean = False);
     procedure AddParamItem2Grid(AIndex: integer; AEngineParameterItem: TEngineParameterItem);
     function GetTextHeader: string;
     procedure AddGridColumn4S7;
@@ -199,6 +202,7 @@ type
     procedure Data_2_ParamFile2;
     procedure Data_2_ParamFile_JSON(AFromGridData: Boolean);
     procedure Data_2_S7ParamFile_JSON;
+    procedure Data_2_Sqlite;
     function GetParamType(AType: string): TParameterType;
     procedure CalcAbsoluteIndex;
     procedure ConnectDB;
@@ -226,7 +230,8 @@ var
   ClipStrList: TStringList;
 implementation
 
-uses String_Func, DBSelectUint, UnitSetMatrix, UnitEngParamConfig;
+uses String_Func, DBSelectUint, UnitSetMatrix, UnitEngParamConfig, UnitRttiUtil,
+  UnitEngineMasterData;
 
 {$R *.dfm}
 
@@ -293,7 +298,10 @@ begin
     JSONFile_Open
   else
   if RGModeSelect.ItemIndex = 3 then
-    JSONFile_S7_Open;
+    JSONFile_S7_Open
+  else
+  if RGModeSelect.ItemIndex = 4 then
+    Sqlite_Open;
 end;
 
 procedure TForm1.btnLeftAlignmentClick(Sender: TObject);
@@ -326,7 +334,7 @@ begin
   NextGrid1.Columns[NextGrid1.SelectedColumn].VerticalAlignment := taAlignBottom;
 end;
 
-procedure TForm1.AddGridColumn4Parameter;
+procedure TForm1.AddGridColumn4Parameter(AIsSqlite: Boolean);
 var
   LnxTextColumn: TnxTextColumn;
   LNxComboBoxColumn: TNxComboBoxColumn;
@@ -384,13 +392,48 @@ begin
 
     LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'SensorType'));
     LNxComboBoxColumn.Name := 'SensorType';
-    SensorType2Strings(LNxComboBoxColumn.Items);
+    g_SensorType.SetType2List(LNxComboBoxColumn.Items);
     LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
 
     LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'ParameterCatetory'));
     LNxComboBoxColumn.Name := 'ParameterCatetory';
     ParameterCatetory2Strings(LNxComboBoxColumn.Items);
     LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+    if AIsSqlite then
+    begin
+      LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'ParameterCatetory4AVAT2'));
+      LNxComboBoxColumn.Name := 'ParameterCatetory4AVAT2';
+      g_ParameterCatetory4AVAT2.SetType2List(LNxComboBoxColumn.Items);
+      LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'DFAlarmKind'));
+      LNxComboBoxColumn.Name := 'DFAlarmKind';
+      g_DFAlarmKind.SetType2List(LNxComboBoxColumn.Items);
+      LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'EngineUsage'));
+      LNxComboBoxColumn.Name := 'EngineUsage';
+      g_EngineUsage.SetType2List(LNxComboBoxColumn.Items);
+      LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'DFCommissioningItem'));
+      LNxComboBoxColumn.Name := 'DFCommissioningItem';
+      g_DFCommissioningItem.SetType2List(LNxComboBoxColumn.Items);
+      LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LnxTextColumn := TnxTextColumn(Columns.Add(TnxTextColumn,'ParamNo'));
+      LnxTextColumn.Name := 'ParamNo';
+      LnxTextColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LnxTextColumn := TnxTextColumn(Columns.Add(TnxTextColumn,'Description_Eng'));
+      LnxTextColumn.Name := 'Description_Eng';
+      LnxTextColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+
+      LnxTextColumn := TnxTextColumn(Columns.Add(TnxTextColumn,'Description_Kor'));
+      LnxTextColumn.Name := 'Description_Kor';
+      LnxTextColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
+    end;
 
     LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'ParameterType'));
     LNxComboBoxColumn.Name := 'ParameterType';
@@ -492,7 +535,7 @@ begin
 
     LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'SensorType'));
     LNxComboBoxColumn.Name := 'SensorType';
-    SensorType2Strings(LNxComboBoxColumn.Items);
+    g_SensorType.SetType2List(LNxComboBoxColumn.Items);
     LNxComboBoxColumn.Options := [coCanClick,coCanInput,coEditing,coDisableMoving,coEditorAutoSelect,coPublicUsing,coShowTextFitHint];
 
     LNxComboBoxColumn := TNxComboBoxColumn(Columns.Add(TNxComboBoxColumn,'ParameterCatetory'));
@@ -605,7 +648,7 @@ begin
   end;
 end;
 
-procedure TForm1.AddParameter2Grid;
+procedure TForm1.AddParameter2Grid(AIsSqlite: Boolean = False);
 var
   i: integer;
 begin
@@ -626,7 +669,7 @@ begin
       CellByName['Alarm', i].AsString := BoolToStr(EngineParameterCollect.Items[i].Alarm, true);
       CellByName['FCode', i].AsString := EngineParameterCollect.Items[i].FCode;
       CellByName['FFUnit', i].AsString := EngineParameterCollect.Items[i].FFUnit;
-      CellByName['SensorType', i].AsString := SensorType2String(EngineParameterCollect.Items[i].SensorType);
+      CellByName['SensorType', i].AsString := g_SensorType.ToString(EngineParameterCollect.Items[i].SensorType);
       CellByName['ParameterCatetory', i].AsString := ParameterCatetory2String(EngineParameterCollect.Items[i].ParameterCatetory);
       CellByName['ParameterType', i].AsString := ParameterType2String(EngineParameterCollect.Items[i].ParameterType);
       CellByName['ParameterSource', i].AsString := ParameterSource2String(EngineParameterCollect.Items[i].ParameterSource);
@@ -637,6 +680,17 @@ begin
       CellByName['AlarmEnable', i].AsString := BoolToStr(EngineParameterCollect.Items[i].AlarmEnable, True);
       CellByName['ProjNo', i].AsString := EngineParameterCollect.Items[i].ProjNo;
       CellByName['EngNo', i].AsString := EngineParameterCollect.Items[i].EngNo;
+
+      if AIsSqlite then
+      begin
+        CellByName['ParameterCatetory4AVAT2', i].AsString := g_ParameterCatetory4AVAT2.ToString(EngineParameterCollect.Items[i].ParameterCatetory4AVAT2);
+        CellByName['DFAlarmKind', i].AsString := g_DFAlarmKind.ToString(EngineParameterCollect.Items[i].DFAlarmKind);
+        CellByName['EngineUsage', i].AsString := g_EngineUsage.ToString(EngineParameterCollect.Items[i].EngineUsage);
+        CellByName['DFCommissioningItem', i].AsString := g_DFCommissioningItem.ToString(EngineParameterCollect.Items[i].DFCommissioningItem);
+        CellByName['ParamNo', i].AsString := EngineParameterCollect.Items[i].ParamNo;
+        CellByName['Description_Eng', i].AsString := EngineParameterCollect.Items[i].Description_Eng;
+        CellByName['Description_Kor', i].AsString := EngineParameterCollect.Items[i].Description_Kor;
+      end;
     end;//for
   end;//with
 end;
@@ -657,7 +711,7 @@ begin
     Cells[9, AIndex] := BoolToStr(AEngineParameterItem.Alarm, true);
     Cells[10, AIndex] := AEngineParameterItem.FCode;
     Cells[11, AIndex] := AEngineParameterItem.FFUnit;
-    Cells[12, AIndex] := SensorType2String(AEngineParameterItem.SensorType);
+    Cells[12, AIndex] := g_SensorType.ToString(AEngineParameterItem.SensorType);
     Cells[13, AIndex] := ParameterCatetory2String(AEngineParameterItem.ParameterCatetory);
     Cells[14, AIndex] := ParameterType2String(AEngineParameterItem.ParameterType);
     Cells[15, AIndex] := ParameterSource2String(AEngineParameterItem.ParameterSource);
@@ -681,7 +735,7 @@ begin
     with NextGrid1 do
     begin
       if (Cell[6,i].AsString = '') and
-        (String2SensorType(Cell[12,i].AsString) = stCalculated) and
+        (g_SensorType.ToType(Cell[12,i].AsString) = stCalculated) and
         (String2ParameterSource(Cell[15,i].AsString) = psManualInput)then
         Cell[6,i].AsString := 'V_' + formatDateTime('yyyymmddhhnnss',now)
     end;
@@ -934,7 +988,7 @@ begin
           CellByName['Alarm', i].AsString := BoolToStr(EngineParameterCollect.Items[i].Alarm, true);
           CellByName['FCode', i].AsString := EngineParameterCollect.Items[i].FCode;
           CellByName['FFUnit', i].AsString := EngineParameterCollect.Items[i].FFUnit;
-          CellByName['SensorType', i].AsString := SensorType2String(EngineParameterCollect.Items[i].SensorType);
+          CellByName['SensorType', i].AsString := g_SensorType.ToString(EngineParameterCollect.Items[i].SensorType);
           CellByName['ParameterCatetory', i].AsString := ParameterCatetory2String(EngineParameterCollect.Items[i].ParameterCatetory);
           CellByName['ParameterType', i].AsString := ParameterType2String(EngineParameterCollect.Items[i].ParameterType);
           CellByName['ParameterSource', i].AsString := ParameterSource2String(EngineParameterCollect.Items[i].ParameterSource);
@@ -1028,7 +1082,7 @@ begin
           CellByName['Alarm', i].AsString := BoolToStr(EngineParameterCollect.Items[i].Alarm, true);
           CellByName['FCode', i].AsString := EngineParameterCollect.Items[i].FCode;
           CellByName['FFUnit', i].AsString := EngineParameterCollect.Items[i].FFUnit;
-          CellByName['SensorType', i].AsString := SensorType2String(EngineParameterCollect.Items[i].SensorType);
+          CellByName['SensorType', i].AsString := g_SensorType.ToString(EngineParameterCollect.Items[i].SensorType);
           CellByName['ParameterCatetory', i].AsString := ParameterCatetory2String(EngineParameterCollect.Items[i].ParameterCatetory);
           CellByName['ParameterType', i].AsString := ParameterType2String(EngineParameterCollect.Items[i].ParameterType);
           CellByName['ParameterSource', i].AsString := ParameterSource2String(EngineParameterCollect.Items[i].ParameterSource);
@@ -1138,7 +1192,10 @@ begin
     Data_2_ParamFile_JSON(False)
   else
   if RGModeSelect.ItemIndex = 3 then
-    Data_2_S7ParamFile_JSON;
+    Data_2_S7ParamFile_JSON
+  else
+  if RGModeSelect.ItemIndex = 4 then
+    Data_2_Sqlite;
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
@@ -1433,7 +1490,7 @@ begin
             Description := CellByName['Description', i].AsString;
             Address := CellByName['Address', i].AsString;
             FFUnit := CellByName['FFUnit', i].AsString;
-            SensorType := String2SensorType(CellByName['SensorType', i].AsString);
+            SensorType := g_SensorType.ToType(CellByName['SensorType', i].AsString);
             ParameterCatetory :=String2ParameterCatetory(CellByName['ParameterCatetory', i].AsString);
             ParameterType :=String2ParameterType(CellByName['ParameterType', i].AsString);
             ParameterSource := String2ParameterSource(CellByName['ParameterSource', i].AsString);
@@ -1546,8 +1603,6 @@ end;
 
 procedure TForm1.Data_2_ParamFile_JSON(AFromGridData: Boolean);
 var
-  //Lobj: ISuperObject;
-  //LCtx: TSuperRttiContext;
   sFileName: string;
 begin
   if AFromGridData then
@@ -1561,17 +1616,6 @@ begin
 
     FEngineParameter.SaveToJSONFile(sFileName,
                                 ExtractFileName(sFileName),EncryptCB.Checked);
-{    LCtx := TSuperRttiContext.Create;
-    try
-      Lobj := LCtx.AsJson<TEngineParameter>(FEngineParameter);
-      //sFileName := LCtx.AsJson<TEngineParameter>(FEngineParameter).AsJSon();
-      //ShowMessage(sFileName);
-      if sFileName <> '' then
-        Lobj.SaveTo(sFileName);
-    finally
-      LCtx.Free;
-    end;
-}
   end;
 end;
 
@@ -1579,6 +1623,22 @@ procedure TForm1.Data_2_S7ParamFile_JSON;
 begin
   FEngineParameter.EngineParameterCollect.Clear;
   Data_2_ParamFile_JSON(False);
+end;
+
+procedure TForm1.Data_2_Sqlite;
+var
+  LDoc: variant;
+  i: integer;
+begin
+  FEngineParameter.EngineParameterCollect.Clear;
+  MakeGridData2Parameter2(True);
+  TDocVariant.New(LDoc);
+
+  for i := 0 to FEngineParameter.EngineParameterCollect.Count - 1 do
+  begin
+    LoadRecordPropertyToVariant(FEngineParameter.EngineParameterCollect.Items[i], LDoc);
+    AddOrUpdateEngParamFromVariant(LDoc, True)
+  end;
 end;
 
 procedure TForm1.Data_2_TextFile;
@@ -2036,7 +2096,7 @@ begin
   end;//with
 end;
 
-procedure TForm1.MakeGridData2Parameter2;
+procedure TForm1.MakeGridData2Parameter2(AIsSqlite: Boolean);
 var
   li,ls,ll : integer;
   sFileName : string;
@@ -2074,7 +2134,7 @@ begin
         Alarm := CellByName['Alarm',li].AsBoolean;
         fcode := CellByName['FCode',li].AsString;
         FFUnit := CellByName['FFUnit',li].AsString;
-        SensorType := String2SensorType(CellByName['SensorType',li].AsString);
+        SensorType := g_SensorType.ToType(CellByName['SensorType',li].AsString);
         //압력은 소수점 두자리 표시
         if SensorType = stmA then
           RadixPosition := 2;
@@ -2101,6 +2161,12 @@ begin
         LItem.AlarmEnable := StrToBool(CellByName['AlarmEnable',li].AsString);
         ProjNo := CellByName['ProjNo',li].AsString;
         EngNo := CellByName['EngNo',li].AsString;
+
+        if AIsSqlite then
+        begin
+          ParameterCatetory4AVAT2 := g_ParameterCatetory4AVAT2.ToType(CellsByName['ParameterCatetory4AVAT2', li]);
+          DFCommissioningItem := g_DFCommissioningItem.toType(CellsByName['DFCommissioningItem', li]);
+        end;
 
         if LItem.IsMatrixData then
         begin
@@ -2256,7 +2322,7 @@ begin
     }
     end
     else
-    if UpCase(Char(Key)) = 'V' then //'c'
+    if UpCase(Char(Key)) = 'V' then
     begin
       for i := 0 to ClipStrList.Count - 1 do
         AddGridRowFromClipBrd(ClipStrList.Strings[i]);
@@ -2609,6 +2675,31 @@ begin
     end;
 
     SetConfigEngParamItemData(Li);
+  end;
+end;
+
+procedure TForm1.Sqlite_Open;
+var
+  i: integer;
+  LEngParamList: RawUtf8;
+begin
+  OpenDialog1.Filter := 'Sqlite|*.sqlite';
+  OpenDialog1.FileName := '';
+
+  if OpenDialog1.Execute then
+  begin
+    FEngineParameter.EngineParameterCollect.Clear;
+    if OpenDialog1.FileName <> '' then
+    begin
+      Caption := OpenDialog1.FileName;
+
+      InitEngineParamClient('E:\pjh\project\util\HiMECS\Application\Bin\db\'+ENG_PARAM_DB_NAME);
+      LEngParamList := GetEngParamList2JSONArrayFromSensorType(stParam);
+      FEngineParameter.LoadFromJSONArray(LEngParamList);
+
+      AddGridColumn4Parameter(True);
+      AddParameter2Grid(True);
+    end;
   end;
 end;
 

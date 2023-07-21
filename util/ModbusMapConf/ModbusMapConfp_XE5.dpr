@@ -2,27 +2,34 @@ program ModbusMapConfp_XE5;
 
 uses
   Forms,
-  ModbusMapConfUint in 'ModbusMapConfUint.pas' {Form1},
+  SynSqlite3Static,
+  FrmModbusMapConf in 'FrmModbusMapConf.pas' {Form1},
   String_Func in 'common\String_Func.pas',
   EngineParameterClass in '..\HiMECS\Application\Source\Common\EngineParameterClass.pas',
   BaseConfigCollect in '..\HiMECS\Application\Source\Common\BaseConfigCollect.pas',
   HiMECSConst in '..\HiMECS\Application\Source\Common\HiMECSConst.pas',
-  UnitEncrypt in '..\..\Common\UnitEncrypt.pas',
   DBSelectUint in 'DBSelectUint.pas' {DBSelectForm},
   UnitSetMatrix in '..\HiMECS\Application\Source\Forms\UnitSetMatrix.pas' {SetMatrixForm},
-  ModbusComConst_endurance in '..\HiMECS\Application\Utility\ModbusComm_내구시험장\ModbusComConst_endurance.pas',
+  UnitModbusComConst in '..\HiMECS\Application\Utility\ModbusCommunication\UnitModbusComConst.pas',
   UnitEngParamConfig in '..\HiMECS\Application\Source\Forms\UnitEngParamConfig.pas' {EngParamItemConfigForm},
   UnitSelectUser in '..\HiMECS\Application\Source\Forms\UnitSelectUser.pas' {SelectUserF},
-  SynCommons in '..\..\OpenSrc\lib\mORMot\SynCommons.pas';
+  UnitEngineParamRecord in '..\HiMECS\Application\Source\Common\UnitEngineParamRecord.pas',
+  UnitEngineMasterData in '..\GSManage\VesselList\UnitEngineMasterData.pas',
+  UnitEngineParamConst in '..\HiMECS\Application\Source\Common\UnitEngineParamConst.pas',
+  UnitEnumHelper in '..\..\Common\UnitEnumHelper.pas',
+  UnitRttiUtil in '..\..\Common\UnitRttiUtil.pas',
+  UnitParameterManager in '..\HiMECS\Application\Utility\Watch2\UnitParameterManager.pas',
+  UnitCryptUtil in '..\..\NoGitHub\Util\UnitCryptUtil.pas',
+  UnitEncrypt in '..\..\NoGitHub\Util\UnitEncrypt.pas',
+  UnitSimulateParamCommandLineOption in '..\HiMECS\Application\Utility\SimulateParamServer\UnitSimulateParamCommandLineOption.pas',
+  UnitSimulateCommonData in '..\HiMECS\Application\Utility\SimulateParamServer\UnitSimulateCommonData.pas',
+  FrmIntInputEdit in 'FrmIntInputEdit.pas' {IntInputF},
+  UnitArrayUtil in '..\..\Common\UnitArrayUtil.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TDBSelectForm, DBSelectForm);
-  Application.CreateForm(TSetMatrixForm, SetMatrixForm);
-  Application.CreateForm(TEngParamItemConfigForm, EngParamItemConfigForm);
-  Application.CreateForm(TSelectUserF, SelectUserF);
   Application.Run;
 end.
